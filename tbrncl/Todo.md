@@ -1,1 +1,2 @@
-- Implement more atomics.
+- Define more atomics.
+- All undefined atomics MUST be images or sounds.
