@@ -1,1 +1,1 @@
-[[Time]] [[Thing]]
+Type: [[Time]], [[Thing]]

@@ -1,1 +1,1 @@
-[[Leg]] [[Clothes]]
+Type: [[Leg]], [[Clothes]]

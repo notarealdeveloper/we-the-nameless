@@ -1,1 +1,1 @@
-[[Almost]] [[Same]]
+Type: [[Almost]], [[Same]]

@@ -1,1 +1,1 @@
-[[Girl]] [[Pants]] [[Parts]]
+Type: [[Girl]], [[Pants]], [[Parts]]

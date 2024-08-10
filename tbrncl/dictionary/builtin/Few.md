@@ -1,1 +1,1 @@
-[[Not]] [[Many]]
+Type: [[Not]], [[Many]]

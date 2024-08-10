@@ -1,1 +1,1 @@
-[[Good]] [[Book]]
+Type: [[Good]], [[Book]]

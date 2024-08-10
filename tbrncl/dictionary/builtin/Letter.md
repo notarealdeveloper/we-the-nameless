@@ -1,1 +1,1 @@
-[[Shape]] [[Meaning]] [[Sound]]
+Type: [[Shape]], [[Meaning]], [[Sound]]

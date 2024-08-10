@@ -1,1 +1,1 @@
-[[Feel]] [[Good]]
+Type: [[Feel]], [[Good]]

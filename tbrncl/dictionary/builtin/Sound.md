@@ -1,1 +1,1 @@
-[[Thing]] [[Ear]] [[Can]] [[See]]
+Type: [[Thing]], [[Ear]], [[Can]], [[See]]

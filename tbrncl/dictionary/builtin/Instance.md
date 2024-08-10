@@ -1,1 +1,1 @@
-[[Thing]] [[In]] [[Type]]
+Type: [[Thing]], [[In]], [[Type]]

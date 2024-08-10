@@ -1,1 +1,1 @@
-[[About]] [[Few]] [[Thing]]
+Type: [[About]], [[Few]], [[Thing]]

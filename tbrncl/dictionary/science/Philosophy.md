@@ -1,1 +1,1 @@
-[[Serious]] [[Word]] [[Meaning]] [[Think]]
+Type: [[Serious]], [[Word]], [[Meaning]], [[Think]]

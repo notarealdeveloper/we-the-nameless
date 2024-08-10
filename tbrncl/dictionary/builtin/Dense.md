@@ -1,3 +1,3 @@
-[[Many]] [[Thing]] [[Near]] [[Together]]
+Type: [[Many]], [[Thing]], [[Near]], [[Together]]
 
-[[Nice]] [[Word]] [[Meaning]] [[Idiot]]
+Type: [[Nice]], [[Word]], [[Meaning]], [[Idiot]]

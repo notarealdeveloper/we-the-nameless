@@ -1,1 +1,1 @@
-[[Most]] [[Good]]
+Type: [[Most]], [[Good]]

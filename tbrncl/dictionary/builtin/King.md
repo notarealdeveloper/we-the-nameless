@@ -1,1 +1,1 @@
-[[Man]] [[With]] [[Most]] [[Power]]
+Type: [[Man]], [[With]], [[Most]], [[Power]]

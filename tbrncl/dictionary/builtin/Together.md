@@ -1,1 +1,1 @@
-[[Many]] [[Thing]] [[One]] [[Place]]
+Type: [[Many]], [[Thing]], [[One]], [[Place]]

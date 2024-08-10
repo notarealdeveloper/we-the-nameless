@@ -1,1 +1,1 @@
-[[Teach]] [[Process]]
+Type: [[Teach]], [[Process]]

@@ -1,1 +1,1 @@
-[[Multiple]] [[Country]] [[Thing]]
+Type: [[Multiple]], [[Country]], [[Thing]]

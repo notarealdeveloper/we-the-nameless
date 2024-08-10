@@ -1,1 +1,1 @@
-[[Can]] [[Not]] [[Make]] [[Better]]
+Type: [[Can]], [[Not]], [[Make]], [[Better]]

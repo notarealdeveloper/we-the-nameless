@@ -1,1 +1,1 @@
-[[Old]] [[Country]] [[That]] [[Invent]] [[Philosophy]] [[And]] [[Buttsex]]
+Type: [[Old]], [[Country]], [[That]], [[Invent]], [[Philosophy]], [[And]], [[Buttsex]]

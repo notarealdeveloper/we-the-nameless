@@ -1,1 +1,1 @@
-[[Some]] [[Times]]
+Type: [[Some]], [[Times]]

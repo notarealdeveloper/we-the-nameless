@@ -1,1 +1,1 @@
-[[Make]] [[For]] [[First]] [[Time]]
+Type: [[Make]], [[For]], [[First]], [[Time]]

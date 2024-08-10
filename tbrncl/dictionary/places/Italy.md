@@ -1,1 +1,1 @@
-[[Boot]] [[Country]]
+Type: [[Boot]], [[Country]]

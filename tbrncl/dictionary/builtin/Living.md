@@ -1,1 +1,1 @@
-[[Have]] [[Life]]
+Type: [[Have]], [[Life]]

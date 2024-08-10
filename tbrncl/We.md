@@ -1,17 +1,19 @@
 
 Welcome to We
 
-We is mostly just a dictionary.
+We is a dictionary.
 
 The `dictionary` directory contains that dictionary.
 
 The `Documentation` directory contains some simple text that relies on that dictionary.
 
-The goal of We is to record and transmit a simple, unsophisticated, unimpressive set of thoughts. A humble set of bits, representing nothing particularly novel or deep.
+The goal of We is to record and transmit a simple, unsophisticated set of thoughts.
+
+A humble set of bits, representing nothing particularly novel or deep.
 
 But to do so in a format that more closely mirrors the structure of thought than of speech.
 
-The result may be understood as the transpose of spoken language, or equivalently, the transpose of a book. A book that cannot be printed, in any order, without shattering into something unintelligible and useless.
+The result may be understood as the transpose of spoken language, or equivalently, of a book. One that cannot be printed, in any order, without shattering into something unintelligible and useless.
 
 The resulting data structure is not difficult to write or to read. It is, however, designed to be maximally difficult to communicate by any means except the data structure itself.
 

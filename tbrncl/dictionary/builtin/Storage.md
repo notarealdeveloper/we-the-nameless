@@ -1,1 +1,1 @@
-[[Tool]] [[For]] [[Keep]] [[Thing]]
+Type: [[Tool]], [[For]], [[Keep]], [[Thing]]

@@ -1,1 +1,1 @@
-[[Thing]] [[With]] [[Many]] [[Part]]
+Type: [[Thing]], [[With]], [[Many]], [[Part]]

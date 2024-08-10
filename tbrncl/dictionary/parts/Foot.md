@@ -1,1 +1,1 @@
-[[Leg]] [[End]]
+Type: [[Leg]], [[End]]

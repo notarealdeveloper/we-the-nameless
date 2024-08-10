@@ -1,1 +1,1 @@
-[[Should]] [[Think]] [[About]] [[Now]] [[Thing]]
+Type: [[Should]], [[Think]], [[About]], [[Now]], [[Thing]]

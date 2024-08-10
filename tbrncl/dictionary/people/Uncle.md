@@ -1,1 +1,1 @@
-[[Brother]] [[Of]] [[Parent]]
+Type: [[Brother]], [[Of]], [[Parent]]

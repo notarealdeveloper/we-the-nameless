@@ -1,1 +1,1 @@
-[[Same]] [[Idea]]
+Type: [[Same]], [[Idea]]

@@ -1,1 +1,1 @@
-[[Reusable]] [[Action]] [[List]]
+Type: [[Reusable]], [[Action]], [[List]]

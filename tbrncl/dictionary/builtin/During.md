@@ -1,1 +1,1 @@
-[[After]] [[Start]] [[Before]] [[Stop]]
+Type: [[After]], [[Start]], [[Before]], [[Stop]]

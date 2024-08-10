@@ -1,1 +1,1 @@
-[[China]] [[Thing]]
+Type: [[China]], [[Thing]]

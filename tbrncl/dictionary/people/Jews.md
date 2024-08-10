@@ -1,1 +1,1 @@
-[[Multiple]] [[Jew]]
+Type: [[Multiple]], [[Jew]]

@@ -1,1 +1,1 @@
-[[Do]] [[Thing]]
+Type: [[Do]], [[Thing]]

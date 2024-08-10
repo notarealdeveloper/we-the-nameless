@@ -1,1 +1,1 @@
-[[Before]] [[Now]]
+Type: [[Before]], [[Now]]

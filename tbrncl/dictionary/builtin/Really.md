@@ -1,1 +1,1 @@
-[[Very]] [[True]] [[Or]] [[Big]] [[Amount]]
+Type: [[Very]], [[True]], [[Or]], [[Big]], [[Amount]]

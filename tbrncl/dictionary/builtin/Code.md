@@ -1,1 +1,1 @@
-[[Action]] [[List]] [[For]] [[Computer]]
+Type: [[Action]], [[List]], [[For]], [[Computer]]

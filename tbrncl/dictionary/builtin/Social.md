@@ -1,1 +1,1 @@
-[[Thing]] [[About]] [[People]]
+Type: [[Thing]], [[About]], [[People]]

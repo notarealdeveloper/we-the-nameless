@@ -1,1 +1,1 @@
-[[Any]] [[Thing]]
+Type: [[Any]], [[Thing]]

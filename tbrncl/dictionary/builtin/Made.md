@@ -1,1 +1,1 @@
-[[Make]] [[In]] [[Past]]
+Type: [[Make]], [[In]], [[Past]]

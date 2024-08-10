@@ -1,3 +1,3 @@
-[[Any]] [[Thing]] [[You]] [[Want]] [[Do]] [[With]] [[Pants]] [[Parts]] [[But]] [[Not]] [[Need]] [[Do]]
+Type: [[Any]], [[Thing]], [[You]], [[Want]], [[Do]], [[With]], [[Pants]], [[Parts]], [[But]], [[Not]], [[Need]], [[Do]]
 
-[[Put]] [[Penis]] [[In]] [[Vagina]]
+Type: [[Put]], [[Penis]], [[In]], [[Vagina]]

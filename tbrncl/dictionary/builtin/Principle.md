@@ -1,1 +1,1 @@
-[[Reusable]] [[If]] [[Then]] [[Sentence]] [[For]] [[Many]] [[Situation]]
+Type: [[Reusable]], [[If]], [[Then]], [[Sentence]], [[For]], [[Many]], [[Situation]]
