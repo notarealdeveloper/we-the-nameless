@@ -1,11 +1,11 @@
 
 Welcome to We
 
-We is a dictionary.
+We is mostly just a dictionary.
 
 The `dictionary` directory contains that dictionary.
 
-The `Documentation` directory contains some text that relies on that dictionary.
+The `Documentation` directory contains some simple text that relies on that dictionary.
 
 The goal of We is to record and transmit a simple, unsophisticated, unimpressive set of thoughts. A humble set of bits, representing nothing particularly novel or deep.
 
