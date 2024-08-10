@@ -1,1 +1,1 @@
-[[Name]] [[For]] [[They]] [[When]] [[Verb]] [[Is]] [[Done]] [[To]] [[They]]
+Type: [[Name]], [[For]], [[They]], [[When]], [[Verb]], [[Is]], [[Done]], [[To]], [[They]]

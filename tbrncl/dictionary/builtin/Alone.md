@@ -1,1 +1,1 @@
-[[Just]] [[One]]
+Type: [[Just]], [[One]]

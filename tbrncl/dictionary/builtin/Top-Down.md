@@ -1,1 +1,1 @@
-[[When]] [[Few]] [[Have]] [[Power]]
+Type: [[When]], [[Few]], [[Have]], [[Power]]

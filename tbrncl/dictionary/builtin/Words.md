@@ -1,1 +1,1 @@
-[[Multiple]] [[Word]]
+Type: [[Multiple]], [[Word]]

@@ -1,1 +1,1 @@
-[[Noun]] [[Form]] [[Of]] [[Retarded]]
+Type: [[Noun]], [[Form]], [[Of]], [[Retarded]]

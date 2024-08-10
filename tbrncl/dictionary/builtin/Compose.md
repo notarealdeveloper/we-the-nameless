@@ -1,1 +1,1 @@
-[[From]] [[Two]] [[Make]] [[One]]
+Type: [[From]], [[Two]], [[Make]], [[One]]

@@ -1,1 +1,1 @@
-[[Know]] [[Reason]] [[Feeling]]
+Type: [[Know]], [[Reason]], [[Feeling]]

@@ -1,1 +1,1 @@
-[[Roman]] [[Retarded]] [[Emperor]] [[And]] [[Uncle]] [[Of]] [[Caligula]]
+Type: [[Roman]], [[Retarded]], [[Emperor]], [[And]], [[Uncle]], [[Of]], [[Caligula]]

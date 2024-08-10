@@ -1,1 +1,1 @@
-[[General]] [[Purpose]] [[Insult]] [[With]] [[Many]] [[Sophisticated]] [[Meaning]]
+Type: [[General]], [[Purpose]], [[Insult]], [[With]], [[Many]], [[Sophisticated]], [[Meaning]]

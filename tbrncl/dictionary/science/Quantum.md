@@ -1,3 +1,3 @@
-[[Strange]] [[Law]] [[Of]] [[Small]] [[Things]]
+Type: [[Strange]], [[Law]], [[Of]], [[Small]], [[Things]]
 
-[[Most]] [[Small]] [[Amount]] [[Of]] [[Stuff]]
+Type: [[Most]], [[Small]], [[Amount]], [[Of]], [[Stuff]]

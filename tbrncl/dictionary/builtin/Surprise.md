@@ -1,1 +1,1 @@
-[[Not]] [[Predict]] [[Thing]]
+Type: [[Not]], [[Predict]], [[Thing]]

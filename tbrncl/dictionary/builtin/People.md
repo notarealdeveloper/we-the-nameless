@@ -1,1 +1,1 @@
-[[Multiple]] [[Person]]
+Type: [[Multiple]], [[Person]]

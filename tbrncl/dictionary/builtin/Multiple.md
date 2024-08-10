@@ -1,1 +1,1 @@
-[[More]] [[Than]] [[One]]
+Type: [[More]], [[Than]], [[One]]

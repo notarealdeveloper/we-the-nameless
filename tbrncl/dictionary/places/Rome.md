@@ -1,3 +1,3 @@
-[[City]] [[In]] [[Italy]]
+Type: [[City]], [[In]], [[Italy]]
 
-[[Big]] [[Country]] [[In]] [[Old]] [[Time]] [[When]] [[Italy]] [[Had]] [[More]] [[Power]]
+Type: [[Big]], [[Country]], [[In]], [[Old]], [[Time]], [[When]], [[Italy]], [[Had]], [[More]], [[Power]]

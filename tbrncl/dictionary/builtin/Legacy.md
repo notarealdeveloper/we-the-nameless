@@ -1,1 +1,1 @@
-[[Old]] [[Thing]] [[dict/stdlib/We]] [[Can]] [[Not]] [[Change]]
+Type: [[Old]], [[Thing]], [[dict/stdlib/We]], [[Can]], [[Not]], [[Change]]

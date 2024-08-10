@@ -1,1 +1,1 @@
-[[Many]] [[Thought]] [[With]] [[Same]] [[Type]]
+Type: [[Many]], [[Thought]], [[With]], [[Same]], [[Type]]

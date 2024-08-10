@@ -1,1 +1,1 @@
-[[Can]] [[Use]] [[Again]]
+Type: [[Can]], [[Use]], [[Again]]

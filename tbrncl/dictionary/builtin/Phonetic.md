@@ -1,1 +1,1 @@
-[[Sound]] [[Thing]]
+Type: [[Sound]], [[Thing]]

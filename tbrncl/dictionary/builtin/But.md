@@ -1,1 +1,1 @@
-[[And]] [[With]] [[Surprise]]
+Type: [[And]], [[With]], [[Surprise]]

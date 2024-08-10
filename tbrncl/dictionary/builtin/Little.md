@@ -1,1 +1,1 @@
-[[Small]]
+Type: [[Small]]

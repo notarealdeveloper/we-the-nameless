@@ -1,1 +1,1 @@
-[[Have]] [[In]] [[Past]]
+Type: [[Have]], [[In]], [[Past]]

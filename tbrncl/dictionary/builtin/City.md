@@ -1,1 +1,1 @@
-[[Place]] [[Where]] [[People]] [[Dense]]
+Type: [[Place]], [[Where]], [[People]], [[Dense]]

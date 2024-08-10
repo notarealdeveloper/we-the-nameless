@@ -1,1 +1,1 @@
-[[Goal]] [[Not]] [[Done]]
+Type: [[Goal]], [[Not]], [[Done]]

@@ -1,1 +1,1 @@
-[[Not]] [[Living]] [[Do]] [[Thing]]
+Type: [[Not]], [[Living]], [[Do]], [[Thing]]

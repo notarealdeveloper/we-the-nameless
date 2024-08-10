@@ -1,1 +1,1 @@
-[[Thought]] [[Storage]]
+Type: [[Thought]], [[Storage]]

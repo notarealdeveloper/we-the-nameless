@@ -1,3 +1,3 @@
-[[Strange]]
+Type: [[Strange]]
 
-[[Number]] [[You]] [[Can't]] [[Cut]] [[In]] [[Half]] [[Unless]] [[You]] [[Cut]] [[One]] [[Thing]] [[In]] [[Half]]
+Type: [[Number]], [[You]], [[Can't]], [[Cut]], [[In]], [[Half]], [[Unless]], [[You]], [[Cut]], [[One]], [[Thing]], [[In]], [[Half]]

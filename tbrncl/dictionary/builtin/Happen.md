@@ -1,1 +1,1 @@
-[[Event]] [[Start]]
+Type: [[Event]], [[Start]]

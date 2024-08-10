@@ -1,1 +1,1 @@
-They: [[That]] [[Man]]
+They: [[That]], [[Man]]

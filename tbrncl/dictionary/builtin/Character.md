@@ -1,1 +1,1 @@
-[[Shape]] [[Meaning]] [[Idea]]
+Type: [[Shape]], [[Meaning]], [[Idea]]

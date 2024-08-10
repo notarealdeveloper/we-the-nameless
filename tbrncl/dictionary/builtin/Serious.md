@@ -1,1 +1,1 @@
-[[Very]] [[Not]] [[Joke]]
+Type: [[Very]], [[Not]], [[Joke]]

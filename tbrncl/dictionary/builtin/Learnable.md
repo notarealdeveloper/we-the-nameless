@@ -1,1 +1,1 @@
-[[Can]] [[Learn]]
+Type: [[Can]], [[Learn]]

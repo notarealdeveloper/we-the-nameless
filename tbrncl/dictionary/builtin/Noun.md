@@ -1,1 +1,1 @@
-[[Thing]] [[Word]]
+Type: [[Thing]], [[Word]]

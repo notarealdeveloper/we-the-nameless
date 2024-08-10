@@ -1,1 +1,1 @@
-[[Make]] [[Thing]] [[Happen]] [[In]] [[Mind]]
+Type: [[Make]], [[Thing]], [[Happen]], [[In]], [[Mind]]

@@ -1,1 +1,1 @@
-[[Action]] [[For]] [[Explain]]
+Type: [[Action]], [[For]], [[Explain]]

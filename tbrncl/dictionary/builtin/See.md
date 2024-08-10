@@ -1,1 +1,1 @@
-[[Thing]] [[Eye]] [[Do]]
+Type: [[Thing]], [[Eye]], [[Do]]

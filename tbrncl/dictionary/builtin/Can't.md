@@ -1,1 +1,1 @@
-[[Not]] [[Can]]
+Type: [[Not]], [[Can]]

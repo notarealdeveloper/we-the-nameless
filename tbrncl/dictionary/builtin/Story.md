@@ -1,1 +1,1 @@
-[[Event]] [[List]]
+Type: [[Event]], [[List]]

@@ -1,1 +1,1 @@
-[[Part]] [[Inside]] [[Thing]]
+Type: [[Part]], [[Inside]], [[Thing]]

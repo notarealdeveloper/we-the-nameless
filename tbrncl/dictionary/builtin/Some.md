@@ -1,1 +1,1 @@
-[[More]] [[Than]] [[None]] [[But]] [[Probably]] [[Less]] [[Than]] [[All]]
+Type: [[More]], [[Than]], [[None]], [[But]], [[Probably]], [[Less]], [[Than]], [[All]]

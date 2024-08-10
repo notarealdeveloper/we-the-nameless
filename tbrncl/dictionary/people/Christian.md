@@ -1,1 +1,1 @@
-[[Jesus]] [[Thing]]
+Type: [[Jesus]], [[Thing]]

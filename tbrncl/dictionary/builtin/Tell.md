@@ -1,1 +1,1 @@
-[[Show]] [[Thought]] [[With]] [[Words]]
+Type: [[Show]], [[Thought]], [[With]], [[Words]]
