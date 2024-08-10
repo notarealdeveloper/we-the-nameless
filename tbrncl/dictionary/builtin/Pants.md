@@ -1,1 +1,1 @@
-Type: [[Leg]], [[Clothes]]
+[[Leg]] [[Clothes]]

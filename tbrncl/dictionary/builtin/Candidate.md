@@ -1,1 +1,1 @@
-Type: [[Possible]], [[Answer]], [[For]], [[Question]]
+[[Possible]] [[Answer]] [[For]] [[Question]]

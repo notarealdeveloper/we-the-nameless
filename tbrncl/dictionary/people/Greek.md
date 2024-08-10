@@ -1,1 +1,1 @@
-Type: [[Greece]], [[Thing]]
+[[Greece]] [[Thing]]

@@ -1,1 +1,1 @@
-Type: [[Jew]], [[Thing]]
+[[Jew]] [[Thing]]

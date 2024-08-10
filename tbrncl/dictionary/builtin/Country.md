@@ -1,1 +1,1 @@
-Type: [[Kingdom]], [[With]], [[No]], [[King]]
+[[Kingdom]] [[With]] [[No]] [[King]]

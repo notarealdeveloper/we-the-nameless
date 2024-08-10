@@ -1,1 +1,1 @@
-Type: [[Magic]], [[Jew]]
+[[Magic]] [[Jew]]

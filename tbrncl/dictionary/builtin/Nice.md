@@ -1,1 +1,1 @@
-Type: [[Small]], [[Good]]
+[[Small]] [[Good]]

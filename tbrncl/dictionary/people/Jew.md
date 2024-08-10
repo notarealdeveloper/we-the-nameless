@@ -1,1 +1,1 @@
-Type: [[First]], [[Bible]], [[People]]
+[[First]] [[Bible]] [[People]]

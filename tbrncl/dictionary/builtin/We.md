@@ -1,1 +1,1 @@
-Type: [[Self]], [[And]], [[Other]]
+[[Self]] [[And]] [[Other]]

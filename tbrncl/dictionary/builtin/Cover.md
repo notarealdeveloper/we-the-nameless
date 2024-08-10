@@ -1,3 +1,3 @@
-Type: [[Thing]], [[On]], [[Other]], [[Thing]]
+[[Thing]] [[On]] [[Other]] [[Thing]]
 
-Type: [[Thing]], [[In]], [[Front]], [[Of]], [[Other]], [[Thing]]
+[[Thing]] [[In]] [[Front]] [[Of]] [[Other]] [[Thing]]

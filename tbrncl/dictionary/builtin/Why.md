@@ -1,1 +1,1 @@
-Type: [[Reason]], [[Question]]
+[[Reason]] [[Question]]

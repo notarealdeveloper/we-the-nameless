@@ -1,1 +1,1 @@
-Type: [[Multiple]], [[Part]]
+[[Multiple]] [[Part]]

@@ -1,1 +1,1 @@
-Type: [[Middle]], [[Kingdom]]
+[[Middle]] [[Kingdom]]

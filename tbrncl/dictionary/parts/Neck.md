@@ -1,1 +1,1 @@
-Type: [[Part]], [[Below]], [[Head]], [[And]], [[Above]], [[Body]]
+[[Part]] [[Below]] [[Head]] [[And]] [[Above]] [[Body]]

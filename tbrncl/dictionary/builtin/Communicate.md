@@ -1,1 +1,1 @@
-Type: [[Try]], [[Explain]], [[Thing]]
+[[Try]] [[Explain]] [[Thing]]

@@ -1,3 +1,3 @@
-Type: [[Small]], [[Love]]
+[[Small]] [[Love]]
 
-Type: [[Similar]], [[To]]
+[[Similar]] [[To]]

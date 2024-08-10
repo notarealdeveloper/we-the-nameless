@@ -1,1 +1,1 @@
-Type: [[Think]], [[Thing]]
+[[Think]] [[Thing]]

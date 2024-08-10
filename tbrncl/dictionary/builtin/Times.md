@@ -1,1 +1,1 @@
-Type: [[Multiple]], [[Time]]
+[[Multiple]] [[Time]]

@@ -1,1 +1,1 @@
-Type: [[Sister]], [[Of]], [[Parent]]
+[[Sister]] [[Of]] [[Parent]]

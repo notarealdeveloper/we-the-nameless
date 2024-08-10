@@ -1,1 +1,1 @@
-Type: [[Specific]], [[Story]], [[With]], [[General]], [[Lesson]]
+[[Specific]] [[Story]] [[With]] [[General]] [[Lesson]]

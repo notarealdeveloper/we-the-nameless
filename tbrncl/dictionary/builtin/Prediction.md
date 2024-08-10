@@ -1,1 +1,1 @@
-Type: [[Guess]], [[Before]], [[Thing]]
+[[Guess]] [[Before]] [[Thing]]

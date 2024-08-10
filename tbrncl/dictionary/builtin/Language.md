@@ -1,1 +1,1 @@
-Type: [[How]], [[Talk]]
+[[How]] [[Talk]]

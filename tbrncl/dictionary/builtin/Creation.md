@@ -1,1 +1,1 @@
-Type: [[Make]] [[New]], [[Thing]]
+[[Make]] [[New]] [[Thing]]

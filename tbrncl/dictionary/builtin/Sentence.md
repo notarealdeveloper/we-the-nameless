@@ -1,1 +1,1 @@
-Type: [[Word]], [[List]]
+[[Word]] [[List]]

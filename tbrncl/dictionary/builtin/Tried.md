@@ -1,1 +1,1 @@
-Type: [[Try]], [[In]], [[Past]]
+[[Try]] [[In]] [[Past]]

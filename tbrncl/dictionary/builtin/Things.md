@@ -1,1 +1,1 @@
-Type: [[Multiple]], [[Thing]]
+[[Multiple]] [[Thing]]

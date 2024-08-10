@@ -1,1 +1,1 @@
-Type: [[First]], [[Alphabet]]
+[[First]] [[Alphabet]]

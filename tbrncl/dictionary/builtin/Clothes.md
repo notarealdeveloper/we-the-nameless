@@ -1,1 +1,1 @@
-Type: [[Body]], [[Cover]]
+[[Body]] [[Cover]]

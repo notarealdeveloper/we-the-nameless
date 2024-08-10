@@ -1,1 +1,1 @@
-Type: [[Find]], [[Cause]], [[Of]], [[Problem]]
+[[Find]] [[Cause]] [[Of]] [[Problem]]

@@ -1,1 +1,1 @@
-Type: [[Not]], [[Follow]], [[Rule]]
+[[Not]] [[Follow]] [[Rule]]

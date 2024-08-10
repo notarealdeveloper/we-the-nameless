@@ -1,1 +1,1 @@
-Type: [[Long]], [[Parts]], [[You]], [[Walk]], [[On]]
+[[Long]] [[Parts]] [[You]] [[Walk]] [[On]]

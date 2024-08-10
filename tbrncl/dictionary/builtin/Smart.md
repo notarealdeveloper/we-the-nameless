@@ -1,1 +1,1 @@
-Type: [[Have]], [[Good]], [[Mind]]
+[[Have]] [[Good]] [[Mind]]

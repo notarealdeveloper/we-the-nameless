@@ -1,1 +1,1 @@
-Type: [[Try]], [[Do]], [[Thing]]
+[[Try]] [[Do]] [[Thing]]
