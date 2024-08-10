@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Documentation/README.md",
+                "file": "We.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Documentation/README.md",
+                "file": "We.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Documentation/README.md",
+                "file": "We.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Documentation/README.md"
+                "file": "We.md"
               }
             }
           }
@@ -147,11 +147,11 @@
       "publish:Publish changes...": false
     }
   },
-  "active": "cb33e5ad48ef8620",
+  "active": "6236467633d1d21a",
   "lastOpenFiles": [
+    "Documentation/FOLLOWME.md",
+    "We.md",
     "publish.css",
-    "FOLLOWME.md",
-    "Documentation/README.md",
     "dictionary/writing/ד.md",
     "Documentation/advanced/religion/for/beginners/include/yue-tu.jpg",
     "Documentation/advanced/religion/for/beginners/include",
@@ -187,7 +187,6 @@
     "dictionary/parts",
     "dictionary/chars",
     "dictionary/people",
-    "dictionary/places",
     "include/how-to-bible.png",
     "include/leaving-egypt-3-writing-systems/proto-sinaitic-3.gif",
     "include/leaving-egypt-3-writing-systems/proto-sinaitic-2.png",

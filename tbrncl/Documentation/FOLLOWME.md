@@ -1,4 +1,3 @@
-## Documentation
 
 ![[yue-tu.jpg]]
 
@@ -13,5 +12,3 @@ Whole. (adjective).
 Down the Rabbit Whole. (phrase).
 - Self-explanatory.
 - And discouraged.
-
-[[Go]] [[To]][:](https://en.wikipedia.org/wiki/Down_the_rabbit_hole)
