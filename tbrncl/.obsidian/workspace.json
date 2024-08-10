@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Documentation/advanced/Quantum Mechanics.md",
+                "file": "Documentation/FOLLOWME.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Documentation/advanced/Quantum Mechanics.md",
+                "file": "Documentation/FOLLOWME.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Documentation/advanced/Quantum Mechanics.md",
+                "file": "Documentation/FOLLOWME.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Documentation/advanced/Quantum Mechanics.md"
+                "file": "Documentation/FOLLOWME.md"
               }
             }
           }
@@ -149,6 +149,7 @@
   },
   "active": "6236467633d1d21a",
   "lastOpenFiles": [
+    "Documentation/advanced/Quantum Mechanics.md",
     "Documentation/FOLLOWME.md",
     "We.md",
     "dictionary/builtin/sedyY4ord",

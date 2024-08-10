@@ -15,4 +15,4 @@ Down the Rabbit Whole. (phrase).
 
 ---
 
-Go To: [[Quantum Mechanics]]
+[[Go]] [[To]]: [[Quantum Mechanics]]
