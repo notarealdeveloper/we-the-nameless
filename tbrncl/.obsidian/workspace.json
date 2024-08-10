@@ -13,13 +13,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Documentation/advanced/We.md",
+                "file": "We.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "7657b441041bb19f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Todo.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Documentation/advanced/We.md",
+                "file": "Todo.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Documentation/advanced/We.md",
+                "file": "Todo.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Documentation/advanced/We.md"
+                "file": "Todo.md"
               }
             }
           }
@@ -147,15 +160,16 @@
       "publish:Publish changes...": false
     }
   },
-  "active": "cb33e5ad48ef8620",
+  "active": "7657b441041bb19f",
   "lastOpenFiles": [
-    "Documentation/FOLLOWME.md",
+    "We.md",
+    "Todo.md",
     "Documentation/advanced/We.md",
+    "Documentation/FOLLOWME.md",
     "dictionary/builtin/Ancestor.md",
     "dictionary/builtin/Tree.md",
     "dictionary/writing/木.md",
     "dictionary/writing/根.md",
-    "We.md",
     "archaeology/We - RFC א - Jews.md",
     "dictionary/writing/艮.md",
     "dictionary/atomic/Shared.md",
@@ -188,7 +202,6 @@
     "dictionary/science/Function.md",
     "dictionary/writing/Ψ.md",
     "dictionary/builtin/Wave.md",
-    "dictionary/science/Quantum.md",
     "include/how-to-bible.png",
     "include/leaving-egypt-3-writing-systems/proto-sinaitic-3.gif",
     "include/leaving-egypt-3-writing-systems/proto-sinaitic-2.png",
