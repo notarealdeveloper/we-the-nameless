@@ -1,1 +1,1 @@
-Type: [[Multiple]], [[Letter]], [[System]]
+[[Multiple]] [[Letter]] [[System]]

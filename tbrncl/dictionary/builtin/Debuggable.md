@@ -1,1 +1,1 @@
-Type: [[Can]], [[Debug]]
+[[Can]] [[Debug]]

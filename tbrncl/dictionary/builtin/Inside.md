@@ -1,1 +1,1 @@
-Type: [[Place]], [[In]], [[Thing]]
+[[Place]] [[In]] [[Thing]]

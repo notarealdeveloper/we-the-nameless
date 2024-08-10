@@ -1,1 +1,1 @@
-Type: [[Multiple]], [[Boot]]
+[[Multiple]] [[Boot]]

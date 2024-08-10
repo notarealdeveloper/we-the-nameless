@@ -1,1 +1,1 @@
-Type: [[Thing]], [[Brain]], [[Do]]
+[[Thing]] [[Brain]] [[Do]]

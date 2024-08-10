@@ -1,1 +1,1 @@
-Type: [[Part]], [[You]], [[Sit]], [[On]]
+[[Part]] [[You]] [[Sit]] [[On]]

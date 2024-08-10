@@ -1,1 +1,1 @@
-Type: [[Brother]], [[Or]], [[Sister]]
+[[Brother]] [[Or]] [[Sister]]

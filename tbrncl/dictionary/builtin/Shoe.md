@@ -1,1 +1,1 @@
-Type: [[dictionary/atomic/Foot]], [[Clothes]]
+[[dictionary/atomic/Foot]] [[Clothes]]

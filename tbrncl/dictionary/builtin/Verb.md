@@ -1,1 +1,1 @@
-Type: [[Action]], [[Word]]
+[[Action]] [[Word]]

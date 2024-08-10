@@ -1,1 +1,1 @@
-Type: [[Place]], [[Question]]
+[[Place]] [[Question]]

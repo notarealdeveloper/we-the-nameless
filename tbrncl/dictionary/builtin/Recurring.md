@@ -1,1 +1,1 @@
-Type: [[Event]], [[Type]], [[Have]], [[Many]], [[Instance]]
+[[Event]] [[Type]] [[Have]] [[Many]] [[Instance]]

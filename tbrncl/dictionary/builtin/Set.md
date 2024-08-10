@@ -1,1 +1,1 @@
-Type: [[Not]], [[Order]], [[List]]
+[[Not]] [[Order]] [[List]]

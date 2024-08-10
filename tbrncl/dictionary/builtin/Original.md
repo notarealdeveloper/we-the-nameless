@@ -1,1 +1,1 @@
-Type: [[First]], [[Version]]
+[[First]] [[Version]]

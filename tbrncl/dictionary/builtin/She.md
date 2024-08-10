@@ -1,1 +1,1 @@
-Type: [[That]], [[Girl]]
+[[That]] [[Girl]]

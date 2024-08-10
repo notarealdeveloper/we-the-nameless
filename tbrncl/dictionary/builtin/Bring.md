@@ -1,1 +1,1 @@
-Type: [[Move]], [[Toward]]
+[[Move]] [[Toward]]

@@ -1,1 +1,1 @@
-Type: [[Can]], [[Compose]]
+[[Can]] [[Compose]]

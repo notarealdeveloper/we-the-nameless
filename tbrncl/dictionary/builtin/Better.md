@@ -1,1 +1,1 @@
-Type: [[More]], [[Good]]
+[[More]] [[Good]]

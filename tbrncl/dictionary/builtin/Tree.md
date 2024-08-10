@@ -1,1 +1,1 @@
-Type: [[Container]], [[Set]], [[With]], [[Shared]], [[Ancestor]], [[Container]]
+[[Container]] [[Set]] [[With]] [[Shared]] [[Ancestor]] [[Container]]

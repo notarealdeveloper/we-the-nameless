@@ -1,1 +1,1 @@
-Type: [[Person]], [[Set]], [[With]], [[Similar]], [[Goal]]
+[[Person]] [[Set]] [[With]] [[Similar]] [[Goal]]

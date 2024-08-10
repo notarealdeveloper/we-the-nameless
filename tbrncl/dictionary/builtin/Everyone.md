@@ -1,1 +1,1 @@
-Type: [[All]], [[Relevant]], [[People]]
+[[All]] [[Relevant]] [[People]]

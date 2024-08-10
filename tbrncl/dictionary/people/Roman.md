@@ -1,1 +1,1 @@
-Type: [[Rome]], [[Thing]]
+[[Rome]] [[Thing]]

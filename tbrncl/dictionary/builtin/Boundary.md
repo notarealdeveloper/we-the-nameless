@@ -1,1 +1,1 @@
-Type: [[Place]], [[Between]], [[Inside]], [[And]], [[Outside]]
+[[Place]] [[Between]] [[Inside]] [[And]] [[Outside]]

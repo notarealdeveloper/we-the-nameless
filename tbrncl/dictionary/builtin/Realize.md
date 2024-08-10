@@ -1,1 +1,1 @@
-Type: [[Not]], [[Know]], [[Before]], [[But]], [[Know]], [[Now]]
+[[Not]] [[Know]] [[Before]] [[But]] [[Know]] [[Now]]

@@ -1,1 +1,1 @@
-Type: [[Talk]], [[Thing]]
+[[Talk]] [[Thing]]

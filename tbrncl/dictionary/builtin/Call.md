@@ -1,1 +1,1 @@
-Type: [[Use]], [[Name]], [[For]], [[Thing]]
+[[Use]] [[Name]] [[For]] [[Thing]]

@@ -1,1 +1,1 @@
-Type: [[Bring]], [[Together]]
+[[Bring]] [[Together]]

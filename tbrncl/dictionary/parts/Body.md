@@ -1,1 +1,1 @@
-Type: [[Whole]], [[Thing]]
+[[Whole]] [[Thing]]

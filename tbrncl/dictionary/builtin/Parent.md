@@ -1,1 +1,1 @@
-Type: [[Mom]], [[Or]], [[Dad]]
+[[Mom]] [[Or]] [[Dad]]

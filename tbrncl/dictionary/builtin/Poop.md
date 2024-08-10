@@ -1,1 +1,1 @@
-Type: [[Brown]], [[Butt]], [[Stuff]]
+[[Brown]] [[Butt]] [[Stuff]]

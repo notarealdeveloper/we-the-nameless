@@ -1,1 +1,1 @@
-Type: [[Roman]], [[Emperor]], [[Little]], [[Boots]]
+[[Roman]] [[Emperor]] [[Little]] [[Boots]]

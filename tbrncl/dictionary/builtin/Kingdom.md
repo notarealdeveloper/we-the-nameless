@@ -1,1 +1,1 @@
-Type: [[King]], [[Place]]
+[[King]] [[Place]]

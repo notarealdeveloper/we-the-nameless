@@ -1,1 +1,1 @@
-Type: [[Multiple]], [[He]], [[Or]], [[She]], [[Or]], [[It]]
+[[Multiple]] [[He]] [[Or]] [[She]] [[Or]] [[It]]

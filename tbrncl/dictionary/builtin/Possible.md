@@ -1,1 +1,1 @@
-Type: [[Can]], [[Happen]]
+[[Can]] [[Happen]]

@@ -1,1 +1,1 @@
-Type: [[More]], [[Serious]], [[Rule]]
+[[More]] [[Serious]] [[Rule]]

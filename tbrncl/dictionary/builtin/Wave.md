@@ -1,1 +1,1 @@
-Type: [[When]], [[Stuff]], [[Go]], [[Up]], [[And]], [[Down]]
+[[When]] [[Stuff]] [[Go]] [[Up]] [[And]] [[Down]]

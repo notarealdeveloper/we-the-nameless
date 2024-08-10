@@ -1,1 +1,1 @@
-Type: [[Not]], [[Good]]
+[[Not]] [[Good]]

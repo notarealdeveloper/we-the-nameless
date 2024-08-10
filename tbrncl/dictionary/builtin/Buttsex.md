@@ -1,1 +1,1 @@
-Type: [[Sex]], [[With]], [[Butt]]
+[[Sex]] [[With]] [[Butt]]

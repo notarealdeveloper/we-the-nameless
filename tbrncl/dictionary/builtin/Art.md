@@ -1,1 +1,1 @@
-Type: [[Make]], [[From]], [[Feel]], [[Thing]]
+[[Make]] [[From]] [[Feel]] [[Thing]]

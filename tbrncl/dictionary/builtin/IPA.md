@@ -1,1 +1,1 @@
-Type: [[International]], [[Phonetic]], [[Alphabet]]
+[[International]] [[Phonetic]] [[Alphabet]]

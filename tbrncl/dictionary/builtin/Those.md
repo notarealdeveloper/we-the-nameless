@@ -1,1 +1,1 @@
-Type: [[Multiple]], [[That]]
+[[Multiple]] [[That]]

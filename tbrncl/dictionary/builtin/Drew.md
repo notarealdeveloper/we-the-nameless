@@ -1,1 +1,1 @@
-Type: [[Pull]], [[Out]]
+[[Pull]] [[Out]]
