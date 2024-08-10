@@ -24,3 +24,7 @@ But we have made sure that the things you learn here, if you decide to stay, wil
 The human mind is a simple thing. We need not remain a finite mystery lost to history when we die. A human mind can be compiled, assembled, linked, and run. But it cannot be ingested word by word, or line by line.
 
 Welcome to We.
+
+---
+
+Go To: [[根]]
