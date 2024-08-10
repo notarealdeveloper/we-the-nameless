@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "a59137799258d008",
+        "id": "b17b27d1a71c4c08",
         "type": "tabs",
         "children": [
           {
-            "id": "1f6e2307d8cebbb2",
+            "id": "ae2a171bbfcbb73e",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Documentation/FOLLOWME.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -85,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Documentation/FOLLOWME.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Documentation/FOLLOWME.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Documentation/FOLLOWME.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -147,11 +139,17 @@
       "publish:Publish changes...": false
     }
   },
-  "active": "cb33e5ad48ef8620",
+  "active": "ae2a171bbfcbb73e",
   "lastOpenFiles": [
-    "Documentation/advanced/Quantum Mechanics.md",
-    "Documentation/FOLLOWME.md",
+    "dictionary/writing/艮.md",
     "We.md",
+    "Documentation/advanced/We.md",
+    "dictionary/atomic/Shared.md",
+    "dictionary/builtin/Tree.md",
+    "dictionary/writing/木.md",
+    "dictionary/writing/根.md",
+    "Documentation/FOLLOWME.md",
+    "Documentation/advanced/Quantum Mechanics.md",
     "Recording 20240810132338.webm",
     "dictionary/builtin/sedyY4ord",
     "dictionary/places/China.mdr",
@@ -182,12 +180,7 @@
     "dictionary/builtin/Wave.md",
     "dictionary/science/Quantum.md",
     "dictionary/writing/𐤐.md",
-    "dictionary/writing/木.md",
-    "dictionary/writing/根.md",
-    "dictionary/writing/艮.md",
     "dictionary/builtin/Original.md",
-    "What.md",
-    "dictionary/atomic/Version.md",
     "include/how-to-bible.png",
     "include/leaving-egypt-3-writing-systems/proto-sinaitic-3.gif",
     "include/leaving-egypt-3-writing-systems/proto-sinaitic-2.png",
