@@ -147,8 +147,9 @@
       "publish:Publish changes...": false
     }
   },
-  "active": "6236467633d1d21a",
+  "active": "cb33e5ad48ef8620",
   "lastOpenFiles": [
+    "publish.css",
     "FOLLOWME.md",
     "Documentation/README.md",
     "dictionary/writing/ד.md",
@@ -179,7 +180,6 @@
     "What.md",
     "dictionary/atomic/Version.md",
     "dictionary/atomic/Root.md",
-    "dictionary/writing/strings/Gen.md",
     "dictionary/writing/strings/Untitled",
     "dictionary/writing/strings",
     "dictionary/writing/chars",
