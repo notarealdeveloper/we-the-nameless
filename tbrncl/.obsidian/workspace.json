@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "3e872b052d674474",
+        "id": "1414b7d53367051a",
         "type": "tabs",
         "children": [
           {
-            "id": "8cf820135509bc59",
+            "id": "79f05e1c1bca2be1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "We.md",
+                "file": "Documentation/advanced/We.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "We.md",
+                "file": "Documentation/advanced/We.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "We.md",
+                "file": "Documentation/advanced/We.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "We.md"
+                "file": "Documentation/advanced/We.md"
               }
             }
           }
@@ -147,17 +147,18 @@
       "publish:Publish changes...": false
     }
   },
-  "active": "8cf820135509bc59",
+  "active": "cb33e5ad48ef8620",
   "lastOpenFiles": [
-    "archaeology/We - RFC א - Jews.md",
-    "We.md",
     "Documentation/FOLLOWME.md",
-    "dictionary/writing/艮.md",
     "Documentation/advanced/We.md",
-    "dictionary/atomic/Shared.md",
+    "dictionary/builtin/Ancestor.md",
     "dictionary/builtin/Tree.md",
     "dictionary/writing/木.md",
     "dictionary/writing/根.md",
+    "We.md",
+    "archaeology/We - RFC א - Jews.md",
+    "dictionary/writing/艮.md",
+    "dictionary/atomic/Shared.md",
     "Documentation/advanced/Quantum Mechanics.md",
     "Recording 20240810132338.webm",
     "dictionary/builtin/sedyY4ord",
@@ -188,7 +189,6 @@
     "dictionary/writing/Ψ.md",
     "dictionary/builtin/Wave.md",
     "dictionary/science/Quantum.md",
-    "dictionary/writing/𐤐.md",
     "include/how-to-bible.png",
     "include/leaving-egypt-3-writing-systems/proto-sinaitic-3.gif",
     "include/leaving-egypt-3-writing-systems/proto-sinaitic-2.png",
