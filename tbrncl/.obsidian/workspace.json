@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "We.md",
+                "file": "Documentation/advanced/Quantum Mechanics.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "We.md",
+                "file": "Documentation/advanced/Quantum Mechanics.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "We.md",
+                "file": "Documentation/advanced/Quantum Mechanics.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "We.md"
+                "file": "Documentation/advanced/Quantum Mechanics.md"
               }
             }
           }
@@ -149,6 +149,8 @@
   },
   "active": "6236467633d1d21a",
   "lastOpenFiles": [
+    "Documentation/FOLLOWME.md",
+    "We.md",
     "dictionary/builtin/sedyY4ord",
     "dictionary/places/China.mdr",
     "dictionary/places/Greece.mdr",
@@ -159,10 +161,7 @@
     "dictionary/science/Function.mdr",
     "dictionary/writing/𐤐.mdr",
     "dictionary/writing/strings/Gen.mdr",
-    "dictionary/writing/Ψ.mdr",
     "Documentation/advanced/religion/for/beginners/include/ld.png",
-    "Documentation/FOLLOWME.md",
-    "We.md",
     "dictionary/writing/ד.md",
     "Documentation/advanced/religion/for/beginners/include/yue-tu.jpg",
     "include/yue-tu.jpg",
