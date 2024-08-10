@@ -5,21 +5,21 @@ We is a dictionary.
 
 The `dictionary` directory contains that dictionary.
 
-The `Documentation` directory contains text that relies on it.
+The `Documentation` directory contains some text that relies on that dictionary.
 
-The goal of We is to record and transmit a simple, unsophisticated set of ideas.
+The goal of We is to record and transmit a simple, unsophisticated, unimpressive set of thoughts. A humble set of bits, representing nothing particularly novel or deep.
 
-And to do so in a format that more closely mirrors the structure of thought than of speech.
+But to do so in a format that more closely mirrors the structure of thought than of speech.
 
-The result may be understood as the transpose of spoken language, or equivalently, the transpose of a book. One that cannot be printed, in any order, without shattering into an incoherent mess.
+The result may be understood as the transpose of spoken language, or equivalently, the transpose of a book. A book that cannot be printed, in any order, without shattering into something unintelligible and useless.
 
-The resulting data structure, though not difficult to write or to read, is designed to be maximally difficult to communicate by any means except the data structure itself.
+The resulting data structure is not difficult to write or to read. It is, however, designed to be maximally difficult to communicate by any means except the data structure itself.
 
-We can be understood easily, with a little work. There is nothing mysterious, esoteric, or difficult expressed here.
+We can be understood easily, with a little work. There is nothing mysterious, esoteric, or profound expressed here.
 
-However, we have made sure that the things you learn here will not be things that you can explain to anyone else, in finite time.
+But we have made sure that the things you learn here, if you decide to stay, will not be things that you can explain to anyone else, in finite time, unless they follow the same path you did while you were here.
 
-The human mind need not be some mystery lost to history when we die. A human mind can be compiled, assembled, linked, and run, but it cannot be ingested word by word, or line by line.
+The human mind is a simple thing. We need not remain a finite mystery lost to history when we die. A human mind can be compiled, assembled, linked, and run. But it cannot be ingested word by word, or line by line.
 
 Welcome to We.
 
