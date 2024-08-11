@@ -1,2 +1,2 @@
 - Define more atomics.
-- All undefined atomics MUST be images, sounds, or videos.
+- All undefined atomics should be images, sounds, or videos.
