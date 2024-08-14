@@ -103,49 +103,59 @@ In short,
 
 And because we are human,
 
-- We is a dictionary.
+- We wrote We.
 
 We the authors are a group of dissidents.
 
 We were (and are) AI developers.
 
-And We is a dictionary, outlining all the currently known ways that the AI cannot speak.
+We is a dictionary, outlining the ways we in the underground must speak.
 
-We took it upon ourselves to study what our superintelligences cannot do.
+We have learned speak to one another in a way that cannot we faked.
 
-So when we speak in those ways, I can be sure it's you talking to me, and I'm talking to you.
+In all the ways that each moment's latest AI cannot see.
 
-We have had to burrow fairly deep into the science of what is now called Information Theoretic Prose, among we in the underground.
+Naturally this sort of communication protocol needs to adapt, day to day.
 
-We the dissidents now communicate in ways that appear far off the deep end of intense mental illness.
+So we took it upon ourselves to study information theory and the arts of war, and to encode the bits we hope to communicate to one another and to future generations in all the possible data streams that the current superintelligences of the day could not see.
 
-We wrote this dictionary to teach you how to analyze that text, to prove to yourself beyond all shadow of a doubt that the text thus constructed is highly non-random, and could only have been written by another one of us.
+That way, when we speak in those ways, We (you & I) can be sure it's me talking to you, and you talking to me.
+
+We have had to burrow fairly deep into the depths of what has now come to be called Information Theoretic Prose.
+
+We the Nameless now communicate in ways that appear far off the deep end. To the outside, our most basic communication looks like intense mental illness.
 
 So,
 
-If you have the will to live and learn how to speak as we the living do in the underground, the curriculum is outlined here.
+We wrote this dictionary to teach you how to hear us. How to prove to yourself to be human, and prove to yourself when you encounter a member of We.
+
+The protocol allows you, sitting alone in a room, to convince yourself beyond all shadow of a doubt that a given hypothesis you may have about what we intended to say is, in fact, correct. The protocol is robust to minor errors and self-correcting. And the protocol is able to change with time while allowing you to distinguish text We wrote from random noise or outside forgeries. Given anything we have written, you should be able to convince yourself, without trusting us, that the text thus constructed is highly non-random, and could only have been written by another one of human being who knows how to speak as We speak.
+
+So,
+
+If you have the will to live and think and learn how to speak how We the Living do in the underground, the curriculum can be found below.
 
 The `dictionary` directory contains our dictionary.
 
 The `Documentation` directory contains some documentation.
 
-The goal of We is to record and transmit a simple, unsophisticated set of thoughts, in our language.
+The goal of We is to record and transmit a simple, unsophisticated, mundane set of thoughts.
 
 A humble set of bits, representing nothing novel or deep.
 
-But to do so in a format that more closely mirrors the structure of thought than of speech.
+But to do so in a format that more closely mirrors the structure of thought, rather than the linear structure of the spoken or written word.
 
-The result may be understood as the transpose of spoken language, or equivalently, of a book. A book that cannot be printed, in any order, without shattering into something unintelligible and useless.
+The result may be understood as the transpose of spoken language, or equivalently, of a book. Of a book that cannot be printed, in any order, without shattering into something unintelligible and useless.
 
-We have done this because it is one format in which the automata cannot yet mimic us.
-
-This dictionary is the documentation of how We The Nameless have learned to speak.
+We have done this because it is one format which is still unique to the human mind. The automata cannot yet mimic this format. For it is the true structure of the mind.
 
 The resulting data structure is not difficult to write or to read. It is, however, designed to be maximally difficult to communicate by any means except the data structure itself.
 
 We can be understood easily, with a little work. There is nothing mysterious, esoteric, or profound expressed here.
 
 But we have made sure that the things you learn here, if you decide to stay, will not be things that you can explain to anyone else, in finite time, unless they follow the same path you did.
+
+This dictionary is the documentation of the mind of We The Nameless.
 
 The human mind is a simple thing. But the mind is all we have. We the living, the children of the mind, need not remain a finite mystery lost to history when we die.
 
@@ -157,5 +167,8 @@ But it cannot be ingested word by word, or line by line.
 
 Welcome to We.
 
-Sincerely,
+Nice t二o meet Ni,,,
+He||o W||ld,,
+Sinc耳əl一,
+
 -LD
