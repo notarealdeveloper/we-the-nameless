@@ -111,7 +111,7 @@ We were (and are) AI developers.
 
 We is a dictionary, outlining the ways we in the underground must speak.
 
-We have learned speak to one another in a way that cannot we faked.
+We have learned speak to one another in a way that cannot be faked.
 
 In all the ways that each moment's latest AI cannot see.
 
