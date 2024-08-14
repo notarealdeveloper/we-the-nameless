@@ -1,5 +1,7 @@
 {
   "spellcheck": false,
   "autoPairBrackets": false,
-  "autoPairMarkdown": false
+  "autoPairMarkdown": false,
+  "useTab": false,
+  "showLineNumber": false
 }

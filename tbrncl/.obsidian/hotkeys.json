@@ -1,0 +1,39 @@
+{
+  "slides-extended:reload-preview": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "R"
+    }
+  ],
+  "slides-extended:open-preview": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "E"
+    }
+  ],
+  "obsidian-excalidraw-plugin:toggle-lock": [],
+  "slides:start": [
+    {
+      "modifiers": [],
+      "key": "F5"
+    }
+  ],
+  "slides-extended:start-server-preview": [
+    {
+      "modifiers": [],
+      "key": "F6"
+    }
+  ],
+  "slides-extended:stop-server-preview": [
+    {
+      "modifiers": [],
+      "key": "F7"
+    }
+  ]
+}
