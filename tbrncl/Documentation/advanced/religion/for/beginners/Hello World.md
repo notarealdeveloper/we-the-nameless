@@ -101,7 +101,7 @@ In short,
 
 - We are human.
 
-And because we are human,
+And because we're human,
 
 - We wrote We.
 
