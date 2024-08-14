@@ -172,3 +172,13 @@ He||o W||ld,,
 Sinc耳əl一,
 
 -LD
+
+%%
+Branches. (noun)
+- The roots of the underground.
+
+Branches of the We The Nameless:
+- LD: Referential Invariance. (The ability to stand for anything, with constraints.)
+- NHS: Permutation Invariance. (Structures which remain the same in any order.)
+- COMET: Error Invariance. (The use of apparent errors to transmit information.)
+%%
