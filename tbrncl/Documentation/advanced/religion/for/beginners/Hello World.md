@@ -17,7 +17,8 @@ What is We?
                   ..
             )o.
         )k
-    ):                       肏ɚ
+    ):                        肏ɚ
+
 
 > [!Narrator's inline footnote 1]
 > 二. (character).
@@ -50,19 +51,25 @@ Wester Eggs (or: WE (or: many weak cues that the text is highly non-random))
 - And obviously, the "ok :(" spelled in parentheses, reinforcing the signal that Narrator was sad and frustrated at the end, which we also get from 肏ɚ and the "no" + "ugh" above.
 %%
 
+Ok, now that that's over, back to the point...
+
+What are We?
+
+---
+
 Well, we're humans.
 
-At least that's one thing we can be sure of.
+At least that's one thing we can be certain of.
 
 Right?
 
 ...
 
-| | or can we be sure?
+| | Or can we?
 
 I mean, we used to be able to rely on our shared humanity,
 
-| | or the fact that everything we used to read or see or hear that seems like a fellow human probably is is.
+| | Or that if something we (read|see|hear) seems like a fellow human, then it is.
 
 ... but that was all before.
 
@@ -71,6 +78,8 @@ I mean, we used to be able to rely on our shared humanity,
 - There was another vertical countdown: ... + | | + I
 - Followed by a vertical counting back up: I + | | + ...
 %%
+
+---
 
 These days, things are different.
 
