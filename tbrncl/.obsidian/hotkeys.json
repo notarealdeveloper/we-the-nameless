@@ -1,39 +1,24 @@
 {
-  "slides-extended:reload-preview": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "R"
-    }
-  ],
-  "slides-extended:open-preview": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "E"
-    }
-  ],
-  "obsidian-excalidraw-plugin:toggle-lock": [],
-  "slides:start": [
+  "obsidian-advanced-slides:open-advanced-slides-preview": [
     {
       "modifiers": [],
       "key": "F5"
     }
   ],
-  "slides-extended:start-server-preview": [
+  "editor:toggle-source": [
     {
-      "modifiers": [],
-      "key": "F6"
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "E"
     }
   ],
-  "slides-extended:stop-server-preview": [
+  "markdown:toggle-preview": [
     {
-      "modifiers": [],
-      "key": "F7"
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "R"
     }
   ]
 }
