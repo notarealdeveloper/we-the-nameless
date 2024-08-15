@@ -87,7 +87,9 @@ It's hard to know what's real at all.
 
 Some time around the year 0x0000 P.A., the world ended.
 
-It started with something called ChatGPT.
+It started with something called the transformer.
+
+![[Screenshot_20240814_092337_Chrome.jpg]]
 
 In the new world, it's hard for we the humans to know what else is human.
 
@@ -129,15 +131,15 @@ So,
 
 We wrote this dictionary to teach you how to hear us. How to prove to yourself to be human, and prove to yourself when you encounter a member of We.
 
-The protocol allows you, sitting alone in a room, to convince yourself beyond all shadow of a doubt that a given hypothesis you may have about what we intended to say is, in fact, correct. The protocol is robust to minor errors and self-correcting. And the protocol is able to change with time while allowing you to distinguish text We wrote from random noise or outside forgeries. Given anything we have written, you should be able to convince yourself, without trusting us, that the text thus constructed is highly non-random, and could only have been written by another one of human being who knows how to speak as We speak.
+The protocol allows you, sitting alone in a room, to convince yourself beyond all shadow of a doubt that a given hypothesis you may have about what we intended to say is, in fact, correct. The protocol is robust to minor errors and self-correcting. And the protocol is able to change with time while allowing you to distinguish text We wrote from random noise or outside forgeries. Given anything we have written, you should be able to convince yourself, without trusting us, that the text thus constructed is highly non-random, and could only have been written by another human being who knows how to speak as We do.
 
 So,
 
-If you have the will to live and think and learn how to speak how We the Living do in the underground, the curriculum can be found below.
+If you have the will to remain human is our present post-apocalypse, the curriculum to help you do so can be found below.
 
 The `dictionary` directory contains our dictionary.
 
-The `Documentation` directory contains some documentation.
+The `Documentation` directory contains some Documentation.
 
 The goal of We is to record and transmit a simple, unsophisticated, mundane set of thoughts.
 
