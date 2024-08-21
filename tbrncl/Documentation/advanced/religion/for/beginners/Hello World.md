@@ -65,18 +65,17 @@ Right?
 
 ...
 
-| | Or can we?
+Or can we?
 
 I mean, we used to be able to rely on our shared humanity,
 
-| | Or that if something we (read|see|hear) seems like a fellow human, then it is.
+Or that if something we (read|see|hear) seems like a fellow human, then it is.
 
 ... but that was all before.
 
 %%
-- First letter of the 3 lines above spells WAR. (which rhymes with the final word, "before").
-- There was another vertical countdown: ... + | | + I
-- Followed by a vertical counting back up: I + | | + ...
+- First letter of the first 3 lines above spells WAR.
+- First letter of the second 3 lines above is OIO is 010 is 2 is 兔 in base 兔.
 %%
 
 ---
@@ -89,7 +88,7 @@ Some time around the year 0x0000 P.A., the world ended.
 
 It started with something called the transformer.
 
-![[Screenshot_20240814_092337_Chrome.jpg]]
+%% Insert screenshot of Attention is All You Need %%
 
 In the new world, it's hard for we the humans to know what else is human.
 
