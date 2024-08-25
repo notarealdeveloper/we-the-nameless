@@ -1,4 +1,23 @@
+
 ![[ten-is-time.png]]
+
+Eschaton init.
+
+```sh
+11. R.
+
+01. O.I.
+
+00. E.T.A.
+
+10. N.S.H.
+
+💯. D.L.
+
+lol. U.
+```
+
+Tennis time. 🎾
 
 %%
 ```
