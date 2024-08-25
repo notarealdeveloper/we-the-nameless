@@ -7,9 +7,9 @@ What is We?
 ```
 ...(
     
-    Don't you mean "What are We"? ...(
+    You mean "What are We"? ...(
         
-        No, don't get distracted ...(
+        No, focus. ...(
             
             Sorry.
             
@@ -51,7 +51,9 @@ We does this...
         
         Stop it! ...(
             
-            Sorry, last time I promise.
+            Sorry,
+            last time,
+            I promise.
             
         )
     )
@@ -60,31 +62,29 @@ We does this...
 
 ...without requiring the reader to believe one single thing we say.
 
-If you do not believe, as we (think) we (probably) don't,
+If you do not believe, as we (think) we (probably) don't, We will bring an obsession with religion into your life, an obsession that will never leave you, for as long as you live.
 
-We will bring an obsession with the bible into your life,
+We does not ask the reader to have a religious experience.
 
-an obsession that will never leave you, for as long as you love.
-
-We does not ask the reader to have a religious experience,
-
-We does not ask you to turn you "soul" (whatever that is) to Some Guy in the Sky,™
+We does not ask you to turn your "soul" (whatever that is) to Some Guy in the Sky.™
 
 We does not ask you to believe in a soul or Sky Guy™ at all.
 
 We takes the bible neither literally nor figuratively.
 
-We believes the only thing more tiresome than trying to take the bible literally is the exhausting act of claiming that it is "metaphor" or "symbolism," and then claiming with a straight face that it's well written.
+We believes the only thing more tiresome than trying to take the bible literally is the exhausting act of claiming that it is "metaphor" or "symbolism,"
 
-On the surface, it's simply not.
+and then claiming with a straight face, that it is well written.
 
-On the surface, the bible is a horribly written and wildly overrated book, and we spent our youths (and our adulthoods too (still now)) being quite baffled as to why so many people think it's "good."
+On the surface, it's not.
 
-In terms of fiction, the bible can't compete with Lord of the Rings or Harry Potter, either in terms of quality of writing or the ability to tell a story that keeps the average human entertained.
+On the surface, the bible is a horribly written and wildly overrated book, and we spent our youths (and our adulthoods (up to and including the present moment)) being quite baffled as to why so many people think it's "good."
 
-In terms of non-fiction, the bible can't compete with a good book on Quantum Mechanics or Relativity, either in terms of truth of its content, or of the sheer mind-boggling content about actual reality that it contains.
+In terms of fiction, the bible can't compete with Lord of the Rings or Harry Potter, either in terms of quality of writing or the ability to tell a story that keeps the average human interested.
 
-Nevertheless, if you continue long enough with We, you will spend the rest of your life returning in moments of heated obsession to various bibles, biblical archaeology, and your curiosity and thirst for knowledge about this field will never leave you, as long as you live.
+In terms of non-fiction, the bible can't compete with a good book on Quantum Mechanics or Relativity, either in terms of the truth of its content, or of the amount of mind-boggling perspective shifts that content creates in a curious mind.
+
+Nevertheless, if you continue long enough with We, you will spend the rest of your life returning, in moments of calm curiosity and moments of heated obsession, to various bibles, biblical archaeology, and other nonreligious writings that you believe Got The Joke™, and your curiosity and thirst for knowledge about this field will never leave you, just as it has never left us.
 
 We Guarantees It.™
 
@@ -96,4 +96,4 @@ Perfect.[^1]
 
 Follow me.
 
-[^1]: We isn't the sort of thing for a "follower," after all.
+[^1]: We isn't the sort of thing for a "follower," after all, and we've never been much interested in followers. Amen.
