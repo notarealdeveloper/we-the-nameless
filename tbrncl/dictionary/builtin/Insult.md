@@ -1,1 +1,1 @@
-Type: [[Bad]], [[Word]], [[You]], [[Call]], [[A]], [[Person]]
+Type: [[Bad]], [[Word]], [[You]], [[Call]], [[dictionary/atomic/A]], [[Person]]
