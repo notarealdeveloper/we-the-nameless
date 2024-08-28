@@ -44,6 +44,4 @@ But that's a story for another day and we won't tell the rest now.
 
 For now, we're going to start learning the alphabet.
 
-Because you know a lot of things.
-
-But you sure don't know that yet.
+Let's start at the beginning...
