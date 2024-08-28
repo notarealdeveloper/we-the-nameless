@@ -1,11 +1,10 @@
-
 Hi there!
 
-Welcome to Super Advanced Kindergarten.™
+Welcome to Super Advanced Kindergarten.
 
 In this directory, we'll be learning the alphabet.
 
-You may know a lot, but you don't know this yet.
+You may know a lot, but you don't know that yet.
 
 That's ok. Anyone can learn the alphabet with a little practice.
 
