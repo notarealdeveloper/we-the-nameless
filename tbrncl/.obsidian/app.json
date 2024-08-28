@@ -2,6 +2,6 @@
   "spellcheck": false,
   "autoPairBrackets": false,
   "autoPairMarkdown": false,
-  "useTab": false,
+  "useTab": true,
   "showLineNumber": false
 }
