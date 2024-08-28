@@ -62,5 +62,3 @@ end = 37:52
 ### There's wine and beer but not hard liquor in the ancient near east
 start = 37:05
 end = 38:08
-
-### 
