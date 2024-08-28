@@ -1,5 +1,10 @@
 ![[ld.png]]
 
+> _The stories and information here are artistic works of fiction and falsehood. Only a fool would take anything posted here as fact._
+> -4chan Proverb
+
+---
+
 Welcome to We.
 
 What is We?
@@ -84,6 +89,7 @@ Nevertheless, if you continue long enough with We, we are certain that you will 
 
 We Guarantees It.™
 
+%%
 Those who get the jokes are granted membership in a secret society. A group as old as history, with no leader or test for entry, no one to grant or deny you admission, no code of conduct, and no required beliefs. It's as non-culty as a cult could ever be. But a cult (or a culture (or whatever)) is what it is. 
 
 You won't need anyone to tell you once you're in. Joining the group can be done without ever meeting another member. You'll know when you're in. Until then, you'll have to live with not knowing.
@@ -137,22 +143,29 @@ For to understand the bible.
  曰      say        🗣️
  日       hi         ☀️
        😃
+%%
 
 Following?
 
 No?
 
+%%
 I thought not.
 
 > [!Narrator:]
 > _(If you had been following, you would have said "hi.")_
 
-I'm glad you didn't follow.[^1]
+I'm glad you didn't follow.
 
 Let's start over.
+%%
 
-Follow me.[^2]
+Perfect.[^1]
+
+Follow me.
 
 [^1]: We isn't the sort of thing for a "follower," after all, and we've never been much interested in followers. [[Goodbye World|Amen]].
 
+%%
 [^2]: As we were saying: To understand the bible, you'll have to learn the alphabet. Because you know a lot of things. But you don't know _that_ [[𐤀|yet]].
+%%

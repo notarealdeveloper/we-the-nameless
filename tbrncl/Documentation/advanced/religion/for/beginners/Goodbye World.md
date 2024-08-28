@@ -1,5 +1,9 @@
+![[ld.png]]
+
 > _The stories and information here are artistic works of fiction and falsehood. Only a fool would take anything posted here as fact._
-> - 4chan Proverb
+> -4chan Proverb
+
+---
 
 There are decades where nothing happens.
 
@@ -130,7 +134,7 @@ Here's an example, from one the most truly bizarre written works of all time...
 
 The so called book of Revelation.
 
-![[revelation-fallen-is-babylon-the-great-01.jpg]]
+![[revelation-fallen-is-babylon-the-great-01.jpg|300]]
 
 What's going on here?
 
@@ -138,13 +142,13 @@ Let's check the dates.
 
 When exactly was this "Babylon" thing around, and when did it fall?
 
-![[we-fall-of-babylon-540-bc.jpg]]
+![[we-fall-of-babylon-540-bc.jpg|300]]
 
 Ok.
 
 So when was this strange Revelation book written?
 
-![[we-revelation-written-95-ce.jpg]]
+![[we-revelation-written-95-ce.jpg|300]]
 
 That's 635 years apart.
 
@@ -186,15 +190,15 @@ Once you get the great joke of history, you'll start thinking about the old empi
 
 Thoughts of old empires have been trending recently too.
 
-![[the-men-think-about-the-roman-empire-meme-01.jpg]]
+![[the-men-think-about-the-roman-empire-meme-01.jpg|400]]
 
-![[the-men-think-about-the-roman-empire-meme-02.jpg]]
+![[the-men-think-about-the-roman-empire-meme-02.jpg|400]]
 
-![[the-men-think-about-the-roman-empire-meme-03.jpg]]
+![[the-men-think-about-the-roman-empire-meme-03.jpg|400]]
 
 Why are men these days thinking about the Roman Empire?
 
-![[revelation-fallen-is-babylon-the-great-02.jpg]]
+![[revelation-fallen-is-babylon-the-great-02.jpg|400]]
 
 Same reason 95 AD was talking about 540 BC.
 
@@ -230,18 +234,12 @@ The authors of the old books understood the power of words to shape the world.
 
 _In the beginning was the word. And the word was with god, and the word was god._
 
+Goodbye old.
+
+Hello new.
+
 Welcome to the apocalypse.
 
-Nice to meet you.
-
-Spread the word.
-
-Goodbye old world,
-
-Hello new world,
-
-Love always,
+Glad we met you.
 
 -LD
-
-![[ld.png]]
