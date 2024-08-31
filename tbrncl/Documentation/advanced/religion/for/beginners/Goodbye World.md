@@ -232,4 +232,4 @@ Nice to meet you.
 
 -LD
 
-P.S. Now go learn the alphabet. It's embarrassing you haven't learned [[READWE|it]] yet.
+P.S. Now go learn the alphabet. It's embarrassing you haven't learned it [[READWE|yet]].
