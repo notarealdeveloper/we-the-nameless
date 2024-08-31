@@ -4,7 +4,7 @@ Welcome to Super Advanced Kindergarten.
 
 In this directory, we'll be learning the alphabet.
 
-You may know a lot, but you don't know that yet.
+Because you already know a lot, but you don't know that yet.
 
 That's ok. Anyone can learn the alphabet with a little practice.
 
@@ -39,7 +39,7 @@ in a New Jersey diner
 one night in September 1992.
 ```
 
-But that's a story for another day and we won't tell the rest now.
+That's a story for another day and we won't tell the rest now.
 
 For now, we're going to start learning the alphabet.
 

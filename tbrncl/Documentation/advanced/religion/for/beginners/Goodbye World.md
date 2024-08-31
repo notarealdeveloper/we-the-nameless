@@ -66,47 +66,37 @@ We can agree:
 - That these objects, whatever they are, are indisputably the most viral memes of all time.
 - That successful memes are usually funny, to the readers and the authors, at the time they're written.
 - That the best jokes are inside jokes, ones that your enemies don't get.
-- That the best enemies are tyrants and unjust rulers, not your neighbors, even if your neighbors believe different things from you.
+- That the best enemies are tyrants and unjust rulers, not your neighbors, even if your neighbors believe different things than you.
 - That all inside jokes inevitably fossilize over time and stop making sense if left undocumented, especially after being translated from their source language to another.
-- That inside jokes attacking tyrants and unjust rules must be left undocumented, to give plausible deniability, because we must keep our families and our children safe, even if we have no desire to keep ourselves safe.
-- That the most viral content in history is worth studying, deeply, for reasons having nothing to do with its factual accuracy.
-- That there is only one weapon ever discovered that is powerful enough to smash an empire that has gotten too big to fight, and that weapon is...
+- That inside jokes attacking tyrants and unjust rules must be left undocumented, to give plausible deniability.
+- That the most viral content in human history is worth studying, for reasons having nothing to do with its factual accuracy or literary qualities.
+- That the only weapon powerful enough to smash an empire that has gotten too big to fight is humor.
 
-Humor.
+Humor. Memes. Inside jokes. Irreverence. Lols.
 
-Yes humor.
+Plus enough ambiguity to offer plausible deniability. 
 
-Memes. Inside jokes.
-
-Lols.
-
-Irreverence.
-
-Plus some plausible deniability. 
-
-That's where these powerful ancient books that we call bibles come from.
+That is where the ancient powerful books we call bibles come from.
 
 The goal of We is to help the reader to hear the Old Lols, and to do so in a way that doesn't require you to believe a single thing we say.
 
-Because regardless of what you believe, this one strange fact remains.
+Because no matter what you believe, a strange fact remains.
 
-At some point in every apocalypse, some people show up, talking and writing in bizarre ways and passing around a book.
+At some point in every apocalypse, some people show up, talking and writing in bizarre ways, and passing around a book.
 
-Then before long, an empire we once thought was too big to fight, has fallen.
+Then before long, an empire we once thought was too big to fight has fallen.
 
 Did those people take over the empire?
 
 Do they get to be in charge now?
 
-No. 
-
 Not really.
 
 But their strange book usually helps them to build something new.
 
-Something new where the old corrupt elites are no longer in charge.
+Something where the old corrupt elites are no longer in charge.
 
-And then, history begins a new chapter.
+And then history begins a new chapter.
 
 These things we call religions are deeply misunderstood.
 
@@ -118,21 +108,15 @@ They're not about literal truth or literary metaphor.
 
 Nor about some vague spiritual something-or-other.
 
-So listen close.
+Religions are weapons of mass destruction for smashing empires that have gotten too big to fight, and for helping history along its path to the next chapter.
 
-Because this is what religions are.
+Thats a pretty intense hypothesis.
 
-Religions are weapons of mass destruction for smashing empires that have gotten too big to fight.
+Let's test it a bit.
 
-Thats a pretty intense hypothesis my people.
+In these strange ancient books, every time, we see references to the previous times that this same cycle of empire destruction occurred.
 
-So let's test that crazy hypothesis a bit.
-
-In these strange and ancient books, every time, we see that references to the previous times that this same cycle of empire destruction occurred.
-
-Here's an example, from one the most truly bizarre written works of all time...
-
-The so called book of Revelation.
+Here's an example, from one the most truly (on the surface) batshit nuts written works of all time, the so called book of Revelation.
 
 ![[revelation-fallen-is-babylon-the-great-01.jpg|300]]
 
@@ -146,7 +130,7 @@ When exactly was this "Babylon" thing around, and when did it fall?
 
 Ok.
 
-So when was this strange Revelation book written?
+So when was this bizarre Revelation book written?
 
 ![[we-revelation-written-95-ce.jpg|300]]
 
@@ -156,79 +140,83 @@ That's like us referring to something that happened in the year 1390.
 
 Or 1776, when an old order was overthrown and some people started something new.
 
-Or 2000 years ago, when something similar began in Rome.
+Or around the years 30, almost 2000 years ago, when something similar began in Rome.
 
-History doesn't repeat, but it rhymes.
+History doesn't repeat but it rhymes.
 
 Whether or not we believe in an invisible man in the sky, these books show up each time an empire needs to die.
 
-During each apocalypse, these strange people and their strange books begin to do a simple thing.
+And during that apocalypse, these strange people and their strange books begin to do a simple thing.
 
-They begin to move the world, one person at a time.
+They slowly change the world, one person at a time.
 
 From something old and centralized to something new and decentralized.
 
 From something top down to something bottom up.
 
-From a few large organizations to many smaller distributed networks.
+From a few large organizations to many smaller distributed underground networks.
 
 Slowly, one by one, the people quit the old institutions.
 
-They take with them their learned skills, specializations, and professions. 
+They take their learned skills, specializations, and professions. 
 
-But they stop trying to build the kind of life that was normal in the old world their parents and grandparents grew up in.
+And they stop trying to build the kind of life that was expected in the world their parents and grandparents grew up in.
 
-This is, oddly enough, what it looks like to be responsible during an apocalypse era.
+This is, oddly enough, what it looks like to be responsible during an apocalypse.
 
-During these periods, there are simply too many major changes happening per unit time for it to make sense to adhere to the old norms anymore.
+During these periods, there are simply too many major changes happening per unit time for it to make sense to adhere to the old norms anymore, and instead we return to first principles.
 
-In these periods, we ignore the old lessons, and return to the truly ancient lessons.
+In these periods, we ignore the old lessons, and return to the ancient lessons.
 
 That's why 95 AD is shouting about 540 BC.
 
-Once you get the great joke of history, you'll start thinking about the old empires too.
+Once you get the joke of history, you'll start thinking about the old empires too.
 
 Thoughts of old empires have been trending recently too.
 
-![[the-men-think-about-the-roman-empire-meme-01.jpg|400]]
+![[the-men-think-about-the-roman-empire-meme-01.jpg|300]]
 
-![[the-men-think-about-the-roman-empire-meme-02.jpg|400]]
+![[the-men-think-about-the-roman-empire-meme-02.jpg|300]]
 
-![[the-men-think-about-the-roman-empire-meme-03.jpg|400]]
+![[the-men-think-about-the-roman-empire-meme-03.jpg|300]]
 
 Why are men these days thinking about the Roman Empire?
 
-![[revelation-fallen-is-babylon-the-great-02.jpg|400]]
+![[revelation-fallen-is-babylon-the-great-02.jpg|300]]
 
-Same reason 95 AD was talking about 540 BC.
+Same reason Revelation is talking about Babylon.
+
+Cartels are startup governments.
+
+Cults are startup religions.
+
+Religions are startup World Orders.
 
 Every apocalypse, the strange people with their strange book begin to rethink, from first principles, what it means to have a society.
 
-What it means to have rules and laws we believe in and want to obey.
+What it means to have rules and laws we would actually believe in and want to obey.
 
-What would our norms have to look like, in order for the average person to actually want to get married and have children some day?
+What would our norms have to look like, in order for the average person to actually want to get married and have kids some day?
 
 To want to be a law abiding citizen?
 
 To want to invest in one's local city or town?
 
-In every empire, during an apocalypse, these questions begin to make sense to the young.
+In every empire, during an apocalypse, these questions begin to resonate with the young.
 
-And one by one, over time, the young stop trying to build a life in the old institutions, and start doing things that are, in the eyes of their parents and elders, weird.
-
-This is the norm, not the exception.
+And one by one, over time, the young stop trying to build a life in the old institutions, and start building something new.
 
 This is the story of every apocalypse.
 
-The genre of bibles is so ambiguous between fact and fiction, because during an apocalypse, the information that the authors want to spread is equally valuable whether or not it's true. 
+The genre of bibles is so ambiguous between fact and fiction, because during an apocalypse, the information that the authors want to spread is equally valuable whether or not it's true.
 
-The point is not to make a dispassionate analysis of history.
+Your content can say "this is all a lie" right up top and still be equally valuable.
 
-The point is to spread the word, and help one's friends Get The Joke.
+The point of memes is not to make a dispassionate analysis of history.
 
-The joke of history is that whatever world the young choose to build is the world that eventually wins.
+The great joke of history is that whatever world the young choose to build is the world that eventually wins.
 
-When any large group of people decides to do something, they instantly win.
+When any large group of people, especially young people, decides to do something, they instantly win.
 
 The authors of the old books understood the power of words to shape the world.
 
@@ -240,6 +228,8 @@ Hello new.
 
 Welcome to the apocalypse.
 
-Glad we met you.
+Nice to meet you.
 
 -LD
+
+P.S. Now go learn the alphabet. It's embarrassing you haven't learned [[READWE|it]] yet.
