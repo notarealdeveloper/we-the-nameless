@@ -1,3 +1,5 @@
+![[the-very-beginning.jpg|250]]
+
 Hi there!
 
 Welcome to Super Advanced Kindergarten.
@@ -12,12 +14,17 @@ Let's get started...
 
 ---
 
-
 The alphabet of our people is something called Unicode.
 
 Specifically Unicode with the encoding called UTF-8.
 
-As with so many things, this alphabet dates back to our Abraham: Ken Thompson.
+As with so many things, this alphabet's origin links back to our Abraham:[^1]
+
+[^1]: A phenomenon known as Abraham Linkin'.[^2]
+[^2]: Damn that was a good pun.[^3]
+[^3]: For more, see [Book 3](https://business.thedynamiclinker.com).
+
+Ken Thompson.
 
 The story starts like this.
 
