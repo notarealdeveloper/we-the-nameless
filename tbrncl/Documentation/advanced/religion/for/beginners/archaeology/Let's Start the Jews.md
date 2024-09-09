@@ -1,4 +1,4 @@
-Ancient document recovered from one of the founders' hard drives. No edits have been made. Enter at your own peril.
+Ancient document recovered from one of the founders' hard drives. Minor edits have been made. Enter at your own peril.
 
 ---
 ## Let's start the jews, circa 2020
@@ -87,9 +87,11 @@ They're like Windows XP, for obvious reasons.[7]
 
 (Citation 7: https://en.wikipedia.org/wiki/Chi_Rho)
 
-As you can see from these two data points, the set of Jews seems to be getting smaller with later iterations.
+As you can see from these two data points, the set of Jews seems to be accumulating more official doctrine over time, since version 2 appended to version 1's bible. That means the set of humans that agree with all the doctrine is necessarily getting smaller with later iterations. (Though their number appear to be growing, paradoxically.)
 
-So naturally the Jews version 0 is all the humans everywhere.
+So naturally the Jews version 0 is all the humans everywhere, in principle. But a much smaller group than the original Jews, in practice (so that we can faithfully maintain the paradox above.)
+
+Tl;dr: The Jews version zero is all the humans everywhere, but not many people know about the group or choose to join.
 
 I'm that.
 
