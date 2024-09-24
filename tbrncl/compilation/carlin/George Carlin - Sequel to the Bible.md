@@ -1,9 +1,9 @@
 ## Link
-https://www.youtube.com/watch?v=trMGhE0mgnw
+https://www.dailymotion.com/video/x7egw18
 
 ## Clips
 
 ### I'm writing a sequel to the bible
-start = 11:47
-end = 12:08
+start = 11:52
+end = 12:14
 

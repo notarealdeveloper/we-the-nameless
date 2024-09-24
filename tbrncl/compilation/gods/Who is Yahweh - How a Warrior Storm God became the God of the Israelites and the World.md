@@ -9,14 +9,19 @@ end = 2:15
 
 ### An episode I've been wanting to make for a long time but dreading
 start = 3:33
-end = 
+end = 4:33
 
-Triple mountain determinative in the first mention of Israel 
-8:08
+### Triple mountain determinative in the first mention of Israel 
+start = 8:08
+end = 9:08
 
-10:30 on the original location of Mount Sinai
+### On the original location of Mount Sinai
+start = 10:30
+end = 12:30
 
-10:45 it appears that Yahweh was originally a war of god associated with rating and taking women as War brides
+### It appears that Yahweh was originally a war of god associated with rating and taking women as War brides
+start = 10:45
+end = 12:45
 
 ### The head of the Canaanite pantheon was El, if you imagine an old bearded dude as god, you're imagining El
 start = 16:28
@@ -30,4 +35,6 @@ end = 19:27
 start = 19:27
 end = 20:07
 
-
+### The deity in the Hebrew bible seems to delight in wading in blood and then a few pages later his mercy and compassion never fails, that's because you have two gods being welded together here
+start = 22:00
+end = 23:00
