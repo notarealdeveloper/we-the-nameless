@@ -9,4 +9,4 @@ end = 7:28
 
 ### Egypt and the Exodus
 start = 7:28
-end = 
+end = 10:28
