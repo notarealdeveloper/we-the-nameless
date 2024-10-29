@@ -112,7 +112,7 @@ echo 死ng
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/7-song-of-the-suffering-servant.mp4" controls=""></video>
 
-## Scene 7 (t{w,o,}o) - The Apocalypse of Josh
+## Scene 7 two - The Apocalypse of Josh
 ```sh
 echo t{w,o,}o
 ```
