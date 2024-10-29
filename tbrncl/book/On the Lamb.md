@@ -19,7 +19,7 @@ echo Begg$(printf "\x69")n\'\ $(echo {爾u,t二,hη耳ɝɚ,k兒子})
 ## Scene 3 - The Behaviors of Creators
 
 ```sh
-echo B
+echo B 。C .
 ```
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/3-the-behaviors-of-creators.mp4" controls=""></video>
