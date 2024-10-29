@@ -86,7 +86,3 @@ end = 52:54
 ### Prophets are the most opposite people in the world from Historians
 start = 52:44
 end = 52:55
-
-### 
-start = 
-end = 

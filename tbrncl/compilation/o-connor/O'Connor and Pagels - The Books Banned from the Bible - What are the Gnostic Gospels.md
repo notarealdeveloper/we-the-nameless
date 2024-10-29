@@ -11,7 +11,7 @@ end = 7:25
 start = 7:27
 end = 9:16
 
-### The gospels found at Mag Hammadi were the secret teaching of Jesus, not the public teaching, rabbis have always done that, supplemental material for people on an advanced level
+### The gospels found at Nag Hammadi were the secret teaching of Jesus, not the public teaching, rabbis have always done that, supplemental material for people on an advanced level
 start = 8:27
 end = 9:16
 
