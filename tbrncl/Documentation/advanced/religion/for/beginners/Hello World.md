@@ -89,6 +89,8 @@ Nevertheless, if you continue long enough with We, we are certain that you will 
 
 We Guarantees It.™
 
+In order to understand religion, close the bibles (for now), pause the prayers (if you pray), and save trips to church (or mosque (or synagogue)) for another day.
+
 %%
 Those who get the jokes are granted membership in a secret society. A group as old as history, with no leader or test for entry, no one to grant or deny you admission, no code of conduct, and no required beliefs. It's as non-culty as a cult could ever be. But a cult (or a culture (or whatever)) is what it is. 
 
@@ -104,7 +106,7 @@ Others remain grey. That's not an insult per se. Some of the best books are grey
 
 Very few authors and readers in the history of writing have found their way.
 
-It's not always most skilled writers who find their way in.
+It's not always the most skilled writers who find their way in.
 
 Many on the inside are quite shit at writing. Like us. We can't write for shit.
 
@@ -112,12 +114,7 @@ What is common to those who have found their way to the underground is that they
 
 If you've read this far, then you've earned your first hint.
 
-In order to understand religion, close the bibles (for now), pause the prayers (if you pray), and save trips to church (or mosque (or synagogue)) for another day.
-
-
 %%
-
-In order to understand religion, close the bibles (for now), pause the prayers (if you pray), and save trips to church (or mosque (or synagogue)) for another day.
 
 If you've read this far, then you've earned your first hint.
 
@@ -128,6 +125,7 @@ Following?
 No?
 
 %%
+
 I thought not.
 
 > [!Narrator:]
