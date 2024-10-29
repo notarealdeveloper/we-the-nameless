@@ -10,9 +10,29 @@ echo 山三ˡlⁱⁱcome back | sed -E -e 's/ˡ/'"'"'/' -e 's/ⁱⁱ/²/' -e 's/
 ## Scene 2 - Advanced Religion for Beginners
 
 ```sh
-echo Begg$(printf "\x69")n\'\ $(echo {爾u,t二,hη耳ɝɚ,k兒子})
+echo Be木g²in艮\'\ $(echo {爾u,t二,η耳ɝɚ,k兒☥}) | sed -E \
+-e 's/(.)²/\1\1/' \
+-e 's/爾./you/' \
+-e 's/.二/tωο/' \
+-e 's/η/h/' \
+-e 's/耳/ear/' \
+-e 's/[ɝɚ]/ar/g' \
+-e 's/.兒/kid/' \
+-e 's/☥/子/' \
+-e 's/子/z/' \
+-e 's/z/ζ/' \
+-e 's/ζ/ς/' \
+-e 's/ς/σ/' \
+-e 's/σ/s/' \
+-e 's/rara//g' \
+-e 's/\x72/&,/' \
+-e 's/ω/Ω/' \
+-e 's/(木)(..)/\2MU/' \
+-e 's/(..)(艮)/GEN\1/' \
+-e 's/MUGEN/無限/' \
+-e 's/無限/∞/' \
+-e 's/[∞ωΩω∞]//g'
 ```
-
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/2-advanced-religion-for-beginners.mp4" controls=""></video>
 
@@ -27,7 +47,7 @@ echo B 。C .
 ## Scene 4 - Introduction to Apocalypsing
 
 ```sh
-echo {$((2#111))\ h{i,e}lls,}
+echo {$((2#111))\ h{i,e}B²C²s,} | sed -E -e 's/[(](.*)[)]²/\1\1/g' -e 's/[(](.*)[)]²/\1\1/g' -e 's/(.)²(.)²/\1\1\2\2/g' -e 's/BBCC/BCBC/g' -e 's/C/c/g' -e 's/B/b/g' -e 's/b/б/g' -e 's/б/6/g' -e 's/6c/\x6c/g' -e 's/ls\b/&,/'
 ```
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/4-introduction-to-apocalypsing.mp4" controls=""></video>
