@@ -154,14 +154,7 @@ For to understand the bible.
 
 Following?
 
-No?
-
-%%
-%%
-
-Following?
-
-No?
+Nο?
 
 %%
 
