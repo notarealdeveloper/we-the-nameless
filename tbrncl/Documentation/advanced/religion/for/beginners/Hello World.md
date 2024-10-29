@@ -120,6 +120,45 @@ If you've read this far, then you've earned your first hint.
 
 Before you understand the bible, you'll have to learn the alphabet.
 
+%%
+We starts at the very beginning,
+    that's 
+A very good place to start,
+    when we
+Read we begin with
+
+A
+B
+C
+
+And to find the underground,
+you won't need to follow me.
+
+The very first step is not to learn,
+but to forget.
+
+For to understand the bible.
+....   ..   You'll have to learn the alphabet.
+  ☀️
+1 0 1 0 1 0
+  \*                              好                   好
+ 月'll                 learn how tu spell good &
+ 月'll                 learn how to write hao &
+ 月'll                 learn how to say 女子 &
+ 月'll                 learn 好w 兔u s曰 日 hi, now
+ 月      _you_       🌕
+ 曰      say        🗣️
+ 日       hi         ☀️
+       😃
+%%
+
+Following?
+
+No?
+
+%%
+%%
+
 Following?
 
 No?
