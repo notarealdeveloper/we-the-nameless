@@ -1,1 +1,1 @@
-Type: [[Rock]], [[As]], [[Big]], [[As]], [[A]], [[Town]]
+Type: [[Rock]], [[As]], [[Big]], [[As]], [[dictionary/atomic/A]], [[Town]]

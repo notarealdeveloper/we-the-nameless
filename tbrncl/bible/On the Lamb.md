@@ -92,7 +92,7 @@ Or:
 
 ![[do-it-yourself-apocalypse-shell-command-or-section-6.png]]
 
-Or: [bible]().
+Or: [bible](https://www.urbandictionary.com/define.php?term=Cao%20ni%20ma)
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/5-do-it-yourself-apocalypse.mp4" controls=""></video>
 

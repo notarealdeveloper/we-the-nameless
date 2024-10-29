@@ -110,7 +110,7 @@ Nor about some vague spiritual something-or-other.
 
 Religions are weapons of mass destruction for smashing empires that have gotten too big to fight, and for helping history along its path to the next chapter.
 
-Thats a pretty intense hypothesis.
+That's a pretty intense hypothesis.
 
 Let's test it a bit.
 
@@ -140,9 +140,11 @@ That's like us referring to something that happened in the year 1390.
 
 Or 1776, when an old order was overthrown and some people started something new.
 
-Or around the years 30, almost 2000 years ago, when something similar began in Rome.
+Or around the year 30, almost 2000 years ago, when something similar began in Rome.
 
 History doesn't repeat but it rhymes.
+
+In all places and all times.
 
 Whether or not we believe in an invisible man in the sky, these books show up each time an empire needs to die.
 

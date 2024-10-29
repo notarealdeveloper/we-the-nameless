@@ -118,7 +118,7 @@ If you've read this far, then you've earned your first hint.
 
 If you've read this far, then you've earned your first hint.
 
-Before you understand the bible, you'll have to learn the alphabet.
+Before you understand the bible, you'll have to learn the alphabet.[^0]
 
 %%
 We starts at the very beginning,
@@ -174,4 +174,4 @@ Follow me.
 
 [^1]: We isn't the sort of thing for a "follower," after all. You're not a follower are you? Good. Follow [[Goodbye World|me]].
 
-[^2]: Or as we say in the underground: _Before you understand the bible, you'll have to learn the alphabet. Because you know a lot of things, but you don't know [[READWE|that]] yet._
+[^0]: Or as we say in the underground: _Before you understand the bible, you'll have to learn the alphabet. Because you know a lot of things, but you don't know [[READWE|that]] yet._
