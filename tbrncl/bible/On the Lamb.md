@@ -1,7 +1,7 @@
 ## Scene 1 - Welcome back
 
 ```sh
-echo '山三'll come back
+echo 山三ˡlⁱⁱcome back | sed -E -e 's/ˡ/'"'"'/' -e 's/ⁱⁱ/²/' -e 's/(.)²/\1\1 /'
 ```
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/1-welcome-back.mp4" controls=""></video>
