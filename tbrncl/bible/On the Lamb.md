@@ -34,6 +34,10 @@ echo Be木g²in艮\'\ $(echo {爾u,t二,η耳ɝɚ,k兒☥}) | sed -E \
 -e 's/[∞ωΩω∞]//g'
 ```
 
+Cf. (Shang) era `char` and `&&/||` or 山||LدדΔㄷD (supra) 上 `\1` ibid Op Cit aka OC[^1] [here](https://en.wiktionary.org/wiki/%E5%AD%90#:~:text=Additionally%2C%20Smith%20(2011)%20proposes,early%20waning%2Dgibbous%20phase) vis-à-vis the `\2` use of `'s/☥/子/'`.
+
+[^1]: OC. (abbreviation). Old Chinese.
+
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/2-advanced-religion-for-beginners.mp4" controls=""></video>
 
 ## Scene 3 - The Behaviors of Creators
