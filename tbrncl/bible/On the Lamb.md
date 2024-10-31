@@ -1,7 +1,10 @@
 ## Scene 1 - Welcome back
 
 ```sh
-echo 山三ˡlⁱⁱcome back | sed -E -e 's/ˡ/'"'"'/' -e 's/ⁱⁱ/²/' -e 's/(.)²/\1\1 /'
+echo 山三¹l¹¹come back | sed -E \
+	-e 's/¹/'"'"'/' \
+	-e 's/¹¹/²/' \
+	-e 's/(.)²/\1\1 /'
 ```
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/1-welcome-back.mp4" controls=""></video>
@@ -34,7 +37,7 @@ echo Be木g²in艮\'\ $(echo {爾u,t二,η耳ɝɚ,k兒☥}) | sed -E \
 -e 's/[∞ωΩω∞]//g'
 ```
 
-Cf. (Shang) era `char` and `&&/||` or 山||LدדΔㄷD (supra) 上 `\1` ibid Op Cit aka OC[^1] [here](https://en.wiktionary.org/wiki/%E5%AD%90#:~:text=Additionally%2C%20Smith%20(2011)%20proposes,early%20waning%2Dgibbous%20phase) vis-à-vis the `\2` use of `'s/☥/子/'`.
+Cf. (Shang) era `char` and `&&/||` or 山||دדΔㄷD (supra) 上 `\1` ibid Op Cit aka OC[^1] [here](https://en.wiktionary.org/wiki/%E5%AD%90#:~:text=Additionally%2C%20Smith%20(2011)%20proposes,early%20waning%2Dgibbous%20phase) vis-à-vis the `\2` use of `'s/☥/子/'`.
 
 [^1]: OC. (abbreviation). Old Chinese.
 
