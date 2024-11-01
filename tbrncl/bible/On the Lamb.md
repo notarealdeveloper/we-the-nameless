@@ -1,8 +1,6 @@
 
-> _Dear Reader,_
-> _It's been awhile._
-> _Or it will have._
-> _By now._
+> _I saw the lamb._
+> -Book of Revelation
 
 ---
 
@@ -86,14 +84,14 @@ echo {$((2#111))\ h{i,e}B²C²s,} | sed -E -e 's/[(](.*)[)]²/\1\1/g' -e 's/[(](
 	   \
 	    \
          #       .      . ఏంటి?
-         # This sʜouʟᴅ bᴇ entirely
+         # This sнouʟᴅ bᴇ entirely
 clear && # if it ɪsn't, ʟ耳n 二 lis十.¹ ⁰
          #	　　 👋	  　🙏　 ¹⁰　     ⁰ ¹
          #                           ⁰ ⁰
 echo 草泥馬的比 BC ωwWШ山三ΞξEe 可\'t s曰k free力理麗 | ( \
-				echo   ...What?          &>/dev/null &&
-				echo 山三曰...            &>/dev/null &&
-	 			        sed -e "s/$(
+                echo   ...What?          &>/dev/null &&
+                echo 山三曰...            &>/dev/null &&
+                        sed -e "s/$(
 echo e88d89e6b3a5e9a6ace79a84e6af94 | xxd -r -p)/$(
 echo e8828fe4bda0e5aabde79a84e5b184 | xxd -r -p)/" -e "s/$(
 echo 4243 | xxd -r -p)/$(
