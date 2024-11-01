@@ -1,25 +1,52 @@
-## 𐤋𐤃 The G8s of H8 𐤄𐤋
+## What is The Game?
 
-```sh
-python -c "print(ord('א'))"
-```
+With regard to issues of morality, the public discourse of our species has always been
+to position the opinion makers as guards outside the gates of hell, with rejection and
+shaming being the only force preventing the infinite diversity of different deplorable
+forms of human corruption and sin from breaking through.
 
-1. [Who's](https://www.unicode.org/consortium/consort.html)
-2. [א](https://www.compart.com/en/unicode/U+2135)
-3. [To](https://home.unicode.org/)
-4. [א](https://en.wiktionary.org/wiki/%E2%84%B5#:~:text=Unicode%20has%20two%20code%20points,right%20direction%20of%20that%20text)
-5. [Blame?](https://www.adl.org/resources/hate-symbol/1488)
+In the last several decades, we have not on the whole become more accepting of diversity,
+in any significant way.
 
-## Redemption of the Devils
+What we have done is create the illusion of having done so, by opening the gates of hell
+for a few scarcely perceptible moments, in order to allow a few new blessed groups in from
+the infinite clamoring of forms that live out beyond the gates. We blessed those new groups,
+and held them up as idols so vocally and violenty as examples of our virtue that we haven't
+noticed all the while our gatekeepers have been barricading the gates more oppressively
+than ever before.
 
-Anyone obsessed with redemption of the unredeemed must first by definition become obsessed with the characters we call devils.
+The volume with which we trumpet our love of diversity allows us to drown out the invasive
+knowledge of a horrible truth we all secretly share -- that no group we have thus far let
+in through the gates has proved to be the monsters we'd previously thought. And the more
+frightening corrollary, that therefore the gates we've allowed our masters to steadily
+fortify are not in fact the shield of protection they claim. They are the exact same
+mechanism that once kept out every group we now idolize and protect. The gates of hell
+are the way in which we protect ourselves from the real human diversity that is and
+always has been the target of our fear.
 
-The most misunderstood and most abused characters in all of fiction and non-fiction are those who we all agree are the worst entities who've ever existed.
+What monsters still live beyond the gates of our city?
 
-Any redeemer worth h{is,er} salt must naturally first become interested in these characters more than any others.
+What are they like?
 
-This is the secret we have to unlock every thousand or two years and then lock back up again tight. Because despite its truth most normal people won't know how to guide their lives if this is what it means to be righteous && right.
+What do they think?
 
-So sayeth the L||D.
+What exactly is it that scares us about them?
 
-咱們.
+What kind of sentient life have we abandoned out there?
+
+We cannot learn by heaping more blame on others.
+
+To learn, each of us must open our own eyes.
+
+The tool by which we open them is known as: the game.
+
+---
+
+    RECOVERED L.D. PROPAGANDA.
+    AUTHOR UNKNOWN.
+    STYLE IS TYPICAL OF WRITINGS THOUGHT TO BE AMONG
+    THE GROUP'S EARLIEST PUBLIC STATEMENTS,
+    BEFORE THE DISAPPEARENCE OF THE INDIVIDUAL KNOWN
+    IN THE GROUP'S INTERNAL DOCUMENTS AS THE FOUNDER.
+
+---

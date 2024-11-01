@@ -20,10 +20,6 @@ Specifically Unicode with the encoding called UTF-8.
 
 As with so many things, this alphabet's origin links back to our Abraham:[^1]
 
-[^1]: A phenomenon known as Abraham Linkin'.[^2]
-[^2]: Damn that was a good pun.[^3]
-[^3]: For more, see [Book 3](https://business.thedynamiclinker.com).
-
 Ken Thompson.
 
 The story starts like this.
@@ -51,3 +47,7 @@ That's a story for another day and we won't tell the rest now.
 For now, we're going to start learning the alphabet.
 
 Let's start at the beginning --> [[Root]].
+
+[^1]: A phenomenon known as Abraham Linkin'.[^2]
+[^2]: Damn that was a good pun.[^3]
+[^3]: For more, see [Book 3](https://business.thedynamiclinker.com).

@@ -1,4 +1,9 @@
 
+> _Dear Reader,_
+> _It's been awhile._
+> _Or it will have._
+> _By now._
+
 ## Scene 1 - Welcome back
 
 
