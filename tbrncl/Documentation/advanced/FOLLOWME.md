@@ -2,7 +2,7 @@
 ![[yue-tu.jpg]]
 
 Whole. (adjective).
-- All of. Entire.
+1. All of. Entire.
 - _"He walked for a whole day."_
 
 ---

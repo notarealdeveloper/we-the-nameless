@@ -50,4 +50,4 @@ That's a story for another day and we won't tell the rest now.
 
 For now, we're going to start learning the alphabet.
 
-Let's start at the beginning...
+Let's start at the beginning --> [[Root]].

@@ -2,7 +2,7 @@
 ![[yue-tu.jpg]]
 
 Down. (verb).
-- To consume quickly, all at once.
+1. To consume quickly, all at once.
 - _"He downed a six pack."_
 
 ---

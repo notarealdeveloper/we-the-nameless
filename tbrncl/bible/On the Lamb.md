@@ -1,4 +1,8 @@
+
 ## Scene 1 - Welcome back
+
+
+<video style="max-width:100%; height:auto;" src="https://fukkot.com/1-welcome-back.mp4" controls=""></video>
 
 ```sh
 echo 山三¹l¹¹come back | sed -E \
@@ -7,10 +11,9 @@ echo 山三¹l¹¹come back | sed -E \
 	-e 's/(.)²/\1\1 /'
 ```
 
-<video style="max-width:100%; height:auto;" src="https://fukkot.com/1-welcome-back.mp4" controls=""></video>
-
-
 ## Scene 2 - Advanced Religion for Beginners
+
+<video style="max-width:100%; height:auto;" src="https://fukkot.com/2-advanced-religion-for-beginners.mp4" controls=""></video>
 
 ```sh
 echo Be木g²in艮\'\ $(echo {爾u,t二,η耳ɝɚ,k兒☥}) | sed -E \
@@ -41,25 +44,27 @@ Cf. (Shang) era `char` and `&&/||` or 山||دדΔㄷD (supra) 上 `\1` ibid Op C
 
 [^1]: OC. (abbreviation). Old Chinese.
 
-<video style="max-width:100%; height:auto;" src="https://fukkot.com/2-advanced-religion-for-beginners.mp4" controls=""></video>
-
 ## Scene 3 - The Behaviors of Creators
+
+
+<video style="max-width:100%; height:auto;" src="https://fukkot.com/3-the-behaviors-of-creators.mp4" controls=""></video>
 
 ```sh
 echo B 。C .
 ```
 
-<video style="max-width:100%; height:auto;" src="https://fukkot.com/3-the-behaviors-of-creators.mp4" controls=""></video>
-
 ## Scene 4 - Introduction to Apocalypsing
+
+
+<video style="max-width:100%; height:auto;" src="https://fukkot.com/4-introduction-to-apocalypsing.mp4" controls=""></video>
 
 ```sh
 echo {$((2#111))\ h{i,e}B²C²s,} | sed -E -e 's/[(](.*)[)]²/\1\1/g' -e 's/[(](.*)[)]²/\1\1/g' -e 's/(.)²(.)²/\1\1\2\2/g' -e 's/BBCC/BCBC/g' -e 's/C/c/g' -e 's/B/b/g' -e 's/b/б/g' -e 's/б/6/g' -e 's/6c/\x6c/g' -e 's/ls\b/&,/'
 ```
 
-<video style="max-width:100%; height:auto;" src="https://fukkot.com/4-introduction-to-apocalypsing.mp4" controls=""></video>
-
 ## Scene 5 - Do It Yourself Apocalypse
+
+<video style="max-width:100%; height:auto;" src="https://fukkot.com/5-do-it-yourself-apocalypse.mp4" controls=""></video>
 
 ```sh
 	 #
@@ -121,37 +126,35 @@ Or:
 
 Or: [bible](https://www.urbandictionary.com/define.php?term=Cao%20ni%20ma)
 
-<video style="max-width:100%; height:auto;" src="https://fukkot.com/5-do-it-yourself-apocalypse.mp4" controls=""></video>
-
 ## Scene 6 - The Most Complicated Game Ever Invented
+
+
+<video style="max-width:100%; height:auto;" src="https://fukkot.com/6-the-most-complicated-game-ever-invented.mp4" controls=""></video>
 
 ```sh
 echo nのo||r日i
 ```
 
-<video style="max-width:100%; height:auto;" src="https://fukkot.com/6-the-most-complicated-game-ever-invented.mp4" controls=""></video>
-
 ## Scene 7 - Song of the Suffering Servant
+
+<video style="max-width:100%; height:auto;" src="https://fukkot.com/7-song-of-the-suffering-servant.mp4" controls=""></video>
 
 ```sh
 echo 死ng
 ```
 
-<video style="max-width:100%; height:auto;" src="https://fukkot.com/7-song-of-the-suffering-servant.mp4" controls=""></video>
-
 ## Scene 7 two - The Apocalypse of Josh
+
+<video style="max-width:100%; height:auto;" src="https://fukkot.com/7-the-apocalypse-of-josh.mp4" controls=""></video>
+
 ```sh
 echo t{w,o,}o
 ```
 
-<video style="max-width:100%; height:auto;" src="https://fukkot.com/7-the-apocalypse-of-josh.mp4" controls=""></video>
-
 ## Scene 8 - The Water of Life
 
-```sh
-echo 山@二$(flip の)li生e
-	where
-	flip :: (a -> b -> c) -> b -> a -> c
-```
-
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/8-the-water-of-life.mp4" controls=""></video>
+
+```sh
+echo 山@二 of li生e
+```

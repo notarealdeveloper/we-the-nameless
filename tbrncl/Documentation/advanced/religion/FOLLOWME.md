@@ -2,7 +2,7 @@
 ![[yue-tu.jpg]]
 
 Down the Rabbit Whole. (phrase).
-- Self-explanatory.
+1. Self-explanatory.
 
 
 ---
