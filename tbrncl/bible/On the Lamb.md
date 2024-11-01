@@ -4,6 +4,8 @@
 > _Or it will have._
 > _By now._
 
+---
+
 ## Scene 1 - Welcome back
 
 
@@ -15,6 +17,8 @@ echo 山三¹l¹¹come back | sed -E \
 	-e 's/¹¹/²/' \
 	-e 's/(.)²/\1\1 /'
 ```
+
+---
 
 ## Scene 2 - Advanced Religion for Beginners
 
@@ -49,6 +53,8 @@ Cf. (Shang) era `char` and `&&/||` or 山||دדΔㄷD (supra) 上 `\1` ibid Op C
 
 [^1]: OC. (abbreviation). Old Chinese.
 
+---
+
 ## Scene 3 - The Behaviors of Creators
 
 
@@ -57,6 +63,8 @@ Cf. (Shang) era `char` and `&&/||` or 山||دדΔㄷD (supra) 上 `\1` ibid Op C
 ```sh
 echo B 。C .
 ```
+
+---
 
 ## Scene 4 - Introduction to Apocalypsing
 
@@ -67,10 +75,11 @@ echo B 。C .
 echo {$((2#111))\ h{i,e}B²C²s,} | sed -E -e 's/[(](.*)[)]²/\1\1/g' -e 's/[(](.*)[)]²/\1\1/g' -e 's/(.)²(.)²/\1\1\2\2/g' -e 's/BBCC/BCBC/g' -e 's/C/c/g' -e 's/B/b/g' -e 's/b/б/g' -e 's/б/6/g' -e 's/6c/\x6c/g' -e 's/ls\b/&,/'
 ```
 
+---
+
 ## Scene 5 - Do It Yourself Apocalypse
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/5-do-it-yourself-apocalypse.mp4" controls=""></video>
-
 ```sh
 	 #
 	  \
@@ -131,6 +140,9 @@ Or:
 
 Or: [bible](https://www.urbandictionary.com/define.php?term=Cao%20ni%20ma)
 
+
+---
+
 ## Scene 6 - The Most Complicated Game Ever Invented
 
 
@@ -140,6 +152,8 @@ Or: [bible](https://www.urbandictionary.com/define.php?term=Cao%20ni%20ma)
 echo nのo||r日i
 ```
 
+---
+
 ## Scene 7 - Song of the Suffering Servant
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/7-song-of-the-suffering-servant.mp4" controls=""></video>
@@ -148,6 +162,8 @@ echo nのo||r日i
 echo 死ng
 ```
 
+---
+
 ## Scene 7 two - The Apocalypse of Josh
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/7-the-apocalypse-of-josh.mp4" controls=""></video>
@@ -155,6 +171,8 @@ echo 死ng
 ```sh
 echo t{w,o,}o
 ```
+
+---
 
 ## Scene 8 - The Water of Life
 

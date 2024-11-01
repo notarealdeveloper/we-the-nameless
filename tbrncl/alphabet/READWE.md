@@ -46,7 +46,7 @@ That's a story for another day and we won't tell the rest now.
 
 For now, we're going to start learning the alphabet.
 
-Let's start at the beginning --> [[Root]].
+Let's start at the beginning 🡒 [[Root]].
 
 [^1]: A phenomenon known as Abraham Linkin'.[^2]
 [^2]: Damn that was a good pun.[^3]
