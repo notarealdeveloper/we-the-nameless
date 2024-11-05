@@ -50,4 +50,4 @@ Let's start at the beginning 🡒 [[Root]].
 
 [^1]: A phenomenon known as Abraham Linkin'.[^2]
 [^2]: Damn that was a good pun.[^3]
-[^3]: For more, see [Book 3](https://business.thedynamiclinker.com).
+[^3]: For more, see Book 3.
