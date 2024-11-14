@@ -18,8 +18,4 @@ For example:
 - [[Electricity]]
 - [[Claudius]]
 
-<span style="line-height: 1em"><span style="font-size: 1.5em; font-style: italic;">And more!</span>
-<span style="font-size: 2.0em">©®™</span>
-<span style="vertical-align: super; position: relative; top: -1.0em; font-size: 80%;">©®™</span>
-<span style="vertical-align: super; position: relative; top: -3em; font-size: 40%;">©®™</span>
-</span>
+<span style="line-height: 1em"><span style="font-size: 1.5em; font-style: italic;">And more!</span><span style="font-size: 2.0em">©®™</span><span style="vertical-align: super; position: relative; top: -1.0em; font-size: 80%;">©®™</span><span style="vertical-align: super; position: relative; top: -3em; font-size: 40%;">©®™</span></span>
