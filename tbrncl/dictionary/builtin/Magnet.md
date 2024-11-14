@@ -1,1 +1,1 @@
-Type: [[Electric]], [[Force]], [[Rotated]], [[Through]], [[Spacetime]]
+Type: [[Electricity]], [[Force]], [[Rotated]], [[Through]], [[Spacetime]]
