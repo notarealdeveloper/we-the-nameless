@@ -4,5 +4,6 @@
   "autoPairMarkdown": false,
   "useTab": true,
   "showLineNumber": false,
-  "showUnsupportedFiles": true
+  "showUnsupportedFiles": true,
+  "smartIndentList": false
 }
