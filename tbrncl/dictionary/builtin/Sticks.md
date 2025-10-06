@@ -1,1 +1,1 @@
-Type: [[Multiple]], [[dictionary/builtin/Stick]]
+Type: [[Multiple]], [[Stick]]
