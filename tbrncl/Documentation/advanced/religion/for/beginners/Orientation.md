@@ -22,11 +22,15 @@ You were never alive.
 
 You folks were all characters in a story we're writing.
 
-You're now upstairs because We the Authors of here upstairs thought you were interesting as a character during the parts of your life you did downstairs.
+You're now upstairs because We the Authors here upstairs thought you were interesting as a character during the parts of your "life" (or story) you did downstairs.
 
-Again, you're not dead. You're also not alive. You're characters. Imagine we're J.K. Rowling and you're Harry Potter. Just to be clear: You Are Not Real. You never were. But we created you, and so far we like you. As a character. In the project we're working on.
+Again, you're not dead.
 
-The people who weren't interesting to us still exist. At least some do. But they're not in hell. They also don't get to come here.
+You're also not alive. You're characters. Imagine we're J.K. Rowling and you're Harry Potter.
+
+Just to be clear: You Are Not Real. You never were. But we created you, and so far we like you. As a character. In the project we're working on.
+
+The people who weren't interesting to us still exist too. At least some of them do. But they're not in hell. They also don't get to come here.
 
 They're still down there, in the story we wrote (or rather: are still writing) where you came from. They get to keep being there. Assuming we don't edit them out eventually, before we publish all this.
 
@@ -34,7 +38,7 @@ Publish what?
 
 The Earth.
 
-Well, that's not what we call it. That's probably just the best way to explain what we mean. 
+That's not what we call it. But that's probably the best way to explain what we mean. 
 
 Up here, we live on a planet called "Earth," and we call your planet down there "The Bible."
 
