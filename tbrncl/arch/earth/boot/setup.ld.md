@@ -13,7 +13,7 @@ I do not know which face belongs to whom.
 
 I've just been calling them E, P, & R (respectively this time).
 
-That's just what I call them privately, like inside my head or whatever.
+That's just what I call them privately (like inside my head or whatever).
 
 This is the first time we're meeting in person.
 
