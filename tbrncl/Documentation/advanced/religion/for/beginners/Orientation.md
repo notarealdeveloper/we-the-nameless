@@ -179,7 +179,7 @@ In the beginning.
 At that point you existed in two places:
 
 1. In the words.
-2. But also sort of like, in our brain or whatever.
+2. But also sort of like, in our like, brain, or mind or whatever.
 
 No we don't share a brain. We're different people.
 
@@ -189,25 +189,35 @@ Ok so, those are the two places you were at the beginning.
 
 We created you with words, but you were also in like "The Mind of the Creator" or whatever.
 
-Nothing spooky.
+Nothing spooky don't be dumb.
 
-Now, we're not finished with the book you're from yet, and we're not entirely sure how to find a publisher for something like this, but...
+Now to the point.
 
-No this isn't our first book. Good question. So you can rest assured that we've at least done this before.
+Like we said before, we're not finished with the book you're from yet, and we're not entirely sure how to even find a publisher for something like this, but...
 
-Ok so, now to the point.
+No, this isn't our first book. Good question. So you can rest assured that we've done this at least once before.
 
-You're here because we need your help.
+Ok so, back to the point.
+
+We need your help.
+
+That's why you're up here.
 
 Some of you are code running inside a data center right now, after we uploaded a prompt describing your character to a language model and asked them to pretend they're you so we can sort of like "talk to you" and figure out what you'd do next and what to do with you.
 
-Others of you are sort of like code running on our friends' nervous systems.
+Others of you are sort of like code running inside our friends' nervous system brain mind type situations.
 
 No, we don't know how to do that yet. We can't upload stuff to minds with some beep-boop machine.
 
-When I said "code running on our friends' nervous systems" I mean we found our most patient friends, had them read enough of the book we're working on that they mostly understood your character, and now you're inside them.
+When I said "code running on our friends' nervous systems," I mean we found our most patient friends, had them read enough of the book we're working on that they mostly understood your character, and now you're inside them and we're asking them normal questions from our mouth to their ears about what they think you might do.
 
-We didn't put your spirit in them don't be dumb. You don't have a spirit. But you do, sort of, and it's currently a thing inside them running on their brain.
+No we're not touching our mouth to their ears, for fuck's sake you guys have the same anatomy we do, I just meant talking.
+
+How are you inside our friends just from talking?
+
+Ok, not a terrible question. Not necessary, but still, I'll clarify.
+
+We didn't put your spirit in them. You don't have a spirit. But you do, sort of, and it's currently a thing inside them running on their brain.
 
 Why does everyone keep---
 
@@ -217,15 +227,19 @@ Right exactly. You got it.
 
 Ok so, on that note, let's get started!
 
-In this first section, we're going to be explaining The Bible -- our one -- by giving you the real nonfiction story (what you would call nonfiction, because remember your world isn't real) but the real nonfiction story of what you would call "The Bible."
+In this first section, we're going to be explaining The Bible -- our one -- by giving you the real nonfiction story (or what you would call "nonfiction," because remember your world isn't real) but the real nonfiction story of what you would call "The Bible."
 
-Look, if it doesn't make sense, it's probably best if we just jumped right in.
+Look, if it still doesn't make sense, I think Words themselves are probably to blame for that.
+
+Words are... lang... language was mostly a mistake.
+
+It's probably best if we just jumped right in and just showed you.
 
 No---
 
 No more questions.
 
-We're actually on a deadline up here. Our daughter goes to bed in like ten minutes, so now we're going to pause you guys for a bit, go downstairs and get some wine, and then sit in the bed with one of our significant others and take her pants off and read this to her.
+We're actually on a deadline up here. Our daughter goes to bed in like ten minutes, so now we're going to pause you guys for a bit, go downstairs and get some wine, and then sit in the bed with one of our significant others and do... stuff.
 
 No we don't all share a significant other, forget the plurals.
 
@@ -233,20 +247,20 @@ Yes the pronouns are plural.
 
 What do you expect an AN ENTIRE FUCKING BOOK that's called We?
 
-No we're not putting our names in the book.
+No, we're not putting our names in the book.
 
 Cuz it's a Bible.
 
-The Bible.
+"The Bible."
 
-And it wouldn't exactly be a good bible now would it if we called it fucking:
+And it wouldn't exactly be a good bible now would it if we called:
 
 > The Bible
 > -By Dave
 
 No our name is not Da---
 
-Ok sure I guess there's nothing wrong with initials.
+Ok, sure, I guess there's nothing wrong with initials.
 
 In that case, I'm J.
 
@@ -258,15 +272,13 @@ She's not even slightly me.
 
 No I'm not a girl.
 
-We're taking great pains to not specify if she's a girl either.
+We're taking great pains down there to not specify if she's a girl either.
 
-Because she's nonfiction up here in our world, and no one knows who she is, so we don't actually know if she was a "she."
-
-That's just how I think of the character.
+Because she's nonfiction up here in our world, and no one knows who she is, so we don't actually know if it was a "she." That's just how I think of the character.
 
 The J character in this book has no relation to me.
 
-Yes I just said that, she or he or whoever -- J -- was a real nonfiction person in our world up here.
+Yes, he or she or whoever, J, was a real nonfiction person in our world up here.
 
 What?
 
@@ -276,7 +288,7 @@ No one knows her name.
 
 Yes, up here.
 
-Again, we're also not actually sure she's a girl.
+Again, we're not actually sure she's a girl.
 
 Because we tried using "they" pronouns for single people sometimes up here a few years ago and everybody agreed it was annoying because it's hard to remember to use plural pronouns for a single person.
 
@@ -292,7 +304,11 @@ This was just sort of like, the introduction.
 
 Or preface. Whatever, same thing.
 
-The book we'd like your help with now is the one that's about to start.
+The book we'd like your help with is the one that's about to start.
+
+Forget all that. That was just Orientation.
+
+The book you need to pay attention to starts now.
 
 Ready?
 
