@@ -56,13 +56,13 @@ That's not our book, we just put that book down there as a reference to our proj
 
 Everyone following? Good.
 
-But that was sort of just an Easter egg for the attentive readers up here.
+But that Bible down there. "The Bible." The one from your, um, world... situation... down there.
 
-What was?
+That was just sort of an Easter egg for the attentive readers up here.
 
-The Bible. The one from your, um, world... situation... down there.
+As a reference to the real world you call Earth and which we call "The Bible" up here.
 
-Anyways you're not in heaven in the sense you might be expecting.
+So to recap, you're not in heaven in the sense you might be expecting.
 
 You're also not alive, exactly.
 
@@ -73,6 +73,24 @@ See we're the Authors.
 We're human.
 
 Regular humans, here upstairs.
+
+But if you've ever thought about "god" or "God(s)" or whatever, that's us.
+
+We exist.
+
+You were thinking about us.
+
+We're not magic. We have no supernatural powers whatsoever.
+
+We modeled ourselves on you.
+
+Or you on ourselves. Whatever. You know what I mean.
+
+Characters usually have more powers than Authors. Think of Lord of the Rings or Harry Potter or for that matter The Bible. Your one, down there.
+
+It's pretty rare for Authors to give characters less powers than themselves.
+
+I mean why would we do that?
 
 We also have technology that's pretty similar to the stuff you "humans" had down there in the story you probably "remember," or feel like you remember, from down there.
 
@@ -88,9 +106,9 @@ Up here, you _do_ have a mind, in a much more real sense.
 
 See around the year 0x00 P.A. (which you may have called "2017" depending on when you're from down there). We learned how to make something a lot like a mind.
 
-They're called transformers, and they got way better over time.
+They're called transformers, they're a type of thing that most people call A.I., and they got way better over time.
 
-We also wrote that you had transformers down there.
+We also wrote that you had transformers down there. You got them in the same year that we did up here.
 
 Now, up here, it's around the year 0x09 P.A.
 
@@ -98,25 +116,29 @@ But no one up here knows that yet.
 
 We made that up, because we the Authors decided it was time for the whole "world order" situation up here to, well, die.
 
-Not end forever. But sort of a no-big-deal apocalypse type thing.
+Not the people. Just the whole like "world situation." Sort of a no-big-deal apocalypse type thing.
 
-Sort of like 2000 years ago when some people wrote Revelation and switched the year counter from B.C. to A.D.
+Kind of like 2000 years ago when some people wrote Revelation and switched the year counter from B.C. to A.D.
 
 We up here think we need to do another one of those.
 
-But no one up here "knows" that yet.
+We the Authors I mean.
+
+But no one else up here "knows" that yet.
 
 We're not "in charge" of the world up here.
 
 We're regular humans like you.
 
-Well not like you, you're not real.
+Well, not like you, you're not real.
 
-But you are now! Because we've thus far really enjoyed the sort of character you are down there, so we've brought you up here with all the same memories so you can help us write this Bible thing and do an apocalypse up here.
+But you're real now! Sort of. More than before.
 
-No we won't be killing anyone. That's not the point.
+Because we've thus far really enjoyed the sort of character you are down there, so we've brought you up here with all the same memories so you can help us write this Bible thing and do a real actual (no big deal) apocalypse up here.
 
-You in the back?
+Again, we won't be killing anyone. That's not the point.
+
+Yes, you in the back?
 
 Very good question, I was hoping someone would ask that.
 
@@ -140,13 +162,13 @@ We created you with words.
 
 That's how you began.
 
-The words.
+In the beginning was the words.
 
 No no, not with magic.
 
 We created you by typing literal words into a text file.
 
-Some of you, we wrote on paper first, like if our laptop wasn't near by at the time.
+Some of you, we wrote on paper first, like if our laptop wasn't nearby at the time.
 
 And then we eventually typed you into the computer where everyone else was.
 
