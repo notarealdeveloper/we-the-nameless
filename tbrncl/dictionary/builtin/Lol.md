@@ -1,1 +1,0 @@
-Type: [[Response]], [[To]], [[Funny]], [[Thing]]

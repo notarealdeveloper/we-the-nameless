@@ -1,1 +1,0 @@
-Type: [[Sand]], [[People]], [[With]], [[Hats]]

@@ -1,1 +1,0 @@
-Type: [[Foot]], [[Clothes]]

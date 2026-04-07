@@ -1,1 +1,0 @@
-Type: [[Stop]], [[Goal]], [[Thing]]

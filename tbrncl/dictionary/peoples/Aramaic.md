@@ -1,1 +1,0 @@
-Type: [[Old]], [[Jew]], [[Type]], [[Of]], [[Language]], [[Used]], [[For]], [[Bible]], [[And]], [[Empire]], [[Stuff]]

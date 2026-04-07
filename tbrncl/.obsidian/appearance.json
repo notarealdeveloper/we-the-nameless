@@ -1,8 +1,27 @@
 {
-  "cssTheme": "Everforest",
   "accentColor": "",
   "theme": "obsidian",
+  "cssTheme": "Everforest",
   "enabledCssSnippets": [
-    "ld"
-  ]
+    "ld",
+    "hide-tags-in-publish",
+    "front-matter",
+    "tags",
+    "howto",
+    "code",
+    "image",
+    "monospace",
+    "hide-properties",
+    "font-mono",
+    "font-serif",
+    "font-size",
+    "proto-sinaitic",
+    "proto"
+  ],
+  "textFontFamily": "",
+  "interfaceFontFamily": "",
+  "monospaceFontFamily": "",
+  "baseFontSize": 16,
+  "baseFontSizeAction": true,
+  "nativeMenus": false
 }

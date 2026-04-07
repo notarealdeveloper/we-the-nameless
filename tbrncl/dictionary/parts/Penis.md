@@ -1,1 +1,0 @@
-Type: [[Man]], [[Pants]], [[Parts]]

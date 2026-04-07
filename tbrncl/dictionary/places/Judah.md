@@ -1,1 +1,0 @@
-Type: [[South]], [[Part]], [[Of]], [[Jew]], [[Land]], [[In]], [[Old]], [[Bible]], [[Time]]

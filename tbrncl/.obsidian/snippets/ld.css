@@ -1,10 +1,10 @@
 :root {
-	--red: #e06666;
-	--blue: #6d9eeb;
-	--yellow: #ffe599;
+    --red: #e06666;
+    --blue: #6d9eeb;
+    --yellow: #ffe599;
     --green: #93c47d;
     --white: #eeeeee;
-	--grey: #adadad;
+    --grey: #adadad;
     --background: #2f383e;
     --r-background-color: var(--background);
 }

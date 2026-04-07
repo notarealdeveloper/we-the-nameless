@@ -7,4 +7,4 @@ Down the Rabbit Whole. (phrase).
 
 ---
 
-[[Hello World|FOLLOWME]]
+[[mm/deprecated/Hello World|FOLLOWME]]
