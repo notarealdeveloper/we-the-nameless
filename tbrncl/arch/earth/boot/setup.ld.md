@@ -3,7 +3,7 @@ I am seated in an office, surrounded by heads and bodies. My posture is consciou
 
 I am in here.
 
-Three faces have resolved into place above the paper strewn table. There are three Deans 一 of Integration, of Publication, and of Some Long Thing I Forget[^1].
+Three faces have resolved into place above the paper strewn table. There are three Deans 一 of Integration, of Publication, and Some Long Thing I Forget[^1].
 
 They are a Mushite, a Levite, and a Redactor, respectively.
 
