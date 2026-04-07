@@ -1,8 +1,5 @@
 ## Day One
 
-### Or
-## Genesis: The Middle
-
 Hi there,
 
 Welcome to Earth.
