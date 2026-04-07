@@ -1,5 +1,5 @@
 
-I am seated in an office, surrounded by heads and bodies. My posture is consciously erect against the hard wood of my seat as i{ si,}t{ w/ it,} presse{d,s} oppressively against the soft flesh of my seat respectively. This is a cold room in Priestly Administration.
+I am seated in an office, surrounded by heads and bodies. My posture is consciously erect against the hard wood of my seat as i{ si,}t{ w/ it,} presse{d,s} oppressively against the soft flesh of my seat, respectively. This is a cold room in Priestly Administration.
 
 I am in here.
 
