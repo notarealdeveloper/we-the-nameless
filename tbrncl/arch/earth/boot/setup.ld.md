@@ -105,6 +105,6 @@ R: Ok so...
 
 ---
 
-Goto: [[main.c|Minutes of meeting on Genesis 1, and how the finalized version you know and maybe love came to be, as a result of the distinct personalities of these three, and look up the Documentary Hypothesis if none of that made sense or more simply in summary: Welcome to We.]]
+Goto: [[main.c|Minutes of meeting on Genesis 1, and how the finalized version you know (and maybe love) came to be, as a result of the distinct personalities of these three, and look up the Documentary Hypothesis if none of that made sense or more simply in summary: Welcome to We.]]
 
 [^1]: Editor's Note: The final one was the Dean of, and I quote, "Codification And Formalization Of Tabernacular Administration And Policy To Ensure Compliance With All Requirements And Required Procedures For No Less Than The Full Duration Of All Steps Of Creation Including Compilation And Assembly And Linkage In Preparation For Execution And Distribution Of The Officially Finalized And Blessed Production Ready Publication So Sayeth The Lord" but we understand why the speaker couldn't remember all that.
