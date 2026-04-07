@@ -4,13 +4,13 @@
 
 ## We The Nameless
 
-### Of:
+### Of
 
-## Human History's Universal University Press
+## Human History's Universal University Press©®™
 
 ### In Association with
 
-## LD
+## LD™
 
 ## Comet
 
@@ -28,5 +28,11 @@
 ## The Bible
 
 ### Chapter One
+
+## Genesis
+
+### Or
+
+## The Middle
 
 goto: [[setup.ld]]

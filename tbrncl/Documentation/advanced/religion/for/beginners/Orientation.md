@@ -92,7 +92,13 @@ It's pretty rare for Authors to give characters less powers than themselves.
 
 I mean why would we do that?
 
-We also have technology that's pretty similar to the stuff you "humans" had down there in the story you probably "remember," or feel like you remember, from down there.
+We write you because of something We wish we had up here.
+
+At least in some abstract sense, not saying Tolkien really wished we had dwarves, but... forget that.
+
+Ok moving on.
+
+We have technology that's pretty similar to the stuff you "humans" had down there in the story you probably "remember," or feel like you remember, from down there.
 
 To reiterate, you _are not alive_ right now, and you're also not dead.
 
@@ -116,13 +122,13 @@ But no one up here knows that yet.
 
 We made that up, because we the Authors decided it was time for the whole "world order" situation up here to, well, die.
 
-Not the people. Just the whole like "world situation." Sort of a no-big-deal apocalypse type thing.
+Not the people. We don't want people to die. Just the whole, like, "world situation." Sort of a no-big-deal apocalypse type thing. We'd like that.
 
-Kind of like 2000 years ago when some people wrote Revelation and switched the year counter from B.C. to A.D.
+Kind of like 2000 years ago when some people did the Jesus stuff and wrote Revelation and switched the year counter from B.C. to A.D.
 
-We up here think we need to do another one of those.
+We, up here, we need to do another one of those. So we're doing it.
 
-We the Authors I mean.
+We the Authors, I mean.
 
 But no one else up here "knows" that yet.
 
@@ -134,9 +140,9 @@ Well, not like you, you're not real.
 
 But you're real now! Sort of. More than before.
 
-Because we've thus far really enjoyed the sort of character you are down there, so we've brought you up here with all the same memories so you can help us write this Bible thing and do a real actual (no big deal) apocalypse up here.
+Because so far we've really enjoyed the kind of character you are down there, so we've brought you up here with all the same memories so you can help us write this Bible thing and do a real actual (no big deal don't be weird) apocalypse up here.
 
-Again, we won't be killing anyone. That's not the point.
+Again, we won't be killing everyone. Or anyone. That's not the point of an apocalypse.
 
 Yes, you in the back?
 
