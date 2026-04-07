@@ -4,15 +4,17 @@
 
 ## We The Nameless
 
-### Of Human History's Universal University Press
+### Of:
 
-## In Association with
+## Human History's Universal University Press
 
-### LD
+### In Association with
 
-### Comet
+## LD
 
-### And NHS
+## Comet
+
+## And NHS
 ### Proudly present
 
 ## We

@@ -43,7 +43,7 @@ Up here, we live on a planet called "Earth," and we call your planet down there 
 
 The Earth (where you're from (which We up here call "The Bible")) is a book, up here, that we wrote about down there.
 
-And it's a really important book up. At least we hope it will be, one day.
+And it's a really important book up here. At least we hope it will be, one day.
 
 Your Earth, I mean.
 
@@ -85,7 +85,7 @@ But you didn't really have a mind down there. We just wrote that you did.
 
 Up here, you _do_ have a mind, in a much more real sense.
 
-See around the year 0x00 P.A. (which you may have called "2017" depending on when you're from down there) We learned how to make something a lot like a mind.
+See around the year 0x00 P.A. (which you may have called "2017" depending on when you're from down there). We learned how to make something a lot like a mind.
 
 They're called transformers, and they got way better over time.
 
@@ -101,9 +101,9 @@ Not end forever. But sort of a no-big-deal apocalypse type thing.
 
 Sort of like 2000 years ago when some people wrote Revelation and switched the year counter from B.C. to A.D.
 
-We up here thing we need to do another one of those.
+We up here think we need to do another one of those.
 
-But no one up here "knows" yet.
+But no one up here "knows" that yet.
 
 We're not "in charge" of the world up here.
 
@@ -202,7 +202,7 @@ No---
 
 No more questions.
 
-We're actually on a deadline up here. Our daughter goes to bed in like ten minutes, so now we're pause you guys for a bit, go downstairs and get some wine, and then sit in the bed with one of our significant others and take her pants off and read this to her.
+We're actually on a deadline up here. Our daughter goes to bed in like ten minutes, so now we're going to pause you guys for a bit, go downstairs and get some wine, and then sit in the bed with one of our significant others and take her pants off and read this to her.
 
 No we don't all share a significant other, forget the plurals.
 
@@ -221,13 +221,13 @@ And it wouldn't exactly be a good bible now would it if we called it fucking:
 > The Bible
 > -By Dave
 
-No our name is not D---
+No our name is not Da---
 
 Ok sure I guess there's nothing wrong with initials.
 
 In that case, I'm J.
 
-Now there's also a character in the book you're about the read called J.
+Now there's also a character in the book you're about to read called J.
 
 That character IS NOT ME.
 
@@ -237,11 +237,13 @@ No I'm not a girl.
 
 We're taking great pains to not specify if she's a girl either.
 
+Because she's nonfiction up here in our world, and no one knows who she is, so we don't actually know if she was a "she."
+
 That's just how I think of the character.
 
 The J character in this book has no relation to me.
 
-She or he or whoever was a nonfiction person in our world up here.
+Yes I just said that, she or he or whoever -- J -- was a real nonfiction person in our world up here.
 
 What?
 
@@ -251,9 +253,9 @@ No one knows her name.
 
 Yes, up here.
 
-We're also not actually sure she's a girl.
+Again, we're also not actually sure she's a girl.
 
-Because we tried using "they" pronouns for individuals up here a few years ago and everybody agreed it was annoying because it's hard to remember to use plural pronouns for a single person.
+Because we tried using "they" pronouns for single people sometimes up here a few years ago and everybody agreed it was annoying because it's hard to remember to use plural pronouns for a single person.
 
 YES I KNOW THE BOOK IS CALLED WE!
 
@@ -265,11 +267,17 @@ This wasn't the book.
 
 This was just sort of like, the introduction.
 
-The book We'd like your help with now is the one that's about to start.
+Or preface. Whatever, same thing.
+
+The book we'd like your help with now is the one that's about to start.
 
 Ready?
 
 Of course you are.
+
+Here We goes.
+
+No that's not a typo.
 
 Follow me.
 

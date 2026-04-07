@@ -1,9 +1,9 @@
 
-I am seated in an office, surrounded by heads and bodies. My posture is consciously erect against the hard wood of my seat as{i,s}it pressed oppressively against the soft flesh of my seat. This is a cold room in Priestly Administration.
+I am seated in an office, surrounded by heads and bodies. My posture is consciously erect against the hard wood of my seat as i{ si,}t{ w/ it,} presse{d,s} oppressively against the soft flesh of my seat, respectively. This is a cold room in Priestly Administration.
 
 I am in here.
 
-Three faces have resolved into place above the paper strewn table. These are three Deans 一 of Integration, of Publication, and of Codification And Formalization Of Tabernacular Administration Policy Required To Ensure Compliance Of Compilation Assembly And Linkage Procedures In Preparation For Execution And Distribution Of Officially Finalized Production-Ready Publication.
+Three faces have resolved into place above the paper strewn table. There are three Deans 一 of Integration, of Publication, and of Some Long Thing I Forget[^1].
 
 They are a Mushite, a Levite, and a Redactor, respectively.
 
@@ -104,3 +104,5 @@ E: Let's get moving guys.
 R: Ok so...
 
 goto: [[main.c]]
+
+[^1]: Editor's Note: The final one was the Dean of, and I quote, "Codification And Formalization Of Tabernacular Administration And Policy To Ensure Compliance With All Requirements And Required Procedures For No Less Than The Full Duration Of All Steps Of Creation Including Compilation And Assembly And Linkage In Preparation For Execution And Distribution Of The Officially Finalized And Blessed Production Ready Publication So Sayeth The Lord" but we understand why the speaker couldn't remember all that.
