@@ -40,9 +40,9 @@ The Earth.
 
 That's not what we call it. But that's probably the best way to explain what we mean. 
 
-Up here, we live on a planet called "Earth," and we call your planet down there "The Bible."
+Up here, we live on a planet called "The Earth," and we call your planet down there "The Bible," but we made you call your planet down there "The Earth." Your Earth is where you live. Our Earth is where We live. And "The Bible" is what we up here call you.
 
-The Earth (where you're from (which We up here call "The Bible")) is a book, up here, that we wrote about down there.
+The Earth (where you're from (which We up here call "The Bible")) is a book, up here, that we wrote, about down there.
 
 And it's a really important book up here. At least we hope it will be, one day.
 
