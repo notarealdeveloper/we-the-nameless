@@ -91,7 +91,7 @@ R: (Non-maliciously, the tone seems more like how a policeman acts if a third pa
 
 ---
 
-(Narrator: One week later, at exactly the same time as last week, but one hour earlier because P said he has a festival to attend after this. Not sure which one. There's a lot.)
+(Narrator: One week later, at exactly the same time as last week, but one hour earlier because P has a festival to attend right after this. Not sure which one. There's a lot.)
 
 R: Let's try to make this more productive than last week.
 
