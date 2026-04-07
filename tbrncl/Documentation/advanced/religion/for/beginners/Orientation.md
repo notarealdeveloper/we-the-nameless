@@ -1,6 +1,7 @@
-## Orientation, Day One
+## Day One
 
-### Religion for Reasonable Creators
+### Or
+## Genesis: The Middle
 
 Hi there,
 
@@ -12,7 +13,7 @@ Ok, let's make this quick.
 
 You're dead.
 
-Just kidding, but not entirely.
+Just kidding. But not entirely.
 
 This is upstairs.
 
