@@ -1,8 +1,7 @@
 [
-  "obsidian-excalidraw-plugin",
-  "obsidian-advanced-slides",
   "obsidian-plugin-toc",
   "obsidian-tidy-footnotes",
   "shorter-footnote",
-  "latex-to-unicode"
+  "latex-to-unicode",
+  "obsidian-excalidraw-plugin"
 ]

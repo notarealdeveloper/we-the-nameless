@@ -7,4 +7,4 @@ Down the Rabbit Whole. (phrase).
 
 ---
 
-[[Orientation|FOLLOWME]]
+[[Documentation/advanced/religion/for/beginners/FOLLOWME|FOLLOWME]]
