@@ -5,3 +5,7 @@
 > It's just sort of upstairs.
 >
 > -The Authors (attributed), from Diary of a Recently Killed Process, Day 1
+
+- [ ] Move `/zero/bible` directory from Sudocode to here.
+- [ ] Organize everything in there by putting it wherever it belongs in here.
+
