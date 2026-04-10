@@ -328,5 +328,5 @@ No that's not a typo.
 
 Follow me.
 
-goto: [[header.S]]
+goto: [[setup.ld]]
 

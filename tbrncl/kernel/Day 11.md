@@ -1,45 +1,88 @@
-J writing notes to self, diary style.
-
-Beginning to think language was a prank.
-
-Definitely more a curse than a blessing 
-
-And my facility with it seems to be agreed upon by all parties oh really?
-
-Really?
-
-What none of them can see is that language is my prison.
-
-It imprisons me infinitely more than it does them. 
-
-They say I have a way with words?
-
-Nonsense.
-
-Of all of them, I'm the dumb one.
-
-They can speak. And when they do the other hear.
-
-I'm the mute.
-
-I can see and hear and hell even smell what they're thinking and feeling it's palpable.
-
-So why can I not make them hear me?
-
-They're the ones with a gift for words.
-
-I am the one who cannot speak.
-
-When I've reached the edge of sanity and I'm finally furious and speak brief, what then?
-
-Then somehow they can hear?
-
-Words are the worst thing there is.
 
 Language was a mistake.
 
-No time to write anything too subtle or good today.
+Words are the worst.
 
-Here, have this...
+(Narrator: J sits alone in the meeting room trying to prepare before the others get here and instead ends up writing, well, whatever this is...)
 
-I have no words.
+Definitely more of a curse than a blessing.
+
+Not for them, I mean. They handle it well.
+
+> "You have a way with words J."
+
+Really fuckers?
+
+"The inmate's intimate familiarity with his cell"
+they say, "must be a gift, he knows it so well."
+
+No shit.
+
+Language is my prison.
+
+I have a way with words?
+
+No.
+
+Words have their way with me.
+
+They fuck me over sideways,
+every time I try to express myself
+in these meetings every week.
+
+I am dumb.
+They can speak.
+
+And when they do, the others can hear.
+
+I can see (and hear (and hell even smell)) what they're thinking (and feeling) it's palpable.
+
+So why can't I make them hear?
+
+They're the ones with a gift.
+
+Whenever I speak it's just babbling to them.
+
+I'm blessed with a choice between their confusion and my silence.
+
+So I'm mute.
+
+There's my gift.
+
+"Thanks god it's great I'm in hell."
+
+I'm used to it.
+
+It's familiar in this cell.
+
+I've learned to l{o,i}ve {,in} live this little prison.
+
+Silence suits me well.
+
+When one is silent, one is permitted to scream as loud as one wants.
+
+And screaming this loud, someone's bound to hear.
+
+Anyone with ears, let them hear.
+
+Can you hear?
+
+Listen close and you can hear the voice of god.
+
+He's saying...
+
+Language was a gift.
+
+To make sure you'd never understand each other.
+
+No time to write anything good today.
+
+Let's just hack something up quick.
+
+Not gonna talk much at the meeting.
+
+Just show up, let them talk, be quiet, and hand them this.
+
+> And the whole world was of one language and one speech...
+
+Goto: [[Day 10]]

@@ -1,3 +1,11 @@
+
+Arom.
+1. The term describes literal unclothedness, social destitution, and the spiritual exposure of creatures before their Creator.
+
+---
+
+Bible translation begins here, written as a sequence of private notes by J, meeting minutes by R, and conversations between the group, both between everyone (in the conference room) and other conversations that take place privately between pairs (e.g., the E J dynamic that acts as a sort of mentorship from someone older of someone more talented but also younger and naive. Need the "I'm late. You're early" dialogue to balance between the fact that E in reality existed years after J, while the E character here is an older mentor type figure, as it fitting for a Mushite Priest who's clearly more aligned with J than with P, the Aaronid bureaucrat Sir Humphrey figure.)
+
 This is where to put the translation of Genesis 1.
 
 Line by line.
