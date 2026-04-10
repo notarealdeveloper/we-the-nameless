@@ -3,6 +3,14 @@ https://youtu.be/9s3fRIFBhdM?si=4zw85f2R7IISZTzg
 
 ## Clips
 
+### P cuts Cain and Abel, cuts the Noah sacrifices after landing, cuts the sacrifice of Isaac, cuts Abraham's sacrifice where he cuts animals up, and all other sacrifices until Aaron is declared high priest
+start = 0:00
+end= 5:00
+
+### The absurd things that often result from combining J and P, like Noah's extinction sacrifices
+start = 5:00
+end = 6:00
+
 ### The priestly source doesn't mention dreams or angels or God appearing to people, the only way to talk to God in the priestly thread is by giving a sacrifice to a priest
 start = 0:00
 end = 10:00
