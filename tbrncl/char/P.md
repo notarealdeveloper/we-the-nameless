@@ -85,13 +85,11 @@ Noah's Extinction Sacrifices:
 - Source: [[21 - D and P#The absurd things that often result from combining J and P, like Noah's extinction sacrifices|Friedman - D and P - 5:00-6:00]].
 
 ## Aaron Means Light Bringer
-P is the original devil.
+Slightly schizo angle, but useful for the narrative of the book:
 Aaron means Light Bringer.
-Aaron is Lucifer.
-The Aaronid Priests are his descendants.
-The P line of Levite Priests are his children.
-Jesus was right.
-Synagogue of Satan.
+The Aaronid Priests, including P, are his descendants.
+The "P as devil" angle actually works here.
+Jesus was right lol.
 
 ## Aaron is Voldemort
 The animated film The Prince of Egypt (1998) also features a depiction of Ramesses (voiced by Ralph Fiennes, for both the speaking and the singing), portrayed as Moses' adoptive brother, and ultimately as the film's villain with essentially the same motivations as in the earlier 1956 film.
