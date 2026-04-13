@@ -33,6 +33,4 @@
 
 ### Or
 
-## The Middle
-
-goto: [[Day 0|The Beginning]]
+[[main.c|The Middle]]
