@@ -155,3 +155,30 @@ Better?
 
 (*leaves room.)
 
+---
+
+NOTE:
+
+In Enuma Elish, after Marduk defeats Tiamat,
+1. Her eyes become the sources of the Tigris and Euphrates.
+2. Her belly becomes regions of land (that covers Gihon, now have 3/4)
+3. What is "Pishon"? So close to getting everything.
+
+Creation from Tiamat’s Body
+After Marduk defeats Tiamat:
+He splits her corpse in two
+Half he raises up to form the heavens
+Half he spreads out to form the earth
+Then:
+He fixes the sky, setting guards so her waters don’t escape
+He organizes the cosmos (stars, moon, calendar)
+And then the crucial geographic piece:
+From her eyes flow two rivers
+→ the Tigris
+→ the Euphrates
+From other parts of her body:
+Mountains are piled up from her breasts
+Clouds, winds, and mist are formed from her spittle
+Rain and storms come from her breath
+Her tail / lower body helps structure the earth’s boundaries
+Her belly becomes regions of the land (sometimes linked to the “Apsu” waters beneath)

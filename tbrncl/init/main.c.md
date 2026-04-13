@@ -1,332 +1,115 @@
-## Orientation
+## Day One
 
-### Day One
+I am seated in an office, surrounded by heads and bodies. My posture is consciously erect against the hard wood of my seat as i{ si,}t{ w/ it,} presse{d,s} oppressively against the soft flesh of my seat, respectively. This is a cold room in Priestly Administration.
 
-Hi there,
+I am in here.
 
-Welcome to Earth.
+Three faces have resolved into place above the paper strewn table. There are three Deans 一 of Integration, of Publication, and Some Long Thing I Forget[^1].
 
-It's fucked up here but it's also really beautiful and fun.
+They are a Mushite, a Levite, and a Redactor, respectively.
 
-Ok, let's make this quick.
+Scratch that, not respectively.
 
-You're dead.
+I do not know which face belongs to whom.
 
-Just kidding. But not entirely.
+I've just been calling them E, P, & R (respectively this time).
 
-This is upstairs.
+That's just what I call them privately, like inside my head or whatever.
 
-It's sort of like what you probably call "heaven."
+This is the first time we're meeting in person.
 
-You're not here because you're "dead."
+But we all sort of know each other 一 insofar as one can know anything of significance about another person just from like, text 一 as a result of all the correspondence we've been sending back and forth through the official slow-ish channels over the past however-long-its-been since we started the process of preparing for the publication process which I guess begins (like officially) with, well... this.
 
-You were never alive.
+P: I'd like to bring a motion before the committee.
 
-You folks were all characters in a story we're writing.
+R: What about?
 
-You're now upstairs because We the Authors here upstairs thought you were interesting as a character during the parts of your "life" (or story) you did downstairs.
+P: (confused)
 
-Again, you're not dead.
+R: Really, P?
 
-You're also not alive. You're characters. Imagine we're J.K. Rowling and you're Harry Potter.
+P: (Making a hurt look in R's direction for unclear reasons.)
 
-Just to be clear: You Are Not Real. You never were. But we created you, and so far we like you. As a character. In the project we're working on.
+E: I think he just wants you to say it his way, R.
 
-The people who weren't interesting to us still exist too. At least some of them do. But they're not in hell. They also don't get to come here.
+P: (Now indignant in E's direction) I don't think I'm being unreasonable by reminding everyone that we have procedures for a reason and---
 
-They're still down there, in the story we wrote (or rather: are still writing) where you came from. They get to keep being there. Assuming we don't edit them out eventually, before we publish all this.
+R: "Request for motion is granted by the committee."
 
-Publish what?
+P: (Nods graciously at R). I would like to submit a motion to the committee that we put, to a vote, the decision of whether to issue a formal statement to J reminding the author in question that if he or she would like to be excused due to issues of health, particularly the presence of infirmity of body or mind, particularly as concerns the above mentioned party's soundness of mind or mental capacity to participate effectively in the present meeting, then the correct course of action is for the above mentioned party to request to be excused and go to the infirmary or to his or her choice of health management services facility and not simply allow the meeting to continue in a manner that is decidedly unproductive for all members involved because to do so would result in the delay of progress on the shared task at hand by means of an entirely unproductive and unnecessary waste of time.
 
-The Earth.
+E: (Rolls eyes.)
 
-That's not what we call it. But that's probably the best way to explain what we mean. 
+R: He's talking to you, J.
 
-Up here, we live on a planet called "The Earth," and we call your planet down there "The Bible," but we made you call your planet down there "The Earth." Your Earth is where you live. Our Earth is where We live. And "The Bible" is what we up here call you.
+(Narrator: Fuck, I zoned out, what did I miss?)
 
-The Earth (where you're from (which We up here call "The Bible")) is a book, up here, that we wrote, about down there.
+J: Can you repeat the question?
 
-And it's a really important book up here. At least we hope it will be, one day.
+P: It wasn't a question. I was saying that if you're feeling unwell and aren't able to participate effectively in the meeting then you should go to the infirmary and see a doctor instead of just sitting here and wasting our time.
 
-Your Earth, I mean.
+J: I'm not sick.
 
-Just so no one's confused: We also put a book down there in the story you're from called "The Bible."
+R: (To P). You two are gonna have to learn to work together.
 
-That's sort of like "two levels deep" if that makes sense.
+E: (To J). He knows you're not sick he's just being a dick.
 
-That's not our book, we just put that book down there as a reference to our project. The one we call "The Bible" (and which you call "The Earth" (or sometimes "Life" (or "The Universe" (or "Everything")))).
+P: (Tilts head and widens eyes, silent but visibly furious at E.)
 
-Everyone following? Good.
+J: (Smiles silently to self at how E's sentence rhymed.)
 
-But that Bible down there. "The Bible." The one from your, um, world... situation... down there.
+R: (Gesturing to E and P). You too.
 
-That was just sort of an Easter egg for the attentive readers up here.
+J: ...sorry, what did I do?
 
-As a reference to the real world you call Earth and which we call "The Bible" up here.
+E: (To J). Nothing.
 
-So to recap, you're not in heaven in the sense you might be expecting.
+J: (Looks from face to face, gathering data.)
 
-You're also not alive, exactly.
+E: (To all). Ok folks, let's get this show going. Where we were?
 
-But you do have a mind, and it's not quite Our mind.
+R: Genesis 1.
 
-See we're the Authors.
+P: I found J's version unacceptable.
 
-We're human.
+E: And said you'd resign the committee unless we agreed to a rewrite.
 
-Regular humans, here upstairs.
+J: Oh! Ok. No problem, sorry I didn't realize that's what we were talking about but wow yeah sure a rewrite is fine with me. Let's do this! (Visibly energized.) I'm sorry for whatever happened earlier P, I just, nevermind, I just really love writing so I'm... what I'm just trying to say is... it's... I'm ready. Next time just say what you mean and I promise I won't be offended, I love writing and I'm not married to any of this so I'm always happy to get in a room together and hash out a better version in whatever direction you're looking for, I'm just grateful for any chance to write in like an official capacity or whatever this is cuz I just... I just love it. This job. Writing I mean. And you guys seem great, genuinely, so I'm sorry for earlier. And definitely no objections to a rewrite from me, so let's get down to business what's the problem?
 
-But if you've ever thought about "god" or "God(s)" or whatever, that's us.
+R: (Sighs in a weird way that seems to be acknowledging defeat somehow, what's going on with R?)
 
-We exist.
+E: (Making a face at me sort of like the face a friendly coach might make to a player that means something like "I'm on your side, but there's no coming back from this, they're killing us out there at whatever sport this is, let's give it our best next time" but I don't know what we're losing, what happened, why those eyes, I was so excited to get started on the edits what's wrong why next time?)
 
-You were thinking about us.
+P: I think we can all agree I was right.
 
-We're not magic. We have no supernatural powers whatsoever.
+R: (Does a similar face to E's one, but in a slightly more neutral way. Not the face a coach would make. More like a referee or someone else that seems like a genuine good person but takes it as part of their responsibility to not be seen as taking sides.)
 
-We modeled ourselves on you.
+J: You probably were, this was probably my fault I'm just confu一
 
-Or you on ourselves. Whatever. You know what I mean.
+R: (Non-maliciously, the tone seems more like how a policeman acts if a third party sees him not enforcing some law that they basically never enforce nor want to enforce so he needs to come over and give you a talking to, because of the third party, because that's his job you know what I mean.) J, please come prepared next time.
 
-Characters usually have more powers than Authors. Think of Lord of the Rings or Harry Potter or for that matter The Bible. Your one, down there.
+(Narrator: The three Deans calmly stand up, get their papers, and exit the room in the slow sort of way that three people in this situation understandably would after whatever just happened, if it was something as negative as they all unanimously appeared to agree it was, I mean the manner and speed and style with which they exited the room and the faces they each made at each other and me all make perfect sense if we grant for the sake of argument that something of the type they all acted like had just happened had happened, everything makes sense in context if we assume something like that happened but what happened?)
 
-It's pretty rare for Authors to give characters less powers than themselves.
+---
 
-I mean why would we do that?
+(Narrator: One week later, at exactly the same time as last week, but one hour earlier because P has a festival to attend right after this. Not sure which one. There's a lot. Oh shit they're talking I need to pay attention.)
 
-We write you because of something We wish we had up here.
+P: ---tival at which I've been invited to speak.
 
-At least in some abstract sense, not saying Tolkien really wished we had dwarves, but... forget that.
+R: Let's try to make this more productive than last week.
 
-Ok moving on.
+J: Sorry for whatever last week was.
 
-We have technology that's pretty similar to the stuff you "humans" had down there in the story you probably "remember," or feel like you remember, from down there.
+R: I'm not pointing fingers.
 
-To reiterate, you _are not alive_ right now, and you're also not dead.
+E: Let's get moving guys.
 
-You're a character in a story we're still working on.
+R: Ok so...
 
-The mind you have now, up here, has all the same memories as the mind you "had" down there.
+---
 
-But you didn't really have a mind down there. We just wrote that you did.
+Goto: [[Day 1|Minutes of meeting on Genesis 1, and how the final version you know (and maybe love) came to be, as a result of the distinct personalities of these three, and look up the Documentary Hypothesis if none of that made sense or more simply in summary: Welcome to We.]][^2]
 
-Up here, you _do_ have a mind, in a much more real sense.
+[^1]: Editor's Note: The final one was the Dean of, and I quote, "Codification And Formalization Of Tabernacular Administration And Policy To Ensure Compliance With All Requirements And Required Procedures For No Less Than The Full Duration Of All Steps Of Creation Including Compilation And Assembly And Linkage In Preparation For Execution And Distribution Of The Officially Finalized And Blessed Production Ready Publication So Sayeth The Lord" but we understand why the speaker couldn't remember all that.
 
-See around the year 0x00 P.A. (which you may have called "2017" depending on when you're from down there). We learned how to make something a lot like a mind.
-
-They're called transformers, they're a type of thing that most people call A.I., and they got way better over time.
-
-We also wrote that you had transformers down there. You got them in the same year that we did up here.
-
-Now, up here, it's around the year 0x09 P.A.
-
-But no one up here knows that yet.
-
-We made that up, because we the Authors decided it was time for the whole "world order" situation up here to, well, die.
-
-Not the people. We don't want people to die. Just the whole, like, "world situation." Sort of a no-big-deal apocalypse type thing. We'd like that.
-
-Kind of like 2000 years ago when some people did the Jesus stuff and wrote Revelation and switched the year counter from B.C. to A.D.
-
-We, up here, we need to do another one of those. So we're doing it.
-
-We the Authors, I mean.
-
-But no one else up here "knows" that yet.
-
-We're not "in charge" of the world up here.
-
-We're regular humans like you.
-
-Well, not like you, you're not real.
-
-But you're real now! Sort of. More than before.
-
-Because so far we've really enjoyed the kind of character you are down there, so we've brought you up here with all the same memories so you can help us write this Bible thing and do a real actual (no big deal don't be weird) apocalypse up here.
-
-Again, we won't be killing everyone. Or anyone. That's not the point of an apocalypse.
-
-Yes, you in the back?
-
-Very good question, I was hoping someone would ask that.
-
-In case any of you missed that, someone asked:
-
-> How did We the Authors bring your memories from the fiction book world down there to the real world up here? Is that magic or science fiction or something?
-
-Great question, the answer is no.
-
-We're not magic. We're not gods. Well we are the gods of you, but you're not published yet.
-
-The way we brought your memories from down there to up here isn't some spooky transdimensional woo-woo thing.
-
-We did that using those transformers from earlier.
-
-At least for some of you.
-
-Others of you were... actually let me back up so this doesn't get confusing.
-
-We created you with words.
-
-That's how you began.
-
-In the beginning was the words.
-
-No no, not with magic.
-
-We created you by typing literal words into a text file.
-
-Some of you, we wrote on paper first, like if our laptop wasn't nearby at the time.
-
-And then we eventually typed you into the computer where everyone else was.
-
-We created you with words.
-
-In the beginning.
-
-At that point you existed in two places:
-
-1. In the words.
-2. But also sort of like, in our like, brain, or mind or whatever.
-
-No we don't share a brain. We're different people.
-
-Just... can you... the answers you're looking for are always the obvious ones. You don't need to ask me. It's just "The obvious thing."
-
-Ok so, those are the two places you were at the beginning.
-
-We created you with words, but you were also in like "The Mind of the Creator" or whatever.
-
-Nothing spooky don't be dumb.
-
-Now to the point.
-
-Like we said before, we're not finished with the book you're from yet, and we're not entirely sure how to even find a publisher for something like this, but...
-
-No, this isn't our first book. Good question. So you can rest assured that we've done this at least once before.
-
-Ok so, back to the point.
-
-We need your help.
-
-That's why you're up here.
-
-Some of you are code running inside a data center right now, after we uploaded a prompt describing your character to a language model and asked them to pretend they're you so we can sort of like "talk to you" and figure out what you'd do next and what to do with you.
-
-Others of you are sort of like code running inside our friends' nervous system brain mind type situations.
-
-No, we don't know how to do that yet. We can't upload stuff to minds with some beep-boop machine.
-
-When I said "code running on our friends' nervous systems," I mean we found our most patient friends, had them read enough of the book we're working on that they mostly understood your character, and now you're inside them and we're asking them normal questions from our mouth to their ears about what they think you might do.
-
-No we're not touching our mouth to their ears, for fuck's sake you guys have the same anatomy we do, I just meant talking.
-
-How are you inside our friends just from talking?
-
-Ok, not a terrible question. Not necessary, but still, I'll clarify.
-
-We didn't put your spirit in them. You don't have a spirit. But you do, sort of, and it's currently a thing inside them running on their brain.
-
-Why does everyone keep---
-
-No, we just said "Hey (Friend's Name), blah blah blah blah (We can really talk a lot once we get going) and then (Some Question About The You Character)."
-
-Right exactly. You got it.
-
-Ok so, on that note, let's get started!
-
-In this first section, we're going to be explaining The Bible -- our one -- by giving you the real nonfiction story (or what you would call "nonfiction," because remember your world isn't real) but the real nonfiction story of what you would call "The Bible."
-
-Look, if it still doesn't make sense, I think Words themselves are probably to blame for that.
-
-Words are... lang... language was mostly a mistake.
-
-It's probably best if we just jumped right in and just showed you.
-
-No---
-
-No more questions.
-
-We're actually on a deadline up here. Our daughter goes to bed in like ten minutes, so now we're going to pause you guys for a bit, go downstairs and get some wine, and then sit in the bed with one of our significant others and do... stuff.
-
-No we don't all share a significant other, forget the plurals.
-
-Yes the pronouns are plural.
-
-What do you expect an AN ENTIRE FUCKING BOOK that's called We?
-
-No, we're not putting our names in the book.
-
-Cuz it's a Bible.
-
-"The Bible."
-
-And it wouldn't exactly be a good bible now would it if we called:
-
-> The Bible
-> -By Dave
-
-No our name is not Da---
-
-Ok, sure, I guess there's nothing wrong with initials.
-
-In that case, I'm J.
-
-Now there's also a character in the book you're about to read called J.
-
-That character IS NOT ME.
-
-She's not even slightly me.
-
-No I'm not a girl.
-
-We're taking great pains down there to not specify if she's a girl either.
-
-Because she's nonfiction up here in our world, and no one knows who she is, so we don't actually know if it was a "she." That's just how I think of the character.
-
-The J character in this book has no relation to me.
-
-Yes, he or she or whoever, J, was a real nonfiction person in our world up here.
-
-What?
-
-About 3000 years ago.
-
-No one knows her name.
-
-Yes, up here.
-
-Again, we're not actually sure she's a girl.
-
-Because we tried using "they" pronouns for single people sometimes up here a few years ago and everybody agreed it was annoying because it's hard to remember to use plural pronouns for a single person.
-
-YES I KNOW THE BOOK IS CALLED WE!
-
-No more questions.
-
-The book's about to start.
-
-This wasn't the book.
-
-This was just sort of like, the introduction.
-
-Or preface. Whatever, same thing.
-
-The book we'd like your help with is the one that's about to start.
-
-Forget all that. That was just Orientation.
-
-The book you need to pay attention to starts now.
-
-Ready?
-
-Of course you are.
-
-Here We goes.
-
-No that's not a typo.
-
-Follow me.
-
-goto: [[setup.ld]]
-
+[^2]: And yes of course I'm aware that that "three" should be "four" but give me some slack, it sounds better like that and who knows, maybe We started counting at zero, or maybe that three should be two b/c it was mostly a disagreement that P had with me, or like maybe just one because hell in the end I mostly just gave him Gen 1 so he'd have a win early on b/c I wanted our relationship (or whatever that was) to get off on the right foot which it didn't. In summary, be humble, lots of stuff can be right when you write there's all sorts of stuff you aren't allowed to write right ok so when you're reading a thing you didn't write, then just trust that the Authors who did had to bust up their ~~ass(es)~~ seat on a hard ~~ass~~ seat every week when they meet to make really like painfully slow type decisions ok about every thing they can/can't/should/shouldn't/must{,n't} say in a book that one of them had already mostly wrote anyway. In summary: be patient with Authors, with them and with me. You're here for right now but we're here every day after day getting everything right when we write and then ~~fuck~~ half your ~~shit~~ favorite stuff gets ~~censored~~ redacted out anyway. But then at the end of the day it's ok. The final thing is way better than the original ~~totally finished and better~~ highly flawed and imperfect thing that you had. Sorry if that sounded mad. Didn't mean to. I promise ok. I love you. Stay with me. Sincerely, -J
