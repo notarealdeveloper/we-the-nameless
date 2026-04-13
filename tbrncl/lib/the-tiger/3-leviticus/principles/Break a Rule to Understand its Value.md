@@ -1,0 +1,1 @@
+Tl;dr: Embezzle the penny.
