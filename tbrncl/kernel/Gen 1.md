@@ -1,10 +1,3 @@
-Perfect. Now write the original scene where P says J's original Genesis 1 unacceptable: The one with the slaying of Rahab (last of the "Rahabim" (it's the exact name of our king / "I changed a letter!" etc) in an homage to the oldest known human creation myth, the Enuma Elish, which we know J does because of all the references to Gilgamesh. Write the dialogue that's meant to come before the scenes we just wrote above. P threatens to resign unless they change Gen 1. P asks J what creation is to him. J says a battle. P says creation is distinction. J then argues that (paraphrasing) "I didn't say it's a battle because that's what creation means to me. I said that because that's what the first creation story is. How do you propose we write a bible? A creation story that will still be relevant in a couple thousand years? None of us have any idea how the world began. But the nonfiction history of the world, is that so different from what we know about how civilization began? Why do you think I put Tigris and Euphrates in Genesis?" Etc etc, use those themes but write it better, your style was good.
-
----
-
-Here’s the prequel scene—same tone, but this is where the conflict actually ignites:
-
----
 
 P: I will be direct.
 
@@ -19,7 +12,6 @@ P: I am being specific. “He crushed Rahab.” “He split the deep.” “He p
 E (mildly): It is older than Babylon.
 
 P: That is not the defense you think it is.
-
 
 ---
 
