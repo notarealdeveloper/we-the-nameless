@@ -63,6 +63,10 @@ end = 37:25
 start = 37:25
 end = 38:20
 
+### P distinguishes between Priests and Levites. P always says "The Priests and the Levites."
+start = 38:00
+end = 40:00
+
 ### In Deuteronomy, Aaron is only mentioned twice, once to say he died, and once to say he made the golden calf
 start = 38:05
 end = 38:18

@@ -42,6 +42,14 @@ Noah's Extinction Sacrifices:
 - In J there are 7 of each sex of all the clean animals, and only 2 each of the unclean animals like Lions and Tigers and Bears.
 - Source: [[21 - D and P#The absurd things that often result from combining J and P, like Noah's extinction sacrifices|Friedman - D and P - 5:00-6:00]].
 
+## The Levites and the Exodus
+
+Friedman suggested only the Levites did the Exodus.
+All Priests are Levites.
+Wherever Yahweh came from, it's hard to imagine it wasn't pushed heavily by the Priestly class.
+Most scholars place the earliest worship of Yahweh in the south.
+Yahweh was not originally in the Canaanite pantheon, but he somehow absorbed the entire thing.
+
 ## Aaron Means Light Bringer
 Slightly schizo angle, but useful for the narrative of the book:
 Aaron means Light Bringer.

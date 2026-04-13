@@ -1,12 +1,3 @@
-
-> If the heavens ever did speak.
-> What would they say?
-> Who would they say it to?
-> And would we be able to hear it?
-> 
-> -_On the Lamb, Ch. 8: The Water of Life[^1]_
-
----
 ## Orientation
 
 Hi there,
@@ -336,5 +327,3 @@ No that's not a typo.
 Follow me.
 
 goto: [[header.S]]
-
-[^1]: From: [[On the Lamb|/lib/dudetheyreontome/on-the-lamb]]
