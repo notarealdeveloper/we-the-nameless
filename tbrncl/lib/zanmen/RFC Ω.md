@@ -1,3 +1,12 @@
+
+Incomprehensible document claimed to have been found among the Founder's personal papers.
+
+Most likely a forgery.
+
+Likely not to be of interest outside niche LD scholarship circles.
+
+Included here for reference.
+
 ```
          /***************************
           *     │             │     *
