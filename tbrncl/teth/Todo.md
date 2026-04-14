@@ -9,4 +9,5 @@
 ---
 
 - [ ] Move `/zero/bible` directory from Sudocode to here.
+- [ ] Finish [[Hello World|Hello World]]
 
