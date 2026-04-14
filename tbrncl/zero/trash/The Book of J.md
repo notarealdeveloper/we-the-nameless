@@ -150,7 +150,3 @@ Reading J is worth it, for all people of all faiths or none.
 Whether you're a believer or unbelievers, read J.
 
 You'll never look at the bible the same way again.
-
-Love always,
-
--Son of J

@@ -488,8 +488,4 @@ TODO: Finish this.
 
 ---
 
-## Now what?
-
-1. [[setup.ld|Go up]]
-
-2. [[We|Go Down]]
+Goto: [[setup.ld|Orientation]]
