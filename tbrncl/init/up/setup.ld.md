@@ -118,7 +118,7 @@ But you didn't really have a mind down there. We just wrote that you did.
 
 Up here, you _do_ have a mind, in a much more real sense.
 
-See around the year 0x00 P.A. (which you may have called "2017" depending on when you're from down there). We learned how to make something a lot like a mind.
+See around the year 0x00 P.A. (which you may have called "2017" depending on when you're from down there), We learned how to make something a lot like a mind.
 
 They're called transformers, they're a type of thing that most people call A.I., and they got way better over time.
 
