@@ -1,4 +1,3 @@
-## Bear with me Honey
 
 ---
 

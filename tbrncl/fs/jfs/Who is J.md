@@ -26,6 +26,13 @@
 > It goes without saying that a work with such distinctive personal traits could stem only from an individual author. When it comes, however, to J’s date, the indications are not nearly so compelling. The prevailing tendency today is to put J in the tenth century B.C., or about a hundred years earlier than was estimated a few decades ago. If the current view is right, J may well have been a contemporary of that other outstanding writer to whom we are indebted for the court history of David and his immediate successors (especially II Sam ix–xx). Did the two, then, know each other personally? And if so, what were the relations between them? It would require a latter-day J to do justice to a situation of this sort.
 > -The Anchor Bible Commentary on Genesis, E.A. Speiser. (pg xxviii)
 
-> One may ask why such obvious discrepancies were not eliminated by the redactor or compiler to whom we owe the composite version. The answer is significant, for it has a decisive bearing, as we shall see later on, on the whole issue of editorial authority in piecing the pertinent documents together. It is, in sum, this: such authority was exercised, if at all, only with utmost hesitancy and with the barest minimum of substantive change.
-> -Ibid. (pg xix)
+---
 
+> One may ask why such obvious discrepancies were not eliminated by the redactor or compiler to whom we owe the composite version. The answer is significant, for it has a decisive bearing, as we shall see later on, on the whole issue of editorial authority in piecing the pertinent documents together. It is, in sum, this: such authority was exercised, if at all, only with utmost hesitancy and with the barest minimum of substantive change.
+> -The Anchor Bible Commentary on Genesis, E.A. Speiser. (pg xix)
+
+---
+
+> Among the various patriarchal themes in Genesis, there are three in particular that exhibit the same blend of uncommon features: each theme appears to involve some form of deception; each has proved to be an obstinate puzzle to countless generations of students, ancient and modern;
+> 
+> -The Anchor Bible Commentary on Genesis, E.A. Speiser. (pg xxxix-xl)

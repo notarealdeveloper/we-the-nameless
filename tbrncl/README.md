@@ -1,4 +1,6 @@
 
+## Hello World
+
 Hi there,
 
 Welcome to Earth.
@@ -450,3 +452,42 @@ Because it's another human first.
 The first prose our species wrote.
 
 That was something called J.
+
+J's writing is probably the most famous thing ever written.
+
+You've definitely heard of the stories from J.
+
+But you've probably heard of J under a different name.
+
+J is the earliest author of a book called The Bible.
+
+## The Bible
+
+"What's the Bible?", I hear you ask.
+
+Good question!
+
+The Bible is a lot like the Sumerian Dog Joke.
+
+Stick with me on this, I promise it's true.
+
+See, just like the Sumerian Dog Joke:
+
+It's extremely old.
+
+The oldest example in its genre.
+
+Everyone thinks they understand it.
+
+Nobody knows if they understand it.
+
+It's written in a really old language no one uses anymore.
+(Biblical Hebrew is way different than modern Israeli Hebrew.)
+
+And it's not the sort of thing you can just read in English without missing a lot.
+
+TODO: Finish this.
+
+---
+
+Goto: [[setup.ld|Orientation]]

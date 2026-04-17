@@ -1,4 +1,4 @@
-# J Atbash Structure Of Narrative
+J Atbash Structure Of Narrative
 
 Or: JASON
 

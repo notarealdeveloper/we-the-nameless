@@ -31,6 +31,5 @@ The elites don't get the satire.
 And they try to co-opt that story because that's them.
 What they don't realize is the story is satirizing them.
 Same as the Jesus story decaying into Christianity.
-Same as Christianity being co-opted by a Pharisee.
-Everyone get it?
-Everyone?
+Instead of J, we get P.
+Instead of Jesus, we have a Pharisee.

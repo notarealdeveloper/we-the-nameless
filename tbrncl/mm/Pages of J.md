@@ -1,4 +1,4 @@
-In Friedman's The Hidden Book In The Bible, the page numbers where each of the books start is as follow:
+In Friedman's The Hidden Book In The Bible, the page numbers where each of the books start is as follows:
 
 ## First Page Number in Friedman
 Start: 0
