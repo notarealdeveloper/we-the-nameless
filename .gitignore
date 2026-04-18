@@ -1,0 +1,6 @@
+*.aux
+*.epub
+*.log
+*.pdf
+*.synctex.gz
+*.toc
