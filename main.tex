@@ -102,11 +102,14 @@
 % These ONLY change text color.
 % ------------------------------------------------------------
 
-\newcommand{\cK}[1]{{\color{Kcolor}#1}}
-\newcommand{\cR}[1]{{\color{Redcolor}#1}}
-\newcommand{\cB}[1]{{\color{Bluecolor}#1}}
-\newcommand{\cG}[1]{{\color{Greencolor}#1}}
-\newcommand{\cGray}[1]{{\color{Graycolor}#1}}
+\newcommand{\cK}[1]{\textcolor{Kcolor}{#1}}
+\newcommand{\cR}[1]{\textcolor{Redcolor}{#1}}
+\newcommand{\cB}[1]{\textcolor{Bluecolor}{#1}}
+\newcommand{\cG}[1]{\textcolor{Greencolor}{#1}}
+\newcommand{\cGray}[1]{\textcolor{Graycolor}{#1}}
+\newcommand{\pK}[1]{{\color{Kcolor}#1}}
+\newcommand{\pR}[1]{{\color{Redcolor}#1}}
+\newcommand{\pB}[1]{{\color{Bluecolor}#1}}
 
 \let\cBlack\cK
 \let\cRed\cR
@@ -152,7 +155,7 @@
 % Source Hebrew font layer
 % ------------------------------------------------------------
 
-\newcommand{\srcfontJ}[1]{{\hebrewfontJ #1}}
+\newcommand{\srcfontJ}[1]{{\mdseries\hebrewfontJ #1}}
 \newcommand{\srcfontE}[1]{{\hebrewfontE #1}}
 \newcommand{\srcfontP}[1]{{\hebrewfontP #1}}
 \newcommand{\srcfontR}[1]{{\hebrewfontR #1}}
@@ -188,7 +191,7 @@
 % Hebrew helpers
 % ------------------------------------------------------------
 
-\newcommand{\heb}[1]{\texthebrew{#1}}
+\newcommand{\heb}[1]{\begingroup\BeginHebrewSourceContext\texthebrew{#1}\endgroup}
 \newcommand{\hs}[2]{#1{#2}}
 
 % ------------------------------------------------------------
@@ -366,9 +369,9 @@
 % Speaker shortcuts
 % ------------------------------------------------------------
 
-\NewDocumentCommand{\asA}{ O{l} +m }{\as{\cK}[#1]{#2}}
-\NewDocumentCommand{\asB}{ O{l} +m }{\as{\cR}[#1]{#2}}
-\NewDocumentCommand{\asC}{ O{l} +m }{\as{\cB}[#1]{#2}}
+\NewDocumentCommand{\asA}{ O{l} +m }{\as{\pK}[#1]{#2}}
+\NewDocumentCommand{\asB}{ O{l} +m }{\as{\pR}[#1]{#2}}
+\NewDocumentCommand{\asC}{ O{l} +m }{\as{\pB}[#1]{#2}}
 
 \NewDocumentCommand{\asJ}{ O{l} +m }{\as{\sJ}[#1]{#2}}
 \NewDocumentCommand{\asE}{ O{l} +m }{\as{\sE}[#1]{#2}}
