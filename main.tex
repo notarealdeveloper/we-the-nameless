@@ -9,24 +9,79 @@
 \usepackage{titlesec}
 \usepackage{tocloft}
 \usepackage{xcolor}
-\usepackage{polyglossia}
 \usepackage{setspace}
 \usepackage{fancyhdr}
-\usepackage{tabularx}
-\usepackage{array}
 \usepackage{xparse}
 \usepackage{ragged2e}
+\usepackage{luacolor}
+\usepackage{luabidi}
+\usepackage{lua-ul}
+
+% ------------------------------------------------------------
+% Compile with:
+%   lualatex main.tex
+% ------------------------------------------------------------
 
 % ------------------------------------------------------------
 % Languages and fonts
 % ------------------------------------------------------------
 
-\setmainlanguage{english}
-\setotherlanguage{hebrew}
-
 \setmainfont{FreeSerif}
 
-\newfontfamily\hebrewfont[Script=Hebrew,Scale=1.22]{David Libre}
+\newfontfamily\EnglishFont{FreeSerif}
+
+\newfontfamily\HebrewFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+% English per-source fonts
+\newfontfamily\EnglishJFont{FreeSerif}
+\newfontfamily\EnglishEFont{FreeSerif}
+\newfontfamily\EnglishPFont{FreeSerif}
+\newfontfamily\EnglishRFont{FreeSerif}
+\newfontfamily\EnglishRJEFont{FreeSerif}
+\newfontfamily\EnglishRecordsFont{FreeSerif}
+\newfontfamily\EnglishOtherFont{FreeSerif}
+
+% Hebrew per-source fonts
+\newfontfamily\HebrewJFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+\newfontfamily\HebrewEFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+\newfontfamily\HebrewPFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+\newfontfamily\HebrewRFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+\newfontfamily\HebrewRJEFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+\newfontfamily\HebrewRecordsFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+\newfontfamily\HebrewOtherFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+% Compatibility alias for included chapter files that may still use \hebrewfont
+\let\hebrewfont\HebrewFont
 
 % ------------------------------------------------------------
 % Global layout
@@ -39,6 +94,18 @@
 \setlength{\emergencystretch}{2em}
 \onehalfspacing
 \raggedbottom
+
+% ------------------------------------------------------------
+% Side-by-side verse geometry
+% ------------------------------------------------------------
+
+\newlength{\VerseGap}
+\newlength{\VerseRuleWidth}
+\newlength{\VerseColWidth}
+
+\setlength{\VerseGap}{0.75em}
+\setlength{\VerseRuleWidth}{0.2pt}
+\setlength{\VerseColWidth}{\dimexpr(\textwidth-\VerseGap-\VerseRuleWidth-\VerseGap)/2\relax}
 
 % ------------------------------------------------------------
 % Colors
@@ -81,38 +148,80 @@
 \let\cGrey\cGray
 
 % ------------------------------------------------------------
-% Inline source helpers
-% Keep background fills inline-safe.
+% Source-style primitives
+%
+% e* = English-side source styling
+% h* = Hebrew-side source styling
+%
+% The highlight-capable sources use lua-ul's \highLight.
 % ------------------------------------------------------------
 
-\newcommand{\inlinebg}[3]{%
-    \begingroup
-    \setlength{\fboxsep}{1pt}%
-    \colorbox{#1}{\textcolor{#2}{\strut #3}}%
-    \endgroup
-}
+\newcommand{\estyleJ}{\EnglishJFont\color{Jcolor}\mdseries}
+\newcommand{\estyleE}{\EnglishEFont\color{Ecolor}\bfseries}
+\newcommand{\estyleP}{\EnglishPFont\color{Pcolor}\bfseries}
+\newcommand{\estyleR}{\EnglishRFont\color{Rcolor}\mdseries}
+\newcommand{\estyleRJE}{\EnglishRJEFont\color{RJEcolor}\mdseries}
+\newcommand{\estyleRecords}{\EnglishRecordsFont\color{RecordsColor}\itshape}
+\newcommand{\estyleOther}{\EnglishOtherFont\color{OtherColor}\itshape}
+
+\newcommand{\hstyleJ}{\HebrewJFont\color{Jcolor}\mdseries}
+\newcommand{\hstyleE}{\HebrewEFont\color{Ecolor}\bfseries}
+\newcommand{\hstyleP}{\HebrewPFont\color{Pcolor}\bfseries}
+\newcommand{\hstyleR}{\HebrewRFont\color{Rcolor}\mdseries}
+\newcommand{\hstyleRJE}{\HebrewRJEFont\color{RJEcolor}\mdseries}
+\newcommand{\hstyleRecords}{\HebrewRecordsFont\color{RecordsColor}\itshape}
+\newcommand{\hstyleOther}{\HebrewOtherFont\color{OtherColor}\itshape}
+
+% English source commands
+\newcommand{\eJ}[1]{{\estyleJ #1}}
+\newcommand{\eE}[1]{{\estyleE #1}}
+\newcommand{\eP}[1]{{\estyleP #1}}
+\newcommand{\eR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
+\newcommand{\eRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
+\newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
+\newcommand{\eOther}[1]{{\estyleOther #1}}
+
+% Hebrew source commands
+\newcommand{\hJ}[1]{{\hstyleJ #1}}
+\newcommand{\hE}[1]{{\hstyleE #1}}
+\newcommand{\hP}[1]{{\hstyleP #1}}
+\newcommand{\hR}[1]{{\hstyleR\highLight[Rbgcolor]{#1}}}
+\newcommand{\hRJE}[1]{{\hstyleRJE\highLight[RJEbgcolor]{#1}}}
+\newcommand{\hBookOfRecords}[1]{{\hstyleRecords #1}}
+\newcommand{\hOther}[1]{{\hstyleOther #1}}
 
 % ------------------------------------------------------------
-% Source-style commands
-% s = source
+% Compatibility source commands
+%
+% These let old included files keep using \sJ, \sP, \sR, etc.
+%
+% Convention:
+% - On the English side, \sJ etc. will do the English thing.
+% - On the Hebrew side, prefer the explicit \hJ/\hP/\hR family.
+%
+% If old Hebrew files used \sJ inside an outer Hebrew context,
+% these usually still work visually, since the current font can
+% already be Hebrew. But for future correctness, prefer \hJ etc.
 % ------------------------------------------------------------
 
-\newcommand{\sJ}[1]{{\color{Jcolor}\mdseries #1}}
-\newcommand{\sE}[1]{{\color{Ecolor}\bfseries #1}}
-\newcommand{\sP}[1]{{\color{Pcolor}\bfseries #1}}
-\newcommand{\sR}[1]{{\color{Rcolor}#1}}
-\newcommand{\sRJE}[1]{{\color{RJEcolor}#1}}
-\newcommand{\sBookOfRecords}[1]{{\color{RecordsColor}\itshape #1}}
-\newcommand{\sOther}[1]{{\color{OtherColor}\itshape #1}}
+\newcommand{\sJ}[1]{{\estyleJ #1}}
+\newcommand{\sE}[1]{{\estyleE #1}}
+\newcommand{\sP}[1]{{\estyleP #1}}
+\newcommand{\sR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
+\newcommand{\sRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
+\newcommand{\sBookOfRecords}[1]{{\estyleRecords #1}}
+\newcommand{\sOther}[1]{{\estyleOther #1}}
 
 % ------------------------------------------------------------
 % Hebrew helpers
-%
-% Keep one outer \heb{...} around the whole Hebrew line whenever
-% possible. Inside it, use \sJ{...}, \cB{...}, etc.
 % ------------------------------------------------------------
 
-\newcommand{\heb}[1]{\texthebrew{#1}}
+\newcommand{\heb}[1]{%
+    \begin{RTL}
+    {\HebrewFont #1}
+    \end{RTL}
+}
+
 \newcommand{\hs}[2]{#1{#2}}
 
 % ------------------------------------------------------------
@@ -121,25 +230,25 @@
 
 \newcommand{\SourceLegend}{%
     {\footnotesize
-    \sJ{J}\quad
-    \sE{E}\quad
-    \sP{P}\quad
-    \inlinebg{Rbgcolor}{Rcolor}{R}\quad
-    \inlinebg{RJEbgcolor}{RJEcolor}{RJE}\quad
-    \sBookOfRecords{Records}\quad
-    \sOther{Other}%
+    \eJ{J}\quad
+    \eE{E}\quad
+    \eP{P}\quad
+    \eR{R}\quad
+    \eRJE{RJE}\quad
+    \eBookOfRecords{Records}\quad
+    \eOther{Other}%
     }%
 }
 
 \DeclareRobustCommand{\SourceLegendHeader}{%
     {\scriptsize
-    \sJ{J}\quad
-    \sE{E}\quad
-    \sP{P}\quad
-    \inlinebg{Rbgcolor}{Rcolor}{R}\quad
-    \inlinebg{RJEbgcolor}{RJEcolor}{RJE}\quad
-    \sBookOfRecords{Rec}\quad
-    \sOther{Oth}%
+    \eJ{J}\quad
+    \eE{E}\quad
+    \eP{P}\quad
+    \eR{R}\quad
+    \eRJE{RJE}\quad
+    \eBookOfRecords{Rec}\quad
+    \eOther{Oth}%
     }%
 }
 
@@ -211,18 +320,34 @@
 \def\englishsize{\normalsize}
 \def\hebrewsize{\normalsize}
 
-\newcolumntype{L}{>{\RaggedRight\arraybackslash\hspace{0pt}}p{0.48\linewidth}}
-\newcolumntype{R}{>{\RaggedLeft\arraybackslash\hspace{0pt}}p{0.48\linewidth}}
-
 \newcommand{\VerseEnglish}[1]{%
-    \englishsize
-    \strut #1%
+    \begin{minipage}[t]{\VerseColWidth}
+        \EnglishFont
+        \englishsize
+        \raggedright
+        #1\par
+    \end{minipage}%
 }
 
 \newcommand{\VerseHebrew}[1]{%
-    \hebrewfont
-    \hebrewsize
-    \strut #1%
+    \begin{minipage}[t]{\VerseColWidth}
+        \begin{RTL}
+            \HebrewFont
+            \hebrewsize
+            \raggedleft
+            #1\par
+        \end{RTL}
+    \end{minipage}%
+}
+
+\newcommand{\VerseColumns}[2]{%
+    \noindent
+    \VerseEnglish{#1}%
+    \hspace{\VerseGap}%
+    \vrule width \VerseRuleWidth%
+    \hspace{\VerseGap}%
+    \VerseHebrew{#2}%
+    \par
 }
 
 \newcommand{\Verse}[4]{%
@@ -237,16 +362,11 @@
     \begingroup
     \hbadness=10000
     \hfuzz=2em
-    \noindent
-    \begin{tabular}{@{}L!{\vrule width 0.2pt}R@{}}
-        \VerseEnglish{#3} &
-        \VerseHebrew{#2}
-    \end{tabular}%
-    \par
+    \VerseColumns{#3}{#2}%
     \endgroup
-    \vspace{0.3em}%
+    \vspace{0.6em}%
     #4\par
-    \vspace{0.3em}%
+    \vspace{0.8em}%
 }
 
 % ------------------------------------------------------------
@@ -254,20 +374,11 @@
 %
 % Generic form:
 %   \as{<style macro>}[l|c|r]{text}
-%
-% Examples:
-%   \as{\cK}{Hello}
-%   \as{\cR}[c]{Centered line}
-%   \as{\sJ}[r]{J speaks}
 % ------------------------------------------------------------
 
 \def\commentarysize{\normalsize}
 
-\def\as@align@l{\raggedright}
-\def\as@align@c{\centering}
-\def\as@align@r{\raggedleft}
-
-\RenewDocumentCommand{\as}{ m O{l} +m }{%
+\NewDocumentCommand{\as}{ m O{l} +m }{%
     \par
     \begingroup
     \parindent=0pt
@@ -289,37 +400,25 @@
     #1{#3}\par
     \endgroup
 }
+
 % ------------------------------------------------------------
 % Speaker shortcuts
-%
-% A / B / C are arbitrary speakers:
-%   A = black
-%   B = red
-%   C = blue
-%
-% Source-author shortcuts are also available:
-%   J, E, P, R, RJE, Records, Other
 % ------------------------------------------------------------
 
 \NewDocumentCommand{\asA}{ O{l} +m }{\as{\cK}[#1]{#2}}
 \NewDocumentCommand{\asB}{ O{l} +m }{\as{\cR}[#1]{#2}}
 \NewDocumentCommand{\asC}{ O{l} +m }{\as{\cB}[#1]{#2}}
 
-\NewDocumentCommand{\asJ}{ O{l} +m }{\as{\sJ}[#1]{#2}}
-\NewDocumentCommand{\asE}{ O{l} +m }{\as{\sE}[#1]{#2}}
-\NewDocumentCommand{\asP}{ O{l} +m }{\as{\sP}[#1]{#2}}
-\NewDocumentCommand{\asR}{ O{l} +m }{\as{\sR}[#1]{#2}}
-\NewDocumentCommand{\asRJE}{ O{l} +m }{\as{\sRJE}[#1]{#2}}
-\NewDocumentCommand{\asRecords}{ O{l} +m }{\as{\sBookOfRecords}[#1]{#2}}
-\NewDocumentCommand{\asOther}{ O{l} +m }{\as{\sOther}[#1]{#2}}
+\NewDocumentCommand{\asJ}{ O{l} +m }{\as{\eJ}[#1]{#2}}
+\NewDocumentCommand{\asE}{ O{l} +m }{\as{\eE}[#1]{#2}}
+\NewDocumentCommand{\asP}{ O{l} +m }{\as{\eP}[#1]{#2}}
+\NewDocumentCommand{\asR}{ O{l} +m }{\as{\eR}[#1]{#2}}
+\NewDocumentCommand{\asRJE}{ O{l} +m }{\as{\eRJE}[#1]{#2}}
+\NewDocumentCommand{\asRecords}{ O{l} +m }{\as{\eBookOfRecords}[#1]{#2}}
+\NewDocumentCommand{\asOther}{ O{l} +m }{\as{\eOther}[#1]{#2}}
 
 % ------------------------------------------------------------
 % Alignment sugar
-%
-% Examples:
-%   \asAl{...}   \asAc{...}   \asAr{...}
-%   \asBl{...}   \asBc{...}   \asBr{...}
-%   \asJl{...}   \asJc{...}   \asJr{...}
 % ------------------------------------------------------------
 
 \newcommand{\DeclareSpeakerTriplet}[1]{%
@@ -354,6 +453,6 @@
 \Book{Genesis}
 \include{genesis/1}
 \include{genesis/2}
-\include{genesis/3}
+%\include{genesis/3}
 
 \end{document}
