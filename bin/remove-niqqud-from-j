@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import re
+import sys
+import unicodedata
+from pathlib import Path
+
+
+HEBREW_COMBINING_MARKS = {
+    c for c in map(chr, range(0x0591, 0x05C8))
+    if unicodedata.category(c).startswith("M")
+}
+
+
+def strip_niqqud(s: str) -> str:
+    return "".join(ch for ch in s if ch not in HEBREW_COMBINING_MARKS)
+
+
+def rewrite_hj_blocks(text: str) -> str:
+    out: list[str] = []
+    i = 0
+    n = len(text)
+
+    while i < n:
+        j = text.find(r"\hJ{", i)
+        if j == -1:
+            out.append(text[i:])
+            break
+
+        out.append(text[i:j])
+
+        k = j + len(r"\hJ{")
+        depth = 1
+        block_chars: list[str] = []
+
+        while k < n and depth > 0:
+            ch = text[k]
+
+            if ch == "\\":
+                if k + 1 < n:
+                    block_chars.append(ch)
+                    block_chars.append(text[k + 1])
+                    k += 2
+                    continue
+
+            if ch == "{":
+                depth += 1
+                block_chars.append(ch)
+            elif ch == "}":
+                depth -= 1
+                if depth > 0:
+                    block_chars.append(ch)
+            else:
+                block_chars.append(ch)
+
+            k += 1
+
+        if depth != 0:
+            raise ValueError(r"Unbalanced braces inside \hJ{...} block")
+
+        inner = "".join(block_chars)
+        inner = strip_niqqud(inner)
+        out.append(r"\hJ{" + inner + "}")
+
+        i = k
+
+    return "".join(out)
+
+
+def main() -> int:
+    if len(sys.argv) != 2:
+        print(f"usage: {Path(sys.argv[0]).name} FILE.tex", file=sys.stderr)
+        return 2
+
+    path = Path(sys.argv[1])
+    old = path.read_text(encoding="utf-8")
+    new = rewrite_hj_blocks(old)
+
+    backup = path.with_suffix(path.suffix + ".bak")
+    backup.write_text(old, encoding="utf-8")
+    path.write_text(new, encoding="utf-8")
+
+    print(f"rewrote {path}")
+    print(f"backup  {backup}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

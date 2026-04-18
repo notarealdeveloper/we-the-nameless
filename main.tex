@@ -26,14 +26,11 @@
 % Languages and fonts
 % ------------------------------------------------------------
 
+\newcommand{\HebrewFontPath}{fonts/}
+
 \setmainfont{FreeSerif}
 
 \newfontfamily\EnglishFont{FreeSerif}
-
-\newfontfamily\HebrewFont[
-    Script=Hebrew,
-    Scale=1.22
-]{David Libre}
 
 % English per-source fonts
 \newfontfamily\EnglishJFont{FreeSerif}
@@ -44,41 +41,53 @@
 \newfontfamily\EnglishRecordsFont{FreeSerif}
 \newfontfamily\EnglishOtherFont{FreeSerif}
 
-% Hebrew per-source fonts
+% Base Hebrew
+\newfontfamily\HebrewFont[
+    Path=\HebrewFontPath,
+    Script=Hebrew,
+    Scale=1.22
+]{hebrew-david.ttf}
+
+% J = simple and readable
 \newfontfamily\HebrewJFont[
+    Path=\HebrewFontPath,
     Script=Hebrew,
-    Scale=1.22
-]{David Libre}
+    Scale=1.42
+]{hebrew-david.ttf}
+%]{hebrew-paleo.ttf}
 
-\newfontfamily\HebrewEFont[
-    Script=Hebrew,
-    Scale=1.22
-]{David Libre}
-
+% P = Ezra (fancier)
 \newfontfamily\HebrewPFont[
+    Path=\HebrewFontPath,
     Script=Hebrew,
-    Scale=1.22
-]{David Libre}
+    Scale=1.23
+]{hebrew-ezra.ttf}
 
+% R = Ezra + highlight
 \newfontfamily\HebrewRFont[
+    Path=\HebrewFontPath,
     Script=Hebrew,
-    Scale=1.22
-]{David Libre}
+    Scale=1.10
+]{hebrew-ezra.ttf}
 
+% Optional: keep consistency
 \newfontfamily\HebrewRJEFont[
+    Path=\HebrewFontPath,
     Script=Hebrew,
-    Scale=1.22
-]{David Libre}
+    Scale=1.10
+]{hebrew-ezra.ttf}
 
 \newfontfamily\HebrewRecordsFont[
+    Path=\HebrewFontPath,
     Script=Hebrew,
-    Scale=1.22
-]{David Libre}
+    Scale=1.10
+]{hebrew-ezra.ttf}
 
 \newfontfamily\HebrewOtherFont[
+    Path=\HebrewFontPath,
     Script=Hebrew,
-    Scale=1.22
-]{David Libre}
+    Scale=1.10
+]{hebrew-other.ttf}
 
 % Compatibility alias for included chapter files that may still use \hebrewfont
 \let\hebrewfont\HebrewFont
@@ -166,7 +175,8 @@
 
 \newcommand{\hstyleJ}{\HebrewJFont\color{Jcolor}\mdseries}
 \newcommand{\hstyleE}{\HebrewEFont\color{Ecolor}\bfseries}
-\newcommand{\hstyleP}{\HebrewPFont\color{Pcolor}\bfseries}
+%\newcommand{\hstyleP}{\HebrewPFont\color{Pcolor}\bfseries}
+\newcommand{\hstyleP}{\HebrewPFont\color{Pcolor}\mdseries}
 \newcommand{\hstyleR}{\HebrewRFont\color{Rcolor}\mdseries}
 \newcommand{\hstyleRJE}{\HebrewRJEFont\color{RJEcolor}\mdseries}
 \newcommand{\hstyleRecords}{\HebrewRecordsFont\color{RecordsColor}\itshape}
@@ -359,7 +369,7 @@
     \hrule
     \vspace{0.25em}%
     {\centering \large \CurrentBook\ \CurrentChapter:#1\par}%
-    \vspace{0.4em}%
+    \vspace{0.8em}%
     \hrule
     \vspace{0.3em}%
     \begingroup
@@ -427,7 +437,9 @@
 \newcommand{\DeclareSpeakerTriplet}[1]{%
     \expandafter\newcommand\csname as#1l\endcsname[1]{\csname as#1\endcsname[l]{##1}}%
     \expandafter\newcommand\csname as#1c\endcsname[1]{\csname as#1\endcsname[c]{##1}}%
-    \expandafter\newcommand\csname as#1r\endcsname[1]{\csname as#1\endcsname[r]{##1}}%
+    \expandafter\newcommand\csname as#1r\endcsname[1]{%
+        \csname as#1\endcsname[l]{\makebox[\linewidth][r]{##1}}%
+    }%
 }
 
 \DeclareSpeakerTriplet{A}
@@ -439,6 +451,7 @@
 \DeclareSpeakerTriplet{P}
 \DeclareSpeakerTriplet{R}
 \DeclareSpeakerTriplet{RJE}
+
 
 % ------------------------------------------------------------
 % Document
