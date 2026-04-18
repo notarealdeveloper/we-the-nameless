@@ -26,41 +26,7 @@
 
 \setmainfont{FreeSerif}
 
-\newfontfamily\hebrewfontJ[
-    Path = ./fonts/,
-    Extension = .ttf,
-    Scale=1.22
-]{hebrew-ezra}
-
-\newfontfamily\hebrewfontE[
-    Path = ./fonts/,
-    Extension = .ttf,
-    Scale=1.22
-]{hebrew-ezra}
-
-\newfontfamily\hebrewfontP[
-    Path = ./fonts/,
-    Extension = .ttf,
-    Scale=1.22
-]{hebrew-ezra}
-
-\newfontfamily\hebrewfontR[
-    Path = ./fonts/,
-    Extension = .ttf,
-    Scale=1.22
-]{hebrew-ezra}
-
-\newfontfamily\hebrewfontOther[
-    Path = ./fonts/,
-    Extension = .ttf,
-    Scale=1.22
-]{hebrew-ezra}
-
-\newfontfamily\hebrewfontProtoSinaitic[
-    Path = ./fonts/,
-    Extension = .ttf,
-    Scale=1.22
-]{hebrew-proto-sinaitic}
+\newfontfamily\hebrewfont[Script=Hebrew,Scale=1.22]{David Libre}
 
 % ------------------------------------------------------------
 % Global layout
@@ -102,14 +68,11 @@
 % These ONLY change text color.
 % ------------------------------------------------------------
 
-\newcommand{\cK}[1]{\textcolor{Kcolor}{#1}}
-\newcommand{\cR}[1]{\textcolor{Redcolor}{#1}}
-\newcommand{\cB}[1]{\textcolor{Bluecolor}{#1}}
-\newcommand{\cG}[1]{\textcolor{Greencolor}{#1}}
-\newcommand{\cGray}[1]{\textcolor{Graycolor}{#1}}
-\newcommand{\pK}[1]{{\color{Kcolor}#1}}
-\newcommand{\pR}[1]{{\color{Redcolor}#1}}
-\newcommand{\pB}[1]{{\color{Bluecolor}#1}}
+\newcommand{\cK}[1]{{\color{Kcolor}#1}}
+\newcommand{\cR}[1]{{\color{Redcolor}#1}}
+\newcommand{\cB}[1]{{\color{Bluecolor}#1}}
+\newcommand{\cG}[1]{{\color{Greencolor}#1}}
+\newcommand{\cGray}[1]{{\color{Graycolor}#1}}
 
 \let\cBlack\cK
 \let\cRed\cR
@@ -130,68 +93,26 @@
 }
 
 % ------------------------------------------------------------
-% Source context
+% Source-style commands
+% s = source
 % ------------------------------------------------------------
 
-\newif\ifinhebrewsourcecontext
-\inhebrewsourcecontextfalse
-
-\newcommand{\BeginHebrewSourceContext}{\inhebrewsourcecontexttrue}
-\newcommand{\BeginEnglishSourceContext}{\inhebrewsourcecontextfalse}
-
-% ------------------------------------------------------------
-% Source color layer
-% ------------------------------------------------------------
-
-\newcommand{\srccolorJ}[1]{{\color{Jcolor}#1}}
-\newcommand{\srccolorE}[1]{{\color{Ecolor}\bfseries #1}}
-\newcommand{\srccolorP}[1]{{\color{Pcolor}\bfseries #1}}
-\newcommand{\srccolorR}[1]{{\inlinebg{Rbgcolor}{Rcolor}{#1}}}
-\newcommand{\srccolorRJE}[1]{{\inlinebg{RJEbgcolor}{RJEcolor}{#1}}}
-\newcommand{\srccolorBookOfRecords}[1]{{\color{RecordsColor}#1}}
-\newcommand{\srccolorOther}[1]{{\color{OtherColor}#1}}
-
-% ------------------------------------------------------------
-% Source Hebrew font layer
-% ------------------------------------------------------------
-
-\newcommand{\srcfontJ}[1]{{\mdseries\hebrewfontJ #1}}
-\newcommand{\srcfontE}[1]{{\hebrewfontE #1}}
-\newcommand{\srcfontP}[1]{{\hebrewfontP #1}}
-\newcommand{\srcfontR}[1]{{\hebrewfontR #1}}
-\newcommand{\srcfontRJE}[1]{{\hebrewfontE #1}}
-\newcommand{\srcfontBookOfRecords}[1]{{\hebrewfontOther #1}}
-\newcommand{\srcfontOther}[1]{{\hebrewfontOther #1}}
-
-% ------------------------------------------------------------
-% Unified source dispatcher
-% ------------------------------------------------------------
-
-\newcommand{\src}[2]{%
-    \ifinhebrewsourcecontext
-        \csname srcfont#1\endcsname{\csname srccolor#1\endcsname{#2}}%
-    \else
-        \csname srccolor#1\endcsname{#2}%
-    \fi
-}
-
-% ------------------------------------------------------------
-% Source aliases
-% ------------------------------------------------------------
-
-\newcommand{\sJ}[1]{\src{J}{#1}}
-\newcommand{\sE}[1]{\src{E}{#1}}
-\newcommand{\sP}[1]{\src{P}{#1}}
-\newcommand{\sR}[1]{\src{R}{#1}}
-\newcommand{\sRJE}[1]{\src{RJE}{#1}}
-\newcommand{\sRecords}[1]{\src{BookOfRecords}{#1}}
-\newcommand{\sOther}[1]{\src{Other}{#1}}
+\newcommand{\sJ}[1]{{\color{Jcolor}\mdseries #1}}
+\newcommand{\sE}[1]{{\color{Ecolor}\bfseries #1}}
+\newcommand{\sP}[1]{{\color{Pcolor}\bfseries #1}}
+\newcommand{\sR}[1]{{\inlinebg{Rbgcolor}{Rcolor}{#1}}}
+\newcommand{\sRJE}[1]{{\inlinebg{RJEbgcolor}{RJEcolor}{#1}}}
+\newcommand{\sBookOfRecords}[1]{{\color{RecordsColor}\itshape #1}}
+\newcommand{\sOther}[1]{{\color{OtherColor}\itshape #1}}
 
 % ------------------------------------------------------------
 % Hebrew helpers
+%
+% Keep one outer \heb{...} around the whole Hebrew line whenever
+% possible. Inside it, use \sJ{...}, \cB{...}, etc.
 % ------------------------------------------------------------
 
-\newcommand{\heb}[1]{\begingroup\BeginHebrewSourceContext\texthebrew{#1}\endgroup}
+\newcommand{\heb}[1]{\texthebrew{#1}}
 \newcommand{\hs}[2]{#1{#2}}
 
 % ------------------------------------------------------------
@@ -200,25 +121,25 @@
 
 \newcommand{\SourceLegend}{%
     {\footnotesize
-    \src{J}{J}\quad
-    \src{E}{E}\quad
-    \src{P}{P}\quad
-    \src{R}{R}\quad
-    \src{RJE}{RJE}\quad
-    \src{BookOfRecords}{Records}\quad
-    \src{Other}{Other}%
+    \sJ{J}\quad
+    \sE{E}\quad
+    \sP{P}\quad
+    \inlinebg{Rbgcolor}{Rcolor}{R}\quad
+    \inlinebg{RJEbgcolor}{RJEcolor}{RJE}\quad
+    \sBookOfRecords{Records}\quad
+    \sOther{Other}%
     }%
 }
 
 \DeclareRobustCommand{\SourceLegendHeader}{%
     {\scriptsize
-    \src{J}{J}\quad
-    \src{E}{E}\quad
-    \src{P}{P}\quad
-    \src{R}{R}\quad
-    \src{RJE}{RJE}\quad
-    \src{BookOfRecords}{Rec}\quad
-    \src{Other}{Oth}%
+    \sJ{J}\quad
+    \sE{E}\quad
+    \sP{P}\quad
+    \inlinebg{Rbgcolor}{Rcolor}{R}\quad
+    \inlinebg{RJEbgcolor}{RJEcolor}{RJE}\quad
+    \sBookOfRecords{Rec}\quad
+    \sOther{Oth}%
     }%
 }
 
@@ -291,7 +212,7 @@
 \def\hebrewsize{\normalsize}
 
 \newcolumntype{L}{>{\RaggedRight\arraybackslash\hspace{0pt}}p{0.48\linewidth}}
-\newcolumntype{R}{>{\beginR\RaggedLeft\arraybackslash\hspace{0pt}}p{0.48\linewidth}<{\endR}}
+\newcolumntype{R}{>{\RaggedLeft\arraybackslash\hspace{0pt}}p{0.48\linewidth}}
 
 \newcommand{\VerseEnglish}[1]{%
     \englishsize
@@ -299,12 +220,9 @@
 }
 
 \newcommand{\VerseHebrew}[1]{%
+    \hebrewfont
     \hebrewsize
-    \strut
-    \begingroup
-    \BeginHebrewSourceContext
-    \heb{#1}%
-    \endgroup
+    \strut #1%
 }
 
 \newcommand{\Verse}[4]{%
@@ -333,6 +251,14 @@
 
 % ------------------------------------------------------------
 % Commentary / utterance layer
+%
+% Generic form:
+%   \as{<style macro>}[l|c|r]{text}
+%
+% Examples:
+%   \as{\cK}{Hello}
+%   \as{\cR}[c]{Centered line}
+%   \as{\sJ}[r]{J speaks}
 % ------------------------------------------------------------
 
 \def\commentarysize{\normalsize}
@@ -344,7 +270,6 @@
 \RenewDocumentCommand{\as}{ m O{l} +m }{%
     \par
     \begingroup
-    \BeginEnglishSourceContext
     \parindent=0pt
     \parskip=0pt
     \commentarysize
@@ -364,25 +289,37 @@
     #1{#3}\par
     \endgroup
 }
-
 % ------------------------------------------------------------
 % Speaker shortcuts
+%
+% A / B / C are arbitrary speakers:
+%   A = black
+%   B = red
+%   C = blue
+%
+% Source-author shortcuts are also available:
+%   J, E, P, R, RJE, Records, Other
 % ------------------------------------------------------------
 
-\NewDocumentCommand{\asA}{ O{l} +m }{\as{\pK}[#1]{#2}}
-\NewDocumentCommand{\asB}{ O{l} +m }{\as{\pR}[#1]{#2}}
-\NewDocumentCommand{\asC}{ O{l} +m }{\as{\pB}[#1]{#2}}
+\NewDocumentCommand{\asA}{ O{l} +m }{\as{\cK}[#1]{#2}}
+\NewDocumentCommand{\asB}{ O{l} +m }{\as{\cR}[#1]{#2}}
+\NewDocumentCommand{\asC}{ O{l} +m }{\as{\cB}[#1]{#2}}
 
 \NewDocumentCommand{\asJ}{ O{l} +m }{\as{\sJ}[#1]{#2}}
 \NewDocumentCommand{\asE}{ O{l} +m }{\as{\sE}[#1]{#2}}
 \NewDocumentCommand{\asP}{ O{l} +m }{\as{\sP}[#1]{#2}}
 \NewDocumentCommand{\asR}{ O{l} +m }{\as{\sR}[#1]{#2}}
 \NewDocumentCommand{\asRJE}{ O{l} +m }{\as{\sRJE}[#1]{#2}}
-\NewDocumentCommand{\asRecords}{ O{l} +m }{\as{\sRecords}[#1]{#2}}
+\NewDocumentCommand{\asRecords}{ O{l} +m }{\as{\sBookOfRecords}[#1]{#2}}
 \NewDocumentCommand{\asOther}{ O{l} +m }{\as{\sOther}[#1]{#2}}
 
 % ------------------------------------------------------------
 % Alignment sugar
+%
+% Examples:
+%   \asAl{...}   \asAc{...}   \asAr{...}
+%   \asBl{...}   \asBc{...}   \asBr{...}
+%   \asJl{...}   \asJc{...}   \asJr{...}
 % ------------------------------------------------------------
 
 \newcommand{\DeclareSpeakerTriplet}[1]{%
