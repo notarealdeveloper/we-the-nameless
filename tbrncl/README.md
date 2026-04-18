@@ -1,4 +1,16 @@
 
+> _People have noted that there is more humor in the Old Testament than in the New Testament._
+> 
+> _The New Testament comes across as a much more serious book, in many ways, than the Old._
+> 
+> _There are fewer scenes that are played for comedy, let us say, in the New Testament than in the Old._
+> 
+> _And it is precisely things that are taken seriously that we are more likely to joke about._
+> 
+> -Richard Elliot Friedman, The Hebrew Bible, Lecture 16, The Kingdom of Israel
+
+---
+
 ## Hello World
 
 Hi there,
