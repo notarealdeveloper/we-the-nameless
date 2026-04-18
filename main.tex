@@ -330,14 +330,17 @@
 }
 
 \newcommand{\VerseHebrew}[1]{%
-    \begin{minipage}[t]{\VerseColWidth}
-        \begin{RTL}
+    \hbox to \VerseColWidth{%
+        \hss
+        \vtop{%
+            \hsize=\VerseColWidth
+            \begin{RTL}
             \HebrewFont
             \hebrewsize
-            \raggedleft
             #1\par
-        \end{RTL}
-    \end{minipage}%
+            \end{RTL}
+        }%
+    }%
 }
 
 \newcommand{\VerseColumns}[2]{%
@@ -453,6 +456,6 @@
 \Book{Genesis}
 \include{genesis/1}
 \include{genesis/2}
-%\include{genesis/3}
+\include{genesis/3}
 
 \end{document}
