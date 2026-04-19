@@ -1,16 +1,4 @@
 
-> _People have noted that there is more humor in the Old Testament than in the New Testament._
-> 
-> _The New Testament comes across as a much more serious book, in many ways, than the Old._
-> 
-> _There are fewer scenes that are played for comedy, let us say, in the New Testament than in the Old._
-> 
-> _And it is precisely things that are taken seriously that we are more likely to joke about._
-> 
-> -Richard Elliot Friedman, The Hebrew Bible, Lecture 16, The Kingdom of Israel
-
----
-
 ## Hello World
 
 Hi there,
@@ -459,19 +447,29 @@ Now, I should explain the gift.
 
 Because it's another human first.
 
-![[prose.jpg]]
+After the invention of writing, we humans spent a couple thousand years writing poetry (and accounting) before anyone invented prose.
 
-The first prose our species wrote.
+---
+
+> prose. (noun).
+> 1. written language in its ordinary form, without metrical structure.
+
+---
+
+In other words, prose is most of what we call "writing" today.
+
+And the first prose our species wrote:
 
 That was something called J.
 
-J's writing is probably the most famous thing ever written.
+J is by far the most famous writer of all time.
+
+We don't know his (or probably her) name.
 
 You've definitely heard of the stories from J.
 
-But you've probably heard of J under a different name.
+J is the first and earliest author of something called the Bible.
 
-J is the earliest author of a book called The Bible.
 
 ## The Bible
 
@@ -481,25 +479,202 @@ Good question!
 
 The Bible is a lot like the Sumerian Dog Joke.
 
-Stick with me on this, I promise it's true.
+Stick with me on this.
+
+I know that sounds weird but I promise it's true.
 
 See, just like the Sumerian Dog Joke:
 
-It's extremely old.
+- It's the oldest thing in its genre.
 
-The oldest example in its genre.
+- It's totally incomprehensible on the surface.
 
-Everyone thinks they understand it.
+- People love making up explanations of what it's about.
 
-Nobody knows if they understand it.
+- Most of those explanations aren't particularly satisfying.
 
-It's written in a really old language no one uses anymore.
-(Biblical Hebrew is way different than modern Israeli Hebrew.)
+- Because most of us, believers or unbelievers, make the same mistake.
 
-And it's not the sort of thing you can just read in English without missing a lot.
+- The mistake is to try to understand it by just reading it.
 
-TODO: Finish this.
+- We can't understand a sumerian dog joke (or a bible) just by reading it.
+
+- To begin to understand these things, first we need some background information.
+
+- The background information isn't mysterious or complicated.
+
+- But there's a lot of it.
+
+- Like, an incredible amount.
+
+- Cuz obviously.
+
+- That's how jokes work.
+
+Reading the bible, one often feels as if every other sentence is a sumerian dog joke.
+
+Here's Genesis 10:9-10, slightly paraphrased.
+
+> 9. Nimrod was a mighty hunter before the Lord; therefore it is said, "Like Nimrod the mighty hunter before the Lord."
+> 10. And the beginning of his kingdom was Babel, Erech, and Accad, in the land of Shinar.
+
+Most modern readers would giggle, because to us, "nimrod" means "idiot."
+
+And we may have heard of Babel from the tower story.
+
+But the words Erech, Accad, and Shinar would be mostly meaningless to most modern readers.
+
+Now a bit of (non-mysterious, non-controversial) background.
+
+The words Erech, Accad, and Shinar are slightly different spellings of:
+- Uruk
+- Akkad
+- Sumer
+
+Which are three of the (real, non-fiction) places where civilization began.
+
+![[uruk-akkad-sumer.jpg]]
+
+That's the background for Genesis 10:10.
+
+Here's the background for 10:9.
+
+![[nimrod-bugs-bunny-elmer-fudd.png]]
+
+We think "Nimrod" means "idiot" because we got Bugs Bunny'ed.
+
+He was mocking Elmer Fudd with a bible reference, calling him "mighty hunter."
+
+That's just two sentences in Genesis.
+
+The whole book is like that.
+
+A little background information goes a long way.
+
+---
+## Super Advanced Kindergarten
+
+We can call this background information "super advanced kindgergarten."
+
+Like kindergarten, it's mostly information that any child knows.
+
+In English, Super Advanced Kindergarten doesn't feel "super advanced" at all.
+
+Because we speak English.
+
+In English, Super Advanced Kindergarten is all the facts like:
+
+- "red" sounds the same as "read" (in the past tense.)
+- "read" (past tense) sounds different from "read" (present tense.)
+- "bread" sounds like "b" plus the past tense version of "read".
+- "b" sounds like "buh", but that's not the letter's name.
+- "b"s name sounds like the little black & yellow insects that sting.
+- "b"s name sounds like the name of those insects, but it doesn't sound like them.
+- ...how the insects themselves sound is closer to "z".
+
+And _hundreds of thousands_ of other little things like that.
+
+The bzzz example wasn't random.
+
+There's one of those in the bible too.
 
 ---
 
-Goto: [[setup.ld|Orientation]]
+> It says _Baal-zebub_. Now those are written with "b"s in English but you pronounce it with "v"s. 
+>
+> Now there is no such god as _Baal-zevuv_ in the ancient Near East.
+>
+> There is a lord who's called _Baal-zevul_, which means a flood of waters. So he's called the "lord of the flood."
+> 
+> The bible is apparently making fun of him, again there is humor in the text.
+> 
+> _Zevuv_ is Hebrew for a fly.
+> 
+> That's true in modern Hebrew too. It's an onomatopoea, you know the word for a fly is the buzzing sound "zzzvvuuvv." That's the sound flies make.
+> 
+> So instead of "lord of the flood," he's the lord of a little fly.
+> 
+> Now _Baal-zevuv_ becomes what's pronounced now in English as _Beelzebub_, which in later later later Christian tradition comes to be a name of the devil.
+> 
+> So when you hear "Beelzebub," that is:
+> - an English mispronunciation of
+> - a Latin mispronunciation of
+> - a Greek mispronunciation of
+> - a Hebrew _deliberate mispronunciation_ of
+> - the Canaanite god _Zevul_
+>
+>
+> People have noted that there's more humor in the Old Testament than in the New Testament. The New Testament comes across as a much more serious book, in many ways, than the Old. There are fewer scenes that are played for comedy, let us say, in the New Testament than in the Old. And it is precisely things that are taken seriously that we are more likely to joke about.
+>
+>
+> _From: Richard Elliot Friedman, The Hebrew Bible, Lecture 16, The Kingdom of Israel._
+
+---
+
+Because of things like this, over time, I've learned to really love the bible.
+
+But I love it in a way that's hard to explain or share.
+
+Usually when I try to talk about the bible with anyone, neither believers nor unbelievers have any idea what I'm talking about.
+
+There is, however, a group who understands.
+
+The group who gets it is a small group of nerds known as "bible scholars."
+
+One of those is Richard Elliot Friedman, who we just quoted up above.
+
+Friedman has spent his entire career studying the bible and writing books about it.
+
+Three of them are:
+
+1. _Commentary on the Torah:_ a very good translation of the first five books of the hebrew bible with extensive footnotes.
+
+2. _The Bible with Sources Revealed:_ a color coded introduction to the Documentary Hypothesis, with line-by-line information on the authorship of each verse showing the extremely different personalities of the authors (for example, J and P, two of the authors of Genesis, are perhaps more different than any authors that have ever existed).
+
+3. _The Hidden Book in the Bible:_ the entire Book of J, presented consecutively, with commentary before and after.
+
+None of these books by itself needs to be read cover to cover.
+
+But no single one of them by itself is enough to express what the bible "is."
+
+A detailed footnote-heavy book like _Commentary on the Torah_ leaves the reader baffled by not presenting any information about the authors, or how the first five books of the bible frequently alternate between authors from one sentence to the next, or even within a single sentence.
+
+A visual introduction to the Documentary Hypothesis like _The Bible with Sources Revealed_ leaves the reader with only minimal footnotes, and would thus fail to offer the simple background information we needed for Genesis 10:9-10 above.
+
+And an entire book dedicated just to the oldest source of the Bible 一 the anonymous author known among bible scholars as J 一 like Friedman's _The Hidden Book in the Bible_ fails to represent what happened to the first and oldest bible (i.e., J) in the centuries _after_ it was written.
+
+Because it was the later authors 一 ones who added (and removed) parts of J 一 that gave us the unusual book we call the bible today.
+
+I've probably heard hundreds of hours of debates between believers and unbelievers.
+
+I've never heard the believers make the case that large parts of Genesis are actually _non-fiction history packaged as narrative_, and that's demonstrably true even if you don't believe in any god.
+
+I've never heard a single person on either side bring up J, E, P, R, and D.
+
+Every believer (and unbeliever) deserves to know about J, E, P, R, and D.
+
+Those letters 一 and the several hundred years of research they represent 一 are the key that unlocks this strange ancient book.
+
+And unlocks it in a way that's impossible to appreciate just from reading it.
+
+The books mentioned above are scholarly, rigorous, polite, and well-written.
+
+This book is none of those things.
+
+However, this book _will_ show you what bible actually _is._
+
+---
+
+The manner in which We does that is best not explained.
+
+---
+
+So, on that note, where would you like to go?
+
+---
+
+## ⬆️ [[setup.ld|Go Up]]
+
+
+## ⬇️ [[We|Go Down]]
+
