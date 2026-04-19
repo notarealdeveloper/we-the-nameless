@@ -90,7 +90,7 @@ R: (Non-maliciously, the tone seems more like how a policeman acts if a third pa
 
 (Narrator: The three Deans calmly stand up, get their papers, and exit the room in the slow sort of way that three people in this situation understandably would after whatever just happened, if it was something as negative as they all unanimously appeared to agree it was, I mean the manner and speed and style with which they exited the room and the faces they each made at each other and me all make perfect sense if we grant for the sake of argument that something of the type they all acted like had just happened had happened, everything makes sense in context if we assume something like that happened but what happened?)
 
---
+---
 
 (Narrator: One week later, at exactly the same time as last week, but one hour earlier because P has a festival to attend right after this. Not sure which one. There's a lot. Oh shit they're talking I need to pay attention.)
 
@@ -106,7 +106,7 @@ E: Let's get moving guys.
 
 R: Ok so...
 
---
+---
 
 Goto: [[Gen 1|Minutes of meeting on Genesis 1, and how the final version you know (and maybe love) came to be, as a result of the distinct personalities of these three, and look up the Documentary Hypothesis if none of that made sense or more simply in summary: Welcome to We.]]
 

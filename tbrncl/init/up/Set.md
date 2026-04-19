@@ -33,4 +33,8 @@
 
 ### Or
 
-[[main.c|The Middle]]
+## The Middle
+
+---
+
+Goto: [[Setup]]

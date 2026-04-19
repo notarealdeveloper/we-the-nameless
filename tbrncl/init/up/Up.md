@@ -1,6 +1,4 @@
 
----
-
 > _If the heavens ever did speak._
 > _What would they say?_
 > _Who would they say it to?_
@@ -342,7 +340,7 @@ Follow me.
 
 ---
 
-goto: [[header.S]]
+goto: [[Set]]
 
 [^1]: From: The Tora 虎. Book 5: Dudetheyreontome. Vol 1: [[On the Lamb]], by _We the Nameless._ Published by Human History's Universal University Press©®™ (ca. year 0x07 P.A.[^2])
 

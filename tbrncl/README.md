@@ -1,4 +1,3 @@
-
 ## Hello World
 
 Hi there,
@@ -678,10 +677,8 @@ So, on that note, where would you like to go?
 
 ---
 
-## 🡅 [[setup.ld|Go Up]]
+Goto: [[Up]]
 
----
-
-## 🡇 [[We|Go Down]]
+Goto: [[Down]]
 
 ---
