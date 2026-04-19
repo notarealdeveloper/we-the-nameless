@@ -646,9 +646,9 @@ A detailed footnote-heavy book like _Commentary on the Torah_ leaves the reader 
 
 A visual introduction to the Documentary Hypothesis like _The Bible with Sources Revealed_ leaves the reader with only minimal footnotes, and would thus fail to offer the simple background information we needed for Genesis 10:9-10 above.
 
-And an entire book dedicated just to the oldest source of the Bible 一 the anonymous author known among bible scholars as J 一 like Friedman's _The Hidden Book in the Bible_ fails to represent what happened to the first and oldest bible (i.e., J) in the centuries _after_ it was written.
+And an entire book dedicated just to the oldest source of the Bible -- the anonymous author known among bible scholars as J -- like Friedman's _The Hidden Book in the Bible_ fails to represent what happened to the first and oldest bible (i.e., J) in the centuries _after_ it was written.
 
-Because it was the later authors 一 ones who added (and removed) parts of J 一 that gave us the unusual book we call the bible today.
+Because it was the later authors -- ones who added (and removed) parts of J -- that gave us the unusual book we call the bible today.
 
 I've probably heard hundreds of hours of debates between believers and unbelievers.
 
@@ -658,7 +658,7 @@ I've never heard a single person on either side bring up J, E, P, R, and D.
 
 Every believer (and unbeliever) deserves to know about J, E, P, R, and D.
 
-Those letters 一 and the several hundred years of research they represent 一 are the key that unlocks this strange ancient book.
+Those letters -- and the several hundred years of research they represent -- are the key that unlocks this strange ancient book.
 
 And unlocks it in a way that's impossible to appreciate just from reading it.
 

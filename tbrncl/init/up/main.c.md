@@ -4,7 +4,7 @@ I am seated in an office, surrounded by heads and bodies. My posture is consciou
 
 I am in here.
 
-Three faces have resolved into place above the paper strewn table. There are three Deans 一 of Integration, of Publication, and Some Long Thing I Forget[^1].
+Three faces have resolved into place above the paper strewn table. There are three Deans -- of Integration, of Publication, and Some Long Thing I Forget[^1].
 
 They are a Mushite, a Levite, and a Redactor, respectively.
 
@@ -18,7 +18,7 @@ That's just what I call them privately, like inside my head or whatever.
 
 This is the first time we're meeting in person.
 
-But we all sort of know each other 一 insofar as one can know anything of significance about another person just from like, text 一 as a result of all the correspondence we've been sending back and forth through the official slow-ish channels over the past however-long-its-been since we started the process of preparing for the publication process which I guess begins (like officially) with, well... this.
+But we all sort of know each other -- insofar as one can know anything of significance about another person just from like, text -- as a result of all the correspondence we've been sending back and forth through the official slow-ish channels over the past however-long-its-been since we started the process of preparing for the publication process which I guess begins (like officially) with, well... this.
 
 P: I'd like to bring a motion before the committee.
 
@@ -32,7 +32,7 @@ P: (Making a hurt look in R's direction for unclear reasons.)
 
 E: I think he just wants you to say it his way, R.
 
-P: (Now indignant in E's direction) I don't think I'm being unreasonable by reminding everyone that we have procedures for a reason and---
+P: (Now indignant in E's direction) I don't think I'm being unreasonable by reminding everyone that we have procedures for a reason and--
 
 R: "Request for motion is granted by the committee."
 
@@ -84,17 +84,17 @@ P: I think we can all agree I was right.
 
 R: (Does a similar face to E's one, but in a slightly more neutral way. Not the face a coach would make. More like a referee or someone else that seems like a genuine good person but takes it as part of their responsibility to not be seen as taking sides.)
 
-J: You probably were, this was probably my fault I'm just confu一
+J: You probably were, this was probably my fault I'm just confu--
 
 R: (Non-maliciously, the tone seems more like how a policeman acts if a third party sees him not enforcing some law that they basically never enforce nor want to enforce so he needs to come over and give you a talking to, because of the third party, because that's his job you know what I mean.) J, please come prepared next time.
 
 (Narrator: The three Deans calmly stand up, get their papers, and exit the room in the slow sort of way that three people in this situation understandably would after whatever just happened, if it was something as negative as they all unanimously appeared to agree it was, I mean the manner and speed and style with which they exited the room and the faces they each made at each other and me all make perfect sense if we grant for the sake of argument that something of the type they all acted like had just happened had happened, everything makes sense in context if we assume something like that happened but what happened?)
 
----
+--
 
 (Narrator: One week later, at exactly the same time as last week, but one hour earlier because P has a festival to attend right after this. Not sure which one. There's a lot. Oh shit they're talking I need to pay attention.)
 
-P: ---tival at which I've been invited to speak.
+P: --tival at which I've been invited to speak.
 
 R: Let's try to make this more productive than last week.
 
@@ -106,7 +106,7 @@ E: Let's get moving guys.
 
 R: Ok so...
 
----
+--
 
 Goto: [[Gen 1|Minutes of meeting on Genesis 1, and how the final version you know (and maybe love) came to be, as a result of the distinct personalities of these three, and look up the Documentary Hypothesis if none of that made sense or more simply in summary: Welcome to We.]]
 
