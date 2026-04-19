@@ -678,9 +678,10 @@ So, on that note, where would you like to go?
 
 ---
 
-## ⬆️ [[setup.ld|Go Up]]
+## 🡅 [[setup.ld|Go Up]]
 
 ---
-## ⬇️ [[We|Go Down]]
+
+## 🡇 [[We|Go Down]]
 
 ---
