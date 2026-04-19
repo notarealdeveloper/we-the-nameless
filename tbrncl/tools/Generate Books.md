@@ -1,151 +1,33 @@
----
-title: "Pandoc → LuaLaTeX POC"
-author: "J"
-lang: en
-fontsize: 11pt
-documentclass: article
-geometry:
-  - margin=1in
-mainfont: Libertinus Serif
-monofont: Libertinus Mono
-colorlinks: true
-toc: false
-header-includes:
-  - |
-    \usepackage{fontspec}
-    \usepackage{xcolor}
-    \usepackage{longtable}
-    \usepackage{booktabs}
-    \usepackage{fancyvrb}
-    \newcommand{\Psrc}[1]{\textcolor{blue}{\textbf{#1}}}
-    \newcommand{\Jsrc}[1]{\textcolor{green!50!black}{#1}}
-    \newcommand{\Rsrc}[1]{\textcolor{cyan!50!black}{#1}}
----
+I want to generate book.md from multiple input markdown files.
 
-# Plain markdown still works
+I want to be able to list an external (outside this repo) path to a directory in which those files will be found.
 
-This is ordinary Pandoc Markdown with **bold**, *italics*, tables, lists, code, and block quotes.
+Then I want to use `[[Obsidian File]]` syntax to say "Look up a file called `Obsidian File.md` using the same methods obsidian uses, somewhere within in the external directory specified above.
 
-## Semantic spans
+Then I want to copy that file into an md directory in this repo, and proceed to find all the `![[image references]]` in that file.
 
-[P source]{.P}  
-[J source]{.J}  
-[Redactor]{.R}
+For each of those, I want to search the same directory as above for an image called that, in the same way obsidian does, and then I want to copy that image into an img directory in this repo, and replace the `![[image references]]` in the md file with image references that pandoc will understand, whether it's the `![](path-to-image)` form or some other one.
 
-## Semantic divs
+This will be the basic setup that lets me *develop* and *write* inside obsidian, and then handle the entire process of turning some subset of that writing into a fully formatted *book* in a separate repo, by pointing to the obsidian repo.
 
-::: {.P}
-This whole block is tagged as Priestly material.
-:::
+If I can get this workflow solid and working stably, I'll be able to take a huge amount of content I've developed over the past few years and start quickly publishing book after book after book.
 
-::: {.J}
-This whole block is tagged as J material.
-:::
+Generate me a python script that does each of these things.
 
-## A verse-like structure
+Give it the following argparse options:
 
-::: {.verse}
-::: {.hebrew}
-בְּיוֹם עֲשׂוֹת יְהוָה אֱלֹהִים אֶרֶץ וְשָׁמָיִם
-:::
+files: names of md files, in desired book order (stdin if not present, one per line).
 
-::: {.english}
-In the day that YHWH God made earth and skies.
-:::
-:::
+-i/--input: path to obsidian vault (src of markdown files and images, no default).
 
-## Table
+-o/--output: path to book directory (dst of markdown files and images, default is 'book').
 
-| Source | Color | Notes |
-|---|---|---|
-| P | blue | bold |
-| J | green | plain |
-| R | cyan | plain |
+-1/--list-files: print the paths to the md files you did or did not find in input directory.
 
-## Code
+-2/--copy-files: copy md files into $output.
 
-```python
-print("hello")
-```
+-3/--list-images: print the paths to the image files you did or did not find in input directory
 
-That uses only Markdown, metadata, and semantic classes. The classes are what your filter will target.
+-4/--copy-images: copy image files into $output/img
 
----
-
-## `filters/verse.lua`
-
-This is a **Pandoc Lua filter**, not LuaLaTeX. It rewrites semantic classes into LaTeX-ish output at the writer stage, while letting you keep the source in Markdown. Pandoc has a built-in Lua interpreter for filters, so this works without external Lua dependencies. 4
-
-```lua
-function Span(el)
-    local classes = el.classes
-
-    if classes:includes("P") then
-        return pandoc.RawInline("latex", "\\Psrc{")
-            .. el.content
-            .. pandoc.RawInline("latex", "}")
-    end
-
-    if classes:includes("J") then
-        return pandoc.RawInline("latex", "\\Jsrc{")
-            .. el.content
-            .. pandoc.RawInline("latex", "}")
-    end
-
-    if classes:includes("R") then
-        return pandoc.RawInline("latex", "\\Rsrc{")
-            .. el.content
-            .. pandoc.RawInline("latex", "}")
-    end
-end
-
-function Div(el)
-    local classes = el.classes
-
-    if classes:includes("P") then
-        return {
-            pandoc.RawBlock("latex", "\\begin{quote}\\Psrc{"),
-            el.content,
-            pandoc.RawBlock("latex", "}\\end{quote}")
-        }
-    end
-
-    if classes:includes("J") then
-        return {
-            pandoc.RawBlock("latex", "\\begin{quote}\\Jsrc{"),
-            el.content,
-            pandoc.RawBlock("latex", "}\\end{quote}")
-        }
-    end
-
-    if classes:includes("R") then
-        return {
-            pandoc.RawBlock("latex", "\\begin{quote}\\Rsrc{"),
-            el.content,
-            pandoc.RawBlock("latex", "}\\end{quote}")
-        }
-    end
-
-    if classes:includes("verse") then
-        local hebrew = {}
-        local english = {}
-
-        for _, child in ipairs(el.content) do
-            if child.t == "Div" and child.classes:includes("hebrew") then
-                hebrew = child.content
-            elseif child.t == "Div" and child.classes:includes("english") then
-                english = child.content
-            end
-        end
-
-        return {
-            pandoc.RawBlock("latex", "\\begin{longtable}{p{0.48\\textwidth} p{0.48\\textwidth}}"),
-            pandoc.Plain(english),
-            pandoc.RawBlock("latex", " & "),
-            pandoc.Plain(hebrew),
-            pandoc.RawBlock("latex", "\\\\"),
-            pandoc.RawBlock("latex", "\\end{longtable}")
-        }
-    end
-end
-```
+-5/--rewrite-files: rewrite the md files in $output to point to the images in $output/img

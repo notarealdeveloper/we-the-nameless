@@ -33,7 +33,7 @@
 | EBD   | servant        | עבד    | /ʕe.ved/    | J,E  |
 | ERB   | evening        | ערב    | /ʕe.rev/    | J    |
 | ERC   | land           | ארץ    | /ʔe.reʦ/    | *    |
-| AShF  | fire           | אש     | /ʔeʃ/       | J    |
+| EShF  | fire           | אש     | /ʔeʃ/       | J    |
 | GWY   | nation         | גוי    | /goj/       | D    |
 | GDL   | grow           | גדל    | /ga.dal/    | J    |
 | HBDL  | separate       | הבדל   | /hav.dil/   | P    |

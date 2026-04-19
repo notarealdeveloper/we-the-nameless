@@ -558,6 +558,7 @@ The whole book is like that.
 A little background information goes a long way.
 
 ---
+
 ## Super Advanced Kindergarten
 
 We can call this background information "super advanced kindgergarten."
