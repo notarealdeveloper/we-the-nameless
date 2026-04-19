@@ -1,0 +1,241 @@
+\documentclass[12pt]{book}
+
+% ------------------------------------------------------------
+% Minimal package set
+% ------------------------------------------------------------
+
+\usepackage[margin=1in]{geometry}
+\usepackage[no-math]{fontspec}
+\usepackage{xcolor}
+\usepackage{luacolor}
+\usepackage{luabidi}
+\usepackage{lua-ul}
+
+% ------------------------------------------------------------
+% Fonts
+% Compile with: lualatex main.tex
+% ------------------------------------------------------------
+
+\setmainfont{FreeSerif}
+
+\newfontfamily\EnglishFont{FreeSerif}
+
+\newfontfamily\HebrewFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+\newfontfamily\EnglishJFont{FreeSerif}
+\newfontfamily\EnglishPFont{FreeSerif}
+\newfontfamily\EnglishRFont{FreeSerif}
+
+\newfontfamily\HebrewJFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+\newfontfamily\HebrewPFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+\newfontfamily\HebrewRFont[
+    Script=Hebrew,
+    Scale=1.22
+]{David Libre}
+
+% ------------------------------------------------------------
+% Colors
+% ------------------------------------------------------------
+
+\definecolor{JColor}{RGB}{0,120,0}
+\definecolor{PColor}{RGB}{0,70,170}
+\definecolor{RColor}{RGB}{0,70,170}
+\definecolor{RBg}{RGB}{220,235,255}
+
+\definecolor{BlackColor}{RGB}{0,0,0}
+\definecolor{RedColor}{RGB}{140,0,0}
+\definecolor{BlueColor}{RGB}{0,0,140}
+\definecolor{GreenColor}{RGB}{0,120,0}
+\definecolor{GrayColor}{RGB}{110,110,110}
+
+% ------------------------------------------------------------
+% Global layout
+% ------------------------------------------------------------
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\newlength{\VerseGap}
+\newlength{\VerseColWidth}
+\setlength{\VerseGap}{1.5em}
+\setlength{\VerseColWidth}{\dimexpr(\textwidth-\VerseGap)/2\relax}
+
+% ------------------------------------------------------------
+% Primitive inline color helpers
+% ------------------------------------------------------------
+
+\newcommand{\cK}[1]{{\color{BlackColor}#1}}
+\newcommand{\cR}[1]{{\color{RedColor}#1}}
+\newcommand{\cB}[1]{{\color{BlueColor}#1}}
+\newcommand{\cG}[1]{{\color{GreenColor}#1}}
+\newcommand{\cGray}[1]{{\color{GrayColor}#1}}
+
+% ------------------------------------------------------------
+% Source style primitives
+%
+% These are intentionally composable.
+% Example:
+%   \eJ{Hi \cR{there} you}
+%   \hJ{בְּיוֹם \cR{יְהוָה} אֱלֹהִים}
+% ------------------------------------------------------------
+
+\newcommand{\estyleJ}{\EnglishJFont\color{JColor}\mdseries}
+\newcommand{\estyleP}{\EnglishPFont\color{PColor}\bfseries}
+\newcommand{\estyleR}{\EnglishRFont\color{RColor}\mdseries}
+
+\newcommand{\hstyleJ}{\HebrewJFont\color{JColor}\mdseries}
+\newcommand{\hstyleP}{\HebrewPFont\color{PColor}\bfseries}
+\newcommand{\hstyleR}{\HebrewRFont\color{RColor}\mdseries}
+
+% ------------------------------------------------------------
+% Highlighted R spans
+%
+% lua-ul + luacolor lets the background belong to the text span
+% rather than to a paragraph box.
+% ------------------------------------------------------------
+
+\newcommand{\eJ}[1]{{\estyleJ #1}}
+\newcommand{\eP}[1]{{\estyleP #1}}
+\newcommand{\eR}[1]{{\estyleR\highLight[RBg]{#1}}}
+
+\newcommand{\hJ}[1]{{\hstyleJ #1}}
+\newcommand{\hP}[1]{{\hstyleP #1}}
+\newcommand{\hR}[1]{{\hstyleR\highLight[RBg]{#1}}}
+
+% ------------------------------------------------------------
+% Side containers
+%
+% Each side gets its own independent line breaking.
+% Hebrew side owns one outer RTL context.
+% ------------------------------------------------------------
+
+\newcommand{\EnglishSide}[1]{%
+    \begin{minipage}[t]{\VerseColWidth}
+        \EnglishFont
+        \raggedright
+        #1\par
+    \end{minipage}%
+}
+
+\newcommand{\HebrewSide}[1]{%
+    \begin{minipage}[t]{\VerseColWidth}
+        \begin{RTL}
+            \HebrewFont
+            \raggedleft
+            #1\par
+        \end{RTL}
+    \end{minipage}%
+}
+
+% ------------------------------------------------------------
+% Book / chapter helpers
+% ------------------------------------------------------------
+
+\newcommand{\Book}[1]{%
+    {\Huge\bfseries #1\par}%
+    \vspace{1.2em}%
+}
+
+\newcommand{\Chapter}[1]{%
+    {\LARGE\bfseries #1\par}%
+    \vspace{1.2em}%
+}
+
+% ------------------------------------------------------------
+% Verse header
+% ------------------------------------------------------------
+
+\newcommand{\VerseHeader}[1]{%
+    \par
+    \vspace{0.8em}%
+    \hrule
+    \vspace{0.25em}%
+    {\centering\Large #1\par}%
+    \vspace{0.25em}%
+    \hrule
+    \vspace{0.5em}%
+}
+
+% ------------------------------------------------------------
+% Verse
+%
+% #1 = verse label
+% #2 = English side
+% #3 = Hebrew side
+% ------------------------------------------------------------
+
+\newcommand{\Verse}[3]{%
+    \VerseHeader{#1}%
+    \noindent
+    \EnglishSide{#2}%
+    \hspace{\VerseGap}%
+    \HebrewSide{#3}%
+    \par
+}
+
+% ------------------------------------------------------------
+% Commentary helpers
+% ------------------------------------------------------------
+
+\newcommand{\asA}[1]{%
+    \par
+    \vspace{0.35em}%
+    {\raggedright #1\par}%
+}
+
+\newcommand{\asB}[1]{%
+    \par
+    \vspace{0.2em}%
+    {\raggedright\cR{#1}\par}%
+}
+
+\newcommand{\asC}[1]{%
+    \par
+    \vspace{0.2em}%
+    {\raggedright\cB{#1}\par}%
+}
+
+% ------------------------------------------------------------
+% Document
+% ------------------------------------------------------------
+
+\begin{document}
+
+\Book{Genesis}
+\Chapter{N}
+
+\Verse{Genesis N:1}
+{
+    \eP{In the beginning of God’s creating the skies and the earth.}
+}
+{
+    \hP{א בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ.}
+}
+
+\asA{This is P.}
+
+\Verse{Genesis N:4}
+{
+    \eR{These are the records of the skies and the earth when they were created: }%
+    \eJ{In the day that YHWH God made earth and skies.}
+}
+{
+    \hR{ד אֵלֶּה תוֹלְדוֹת הַשָּׁמַיִם וְהָאָרֶץ בְּהִבָּרְאָם: }%
+    \hJ{בְּיוֹם עֲשׂוֹת יְהוָה אֱלֹהִים אֶרֶץ וְשָׁמָיִם.}
+}
+
+\asB{This is R.}
+\asC{And then J.}
+
+\end{document}
