@@ -40,5 +40,7 @@
     "bookmarks:bookmark-current-heading"
   ],
   "showUnsupportedFiles": false,
-  "promptDelete": false
+  "promptDelete": false,
+  "autoPairMarkdown": false,
+  "smartIndentList": false
 }
