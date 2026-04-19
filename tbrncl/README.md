@@ -515,8 +515,13 @@ Reading the bible, one often feels as if every other sentence is a sumerian dog 
 
 Here's Genesis 10:9-10, slightly paraphrased.
 
-> 9. Nimrod was a mighty hunter before the Lord; therefore it is said, "Like Nimrod the mighty hunter before the Lord."
-> 10. And the beginning of his kingdom was Babel, Erech, and Accad, in the land of Shinar.
+---
+
+> 9: Nimrod was a mighty hunter before the Lord; therefore it is said, "Like Nimrod the mighty hunter before the Lord."
+>
+> 10: And the beginning of his kingdom was Babel, Erech, and Accad, in the land of Shinar.
+
+---
 
 Most modern readers would giggle, because to us, "nimrod" means "idiot."
 
@@ -526,12 +531,13 @@ But the words Erech, Accad, and Shinar would be mostly meaningless to most moder
 
 Now a bit of (non-mysterious, non-controversial) background.
 
-The words Erech, Accad, and Shinar are slightly different spellings of:
+The words Babel, Erech, Accad, and Shinar are english renderings of the hebrew spelling of:
+- Babylon
 - Uruk
 - Akkad
 - Sumer
 
-Which are three of the (real, non-fiction) places where civilization began.
+Which are four of the (real, non-fiction) places where civilization began.
 
 ![[uruk-akkad-sumer.jpg]]
 
@@ -539,9 +545,9 @@ That's the background for Genesis 10:10.
 
 Here's the background for 10:9.
 
-![[nimrod-bugs-bunny-elmer-fudd.png]]
-
 We think "Nimrod" means "idiot" because we got Bugs Bunny'ed.
+
+![[nimrod-bugs-bunny-elmer-fudd.png]]
 
 He was mocking Elmer Fudd with a bible reference, calling him "mighty hunter."
 
@@ -603,11 +609,9 @@ There's one of those in the bible too.
 > - a Hebrew _deliberate mispronunciation_ of
 > - the Canaanite god _Zevul_
 >
->
 > People have noted that there's more humor in the Old Testament than in the New Testament. The New Testament comes across as a much more serious book, in many ways, than the Old. There are fewer scenes that are played for comedy, let us say, in the New Testament than in the Old. And it is precisely things that are taken seriously that we are more likely to joke about.
 >
->
-> _From: Richard Elliot Friedman, The Hebrew Bible, Lecture 16, The Kingdom of Israel._
+> _-From: Richard Elliot Friedman, The Hebrew Bible, Lecture 16, The Kingdom of Israel._
 
 ---
 
@@ -675,6 +679,7 @@ So, on that note, where would you like to go?
 
 ## ⬆️ [[setup.ld|Go Up]]
 
-
+---
 ## ⬇️ [[We|Go Down]]
 
+---
