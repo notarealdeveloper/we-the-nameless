@@ -1,74 +1,21 @@
 
 ```
-lyrdn .ilm .n‘mm[.]
-I would call on the gracious gods,
-
-[dġzr ym .bn]ym
-‘cleavers’ of the sea, children of the sea,
-
-ymqm .bdp sd.
-who suck the teats of the breasts
-
-ddrt .[wrhmy]
-of Athirat and Rahmay,
-
-špš .mṣprt .dlhm[.]
-May pale Shapash lead them,
-
-[----] (26) wġrnbm
-[    ] and (to) the grapes!
-
-slm .‘rbm .l‘n[nm]
-Peace to the ministers (and) the guards,
-
-hlkm .bddh m ṯl
-those who come with the sacrifice of grace!
-
-sd (.sd) [l]lm.
-‘The field(s) of the gods,
-
-sd .dtrt .wrhmy
-the fields of Athirat and Rahmay,
-
-[----] .yṯ[?]
-shall again [    ]
-
-[l. yṯ]l .gp ym.
-[El went out] to the shore of the sea
-
-wṣydq .gp .thm
-and advanced to the shore of the ocean.
-
 [----] lṭ[. .]ms’ ltm
 El perceived two women moving up and down,
 
 mst’ ltm .brš .dgn
 two women moving up and down over a basin.
+```
 
-
----
-
-hḫh .tṣpl.
-One moved down,
-
-hḫh .trm.
-the other moved up;
-
-hḫh .tṣh .dd dd
-one cried ‘Father, father!’
-
-hḫh .tṣh .’m ’m
-and the other cried ‘Mother, mother!’
-
+```
 wyḏ .il .kmdh
-The organ of El grew long as the sea,
+The hand of El grew long as the sea,
 
 ’rk .yd .il .kmdh
-and the organ of El as the flood.
+and the hand of El as the flood.
+```
 
-w .yd .il .kmdh
-The organ of El did grow long as the sea,
-
+```
 yqḥ .il .mšt’ ltm
 El took the two women who moved up and down,
 
@@ -77,286 +24,202 @@ mšt’ ltm .brš .dgn
 
 yqḥ (38) yr .šmnm
 he took (them) and set (them) in his house,
-
-yr .bšmm .šr
-El did lower his sceptre,
-
-yḥrt yšt (39) lḥm
-the staff in his hand.
-
-il .dtm .kṣpt
-He raised (it) and shot heavenward,
-
-hm .dtm .tṣḥn
-he shot a bird in the heavens,
-
-ymn[.] .mš .nṣṭm .ḥtk
-he plucked (it) and put (it) on the coals.
-
-mnmnm .mt ydk
-Surely El seduced the two women, (saying):
-
-hḫl] .šr .tḥr .lšt
-‘If the two women should cry out,
-
-šrrt .lḥmm
-“O husband, husband,
-
-d[q]tm .dtt .il.
-who have lowered your sceptre,
-
-dtt .il .w ‘lmh
-who have [    ] the staff in your hand,
-
-whn (43) dttm .tṣḥn
-look! the bird is roasted on the fire,
-
-y .dd dd .nṣtm .ḥtk
-it has browned on the coals,”
-
-mnmnm .mt ydk
-the two women (will be) wives of El,
-
-hḫl] .šr .tḥr .lšt
-wives of El even for ever.’
-
-’ṣpḥrt .lḥmm
-But if the two women should cry out,
-
-bṯm .bt .il
-“O father, father,
-
-bṯ .il (46) w ‘lmh
-who have lowered your sceptre,
-
-whn dttm .tṣḥn
-who have [    ] the staff in your hand,
-
-y .mt mt (47) nṣtm .ḥtk
-look! the bird is roasted on the fire,
-
-mnmnm .mt ydk
-and has browned on the coals,”
-
-hḫl] .šr (48) tḥr .lšt
-the two girls (will be) daughters of El,
-
-’ṣpḥr[t] .lḥmm
-daughters of El even for ever.’
-
-dttm .’[tt .il]
-And behold the two women cried out:
-
-dtt .il .w ‘lmh
-“O husband, husband,
-
-yhbr .šptm .yšq
-who have lowered your sceptre,
-
-hn .šptm .mtqtm
-who have [    ] the staff in your hand,
-
-bn .nšq .whr
-look! the bird is roasted on the fire,
-
-bḫbg .ḥmmh
-and has browned on the coals.”
-
-tqt[nm] (52) ldn .šḥr .wšlm
-The two women (became) wives of El,
-
-rgm .ll .ybl
-wives of El even for ever.
-
-’[tty] (53) il .ylt
-He stooped (and) kissed their lips;
-
-mh .ylt
-behold! their lips were sweet,
-
-yldy .šḥr .wšl[m]
-sweet as pomegranate[s].
-
-bḫ .db .kṣṣ .rbt
-In the kissing (there was) conception,
-
-wbkbnm .ḥm[m]
-in the embracing (there was) pregnancy;
-
-yhbr .šptm .yšq
-they travailed and gave birth to Shachar and Shalim.
-
-hn .šptm .mtqtm
-Word was carried to El:
-
-bn .nšq .whr
-‘The two wives of El have given birth.’
-
-rgm .ll .ybl
-‘What did they bear?’
-
-’tty il .ylt
-‘Two have been born: Shachar and Shalim.’
-
-yldy .šḥr .wšl[m]
-‘Raise and prepare (an offering) for Lady Shapash
-
-yldy (57) yšp .lḥmš .lṣf
-and for the fixed stars.’
-
-klt (58) tqtn .wtldn
-Both of them travailed and gave birth,
-
-tld .[ilm .n‘mm
-they gave birth to the gracious gods,
-
-dġzr ym (59) bn .ym
-“cleavers” of the sea, children of the sea,
-
-ymqm .bdp .šd .šṭ
-who suck the teats of the breasts of the Lady.
-
-rgm .ll .ybl
-Word was carried to El:
-
-mh .ylt
-‘The two wives of El have given birth.’
-
-ilmy n‘mm
-‘What did they bear?’
-
-dġzr ym .bn ym
-‘The gracious gods,
-
-ymqm .bdp .šd .šṭ
-“cleavers” of the sea, children of the sea,
-
-špt (62) lḫṣ
-who suck the teats of the breasts of the Lady,
-
-w[l] rb .bšpm
-One lip (reached) to the earth,
-
-’ṣr .šmm
-one lip to the heavens,
-
-wddg bym
-and there did enter their mouth
-
-wndd .gzr .l(g)zr
-the birds of the heavens
-
-y’d .l’ymn (64) wšm’l .bšpm
-and the fish from the sea.
-
-w .dtt .l’trḥ
-And they did stand, cleaver by cleaver,
-
-ybn .dšd[.]
-as or right or left they were put into their mouth,
-
-‘db .tk .mdbr qdš
-but they were not satisfied:
-
-‘O wives whom I have married,
-
-tm .tgrgr .lḫmm .wl .ym
-raise (and) prepare a sanctuary in the midst of the desert,
-
-šš .šnt (67) tmt
-there dwell among the stones and the trees.’
-
-tmn .nqpt .d
-Seven years did come to an end,
-
-ilm .n‘mm .tlkn (68) šd
-eight revolutions of time,
-
-tṣdn .pḏt .mdbr
-as the gracious gods went about in the fields
-
-wmṣ .hm .nġr (69) mdr‘
-and hunted on the fringe of the desert;
-
-wṣḥ hm .m .nġr .mdr‘
-and they came upon the watchman of the sown land,
-
-y .nġr (70) nġr .ptḥ
-and they cried to the watchman:
-
-wptḥ hw .prṣ .b‘ dḥm
-‘O watchman, watchman, open!’
-
-w‘rb .hm
-And he opened a breach for them,
-
-hm[.] .t’--]lḥm
-and they entered, saying:
-
-w[n] (72) ‘nmlḥm
-‘If there is bread,
-
-hm .l[-- yn.]
-then give (us it) that we may eat;
-
-[w]tn .wnšt
-if there is wine,
-
-w’nm .nġr .mdr‘[.]
-then give (us it) that we may drink.’
-
-[t. lḥm .d‘rb]
-And the watchman answered:
-
-lš .ym .d‘rb
-‘There is bread for him who enters;
-
-btk [--------]
-there is wine for him who enters.
-
-mg hna .lḥm .lg ynt
-Let him approach here, his pint of wine,
-
-wḥbrh .mld ym [------]
-let him fill his companion(s) with wine.’
-
+```
 
 ---
 
-Footnotes
+> _Grown-ups never understand anything by themselves,_
+> _and it is tiresome for children to be always_
+> _and forever explaining things to them._
+> 
+> -Antoine de Saint-Exupéry, The Little Prince
 
-1. “gracious gods” (ilm n‘mm) is a standard Ugaritic epithet for divine offspring.
+---
 
+The vision of a postdoctoral scholar with a PhD
+in the languages of the ancient Near East,
+as it was [written]((https://mostlydeadlanguages.tumblr.com/post/171802743513/ktu-123-dawn-and-duskthe-gentle-gods) in the place made for tumbling
+and which was called Mostly Dead Languages
+and called also Slightly Alive Translations,
+and which was published by the author on
+The Dynamic Read Writable Free Encyclopedic
+Repository of the Modern State of Human Knowledge,
+in the second year of the first reign of Donald the
+decisive overriding factor or final resource, whose
+name means also a dependable or exemplary person.
 
-2. “cleavers of the sea” (dġzr ym) is uncertain; possibly “cutters” or “dividers,” sometimes interpreted metaphorically.
+The scholar spoke as follows.
 
+It’s been a while since my last translation, but I hope you enjoy this one as much as I do. It’s an odd Ugaritic text: the first half is a fragmented mish-mash of ritual instructions and mythic imagery, while the second half is a ribald tale about Ilu, the Father-God, and the consequences of his libido. I have included several notes to outline my own read of the text, but I want to emphasize that many of its elements are still debated by scholars, so you should take my observations with several grains of salt. Notably, I argue that in the “bawdy comedy” section, the text includes a fairly explicit depiction of two women having sex with each other.
 
-3. Athirat = Asherah; Rahmay possibly a related maternal or fertility figure.
+---
 
+\[El walks along\] the sea shore;  
+    he strides the shore of the Great Deep.  
 
-4. Shapash = the sun goddess.
+El \[sees\] two women mounting each other —  
+    two women mounting each other, head to “cauldron.”[^1]  
 
+Watch! One sinks down.  
+    Watch! One rises up.  
+Watch! One shouts, “daddy, daddy!”  
+    Watch! One shouts “mommy, mommy!”
 
-5. Repeated lines reflect parallelism or scribal duplication (common in Ugaritic poetry).
+El’s member lengthens like the sea —  
+    yes, El’s member rises like the tide.  
 
+El seizes the two women mounting each other,  
+    the two women mounting each other, head to “cauldron.”  
 
-6. “organ of El” is literal; fertility imagery is explicit in the original.
+He seizes \[them\] and puts them in his house.
 
+El has pulled out his “staff”;
+    El has palmed the rod with his hand.  
 
-7. “lowered your sceptre / staff” likely sexual metaphor.
+Raising it, he shoots skyward:  
+    he has shot a bird from the sky!  
 
+Plucking it, he puts it on the embers:  
+    in this way, El ravishes the women.
 
-8. Shachar and Shalim = Dawn and Dusk.
+---
 
+### Conditional Speech
 
-9. “fixed stars” likely astral deities.
+If the two women shout, “Oh husband, husband,  
+    pulling out your staff,  
+        palming the rod with your hand!  
+    Watch out! You’re roasting the bird on the fire,  
+        but you’ve burned it on the coals.”  
 
+Then they are wives indeed, wives of El,  
+    wives of El forever.
 
-10. The “two lips” passage describes cosmic-scale beings consuming birds and fish—hyperbolic mythic imagery.
+But if the two women shout, “Oh daddy, daddy,  
+    pulling out your staff,  
+        palming the rod with your hand!  
+    Watch out! You’re roasting the bird on the fire,  
+        but you’ve burned it on the coals.”  
 
+Then they are daughters indeed, daughters of El,  
+    daughters of El forever. [^2]
 
-11. “watchman of the sown land” marks transition from mythic to semi-pastoral setting.
+---
 
+### Birth of Dawn and Dusk
 
-12. Lacunae [----] reflect damaged tablet sections.
-```
+He leans down and kisses their lips.  
+    Oh, oh! Their lips are sweet,  
+        sweet as pomegranates.  
+
+With kissing comes conception;  
+    with lovemaking comes climax.  
+
+The two squat down and give birth  
+    to Dawn and Dusk.
+
+A message arrives for El:  
+    “The wives of El gave birth!”  
+
+“To what did they give birth?”  
+    “To the two boys, Dawn and Dusk!”  
+
+“Raise a gift to the Great Sun-Goddess,  
+    and to the unchanging stars.”
+
+---
+
+### Birth of the Gentle Gods
+
+He leans down and kisses their lips.  
+    Oh, oh! Their lips are sweet,  
+        sweet as pomegranates.  
+
+With kissing comes conception;  
+    with lovemaking comes climax.  
+
+\[El\] sits down […]  
+    he counts to five […]  
+    […] ten, the pair is complete.  
+
+The two squat down and give birth  
+    to the Gentle Gods:
+
+Devourers of the day, sons of one day,  
+    they who suckle the nipple of the breast.
+
+---
+
+### Description of the Gentle Gods
+
+A message arrives for El:  
+    “The wives of El gave birth!”  
+
+“To what did they give birth?”  
+    “To the Gentle Gods:  
+
+Devourers of the day, sons of one day,  
+    they who suckle the nipple of the breast of the lady.  
+
+One lip on the earth,  
+    one lip in the sky.  
+
+Everything goes into their mouths:  
+    the birds of the sky,  
+    and the fish of the sea.  
+
+And they stand from one edge to the other,  
+    devouring to the right and to the left.  
+
+Nothing in their mouths can sate them.” [^3]
+
+---
+
+### Exile and Encounter
+
+“Wives that I married,  
+    sons that I fathered:  
+
+Raise a gift  
+    from within the holy wilderness.  
+
+You will be refugees there —  
+    refugees among the stones  
+    and among the trees,  
+
+for a total of seven years,  
+    eight circuits of time.”
+
+The Gentle Gods journey to the field;  
+    they hunt at the edge of the wilderness.  
+
+Then they approach the Guardian of Farmland [^4]  
+    and call out:  
+
+“Oi, guardian! Guardian! Open up!”
+
+So he opens a passage,  
+    and they enter.
+
+“If you’ve got bread,  
+    give it over, so we can eat!  
+
+If you’ve got wine,  
+    give it over, so we can drink!”
+
+The Guardian answers them,  
+    “There’s wine that comes from Th[…] …”  
+
+… appears.  
+He serves a measure of his wine …  
+And his friend fills up with wine …
+
+---
+
+[^1]: “Two women mounting each other, head to ‘cauldron.’” This is a difficult passage. The compound appears only here in Ugaritic; interpretations vary. One plausible reading takes it as a reflexive/reciprocal form meaning “to mount each other.” “Cauldron” may echo earlier ritual imagery and also functions as a euphemism in related Semitic usage.
+
+[^2]: “Daughters of El for all time” — this designation does not preclude a sexual relationship. Similar overlaps of familial and marital language occur elsewhere in ancient Near Eastern texts.
+
+[^3]: These “ravenous” gods are often interpreted symbolically (e.g., as Dawn and Dusk), consuming and releasing the day in a cyclical pattern.
+
+[^4]: “Guardian of Farmland” — the term refers to cultivated land (as opposed to wilderness). The scene likely reflects a boundary between wild and settled space.

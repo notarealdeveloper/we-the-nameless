@@ -1,6 +1,6 @@
 {
   "spellcheck": false,
-  "autoPairBrackets": false,
+  "autoPairBrackets": true,
   "alwaysUpdateLinks": true,
   "pdfExportSettings": {
     "includeName": true,
@@ -42,5 +42,5 @@
   "showUnsupportedFiles": false,
   "promptDelete": false,
   "autoPairMarkdown": false,
-  "smartIndentList": false
+  "smartIndentList": true
 }
