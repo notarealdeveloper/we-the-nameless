@@ -82,10 +82,6 @@ Raising it, he shoots skyward:
 Plucking it, he puts it on the embers:  
     in this way, El ravishes the women.
 
----
-
-### Conditional Speech
-
 If the two women shout, “Oh husband, husband,  
     pulling out your staff,  
         palming the rod with your hand!  
@@ -102,11 +98,7 @@ But if the two women shout, “Oh daddy, daddy,
         but you’ve burned it on the coals.”  
 
 Then they are daughters indeed, daughters of El,  
-    daughters of El forever. [^2]
-
----
-
-### Birth of Dawn and Dusk
+    daughters of El forever.[^2]
 
 He leans down and kisses their lips.  
     Oh, oh! Their lips are sweet,  
@@ -127,10 +119,6 @@ A message arrives for El:
 “Raise a gift to the Great Sun-Goddess,  
     and to the unchanging stars.”
 
----
-
-### Birth of the Gentle Gods
-
 He leans down and kisses their lips.  
     Oh, oh! Their lips are sweet,  
         sweet as pomegranates.  
@@ -138,19 +126,15 @@ He leans down and kisses their lips.
 With kissing comes conception;  
     with lovemaking comes climax.  
 
-\[El\] sits down […]  
+\[El\] sits down \[…\]  
     he counts to five […]  
-    […] ten, the pair is complete.  
+    \[…\] ten, the pair is complete.  
 
 The two squat down and give birth  
     to the Gentle Gods:
 
 Devourers of the day, sons of one day,  
     they who suckle the nipple of the breast.
-
----
-
-### Description of the Gentle Gods
 
 A message arrives for El:  
     “The wives of El gave birth!”  
@@ -171,11 +155,7 @@ Everything goes into their mouths:
 And they stand from one edge to the other,  
     devouring to the right and to the left.  
 
-Nothing in their mouths can sate them.” [^3]
-
----
-
-### Exile and Encounter
+Nothing in their mouths can sate them.”[^3]
 
 “Wives that I married,  
     sons that I fathered:  
@@ -193,7 +173,7 @@ for a total of seven years,
 The Gentle Gods journey to the field;  
     they hunt at the edge of the wilderness.  
 
-Then they approach the Guardian of Farmland [^4]  
+Then they approach the Guardian of Farmland[^4]  
     and call out:  
 
 “Oi, guardian! Guardian! Open up!”
@@ -213,8 +193,6 @@ The Guardian answers them,
 … appears.  
 He serves a measure of his wine …  
 And his friend fills up with wine …
-
----
 
 [^1]: “Two women mounting each other, head to ‘cauldron.’” This is a difficult passage. The compound appears only here in Ugaritic; interpretations vary. One plausible reading takes it as a reflexive/reciprocal form meaning “to mount each other.” “Cauldron” may echo earlier ritual imagery and also functions as a euphemism in related Semitic usage.
 
