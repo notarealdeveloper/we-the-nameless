@@ -200,7 +200,7 @@ A message arrives for El:
        and the fish of the sea.  
 "And they stand from one edge to the other,  
        devouring to the right and to the left.  
-"Nothing in their mouths can sate them." [^9]
+"Nothing in their mouths can sate them."[^9]
 
 "Wives that I married,  
        sons that I fathered:  
@@ -214,7 +214,7 @@ A message arrives for El:
 
 The Gentle Gods journey to the field;  
        they hunt at the edge of the wilderness.  
-Then they approach the Guardian of Farmland [^10]  
+Then they approach the Guardian of Farmland[^10]  
        and call out to the Guardian of Farmland:  
        "Oi, guardian! Guardian! Open up!"  
 So he opens up a passage near them,  
