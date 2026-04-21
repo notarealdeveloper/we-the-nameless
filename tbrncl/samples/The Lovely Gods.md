@@ -38,7 +38,7 @@ he took (them) and set (them) in his house,
 
 The vision of a postdoctoral scholar with a PhD
 in the languages of the ancient Near East,
-as it was [written]((https://mostlydeadlanguages.tumblr.com/post/171802743513/ktu-123-dawn-and-duskthe-gentle-gods) in the place made for tumbling
+as it was [written](https://mostlydeadlanguages.tumblr.com/post/171802743513/ktu-123-dawn-and-duskthe-gentle-gods) in the place made for tumbling
 and which was called Mostly Dead Languages
 and called also Slightly Alive Translations,
 and which was published by the author on
@@ -49,6 +49,8 @@ decisive overriding factor or final resource, whose
 name means also a dependable or exemplary person.
 
 The scholar spoke as follows.
+
+---
 
 It’s been a while since my last translation, but I hope you enjoy this one as much as I do. It’s an odd Ugaritic text: the first half is a fragmented mish-mash of ritual instructions and mythic imagery, while the second half is a ribald tale about Ilu, the Father-God, and the consequences of his libido. I have included several notes to outline my own read of the text, but I want to emphasize that many of its elements are still debated by scholars, so you should take my observations with several grains of salt. Notably, I argue that in the “bawdy comedy” section, the text includes a fairly explicit depiction of two women having sex with each other.
 
@@ -188,7 +190,7 @@ If you’ve got wine,
     give it over, so we can drink!”
 
 The Guardian answers them,  
-    “There’s wine that comes from Th[…] …”  
+    “There’s wine that comes from Th\[…\] …”  
 
 … appears.  
 He serves a measure of his wine …  
