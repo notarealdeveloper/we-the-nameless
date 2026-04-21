@@ -99,9 +99,7 @@ Apparently the joke was all the rage back when it was written.
 
 About 4000 years after that, just a few years ago, the old Sumerian Dog Joke got popular again.
 
-
 ![[sumerian-dog-joke-01.png]]
-
 
 No one understands it.
 
