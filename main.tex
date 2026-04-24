@@ -463,25 +463,10 @@
 \def\commentarysize{\normalsize}
 
 \NewDocumentCommand{\as}{ m O{l} +m }{%
-    \par
     \begingroup
-    \parindent=0pt
-    \parskip=0pt
     \commentarysize
     \rmfamily
-    \def\tempa{#2}%
-    \def\tempb{c}%
-    \def\tempc{r}%
-    \ifx\tempa\tempb
-        \centering
-    \else
-        \ifx\tempa\tempc
-            \raggedleft
-        \else
-            \raggedright
-        \fi
-    \fi
-    #1{#3}\par
+    #1{#3}%
     \endgroup
 }
 
