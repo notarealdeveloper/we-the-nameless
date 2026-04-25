@@ -491,10 +491,14 @@
 % ------------------------------------------------------------
 
 \newcommand{\DeclareSpeakerTriplet}[1]{%
-    \expandafter\newcommand\csname as#1l\endcsname[1]{\csname as#1\endcsname[l]{##1}}%
-    \expandafter\newcommand\csname as#1c\endcsname[1]{\csname as#1\endcsname[c]{##1}}%
-    \expandafter\newcommand\csname as#1r\endcsname[1]{%
-        \csname as#1\endcsname[l]{\makebox[\linewidth][r]{##1}}%
+    \expandafter\newcommand\csname a#1l\endcsname[1]{%
+		\csname a#1\endcsname[l]{##1}%
+	}%
+    \expandafter\newcommand\csname a#1c\endcsname[1]{%
+		\csname a#1\endcsname[c]{##1}
+	}%
+    \expandafter\newcommand\csname a#1r\endcsname[1]{%
+		\csname a#1\endcsname[l]{\makebox[\linewidth][r]{##1}}%
     }%
 }
 
