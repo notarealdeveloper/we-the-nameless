@@ -7,18 +7,37 @@ Book Two Is Here
       Go!
 
 
+## Gen To(d)o
+
+- Turn Havilah Pishon notes into LaTeX.
+- Get quickly to Lamech and Genesis 5.
+
+
 ## Gen 2
 
-Poop now.
-Then take another ADXR.
-Then have GPT turn your Havilah Pishon notes into LaTeX.
-Today I want you to get to Lamech and Genesis 5.
+The initial wave of puns establishes the protocol.
+After that, J need not explain what she's doing.
+The attentive reader can figure it out.
+And they'll have to.
+
+
+- Kish
+- Kesh
+- Havilah & Pishon
+- Lapis Lazuli & Carnelian
+
 
 ## Gen 3
 
 Turn J into Paleo Hebrew.
 
-We need Paleo Hebrew to understand what's going on in the Lamech and Book of Records sections.
+First just get Phoenician working OUTSIDE the verse blocks, and don't worry about RTL.
+
+A and B need to be able to use Paleo Hebrew in the commentary sections.
+
+We'll need Paleo Hebrew to give the reader a feeling that they
+understand what's going on in the Lamech and Book of Records sections.
+
 
 ## Gen 4
 

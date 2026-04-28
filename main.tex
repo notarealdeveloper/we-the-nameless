@@ -39,13 +39,12 @@
 % Languages and fonts
 % ------------------------------------------------------------
 
-\newcommand{\HebrewFontPath}{fonts/}
+\newcommand{\LocalFontPath}{fonts/}
 
 \setmainfont{FreeSerif}
 
+% English fonts
 \newfontfamily\EnglishFont{FreeSerif}
-
-% English per-source fonts
 \newfontfamily\EnglishJFont{FreeSerif}
 \newfontfamily\EnglishEFont{FreeSerif}
 \newfontfamily\EnglishPFont{FreeSerif}
@@ -54,23 +53,29 @@
 \newfontfamily\EnglishRecordsFont{FreeSerif}
 \newfontfamily\EnglishOtherFont{FreeSerif}
 
+% The Ancients
 \newfontfamily\Cun[
-    Path=\HebrewFontPath,
-    %Script=Cuneiform,
+    Path=\LocalFontPath,
+    %Script=Idk,
     Scale=1.22
 ]{noto-sans-cuneiform-regular.ttf}
 
+\newfontfamily\Paleo[
+    Path=\LocalFontPath,
+    %Script=Cuneiform,
+    Scale=1.22
+]{noto-sans-phoenician-regular.ttf}
 
 % Base Hebrew
 \newfontfamily\HebrewFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.22
 ]{hebrew-david.ttf}
 
 % J = simple and readable
 \newfontfamily\HebrewJFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.42
 ]{hebrew-david.ttf}
@@ -78,33 +83,33 @@
 
 % P = Ezra (fancier)
 \newfontfamily\HebrewPFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.23
 ]{hebrew-ezra.ttf}
 
 % R = Ezra + highlight
 \newfontfamily\HebrewRFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.10
 ]{hebrew-ezra.ttf}
 
 % Optional: keep consistency
 \newfontfamily\HebrewRJEFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.10
 ]{hebrew-ezra.ttf}
 
 \newfontfamily\HebrewRecordsFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.10
 ]{hebrew-ezra.ttf}
 
 \newfontfamily\HebrewOtherFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.10
 ]{hebrew-other.ttf}
@@ -114,21 +119,21 @@
 
 % When a character quotes J
 \newfontfamily\HebrewCommentaryJFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.00
 ]{hebrew-square.ttf}
 
 % When a character quotes E
 \newfontfamily\HebrewCommentaryEFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.00
 ]{hebrew-square.ttf}
 
 % When a character quotes P
 \newfontfamily\HebrewCommentaryPFont[
-    Path=\HebrewFontPath,
+    Path=\LocalFontPath,
     Script=Hebrew,
     Scale=1.00
 ]{hebrew-square.ttf}
