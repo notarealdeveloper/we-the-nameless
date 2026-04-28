@@ -9,10 +9,9 @@ And they'll have to.
 ### Pishon
 
 Pishon: [פישון](https://en.wiktionary.org/wiki/%D7%A4%D7%99%D7%A9%D7%95%D7%9F)
-- Unknown: Look for parallels elsewhere in the text.
-- Supposedly from the root פ־ו־שׁ (p-v-sh) or פ־י־שׁ (p-y-sh), meaning "to spring about".
-- Pishon (one of the four rivers in Eden) 
+- One of the four rivers in Eden.
 - Only used once in the Bible, in the passage quoted above.
+- Possibly from the root פ־ו־שׁ (p-w-sh) or פ־י־שׁ (p-i-sh), meaning "to spring about".
 - Ugaritic analogue: [To open, to spread out](https://chatgpt.com/share/69d6b51d-cb54-83e8-9d94-61380946ca3c)
 
 Pāšāh (פָּשָׁה)
