@@ -495,7 +495,7 @@
 		\csname a#1\endcsname[l]{##1}%
 	}%
     \expandafter\newcommand\csname a#1c\endcsname[1]{%
-		\csname a#1\endcsname[c]{##1}
+		\csname a#1\endcsname[c]{\begin{quote}\centering ##1 \end{quote}}
 	}%
     \expandafter\newcommand\csname a#1r\endcsname[1]{%
 		\csname a#1\endcsname[l]{\makebox[\linewidth][r]{##1}}%
@@ -512,6 +512,11 @@
 \DeclareSpeakerTriplet{R}
 \DeclareSpeakerTriplet{RJE}
 
+
+\newcommand{\redacted}[1]{%
+  {\setlength{\fboxsep}{0pt}%
+   \colorbox{Pcolor}{\strut\phantom{#1}}}%
+}
 
 % ------------------------------------------------------------
 % Document
