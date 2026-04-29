@@ -1,5 +1,7 @@
 # Proto-Sinaitic Local Font — Minimal Working Project
 
+Note: The glyphs are currently dummy files, not real Proto Sinaitic.
+
 This is a tiny Linux-friendly font project for making a local experimental Proto-Sinaitic / early alphabet font from SVG glyphs.
 
 It uses:
