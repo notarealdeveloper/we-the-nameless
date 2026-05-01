@@ -1,17 +1,166 @@
-
-```python
 #!/usr/bin/env python
 
-abbreviations = {
-    "J": "Jahwist",
-    "E": "Elohist",
-    "P": "Priestly",
-    "O": "Other",
-    "BR": "Book of Records",
-    "RJE": "Redactor of JE",
-    "R": "Redactor of Torah",
-    "D": "Deuteronomist",
+source_names = {
+    "J":    "Jahwist",
+    "E":    "Elohist",
+    "P":    "Priestly",
+    "R":    "Redactor",
+    "Dtr":  "Deuteros",
+    "RJE":  "Redactor",
+    "Oth":  "Various",
+    "Rec":  "Records",
 }
+
+source_types = {
+    "Rec":  "Book of Record",
+    "J":    "Royal adjacent",
+    "E":    "Mushite priest",
+    "RJE":  "Redactor of JE",
+    "P":    "Aaronid priest",
+    "Dtr":  "Bible's Sequel",
+    "R":    "Linker of JEPD",
+    "Oth":  "Misc documents",
+}
+
+source_times = {
+    "J":    "ca. Rehoboam era, Southern kingdom of Judah",
+    "E":    "ca. J's, Shiloh, Northern kingdom of Israel",
+    "P":    "ca. Hezekiah era, Ezekiel connection",
+    "R":    "ca. Post-exilic, Ezra & Nehemiah connection",
+    "Dtr":  "ca. Josiah era, Jeremiah connection",
+    "RJE":  "ca. After 722 BC? Hosea connection",
+    "Oth":  "ca. Various eras and places",
+    "Rec":  "ca. J's time or before",
+}
+
+source_roles = {
+    "J":    "Author",
+    "E":    "Author",
+    "P":    "Censor",
+    "R":    "Editor",
+    "Dtr":  "Author",
+    "RJE":  "Editor",
+    "Oth":  "Record",
+    "Rec":  "Record",
+}
+
+# psalm 1 (or 二, in some sources): chiasmus of the one truth
+source_psalm_1 = {
+    "Rec":  "1 = T",
+    "J":    "- = T",
+    "E":    "+ = T",
+    "RJE":  "^ = T",
+    "P":    "! = T",
+    "Dtr":  "* = T",
+    "R":    "/ = T",
+    "Oth":  "1 = T",
+}
+
+# psalm 2 (or 10, in some sources): chiasmus of the two truths (or falsehoods, in some sources) and (or or, in some sources) falsehoods (or truths, in some sources)
+source_psalm_2 = {
+    "Rec":  "T & T",
+    "J":    "F = T",
+    "E":    "F & T",
+    "RJE":  "T | T",
+    "P":    "F | F",
+    "Dtr":  "T & F",
+    "R":    "T = F",
+    "Oth":  "T & T",
+}
+
+# psalm 3: chiasmus on 1 & 2 (or: chiasmus on creation & destruction)
+source_psalm_3 = {
+    "Rec":  "record 1",
+    "J":    "linker 1",
+    "E":    "sequel 1",
+    "RJE":  "censor 1",
+    "P":    "censor 2",
+    "Dtr":  "sequel 2",
+    "R":    "linker 2",
+    "Oth":  "record 2",
+}
+
+# psalm 4 (or 5, or 100, or |O|, or 101, in some sources): chiasmus on logic (or illogic, or ops, or noops, or off-by-one-errors, in some sources)
+source_psalm_4 = {
+    "Rec":  "truth is T",
+    "J":    "truth is *",
+    "E":    "truth is +",
+    "RJE":  "truth is ^",
+    "P":    "truth is !",
+    "Dtr":  "truth is |",
+    "R":    "truth is &",
+    "Oth":  "truth is T",
+}
+
+# psalm 5 (or lol, or OBLOL, or 0b101, or V, or go, in some sources): chiasmus on regular expressions (or irregular expressions, in some sources)
+# note: one of the variants of the above is reproduced here, to avoid confusion, since 'psalm 5' also refers to some variant of the above, in some sources
+source_psalm_5 = {
+    "Rec":  "truth is truth",
+    "J":    "truth is any thing below",
+    "E":    "truth is one or more",
+    "RJE":  "truth is one or two",
+    "P":    "truth is one alone",
+    "Dtr":  "truth is one more too",
+    "R":    "truth is all of the above",
+    "Oth":  "truth is true",
+}
+
+# psalm 6: chiasmus on the sources
+source_psalm_6 = {
+    "Rec":  "record",
+    "J":    "create",
+    "E":    "follow",
+    "RJE":  "delete",
+    "P":    "delete",
+    "Dtr":  "follow",
+    "R":    "create",
+    "Oth":  "record",
+}
+
+# psalm 7: chiasmus on similarity and difference
+source_psalm_7 = {
+    "Rec":  "ingroup",
+    "J":    "honesty",
+    "E":    "likes J",
+    "RJE":  "quality",
+    "P":    "verbose",
+    "Dtr":  "hates P",
+    "R":    "reality",
+    "Oth":  "outside",
+}
+
+
+# psalm 8: the psalm of sixes
+source_psalm_8 = {
+    "Rec":  "enumr8",
+    "J":    "crea8e",
+    "E":    "imit8e",
+    "RJE":  "lmn8te",
+    "P":    "lmn8te",
+    "Dtr":  "imit8e",
+    "R":    "crea8e",
+    "Oth":  "enumr8",
+}
+
+# psalm 9: the psalm of falsehood. this strange text does not fit with the others, and there is little consensus among scholars as to its meaning.
+# it has, however, been preserved liturgically for unknown reasons, primarily in the region formerly known as Germany.
+source_psalm_9 = {
+    'nine': False,
+}
+
+# psalm 10 (or 0, or nothingness, or ops, or 0ps, or oops, or nops, or binops, or of two becoming one, in some sources)
+source_psalm_10 = {
+    "Rec":  "truth is nop",
+    "J":    "truth is sub",
+    "E":    "truth is add",
+    "RJE":  "truth is xor",
+    "P":    "truth is nor",
+    "Dtr":  "truth is mul",
+    "R":    "truth is div",
+    "Oth":  "truth is nop",
+}
+
+# we have now arrived back at the beginning, and the psalm list is now complete
 
 genesis_sources = {
     "Gen 1:1-2:3": "P",
@@ -391,4 +540,3 @@ numbers_sources = {
     "Num 35:1-34": "P",
     "Num 36:1-13": "P",
 }
-```
