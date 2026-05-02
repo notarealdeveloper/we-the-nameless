@@ -1,0 +1,138 @@
+#!/usr/bin/env python
+
+import csv
+import html
+import re
+import time
+import unicodedata
+from urllib.parse import quote
+
+import requests
+
+OUTFILE = "hebrew-tanach.tsv"
+
+BOOKS = {
+    "Genesis": 50,
+    "Exodus": 40,
+    "Leviticus": 27,
+    "Numbers": 36,
+    "Deuteronomy": 34,
+    "Joshua": 24,
+    "Judges": 21,
+    "I Samuel": 31,
+    "II Samuel": 24,
+    "I Kings": 22,
+    "II Kings": 25,
+    "Isaiah": 66,
+    "Jeremiah": 52,
+    "Ezekiel": 48,
+    "Hosea": 14,
+    "Joel": 4,
+    "Amos": 9,
+    "Obadiah": 1,
+    "Jonah": 4,
+    "Micah": 7,
+    "Nahum": 3,
+    "Habakkuk": 3,
+    "Zephaniah": 3,
+    "Haggai": 2,
+    "Zechariah": 14,
+    "Malachi": 3,
+    "Psalms": 150,
+    "Proverbs": 31,
+    "Job": 42,
+    "Song of Songs": 8,
+    "Ruth": 4,
+    "Lamentations": 5,
+    "Ecclesiastes": 12,
+    "Esther": 10,
+    "Daniel": 12,
+    "Ezra": 10,
+    "Nehemiah": 13,
+    "I Chronicles": 29,
+    "II Chronicles": 36,
+}
+
+HEBREW_MARKS = re.compile(r"[\u0591-\u05BD\u05BF-\u05C7]")
+HTML_TAGS = re.compile(r"<[^>]+>")
+
+
+def strip_html(s):
+    s = HTML_TAGS.sub("", s)
+    return html.unescape(s)
+
+
+def strip_niqqud_and_cantillation(s):
+    s = unicodedata.normalize("NFD", s)
+    s = HEBREW_MARKS.sub("", s)
+    s = unicodedata.normalize("NFC", s)
+    return s
+
+
+def clean_hebrew(s):
+    s = strip_html(s)
+    s = strip_niqqud_and_cantillation(s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
+def get_chapter(book, chapter):
+    tref = quote(f"{book} {chapter}")
+    url = f"https://www.sefaria.org/api/v3/texts/{tref}"
+
+    params = {
+        "version": "Tanach with Text Only",
+        "lang": "he",
+    }
+
+    print(f"[GET] {book} {chapter}")
+
+    r = requests.get(url, params=params, timeout=30)
+    if r.status_code != 200:
+        print(f"[ERROR] HTTP {r.status_code}: {book} {chapter}")
+        print(r.text[:500])
+        return []
+
+    data = r.json()
+
+    # v3 responses vary a little by text/version; this handles the common shapes.
+    versions = data.get("versions", [])
+    if versions:
+        text = versions[0].get("text", "")
+    else:
+        text = data.get("he", data.get("text", ""))
+
+    if isinstance(text, str):
+        # Single-verse chapter edge case.
+        return [clean_hebrew(text)]
+
+    if isinstance(text, list):
+        return [clean_hebrew(v) for v in text]
+
+    print(f"[WARN] Unknown text shape for {book} {chapter}: {type(text)}")
+    return []
+
+
+def main():
+    with open(OUTFILE, "w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f, delimiter="\t")
+        writer.writerow(["Book", "Chapter", "Verse", "Hebrew"])
+
+        for book, chapter_count in BOOKS.items():
+            for chapter in range(1, chapter_count + 1):
+                verses = get_chapter(book, chapter)
+
+                if not verses:
+                    print(f"[WARN] No verses returned: {book} {chapter}")
+                    continue
+
+                for i, hebrew in enumerate(verses, start=1):
+                    writer.writerow([book, chapter, i, hebrew])
+
+                time.sleep(0.15)
+
+    print(f"[DONE] Wrote {OUTFILE}")
+
+
+if __name__ == "__main__":
+    main()

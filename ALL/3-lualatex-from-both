@@ -1,0 +1,323 @@
+#!/usr/bin/env python3
+
+import ast
+import csv
+import os
+import re
+from pathlib import Path
+
+SRC_MD = Path("src")
+HEBREW_TSV = Path("hebrew-tanach.tsv")
+SOURCE_MAP_FILE = Path("source-map")
+OUT_DIR = Path("lualatex-src")
+
+BOOKS = {
+    "Genesis": {
+        "dir": "1-genesis",
+        "abbr": "Gen",
+        "source_dict": "genesis_sources",
+    },
+    "Exodus": {
+        "dir": "2-exodus",
+        "abbr": "Exo",
+        "source_dict": "exodus_sources",
+    },
+    "Leviticus": {
+        "dir": "3-leviticus",
+        "abbr": "Lev",
+        "source_dict": "leviticus_sources",
+    },
+    "Numbers": {
+        "dir": "4-numbers",
+        "abbr": "Num",
+        "source_dict": "numbers_sources",
+    },
+    # Deuteronomy deferred.
+}
+
+SOURCE_TO_MACRO = {
+    "J": "J",
+    "E": "E",
+    "P": "P",
+    "R": "R",
+    "RJE": "RJE",
+    "BR": "BookOfRecords",
+    "O": "Other",
+    "Other": "Other",
+}
+
+DEFAULT_SOURCE = "Other"
+
+
+def load_source_maps(path):
+    """
+    Loads only *_sources dicts from the Python source-map file.
+    This avoids importing/executing arbitrary non-dict code.
+    """
+    print(f"[INFO] Loading source map: {path}")
+
+    text = path.read_text(encoding="utf-8")
+    tree = ast.parse(text)
+
+    maps = {}
+
+    for node in tree.body:
+        if not isinstance(node, ast.Assign):
+            continue
+
+        for target in node.targets:
+            if isinstance(target, ast.Name) and target.id.endswith("_sources"):
+                value = ast.literal_eval(node.value)
+                maps[target.id] = value
+                print(f"[INFO] Loaded {target.id}: {len(value)} entries")
+
+    return maps
+
+
+def parse_ref(ref):
+    """
+    Handles:
+      Gen 15:1
+      Gen 15:1-6
+      Exo 5:1-6:1
+      Lev 1-27
+      Exo 15:22-25a  -> treats 25a as verse 25
+    """
+    ref = ref.strip()
+
+    m = re.fullmatch(r"([A-Za-z]+)\s+(\d+)-(\d+)", ref)
+    if m:
+        abbr, start_ch, end_ch = m.groups()
+        return abbr, int(start_ch), None, int(end_ch), None
+
+    m = re.fullmatch(
+        r"([A-Za-z]+)\s+(\d+):(\d+)[a-z]?-(?:(\d+):)?(\d+)[a-z]?",
+        ref,
+    )
+    if m:
+        abbr, start_ch, start_v, end_ch, end_v = m.groups()
+        start_ch = int(start_ch)
+        start_v = int(start_v)
+        end_ch = int(end_ch) if end_ch else start_ch
+        end_v = int(end_v)
+        return abbr, start_ch, start_v, end_ch, end_v
+
+    m = re.fullmatch(r"([A-Za-z]+)\s+(\d+):(\d+)[a-z]?", ref)
+    if m:
+        abbr, ch, v = m.groups()
+        return abbr, int(ch), int(v), int(ch), int(v)
+
+    raise ValueError(f"Could not parse source-map ref: {ref!r}")
+
+
+def expand_source_map(source_maps):
+    """
+    Returns lookup:
+      ("Genesis", 15, 1) -> "J"
+      ("Exodus", 5, 1) -> "RJE"
+    """
+    lookup = {}
+
+    for book, info in BOOKS.items():
+        dict_name = info["source_dict"]
+        abbr = info["abbr"]
+        entries = source_maps.get(dict_name, {})
+
+        for ref, source in entries.items():
+            ref_abbr, ch1, v1, ch2, v2 = parse_ref(ref)
+
+            if ref_abbr != abbr:
+                print(f"[WARN] Unexpected abbr in {dict_name}: {ref}")
+                continue
+
+            # Whole-chapter range, e.g. Lev 1-27
+            if v1 is None and v2 is None:
+                for ch in range(ch1, ch2 + 1):
+                    lookup[(book, ch, None)] = source
+                continue
+
+            # Same-chapter verse range
+            if ch1 == ch2:
+                for v in range(v1, v2 + 1):
+                    lookup[(book, ch1, v)] = source
+                continue
+
+            # Cross-chapter ranges are uncommon in your map.
+            # We cannot know chapter lengths here, so mark only endpoints and warn.
+            print(f"[WARN] Cross-chapter source range needs special handling: {ref} -> {source}")
+            lookup[(book, ch1, v1)] = source
+            lookup[(book, ch2, v2)] = source
+
+    print(f"[INFO] Expanded source lookup: {len(lookup)} verse/chapter entries")
+    return lookup
+
+
+def source_for(book, chapter, verse, source_lookup):
+    source = source_lookup.get((book, chapter, verse))
+
+    if source is None:
+        # For whole-chapter source entries like Lev 1-27
+        source = source_lookup.get((book, chapter, None))
+
+    if source is None:
+        print(f"[WARN] Missing source for {book} {chapter}:{verse}; using {DEFAULT_SOURCE}")
+        return DEFAULT_SOURCE
+
+    if "," in source:
+        first = source.split(",", 1)[0].strip()
+        print(f"[WARN] Mixed source {book} {chapter}:{verse}: {source!r}; using {first!r}")
+        return first
+
+    return source.strip()
+
+
+def macro_suffix_for_source(source):
+    suffix = SOURCE_TO_MACRO.get(source)
+
+    if not suffix:
+        print(f"[WARN] Unknown source {source!r}; using Other")
+        suffix = "Other"
+
+    return suffix
+
+
+def load_hebrew():
+    hebrew = {}
+
+    with open(HEBREW_TSV, encoding="utf-8") as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        for row in reader:
+            key = (row["Book"], int(row["Chapter"]), int(row["Verse"]))
+            hebrew[key] = row["Hebrew"].strip()
+
+    print(f"[INFO] Loaded {len(hebrew)} Hebrew verses")
+    return hebrew
+
+
+def latex_escape_english(text):
+    replacements = {
+        "&": r"\&",
+        "%": r"\%",
+        "#": r"\#",
+        "_": r"\_",
+    }
+
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+
+    return text
+
+
+def clean_english(block):
+    # Keep verse text before footnotes.
+    block = block.split("\n---\n", 1)[0]
+
+    # Drop leading superscript verse number.
+    block = re.sub(r"^[⁰¹²³⁴⁵⁶⁷⁸⁹]+\s*", "", block.strip())
+
+    block = latex_escape_english(block)
+    return block.strip()
+
+
+def parse_markdown_chapter(path):
+    text = path.read_text(encoding="utf-8")
+
+    pattern = re.compile(
+        r"##\s+([A-Za-z ]+)\s+(\d+):(\d+)\s*\n+[-]+\n+(.*?)(?=\n[-]+\n+##|\Z)",
+        re.DOTALL,
+    )
+
+    verses = []
+
+    for m in pattern.finditer(text):
+        book = m.group(1).strip()
+        chapter = int(m.group(2))
+        verse = int(m.group(3))
+        body = m.group(4).strip()
+
+        verses.append({
+            "book": book,
+            "chapter": chapter,
+            "verse": verse,
+            "english": clean_english(body),
+        })
+
+    print(f"[INFO] Parsed {len(verses)} verses from {path}")
+    return verses
+
+
+def render_verse(v, hebrew_text, source):
+    suffix = macro_suffix_for_source(source)
+
+    hmacro = f"h{suffix}"
+    emacro = f"e{suffix}"
+
+    return f"""\\Verse{{{v["verse"]}}}
+{{
+\t\\{hmacro}{{{hebrew_text}}}
+}}
+{{
+\t\\{emacro}{{
+\t\t{v["english"]}\\\\
+\t}}
+}}
+{{
+}}
+
+"""
+
+
+def render_chapter(book, chapter, verses, hebrew, source_lookup):
+    out = f"\\Chapter{{{chapter}}}\n\n"
+
+    for v in verses:
+        heb = hebrew.get((book, chapter, v["verse"]))
+
+        if not heb:
+            print(f"[WARN] Missing Hebrew for {book} {chapter}:{v['verse']}")
+            heb = ""
+
+        source = source_for(book, chapter, v["verse"], source_lookup)
+
+        out += render_verse(v, heb, source)
+
+    return out
+
+
+def main():
+    hebrew = load_hebrew()
+    source_maps = load_source_maps(SOURCE_MAP_FILE)
+    source_lookup = expand_source_map(source_maps)
+
+    OUT_DIR.mkdir(exist_ok=True)
+
+    for book, info in BOOKS.items():
+        in_dir = SRC_MD / info["dir"]
+        out_dir = OUT_DIR / info["dir"]
+
+        if not in_dir.exists():
+            print(f"[WARN] Missing source dir: {in_dir}")
+            continue
+
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+        for md_path in sorted(in_dir.glob("*.md")):
+            chapter = int(md_path.stem)
+            verses = parse_markdown_chapter(md_path)
+
+            if not verses:
+                print(f"[WARN] No verses found in {md_path}")
+                continue
+
+            tex = render_chapter(book, chapter, verses, hebrew, source_lookup)
+
+            out_path = out_dir / f"{chapter:02d}.tex"
+            out_path.write_text(tex, encoding="utf-8")
+
+            print(f"[WRITE] {out_path}")
+
+    print("[DONE]")
+
+
+if __name__ == "__main__":
+    main()

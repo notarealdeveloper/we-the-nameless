@@ -9,9 +9,9 @@ Book Two Is Here
 
 ## Gen To(d)o
 
-- Turn Havilah Pishon notes into LaTeX.
-- Get quickly to Lamech and Genesis 5.
+Turn Havilah Pishon notes into LaTeX.
 
+Oedipus example of green x red check: "You should have found the murderer the king a mighty king had been destroyed."
 
 ## Gen 2
 

@@ -1,0 +1,224 @@
+#!/usr/bin/env python
+
+import os
+import re
+from collections import defaultdict
+
+INPUT_FILE = "commentary-on-the-torah-full.txt"
+OUTPUT_DIR = "src"
+
+BOOK_ORDER = [
+    "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy"
+]
+
+def book_dir_name(book):
+    if book not in BOOK_ORDER:
+        print(f"[WARN] Book '{book}' not in BOOK_ORDER")
+        return f"unknown-{book.lower()}"
+    idx = BOOK_ORDER.index(book) + 1
+    return f"{idx}-{book.lower()}"
+
+
+def clean_text(text):
+    print("[DEBUG] Cleaning text chunk...")
+
+    # --- 1. Remove [Image]
+    text = re.sub(r"\[Image\]", "", text)
+
+    # --- 2. Add space after superscripts
+    text = re.sub(r"([¹²³⁴⁵⁶⁷⁸⁹⁰])([A-Za-z])", r"\1 \2", text)
+
+    # --- 3. Add "Footnote"
+    text = re.sub(r"\n(\d+:\d+\.)", r"\nFootnote \1", text)
+
+    # --- 4. Remove cruft like:
+    # IN THE BEGINNING\n\n1\n
+    text = re.sub(r"\n[A-Z\s]+\n+\d+\n", "\n", text)
+
+    # --- 5. Transform headers
+    # Match:
+    # ------
+    #
+    # Genesis 1:1
+    #
+    # ------
+    #
+    # → keep first hrule, convert middle to ##, drop second hrule
+
+    def header_rewrite(match):
+        hrule = match.group(1)
+        title = match.group(2)
+        return f"{hrule}\n\n## {title}\n\n"
+
+    text = re.sub(
+        r"(-{5,})\s*\n\s*([A-Za-z]+\s+\d+:\d+)\s*\n\s*(-{5,})",
+        header_rewrite,
+        text
+    )
+
+    # --- 6. Clean extra blank lines
+    text = re.sub(r"\n{3,}", "\n\n", text)
+
+    return text.strip() + "\n"
+
+def clean_text(text):
+    print("[DEBUG] Cleaning text chunk...")
+
+    # --- 1. Remove [Image]
+    text = re.sub(r"\[Image\]", "", text)
+
+    # --- 2. Add space after superscripts
+    text = re.sub(r"([¹²³⁴⁵⁶⁷⁸⁹⁰])([A-Za-z])", r"\1 \2", text)
+
+    # --- 3. Add "Footnote"
+    text = re.sub(r"\n(\d+:\d+\.)", r"\nFootnote \1", text)
+
+    # --- 4. Remove cruft
+    text = re.sub(r"\n[A-Z\s]+\n+\d+\n", "\n", text)
+
+    # --- 5. Rewrite header
+    def header_rewrite(match):
+        hrule = match.group(1)
+        title = match.group(2)
+        return f"{hrule}\n\n## {title}\n\n{hrule}\n\n"
+
+    text = re.sub(
+        r"(-{5,})\s*\n\s*([A-Za-z]+\s+\d+:\d+)\s*\n\s*-+",
+        header_rewrite,
+        text
+    )
+
+    # --- 6. Split verse vs footnotes and insert ---
+    def split_verse_block(block):
+        parts = re.split(r"\n(?=Footnote\s+\d+:\d+\.)", block)
+
+        if len(parts) == 1:
+            return block  # no footnotes
+
+        verse = parts[0].strip()
+        notes = "\n\n".join(p.strip() for p in parts[1:])
+
+        return f"{verse}\n\n---\n\n{notes}"
+
+    # Apply splitting inside each section
+    sections = re.split(r"(?=\n?-{5,}\n)", text)
+
+    processed_sections = []
+    for sec in sections:
+        if "Footnote" in sec:
+            processed_sections.append(split_verse_block(sec))
+        else:
+            processed_sections.append(sec)
+
+    text = "".join(processed_sections)
+
+    # --- 7. Clean spacing
+    text = re.sub(r"\n{3,}", "\n\n", text)
+
+    # --- Ensure blank lines around any hrule (---, ----, etc.)
+    def normalize_hrules(text):
+        lines = text.splitlines()
+        out = []
+
+        for i, line in enumerate(lines):
+            stripped = line.strip()
+
+            # Detect hrule: line that is mostly dashes
+            if re.fullmatch(r"-{3,}", stripped):
+                # Ensure blank line before
+                if out and out[-1].strip() != "":
+                    out.append("")
+
+                out.append(stripped)
+
+                # Ensure blank line after (peek ahead)
+                if i + 1 < len(lines) and lines[i + 1].strip() != "":
+                    out.append("")
+            else:
+                out.append(line)
+
+        return "\n".join(out)
+
+    text = normalize_hrules(text)
+
+    return text.strip() + "\n"
+
+def main():
+    print("[INFO] Starting script...")
+
+    if not os.path.exists(INPUT_FILE):
+        print(f"[ERROR] File not found: {INPUT_FILE}")
+        return
+
+    with open(INPUT_FILE, "r", encoding="utf-8") as f:
+        data = f.read()
+
+    print(f"[INFO] Loaded file, length = {len(data)} characters")
+
+    pattern = r"-+\s*\n\s*([A-Za-z]+)\s+(\d+):\d+\s*\n\s*-+"
+    matches = list(re.finditer(pattern, data))
+
+    print(f"[INFO] Found {len(matches)} section matches")
+
+    if len(matches) == 0:
+        print("[ERROR] No matches found. Regex likely incorrect.")
+        print("[DEBUG] Showing first 500 chars of file:")
+        print(data[:500])
+        return
+
+    chapters = defaultdict(list)
+
+    for i, match in enumerate(matches):
+        book = match.group(1)
+        chapter = int(match.group(2))
+
+        print(f"[DEBUG] Match {i}: book={book}, chapter={chapter}")
+
+        start = match.start()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(data)
+
+        chunk = data[start:end]
+
+        if not chunk.strip():
+            print(f"[WARN] Empty chunk for {book} {chapter}")
+        else:
+            print(f"[DEBUG] Chunk length = {len(chunk)}")
+
+        chapters[(book, chapter)].append(chunk)
+
+    print(f"[INFO] Total chapter groups: {len(chapters)}")
+
+    if not chapters:
+        print("[ERROR] No chapters accumulated.")
+        return
+
+    for (book, chapter), chunks in chapters.items():
+        print(f"[INFO] Writing {book} {chapter}...")
+
+        book_dir = book_dir_name(book)
+        dir_path = os.path.join(OUTPUT_DIR, book_dir)
+
+        if not os.path.exists(dir_path):
+            print(f"[DEBUG] Creating directory: {dir_path}")
+            os.makedirs(dir_path, exist_ok=True)
+        else:
+            print(f"[DEBUG] Directory exists: {dir_path}")
+
+        filename = f"{chapter:02d}.md"
+        filepath = os.path.join(dir_path, filename)
+
+        full_text = "\n".join(chunks)
+
+        print(f"[DEBUG] Combined chunk length: {len(full_text)}")
+
+        cleaned = clean_text(full_text)
+
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(cleaned)
+
+        print(f"[SUCCESS] Wrote file: {filepath}")
+
+    print("[DONE] All files written.")
+
+if __name__ == "__main__":
+    main()
