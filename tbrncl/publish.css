@@ -717,3 +717,8 @@ h1, h2, h3, h4, h5, h6 {
 .slide-background-content {
     color: var(--background) !important;
 }
+
+/* Remove the built-in underline from Publish headings */
+h2 {
+    border-bottom: none !important;
+}

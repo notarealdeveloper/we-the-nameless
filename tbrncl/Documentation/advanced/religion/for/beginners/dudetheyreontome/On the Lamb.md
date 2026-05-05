@@ -64,8 +64,7 @@ echo B 。C .
 
 ---
 
-## Scene 4 - Introduction to Apocalypsingop0 in 8[m]⁵Welcome to GboardWelcome to Gboard clipboard, any text you copy will be saved here.Welcome to Gboard clipboard, any text you copy will be saved here.Welcome to Gboard clipboard, any text you copy will be saved here.Welcome to Gboard clipboard, any text you copy will be saved here.Welcome to Gboard clipboard, any text you copy will be saved here.Welcome to Gboard clipboard, any text you copy will be saved here. clipboard, any text you copy will be saved here.Welcome to Gboard clipboard, any text you copy will be saved here.Welcome to Gboard clipboard, any text you copy will be saved here.
-
+## Scene 4 - Introduction to Apocalypsing
 
 <video style="max-width:100%; height:auto;" src="https://fukkot.com/4-introduction-to-apocalypsing.mp4" controls=""></video>
 
