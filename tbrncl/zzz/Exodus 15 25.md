@@ -1,4 +1,4 @@
-The word 
+The word חק
 
 1. [law](https://en.wiktionary.org/wiki/law#English "law"), [statute](https://en.wiktionary.org/wiki/statute#English "statute") 
 2. [rule](https://en.wiktionary.org/wiki/rule#English "rule")
