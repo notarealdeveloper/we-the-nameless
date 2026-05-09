@@ -1,0 +1,3 @@
+David Koresh died at age 33 around passover. He gets a book in We the Nameless, with commentary. See link in the details section. Best quote in the above link: "Although his interpretation is unique in its specific application and reference, it is similar in method and style to other well known exegetes such as Isaac Newton, Joseph Smith..." WOW. We the Nameless has to have a chapter about The Authors: Isaac (Newton), Joseph (Smith) and David (Koresh).
+
+https://ccat.sas.upenn.edu/gopher/text/religion/koresh/Koresh%20Seals
