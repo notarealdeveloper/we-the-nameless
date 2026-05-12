@@ -1,5 +1,5 @@
 
-![[Screenshot_20260509-112849.png]]
+![[exodus-12-abracadabra.png]]
 
-![[Screenshot_20260509-112923.png]]
+![[exodus-412-LHS-NHS.png]]
 

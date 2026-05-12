@@ -29,33 +29,33 @@ J's always more erom that we realize.
 Sounds like something she'd do.
 
 
-![[Screenshot_20260509-101703.png]]
+![[exodus-4-js-10th-plague-01.png]]
 
-![[Screenshot_20260509-101715.png]]
+![[exodus-4-js-10th-plague-02.png]]
 
-![[Screenshot_20260509-101822.png]]
+![[exodus-4-js-10th-plague-02-suppose-exodus-5-1-isnt-j.png]]
 
-![[Screenshot_20260509-102933.png]]
+![[exodus-4-js-10th-plague-03-after-the-hotel-theyre-done-in-j.png]]
 
 Ok so what's all that about the feet?
 The "held back from him"?
 The bridegroom of blood?
 
-![[Screenshot_20260509-103800.png]]
+![[exodus-4-js-10th-plague-04-dmim-money-funds.png]]
 
-![[Screenshot_20260509-103813.png]]
+![[exodus-4-js-10th-plague-05-dm-as-blood.png]]
 
 Ok sure, but how is this related to the 10th plague?
 
 Here's the other sources describing the 10th plague.
 
-![[Screenshot_20260509-105452.png]]
+![[exodus-12-SNH.png]]
 
 How would J satisfy that requirement?
 
 Knowing J, the best answer would be "a pun."
 
-![[Screenshot_20260509-105333.png]]
+![[exodus-4-js-10th-plague-07-KBSH-as-a-sheep-or-sacrifice-animal.png]]
 
 So, J's Zipporah, panicked, has to quickly come up with a כבש and make a blood sacrifice in order to prevent YHWH from killing her firstborn, Gershom.
 
@@ -67,7 +67,7 @@ And why the strange comment "He held back from him"?
 
 I'll leave the final word to J.
 
-![[Screenshot_20260509-105311.png]]
+![[exodus-4-js-10th-plague-06-KBSH-as-to-touch-with-feet-and-to-hold-back.png]]
 
 Feet.
 

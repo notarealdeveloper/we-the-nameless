@@ -1,15 +1,13 @@
 
 The Hand Staff Snake miracle and the Hand Pubis White as Snow miracle.
 
-![[Screenshot_20260508-145533.png]]
+![[exodus-4-in-his-lap-1.png]]
 
-![[Screenshot_20260508-145558.png]]
+![[exodus-4-lap-as-hiq.png]]
 
 The Hebrew root ח־י/ו־ק (ḥ-y/q) and especially the noun חֵיק / חֵיקָה (ḥēq / ḥēqāh) has a surprisingly rich semantic field across Northwest Semitic languages. The “core image” is something like:
 
 > a bent inward space that holds, encloses, embraces, or contains
-
-
 
 From that, you get meanings like:
 
@@ -28,7 +26,6 @@ womb-like enclosure
 intimate closeness
 
 protected inner area
-
 
 Here’s a structured rundown.
 

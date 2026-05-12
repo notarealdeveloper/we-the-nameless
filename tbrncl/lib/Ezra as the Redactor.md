@@ -7,7 +7,7 @@
 
 22 If then I have found favor with you, send the holy spirit into me, and I will write everything that has happened in the world from the beginning, the things that were written in your law, so that people may be able to find the path, and that those who want to live in the last days may do so.
 
-23 He answered me and said, “Go and gather the people, and tell them not to seek you for forty days.
+23 He answered me and said, “Go and gather the people, and tell them not to seek you for forty days."
 
 24 But prepare for yourself many writing tablets, and take with you Sarea, Dabria, Selemia, Ethanus, and Asiel—these five, who are trained to write rapidly;
 

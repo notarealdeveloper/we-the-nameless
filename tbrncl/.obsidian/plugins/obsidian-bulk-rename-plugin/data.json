@@ -1,0 +1,13 @@
+{
+  "folderName": "./",
+  "fileNames": [],
+  "existingSymbol": "",
+  "replacePattern": "",
+  "regExpState": {
+    "regExp": "Screenshot*",
+    "flags": [],
+    "withRegExpForReplaceSymbols": true
+  },
+  "tags": [],
+  "viewType": "regexp"
+}

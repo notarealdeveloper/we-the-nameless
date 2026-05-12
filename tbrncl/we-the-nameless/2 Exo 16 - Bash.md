@@ -14,4 +14,4 @@ Now let's look up worms.
 
 ---
 
-![[Screenshot_20260504-234513.png]]
+![[exodus-16-bash-used-as-stink-1.png]]

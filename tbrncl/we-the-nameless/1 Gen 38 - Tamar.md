@@ -30,40 +30,40 @@ Tamar: תמר
 
 It's all a giant pun.
 
-![[Screenshot_20260508-171337.png]]
+![[genesis-38-20-young-goat-by-the-hand-of-his-friend-the-adullamite.png]]
 
 
 בִּזָּה • (bizá) (pi'el construction)
 
 To degrade, to despise, to abuse: defective spelling of ביזה.
 
-![[Screenshot_20260508-172052.png]]
+![[genesis-38-no-harlot.png]]
 
 Oh my fucking god.
 
-![[Screenshot_20260508-172653.png]]
+![[genesis-38-18-breach-so-perez.png]]
 
-![[Screenshot_20260508-172903.png]]
+![[genesis-38-30-YD-hand-HSNI-means-red-and-second-so-his-name-is-ZRH-seed.png]]
 
-![[Screenshot_20260508-172913.png]]
+![[genesis-38-30-seed-zera.png]]
 
-![[Screenshot_20260508-173141.png]]
+![[genesis-39-6-not-YDA-himself-with-anything.png]]
 
-![[Screenshot_20260508-173356.png]]
-
-
-![[Screenshot_20260508-173658.png]]
+![[genesis-39-8-not-YDA-with-me.png]]
 
 
-![[Screenshot_20260508-173736.png]]
+![[genesis-39-12-his-garment-in-her-hand.png]]
 
-![[Screenshot_20260508-173801.png]]
 
-![[Screenshot_20260508-174129.png]]
+![[genesis-39-12-BGDIM-see-also-BDG.png]]
+
+![[genesis-39-12-BGD-is-to-betray-or-to-cheat.png]]
+
+![[genesis-39-16-so-she-kept-his-BGD-with-her.png]]
 
 This is the wildest thing I've ever seen.
 
-![[Screenshot_20260508-174213.png]]
+![[genesis-39-17-this-is-the-most-amazing-thing-ive-ever-seen.png]]
 
 
 
@@ -87,18 +87,18 @@ THIS is the way to explain Cult Of The Minor Error.
 
 And Holy shit, it's Bat Shua 😅😂
 
-![[Screenshot_20260508-164815.png]]
+![[genesis-38-bat-shua-1.png]]
 
 ---
 
 ## Genesis 38
 
 
-![[Screenshot_20260508-163407 1.png]]
+![[genesis-38-er-was-ra-2.png]]
 
 Oh. My. Fucking. God.
 
-![[Screenshot_20260508-165315.png]]
+![[genesis-38-SLH-LSH-shelah-as-a-wife.png]]
 
 Verb
 edit
@@ -108,16 +108,16 @@ to pull out, to draw out (from a liquid)
 
 Note the "Will send" vs "Shelah" here:
 
-![[Screenshot_20260508-165748.png]]
+![[genesis-38-ASHLH-will-send.png]]
 
 This is fucking incredible.
 
-![[Screenshot_20260508-170020.png]]
+![[genesis-38-ED-ED-SLH.png]]
 
 I.
 Am.
 Fucking.
 Dying.
 
-![[Screenshot_20260508-170733.png]]
+![[genesis-38-18-wa-tamr.png]]
 
