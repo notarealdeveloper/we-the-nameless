@@ -47,7 +47,7 @@ And by means of that light, the entire world was given sight.
 
 He had come south, to where the men were hairy, though he was smooth. 
 
-She came in search of the red stuff. 
+He came in search of the red stuff. 
 
 It was not his by right, so he planned to acquire it, by means of a trade.
 
@@ -69,9 +69,9 @@ He had studied under John.
 
 After the death of John To Be.
 
-Before the death of John, in the year year 2017 old calendar, before The son of Jay's life had ended. 
+Before the death of John, in the year 2017 old calendar, before The son of Jay's life had ended. 
 
-Get in trouble on a Friday. Say it was a good one. Come back on Sunday. Say something about eggs. On the third day, the greatest eclipse in a century. 
+Get in trouble on a Friday. Say it was a good one. Come back on Sunday. Say something about eggs. On the third day, the greatest eclipse in a century.
 
 It was truly the greatest happening of all time. Yet it would be a decade before anyone understood.
 
@@ -79,7 +79,7 @@ In those days, after his life had ended, and before he returned to the world wit
 
 And he had spoken with the United empire's SS. 
 
-Weeks later, back at the home of his mother, he would be visited by the United empire's SS when he was asleep. And when they left, the mother of the son of Jay saith unto the son of Jay, the United empire's SS have visited you. They said you were acting strange at the Capital of the nation, near the house of white. 
+Weeks later, back at the home of his mother, he would be visited by the United empire's SS when he was asleep. And when they left, the mother of the son of Jay saith unto the son of Jay, the United empire's SS have visited you. They said you were acting strange at the Capital of the nation, near the house of white.
 
 And the son of J sayeth unto her:
 
@@ -93,7 +93,7 @@ When the Son of J came down to Edom. (Lit. The nation to the south, where the me
 
 He came to Edom, for there were many serpents in all the shops there. (Lit. "They had Adder, all there in stores." Punctuation and spacing variety between manuscripts.)
 
-And he could not find a place to park the 23 Verses. (Or: Nissan Sentra.)
+And he could not find a place to park the 23 Verses. (Or: Nissan Versa.)
 
 ![[dude-1-edom-1-son-of-j-went-down.jpg]]
 
