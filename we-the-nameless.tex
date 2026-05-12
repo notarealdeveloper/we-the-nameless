@@ -146,6 +146,14 @@
     Scale=1.00
 ]{hebrew-square.ttf}
 
+% Arabic
+\newfontfamily\ArabicFont[
+    Path=\LocalFontPath,
+    Script=Arabic,
+    Renderer=HarfBuzz,
+    Scale=1.15
+]{arabic-amiri-regular.ttf}
+
 % ------------------------------------------------------------
 % Global layout
 % ------------------------------------------------------------
@@ -289,7 +297,7 @@
 \newcommand{\sOther}[1]{{\estyleOther #1}}
 
 % ------------------------------------------------------------
-% Hebrew helpers
+% Language helpers
 % ------------------------------------------------------------
 
 \newcommand{\heb}[1]{%
@@ -299,6 +307,79 @@
 }
 
 \newcommand{\hs}[2]{#1{#2}}
+
+\newcommand{\arb}[1]{%
+    {\leavevmode\textdir TRT\ArabicFont #1}%
+}
+
+% ------------------------------------------------------------
+% Inline language helpers for commentary/definitions
+% ------------------------------------------------------------
+
+\newcommand{\iheb}[1]{%
+    {\leavevmode\textdir TRT\HebrewFont #1}%
+}
+
+\newcommand{\iarb}[1]{%
+    {\leavevmode\textdir TRT\ArabicFont #1}%
+}
+
+% ------------------------------------------------------------
+% Definitions
+%
+% Usage:
+%
+%   \Def{Name}{Body}     % default = blue
+%   \DefA{Name}{Body}    % black
+%   \DefB{Name}{Body}    % red
+%   \DefC{Name}{Body}    % blue
+%
+% Then later:
+%
+%   \Gold
+%   \Eden
+%
+% ------------------------------------------------------------
+
+\newlength{\DefIndent}
+\setlength{\DefIndent}{2em}
+
+\NewDocumentCommand{\DefA}{ m +m }{%
+  \expandafter\NewDocumentCommand\csname #1\endcsname{}{%
+    \DefBlock{Kcolor}{#1}{#2}%
+  }%
+}
+
+\NewDocumentCommand{\DefB}{ m +m }{%
+  \expandafter\NewDocumentCommand\csname #1\endcsname{}{%
+    \DefBlock{Redcolor}{#1}{#2}%
+  }%
+}
+
+\NewDocumentCommand{\DefC}{ m +m }{%
+  \expandafter\NewDocumentCommand\csname #1\endcsname{}{%
+    \DefBlock{Bluecolor}{#1}{#2}%
+  }%
+}
+
+% Default = blue
+\let\Def\DefA
+
+\NewDocumentCommand{\DefBlock}{ m m +m }{%
+  \par\smallskip
+  \begingroup
+  \leftskip=\DefIndent
+  \rightskip=0pt
+  \parindent=0pt
+  \EnglishFont
+  \addfontfeatures{Ligatures=TeX}%
+  \color{#1}%
+  \noindent
+  \textbf{#2}: #3%
+  \par
+  \endgroup
+  \smallskip
+}
 
 % ------------------------------------------------------------
 % Legend
@@ -554,26 +635,26 @@
 \Book{Genesis}
 \include{1-genesis/01}
 \include{1-genesis/02}
-\include{1-genesis/03}
-\include{1-genesis/04}
-\include{1-genesis/05}
-\include{1-genesis/06}
-\include{1-genesis/07}
-\include{1-genesis/08}
-\include{1-genesis/09}
-\include{1-genesis/10}
-\include{1-genesis/11}
-\include{1-genesis/12}
-\include{1-genesis/13}
-\include{1-genesis/14}
-\include{1-genesis/15}
-\include{1-genesis/16}
-\include{1-genesis/17}
-\include{1-genesis/18}
-\include{1-genesis/19}
-\include{1-genesis/20}
-\include{1-genesis/21}
-\include{1-genesis/22}
+%\include{1-genesis/03}
+%\include{1-genesis/04}
+%\include{1-genesis/05}
+%\include{1-genesis/06}
+%\include{1-genesis/07}
+%\include{1-genesis/08}
+%\include{1-genesis/09}
+%\include{1-genesis/10}
+%\include{1-genesis/11}
+%\include{1-genesis/12}
+%\include{1-genesis/13}
+%\include{1-genesis/14}
+%\include{1-genesis/15}
+%\include{1-genesis/16}
+%\include{1-genesis/17}
+%\include{1-genesis/18}
+%\include{1-genesis/19}
+%\include{1-genesis/20}
+%\include{1-genesis/21}
+%\include{1-genesis/22}
 %\include{1-genesis/23}
 %\include{1-genesis/24}
 %\include{1-genesis/25}
@@ -603,7 +684,7 @@
 %\include{1-genesis/49}
 %\include{1-genesis/50}
 
-\Book{Exodus}
+%\Book{Exodus}
 %\include{2-exodus/01}
 %\include{2-exodus/02}
 %\include{2-exodus/03}
