@@ -40,11 +40,6 @@ PSH: [פסח](https://en.wiktionary.org/wiki/%D7%A4%D7%A1%D7%97))
 
 Google Translate translates הַֽחֲוִילָ֔ה as literally: "The Beginning"
 
-Havilah: חוליה / חֻלְיָה
-- A link (An element of a chain)
-
-"As a mother" is כיולדה
-
 Root: חול (ḥ-w-l) — to whirl / writhe / twist
 
 Meanings include:

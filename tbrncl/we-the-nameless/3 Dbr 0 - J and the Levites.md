@@ -1,162 +1,4 @@
 
-## Book 3: Leviticus
-
-### Chapter N: Isaiah 1:11-2:22
-
-Isaiah...
-
-1:11 “The multitude of your sacrifices—
-what are they to me?” says the Lord.
-“I have more than enough of burnt offerings,
-of rams and the fat of fattened animals;
-I have no pleasure
-in the blood of bulls and lambs and goats.
-
-12 When you come to appear before me,
-who has asked this of you,
-this trampling of my courts?
-
-13 Stop bringing meaningless offerings!
-Your incense is detestable to me.
-New Moons, Sabbaths and convocations—
-I cannot bear your worthless assemblies.
-
-14 Your New Moon feasts and your appointed festivals
-I hate with all my being.
-They have become a burden to me;
-I am weary of bearing them.
-
-15 When you spread out your hands in prayer,
-I hide my eyes from you;
-even when you offer many prayers,
-I am not listening.
-
-Your hands are full of blood!
-
-16 Wash and make yourselves clean.
-Take your evil deeds out of my sight;
-stop doing wrong.
-
-17 Learn to do right; seek justice.
-Defend the oppressed.
-Take up the cause of the fatherless;
-plead the case of the widow.
-
-18 “Come now, let us settle the matter,”
-says the Lord.
-“Though your sins are like scarlet,
-they shall be as white as snow;
-though they are red as crimson,
-they shall be like wool.
-
-19 If you are willing and obedient,
-you will eat the good things of the land;
-
-20 but if you resist and rebel,
-you will be devoured by the sword.”
-For the mouth of the Lord has spoken.
-
-21 See how the faithful city
-has become a prostitute!
-She once was full of justice;
-righteousness used to dwell in her—
-but now murderers!
-
-22 Your silver has become dross,
-your choice wine is diluted with water.
-
-23 Your rulers are rebels,
-partners with thieves;
-they all love bribes
-and chase after gifts.
-They do not defend the cause of the fatherless;
-the widow’s case does not come before them
-
-...
-
-2:22 Stop trusting in mere humans,
-    who have but a breath in their nostrils.
-    Why hold them in esteem?
-
-Isaiah
-Book 1 to 2.
-Verses 11 to 22.
-Contemporary of king Hezekiah.
-Who centralized worship at the temple.
-And empowered the Aaronid Priesthood.
-In the era of the source and author we call P.
-
----
-
-## Book 3: Leviticus
-
-### Chapter Ω: Revelation 13
-
-Or: The Woman and the Dragon.
-
-Or: The great red dragon, that ancient serpent called the devil, or Satan, who leads the whole world astray.
-
-Or: Sun and Moon.
-
-Or: The woman clothed with the sun, the moon under her feet and a crown of twelve stars on her head.
-
-Or: Holding the key to the Abyss and holding in his hand a great chain. He seized the dragon, that ancient serpent, who is the devil, or Satan, and bound him for a thousand years. He threw him into the Abyss, and locked and sealed it over him, to keep him from deceiving the nations anymore until the thousand years were ended. After that, he must be set free for a short time.
-
-Or: The next thousand years.
-
-Or: Slaying the ancient serpent.
-
-![[lev-1-levi-took-us-11.png]]
-
----
-
-## Book 3: Levi took us
-
-### Or: Genesis
-#### Chapter 1: The Beginning
-
-In the beginning,
-before J wrote,
-before Genesis 2
-was on the page,
-there were these
-things...
-
-Then you start the background information below,
-of what was happening before J wrote.
-
-Then you eventually say:
-
-## Book 3: Levi took us
-
-### Or: Genesis
-#### Chapter 2: The Middle
-
-In the day when YHWH made earth and skies...
-
-(And then you cut to.)
-
-
-## Book 3: Levi took us
-
-### Or: Genesis
-
-#### Chapter 3: The Court History
-
-Here's where to put J's story of the Court History.
-
-You've got a lot about it below.
-
-Put it here, and categorize it in the We the Nameless directory.
-
-
----
-
-## NOTE: THIS WHOLE FILE IS VALUABLE, BUT IT'S LONG, AND SHOULD BE ORGANIZED!
-
-Here we end P (who came late.)
-And cover the end of J (who came earlier.)
-
 - We talk about Levites and the Exodus.
 - We explain how they became the Priests.
 - We don't read all the laws, we do Samuel.
@@ -250,18 +92,58 @@ Plan for the book:
 - And write a proper sequel to the bible
 - Without making it feel like it's about you
 
-## Book 2: Exodus
+---
 
-### Or: In the Desert
+## Book 3: Leviticus
 
-Combines Exodus and Numbers.
-Removes the heavily P sections.
-Says we'll get to those in book 3
-when we cover the Levites.
+### Chapter Ω: Revelation 13
 
-## Book 3: Levi Took Us
+Or: The Woman and the Dragon.
 
-### Or: Levite tukkus
+Or: The great red dragon, that ancient serpent called the devil, or Satan, who leads the whole world astray.
+
+Or: Sun and Moon.
+
+Or: The woman clothed with the sun, the moon under her feet and a crown of twelve stars on her head.
+
+Or: Holding the key to the Abyss and holding in his hand a great chain. He seized the dragon, that ancient serpent, who is the devil, or Satan, and bound him for a thousand years. He threw him into the Abyss, and locked and sealed it over him, to keep him from deceiving the nations anymore until the thousand years were ended. After that, he must be set free for a short time.
+
+Or: The next thousand years.
+
+Or: Slaying the ancient serpent.
+
+![[lev-1-levi-took-us-11.png]]
+
+---
+
+## Book 3: DBR
+
+Or: DBRM
+Or: TMR
+Or: Watomer
+Or: And Tamar
+Or: Levi took us
+Or: Levite tukkus
+Or: Leviticus
+
+Chapter 1: The Beginning
+
+> In the beginning,
+> before J wrote,
+> before Genesis 2
+> was on the page,
+> there was J, and
+> there were these
+> Levites in her land.
+
+Chapter 2: The Middle
+
+> In the day when YHWH made earth and skies...
+
+Chapter 3: The Court History
+
+
+
 
 Ok so...
 
@@ -373,48 +255,11 @@ Neither of the Authors of RJE particularly like the Aaronid priesthood in Jerusa
 
 Hezekiah (when P wrote, centralization.)
 
-## Lawd Have Mercy
+Then there was Law.
+Laws bitch.
+Laws.
 
-In Exodus, the standard 10 commandments come between two bits by J and E.
+Lawd
+Have
+Mercy.
 
-It's a bit of J.
-Then 10 commandments.
-Then a bit of E.
-
-After this:
-
-E has 3 chapters of laws, most fairly universal
-moral laws, some a bit priestly and parochial.
-The harshest ones are about monotheism.
-
-J has no laws, but she does have her own
-10 commandments, which appear to be satire.
-
-P has 53 goddamn chapters worth of laws,
-which take up most of the rest of Exodus,
-all of Leviticus, the first part Numbers, and
-then he keeps showing up periodically
-throughout Numbers to yammer more
-laws and the Torah pretty much falls
-apart until the end, at least until
-Deuteronomy which wasn't
-even part of the Torah to
-begin with, so I guess at
-this point we should talk
-about what the Torah is
-now that P went and
-totally ruined the fun.
-
-Don't worry, there's
-more fun. But if we
-want to find it, we'll
-have to go on the
-run...
-
-Dudetheyreontome.
-
-Hey ה' Dude They're On A Mystic History.
-
-Chapter One.
-
-On the Lamb.

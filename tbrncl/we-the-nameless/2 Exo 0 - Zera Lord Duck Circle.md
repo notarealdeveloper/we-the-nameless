@@ -1,3 +1,4 @@
+
 | Word / Name | Script           | IPA                      | Meaning                  |
 | ----------- | ---------------- | ------------------------ | ------------------------ |
 | Son of Ra   | 𓅭𓇳             | /saʀaʔ/                  | “Son of Ra”              |
@@ -8,3 +9,4 @@
 | sar         | שר               | /saʁ/                    | prince, ruler            |
 | Ramesses    | רעמסס / Rꜥ-ms-sw | /ʁamˈses/ • /raʕ-mes-su/ | “Ra bore him”            |
 
+𓅭𓇳
