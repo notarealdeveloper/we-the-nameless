@@ -101,7 +101,7 @@ source_psalm_5 = {
     "RJE":  "truth is one or two",
     "P":    "truth is one alone",
     "Dtr":  "truth is one more too",
-    "R":    "truth is all of the above",
+    "R":    "truth is any thing above",
     "Oth":  "truth is true",
 }
 
