@@ -366,7 +366,8 @@
 \let\Def\DefA
 
 \NewDocumentCommand{\DefBlock}{ m m +m }{%
-  \par\smallskip
+  \par%
+  \smallskip
   \begingroup
   \leftskip=\DefIndent
   \rightskip=0pt
@@ -375,7 +376,7 @@
   \addfontfeatures{Ligatures=TeX}%
   \color{#1}%
   \noindent
-  \textbf{#2}: #3%
+  \textbf{#2} #3%
   \par
   \endgroup
   \smallskip
