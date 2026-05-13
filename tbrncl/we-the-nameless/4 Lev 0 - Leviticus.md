@@ -28,5 +28,4 @@ It's a bit of J.
 Then 10 commandments.
 Then a bit of E.
 
-
-
+P is alone, ranting about his pretty clothes that other people need to pay for.
