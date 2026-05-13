@@ -1,11 +1,15 @@
 
-Take your highlights from bible website, and use those as the verses.
+---
+
+You've highlighted most of this book.
+OCR it and turn it into LaTeX verses with highlighting that matches your highlights.
+Link: https://www.biblegateway.com/passage/?search=Jeremiah%201&version=NIV
 
 ---
 
 Isaiah. (ישעיהו)
 
-(1) A name meaning YHW saves.
+(1) A name, meaning YHW saves.
 
 (2) Contemporary of king Hezekiah.
 Who centralized worship at the temple.
@@ -13,6 +17,14 @@ And empowered the Aaronid Priesthood.
 In the era of the source and author we call P.
 
 ---
+
+![[4-lev-i-isaiah-1-1.png]]
+
+
+![[4-lev-i-isaiah-1-2.png]]
+
+
+![[4-lev-i-isaiah-1-3.png]]
 
 ## Isaiah 1:11-2:22
 
