@@ -175,92 +175,113 @@
 \newfontfamily\ProtoSinaiticFifteenFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=1.80
 ]{proto-sinaitic-15.ttf}
 
 % Proto Sinaitic (13th c)
 \newfontfamily\ProtoSinaiticThirteenFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.00
 ]{proto-sinaitic-13.ttf}
 
 % Paleo Hebrew Tel Zayit (10th c)
 \newfontfamily\PaleoHebrewTelZayitFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.65
 ]{paleo-hebrew-tel-zayit.ttf}
 
 % Paleo Hebrew Gezer Calendar (10th c)
 \newfontfamily\PaleoHebrewGezerFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.00
 ]{paleo-hebrew-gezer.ttf}
 
 % Paleo Hebrew Tel Dan (9th c)
 \newfontfamily\PaleoHebrewTelDanFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.22
 ]{paleo-hebrew-tel-dan.ttf}
 
 % Paleo Hebrew Tel Dan (9th c)
 \newfontfamily\PaleoHebrewMoabiteFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.11
 ]{paleo-hebrew-moabite.ttf}
+
+% Paleo Hebrew Best (9th c)
+\newfontfamily\PaleoHebrewFontJ[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.42
+]{paleo-hebrew.ttf}
 
 % Paleo Hebrew Siloam (7th c)
 \newfontfamily\PaleoHebrewSiloamFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.75
 ]{paleo-hebrew-siloam.ttf}
 
 % Paleo Hebrew Ketef Hinnom A (7th c)
 \newfontfamily\PaleoHebrewKetefHinnomOneFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.42
 ]{paleo-hebrew-ketef-hinnom-1.ttf}
 
 % Paleo Hebrew Ketef Hinnom B (7th c)
 \newfontfamily\PaleoHebrewKetefHinnomTwoFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.32
 ]{paleo-hebrew-ketef-hinnom-2.ttf}
 
 % Paleo Hebrew Lachish A (6th c)
 \newfontfamily\PaleoHebrewLachishAFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.22
 ]{paleo-hebrew-lachish-3.ttf}
 
 % Paleo Hebrew Lachish B (6th c)
 \newfontfamily\PaleoHebrewLachishBFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.11
 ]{paleo-hebrew-lachish-4.ttf}
 
 % Paleo Hebrew Lachish C (6th c)
 \newfontfamily\PaleoHebrewLachishCFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.22
 ]{paleo-hebrew-lachish-5.ttf}
 
 % Paleo Hebrew Isaiah Scroll (2nd c)
 \newfontfamily\PaleoHebrewIsaiahScrollFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.42
+    Scale=2.32
 ]{paleo-hebrew-isaiah-scroll.ttf}
+
+% Hebrew Square
+\newfontfamily\HebrewSquare[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=3.00
+]{hebrew-david.ttf}
+
+% Hebrew Ezra
+\newfontfamily\HebrewEzra[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=2.70
+]{hebrew-ezra.ttf}
 
 
 % =================================================
@@ -277,119 +298,119 @@
 % Proto Sinaitic (15th c)
 \ExplSyntaxOn
 \NewDocumentCommand{\protoa}{ m }{
-  {\leavevmode\ProtoSinaiticFifteenFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TRT\ProtoSinaiticFifteenFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Proto Sinaitic (13th c)
 \ExplSyntaxOn
 \NewDocumentCommand{\protob}{ m }{
-  {\leavevmode\ProtoSinaiticThirteenFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TRT\ProtoSinaiticThirteenFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Default
 \ExplSyntaxOn
 \NewDocumentCommand{\paleo}{ m }{
-  {\leavevmode\PaleoHebrewFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TRT\PaleoHebrewFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Tel Zayit (10th c)
 \ExplSyntaxOn
 \NewDocumentCommand{\paleoa}{ m }{
-  {\leavevmode\PaleoHebrewTelZayitFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TRT\PaleoHebrewTelZayitFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Gezer (10th c)
 \ExplSyntaxOn
 \NewDocumentCommand{\paleob}{ m }{
-  {\leavevmode\PaleoHebrewGezerFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TRT\PaleoHebrewGezerFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Tel Dan (9th c)
 \ExplSyntaxOn
 \NewDocumentCommand{\paleoc}{ m }{
-  {\leavevmode\PaleoHebrewTelDanFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TRT\PaleoHebrewTelDanFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Moabite (9th c)
 \ExplSyntaxOn
 \NewDocumentCommand{\paleod}{ m }{
-  {\leavevmode\PaleoHebrewMoabiteFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TRT\PaleoHebrewMoabiteFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Best (9th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleoe}{ m }{
+  {\leavevmode\textdir TRT\PaleoHebrewFontJ\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Siloam (7th c)
 \ExplSyntaxOn
-\NewDocumentCommand{\paleoe}{ m }{
-  {\leavevmode\PaleoHebrewSiloamFont\tl_reverse:n { #1 }}
+\NewDocumentCommand{\paleof}{ m }{
+  {\leavevmode\textdir TRT\PaleoHebrewSiloamFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Ketef Hinnom A (7th c)
 \ExplSyntaxOn
-\NewDocumentCommand{\paleof}{ m }{
-  {\leavevmode\PaleoHebrewKetefHinnomOneFont\tl_reverse:n { #1 }}
+\NewDocumentCommand{\paleog}{ m }{
+  {\leavevmode\textdir TRT\PaleoHebrewKetefHinnomOneFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Ketef Hinnom B (7th c)
 \ExplSyntaxOn
-\NewDocumentCommand{\paleog}{ m }{
-  {\leavevmode\PaleoHebrewKetefHinnomTwoFont\tl_reverse:n { #1 }}
+\NewDocumentCommand{\paleoh}{ m }{
+  {\leavevmode\textdir TRT\PaleoHebrewKetefHinnomTwoFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Lachish A (6th c)
 \ExplSyntaxOn
-\NewDocumentCommand{\paleoh}{ m }{
-  {\leavevmode\PaleoHebrewLachishAFont\tl_reverse:n { #1 }}
+\NewDocumentCommand{\paleoi}{ m }{
+  {\leavevmode\textdir TRT\PaleoHebrewLachishAFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Lachish B (6th c)
 \ExplSyntaxOn
-\NewDocumentCommand{\paleoi}{ m }{
-  {\leavevmode\PaleoHebrewLachishBFont\tl_reverse:n { #1 }}
+\NewDocumentCommand{\paleoj}{ m }{
+  {\leavevmode\textdir TRT\PaleoHebrewLachishBFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Lachish C (6th c)
 \ExplSyntaxOn
-\NewDocumentCommand{\paleoj}{ m }{
-  {\leavevmode\PaleoHebrewLachishCFont\tl_reverse:n { #1 }}
+\NewDocumentCommand{\paleok}{ m }{
+  {\leavevmode\textdir TRT\PaleoHebrewLachishCFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Paleo Hebrew Isaiah Scroll (2nd c)
 \ExplSyntaxOn
-\NewDocumentCommand{\paleok}{ m }{
-  {\leavevmode\PaleoHebrewIsaiahScrollFont\tl_reverse:n { #1 }}
-}
-\ExplSyntaxOff
-
-% Paleo Hebrew Best
-\ExplSyntaxOn
-\NewDocumentCommand{\paleot}{ m }{
-  {\leavevmode\PaleoHebrewFont\tl_reverse:n { #1 }}
+\NewDocumentCommand{\paleol}{ m }{
+  {\leavevmode\textdir TRT\PaleoHebrewIsaiahScrollFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Hebrew J
 \ExplSyntaxOn
 \NewDocumentCommand{\hebrewj}{ m }{
-  {\leavevmode\HebrewJFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TRT\HebrewSquare\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
 % Hebrew P
 \ExplSyntaxOn
 \NewDocumentCommand{\hebrewp}{ m }{
-  {\leavevmode\HebrewJFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TRT\HebrewEzra\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
@@ -860,6 +881,50 @@
 \begin{document}
 
 \wetitlepage
+
+\newpage
+
+\def\protoaupper{{ABGSHWZXjYKLMNOPCQRfVT}}
+\def\protoalower{{abgshwzxjyklmnopcqrDvt}}
+\def\protobupper{{ABGDHWZXJYKILMNSOPCQRVTCEFU}}
+\def\protoblower{{abgdhwzxjyiklmnsopcqrvtcefu}}
+\def\paleoupper{{ABGDHWZXJYKILMNSOPCQRVTCEFU}}
+\def\paleolower{{abgdhwzxjyiklmnsopcqrvtcefu}}
+\def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
+\begin{flushright}
+\protoa{\protoaupper}\\
+\protoa{\protoalower}\\
+\protob{\protobupper}\\
+\protob{\protoblower}\\
+%\paleoa{\paleoupper}\\
+\paleoa{\paleolower}\\
+\paleob{\paleoupper}\\
+\paleob{\paleolower}\\
+\paleoc{\paleoupper}\\
+\paleoc{\paleolower}\\
+\paleod{\paleoupper}\\
+\paleod{\paleolower}\\
+\paleoe{\paleoupper}\\
+\paleoe{\paleolower}\\
+\paleof{\paleoupper}\\
+\paleof{\paleolower}\\
+\paleog{\paleoupper}\\
+\paleog{\paleolower}\\
+\paleoh{\paleoupper}\\
+\paleoh{\paleolower}\\
+\paleoi{\paleoupper}\\
+\paleoi{\paleolower}\\
+\paleoj{\paleoupper}\\
+\paleoj{\paleolower}\\
+\paleok{\paleoupper}\\
+\paleok{\paleolower}\\
+\paleol{\paleoupper}\\
+\paleol{\paleolower}\\
+\hebrewj{\healphabet}\\
+\hebrewp{\healphabet}\\
+\end{flushright}
+
+\newpage
 
 \frontmatter
 \tableofcontents
