@@ -57,13 +57,12 @@
 % The Ancients
 \newfontfamily\Cun[
     Path=\LocalFontPath,
-    %Script=Idk,
+	BoldFont=noto-sans-cuneiform-regular.ttf,
     Scale=1.22
 ]{noto-sans-cuneiform-regular.ttf}
 
 \newfontfamily\Paleo[
     Path=\LocalFontPath,
-    %Script=Cuneiform,
     Scale=1.22
 ]{noto-sans-phoenician-regular.ttf}
 
@@ -154,6 +153,246 @@
     Scale=1.15
 ]{arabic-amiri-regular.ttf}
 
+% ==========================================
+
+% Proto Sinaitic Default
+\newfontfamily\ProtoSinaiticFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{proto-sinaitic-15.ttf}
+
+% Paleo Hebrew Default
+\newfontfamily\PaleoHebrewFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew.ttf}
+
+% ==========================================
+
+% Proto Sinaitic (15th c)
+\newfontfamily\ProtoSinaiticFifteenFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{proto-sinaitic-15.ttf}
+
+% Proto Sinaitic (13th c)
+\newfontfamily\ProtoSinaiticThirteenFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{proto-sinaitic-13.ttf}
+
+% Paleo Hebrew Tel Zayit (10th c)
+\newfontfamily\PaleoHebrewTelZayitFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-tel-zayit.ttf}
+
+% Paleo Hebrew Gezer Calendar (10th c)
+\newfontfamily\PaleoHebrewGezerFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-gezer.ttf}
+
+% Paleo Hebrew Tel Dan (9th c)
+\newfontfamily\PaleoHebrewTelDanFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-tel-dan.ttf}
+
+% Paleo Hebrew Tel Dan (9th c)
+\newfontfamily\PaleoHebrewMoabiteFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-moabite.ttf}
+
+% Paleo Hebrew Siloam (7th c)
+\newfontfamily\PaleoHebrewSiloamFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-siloam.ttf}
+
+% Paleo Hebrew Ketef Hinnom A (7th c)
+\newfontfamily\PaleoHebrewKetefHinnomOneFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-ketef-hinnom-1.ttf}
+
+% Paleo Hebrew Ketef Hinnom B (7th c)
+\newfontfamily\PaleoHebrewKetefHinnomTwoFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-ketef-hinnom-2.ttf}
+
+% Paleo Hebrew Lachish A (6th c)
+\newfontfamily\PaleoHebrewLachishAFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-lachish-3.ttf}
+
+% Paleo Hebrew Lachish B (6th c)
+\newfontfamily\PaleoHebrewLachishBFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-lachish-4.ttf}
+
+% Paleo Hebrew Lachish C (6th c)
+\newfontfamily\PaleoHebrewLachishCFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-lachish-5.ttf}
+
+% Paleo Hebrew Isaiah Scroll (2nd c)
+\newfontfamily\PaleoHebrewIsaiahScrollFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-isaiah-scroll.ttf}
+
+
+% =================================================
+% Commands
+% =================================================
+
+% Proto Sinaitic Default
+\ExplSyntaxOn
+\NewDocumentCommand{\proto}{ m }{
+  {\leavevmode\ProtoSinaiticFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Proto Sinaitic (15th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\protoa}{ m }{
+  {\leavevmode\ProtoSinaiticFifteenFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Proto Sinaitic (13th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\protob}{ m }{
+  {\leavevmode\ProtoSinaiticThirteenFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Default
+\ExplSyntaxOn
+\NewDocumentCommand{\paleo}{ m }{
+  {\leavevmode\PaleoHebrewFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Tel Zayit (10th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleoa}{ m }{
+  {\leavevmode\PaleoHebrewTelZayitFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Gezer (10th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleob}{ m }{
+  {\leavevmode\PaleoHebrewGezerFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Tel Dan (9th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleoc}{ m }{
+  {\leavevmode\PaleoHebrewTelDanFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Moabite (9th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleod}{ m }{
+  {\leavevmode\PaleoHebrewMoabiteFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Siloam (7th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleoe}{ m }{
+  {\leavevmode\PaleoHebrewSiloamFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Ketef Hinnom A (7th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleof}{ m }{
+  {\leavevmode\PaleoHebrewKetefHinnomOneFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Ketef Hinnom B (7th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleog}{ m }{
+  {\leavevmode\PaleoHebrewKetefHinnomTwoFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Lachish A (6th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleoh}{ m }{
+  {\leavevmode\PaleoHebrewLachishAFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Lachish B (6th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleoi}{ m }{
+  {\leavevmode\PaleoHebrewLachishBFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Lachish C (6th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleoj}{ m }{
+  {\leavevmode\PaleoHebrewLachishCFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Isaiah Scroll (2nd c)
+\ExplSyntaxOn
+\NewDocumentCommand{\paleok}{ m }{
+  {\leavevmode\PaleoHebrewIsaiahScrollFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Paleo Hebrew Best
+\ExplSyntaxOn
+\NewDocumentCommand{\paleot}{ m }{
+  {\leavevmode\PaleoHebrewFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Hebrew J
+\ExplSyntaxOn
+\NewDocumentCommand{\hebrewj}{ m }{
+  {\leavevmode\HebrewJFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Hebrew P
+\ExplSyntaxOn
+\NewDocumentCommand{\hebrewp}{ m }{
+  {\leavevmode\HebrewJFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
 % ------------------------------------------------------------
 % Global layout
 % ------------------------------------------------------------
@@ -200,6 +439,8 @@
 \definecolor{Bluecolor}{RGB}{0,70,170}
 \definecolor{Greencolor}{RGB}{0,120,0}
 \definecolor{Graycolor}{RGB}{110,110,110}
+
+\definecolor{DefColor}{RGB}{0,70,170}
 
 % ------------------------------------------------------------
 % Plain color commands
@@ -297,36 +538,22 @@
 \newcommand{\sOther}[1]{{\estyleOther #1}}
 
 % ------------------------------------------------------------
-% Language helpers
-% ------------------------------------------------------------
-
-\newcommand{\heb}[1]{%
-    \begin{RTL}
-    {\HebrewFont #1}
-    \end{RTL}
-}
-
-\newcommand{\hs}[2]{#1{#2}}
-
-\newcommand{\arb}[1]{%
-    {\leavevmode\textdir TRT\ArabicFont #1}%
-}
-
-% ------------------------------------------------------------
 % Inline language helpers for commentary/definitions
 % ------------------------------------------------------------
 
-\newcommand{\iheb}[1]{%
+\newcommand{\heb}[1]{%
     {\leavevmode\textdir TRT\HebrewFont #1}%
 }
 
-\newcommand{\iarb}[1]{%
+\newcommand{\arb}[1]{%
     {\leavevmode\textdir TRT\ArabicFont #1}%
 }
 
 \newcommand{\akk}[1]{%
     {\leavevmode\Cun #1}%
 }
+
+\newcommand{\hs}[2]{#1{#2}}
 
 % Usage:
 %   \Def{Matres Lectiones}{Body}
@@ -337,20 +564,27 @@
 
 \ExplSyntaxOn
 
+\NewDocumentCommand{\Def}{ m +m }{
+  \cs_set_protected:cpn { userdef/#1 } {
+    \DefBlock{DefColor}{#1}{#2}
+  }
+  \DefBlock{DefColor}{#1}{#2}
+}
+
 \NewDocumentCommand{\DefA}{ m +m }{
-  \cs_new_protected:cpn { userdef/#1 } {
+  \cs_set_protected:cpn { userdef/#1 } {
     \DefBlock{Kcolor}{#1}{#2}
   }
 }
 
 \NewDocumentCommand{\DefB}{ m +m }{
-  \cs_new_protected:cpn { userdef/#1 } {
+  \cs_set_protected:cpn { userdef/#1 } {
     \DefBlock{Redcolor}{#1}{#2}
   }
 }
 
 \NewDocumentCommand{\DefC}{ m +m }{
-  \cs_new_protected:cpn { userdef/#1 } {
+  \cs_set_protected:cpn { userdef/#1 } {
     \DefBlock{Bluecolor}{#1}{#2}
   }
 }
@@ -363,9 +597,6 @@
 
 \ExplSyntaxOff
 
-% Default = black, matching your current \let\Def\DefA
-\let\Def\DefA
-
 \NewDocumentCommand{\DefBlock}{ m m +m }{%
   \par%
   \smallskip
@@ -377,7 +608,8 @@
   \addfontfeatures{Ligatures=TeX}%
   \color{#1}%
   \noindent
-  \textbf{#2} #3%
+  \textbf{#2}.%
+  #3%
   \par
   \endgroup
   \smallskip
