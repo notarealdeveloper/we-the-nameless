@@ -324,45 +324,46 @@
     {\leavevmode\textdir TRT\ArabicFont #1}%
 }
 
-% ------------------------------------------------------------
-% Definitions
-%
+\newcommand{\akk}[1]{%
+    {\leavevmode\Cun #1}%
+}
+
 % Usage:
-%
-%   \Def{Name}{Body}     % default = blue
-%   \DefA{Name}{Body}    % black
-%   \DefB{Name}{Body}    % red
-%   \DefC{Name}{Body}    % blue
-%
-% Then later:
-%
-%   \Gold
-%   \Eden
-%
-% ------------------------------------------------------------
+%   \Def{Matres Lectiones}{Body}
+%   \UseDef{Matres Lectiones}
 
 \newlength{\DefIndent}
 \setlength{\DefIndent}{2em}
 
-\NewDocumentCommand{\DefA}{ m +m }{%
-  \expandafter\NewDocumentCommand\csname #1\endcsname{}{%
-    \DefBlock{Kcolor}{#1}{#2}%
-  }%
+\ExplSyntaxOn
+
+\NewDocumentCommand{\DefA}{ m +m }{
+  \cs_new_protected:cpn { userdef/#1 } {
+    \DefBlock{Kcolor}{#1}{#2}
+  }
 }
 
-\NewDocumentCommand{\DefB}{ m +m }{%
-  \expandafter\NewDocumentCommand\csname #1\endcsname{}{%
-    \DefBlock{Redcolor}{#1}{#2}%
-  }%
+\NewDocumentCommand{\DefB}{ m +m }{
+  \cs_new_protected:cpn { userdef/#1 } {
+    \DefBlock{Redcolor}{#1}{#2}
+  }
 }
 
-\NewDocumentCommand{\DefC}{ m +m }{%
-  \expandafter\NewDocumentCommand\csname #1\endcsname{}{%
-    \DefBlock{Bluecolor}{#1}{#2}%
-  }%
+\NewDocumentCommand{\DefC}{ m +m }{
+  \cs_new_protected:cpn { userdef/#1 } {
+    \DefBlock{Bluecolor}{#1}{#2}
+  }
 }
 
-% Default = blue
+\NewDocumentCommand{\Define}{ m }{
+  \cs_if_exist_use:cTF { userdef/#1 }
+    { }
+    { \textbf{[Undefined definition: #1]} }
+}
+
+\ExplSyntaxOff
+
+% Default = black, matching your current \let\Def\DefA
 \let\Def\DefA
 
 \NewDocumentCommand{\DefBlock}{ m m +m }{%
