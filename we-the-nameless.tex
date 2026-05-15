@@ -171,122 +171,152 @@
 
 % ==========================================
 
+% Egyptian Hieroglyphs
+\newfontfamily\EgyptianFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.9,
+    FakeBold=2.0,
+    %BoldFont=egyptian-hieroglyphs-regular-noto-sans.ttf
+]{egyptian-hieroglyphs-regular-noto-sans.ttf}
+
 % Proto Sinaitic (15th c)
 \newfontfamily\ProtoSinaiticFifteenFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.80
+    Scale=1.75
 ]{proto-sinaitic-15.ttf}
 
 % Proto Sinaitic (13th c)
 \newfontfamily\ProtoSinaiticThirteenFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.00
+    Scale=2.40
 ]{proto-sinaitic-13.ttf}
+
+% Proto Sinaitic Izbet Sartah (13th c)
+\newfontfamily\ProtoSinaiticIzbetFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=3.70
+]{proto-sinaitic-13-izbet-sartah.ttf}
 
 % Paleo Hebrew Tel Zayit (10th c)
 \newfontfamily\PaleoHebrewTelZayitFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.65
+    Scale=3.10
 ]{paleo-hebrew-tel-zayit.ttf}
 
 % Paleo Hebrew Gezer Calendar (10th c)
 \newfontfamily\PaleoHebrewGezerFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.00
+    Scale=2.60
 ]{paleo-hebrew-gezer.ttf}
 
 % Paleo Hebrew Tel Dan (9th c)
 \newfontfamily\PaleoHebrewTelDanFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.22
+    Scale=2.60
 ]{paleo-hebrew-tel-dan.ttf}
 
 % Paleo Hebrew Tel Dan (9th c)
 \newfontfamily\PaleoHebrewMoabiteFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.11
+    Scale=2.50
 ]{paleo-hebrew-moabite.ttf}
 
 % Paleo Hebrew Best (9th c)
 \newfontfamily\PaleoHebrewFontJ[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.42
+    Scale=2.70
 ]{paleo-hebrew.ttf}
 
 % Paleo Hebrew Siloam (7th c)
 \newfontfamily\PaleoHebrewSiloamFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.75
+    Scale=3.10
 ]{paleo-hebrew-siloam.ttf}
 
 % Paleo Hebrew Ketef Hinnom A (7th c)
 \newfontfamily\PaleoHebrewKetefHinnomOneFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.42
+    Scale=3.40
 ]{paleo-hebrew-ketef-hinnom-1.ttf}
 
 % Paleo Hebrew Ketef Hinnom B (7th c)
 \newfontfamily\PaleoHebrewKetefHinnomTwoFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.32
+    Scale=3.00
 ]{paleo-hebrew-ketef-hinnom-2.ttf}
 
 % Paleo Hebrew Lachish A (6th c)
 \newfontfamily\PaleoHebrewLachishAFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.22
+    Scale=2.50
 ]{paleo-hebrew-lachish-3.ttf}
 
 % Paleo Hebrew Lachish B (6th c)
 \newfontfamily\PaleoHebrewLachishBFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.11
+    Scale=2.50
 ]{paleo-hebrew-lachish-4.ttf}
 
 % Paleo Hebrew Lachish C (6th c)
 \newfontfamily\PaleoHebrewLachishCFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.22
+    Scale=2.57
 ]{paleo-hebrew-lachish-5.ttf}
 
 % Paleo Hebrew Isaiah Scroll (2nd c)
 \newfontfamily\PaleoHebrewIsaiahScrollFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=2.32
+    Scale=2.90
 ]{paleo-hebrew-isaiah-scroll.ttf}
+
+% Aramaic
+\newfontfamily\Aramaic[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.60
+]{noto-sans-imperial-aramaic-regular.ttf}
 
 % Hebrew Square
 \newfontfamily\HebrewSquare[
     Path=\LocalFontPath,
     Script=Hebrew,
-    Scale=3.00
+    Scale=3.25
 ]{hebrew-david.ttf}
 
 % Hebrew Ezra
 \newfontfamily\HebrewEzra[
     Path=\LocalFontPath,
     Script=Hebrew,
-    Scale=2.70
+    Scale=2.95
 ]{hebrew-ezra.ttf}
 
 
 % =================================================
 % Commands
 % =================================================
+
+% Egyptian Hieroglyphs
+\ExplSyntaxOn
+\NewDocumentCommand{\egypt}{ m }{
+  {\leavevmode\EgyptianFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
 
 % Proto Sinaitic Default
 \ExplSyntaxOn
@@ -306,6 +336,13 @@
 \ExplSyntaxOn
 \NewDocumentCommand{\protob}{ m }{
   {\leavevmode\textdir TRT\ProtoSinaiticThirteenFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Proto Sinaitic Izbet Sartah (13th c)
+\ExplSyntaxOn
+\NewDocumentCommand{\protoc}{ m }{
+  {\leavevmode\textdir TRT\ProtoSinaiticIzbetFont\tl_reverse:n { #1 }}
 }
 \ExplSyntaxOff
 
@@ -390,6 +427,13 @@
 \ExplSyntaxOn
 \NewDocumentCommand{\paleok}{ m }{
   {\leavevmode\textdir TRT\PaleoHebrewLachishCFont\tl_reverse:n { #1 }}
+}
+\ExplSyntaxOff
+
+% Imperial Aramaic (5th c onward)
+\ExplSyntaxOn
+\NewDocumentCommand{\aramaic}{ m }{
+  {\leavevmode\textdir TRT\Aramaic { #1 }}
 }
 \ExplSyntaxOff
 
@@ -884,42 +928,83 @@
 
 \newpage
 
-\def\protoaupper{{ABGSHWZXjYKLMNOPCQRfVT}}
-\def\protoalower{{abgshwzxjyklmnopcqrDvt}}
-\def\protobupper{{ABGDHWZXJYKILMNSOPCQRVTCEFU}}
-\def\protoblower{{abgdhwzxjyiklmnsopcqrvtcefu}}
-\def\paleoupper{{ABGDHWZXJYKILMNSOPCQRVTCEFU}}
-\def\paleolower{{abgdhwzxjyiklmnsopcqrvtcefu}}
+\clearpage
+\thispagestyle{empty}
+
+\def\paleoupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleolower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\protoalower{{abgshwZxjyklmn\;]p\;c\,q\,r\,f\,t}}
+\def\protoaupper{{ABGSHWZXjY\;KLM\,N\;]P\;C\,Q\,R\,V\,T}}
+
+\def\protobupper{{ABGD\!hw\!ZXJYKLMNS]\;P\;C\;Q\;R\;V\;T}}
+\def\protoblower{{ab\!gdHW\!zxjyklMns]\;pcq\;r\,v\,t}}
+
+\def\protocupper{{ABGDH\;WZXJ\!Y\!KL\;NS]PC\;Q\;R\,V\,T}}
+\def\protoclower{{abgdh\;wzxj\!yklns]p\!c\,q\,R\,v\,t}}
+
+%\def\paleoaupper{{ABGDHWZXJYKLMNS]P\!CQRVT}}
+\def\paleoalower{{abgdhw\!zxjyklmns]p\!cq\,r\,v\,t}}
+
+\def\paleobupper{{A\;BG\,DH\;WZX YKLM S]PCQRVT}}
+\def\paleoblower{{a\,bg\!dh\!wzx yklm\;s]p\!cqrvt}}
+
+\def\paleoeupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoelower{{abgdhwz\,xjy\;klmns]pc\,q\,rvt}}
+
+\def\paleofupper{{ABGDHWZXJY\,K\,L\,M\,NS]PCQRVT}}
+\def\paleoflower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\paleoijkupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoijklower{{abgdhwzxjyklmns]pcqrvt}}
+
+%\def\paleojupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+%\def\paleojlower{{abgdhwzxjyklmns]pcqrvt}}
+%
+%\def\paleokupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+%\def\paleoklower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\paleolupper{{ABGDHWZXJYK\,L\,M\,NS]PCQRVT}}
+\def\paleollower{{abgdhwzxjyklmns]pcqrvt}}
+
 \def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
+
 \begin{flushright}
-\protoa{\protoaupper}\\
+\egypt{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}
 \protoa{\protoalower}\\
+\protoa{\protoaupper}\\
 \protob{\protobupper}\\
 \protob{\protoblower}\\
+\protoc{\protocupper}\\
+\protoc{\protoclower}\\
 %\paleoa{\paleoupper}\\
-\paleoa{\paleolower}\\
-\paleob{\paleoupper}\\
-\paleob{\paleolower}\\
+\paleoa{\paleoalower}\\
+\paleob{\paleobupper}\\
+\paleob{\paleoblower}\\
 \paleoc{\paleoupper}\\
 \paleoc{\paleolower}\\
 \paleod{\paleoupper}\\
 \paleod{\paleolower}\\
-\paleoe{\paleoupper}\\
-\paleoe{\paleolower}\\
-\paleof{\paleoupper}\\
-\paleof{\paleolower}\\
+\paleoe{\paleoeupper}\\
+\paleoe{\paleoelower}\\
+\paleof{\paleofupper}\\
+\paleof{\paleoflower}\\
+\newpage
+\clearpage
+\thispagestyle{empty}
 \paleog{\paleoupper}\\
 \paleog{\paleolower}\\
 \paleoh{\paleoupper}\\
 \paleoh{\paleolower}\\
-\paleoi{\paleoupper}\\
-\paleoi{\paleolower}\\
-\paleoj{\paleoupper}\\
-\paleoj{\paleolower}\\
-\paleok{\paleoupper}\\
-\paleok{\paleolower}\\
-\paleol{\paleoupper}\\
-\paleol{\paleolower}\\
+\paleoi{\paleoijkupper}\\
+\paleoi{\paleoijkupper}\\
+\paleoj{\paleoijkupper}\\
+\paleoj{\paleoijkupper}\\
+\paleok{\paleoijkupper}\\
+\paleok{\paleoijkupper}\\
+\aramaic{𐡀𐡁𐡂𐡃𐡄𐡅𐡆𐡇𐡈𐡉𐡊𐡋𐡌𐡍𐡎𐡏𐡐𐡑𐡒𐡓𐡔𐡕}\\
+\paleol{\paleolupper}\\
+\paleol{\paleollower}\\
 \hebrewj{\healphabet}\\
 \hebrewp{\healphabet}\\
 \end{flushright}
