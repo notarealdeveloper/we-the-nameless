@@ -28,6 +28,8 @@
 \usepackage{lua-ul}
 \usepackage{needspace}
 \usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
 
 %\usepackage{showframe}
 
@@ -60,6 +62,19 @@
 	BoldFont=noto-sans-cuneiform-regular.ttf,
     Scale=1.22
 ]{noto-sans-cuneiform-regular.ttf}
+
+\newfontfamily\UgariticFont[
+    Path=\LocalFontPath,
+	BoldFont=noto-sans-ugaritic-regular.ttf,
+    Scale=1.22
+]{noto-sans-ugaritic-regular.ttf}
+
+\newfontfamily\AramaicFont[
+    Path=\LocalFontPath,
+	BoldFont=noto-sans-imperial-aramaic-regular.ttf,
+    Scale=1.22
+]{noto-sans-imperial-aramaic-regular.ttf}
+
 
 \newfontfamily\Paleo[
     Path=\LocalFontPath,
@@ -606,6 +621,10 @@
 % Inline language helpers for commentary/definitions
 % ------------------------------------------------------------
 
+% Todo: Separate the scaled fonts we need for the title page
+% from the commands we wrap around those fonts, this is gonna
+% get messy if we don't organize the infrastructure tightly.
+
 \newcommand{\heb}[1]{%
     {\leavevmode\textdir TRT\HebrewFont #1}%
 }
@@ -616,6 +635,12 @@
 
 \newcommand{\akk}[1]{%
     {\leavevmode\Cun #1}%
+}
+
+\newcommand{\uga}[1]{{\UgariticFont #1}}
+
+\newcommand{\ara}[1]{%
+    {\leavevmode\textdir TRT\AramaicFont #1}%
 }
 
 \newcommand{\hs}[2]{#1{#2}}
