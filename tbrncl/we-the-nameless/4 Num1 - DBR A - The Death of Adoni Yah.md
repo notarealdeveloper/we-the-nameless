@@ -1,3 +1,5 @@
+## The death of ADONI אדניהו YHW
+
 The book of J ends with the death of "Adonijah."
 
 That's אדניהו = ADN YHW
