@@ -29,33 +29,33 @@
 
 ## Do
 
-| Form | Meaning | English | Hebrew | Paleo-Hebrew | Phoenician | Ugaritic (Alphabetic) | Ugaritic (Cuneiform) |
-|---|---|---|---|---|---|---|---|
-| BE | root meaning | be | היה | 𐤄𐤉𐤄 | 𐤄𐤉 | 𐤄𐤅𐤉 | 𐎅𐎆𐎊 |
-| Qatal | finished | he was | היה | 𐤄𐤉𐤄 | 𐤄𐤉 | 𐤄𐤅𐤉 | 𐎅𐎆𐎊 |
-| Yiqtol | unfinished | he is / will be | יהיה | 𐤉𐤄𐤉𐤄 | 𐤉𐤄𐤉 | 𐤉𐤄𐤅𐤉 | 𐎉𐎅𐎆𐎊 |
-| Wayyiqtol | narrative-past | and he was | ויהי | 𐤅𐤉𐤄𐤉 | 𐤅𐤉𐤄𐤉 | 𐤅𐤉𐤄𐤅𐤉 | 𐎆𐎉𐎅𐎆𐎊 |
-| Weqatal | narrative-future | and he will be | והיה | 𐤅𐤄𐤉𐤄 | 𐤅𐤄𐤉 | 𐤅𐤄𐤅𐤉 | 𐎆𐎅𐎆𐎊 |
-| Imperative | command | be! | היה | 𐤄𐤉𐤄 | 𐤄𐤉 | 𐤄𐤅𐤉 | 𐎅𐎆𐎊 |
-| Infinitive Construct | verbal-noun | to be | היות | 𐤄𐤉𐤅𐤕 | 𐤄𐤉𐤕 | 𐤄𐤅𐤉 | 𐎅𐎆𐎊 |
-| Infinitive Absolute | emphatic | surely be | היה | 𐤄𐤉𐤄 | 𐤄𐤉 | 𐤄𐤅𐤉 | 𐎅𐎆𐎊 |
-| Active Participle | ongoing | being | הוה | 𐤄𐤅𐤄 | 𐤄𐤅 | 𐤄𐤅𐤉 | 𐎅𐎆𐎊 |
-| Passive Participle | passive-state | been | — | — | — | — | — |
+| Form                 | Meaning          | English         | Hebrew | Paleo-Hebrew | Phoenician | Ugaritic (Alphabetic) | Ugaritic (Cuneiform) |
+| -------------------- | ---------------- | --------------- | ------ | ------------ | ---------- | --------------------- | -------------------- |
+| BE                   | root meaning     | be              | היה    | 𐤄𐤉𐤄       | 𐤄𐤉       | 𐤄𐤅𐤉                | 𐎅𐎆𐎊               |
+| Qatal                | finished         | he was          | היה    | 𐤄𐤉𐤄       | 𐤄𐤉       | 𐤄𐤅𐤉                | 𐎅𐎆𐎊               |
+| Yiqtol               | unfinished       | he is / will be | יהיה   | 𐤉𐤄𐤉𐤄     | 𐤉𐤄𐤉     | 𐤉𐤄𐤅𐤉              | 𐎉𐎅𐎆𐎊             |
+| Wayyiqtol            | narrative-past   | and he was      | ויהי   | 𐤅𐤉𐤄𐤉     | 𐤅𐤉𐤄𐤉   | 𐤅𐤉𐤄𐤅𐤉            | 𐎆𐎉𐎅𐎆𐎊           |
+| Weqatal              | narrative-future | and he will be  | והיה   | 𐤅𐤄𐤉𐤄     | 𐤅𐤄𐤉     | 𐤅𐤄𐤅𐤉              | 𐎆𐎅𐎆𐎊             |
+| Imperative           | command          | be!             | היה    | 𐤄𐤉𐤄       | 𐤄𐤉       | 𐤄𐤅𐤉                | 𐎅𐎆𐎊               |
+| Infinitive Construct | verbal-noun      | to be           | היות   | 𐤄𐤉𐤅𐤕     | 𐤄𐤉𐤕     | 𐤄𐤅𐤉                | 𐎅𐎆𐎊               |
+| Infinitive Absolute  | emphatic         | surely be       | היה    | 𐤄𐤉𐤄       | 𐤄𐤉       | 𐤄𐤅𐤉                | 𐎅𐎆𐎊               |
+| Active Participle    | ongoing          | being           | הוה    | 𐤄𐤅𐤄       | 𐤄𐤅       | 𐤄𐤅𐤉                | 𐎅𐎆𐎊               |
+| Passive Participle   | passive-state    | been            | —      | —            | —          | —                     | —                    |
 
 ## Go
 
-| Form | Meaning | English | Hebrew | Paleo-Hebrew | Phoenician | Ugaritic (Alphabetic) | Ugaritic (Cuneiform) |
-|---|---|---|---|---|---|---|---|
-| GO | root meaning | go | הלך | 𐤄𐤋𐤊 | 𐤄𐤋𐤊 | 𐤄𐤋𐤊 | 𐎅𐎍𐎋 |
-| Qatal | finished | he went | הלך | 𐤄𐤋𐤊 | 𐤄𐤋𐤊 | 𐤄𐤋𐤊 | 𐎅𐎍𐎋 |
-| Yiqtol | unfinished | he goes / will go | יהלך | 𐤉𐤄𐤋𐤊 | 𐤉𐤄𐤋𐤊 | 𐤉𐤄𐤋𐤊 | 𐎉𐎅𐎍𐎋 |
-| Wayyiqtol | narrative-past | and he went | ויהלך | 𐤅𐤉𐤄𐤋𐤊 | 𐤅𐤉𐤄𐤋𐤊 | 𐤅𐤉𐤄𐤋𐤊 | 𐎆𐎉𐎅𐎍𐎋 |
-| Weqatal | narrative-future | and he will go | והלך | 𐤅𐤄𐤋𐤊 | 𐤅𐤄𐤋𐤊 | 𐤅𐤄𐤋𐤊 | 𐎆𐎅𐎍𐎋 |
-| Imperative | command | go! | הלך | 𐤄𐤋𐤊 | 𐤄𐤋𐤊 | 𐤄𐤋𐤊 | 𐎅𐎍𐎋 |
-| Infinitive Construct | verbal-noun | to go | ללכת | 𐤋𐤋𐤊𐤕 | 𐤋𐤋𐤊𐤕 | 𐤄𐤋𐤊 | 𐎅𐎍𐎋 |
-| Infinitive Absolute | emphatic | surely go | הלוך | 𐤄𐤋𐤅𐤊 | 𐤄𐤋𐤊 | 𐤄𐤋𐤅𐤊 | 𐎅𐎍𐎆𐎋 |
-| Active Participle | ongoing | going | הלך | 𐤄𐤋𐤊 | 𐤄𐤋𐤊 | 𐤄𐤋𐤉𐤊 | 𐎅𐎍𐎊𐎋 |
-| Passive Participle | passive-state | gone | — | — | — | — | — |
+| Form                 | Meaning          | English           | Hebrew | Paleo-Hebrew | Phoenician | Ugaritic (Alphabetic) | Ugaritic (Cuneiform) |
+| -------------------- | ---------------- | ----------------- | ------ | ------------ | ---------- | --------------------- | -------------------- |
+| GO                   | root meaning     | go                | הלך    | 𐤄𐤋𐤊       | 𐤄𐤋𐤊     | 𐤄𐤋𐤊                | 𐎅𐎍𐎋               |
+| Qatal                | finished         | he went           | הלך    | 𐤄𐤋𐤊       | 𐤄𐤋𐤊     | 𐤄𐤋𐤊                | 𐎅𐎍𐎋               |
+| Yiqtol               | unfinished       | he goes / will go | יהלך   | 𐤉𐤄𐤋𐤊     | 𐤉𐤄𐤋𐤊   | 𐤉𐤄𐤋𐤊              | 𐎉𐎅𐎍𐎋             |
+| Wayyiqtol            | narrative-past   | and he went       | ויהלך  | 𐤅𐤉𐤄𐤋𐤊   | 𐤅𐤉𐤄𐤋𐤊 | 𐤅𐤉𐤄𐤋𐤊            | 𐎆𐎉𐎅𐎍𐎋           |
+| Weqatal              | narrative-future | and he will go    | והלך   | 𐤅𐤄𐤋𐤊     | 𐤅𐤄𐤋𐤊   | 𐤅𐤄𐤋𐤊              | 𐎆𐎅𐎍𐎋             |
+| Imperative           | command          | go!               | הלך    | 𐤄𐤋𐤊       | 𐤄𐤋𐤊     | 𐤄𐤋𐤊                | 𐎅𐎍𐎋               |
+| Infinitive Construct | verbal-noun      | to go             | ללכת   | 𐤋𐤋𐤊𐤕     | 𐤋𐤋𐤊𐤕   | 𐤄𐤋𐤊                | 𐎅𐎍𐎋               |
+| Infinitive Absolute  | emphatic         | surely go         | הלוך   | 𐤄𐤋𐤅𐤊     | 𐤄𐤋𐤊     | 𐤄𐤋𐤅𐤊              | 𐎅𐎍𐎆𐎋             |
+| Active Participle    | ongoing          | going             | הלך    | 𐤄𐤋𐤊       | 𐤄𐤋𐤊     | 𐤄𐤋𐤉𐤊              | 𐎅𐎍𐎊𐎋             |
+| Passive Participle   | passive-state    | gone              | —      | —            | —          | —                     | —                    |
 
 
 ## Come
