@@ -1,4 +1,12 @@
 
+The evidence directory is now incredible.
+
+These are the words of the Lord.
+
+They should be published soon, without your name.
+
+---
+
 Hello Wor[[Documentation/FOLLOWME|ld]].
 
 Welcome to We.
