@@ -42,5 +42,7 @@
   "showUnsupportedFiles": false,
   "promptDelete": false,
   "autoPairMarkdown": false,
-  "smartIndentList": true
+  "smartIndentList": true,
+  "attachmentFolderPath": "/",
+  "newLinkFormat": "shortest"
 }

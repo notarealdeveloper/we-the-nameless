@@ -11,27 +11,27 @@ Jah = יהו = YHW
 
 NPShO
 
-![[3-dbr-N-adn-yhw-npsho-3.png]]
+![[IMG-20260513131700417.png]]
 
 Gen 2:11
 
-![[3-dbr-N-adn-yhw-npsho-2.png]]
+![[IMG-20260513131700329.png]]
 
-![[1-gen-2-hhwylh-1.png]]
+![[IMG-20260517151057349.png]]
 
-![[1-gen-2-pshon-npsh-2.png]]
+![[IMG-20260517151101069.png]]
 
-![[1-gen-2-pshon-npsh-4.png]]
+![[IMG-20260517151100831.png]]
 
 
 ## 1 Kings 2:24
 
-![[3-dbr-N-hiom-iwmt-adnyhw.png]]
+![[IMG-20260513131659800.png]]
 
 It's a permutation of the word אדוניה,
 which translates to "Her Majesty"
 
-![[3-dbr-biom-surely-die-1.png]]
+![[IMG-20260513131659865.png]]
 
 And in Genesis 2, YHWH says ביום
 B
@@ -50,7 +50,7 @@ And 1 Kings 2:24 has אשרה and אשרע and אשר as substrings and then end
 
 ## 1 Kings 2:25
 
-![[3-dbr-N-bnyhw-bn-yhwida-killed-him-2.png]]
+![[IMG-20260513131700011.png]]
 
 By the hand יד of
 
@@ -60,7 +60,7 @@ BN YHW
 BN YHW YDA
 (Son of YHW ידע)
 
-![[3-dbr-N-bnyhw-bn-yhwida-killed-him-3.png]]
+![[IMG-20260513131700085.png]]
 
 And he struck him down
 And he died.
@@ -80,7 +80,7 @@ ADN YHW = אדניהו
 Adoni = אדני = Lord
 Jah = יהו = YHW
 
-![[3-dbr-N-adn-yhw-1.png]]
+![[IMG-20260513131700154.png]]
 
 ## 1 Kings 2:26
 
@@ -90,51 +90,51 @@ Now tell the Mushite priest he deserves death,
 but don't kill him.
 
 
-![[3-dbr-N-abiathar-anathoth-1.png]]
+![[IMG-20260513131700497.png]]
 
 ## 1 Kings 2:27
 
 Remove him from being the high priest.
 
-![[3-dbr-N-abiathar-anathoth-2.png]]
+![[IMG-20260513131700571.png]]
 
 And send him away to the place of the first temple at Shiloh.
 
-![[3-dbr-N-abiathar-anathoth-3.png]]
+![[IMG-20260513131700650.png]]
 
 ## 1 Kings 2:37
 
-![[3-dbr-N-biom-you-go-out-1.png]]
+![[IMG-20260513131700716.png]]
 
-![[3-dbr-N-biom-you-go-out-2-you-will-surely-die.png]]
+![[IMG-20260513131700790.png]]
 
 ## 1 Kings 2:42
 
 
-![[3-dbr-N-biom-you-go-out-3-you-will-surely-die.png]]
+![[IMG-20260513131700866.png]]
 
-![[3-dbr-N-watomer-ha-dabar.png]]
+![[IMG-20260513131700938.png]]
 
 
 ## 1 Kings 2:44
 
-![[3-dbr-N-wayomer-yada-yada.png]]
+![[IMG-20260513131701020.png]]
 
 
-![[3-dbr-N-asher-a-shit-ldwd-1.png]]
+![[IMG-20260513131701095.png]]
 
 
-![[3-dbr-N-asher-a-shit-ldwd-2.png]]
+![[IMG-20260513131701179.png]]
 
 
 ## 1 Kings 2:45
 
-![[3-dbr-N-yhyh-yhwh.png]]
+![[IMG-20260513131701264.png]]
 
 
 ## 1 Kings 2:46
 
-![[3-dbr-N-bnyhw-bn-yhwida-killed-him-4.png]]
+![[IMG-20260513131701462.png]]
 
 
-![[3-dbr-N-and-the-kingdom-was-secure-in-solomons-hand.png]]
+![[IMG-20260513131701532.png]]

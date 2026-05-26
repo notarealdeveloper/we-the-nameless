@@ -131,12 +131,12 @@ is exactly the sort of semantic clustering Biblical Hebrew authors loved exploit
 
 Now look at this:
 
-![[3-dbr-N-batsheba-peace.png]]
+![[IMG-20260513131658777.png]]
 
-![[3-dbr-N-watomer-dbr-1.png]]
+![[IMG-20260513131658851.png]]
 
-![[3-dbr-N-watomer-dbr-2.png]]
+![[IMG-20260513131658929.png]]
 
-![[3-dbr-N-watomer-dbr-3.png]]
+![[IMG-20260513131659008.png]]
 
 

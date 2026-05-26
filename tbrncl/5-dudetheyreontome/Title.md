@@ -34,7 +34,3 @@
 ### Or
 
 ## The Middle
-
----
-
-Goto: [[Setup]]
