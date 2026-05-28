@@ -275,7 +275,6 @@ R: You’re mapping kings onto rivers.
 
 J: I am mapping history onto myth.
 
-
 ---
 
 E: So Gihon → Solomon.
@@ -296,7 +295,6 @@ P: That is dangerously close to political commentary.
 
 J: It is safely distant. I hid it in a river.
 
-
 ---
 
 R: So:
@@ -305,11 +303,9 @@ Pishon — spreading / widening
 
 Rehoboam — רחב עם — widening the people… by dividing them
 
-
 E: The kingdom splits.
 
 J: The people are “made broad.” Scattered. Dispersed.
-
 
 ---
 
@@ -318,12 +314,9 @@ P: And you are claiming this is encoded in Genesis 2?
 J: I am claiming that:
 
 > The first river hints at the present dynasty.
-The last river hints at the ideal past.
-
-
+> The last river hints at the ideal past.
 
 And the entire structure runs backward.
-
 
 ---
 
@@ -333,20 +326,15 @@ End (Gihon / Solomon) = proper emergence
 
 Beginning (Pishon / Rehoboam) = improper dispersal
 
-
 J: Yes.
 
 > Aleph is Tav. Beginning is end.
-
-
-
 
 ---
 
 R: That would mean Eden is not just origin.
 
 J: It is commentary.
-
 
 ---
 
@@ -358,7 +346,6 @@ P: And the pattern criticizes the current order.
 
 J: The pattern invites reflection.
 
-
 ---
 
 E (quietly): And the attentive reader sees:
@@ -367,9 +354,7 @@ The river that spreads and surrounds → a kingdom that fractures
 
 The river that bursts forth → a king properly established
 
-
 R: And between them, the whole human story.
-
 
 ---
 

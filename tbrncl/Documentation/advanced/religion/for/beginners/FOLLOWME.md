@@ -12,5 +12,5 @@
 
 Right this way...
 
-一 二 [[On the Lamb|LꞀ]] 二 一
+一 二 [[Documentation/advanced/religion/for/beginners/dudetheyreontome/On the Lamb|LꞀ]] 二 一
 

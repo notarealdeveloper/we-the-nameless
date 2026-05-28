@@ -1,4 +1,4 @@
-## The death of ADONI אדניהו YHW
+## The death of אדניהו
 
 The book of J ends with the death of "Adonijah."
 

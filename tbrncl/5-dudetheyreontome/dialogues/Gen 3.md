@@ -8,7 +8,6 @@ J says that this is what he was aiming at with the slaying of Rahab in Genesis 1
 
 Here’s a revised Genesis 3 scene, tighter, and with J explicitly making the Gilgamesh → Genesis connection as the genre explanation he needs the others to understand:
 
-
 ---
 
 R: We’ve read the garden account.
@@ -22,21 +21,17 @@ R: I think we need to talk about what this is.
 
 P (cold): Yes. We do.
 
-
 ---
 
 E (curious): It’s… different.
-
 
 ---
 
 P: It is not different. It is evasive.
 
-
 ---
 
 J: It is precise.
-
 
 ---
 
@@ -46,16 +41,13 @@ P: It is a talking serpent, a forbidden plant, and the loss of immortality.
 
 P: Does that remind you of anything?
 
-
 ---
 
 E (after a beat): The old stories.
 
-
 ---
 
 J: Yes.
-
 
 ---
 
@@ -69,31 +61,25 @@ He finds the plant.
 
 He loses it to a serpent.
 
-
 ---
 
 (silence)
-
 
 ---
 
 R: You’re referring to Gilgamesh.
 
-
 ---
 
 J: Of course I am.
-
 
 ---
 
 P: That is precisely the problem.
 
-
 ---
 
 J: No. That is precisely the point.
-
 
 ---
 
@@ -103,16 +89,13 @@ J (calmly now): You asked me, earlier—
 
 What is creation?
 
-
 ---
 
 P: And you answered: a battle.
 
-
 ---
 
 J: I answered: that is how the first story tells it.
-
 
 ---
 

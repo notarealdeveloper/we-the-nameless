@@ -202,10 +202,6 @@ _(Narrator: Time passes.)_
 
 ---
 
-Bears:
-
-![[honey-2.jpg]]
-
 Me: Good morning bears.
 
 Bears: So, where did we leave off?

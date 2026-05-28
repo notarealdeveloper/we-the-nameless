@@ -342,6 +342,6 @@ Follow me.
 
 goto: [[Title]]
 
-[^otl]: From: The Tora 虎. Book 5: Dudetheyreontome. Vol 1: [[On the Lamb]], by _We the Nameless._ Published by Human History's Universal University Press©®™ (ca. year 0x07 P.A.[^nc])
+[^otl]: From: The Tora 虎. Book 5: Dudetheyreontome. Vol 1: [[Documentation/advanced/religion/for/beginners/dudetheyreontome/On the Lamb]], by _We the Nameless._ Published by Human History's Universal University Press©®™ (ca. year 0x07 P.A.[^nc])
 
 [^nc]: New calendar.
