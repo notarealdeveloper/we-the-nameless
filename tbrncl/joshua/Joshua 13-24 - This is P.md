@@ -1,4 +1,27 @@
 
+See highlights I've already done, and add more.
+
+Link: https://www.biblegateway.com/passage/?search=Joshua%2018&version=NIV
+
+---
+## Friedman on P continuing and why everyone is wrong
+
+```json
+  "Josh 13:14–33": "P",
+  "Josh 14:1–5": "P",
+  "Josh 14:6–15": "Other",
+  "Josh 15:1–63": "P",
+  "Josh 16:1–10": "P",
+  "Josh 17:1–18": "P",
+  "Josh 18:1–28": "P",
+  "Josh 19:1–51": "P",
+  "Josh 20:1–9": "P",
+  "Josh 21:1–45": "P",
+  "Josh 22:1–34": "P",
+  "Josh 23:1–16": "Other",
+  "Josh 24:1–33": "Other",
+```
+
 > Everyone in my field denies it,
 > and they're wrong,
 > and I'm right,

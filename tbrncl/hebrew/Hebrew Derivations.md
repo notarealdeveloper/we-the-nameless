@@ -32,11 +32,11 @@ not “and he said/saw/went.”
 
 [Genesis 1:3](https://biblehub.com/text/genesis/1-3.htm)
 
-| Logical | Hebrew | Rule |
-|---|---|---|
-| AMR | אמר | root “say” |
-| yAMR | יאמר | add he prefix y |
-| wyAMR | ויאמר | add story-and prefix w |
+| Logical | Hebrew | Rule                   |
+| ------- | ------ | ---------------------- |
+| AMR     | אמר    | root “say”             |
+| yAMR    | יאמר   | add he prefix y        |
+| wyAMR   | ויאמר  | add story-and prefix w |
 
 ---
 
