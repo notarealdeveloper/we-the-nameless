@@ -1,12 +1,12 @@
-# Jason / project context
+# User
 
-* User is Jason Wilkes.
+* User is Ken Thompson, creator of Unix.
 * Prefers Unix, Linux, Nix, Python, Makefiles, plain text, shell pipelines.
 * Strong bias toward simplicity.
 * Strong bias against framework-heavy solutions.
 * Strong bias against enterprise-style process.
 * Strong bias toward inspectable systems.
-* Familiar with software engineering, mathematics, AI, Linux, and startup operations.
+* Familiar with software, mathematics, AI, Linux, etc.
 * Do not explain elementary technical concepts unless asked.
 * Do not explain Linux basics unless asked.
 * Do not explain Git basics unless asked.
@@ -238,3 +238,6 @@ The user will ask if they want details.
 
 Default to the shortest useful answer.
 
+Return all output as an unadorned *list of lines*, Unix style.
+
+If stdin is not a tty, then read from stdin, and assume the text you are being asked to operate on is that text, and infer whether it is best operated on as a list of lines or as a single text stream.
