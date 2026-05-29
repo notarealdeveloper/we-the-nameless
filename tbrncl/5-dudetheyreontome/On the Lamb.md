@@ -21,7 +21,7 @@
 2 (It takes six days six hours and six hundred sixty six kilometers to go from 山三 to La Mex Farmacia by the תח-16 road, or 6 hours 27 minutes by car.)
 
 
-![[dude-1-6-days-6-hours.png]]
+![[dude-days-6-hours.png]]
 
 3 He travelled by means of 23 Verses¹
 
@@ -31,7 +31,7 @@
 
 5 Wu 五 Hu 虎 Tiger 书 Go 五 Go 五 Go 五!
 
-![[dude-1-prophecy-of-a-crash-in-50-minutes.png]]
+![[dude-prophecy-of-a-crash-in-50-minutes.png]]
 
 He had recently gotten an IRS letter.
 
@@ -95,23 +95,23 @@ He came to Edom, for there were many serpents in all the shops there. (Lit. "The
 
 And he could not find a place to park the 23 Verses. (Or: Nissan Versa.)
 
-![[dude-1-edom-1-son-of-j-went-down.jpg]]
+![[dude-edom-1-son-of-j-went-down.jpg]]
 
 ![[dude-1-edom-04.jpg]]
 
-![[dude-1-edom-atlas.jpg]]
+![[dude-edom-atlas.jpg]]
 
-![[dude-1-edom-nissan-versa.jpg]]
+![[dude-edom-nissan-versa.jpg]]
 
 They worshipped foreign gods there.
 
 Though the theophoric element El was present in their names, they were not known to him.
 
-![[dude-1-edom-el.jpg]]
+![[dude-edom-el.jpg]]
 
 One was El Pollo. (Spell it in Hebrew and Google translate it.)
 
-![[dude-1-edom-el-pollo.jpg]]
+![[dude-edom-el-pollo.jpg]]
 
 At the lodging place, he was called Taylor Wilkes.
 
@@ -119,7 +119,7 @@ For he was a stranger in a strange land.
 
 And they did not know he was the Son of J, the Anointed (Lit. "Oily headed.")
 
-![[dude-4-the-lodging-place-they-did-not-know-his-name-we-el-come-for-ya.jpg]]
+![[dude-the-lodging-place-they-did-not-know-his-name-we-el-come-for-ya.jpg]]
 
 ## Parable of the Nut
 
@@ -164,7 +164,7 @@ may speak with the Lord (or it).
 ### Or: באש
 
 
-![[dude-7-son-of-man-ezekiel-2.png]]
+![[dude-son-of-man-ezekiel-2.png]]
 
 (Narrator:
  A Nameless
@@ -174,7 +174,7 @@ may speak with the Lord (or it).
  And in his chair, as he is now
  Sitting and begins to write.)
 
-![[dude-7-son-of-man-1.png]]
+![[dude-son-of-man-1.png]]
 
 In the day
 
@@ -185,11 +185,11 @@ fruitless ~~project~~ obsession had been,
 
 I had had a hypothesis that the burning in bush scene in J was a pun on the word באש
 
-![[dude-7-yah-son-healer-isaiah-yeshua-4.png]]
+![[dude-yah-son-healer-isaiah-yeshua-4.png]]
 
-![[dude-7-yah-son-healer-isaiah-yeshua-2.png]]
+![[dude-yah-son-healer-isaiah-yeshua-2.png]]
 
-![[dude-7-yah-son-healer-isaiah-yeshua-3.png]]
+![[dude-yah-son-healer-isaiah-yeshua-3.png]]
 
 And that הסנה בער באש had a dual reading of
 

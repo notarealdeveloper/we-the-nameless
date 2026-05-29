@@ -1,8 +1,8 @@
 
-![[3-dbr-N-pishon.png]]
+![[dude-pishon.png]]
 
 
-![[3-dbr-N-npsh.png]]
+![[dude-npsh.png]]
 
 
 ![[1-gen-3-they-knew-they-were-erom-2.png]]

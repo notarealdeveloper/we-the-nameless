@@ -3,11 +3,11 @@
 
 And the coffee called out to him, with the voice of Aaron the Jew (or Erin, who called him Blayson, and who he had loved dearly and lost, many years earlier.)
 
-![[dude-4-the-lodging-place-the-voice-or-aaron-the-jew.jpg]]
+![[dude-the-lodging-place-the-voice-or-aaron-the-jew.jpg]]
 
 And the door said to him, "No Mole Star."
 
-![[dude-4-the-lodging-place-genesis-34-he-wanted-dinah-but-no-molest-dinah-or-group-bris.jpg]]
+![[dude-the-lodging-place-genesis-34-he-wanted-dinah-but-no-molest-dinah-or-group-bris.jpg]]
 
 And he felt uncomfortable, as if touched.
 
@@ -19,11 +19,11 @@ And he went out to the Adders.
 
 And he descended, by escalation.
 
-![[dude-4-the-lodging-place-enoch.jpg]]
+![[dude-the-lodging-place-enoch.jpg]]
 
 And he read the name "Enoch."
 
-![[dude-4-the-lodging-place-enoch-taken-up.jpg]]
+![[dude-the-lodging-place-enoch-taken-up.jpg]]
 
 And like Enoch, he was taken up and risen.
 

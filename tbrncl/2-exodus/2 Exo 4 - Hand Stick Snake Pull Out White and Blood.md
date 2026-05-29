@@ -1,9 +1,9 @@
 
 The Hand Staff Snake miracle and the Hand Pubis White as Snow miracle.
 
-![[exodus-4-in-his-lap-1.png]]
+![[2-exo-4-in-his-lap-1.png]]
 
-![[exodus-4-lap-as-hiq.png]]
+![[2-exo-4-lap-as-hiq.png]]
 
 The Hebrew root ח־י/ו־ק (ḥ-y/q) and especially the noun חֵיק / חֵיקָה (ḥēq / ḥēqāh) has a surprisingly rich semantic field across Northwest Semitic languages. The “core image” is something like:
 

@@ -5,7 +5,7 @@
 | **ל**  וַיַּרְא אַהֲרֹן וְכָל-בְּנֵי יִשְׂרָאֵל, אֶת-מֹשֶׁה, וְהִנֵּה קָרַן, עוֹר פָּנָיו; וַיִּירְאוּ, מִגֶּשֶׁת אֵלָיו.                                                      | **30** And when Aaron and all the children of Israel saw Moses, behold, the skin of his face sent forth beams; and they were afraid to come nigh him.                                                                                             |
 |                                                                                                                                                                                |                                                                                                                                                                                                                                                   |
 
-![[dude-5-the-face-of-karen-qrn.png]]
+![[dude-the-face-of-karen-qrn.png]]
 
 ## Exodus 34 - The crown of light
 
@@ -21,7 +21,7 @@
 
 And the Son of J proceeded to a Farm in the region of Acias.
 
-![[dude-5-the-face-of-karen-and-farms-of-acias.jpg]]
+![[dude-the-face-of-karen-and-farms-of-acias.jpg]]
 
 But the people did not understand him.
 
@@ -42,7 +42,7 @@ In the land of the Northern Lion.
 For the Pharmisees here demanded proscription.
 And bought not was the substance that he sought.
 
-![[dude-5-the-face-of-karen-and-shn.png]]
+![[dude-the-face-of-karen-and-shn.png]]
 
 
 ---
@@ -59,13 +59,13 @@ Once he rendered unto Cesar what was his.
 
 For this was the name of the man at the counter.
 
-![[dude-5-the-crown-of-light.jpg]]
+![[dude-the-crown-of-light.jpg]]
 
 And again, the Son of J cursed the makers of the law.
 For it was the Sabbath on this day.
 And Cesar had said the drinking of wine was prohibitied at this time.
 
-![[dude-5-for-it-was-the-sabbath-curse-the-makers-of-the-law.jpg]]
+![[dude-for-it-was-the-sabbath-curse-the-makers-of-the-law.jpg]]
 
 And the crown of light would not belong to him or to our people.
 And the wine was his blood.

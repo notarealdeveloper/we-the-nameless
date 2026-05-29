@@ -11,35 +11,35 @@ Though by my name I was not known to you.
 And My Actual Real name is J's son that is
 Ye ייסון Son.
 
-![[dude-6-ya-son.png]]
+![[dude-ya-son.png]]
 
 Let it be known, this name means Ben YHWH.
 
 Or in the old tongue Ben Yah.
 
-![[dude-7-son-of-j-realizes-01.png]]
+![[dude-son-of-j-realizes-01.png]]
 
 Read these words, for iam the maker of the sea, and the Author, the word he who causes to be.
 
 We have heard it said that I am a carpenter, for I am in construction.
 
-![[dude-7-son-of-j-realizes-02.png]]
+![[dude-son-of-j-realizes-02.png]]
 
 Insight can be found through what appears to be total nonsense.
 
-![[dude-7-son-of-j-realizes-04.png]]
+![[dude-son-of-j-realizes-04.png]]
 
 Let these words be heard and understood.
 
-![[dude-7-son-of-j-realizes-05.png]]
+![[dude-son-of-j-realizes-05.png]]
 
 Know the answers they give you.
 
-![[dude-7-son-of-j-realizes-06.png]]
+![[dude-son-of-j-realizes-06.png]]
 
 ἐγώ εἰμι.
 
-![[dude-7-son-of-j-realizes-07.png]]
+![[dude-son-of-j-realizes-07.png]]
 
 Si 是 Ναί.
 
@@ -47,7 +47,7 @@ Si 是 Ναί.
 
 Yes χLD Yes.
 
-![[dude-7-son-of-j-realizes-08.png]]
+![[dude-son-of-j-realizes-08.png]]
 
 No χLꞀ no.
 
@@ -65,6 +65,6 @@ I am 意 one, meaning.
 
 Iamr.
 
-![[dude-6-name-of-the-son-1.png]]
+![[dude-name-of-the-son-1.png]]
 
 These are the words of J's son.

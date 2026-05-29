@@ -1,13 +1,13 @@
 {
   "folderName": "./",
   "fileNames": [],
-  "existingSymbol": "",
-  "replacePattern": "",
+  "existingSymbol": "dude-N",
+  "replacePattern": "dude",
   "regExpState": {
-    "regExp": "Screenshot*",
+    "regExp": "dude-",
     "flags": [],
     "withRegExpForReplaceSymbols": true
   },
   "tags": [],
-  "viewType": "folder"
+  "viewType": "regexp"
 }
