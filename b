@@ -34,6 +34,16 @@ from urllib.request import Request, urlopen
 
 API_BASE = "https://www.sefaria.org/api/v3/texts"
 HEBREW_MARKS_RE = re.compile(r"[\u0591-\u05BD\u05BF-\u05C7]")
+PREFERRED_ENGLISH_VERSIONS = [
+    "HarperCollins Study Bible, New Revised Standard Version",
+    "Harper Collins Study Bible, New Revised Standard Version",
+    "New Revised Standard Version",
+    "NRSV",
+]
+SIMILAR_ENGLISH_VERSIONS = [
+    "Tanakh: The Holy Scriptures, published by JPS",
+    "The Contemporary Torah, Jewish Publication Society, 2006",
+]
 
 
 BOOKS = [
@@ -158,15 +168,72 @@ def fetch_one(ref, lang, version=None):
         raise SystemExit(f"Sefaria request failed: {e.reason}") from e
 
 
+def available_versions(data, lang=None):
+    versions = data.get("available_versions") or []
+    if lang:
+        versions = [v for v in versions if v.get("language") == lang]
+    return versions
+
+
+def english_versions(data):
+    return [
+        v
+        for v in available_versions(data, "en")
+        if v.get("actualLanguage", "en") == "en"
+        or v.get("languageFamilyName") == "english"
+    ]
+
+
+def find_version(data, candidates):
+    versions = english_versions(data)
+    by_title = {norm(v.get("versionTitle") or ""): v for v in versions}
+    by_short = {norm(v.get("shortVersionTitle") or ""): v for v in versions}
+
+    for candidate in candidates:
+        key = norm(candidate)
+        if key in by_title:
+            return by_title[key].get("versionTitle")
+        if key in by_short:
+            return by_short[key].get("versionTitle")
+
+    for candidate in candidates:
+        key = norm(candidate)
+        for v in versions:
+            title = norm(v.get("versionTitle") or "")
+            short = norm(v.get("shortVersionTitle") or "")
+            if key and (key in title or key in short):
+                return v.get("versionTitle")
+
+    return None
+
+
+def get_version_title(data, lang):
+    for v in data.get("versions") or []:
+        if v.get("language") == lang and v.get("text"):
+            return v.get("versionTitle")
+    return None
+
+
+def default_english_version(data):
+    return (
+        find_version(data, PREFERRED_ENGLISH_VERSIONS)
+        or find_version(data, SIMILAR_ENGLISH_VERSIONS)
+    )
+
+
 def fetch(ref, lang, version=None):
-    if lang != "both":
+    if version or lang == "he":
         return fetch_one(ref, lang, version)
 
-    if version:
-        raise SystemExit("--version cannot be used with --lang both")
+    if lang == "en":
+        data = fetch_one(ref, lang)
+        default_version = default_english_version(data)
+        if default_version and default_version != get_version_title(data, "en"):
+            return fetch_one(ref, lang, default_version)
+        return data
 
     he = fetch_one(ref, "he")
-    en = fetch_one(ref, "en")
+    en = fetch(ref, "en")
     data = dict(he)
     data["versions"] = (he.get("versions") or []) + (en.get("versions") or [])
     return data
