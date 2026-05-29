@@ -113,17 +113,17 @@ J The Namelesש And How A She-
 
 J's book about the Levites and their god.
 
-![[lev-1-levi-took-us-00-wa-tamar.png]]
+![[levi-took-us-00-wa-tamar.png]]
 
 ## And She Said - ותאמר
 
 ### Or: ASS
 
-![[lev-1-NHS-2-snake.png]]
+![[NHS-2-snake.png]]
 
 And the lion of the tribe of Judah
 
-![[lev-1-NHS-1-lion.png]]
+![[NHS-1-lion.png]]
 
 Was more clever than all the life of Shaddai.
 
@@ -131,23 +131,23 @@ Was more clever than all the life of Shaddai.
 
 Shaddai?
 
-![[lev-1-NHS-shaddai-2.png]]
+![[NHS-shaddai-2.png]]
 
 ## And Tamar ותאמר
 
 ## Wa to mer
 
-![[lev-1-NHS-3-to-divine.png]]
+![[NHS-3-to-divine.png]]
 
 Here read and see the words of this here prophecy and profit there from.
 
 It's לא
 
-![[lev-1-NHS-5-sorcery-spell-augury-or-ass.png]]
+![[NHS-5-sorcery-spell-augury-or-ass.png]]
 
 Magic it's simple so listen & come.
 
-![[lev-1-levi-took-us-10.png]]
+![[levi-took-us-10.png]]
 
 Stretch out and grasp my hand ידע 
 & I know you don't know me y'don't
@@ -162,18 +162,18 @@ comes into the w||LD & has to learn what things
 mean so come with me like a χLD人, and hear what
 We'llליוve lived & heard & s(月)n & s(曰)d & s(日)n...
 
-![[lev-1-levi-took-us-12.png]]
+![[levi-took-us-12.png]]
 
 We speak of the Levites.
 
-![[lev-1-levi-took-us-04.png]]
+![[levi-took-us-04.png]]
 
 
 
-![[lev-1-levi-took-us-07.png]]
+![[levi-took-us-07.png]]
 
-![[lev-1-levi-took-us-16.png]]
+![[levi-took-us-16.png]]
 
-![[lev-1-levi-took-us-15.png]]
+![[levi-took-us-15.png]]
 
 Welcome to We.

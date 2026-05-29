@@ -232,9 +232,9 @@ Jeremiah 8:8
 when actually the lying pen of the scribes
     has handled it falsely?
 
-![[lev-1-levi-took-us-18.png]]
+![[jeremiah-8-v8-01.png]]
 
-![[lev-1-levi-took-us-19.png]]
+![[jeremiah-8-v8-02.png]]
 
 ![[lev-1-levi-took-us-20.png]]
 

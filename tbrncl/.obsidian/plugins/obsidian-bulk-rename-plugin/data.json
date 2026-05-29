@@ -1,10 +1,10 @@
 {
   "folderName": "./",
   "fileNames": [],
-  "existingSymbol": "dude-N",
-  "replacePattern": "dude",
+  "existingSymbol": "i-isaiah",
+  "replacePattern": "isaiah",
   "regExpState": {
-    "regExp": "dude-",
+    "regExp": "i-isaiah",
     "flags": [],
     "withRegExpForReplaceSymbols": true
   },

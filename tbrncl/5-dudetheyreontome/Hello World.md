@@ -98,7 +98,7 @@ Apparently the joke was all the rage back when it was written.
 
 About 4000 years after that, just a few years ago, the old Sumerian Dog Joke got popular again.
 
-![[sumerian-dog-joke-01.png]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-01.png]]
 
 No one understands it.
 
@@ -109,13 +109,13 @@ But we humans love trying to make sense of things.
 So naturally, humans came up with lots of theories about the joke.
 
 
-![[sumerian-dog-joke-19.jpg]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-19.jpg]]
 
 
 None of the theories were very satisfying.
 
 
-![[sumerian-dog-joke-24.jpg]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-24.jpg]]
 
 
 Not one of the theories had the real ring of truth.
@@ -123,7 +123,7 @@ Not one of the theories had the real ring of truth.
 Some humans even hypothesized a lost "physical gesture" that was supposed to be performed alongside the joke.
 
 
-![[sumerian-dog-joke-13.jpg]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-13.jpg]]
 
 
 No one really understood the joke.
@@ -145,13 +145,13 @@ that someone would come along
 and tell them what this odd joke was about.
 
 
-![[sumerian-dog-joke-10.jpg]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-10.jpg]]
 
 
 The joke took on a life of its own.
 
 
-![[sumerian-dog-joke-22.png]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-22.png]]
 
 
 Some thought the joke had "gone stale,"
@@ -159,7 +159,7 @@ Some thought the joke had "gone stale,"
 Or that maybe humor had just changed a lot since back then.
 
 
-![[sumerian-dog-joke-03.png]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-03.png]]
 
 
 This was surely not so.
@@ -252,7 +252,7 @@ What was the joke again?
 Curiously, one thing that many humans agreed on was that the joke was "probably something about sex."
 
 
-![[sumerian-dog-joke-09.jpg]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-09.jpg]]
 
 
 They didn't know how or why it would be "something about sex."
@@ -310,7 +310,7 @@ Here's all we know for sure:
 Humans have always been the same.
 
 
-![[sumerian-dog-joke-12.jpg]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-12.jpg]]
 
 
 So armed with their modern tools,
@@ -331,7 +331,7 @@ in search of hints and lost context.
 Experts in Scandanavian archaeology chimed in, with evidence from Nordic history, to corroborate the theory that it was "probably about sex."
 
 
-![[sumerian-dog-joke-14.jpg]]
+![[include/sumerian-dog-joke/sumerian-dog-joke/sumerian-dog-joke-14.jpg]]
 
 
 Distinguished scholars in linguistics argued the joke must have been funny enough to be worth carving into rock, or at least a clay tablet.

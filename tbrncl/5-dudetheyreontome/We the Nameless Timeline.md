@@ -1,0 +1,94 @@
+
+```
+And
+the
+(bush | mount sinai)
+was
+(burning | consumed, stupid, ignorant)
+(in fire | smelly, disgusting)
+
+
+                                                                                                El, Asherah, Baal
+                                                                                   1200 BC
+                                                                                Levites show up
+                                                                            Moses           Aaron
+                                                                          Mushites         Aaronids
+                                                                1000 BC
+                                                               David, UK
+                                                            2 high priests
+                                                  Solomon
+                                              Chooses Aaronid
+                                                high priest
+                                     Rehoboam
+                                   Sucks so bad
+                                 The North secedes
+                                under a dude named
+                                     Jeroboam
+
+                                        J
+                                  Writes history
+                          of the world and country too
+                        David, gets to Solomon and stops...
+             Gihon                                               Gihon
+                  Bro kl bro                            Bro kl Bro
+                    Sodom & Gomorrah               Sodom & Gomorrah
+                      Israel  Judah               Judah Israel
+                                                     David
+                              Bat Shua                   Batshua
+                                                           Solomon
+                                                           (SHLM)
+                      Esau                                Edom
+                   Cain & Abel                        Amnon & Absalom (AB SHLM)
+                                Tamar               Tamar         |
+                                                                Tamar
+      RHB                             RHB                               RHB
+
+
+                                                                 922 BC             1000 BC
+                                                                   RHB   Solomon     David      Priest ass    Egypt
+                                                                    J
+                                                      *      E
+                                                    722 BC
+                                                    RJE
+                                            650
+                                         Hezekiah
+                                             P
+                                    615
+                                   Josiah
+                                     D
+
+                                          P-Genesis              Genesis 
+                                          P-Exodus        Exodus
+                                         P-Leviticus
+                                         OH. MY. GOD.
+
+                           587-567 BC
+                        Babylon destroys
+                        everything, & the
+                        temple, & they take
+                        only the elites off
+                        to entertain them.
+
+                        539 BC
+                     Cyrus kills
+                Babylon & lets y'all
+                go home & realize you're
+                not famous or in charge
+                       anymore.
+
+R
+Numbers
+
+                                Deuteronomy                     1 sent. of J
+                                Joshua                          RHB the whore
+                                Judges                          Weird J shit
+                                1 Samuel                        Eli says wtf is prayer
+                                2 Samuel                        David's whole history
+                                                                All that J shit up there
+                                1 Kings
+                                2 Kings
+
+Ezra
+Nehemiah
+Esther
+```

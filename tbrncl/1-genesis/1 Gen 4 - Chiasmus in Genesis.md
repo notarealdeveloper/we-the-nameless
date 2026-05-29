@@ -41,7 +41,7 @@ X′  God passes judgment on man (3.17–19a)
 
 ## NOAH
 
-![[chiasmus-in-noah.jpg]]
+![[1-gen-6-8-chiasmus-in-noah.jpg]]
 
 ```
 A   Noah (6:10a)  

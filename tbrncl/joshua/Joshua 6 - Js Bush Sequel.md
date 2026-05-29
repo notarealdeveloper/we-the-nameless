@@ -13,12 +13,11 @@ Hmm, where have we heard that before?
 
 Then the following sequence of events occurs.
 
-![[Screenshot_20260515-234700.png]]
+![[joshua-6-the-priests-blow-01.png]]
 
-![[Screenshot_20260515-223057.png]]
+![[joshua-6-the-priests-blow-02.png]]
 
-
-![[Screenshot_20260515-223157 1.png]]
+![[joshua-6-the-priests-blow-03.png]]
 
 So there's blowing.
 
@@ -26,7 +25,7 @@ All the Priests blow.
 
 And they carry the ARON (ארון) around.
 
-![[Screenshot_20260515-223455.png]]
+![[joshua-6-the-priests-blow-04.png]]
 
 The priests keep blowing
 
@@ -34,19 +33,19 @@ And carrying the ARON around.
 
 For seven days.
 
-![[Screenshot_20260515-223533.png]]
+![[joshua-6-the-priests-blow-05.png]]
 
-![[Screenshot_20260515-223627.png]]
+![[joshua-6-the-priests-blow-06.png]]
 
-![[Screenshot_20260515-223657.png]]
+![[joshua-6-the-priests-blow-07.png]]
 
-![[Screenshot_20260515-223657 1.png]]
+![[joshua-6-the-priests-blow-08.png]]
 
-![[Screenshot_20260515-223724.png]]
+![[joshua-6-the-priests-blow-09.png]]
 
 They grab the ram by the horns and ram it in.
 
-![[Screenshot_20260515-223913.png]]
+![[joshua-6-the-priests-blow-10.png]]
 
 And there's this verb that describes how they blow.
 
@@ -54,15 +53,15 @@ Note the square brackets.
 
 Thanks translators.
 
-![[Screenshot_20260515-224023.png]]
+![[joshua-6-the-priests-blow-11.png]]
 
 So much ARON.
 
-![[Screenshot_20260515-224251.png]]
+![[joshua-6-the-priests-blow-12.png]]
 
 So much priests.
 
-![[Screenshot_20260515-224327.png]]
+![[joshua-6-the-priests-blow-13.png]]
 
 So much blowing.
 
@@ -96,17 +95,16 @@ For seven days.
 
 Seven days of blowing priests and ARON.
 
-![[Screenshot_20260515-224423.png]]
+![[joshua-6-the-priests-blow-14.png]]
 
 
-
-![[Screenshot_20260515-224848.png]]
-
-
-![[Screenshot_20260515-224945.png]]
+![[joshua-6-the-priests-blow-15.png]]
 
 
-![[Screenshot_20260515-225254.png]]
+![[joshua-6-the-priests-blow-16.png]]
+
+
+![[joshua-6-the-priests-blow-17.png]]
 
 And the city was destroyed...
 
@@ -116,23 +114,23 @@ That's right, RHB!
 
 The whore!
 
-![[Screenshot_20260515-225402.png]]
+![[joshua-6-the-priests-blow-18.png]]
 
 She gets to live!
 
 Only RHB.
 
-![[Screenshot_20260515-225457.png]]
+![[joshua-6-the-priests-blow-19.png]]
 
 She hid the messages.
 
-![[Screenshot_20260515-225541.png]]
+![[joshua-6-the-priests-blow-20.png]]
 
 They took the gold for YHWH.
 
 And man the priests blew.
 
-![[Screenshot_20260515-225631.png]]
+![[joshua-6-the-priests-blow-21.png]]
 
 Everyone's dead.
 
@@ -148,29 +146,28 @@ And their ARON.
 
 And the lovable whore, good ol' RHB.
 
-![[Screenshot_20260515-225719.png]]
+![[joshua-6-the-priests-blow-22.png]]
 
  A mountain of destruction and fire.
  
  Because obviously, HRB.
 
-![[Screenshot_20260515-225732 1.png]]
+![[joshua-6-the-priests-blow-23.png]]
+
+ere
+![[joshua-6-the-priests-blow-24.png]]
 
 
-
-![[Screenshot_20260515-225817.png]]
-
-
-![[Screenshot_20260515-225832.png]]
+![[joshua-6-the-priests-blow-26.png]]
 
 
-![[Screenshot_20260515-225935.png]]
+![[joshua-6-the-priests-blow-27.png]]
 
 
-![[Screenshot_20260515-230015.png]]
+![[joshua-6-the-priests-blow-28.png]]
 
 
-![[Screenshot_20260515-230110.png]]
+![[joshua-6-the-priests-blow-29.png]]
 
 
 So the priests blew.

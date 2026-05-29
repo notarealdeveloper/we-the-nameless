@@ -18,13 +18,13 @@ In the era of the source and author we call P.
 
 ---
 
-![[4-lev-i-isaiah-1-1.png]]
+![[isaiah-1-1.png]]
 
 
-![[4-lev-i-isaiah-1-2.png]]
+![[isaiah-1-2.png]]
 
 
-![[4-lev-i-isaiah-1-3.png]]
+![[isaiah-1-3.png]]
 
 ## Isaiah 1:11-2:22
 

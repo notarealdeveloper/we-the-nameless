@@ -112,7 +112,7 @@ Or: The next thousand years.
 
 Or: Slaying the ancient serpent.
 
-![[lev-1-levi-took-us-11.png]]
+![[levi-took-us-11.png]]
 
 ---
 

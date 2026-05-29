@@ -33,14 +33,14 @@ P cuts all sacrifices in all of history prior to Aaron.
 - P cuts Abraham sacrifice where he cuts animals up.
 - No sacrifices until last chapter of Exodus (Exodus 40).
 - This is the dedication of Aaron as the high priest of Israel.
-- Source: [[21 - D and P#P cuts Cain and Abel, cuts the Noah sacrifices after landing, cuts the sacrifice of Isaac, cuts Abraham's sacrifice where he cuts animals up, and all other sacrifices until Aaron is declared high priest|Friedman - D and P - 0:00-5:00]].
+- Source: [[REF 21 - D and P#P cuts Cain and Abel, cuts the Noah sacrifices after landing, cuts the sacrifice of Isaac, cuts Abraham's sacrifice where he cuts animals up, and all other sacrifices until Aaron is declared high priest|Friedman - D and P - 0:00-5:00]].
 
 ### Absurd things often result from the combination of P and J
 
 Noah's Extinction Sacrifices:
 - In J we have a distinction between the clean and unclean animals.
 - In J there are 7 of each sex of all the clean animals, and only 2 each of the unclean animals like Lions and Tigers and Bears.
-- Source: [[21 - D and P#The absurd things that often result from combining J and P, like Noah's extinction sacrifices|Friedman - D and P - 5:00-6:00]].
+- Source: [[REF 21 - D and P#The absurd things that often result from combining J and P, like Noah's extinction sacrifices|Friedman - D and P - 5:00-6:00]].
 
 ## The Levites and the Exodus
 

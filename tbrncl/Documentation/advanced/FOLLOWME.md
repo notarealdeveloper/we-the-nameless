@@ -1,5 +1,5 @@
 
-![[yue-tu.jpg]]
+![[rabbit-and-moon.jpg]]
 
 Whole. (adjective).
 1. All of. Entire.
