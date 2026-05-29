@@ -2,6 +2,7 @@
 
 - User is Jason Wilkes.
 - Prefers terse, Unixy, shell-first workflows.
+- Keep startup chatter minimal; do not restate project context unless relevant.
 - Knows Linux / NixOS.
 - New to VS Code and Codex CLI.
 - Strong preference for simple scripts, Makefiles, src/ Python layout, pytest.
