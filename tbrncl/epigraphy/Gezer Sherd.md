@@ -2,7 +2,7 @@
 Suppose you discover a 3 letter inscription in Proto Sinaitic. You're unsure of the direction of writing or the letters, but it's 3 symbols that are likely:
 
 
-![[gezer-sherd-1.jpg]]
+![[proto-sinaitic-gezer-sherd-1.jpg]]
 
 (K|Sh|O)
 (W|L|Q)
@@ -11,7 +11,7 @@ Suppose you discover a 3 letter inscription in Proto Sinaitic. You're unsure of 
 Where Sh means Shin, O means Ayin (eye), X means Heth, and the rest should be obvious.
 
 
-![[gezer-sherd-2.png]]
+![[proto-sinaitic-gezer-sherd-2.png]]
 
 Now, assuming it was written in 1700 BC and we don't know the direction of writing, give me the rankings of all 27 possibilities, from most likely to least likely, and give a possible meaning of each three letter sequence by reaching across Ancient Hebrew, Ugaritic, and Phoenician.
 

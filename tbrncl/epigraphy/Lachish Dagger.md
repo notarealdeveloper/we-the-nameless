@@ -6,11 +6,11 @@
 
 Here's the inscription.
 
-![[lachish-dagger-2.jpg]]
+![[proto-sinaitic-lachish-dagger-2.jpg]]
 
 The only undeniably clear one is resh.
 
-![[lachish-dagger-1.jpg]]
+![[proto-sinaitic-lachish-dagger-1.jpg]]
 
 It's on a dagger.
 

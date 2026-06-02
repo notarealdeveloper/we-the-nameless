@@ -1,7 +1,7 @@
 
 We've got (reading left to right)
 
-![[wadi-el-hol-1.jpg]]
+![[proto-sinaitic-wadi-el-hol-1.jpg]]
 
 (Resh or Bet)
 (Heth)
