@@ -241,29 +241,29 @@ when actually the lying pen of the scribes
 And behold, the question was closed,
 for it invited opinions from many perspectives.
 
-![[num-jeremiah-8-8-1.png]]
+![[jeremiah-8-8-1.png]]
 
 And many voices cried out, saying "You are false, and we are wise"
 
-![[num-jeremiah-8-8-2.png]]
+![[jeremiah-8-8-2.png]]
 
-![[num-jeremiah-8-8-3.png]]
+![[jeremiah-8-8-3.png]]
 
-![[num-jeremiah-8-8-4.png]]
+![[jeremiah-8-8-4.png]]
 
 It was then that a voice was heard,
 A voice of one crying in the wilderness,
 saying:
 
-![[num-jeremiah-8-8-6.png]]
+![[jeremiah-8-8-6.png]]
 
-![[num-jeremiah-8-8-7.png]]
+![[jeremiah-8-8-7.png]]
 
-![[num-jeremiah-8-8-8.png]]
+![[jeremiah-8-8-8.png]]
 
 And the powerful heard the voice, and they cried out:
 
-![[num-jeremiah-8-8-9.png]]
+![[jeremiah-8-8-9.png]]
 
 And the scriptures did not have paragraph breaks.
 

@@ -127,7 +127,7 @@ And the lion of the tribe of Judah
 
 Was more clever than all the life of Shaddai.
 
-![[levi-1-NHS-shaddai-1.png]]
+![[NHS-shaddai-1.png]]
 
 Shaddai?
 

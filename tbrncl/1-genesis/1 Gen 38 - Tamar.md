@@ -30,40 +30,40 @@ Tamar: תמר
 
 It's all a giant pun.
 
-![[genesis-38-20-young-goat-by-the-hand-of-his-friend-the-adullamite.png]]
+![[1-gen-38-20-young-goat-by-the-hand-of-his-friend-the-adullamite.png]]
 
 
 בִּזָּה • (bizá) (pi'el construction)
 
 To degrade, to despise, to abuse: defective spelling of ביזה.
 
-![[genesis-38-no-harlot.png]]
+![[1-gen-38-no-harlot.png]]
 
 Oh my fucking god.
 
-![[genesis-38-18-breach-so-perez.png]]
+![[1-gen-38-18-breach-so-perez.png]]
 
-![[genesis-38-30-YD-hand-HSNI-means-red-and-second-so-his-name-is-ZRH-seed.png]]
+![[1-gen-38-30-YD-hand-HSNI-means-red-and-second-so-his-name-is-ZRH-seed.png]]
 
-![[genesis-38-30-seed-zera.png]]
+![[1-gen-38-30-seed-zera.png]]
 
-![[genesis-39-6-not-YDA-himself-with-anything.png]]
+![[1-gen-39-6-not-YDA-himself-with-anything.png]]
 
-![[genesis-39-8-not-YDA-with-me.png]]
-
-
-![[genesis-39-12-his-garment-in-her-hand.png]]
+![[1-gen-39-8-not-YDA-with-me.png]]
 
 
-![[genesis-39-12-BGDIM-see-also-BDG.png]]
+![[1-gen-39-12-his-garment-in-her-hand.png]]
 
-![[genesis-39-12-BGD-is-to-betray-or-to-cheat.png]]
 
-![[genesis-39-16-so-she-kept-his-BGD-with-her.png]]
+![[1-gen-39-12-BGDIM-see-also-BDG.png]]
+
+![[1-gen-39-12-BGD-is-to-betray-or-to-cheat.png]]
+
+![[1-gen-39-16-so-she-kept-his-BGD-with-her.png]]
 
 This is the wildest thing I've ever seen.
 
-![[genesis-39-17-this-is-the-most-amazing-thing-ive-ever-seen.png]]
+![[1-gen-39-17-this-is-the-most-amazing-thing-ive-ever-seen.png]]
 
 
 
@@ -87,18 +87,18 @@ THIS is the way to explain Cult Of The Minor Error.
 
 And Holy shit, it's Bat Shua 😅😂
 
-![[genesis-38-bat-shua-1.png]]
+![[1-gen-38-bat-shua-1.png]]
 
 ---
 
 ## Genesis 38
 
 
-![[genesis-38-er-was-ra-2.png]]
+![[1-gen-38-er-was-ra-2.png]]
 
 Oh. My. Fucking. God.
 
-![[genesis-38-SLH-LSH-shelah-as-a-wife.png]]
+![[1-gen-38-SLH-LSH-shelah-as-a-wife.png]]
 
 Verb
 edit
@@ -108,16 +108,15 @@ to pull out, to draw out (from a liquid)
 
 Note the "Will send" vs "Shelah" here:
 
-![[genesis-38-ASHLH-will-send.png]]
+![[1-gen-38-ASHLH-will-send.png]]
 
 This is fucking incredible.
 
-![[genesis-38-ED-ED-SLH.png]]
+![[1-gen-38-ED-ED-SLH.png]]
 
 I.
 Am.
 Fucking.
 Dying.
 
-![[genesis-38-18-wa-tamr.png]]
-
+![[1-gen-38-18-wa-tamr.png]]

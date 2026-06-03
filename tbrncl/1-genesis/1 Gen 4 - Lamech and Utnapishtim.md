@@ -12,7 +12,7 @@ So who was Utinapishtim's dad?
 
 ---
 
-![[genesis-4.png]]
+![[1-gen-4.png]]
 
 ---
 

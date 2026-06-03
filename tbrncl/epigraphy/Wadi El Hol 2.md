@@ -13,7 +13,7 @@ Sh (Shin)
 A (Aleph)
 L (Lamedh)
 
-![[Wadi_el-Hol_inscriptions_II_drawing 1.jpg]]
+![[proto-sinaitic-wadi-el-hol-2.jpg]]
 
 MSh
 

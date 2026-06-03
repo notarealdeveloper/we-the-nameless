@@ -1,4 +1,4 @@
-![[include/deprecated/ld.png]]
+![[include/ld.png]]
 
 > _The stories and information here are artistic works of fiction and falsehood. Only a fool would take anything posted here as fact._
 > -4chan Proverb
