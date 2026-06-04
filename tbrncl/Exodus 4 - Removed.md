@@ -1,3 +1,4 @@
+## The Lodging Place
 
 P.S. To summarize:
 
