@@ -1,4 +1,12 @@
 
+There's almost certainly some J in here, in 13-14.
+
+After that is P.
+
+Friedman proposes that J may have originally been 2 works, and the first ends in Joshua 14 with "and the land had rest from war."
+
+At Gilgal, which means circle.
+
 See highlights I've already done, and add more.
 
 Link: https://www.biblegateway.com/passage/?search=Joshua%2018&version=NIV
