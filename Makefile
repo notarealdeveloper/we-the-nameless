@@ -1,23 +1,25 @@
-MAIN      := main
-PDF       := $(MAIN).pdf
-BUILD     := build
-LATEX     := lualatex
+MAIN       := main
+PDF        := $(MAIN).pdf
+BUILD      := build
+LATEX      := lualatex
 LATEXFLAGS := -interaction=nonstopmode -output-directory=$(BUILD)
 
-.PHONY: all clean debug progress open
+INCLUDES := $(shell grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex)
+INCLUDE_BUILD_DIRS := $(addprefix $(BUILD)/,$(sort $(dir $(INCLUDES))))
+
+.PHONY: all clean debug progress open prepare-build
 
 all: $(PDF) open
 
-$(BUILD):
-	mkdir -p $(BUILD)
+prepare-build:
+	mkdir -p $(BUILD) $(INCLUDE_BUILD_DIRS)
 
-$(PDF): $(MAIN).tex | $(BUILD)
+$(PDF): $(MAIN).tex prepare-build
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
-	cp $(BUILD)/$(PDF) .
 
 open:
-	xdg-open $(PDF) >/dev/null 2>&1 &
+	xdg-open $(BUILD)/$(PDF) >/dev/null 2>&1 &
 
 clean:
 	rm -rf $(BUILD)
@@ -35,7 +37,7 @@ clean:
 debug:
 	codex exec "$$(printf '%s\n\n%s' \
 		'This LuaLaTeX build failed. Read the log below and explain the likely cause and exact fix.' \
-		"$$(cat $(MAIN).log)")"
+		"$$(cat $(BUILD)/$(MAIN).log)")"
 
 progress:
 	texmaker -master $(MAIN).tex &
