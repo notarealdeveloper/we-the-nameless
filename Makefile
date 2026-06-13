@@ -17,7 +17,7 @@ build-prepare:
 $(PDF): $(MAIN).tex build-prepare
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
 	cp $(BUILD)/$(MAIN).log .
-	sleep 5 && rm $(MAIN).log
+	( sleep 5 && rm $(MAIN).log ) &
 
 open:
 	xdg-open $(BUILD)/$(PDF) >/dev/null 2>&1 &
@@ -46,4 +46,5 @@ debug:
 progress:
 	( grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex | sort \
 		| sed -E 's@(.*)@\1.tex@'; ) \
-		| xargs -n1 xdg-open & wait && xdg-open $(MAIN).tex && sleep 5 && xdotool key ctrl+0
+		| xargs -n1 xdg-open & wait && xdg-open $(MAIN).tex
+	( sleep 5 && xdotool key ctrl+0 ) &
