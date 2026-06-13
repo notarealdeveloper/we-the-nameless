@@ -35,6 +35,9 @@ clean:
 		-name '*.synctex.gz' \
 	\) -delete
 
+x:
+	cat $(MAIN).tex 1-genesis/0{1,2}.tex | xc
+
 debug:
 	codex exec "$$(printf '%s\n\n%s' \
 		'This LuaLaTeX build failed. Read the log below and explain the likely cause and exact fix.' \
