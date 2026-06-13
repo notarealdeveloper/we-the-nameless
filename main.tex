@@ -80,8 +80,9 @@
 ]{noto-sans-imperial-aramaic-regular.ttf}
 
 
-\newfontfamily\Paleo[
+\newfontfamily\PhoenicianFont[
     Path=\LocalFontPath,
+    Renderer=HarfBuzz,
     Scale=1.22
 ]{noto-sans-phoenician-regular.ttf}
 
@@ -605,21 +606,106 @@
   }%
 }
 
+% Hebrew -> Phoenician/Paleo-Hebrew Unicode
+% This is for fonts that put Paleo/Phoenician glyphs at the
+% Phoenician Unicode codepoints instead of the Hebrew codepoints.
+%
+% Important: do NOT use Lua -- line comments inside \directlua{...}.
+% TeX turns most newlines in macro arguments into spaces, so a Lua
+% line comment can accidentally comment out the rest of the chunk.
+\directlua{
+  hebrew_to_phoenician_map = {
+    [0x05D0] = 0x10900,
+    [0x05D1] = 0x10901,
+    [0x05D2] = 0x10902,
+    [0x05D3] = 0x10903,
+    [0x05D4] = 0x10904,
+    [0x05D5] = 0x10905,
+    [0x05D6] = 0x10906,
+    [0x05D7] = 0x10907,
+    [0x05D8] = 0x10908,
+    [0x05D9] = 0x10909,
+    [0x05DA] = 0x1090A,
+    [0x05DB] = 0x1090A,
+    [0x05DC] = 0x1090B,
+    [0x05DD] = 0x1090C,
+    [0x05DE] = 0x1090C,
+    [0x05DF] = 0x1090D,
+    [0x05E0] = 0x1090D,
+    [0x05E1] = 0x1090E,
+    [0x05E2] = 0x1090F,
+    [0x05E3] = 0x10910,
+    [0x05E4] = 0x10910,
+    [0x05E5] = 0x10911,
+    [0x05E6] = 0x10911,
+    [0x05E7] = 0x10912,
+    [0x05E8] = 0x10913,
+    [0x05E9] = 0x10914,
+    [0x05EA] = 0x10915,
+  }
+
+  function hebrew_to_phoenician(s)
+    s = strip_hebrew_niqqud(s)
+    local out = {}
+
+    for pos, code in utf8.codes(s) do
+      local mapped = hebrew_to_phoenician_map[code]
+      if mapped then
+        table.insert(out, utf8.char(mapped))
+      elseif code == 0x05BE then
+        table.insert(out, " ")
+      else
+        table.insert(out, utf8.char(code))
+      end
+    end
+
+    return table.concat(out)
+  end
+}
+
+\newcommand{\HebrewToPhoenician}[1]{%
+  \directlua{%
+    tex.sprint(hebrew_to_phoenician("\luaescapestring{\detokenize{#1}}"))%
+  }%
+}
+
+% Usage: \Paleo{בְּרֵאשִׁית} -> Phoenician-codepoint letters.
+\newcommand{\Paleo}[1]{%
+  {\leavevmode\textdir TRT\PhoenicianFont \HebrewToPhoenician{#1}}%
+}
+
+% Renderers let the chapter files stay Hebrew while the display backend changes.
+\newcommand{\RenderHebrewNoNiqqud}[2]{{#1 \HebrewNoNiqqud{#2}}}
+\newcommand{\RenderHebrewRaw}[2]{{#1 #2}}
+\newcommand{\RenderPaleoNoNiqqud}[2]{{#1\PhoenicianFont \HebrewToPhoenician{#2}}}
+
+% Defaults. Change these aliases to test a different backend without touching 1-genesis/*.tex.
+\newcommand{\DefaultHebrewTextRender}{\RenderHebrewNoNiqqud}
+\newcommand{\DefaultRawHebrewTextRender}{\RenderHebrewRaw}
+\newcommand{\DefaultPaleoTextRender}{\RenderPaleoNoNiqqud}
+
+% Per-source renderer aliases. Override one of these to switch only that source.
+\newcommand{\hJTextRender}{\DefaultHebrewTextRender}
+\newcommand{\hETextRender}{\DefaultHebrewTextRender}
+\newcommand{\hPTextRender}{\DefaultRawHebrewTextRender}
+\newcommand{\hRecordsTextRender}{\DefaultHebrewTextRender}
+\newcommand{\hOtherTextRender}{\DefaultHebrewTextRender}
+
 % Hebrew source commands
 
 % No niqqud for J and the Mushites
-\newcommand{\hJ}[1]{{\hstyleJ \HebrewNoNiqqud{#1}}}
-\newcommand{\hE}[1]{{\hstyleE \HebrewNoNiqqud{#1}}}
-%\newcommand{\hD}[1]{{\hstyleE \HebrewNoNiqqud{#1}}}
+\newcommand{\hJ}[1]{\hJTextRender{\hstyleJ}{#1}}
+\newcommand{\hE}[1]{\hETextRender{\hstyleE}{#1}}
+%\newcommand{\hD}[1]{\hETextRender{\hstyleE}{#1}}
 
-% Keep niqqud for the Aaronids
-\newcommand{\hP}[1]{{\hstyleP #1}}
+% Keep niqqud for the Aaronids by default
+\newcommand{\hP}[1]{\hPTextRender{\hstyleP}{#1}}
 \newcommand{\hR}[1]{{\hstyleR\highLight[Rbgcolor]{#1}}}
 
 % Stripped
 \newcommand{\hRJE}[1]{{\hstyleRJE\highLight[RJEbgcolor]{\HebrewNoNiqqud{#1}}}}
-\newcommand{\hBookOfRecords}[1]{{\hstyleRecords \HebrewNoNiqqud{#1}}}
-\newcommand{\hOther}[1]{{\hstyleOther \HebrewNoNiqqud{#1}}}
+\newcommand{\hBookOfRecords}[1]{\hRecordsTextRender{\hstyleRecords}{#1}}
+\newcommand{\hOther}[1]{\hOtherTextRender{\hstyleOther}{#1}}
 
 % ------------------------------------------------------------
 % Inline Hebrew with explicit font selection
