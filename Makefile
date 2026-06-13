@@ -17,6 +17,7 @@ prepare-build:
 $(PDF): $(MAIN).tex prepare-build
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
 	cp $(BUILD)/$(MAIN).log .
+	sleep 5 && rm $(MAIN).log
 
 open:
 	xdg-open $(BUILD)/$(PDF) >/dev/null 2>&1 &
