@@ -39,9 +39,7 @@ clean:
 # for giving examples of the format to agebts
 c:
 	cat $(MAIN).tex
-	cat 1-genesis/01.tex | head -n 100
-	cat 1-genesis/02.tex | head -n 100
-	cat 1-genesis/03.tex | head -n 100
+	cat 1-genesis/08.tex
 
 x:
 	make c | xc
