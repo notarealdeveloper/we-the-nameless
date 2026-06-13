@@ -7,14 +7,14 @@ LATEXFLAGS := -interaction=nonstopmode -output-directory=$(BUILD)
 INCLUDES := $(shell grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex)
 INCLUDE_BUILD_DIRS := $(addprefix $(BUILD)/,$(sort $(dir $(INCLUDES))))
 
-.PHONY: all clean debug progress open prepare-build
+.PHONY: all clean debug progress open build-prepare
 
 all: $(PDF) open
 
-prepare-build:
+build-prepare:
 	mkdir -p $(BUILD) $(INCLUDE_BUILD_DIRS)
 
-$(PDF): $(MAIN).tex prepare-build
+$(PDF): $(MAIN).tex build-prepare
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
 	cp $(BUILD)/$(MAIN).log .
 	sleep 5 && rm $(MAIN).log
