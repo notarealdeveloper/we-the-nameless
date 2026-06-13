@@ -40,7 +40,6 @@ debug:
 		"$$(cat $(BUILD)/$(MAIN).log)")"
 
 progress:
-	texmaker -master $(MAIN).tex &
-	grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex \
-		| sed -E 's@(.*)@\1.tex@' \
-		| xargs -r -n1 xdg-open
+	( grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex | sort \
+		| sed -E 's@(.*)@\1.tex@'; ) \
+		| xargs -n1 xdg-open & wait && xdg-open $(MAIN).tex # && sleep 5 && xdotool key ctrl+0
