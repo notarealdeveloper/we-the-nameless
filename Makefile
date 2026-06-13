@@ -35,8 +35,13 @@ clean:
 		-name '*.synctex.gz' \
 	\) -delete
 
+
+# for giving examples of the format to agebts
+c:
+	cat $(MAIN).tex 1-genesis/0{1,2}.tex
+
 x:
-	cat $(MAIN).tex 1-genesis/0{1,2}.tex | xc
+	make c | xc
 
 debug:
 	codex exec "$$(printf '%s\n\n%s' \
