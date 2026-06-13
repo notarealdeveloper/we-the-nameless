@@ -794,6 +794,22 @@
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
 }
 
+% \Apocrypha defines an apocryphal Book
+\newcommand{\Apocrypha}[1]{%
+    % The Apocrypha are all in one chapter at present,
+    	% which we create manually below.
+    \def\CurrentBook{#1 Apocryphon}%
+    %\addcontentsline{toc}{section}{#1 Apocryphon}%
+}
+
+% \Apocryphon defines an apocryphal Chapter
+\newcommand{\Apocryphon}[1]{%
+    \section*{#1}%
+    \def\CurrentChapter{#1}%
+    \addcontentsline{toc}{section}{#1}%
+    \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
+}
+
 % ------------------------------------------------------------
 % Verse layout
 % ------------------------------------------------------------
@@ -1044,54 +1060,54 @@
 \Book{Genesis}
 \include{1-genesis/01}
 \include{1-genesis/02}
-%\include{1-genesis/03}
-%\include{1-genesis/04}
-%\include{1-genesis/05}
-%\include{1-genesis/06}
-%\include{1-genesis/07}
-%\include{1-genesis/08}
-%\include{1-genesis/09}
-%\include{1-genesis/10}
-%\include{1-genesis/11}
-%\include{1-genesis/12}
-%\include{1-genesis/13}
-%\include{1-genesis/14}
-%\include{1-genesis/15}
-%\include{1-genesis/16}
-%\include{1-genesis/17}
-%\include{1-genesis/18}
-%\include{1-genesis/19}
-%\include{1-genesis/20}
-%\include{1-genesis/21}
-%\include{1-genesis/22}
-%\include{1-genesis/23}
-%\include{1-genesis/24}
-%\include{1-genesis/25}
-%\include{1-genesis/26}
-%\include{1-genesis/27}
-%\include{1-genesis/28}
-%\include{1-genesis/29}
-%\include{1-genesis/30}
-%\include{1-genesis/31}
-%\include{1-genesis/32}
-%\include{1-genesis/33}
-%\include{1-genesis/34}
-%\include{1-genesis/35}
-%\include{1-genesis/36}
-%\include{1-genesis/37}
-%\include{1-genesis/38}
-%\include{1-genesis/39}
-%\include{1-genesis/40}
-%\include{1-genesis/41}
-%\include{1-genesis/42}
-%\include{1-genesis/43}
-%\include{1-genesis/44}
-%\include{1-genesis/45}
-%\include{1-genesis/46}
-%\include{1-genesis/47}
-%\include{1-genesis/48}
-%\include{1-genesis/49}
-%\include{1-genesis/50}
+\include{1-genesis/03}
+\include{1-genesis/04}
+\include{1-genesis/05}
+\include{1-genesis/06}
+\include{1-genesis/07}
+\include{1-genesis/08}
+\include{1-genesis/09}
+\include{1-genesis/10}
+\include{1-genesis/11}
+\include{1-genesis/12}
+\include{1-genesis/13}
+\include{1-genesis/14}
+\include{1-genesis/15}
+\include{1-genesis/16}
+\include{1-genesis/17}
+\include{1-genesis/18}
+\include{1-genesis/19}
+\include{1-genesis/20}
+\include{1-genesis/21}
+\include{1-genesis/22}
+\include{1-genesis/23}
+\include{1-genesis/24}
+\include{1-genesis/25}
+\include{1-genesis/26}
+\include{1-genesis/27}
+\include{1-genesis/28}
+\include{1-genesis/29}
+\include{1-genesis/30}
+\include{1-genesis/31}
+\include{1-genesis/32}
+\include{1-genesis/33}
+\include{1-genesis/34}
+\include{1-genesis/35}
+\include{1-genesis/36}
+\include{1-genesis/37}
+\include{1-genesis/38}
+\include{1-genesis/39}
+\include{1-genesis/40}
+\include{1-genesis/41}
+\include{1-genesis/42}
+\include{1-genesis/43}
+\include{1-genesis/44}
+\include{1-genesis/45}
+\include{1-genesis/46}
+\include{1-genesis/47}
+\include{1-genesis/48}
+\include{1-genesis/49}
+\include{1-genesis/50}
 
 %\Book{Exodus}
 %\include{2-exodus/01}
@@ -1135,6 +1151,11 @@
 %\include{2-exodus/39}
 %\include{2-exodus/40}
 
-\include{apocrypha}
+
+\chapter*{Apocrypha}%
+\addcontentsline{toc}{chapter}{Apocrypha}
+
+\Apocrypha{Genesis}
+\include{1-genesis/apocrypha}
 
 \end{document}

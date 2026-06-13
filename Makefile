@@ -2,8 +2,7 @@ MAIN      := main
 PDF       := $(MAIN).pdf
 BUILD     := build
 LATEX     := lualatex
-LATEXFLAGS := -interaction=nonstopmode -halt-on-error -file-line-error \
-              -output-directory=$(BUILD)
+LATEXFLAGS := -interaction=nonstopmode -output-directory=$(BUILD)
 
 .PHONY: all clean debug progress open
 
@@ -34,10 +33,9 @@ clean:
 	\) -delete
 
 debug:
-	@test -f $(BUILD)/$(MAIN).log || { echo "No log at $(BUILD)/$(MAIN).log"; exit 1; }
 	codex exec "$$(printf '%s\n\n%s' \
 		'This LuaLaTeX build failed. Read the log below and explain the likely cause and exact fix.' \
-		"$$(cat $(BUILD)/$(MAIN).log)")"
+		"$$(cat $(MAIN).log)")"
 
 progress:
 	texmaker -master $(MAIN).tex &
