@@ -43,6 +43,11 @@ debug:
 		'This LuaLaTeX build failed. Read the log below and explain the likely cause and exact fix.' \
 		"$$(cat $(BUILD)/$(MAIN).log)")"
 
+list:
+	@( grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex | sort \
+		| sed -E 's@(.*)@\1.tex@'; ) \
+		| xargs -n1 echo
+
 progress:
 	( grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex | sort \
 		| sed -E 's@(.*)@\1.tex@'; ) \
