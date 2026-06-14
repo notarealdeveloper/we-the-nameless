@@ -6,6 +6,8 @@ from pathlib import Path
 
 INDENT = "\t"
 
+DEFAULT_WIDTH = 100
+
 HEBREW = re.compile(r"[\u0590-\u05ff]")
 SIMPLE_MACRO = re.compile(r"^(\\[A-Za-z@]+\{)(.*)(\})$")
 
@@ -72,7 +74,7 @@ def is_english_and_word(word: str) -> bool:
     bare = word.strip("`'\"“”‘’()[]{}.,;:!?—-")
     return bare in {"And", "and"}
 
-def lint_text(text: str, width: int = 80, hebrew_macros: set[str] | None = None) -> str:
+def lint_text(text: str, width: int = DEFAULT_WIDTH, hebrew_macros: set[str] | None = None) -> str:
     if hebrew_macros is None:
         hebrew_macros = discover_hebrew_macros()
 
