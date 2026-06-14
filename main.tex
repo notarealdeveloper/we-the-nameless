@@ -353,6 +353,19 @@
     [0x05F3] = "'", [0x05F4] = '"'
   }
 
+  function paleotex.hebrew_for_paleo_unicode(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = hebrew_punctuation[code]
+      if mapped ~= nil then
+        table.insert(out, mapped)
+      elseif not is_hebrew_mark(code) then
+        table.insert(out, utf8.char(code))
+      end
+    end
+    return table.concat(out)
+  end
+
   function paleotex.hebrew_to_paleo_ascii(s)
     local out = {}
     for pos, code in utf8.codes(s) do
@@ -373,6 +386,10 @@
   function hebrew_to_paleo_ascii(s)
     return paleotex.hebrew_to_paleo_ascii(s)
   end
+
+  function hebrew_for_paleo_unicode(s)
+    return paleotex.hebrew_for_paleo_unicode(s)
+  end
 }
 
 \newcommand{\HebrewNoNiqqud}[1]{%
@@ -383,9 +400,14 @@
   \directlua{tex.sprint(hebrew_to_paleo_ascii("\luaescapestring{\detokenize{#1}}"))}%
 }
 
+\newcommand{\HebrewForPaleoUnicode}[1]{%
+  \directlua{tex.sprint(hebrew_for_paleo_unicode("\luaescapestring{\detokenize{#1}}"))}%
+}
+
 \newcommand{\EncodeHebrewNoNiqqud}[1]{\HebrewNoNiqqud{#1}}
 \newcommand{\EncodeHebrewRaw}[1]{#1}
 \newcommand{\EncodePaleoASCII}[1]{\HebrewToPaleoASCII{#1}}
+\newcommand{\EncodePaleoUnicode}[1]{\HebrewForPaleoUnicode{#1}}
 
 \makeatletter
 \newcommand{\DeclareHebrewRenderer}[3]{%
@@ -403,7 +425,7 @@
 \DeclareHebrewRenderer{HebrewOther}{\HebrewOtherFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{HebrewSquare}{\HebrewSquareFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{ProtoSinaiticBest}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
-\DeclareHebrewRenderer{PaleoHebrewRobo}{\PaleoHebrewRoboFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{PaleoHebrewRobo}{\PaleoHebrewRoboFont}{\EncodePaleoUnicode}
 
 % ASCII historical renderers.  Use these with fonts that expect ABGDHWZX... input.
 \DeclareHebrewRenderer{ProtoASCIIFifteenthCentury}{\ProtoSinaiticFifteenthCenturyFont}{\EncodePaleoASCII}
@@ -432,7 +454,7 @@
 }
 \makeatother
 
-\DeclareSourceProfile{J}{\EnglishFont}{\color{Jcolor}\mdseries}{\PaleoASCIIStandard}{\color{Jcolor}\mdseries}
+\DeclareSourceProfile{J}{\EnglishFont}{\color{Jcolor}\mdseries}{\PaleoHebrewRobo}{\color{Jcolor}\mdseries}
 \DeclareSourceProfile{E}{\EnglishFont}{\color{Ecolor}\bfseries}{\HebrewDavid}{\addfontfeatures{Scale=1.42}\color{Ecolor}\bfseries}
 \DeclareSourceProfile{P}{\EnglishFont}{\color{Pcolor}\bfseries}{\HebrewEzraRaw}{\addfontfeatures{Scale=1.23}\color{Pcolor}\mdseries}
 \DeclareSourceProfile{DtrOne}{\EnglishFont}{\color{Dtr1color}\mdseries}{\HebrewEzraRaw}{\addfontfeatures{Scale=1.23}\color{Dtr1color}\mdseries}
