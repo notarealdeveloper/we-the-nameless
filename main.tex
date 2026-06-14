@@ -513,6 +513,9 @@
 \definecolor{Jcolor}{RGB}{0,120,0}
 \definecolor{Ecolor}{RGB}{0,120,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
+\definecolor{Dtr1color}{RGB}{0,70,170}
+\definecolor{Dtr2color}{RGB}{0,70,170}
+\definecolor{Dtncolor}{RGB}{0,120,0}
 
 \definecolor{Rcolor}{RGB}{0,70,170}
 \definecolor{Rbgcolor}{RGB}{220,235,255}
@@ -560,6 +563,9 @@
 \newcommand{\estyleJ}{\EnglishJFont\color{Jcolor}\mdseries}
 \newcommand{\estyleE}{\EnglishEFont\color{Ecolor}\bfseries}
 \newcommand{\estyleP}{\EnglishPFont\color{Pcolor}\bfseries}
+\newcommand{\estyleDtrOne}{\EnglishPFont\color{Dtr1color}\mdseries}
+\newcommand{\estyleDtrTwo}{\EnglishPFont\color{Dtr2color}\bfseries}
+\newcommand{\estyleDtn}{\EnglishJFont\color{Dtncolor}\itshape}
 \newcommand{\estyleR}{\EnglishRFont\color{Rcolor}\mdseries}
 \newcommand{\estyleRJE}{\EnglishRJEFont\color{RJEcolor}\mdseries}
 \newcommand{\estyleRecords}{\EnglishRecordsFont\color{RecordsColor}\itshape}
@@ -569,6 +575,9 @@
 \newcommand{\hstyleE}{\HebrewEFont\color{Ecolor}\bfseries}
 %\newcommand{\hstyleP}{\HebrewPFont\color{Pcolor}\bfseries}
 \newcommand{\hstyleP}{\HebrewPFont\color{Pcolor}\mdseries}
+\newcommand{\hstyleDtrOne}{\HebrewPFont\color{Dtr1color}\mdseries}
+\newcommand{\hstyleDtrTwo}{\HebrewPFont\color{Dtr2color}\bfseries}
+\newcommand{\hstyleDtn}{\HebrewJFont\color{Dtncolor}\itshape}
 \newcommand{\hstyleR}{\HebrewRFont\color{Rcolor}\mdseries}
 \newcommand{\hstyleRJE}{\HebrewRJEFont\color{RJEcolor}\mdseries}
 \newcommand{\hstyleRecords}{\HebrewRecordsFont\color{RecordsColor}\itshape}
@@ -578,6 +587,9 @@
 \newcommand{\eJ}[1]{{\estyleJ #1}}
 \newcommand{\eE}[1]{{\estyleE #1}}
 \newcommand{\eP}[1]{{\estyleP #1}}
+\newcommand{\eDtrOne}[1]{{\estyleDtrOne #1}}
+\newcommand{\eDtrTwo}[1]{{\estyleDtrTwo #1}}
+\newcommand{\eDtn}[1]{{\estyleDtn #1}}
 \newcommand{\eR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
 \newcommand{\eRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
 \newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
@@ -721,6 +733,9 @@
 \newcommand{\hJProfile}{\HebrewProfileHebrewJ}
 \newcommand{\hEProfile}{\HebrewProfileHebrewE}
 \newcommand{\hPProfile}{\HebrewProfileHebrewP}
+\newcommand{\hDtrOneProfile}{\HebrewProfileHebrewP}
+\newcommand{\hDtrTwoProfile}{\HebrewProfileHebrewP}
+\newcommand{\hDtnProfile}{\HebrewProfileHebrewJ}
 \newcommand{\hRProfile}{\HebrewProfileHebrewR}
 \newcommand{\hRJEProfile}{\HebrewProfileHebrewRJE}
 \newcommand{\hRecordsProfile}{\HebrewProfileHebrewRecords}
@@ -749,6 +764,9 @@
 \newcommand{\hE}[1]{\hEProfile{\color{Ecolor}\bfseries}{#1}}
 %\newcommand{\hD}[1]{\hEProfile{\color{Ecolor}\bfseries}{#1}}
 \newcommand{\hP}[1]{\hPProfile{\color{Pcolor}\mdseries}{#1}}
+\newcommand{\hDtrOne}[1]{\hDtrOneProfile{\color{Dtr1color}\mdseries}{#1}}
+\newcommand{\hDtrTwo}[1]{\hDtrTwoProfile{\color{Dtr2color}\bfseries}{#1}}
+\newcommand{\hDtn}[1]{\hDtnProfile{\color{Dtncolor}\itshape}{#1}}
 \newcommand{\hR}[1]{{\leavevmode\textdir TRT\HebrewRFont\color{Rcolor}\mdseries\highLight[Rbgcolor]{#1}}}
 \newcommand{\hRJE}[1]{{\leavevmode\textdir TRT\HebrewRJEFont\color{RJEcolor}\mdseries\highLight[RJEbgcolor]{\HebrewNoNiqqud{#1}}}}
 \newcommand{\hBookOfRecords}[1]{\hRecordsProfile{\color{RecordsColor}\itshape}{#1}}
@@ -783,6 +801,9 @@
 \newcommand{\sJ}[1]{{\estyleJ #1}}
 \newcommand{\sE}[1]{{\estyleE #1}}
 \newcommand{\sP}[1]{{\estyleP #1}}
+\newcommand{\sDtrOne}[1]{{\estyleDtrOne #1}}
+\newcommand{\sDtrTwo}[1]{{\estyleDtrTwo #1}}
+\newcommand{\sDtn}[1]{{\estyleDtn #1}}
 \newcommand{\sR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
 \newcommand{\sRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
 \newcommand{\sBookOfRecords}[1]{{\estyleRecords #1}}
@@ -899,6 +920,9 @@
     \eJ{J}\quad
     \eE{E}\quad
     \eP{P}\quad
+    \eDtrOne{Dtr1}\quad
+    \eDtrTwo{Dtr2}\quad
+    \eDtn{Dtn}\quad
     \eR{R}\quad
     \eRJE{RJE}\quad
     \eBookOfRecords{Records}\quad
@@ -911,6 +935,9 @@
     \eJ{J}\quad
     \eE{E}\quad
     \eP{P}\quad
+    \eDtrOne{Dtr1}\quad
+    \eDtrTwo{Dtr2}\quad
+    \eDtn{Dtn}\quad
     \eR{R}\quad
     \eRJE{RJE}\quad
     \eBookOfRecords{Rec}\quad
@@ -1163,6 +1190,9 @@
 \NewDocumentCommand{\aJ}{ O{l} +m }{\as{\eJ}[#1]{#2}}
 \NewDocumentCommand{\aE}{ O{l} +m }{\as{\eE}[#1]{#2}}
 \NewDocumentCommand{\aP}{ O{l} +m }{\as{\eP}[#1]{#2}}
+\NewDocumentCommand{\aDtrOne}{ O{l} +m }{\as{\eDtrOne}[#1]{#2}}
+\NewDocumentCommand{\aDtrTwo}{ O{l} +m }{\as{\eDtrTwo}[#1]{#2}}
+\NewDocumentCommand{\aDtn}{ O{l} +m }{\as{\eDtn}[#1]{#2}}
 \NewDocumentCommand{\aR}{ O{l} +m }{\as{\eR}[#1]{#2}}
 \NewDocumentCommand{\aRJE}{ O{l} +m }{\as{\eRJE}[#1]{#2}}
 \NewDocumentCommand{\aRecords}{ O{l} +m }{\as{\eBookOfRecords}[#1]{#2}}
@@ -1191,6 +1221,9 @@
 \DeclareSpeakerTriplet{J}
 \DeclareSpeakerTriplet{E}
 \DeclareSpeakerTriplet{P}
+\DeclareSpeakerTriplet{DtrOne}
+\DeclareSpeakerTriplet{DtrTwo}
+\DeclareSpeakerTriplet{Dtn}
 \DeclareSpeakerTriplet{R}
 \DeclareSpeakerTriplet{RJE}
 
