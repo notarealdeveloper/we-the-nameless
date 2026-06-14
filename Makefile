@@ -3,34 +3,38 @@ PDF        := $(MAIN).pdf
 BUILD      := build
 BUILD_PDF  := $(BUILD)/$(PDF)
 CACHE      := $(abspath $(BUILD)/texmf-var)
-LATEX      := lualatex
-LATEXFLAGS := -interaction=nonstopmode -output-directory=$(BUILD)
+LATEXMK    := latexmk
+LATEXMKFLAGS := -lualatex \
+	-interaction=nonstopmode \
+	-halt-on-error \
+	-file-line-error \
+	-outdir=$(BUILD)
 
 export TEXMFVAR := $(CACHE)
 
-INCLUDES := $(shell grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex)
-INCLUDE_SOURCES := $(addsuffix .tex,$(INCLUDES))
-INCLUDE_BUILD_DIRS := $(addprefix $(BUILD)/,$(sort $(dir $(INCLUDES))))
+TEX_DIRS := $(sort $(dir $(shell find . -type f -name '*.tex' -not -path './$(BUILD)/*')))
+BUILD_TEX_DIRS := $(addprefix $(BUILD)/,$(patsubst ./%,%,$(TEX_DIRS)))
 
-.PHONY: all clean debug progress open build-prepare
+.PHONY: all build clean debug progress open build-prepare
 
-all: $(PDF) open
+all: build open
 
 build-prepare:
-	mkdir -p $(BUILD) $(CACHE) $(INCLUDE_BUILD_DIRS)
+	mkdir -p $(BUILD) $(CACHE) $(BUILD_TEX_DIRS)
 
-$(PDF): $(BUILD_PDF)
-	cp $< $@
+# Always ask latexmk to check its recorder database. It only runs LuaLaTeX when
+# a source used by the previous build has changed.
+build: | build-prepare
+	$(LATEXMK) $(LATEXMKFLAGS) $(MAIN).tex
+	@if ! cmp -s $(BUILD_PDF) $(PDF); then cp $(BUILD_PDF) $(PDF); fi
 
-$(BUILD_PDF): $(MAIN).tex cover.tex $(INCLUDE_SOURCES) | build-prepare
-	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
-	cp $(BUILD)/$(MAIN).log .
-	( sleep 5 && rm $(MAIN).log ) &
+$(PDF): build
 
-open:
+open: build
 	xdg-open $(BUILD_PDF) >/dev/null 2>&1 &
 
 clean:
+	$(LATEXMK) -C -outdir=$(BUILD) $(MAIN).tex
 	rm -rf $(BUILD)
 	find . -type f \( \
 		-name '*.aux' -o \

@@ -1,6 +1,8 @@
 *.aux
 *.epub
 *.log
+*.fdb_latexmk
+*.fls
 *.synctex.gz
 *.toc
 __pycache__
