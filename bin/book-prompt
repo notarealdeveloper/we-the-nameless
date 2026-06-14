@@ -63,7 +63,7 @@ $(book-source-map)
 ### english and hebrew text above               ###
 ###################################################
 
-$(make c)
+$(make c | book-lint)
 
 
 ###############
