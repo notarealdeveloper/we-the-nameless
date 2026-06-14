@@ -1,6 +1,7 @@
 MAIN       := main
 PDF        := $(MAIN).pdf
 BUILD      := build
+BUILD_PDF  := $(BUILD)/$(PDF)
 CACHE      := $(abspath $(BUILD)/texmf-var)
 LATEX      := lualatex
 LATEXFLAGS := -interaction=nonstopmode -output-directory=$(BUILD)
@@ -18,14 +19,16 @@ all: $(PDF) open
 build-prepare:
 	mkdir -p $(BUILD) $(CACHE) $(INCLUDE_BUILD_DIRS)
 
-$(PDF): $(MAIN).tex cover.tex $(INCLUDE_SOURCES) | build-prepare
+$(PDF): $(BUILD_PDF)
+	cp $< $@
+
+$(BUILD_PDF): $(MAIN).tex cover.tex $(INCLUDE_SOURCES) | build-prepare
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
 	cp $(BUILD)/$(MAIN).log .
-	cp $(BUILD)/$(MAIN).pdf .
 	( sleep 5 && rm $(MAIN).log ) &
 
 open:
-	xdg-open $(BUILD)/$(PDF) >/dev/null 2>&1 &
+	xdg-open $(BUILD_PDF) >/dev/null 2>&1 &
 
 clean:
 	rm -rf $(BUILD)
