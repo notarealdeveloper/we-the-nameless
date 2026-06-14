@@ -1,0 +1,196 @@
+% These font sizes are calibrated only to align the alphabets on these two
+% pages.  They are deliberately separate from the normal-size declarations
+% in main.tex.
+\newfontfamily\AlphabetHistoryProtoSinaiticFifteenthCenturyFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.75
+]{proto-sinaitic-15.ttf}
+
+\newfontfamily\AlphabetHistoryProtoSinaiticThirteenthCenturyFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.40
+]{proto-sinaitic-13.ttf}
+
+\newfontfamily\AlphabetHistoryProtoSinaiticIzbetSartahFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=3.70
+]{proto-sinaitic-13-izbet-sartah.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewTelZayitFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=3.10
+]{paleo-hebrew-tel-zayit.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewGezerFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.60
+]{paleo-hebrew-gezer.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewTelDanFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.60
+]{paleo-hebrew-tel-dan.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewMoabiteFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.50
+]{paleo-hebrew-moabite.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewStandardFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.70
+]{paleo-hebrew.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewSiloamFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=3.10
+]{paleo-hebrew-siloam.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewKetefHinnomAFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=3.40
+]{paleo-hebrew-ketef-hinnom-1.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewKetefHinnomBFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=3.00
+]{paleo-hebrew-ketef-hinnom-2.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewLachishAFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.50
+]{paleo-hebrew-lachish-3.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewLachishBFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.50
+]{paleo-hebrew-lachish-4.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewLachishCFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.57
+]{paleo-hebrew-lachish-5.ttf}
+
+\newfontfamily\AlphabetHistoryAramaicFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.60
+]{noto-sans-imperial-aramaic-regular.ttf}
+
+\newfontfamily\AlphabetHistoryPaleoHebrewIsaiahScrollFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.90
+]{paleo-hebrew-isaiah-scroll.ttf}
+
+\newfontfamily\AlphabetHistoryHebrewSquareFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=3.25
+]{hebrew-david.ttf}
+
+\newfontfamily\AlphabetHistoryHebrewEzraFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=2.95
+]{hebrew-ezra.ttf}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\AlphabetHistoryASCII}{ m m }{
+  {\leavevmode\textdir TRT#1\tl_reverse:n { #2 }}
+}
+\NewDocumentCommand{\AlphabetHistoryRightToLeft}{ m m }{
+  {\leavevmode\textdir TRT#1 { #2 }}
+}
+\ExplSyntaxOff
+
+\def\paleoupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleolower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\protoalower{{abgshwZxjyklmn\;]p\;c\,q\,r\,f\,t}}
+\def\protoaupper{{ABGSHWZXjY\;KLM\,N\;]P\;C\,Q\,R\,V\,T}}
+
+\def\protobupper{{ABGD\!hw\!ZXJYKLMNS]\;P\;C\;Q\;R\;V\;T}}
+\def\protoblower{{ab\!gdHW\!zxjyklMns]\;pcq\;r\,v\,t}}
+
+\def\protocupper{{ABGDH\;WZXJ\!Y\!KL\;NS]PC\;Q\;R\,V\,T}}
+\def\protoclower{{abgdh\;wzxj\!yklns]p\!c\,q\,R\,v\,t}}
+
+% \def\paleoaupper{{ABGDHWZXJYKLMNS]P\!CQRVT}}
+\def\paleoalower{{abgdhw\!zxjyklmns]p\!cq\,r\,v\,t}}
+
+\def\paleobupper{{A\;BG\,DH\;WZX YKLM S]PCQRVT}}
+\def\paleoblower{{a\,bg\!dh\!wzx yklm\;s]p\!cqrvt}}
+
+\def\paleoeupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoelower{{abgdhwz\,xjy\;klmns]pc\,q\,rvt}}
+
+\def\paleofupper{{ABGDHWZXJY\,K\,L\,M\,NS]PCQRVT}}
+\def\paleoflower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\paleoijkupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoijklower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\paleolupper{{ABGDHWZXJYK\,L\,M\,NS]PCQRVT}}
+\def\paleollower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
+
+\clearpage
+\thispagestyle{empty}
+\begin{flushright}
+\egypt{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}
+\AlphabetHistoryASCII{\AlphabetHistoryProtoSinaiticFifteenthCenturyFont}{\protoalower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryProtoSinaiticFifteenthCenturyFont}{\protoaupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryProtoSinaiticThirteenthCenturyFont}{\protobupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryProtoSinaiticThirteenthCenturyFont}{\protoblower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryProtoSinaiticIzbetSartahFont}{\protocupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryProtoSinaiticIzbetSartahFont}{\protoclower}\\
+% \AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewTelZayitFont}{\paleoupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewTelZayitFont}{\paleoalower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewGezerFont}{\paleobupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewGezerFont}{\paleoblower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewTelDanFont}{\paleoupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewTelDanFont}{\paleolower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewMoabiteFont}{\paleoupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewMoabiteFont}{\paleolower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewStandardFont}{\paleoeupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewStandardFont}{\paleoelower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewSiloamFont}{\paleofupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewSiloamFont}{\paleoflower}\\
+
+\newpage
+\clearpage
+\thispagestyle{empty}
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewKetefHinnomAFont}{\paleoupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewKetefHinnomAFont}{\paleolower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewKetefHinnomBFont}{\paleoupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewKetefHinnomBFont}{\paleolower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewLachishAFont}{\paleoijkupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewLachishAFont}{\paleoijkupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewLachishBFont}{\paleoijkupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewLachishBFont}{\paleoijkupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewLachishCFont}{\paleoijkupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewLachishCFont}{\paleoijkupper}\\
+\AlphabetHistoryRightToLeft{\AlphabetHistoryAramaicFont}{𐡀𐡁𐡂𐡃𐡄𐡅𐡆𐡇𐡈𐡉𐡊𐡋𐡌𐡍𐡎𐡏𐡐𐡑𐡒𐡓𐡔𐡕}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewIsaiahScrollFont}{\paleolupper}\\
+\AlphabetHistoryASCII{\AlphabetHistoryPaleoHebrewIsaiahScrollFont}{\paleollower}\\
+\AlphabetHistoryASCII{\AlphabetHistoryHebrewSquareFont}{\healphabet}\\
+\AlphabetHistoryASCII{\AlphabetHistoryHebrewEzraFont}{\healphabet}\\
+\end{flushright}
+
+\newpage
