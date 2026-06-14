@@ -1036,7 +1036,7 @@
 }
 
 \newcommand{\VerseHeader}[1]{%
-    \Needspace{6\baselineskip}
+    %\Needspace{6\baselineskip}
     \vspace{0.8em}%
     \hrule
     \vspace{0.25em}%
@@ -1047,14 +1047,16 @@
 }
 
 \newcommand{\Verse}[4]{%
+    \begin{together}
     \par
-    \Needspace{12\baselineskip}%
+    %\Needspace{6\baselineskip}%
     \VerseHeader{#1}%
     \begingroup
     \hbadness=10000
     \hfuzz=2em
     \VerseColumns{#3}{#2}%
     \endgroup
+    \end{together}
     \vspace{0.8em}%
     #4\par
     \vspace{0.8em}%
@@ -1079,6 +1081,59 @@
 %    #4\par
 %    \vspace{0.8em}%
 %}
+
+% ------------------------------------------------------------
+% Keeping chunks together
+%
+% \begin{together}
+% ...
+% \end{together}
+%
+% where:
+%
+% First argument  = minimum remaining lines required before starting
+% Second argument = page-break strength (0–10000)
+%
+% \begin{together}[20]
+% ...
+% \end{together}
+%
+% \begin{together}[][8000]
+% ...
+% \end{together}
+%
+% \begin{together}[20][10000]
+% ...
+% \end{together}
+
+% ------------------------------------------------------------
+
+\makeatletter
+
+\NewDocumentEnvironment{together}{ O{10} O{5000} }
+{
+    \par
+
+    % Start a new page if fewer than N lines remain.
+    \Needspace{#1\baselineskip}
+
+    \begingroup
+
+    % Discourage page breaks within the block.
+    \interlinepenalty=#2\relax
+    \predisplaypenalty=#2\relax
+    \postdisplaypenalty=#2\relax
+    \interdisplaylinepenalty=#2\relax
+    \@beginparpenalty=#2\relax
+    \@endparpenalty=#2\relax
+    \@itempenalty=#2\relax
+}
+{
+    \par
+    \endgroup
+}
+
+\makeatother
 
 % ------------------------------------------------------------
 % Commentary / utterance layer
