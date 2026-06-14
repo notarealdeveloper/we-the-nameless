@@ -4,11 +4,10 @@ import re
 import sys
 from pathlib import Path
 
-INDENT = "\t"
+INDENT = "    "
 
 HEBREW = re.compile(r"[\u0590-\u05ff]")
 MACRO_START = re.compile(r"^(\s*)(\\[A-Za-z@]+)\{(.*)$")
-SIMPLE_MACRO = re.compile(r"^(\s*)(\\[A-Za-z@]+)\{(.*)\}\s*$")
 
 FALLBACK_HEBREW_MACROS = {
     "\\hJ", "\\hE", "\\hP", "\\hR", "\\hRJE",
@@ -36,6 +35,12 @@ NEVER_TOUCH_MACROS = {
 def has_hebrew(s):
     return bool(HEBREW.search(s))
 
+def leading_ws(s):
+    return s[:len(s) - len(s.lstrip())]
+
+def untab(s):
+    return s.replace("\t", INDENT)
+
 def discover_hebrew_macros(main_tex=Path("main.tex")):
     try:
         text = main_tex.read_text(encoding="utf-8")
@@ -43,7 +48,6 @@ def discover_hebrew_macros(main_tex=Path("main.tex")):
         return set(FALLBACK_HEBREW_MACROS)
 
     macros = set()
-
     patterns = (
         r"\\(?:newcommand|renewcommand)\{(\\[A-Za-z@]+)\}(?:\[[^\]]+\])?\{(.*?)\}",
         r"\\NewDocumentCommand\{(\\[A-Za-z@]+)\}\s*\{[^}]*\}\s*\{(.*?)\}",
@@ -73,7 +77,7 @@ def is_target_macro(name, hebrew_macros):
         return True
     if re.match(r"\\a[A-Z]", name):
         return True
-    if name in {"\\heb"}:
+    if name == "\\heb":
         return True
     return False
 
@@ -95,7 +99,7 @@ def lint_text(text, width=80, hebrew_macros=None):
     blank_count = 0
 
     while i < len(lines):
-        raw = lines[i].rstrip()
+        raw = untab(lines[i].rstrip())
 
         m_begin = re.match(r"\s*\\begin\{([^}]+)\}", raw)
         m_end = re.match(r"\s*\\end\{([^}]+)\}", raw)
@@ -131,20 +135,17 @@ def lint_text(text, width=80, hebrew_macros=None):
     return "\n".join(out).rstrip() + "\n"
 
 def collect_target_macro(lines, start, hebrew_macros):
-    line = lines[start].rstrip()
-    m = MACRO_START.match(line.strip())
+    line = untab(lines[start].rstrip())
+    stripped = line.strip()
+    m = MACRO_START.match(stripped)
 
     if not m:
         return None
 
-    _unused_indent, name, _rest = m.groups()
+    _indent, name, _rest = m.groups()
 
     if not is_target_macro(name, hebrew_macros):
         return None
-
-    # Only collect when the whole logical thing starts at this line.
-    real_indent = line[: len(line) - len(line.lstrip())]
-    stripped = line.strip()
 
     if not stripped.startswith(name + "{"):
         return None
@@ -154,7 +155,7 @@ def collect_target_macro(lines, start, hebrew_macros):
     i = start + 1
 
     while depth > 0 and i < len(lines):
-        nxt = lines[i].rstrip()
+        nxt = untab(lines[i].rstrip())
         chunk.append(nxt)
         depth += brace_delta(nxt)
         i += 1
@@ -163,17 +164,16 @@ def collect_target_macro(lines, start, hebrew_macros):
         return None
 
     used = i - start
-    formatted = format_macro_chunk(chunk, real_indent, name, hebrew_macros)
-    return used, formatted
+    indent = leading_ws(line)
+    return used, format_macro_chunk(chunk, indent, name, hebrew_macros, 80)
 
 def brace_delta(s):
-    # Good enough for these generated files. Avoids trying to be TeX.
     return s.count("{") - s.count("}")
 
-def format_macro_chunk(chunk, indent, name, hebrew_macros):
+def format_macro_chunk(chunk, indent, name, hebrew_macros, width):
     text = "\n".join(x.strip() for x in chunk)
-
     prefix = name + "{"
+
     if not text.startswith(prefix):
         return chunk
 
@@ -182,38 +182,60 @@ def format_macro_chunk(chunk, indent, name, hebrew_macros):
         inner = inner[:-1]
 
     inner = inner.strip()
+    prefer_hebrew = name in hebrew_macros or has_hebrew(inner)
 
-    # If nested TeX is present, don't try to reflow it.
+    # Long LaTeX argument = contains a paragraph break.
+    # For these, do NOT wrap, normalize, merge, split, or make any
+    # subset-level decisions. Only put the opener/closer in block form
+    # and shift the whole payload to the same relative indentation.
+    if has_paragraph_break(inner):
+        return format_long_arg_verbatim(indent, name, inner)
+
+    # Short argument = no paragraph break.
+    # These may stay one-line or soft-wrap in:
+    #
+    #   \xx{first line
+    #       continuation line}
+    #
+    # style.
     if "{" in inner or "}" in inner:
         return chunk
 
-    prefer_hebrew = name in hebrew_macros or has_hebrew(inner)
-
-    if has_paragraph_break(inner):
-        return format_long_arg(indent, name, inner, 80, prefer_hebrew)
-
-    return format_short_arg(indent, name, inner, 80, prefer_hebrew)
+    return format_short_arg(indent, name, inner, width, prefer_hebrew)
 
 def has_paragraph_break(s):
     return bool(re.search(r"\n\s*\n", s))
 
-def format_long_arg(indent, name, inner, width, prefer_hebrew):
-    out = [indent + name + "{"]
-    paragraphs = re.split(r"\n\s*\n", inner)
+def format_long_arg_verbatim(indent, name, inner):
+    raw_lines = inner.split("\n")
+    raw_lines = strip_outer_blank_lines(raw_lines)
+    raw_lines = [untab(x.rstrip()) for x in raw_lines]
 
-    for p_i, para in enumerate(paragraphs):
-        if p_i:
+    base = min_indent(raw_lines)
+    out = [indent + name + "{"]
+
+    for line in raw_lines:
+        if line.strip():
+            out.append(indent + INDENT + line[base:])
+        else:
             out.append("")
-        para = " ".join(para.split())
-        out.extend(wrap_words(
-            para,
-            indent + INDENT,
-            width,
-            is_hebrew_waw_word if prefer_hebrew else is_english_and_word,
-        ))
 
     out.append(indent + "}")
     return out
+
+def strip_outer_blank_lines(lines):
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    while lines and not lines[-1].strip():
+        lines.pop()
+    return lines
+
+def min_indent(lines):
+    indents = []
+    for line in lines:
+        if line.strip():
+            indents.append(len(leading_ws(line)))
+    return min(indents) if indents else 0
 
 def format_short_arg(indent, name, inner, width, prefer_hebrew):
     inner = " ".join(inner.split())
@@ -236,7 +258,7 @@ def format_short_arg(indent, name, inner, width, prefer_hebrew):
 
 def lint_plain_line(line, width):
     stripped = line.strip()
-    indent = line[: len(line) - len(line.lstrip())]
+    indent = leading_ws(line)
 
     if (
         not stripped
