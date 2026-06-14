@@ -155,6 +155,13 @@
     Scale=1.42
 ]{paleo-hebrew.ttf}
 
+\newfontfamily\PaleoHebrewRoboFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    Scale=1.42
+]{paleo-hebrew-robo.ttf}
+
 \newfontfamily\PaleoHebrewTelZayitFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
@@ -396,6 +403,7 @@
 \DeclareHebrewRenderer{HebrewOther}{\HebrewOtherFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{HebrewSquare}{\HebrewSquareFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{ProtoSinaiticBest}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{PaleoHebrewRobo}{\PaleoHebrewRoboFont}{\EncodeHebrewNoNiqqud}
 
 % ASCII historical renderers.  Use these with fonts that expect ABGDHWZX... input.
 \DeclareHebrewRenderer{ProtoASCIIFifteenthCentury}{\ProtoSinaiticFifteenthCenturyFont}{\EncodePaleoASCII}
