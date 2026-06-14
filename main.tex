@@ -813,7 +813,7 @@
 \newcommand{\hs}[2]{#1{#2}}
 
 % Usage:
-%   \Def{Matres Lectiones}{Body}
+%   \Def{Matres Lectiones}[Latin: \textit{matres lectionis}]{Body}
 %   \UseDef{Matres Lectiones}
 
 \newlength{\DefIndent}
@@ -821,28 +821,28 @@
 
 \ExplSyntaxOn
 
-\NewDocumentCommand{\Def}{ m +m }{
+\NewDocumentCommand{\Def}{ m O{} +m }{
   \cs_set_protected:cpn { userdef/#1 } {
-    \DefBlock{DefColor}{#1}{#2}
+    \DefBlock{DefColor}{#1}{#2}{#3}
   }
-  \DefBlock{DefColor}{#1}{#2}
+  \DefBlock{DefColor}{#1}{#2}{#3}
 }
 
 \NewDocumentCommand{\DefA}{ m +m }{
   \cs_set_protected:cpn { userdef/#1 } {
-    \DefBlock{Kcolor}{#1}{#2}
+    \DefBlock{Kcolor}{#1}{}{#2}
   }
 }
 
 \NewDocumentCommand{\DefB}{ m +m }{
   \cs_set_protected:cpn { userdef/#1 } {
-    \DefBlock{Redcolor}{#1}{#2}
+    \DefBlock{Redcolor}{#1}{}{#2}
   }
 }
 
 \NewDocumentCommand{\DefC}{ m +m }{
   \cs_set_protected:cpn { userdef/#1 } {
-    \DefBlock{Bluecolor}{#1}{#2}
+    \DefBlock{Bluecolor}{#1}{}{#2}
   }
 }
 
@@ -854,7 +854,7 @@
 
 \ExplSyntaxOff
 
-\NewDocumentCommand{\DefBlock}{ m m +m }{%
+\NewDocumentCommand{\DefBlock}{ m m m +m }{%
   \par%
   \smallskip
   \begingroup
@@ -865,8 +865,11 @@
   \addfontfeatures{Ligatures=TeX}%
   \color{#1}%
   \noindent
-  \textbf{#2}.%
-  #3%
+  \textbf{#2}%
+  \if\relax\detokenize{#3}\relax\else\space(#3)\fi
+  .%
+  \par\nobreak
+  #4%
   \par
   \endgroup
   \smallskip
