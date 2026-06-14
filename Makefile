@@ -60,7 +60,7 @@ list:
 		| xargs -n1 echo
 
 progress:
-	( grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex | sort \
+	( grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex | sort | head -n 5 \
 		| sed -E 's@(.*)@\1.tex@'; ) \
 		| xargs -n1 xdg-open & wait && xdg-open $(MAIN).tex
 	( sleep 5 && xdotool key ctrl+0 ) &
