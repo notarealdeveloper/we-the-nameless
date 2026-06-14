@@ -7,7 +7,8 @@ from pathlib import Path
 INDENT = "\t"
 
 HEBREW = re.compile(r"[\u0590-\u05ff]")
-SIMPLE_MACRO = re.compile(r"^(\\[A-Za-z@]+\{)(.*)(\})$")
+MACRO_START = re.compile(r"^(\s*)(\\[A-Za-z@]+)\{(.*)$")
+SIMPLE_MACRO = re.compile(r"^(\s*)(\\[A-Za-z@]+)\{(.*)\}\s*$")
 
 FALLBACK_HEBREW_MACROS = {
     "\\hJ", "\\hE", "\\hP", "\\hR", "\\hRJE",
@@ -26,10 +27,16 @@ SKIP_WRAP_STARTS = (
     "{", "}", "%",
 )
 
-def has_hebrew(s: str) -> bool:
+NEVER_TOUCH_MACROS = {
+    "\\Verse", "\\Chapter", "\\Book", "\\Apocrypha", "\\Apocryphon",
+    "\\Define", "\\UseDef", "\\Def", "\\DefA", "\\DefB", "\\DefC",
+    "\\Table", "\\footnote", "\\raisebox",
+}
+
+def has_hebrew(s):
     return bool(HEBREW.search(s))
 
-def discover_hebrew_macros(main_tex: Path = Path("main.tex")) -> set[str]:
+def discover_hebrew_macros(main_tex=Path("main.tex")):
     try:
         text = main_tex.read_text(encoding="utf-8")
     except OSError:
@@ -37,53 +44,58 @@ def discover_hebrew_macros(main_tex: Path = Path("main.tex")) -> set[str]:
 
     macros = set()
 
-    for m in re.finditer(r"\\(?:newcommand|renewcommand)\{(\\[A-Za-z@]+)\}(?:\[[^\]]+\])?\{([^%]*?)\}", text, re.S):
-        name, body = m.groups()
-        if (
-            name.startswith("\\h")
-            or "Hebrew" in body
-            or "hebrew" in body
-            or "textdir TRT" in body
-            or "RTL" in body
-            or has_hebrew(body)
-        ):
-            macros.add(name)
+    patterns = (
+        r"\\(?:newcommand|renewcommand)\{(\\[A-Za-z@]+)\}(?:\[[^\]]+\])?\{(.*?)\}",
+        r"\\NewDocumentCommand\{(\\[A-Za-z@]+)\}\s*\{[^}]*\}\s*\{(.*?)\}",
+    )
 
-    for m in re.finditer(r"\\NewDocumentCommand\{(\\[A-Za-z@]+)\}\s*\{[^}]*\}\s*\{([^%]*?)\}", text, re.S):
-        name, body = m.groups()
-        if (
-            name.startswith("\\h")
-            or "Hebrew" in body
-            or "hebrew" in body
-            or "textdir TRT" in body
-            or "RTL" in body
-            or has_hebrew(body)
-        ):
-            macros.add(name)
+    for pat in patterns:
+        for m in re.finditer(pat, text, re.S):
+            name, body = m.groups()
+            if (
+                name.startswith("\\h")
+                or "Hebrew" in body
+                or "hebrew" in body
+                or "textdir TRT" in body
+                or "RTL" in body
+                or has_hebrew(body)
+            ):
+                macros.add(name)
 
     return macros or set(FALLBACK_HEBREW_MACROS)
 
-def macro_name_from_opener(opener: str) -> str:
-    return opener[:-1]
+def is_target_macro(name, hebrew_macros):
+    if name in NEVER_TOUCH_MACROS:
+        return False
+    if name in hebrew_macros:
+        return True
+    if re.match(r"\\e[A-Z]", name):
+        return True
+    if re.match(r"\\a[A-Z]", name):
+        return True
+    if name in {"\\heb"}:
+        return True
+    return False
 
-def is_hebrew_waw_word(word: str) -> bool:
+def is_hebrew_waw_word(word):
     return len(word) > 1 and word.startswith("ו")
 
-def is_english_and_word(word: str) -> bool:
+def is_english_and_word(word):
     bare = word.strip("`'\"“”‘’()[]{}.,;:!?—-")
     return bare in {"And", "and"}
 
-def lint_text(text: str, width: int = 80, hebrew_macros: set[str] | None = None) -> str:
+def lint_text(text, width=80, hebrew_macros=None):
     if hebrew_macros is None:
         hebrew_macros = discover_hebrew_macros()
 
     lines = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
     out = []
+    i = 0
     protected = False
     blank_count = 0
 
-    for line in lines:
-        raw = line.rstrip()
+    while i < len(lines):
+        raw = lines[i].rstrip()
 
         m_begin = re.match(r"\s*\\begin\{([^}]+)\}", raw)
         m_end = re.match(r"\s*\\end\{([^}]+)\}", raw)
@@ -93,58 +105,142 @@ def lint_text(text: str, width: int = 80, hebrew_macros: set[str] | None = None)
 
         if protected:
             out.append(raw)
-        else:
-            if raw == "":
-                blank_count += 1
-                if blank_count <= 2:
-                    out.append("")
-            else:
-                blank_count = 0
-                out.extend(lint_line(raw, width, hebrew_macros))
+            if m_end and m_end.group(1) in PROTECT_ENVS:
+                protected = False
+            i += 1
+            continue
 
-        if m_end and m_end.group(1) in PROTECT_ENVS:
-            protected = False
+        block = collect_target_macro(lines, i, hebrew_macros)
+        if block:
+            used, formatted = block
+            out.extend(formatted)
+            i += used
+            blank_count = 0
+            continue
+
+        if raw == "":
+            blank_count += 1
+            if blank_count <= 2:
+                out.append("")
+        else:
+            blank_count = 0
+            out.extend(lint_plain_line(raw, width))
+
+        i += 1
 
     return "\n".join(out).rstrip() + "\n"
 
-def lint_line(line: str, width: int, hebrew_macros: set[str]) -> list[str]:
+def collect_target_macro(lines, start, hebrew_macros):
+    line = lines[start].rstrip()
+    m = MACRO_START.match(line.strip())
+
+    if not m:
+        return None
+
+    _unused_indent, name, _rest = m.groups()
+
+    if not is_target_macro(name, hebrew_macros):
+        return None
+
+    # Only collect when the whole logical thing starts at this line.
+    real_indent = line[: len(line) - len(line.lstrip())]
     stripped = line.strip()
-    base_indent = line[: len(line) - len(line.lstrip())]
 
-    if not stripped:
-        return [line]
+    if not stripped.startswith(name + "{"):
+        return None
 
-    simple = SIMPLE_MACRO.match(stripped)
-    if simple and should_expand_simple_macro(stripped):
-        opener, inner, _ = simple.groups()
-        name = macro_name_from_opener(opener)
-        inner_indent = base_indent + INDENT
+    depth = brace_delta(stripped)
+    chunk = [line]
+    i = start + 1
 
-        body = lint_wrappable_text(
-            inner.strip(),
-            inner_indent,
+    while depth > 0 and i < len(lines):
+        nxt = lines[i].rstrip()
+        chunk.append(nxt)
+        depth += brace_delta(nxt)
+        i += 1
+
+    if depth != 0:
+        return None
+
+    used = i - start
+    formatted = format_macro_chunk(chunk, real_indent, name, hebrew_macros)
+    return used, formatted
+
+def brace_delta(s):
+    # Good enough for these generated files. Avoids trying to be TeX.
+    return s.count("{") - s.count("}")
+
+def format_macro_chunk(chunk, indent, name, hebrew_macros):
+    text = "\n".join(x.strip() for x in chunk)
+
+    prefix = name + "{"
+    if not text.startswith(prefix):
+        return chunk
+
+    inner = text[len(prefix):]
+    if inner.endswith("}"):
+        inner = inner[:-1]
+
+    inner = inner.strip()
+
+    # If nested TeX is present, don't try to reflow it.
+    if "{" in inner or "}" in inner:
+        return chunk
+
+    prefer_hebrew = name in hebrew_macros or has_hebrew(inner)
+
+    if has_paragraph_break(inner):
+        return format_long_arg(indent, name, inner, 80, prefer_hebrew)
+
+    return format_short_arg(indent, name, inner, 80, prefer_hebrew)
+
+def has_paragraph_break(s):
+    return bool(re.search(r"\n\s*\n", s))
+
+def format_long_arg(indent, name, inner, width, prefer_hebrew):
+    out = [indent + name + "{"]
+    paragraphs = re.split(r"\n\s*\n", inner)
+
+    for p_i, para in enumerate(paragraphs):
+        if p_i:
+            out.append("")
+        para = " ".join(para.split())
+        out.extend(wrap_words(
+            para,
+            indent + INDENT,
             width,
-            prefer_hebrew=(name in hebrew_macros or has_hebrew(inner)),
-        )
+            is_hebrew_waw_word if prefer_hebrew else is_english_and_word,
+        ))
 
-        # Only explode:
-        #
-        #   \xx{...}
-        #
-        # into:
-        #
-        #   \xx{
-        #       ...
-        #   }
-        #
-        # if the argument actually became multiline.
-        if len(body) > 1:
-            return [base_indent + opener, *body, base_indent + "}"]
+    out.append(indent + "}")
+    return out
 
-        return [line]
+def format_short_arg(indent, name, inner, width, prefer_hebrew):
+    inner = " ".join(inner.split())
+    opener = indent + name + "{"
+    cont = indent + INDENT
+
+    lines = wrap_words(
+        inner,
+        opener,
+        width,
+        is_hebrew_waw_word if prefer_hebrew else is_english_and_word,
+        cont,
+    )
+
+    if len(lines) == 1:
+        return [lines[0] + "}"]
+
+    lines[-1] += "}"
+    return lines
+
+def lint_plain_line(line, width):
+    stripped = line.strip()
+    indent = line[: len(line) - len(line.lstrip())]
 
     if (
-        stripped.startswith(SKIP_WRAP_STARTS)
+        not stripped
+        or stripped.startswith(SKIP_WRAP_STARTS)
         or "\\\\" in stripped
         or "%%%" in stripped
         or len(line) <= width
@@ -154,86 +250,57 @@ def lint_line(line: str, width: int, hebrew_macros: set[str]) -> list[str]:
     if line.count("\\") >= 2 or line.count("{") != line.count("}"):
         return [line]
 
-    return lint_wrappable_text(
+    return wrap_words(
         stripped,
-        base_indent,
+        indent,
         width,
-        prefer_hebrew=has_hebrew(stripped),
+        is_hebrew_waw_word if has_hebrew(stripped) else is_english_and_word,
     )
 
-def should_expand_simple_macro(stripped: str) -> bool:
-    if stripped.startswith(("\\begin", "\\end", "\\raisebox", "\\footnote")):
-        return False
+def wrap_words(text, first_indent, width, prefer_break, next_indent=None):
+    if next_indent is None:
+        next_indent = first_indent
 
-    m = SIMPLE_MACRO.match(stripped)
-    if not m:
-        return False
-
-    _opener, inner, _closer = m.groups()
-
-    if not inner.strip():
-        return False
-
-    if inner.count("{") or inner.count("}"):
-        return False
-
-    return True
-
-def lint_wrappable_text(
-    text: str,
-    indent: str,
-    width: int,
-    prefer_hebrew: bool = False,
-) -> list[str]:
-    if prefer_hebrew:
-        return wrap_words(text, indent, width, is_hebrew_waw_word)
-
-    return wrap_words(text, indent, width, is_english_and_word)
-
-def wrap_words(text: str, indent: str, width: int, should_prefer_break) -> list[str]:
     words = text.split()
-    lines = []
+    out = []
     cur = []
-
-    def cur_text() -> str:
-        return " ".join(cur)
-
-    def cur_len() -> int:
-        return len(indent) + len(cur_text())
+    indent = first_indent
 
     for word in words:
-        would_be = (cur_text() + " " + word).strip()
-        would_len = len(indent) + len(would_be)
+        cur_text = " ".join(cur)
+        maybe = (cur_text + " " + word).strip()
 
-        if should_prefer_break(word) and cur and cur_len() >= max(38, width // 2):
-            lines.append(indent + cur_text())
+        if prefer_break(word) and cur and len(indent + cur_text) >= max(38, width // 2):
+            out.append(indent + cur_text)
             cur = [word]
+            indent = next_indent
             continue
 
-        if cur and would_len > width:
-            lines.append(indent + cur_text())
+        if cur and len(indent + maybe) > width:
+            out.append(indent + cur_text)
             cur = [word]
+            indent = next_indent
             continue
 
         cur.append(word)
 
     if cur:
-        lines.append(indent + cur_text())
+        out.append(indent + " ".join(cur))
 
-    return lines or [indent + text]
+    return out or [first_indent + text]
 
-def iter_tex_files(root: Path):
+def iter_tex_files(root):
     for path in root.rglob("*.tex"):
         if path.is_file():
             yield path
 
-def read_path(path: Path) -> str:
+def read_path(path):
     return path.read_text(encoding="utf-8")
 
-def write_path(path: Path, text: str):
+def write_path(path, text):
     path.write_text(text, encoding="utf-8")
 
-def main() -> int:
+def main():
     ap = argparse.ArgumentParser(
         description="Lightweight LaTeX linter/formatter for narrative .tex files."
     )
