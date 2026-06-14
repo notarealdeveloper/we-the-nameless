@@ -90,21 +90,23 @@
     Scale=1.22
 ]{hebrew-david.ttf}
 
-% J = simple and readable
+% J
 \newfontfamily\HebrewJFont[
     Path=\LocalFontPath,
     Script=Hebrew,
+    Renderer=HarfBuzz,
     Scale=1.42
 ]{hebrew-david.ttf}
 
-% E = same as J (or customize later)
+% E
 \newfontfamily\HebrewEFont[
     Path=\LocalFontPath,
     Script=Hebrew,
+    BoldFont=hebrew-david-bold.ttf,
     Scale=1.42
 ]{hebrew-david.ttf}
 
-% P = Ezra (fancier)
+% P
 \newfontfamily\HebrewPFont[
     Path=\LocalFontPath,
     Script=Hebrew,
