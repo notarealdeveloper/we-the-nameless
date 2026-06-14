@@ -201,6 +201,14 @@
     Scale=1.42
 ]{proto-sinaitic-13-izbet-sartah.ttf}
 
+\newfontfamily\ProtoSinaiticBestFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    BoldFont=proto-sinaitic-best-bold.ttf,
+    Scale=1.42
+]{proto-sinaitic-best.ttf}
+
 \newfontfamily\PaleoHebrewFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
@@ -495,6 +503,7 @@
 \DeclareHebrewRenderer{HebrewRJE}{\HebrewRJEFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{HebrewRecords}{\HebrewRecordsFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{HebrewOther}{\HebrewOtherFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{ProtoSinaiticBest}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
 
 % ASCII historical renderers.  Use these with fonts that expect ABGDHWZX... input.
 \DeclareHebrewRenderer{ProtoASCIIFifteenthCentury}{\ProtoSinaiticFifteenthCenturyFont}{\EncodePaleoASCII}
