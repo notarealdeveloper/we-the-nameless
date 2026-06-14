@@ -99,7 +99,7 @@
     Script=Hebrew,
     Scale=1.42
 ]{hebrew-david.ttf}
-%]{hebrew-paleo.ttf}
+%]{paleo-hebrew.ttf}
 
 % E = same as J (or customize later)
 \newfontfamily\HebrewEFont[
@@ -579,133 +579,176 @@
 \newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
 \newcommand{\eOther}[1]{{\estyleOther #1}}
 
-% Niqqud stripping Lua
-\directlua{
-  function strip_hebrew_niqqud(s)
-    local out = {}
+% ------------------------------------------------------------
+% Hebrew text encoders and font profiles
+%
+% Ground truth in 1-genesis/*.tex stays Hebrew.  A font profile decides
+% how Hebrew input is encoded before it reaches a particular font.
+%
+% Examples:
+%   \renewcommand{\hJProfile}{\HebrewProfileHebrewPaleoCodepointsJ}
+%   \renewcommand{\hJProfile}{\HebrewProfilePaleoASCIIJ}
+%   \renewcommand{\hJProfile}{\HebrewProfilePhoenicianUnicodeJ}
+% ------------------------------------------------------------
 
+\directlua{
+  paleotex = paleotex or {}
+
+  function paleotex.strip_hebrew_niqqud(s)
+    local out = {}
     for pos, code in utf8.codes(s) do
-      if not (
-        (code >= 0x0591 and code <= 0x05BD) or
-        code == 0x05BF or
-        (code >= 0x05C1 and code <= 0x05C2) or
-        (code >= 0x05C4 and code <= 0x05C5) or
-        code == 0x05C7
-      ) then
+      if not ((code >= 0x0591 and code <= 0x05BD) or code == 0x05BF or (code >= 0x05C1 and code <= 0x05C2) or (code >= 0x05C4 and code <= 0x05C5) or code == 0x05C7) then
         table.insert(out, utf8.char(code))
       end
     end
-
     return table.concat(out)
   end
-}
 
-\newcommand{\HebrewNoNiqqud}[1]{%
-  \directlua{
-    tex.sprint(strip_hebrew_niqqud("\luaescapestring{\detokenize{#1}}"))
-  }%
-}
-
-% Hebrew -> Phoenician/Paleo-Hebrew Unicode
-% This is for fonts that put Paleo/Phoenician glyphs at the
-% Phoenician Unicode codepoints instead of the Hebrew codepoints.
-%
-% Important: do NOT use Lua -- line comments inside \directlua{...}.
-% TeX turns most newlines in macro arguments into spaces, so a Lua
-% line comment can accidentally comment out the rest of the chunk.
-\directlua{
-  hebrew_to_phoenician_map = {
-    [0x05D0] = 0x10900,
-    [0x05D1] = 0x10901,
-    [0x05D2] = 0x10902,
-    [0x05D3] = 0x10903,
-    [0x05D4] = 0x10904,
-    [0x05D5] = 0x10905,
-    [0x05D6] = 0x10906,
-    [0x05D7] = 0x10907,
-    [0x05D8] = 0x10908,
-    [0x05D9] = 0x10909,
-    [0x05DA] = 0x1090A,
-    [0x05DB] = 0x1090A,
-    [0x05DC] = 0x1090B,
-    [0x05DD] = 0x1090C,
-    [0x05DE] = 0x1090C,
-    [0x05DF] = 0x1090D,
-    [0x05E0] = 0x1090D,
-    [0x05E1] = 0x1090E,
-    [0x05E2] = 0x1090F,
-    [0x05E3] = 0x10910,
-    [0x05E4] = 0x10910,
-    [0x05E5] = 0x10911,
-    [0x05E6] = 0x10911,
-    [0x05E7] = 0x10912,
-    [0x05E8] = 0x10913,
-    [0x05E9] = 0x10914,
-    [0x05EA] = 0x10915,
+  paleotex.hebrew_to_phoenician_unicode_map = {
+    [0x05D0] = 0x10900, [0x05D1] = 0x10901, [0x05D2] = 0x10902, [0x05D3] = 0x10903,
+    [0x05D4] = 0x10904, [0x05D5] = 0x10905, [0x05D6] = 0x10906, [0x05D7] = 0x10907,
+    [0x05D8] = 0x10908, [0x05D9] = 0x10909, [0x05DA] = 0x1090A, [0x05DB] = 0x1090A,
+    [0x05DC] = 0x1090B, [0x05DD] = 0x1090C, [0x05DE] = 0x1090C, [0x05DF] = 0x1090D,
+    [0x05E0] = 0x1090D, [0x05E1] = 0x1090E, [0x05E2] = 0x1090F, [0x05E3] = 0x10910,
+    [0x05E4] = 0x10910, [0x05E5] = 0x10911, [0x05E6] = 0x10911, [0x05E7] = 0x10912,
+    [0x05E8] = 0x10913, [0x05E9] = 0x10914, [0x05EA] = 0x10915
   }
 
-  function hebrew_to_phoenician(s)
-    s = strip_hebrew_niqqud(s)
-    local out = {}
+  paleotex.hebrew_to_paleo_ascii_map = {
+    [0x05D0] = "A", [0x05D1] = "B", [0x05D2] = "G", [0x05D3] = "D",
+    [0x05D4] = "H", [0x05D5] = "W", [0x05D6] = "Z", [0x05D7] = "X",
+    [0x05D8] = "J", [0x05D9] = "Y", [0x05DA] = "K", [0x05DB] = "K",
+    [0x05DC] = "L", [0x05DD] = "M", [0x05DE] = "M", [0x05DF] = "N",
+    [0x05E0] = "N", [0x05E1] = "S", [0x05E2] = "]", [0x05E3] = "P",
+    [0x05E4] = "P", [0x05E5] = "C", [0x05E6] = "C", [0x05E7] = "Q",
+    [0x05E8] = "R", [0x05E9] = "V", [0x05EA] = "T"
+  }
 
+  function paleotex.map_hebrew(s, map, unicode_output)
+    s = paleotex.strip_hebrew_niqqud(s)
+    local out = {}
     for pos, code in utf8.codes(s) do
-      local mapped = hebrew_to_phoenician_map[code]
+      local mapped = map[code]
       if mapped then
-        table.insert(out, utf8.char(mapped))
+        if unicode_output then
+          table.insert(out, utf8.char(mapped))
+        else
+          table.insert(out, mapped)
+        end
       elseif code == 0x05BE then
         table.insert(out, " ")
       else
         table.insert(out, utf8.char(code))
       end
     end
-
     return table.concat(out)
+  end
+
+  function strip_hebrew_niqqud(s)
+    return paleotex.strip_hebrew_niqqud(s)
+  end
+
+  function hebrew_to_phoenician(s)
+    return paleotex.map_hebrew(s, paleotex.hebrew_to_phoenician_unicode_map, true)
+  end
+
+  function hebrew_to_paleo_ascii(s)
+    return paleotex.map_hebrew(s, paleotex.hebrew_to_paleo_ascii_map, false)
   end
 }
 
+\newcommand{\HebrewNoNiqqud}[1]{%
+  \directlua{tex.sprint(strip_hebrew_niqqud("\luaescapestring{\detokenize{#1}}"))}%
+}
+
 \newcommand{\HebrewToPhoenician}[1]{%
-  \directlua{%
-    tex.sprint(hebrew_to_phoenician("\luaescapestring{\detokenize{#1}}"))%
+  \directlua{tex.sprint(hebrew_to_phoenician("\luaescapestring{\detokenize{#1}}"))}%
+}
+
+\newcommand{\HebrewToPaleoASCII}[1]{%
+  \directlua{tex.sprint(hebrew_to_paleo_ascii("\luaescapestring{\detokenize{#1}}"))}%
+}
+
+\newcommand{\EncodeHebrewNoNiqqud}[1]{\HebrewNoNiqqud{#1}}
+\newcommand{\EncodeHebrewRaw}[1]{#1}
+\newcommand{\EncodePhoenicianUnicode}[1]{\HebrewToPhoenician{#1}}
+\newcommand{\EncodePaleoASCII}[1]{\HebrewToPaleoASCII{#1}}
+
+\makeatletter
+\newcommand{\DeclareHebrewProfile}[3]{%
+  \expandafter\newcommand\csname HebrewProfile#1\endcsname[2]{%
+    {\leavevmode\textdir TRT#2##1#3{##2}}%
   }%
 }
+\makeatother
 
-% Usage: \Paleo{בְּרֵאשִׁית} -> Phoenician-codepoint letters.
-\newcommand{\Paleo}[1]{%
-  {\leavevmode\textdir TRT\PhoenicianFont \HebrewToPhoenician{#1}}%
-}
+% Hebrew-codepoint profiles.  These expect the font itself to contain Hebrew codepoints.
+\DeclareHebrewProfile{HebrewDefault}{\HebrewFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewProfile{HebrewRawDefault}{\HebrewFont}{\EncodeHebrewRaw}
+\DeclareHebrewProfile{HebrewJ}{\HebrewJFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewProfile{HebrewE}{\HebrewEFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewProfile{HebrewP}{\HebrewPFont}{\EncodeHebrewRaw}
+\DeclareHebrewProfile{HebrewR}{\HebrewRFont}{\EncodeHebrewRaw}
+\DeclareHebrewProfile{HebrewRJE}{\HebrewRJEFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewProfile{HebrewRecords}{\HebrewRecordsFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewProfile{HebrewOther}{\HebrewOtherFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewProfile{HebrewPaleoCodepointsJ}{\HebrewJFont}{\EncodeHebrewNoNiqqud}
 
-% Renderers let the chapter files stay Hebrew while the display backend changes.
-\newcommand{\RenderHebrewNoNiqqud}[2]{{#1 \HebrewNoNiqqud{#2}}}
-\newcommand{\RenderHebrewRaw}[2]{{#1 #2}}
-\newcommand{\RenderPaleoNoNiqqud}[2]{{#1\PhoenicianFont \HebrewToPhoenician{#2}}}
+% Unicode Phoenician profile.  Use this with fonts like Noto Sans Phoenician.
+\DeclareHebrewProfile{PhoenicianUnicodeJ}{\PhoenicianFont}{\EncodePhoenicianUnicode}
+\DeclareHebrewProfile{PhoenicianUnicodeDefault}{\PhoenicianFont}{\EncodePhoenicianUnicode}
 
-% Defaults. Change these aliases to test a different backend without touching 1-genesis/*.tex.
-\newcommand{\DefaultHebrewTextRender}{\RenderHebrewNoNiqqud}
-\newcommand{\DefaultRawHebrewTextRender}{\RenderHebrewRaw}
-\newcommand{\DefaultPaleoTextRender}{\RenderPaleoNoNiqqud}
+% ASCII paleo profiles.  Use these with your paleo/proto font files that expect ABGDHWZX... input.
+\DeclareHebrewProfile{PaleoASCII}{\PaleoHebrewFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIIJ}{\PaleoHebrewFontJ}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIITelZayit}{\PaleoHebrewTelZayitFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIIGezer}{\PaleoHebrewGezerFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIITelDan}{\PaleoHebrewTelDanFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIIMoabite}{\PaleoHebrewMoabiteFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIISiloam}{\PaleoHebrewSiloamFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIIKetefHinnomA}{\PaleoHebrewKetefHinnomOneFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIIKetefHinnomB}{\PaleoHebrewKetefHinnomTwoFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIILachishA}{\PaleoHebrewLachishAFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIILachishB}{\PaleoHebrewLachishBFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIILachishC}{\PaleoHebrewLachishCFont}{\EncodePaleoASCII}
+\DeclareHebrewProfile{PaleoASCIIIsaiahScroll}{\PaleoHebrewIsaiahScrollFont}{\EncodePaleoASCII}
 
-% Per-source renderer aliases. Override one of these to switch only that source.
-\newcommand{\hJTextRender}{\DefaultHebrewTextRender}
-\newcommand{\hETextRender}{\DefaultHebrewTextRender}
-\newcommand{\hPTextRender}{\DefaultRawHebrewTextRender}
-\newcommand{\hRecordsTextRender}{\DefaultHebrewTextRender}
-\newcommand{\hOtherTextRender}{\DefaultHebrewTextRender}
+% Source bindings.  These are the only aliases you should normally change.
+\newcommand{\hJProfile}{\HebrewProfileHebrewJ}
+\newcommand{\hEProfile}{\HebrewProfileHebrewE}
+\newcommand{\hPProfile}{\HebrewProfileHebrewP}
+\newcommand{\hRProfile}{\HebrewProfileHebrewR}
+\newcommand{\hRJEProfile}{\HebrewProfileHebrewRJE}
+\newcommand{\hRecordsProfile}{\HebrewProfileHebrewRecords}
+\newcommand{\hOtherProfile}{\HebrewProfileHebrewOther}
+\newcommand{\InlineHebrewProfile}{\HebrewProfileHebrewDefault}
+
+% Direct helpers for experiments.
+\newcommand{\Paleo}[1]{\HebrewProfilePhoenicianUnicodeDefault{}{#1}}
+\newcommand{\PaleoASCII}[1]{\HebrewProfilePaleoASCII{}{#1}}
+
+% Cleaner alphabet-test helpers.  These let the title/demo pages feed Hebrew once.
+\newcommand{\HebrewAlphabet}{אבגדהוזחטיכלמנסעפצקרשת}
+\newcommand{\ShowHebrewProfileAlphabet}[1]{#1{}{\HebrewAlphabet}\\}
+
+% To test J with paleo-hebrew.ttf, add exactly this after these declarations:
+%   \renewcommand{\hJProfile}{\HebrewProfilePaleoASCIIJ}
+%
+% To test J with noto-sans-phoenician-regular.ttf, add:
+%   \renewcommand{\hJProfile}{\HebrewProfilePhoenicianUnicodeJ}
+%
+% To test J with a Hebrew-codepoint paleo font, set \HebrewJFont to that font and leave:
+%   \newcommand{\hJProfile}{\HebrewProfileHebrewJ}
 
 % Hebrew source commands
-
-% No niqqud for J and the Mushites
-\newcommand{\hJ}[1]{\hJTextRender{\hstyleJ}{#1}}
-\newcommand{\hE}[1]{\hETextRender{\hstyleE}{#1}}
-%\newcommand{\hD}[1]{\hETextRender{\hstyleE}{#1}}
-
-% Keep niqqud for the Aaronids by default
-\newcommand{\hP}[1]{\hPTextRender{\hstyleP}{#1}}
-\newcommand{\hR}[1]{{\hstyleR\highLight[Rbgcolor]{#1}}}
-
-% Stripped
-\newcommand{\hRJE}[1]{{\hstyleRJE\highLight[RJEbgcolor]{\HebrewNoNiqqud{#1}}}}
-\newcommand{\hBookOfRecords}[1]{\hRecordsTextRender{\hstyleRecords}{#1}}
-\newcommand{\hOther}[1]{\hOtherTextRender{\hstyleOther}{#1}}
+\newcommand{\hJ}[1]{\hJProfile{\color{Jcolor}\mdseries}{#1}}
+\newcommand{\hE}[1]{\hEProfile{\color{Ecolor}\bfseries}{#1}}
+%\newcommand{\hD}[1]{\hEProfile{\color{Ecolor}\bfseries}{#1}}
+\newcommand{\hP}[1]{\hPProfile{\color{Pcolor}\mdseries}{#1}}
+\newcommand{\hR}[1]{{\leavevmode\textdir TRT\HebrewRFont\color{Rcolor}\mdseries\highLight[Rbgcolor]{#1}}}
+\newcommand{\hRJE}[1]{{\leavevmode\textdir TRT\HebrewRJEFont\color{RJEcolor}\mdseries\highLight[RJEbgcolor]{\HebrewNoNiqqud{#1}}}}
+\newcommand{\hBookOfRecords}[1]{\hRecordsProfile{\color{RecordsColor}\itshape}{#1}}
+\newcommand{\hOther}[1]{\hOtherProfile{\color{OtherColor}\itshape}{#1}}
 
 % ------------------------------------------------------------
 % Inline Hebrew with explicit font selection
@@ -750,7 +793,7 @@
 % get messy if we don't organize the infrastructure tightly.
 
 \newcommand{\heb}[1]{%
-    {\leavevmode\textdir TRT\HebrewFont #1}%
+    {\InlineHebrewProfile{}{#1}}%
 }
 
 \newcommand{\arb}[1]{%
