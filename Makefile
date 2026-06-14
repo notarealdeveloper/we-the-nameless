@@ -20,6 +20,7 @@ build-prepare:
 $(PDF): $(MAIN).tex build-prepare
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
 	cp $(BUILD)/$(MAIN).log .
+	cp $(BUILD)/$(MAIN).pdf .
 	( sleep 5 && rm $(MAIN).log ) &
 
 open:
@@ -27,7 +28,6 @@ open:
 
 clean:
 	rm -rf $(BUILD)
-	rm -f $(MAIN).pdf
 	find . -type f \( \
 		-name '*.aux' -o \
 		-name '*.log' -o \
