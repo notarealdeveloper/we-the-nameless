@@ -1,9 +1,9 @@
 *.aux
 *.epub
 *.log
-*.pdf
 *.synctex.gz
 *.toc
 __pycache__
 *.pyc
-build
+build/main.pdf
+main.pdf
