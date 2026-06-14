@@ -206,21 +206,29 @@ def format_macro_chunk(chunk, indent, name, hebrew_macros, width):
 def has_paragraph_break(s):
     return bool(re.search(r"\n\s*\n", s))
 
-def format_long_arg_verbatim(indent, name, inner):
-    raw_lines = inner.split("\n")
-    raw_lines = strip_outer_blank_lines(raw_lines)
-    raw_lines = [untab(x.rstrip()) for x in raw_lines]
+def shift_long_arg(indent, inner):
+    out = []
 
-    out = [indent + name + "{"]
+    for line in strip_outer_blank_lines(inner.split("\n")):
+        line = untab(line.rstrip())
 
-    for line in raw_lines:
-        if line.strip():
-            out.append(indent + INDENT + line)
-        else:
+        if not line.strip():
             out.append("")
+            continue
 
-    out.append(indent + "}")
+        if line.startswith(indent):
+            line = line[len(indent):]
+
+        out.append(indent + INDENT + line)
+
     return out
+
+def format_long_arg_verbatim(indent, name, inner):
+    return [
+        indent + name + "{",
+        *shift_long_arg(indent, inner),
+        indent + "}",
+    ]
 
 def strip_outer_blank_lines(lines):
     while lines and not lines[0].strip():
