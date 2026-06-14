@@ -71,6 +71,12 @@
     Scale=1.22
 ]{noto-sans-imperial-aramaic-regular.ttf}
 
+\newfontfamily\PhoenicianFont[
+    Path=\LocalFontPath,
+    BoldFont=noto-sans-phoenician-regular.ttf,
+    Scale=1.22
+]{noto-sans-phoenician-regular.ttf}
+
 
 \newfontfamily\HebrewDavidFont[
     Path=\LocalFontPath,
@@ -556,6 +562,10 @@
 
 \newcommand{\ara}[1]{%
     {\leavevmode\textdir TRT\AramaicFont #1}%
+}
+
+\newcommand{\phn}[1]{%
+    {\leavevmode\textdir TRT\PhoenicianFont #1}%
 }
 
 \newcommand{\hs}[2]{#1{#2}}
