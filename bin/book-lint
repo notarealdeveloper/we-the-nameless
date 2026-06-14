@@ -6,8 +6,6 @@ from pathlib import Path
 
 INDENT = "\t"
 
-DEFAULT_WIDTH = 100
-
 HEBREW = re.compile(r"[\u0590-\u05ff]")
 SIMPLE_MACRO = re.compile(r"^(\\[A-Za-z@]+\{)(.*)(\})$")
 
@@ -28,11 +26,6 @@ SKIP_WRAP_STARTS = (
     "{", "}", "%",
 )
 
-NEVER_EXPAND_MACROS = {
-    "\\Verse", "\\Chapter", "\\Book", "\\Apocrypha", "\\Apocryphon",
-    "\\Define", "\\UseDef",
-}
-
 def has_hebrew(s: str) -> bool:
     return bool(HEBREW.search(s))
 
@@ -44,23 +37,29 @@ def discover_hebrew_macros(main_tex: Path = Path("main.tex")) -> set[str]:
 
     macros = set()
 
-    command_patterns = (
-        r"\\(?:newcommand|renewcommand)\{(\\[A-Za-z@]+)\}(?:\[[^\]]+\])?\{([^%]*?)\}",
-        r"\\NewDocumentCommand\{(\\[A-Za-z@]+)\}\s*\{[^}]*\}\s*\{([^%]*?)\}",
-    )
+    for m in re.finditer(r"\\(?:newcommand|renewcommand)\{(\\[A-Za-z@]+)\}(?:\[[^\]]+\])?\{([^%]*?)\}", text, re.S):
+        name, body = m.groups()
+        if (
+            name.startswith("\\h")
+            or "Hebrew" in body
+            or "hebrew" in body
+            or "textdir TRT" in body
+            or "RTL" in body
+            or has_hebrew(body)
+        ):
+            macros.add(name)
 
-    for pattern in command_patterns:
-        for m in re.finditer(pattern, text, re.S):
-            name, body = m.groups()
-            if (
-                name.startswith("\\h")
-                or "Hebrew" in body
-                or "hebrew" in body
-                or "textdir TRT" in body
-                or "RTL" in body
-                or has_hebrew(body)
-            ):
-                macros.add(name)
+    for m in re.finditer(r"\\NewDocumentCommand\{(\\[A-Za-z@]+)\}\s*\{[^}]*\}\s*\{([^%]*?)\}", text, re.S):
+        name, body = m.groups()
+        if (
+            name.startswith("\\h")
+            or "Hebrew" in body
+            or "hebrew" in body
+            or "textdir TRT" in body
+            or "RTL" in body
+            or has_hebrew(body)
+        ):
+            macros.add(name)
 
     return macros or set(FALLBACK_HEBREW_MACROS)
 
@@ -74,7 +73,7 @@ def is_english_and_word(word: str) -> bool:
     bare = word.strip("`'\"“”‘’()[]{}.,;:!?—-")
     return bare in {"And", "and"}
 
-def lint_text(text: str, width: int = DEFAULT_WIDTH, hebrew_macros: set[str] | None = None) -> str:
+def lint_text(text: str, width: int = 80, hebrew_macros: set[str] | None = None) -> str:
     if hebrew_macros is None:
         hebrew_macros = discover_hebrew_macros()
 
@@ -128,22 +127,17 @@ def lint_line(line: str, width: int, hebrew_macros: set[str]) -> list[str]:
             prefer_hebrew=(name in hebrew_macros or has_hebrew(inner)),
         )
 
-        # Invariant:
-        #   \xx{short arg}
-        # stays single-line.
+        # Only explode:
         #
-        #   \xx{long arg that wraps...}
-        # becomes:
+        #   \xx{...}
+        #
+        # into:
         #
         #   \xx{
-        #       long arg
-        #       that wraps...
+        #       ...
         #   }
         #
-        # Never emit a half-expanded macro like:
-        #
-        #   \xx{first wrapped line
-        #   second wrapped line}
+        # if the argument actually became multiline.
         if len(body) > 1:
             return [base_indent + opener, *body, base_indent + "}"]
 
@@ -175,17 +169,11 @@ def should_expand_simple_macro(stripped: str) -> bool:
     if not m:
         return False
 
-    opener, inner, _closer = m.groups()
-    name = macro_name_from_opener(opener)
-
-    if name in NEVER_EXPAND_MACROS:
-        return False
+    _opener, inner, _closer = m.groups()
 
     if not inner.strip():
         return False
 
-    # Avoid nested TeX. This keeps things like \textsc{foo \hBP{bar}}
-    # and \Def{X}{...} out of the dumb formatter.
     if inner.count("{") or inner.count("}"):
         return False
 
@@ -251,11 +239,8 @@ def main() -> int:
     )
     ap.add_argument("files", nargs="*", help="Input .tex files. Reads stdin if omitted.")
     ap.add_argument("-i", "--in-place", action="store_true", help="Modify files in place.")
-    ap.add_argument(
-        "-r", "--recursive",
-        action="store_true",
-        help="Operate on all .tex files under the current directory.",
-    )
+    ap.add_argument("-r", "--recursive", action="store_true",
+                    help="Operate on all .tex files under the current directory.")
     ap.add_argument("-w", "--width", type=int, default=80, help="Soft wrap width.")
     args = ap.parse_args()
 
