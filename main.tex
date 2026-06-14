@@ -359,6 +359,36 @@
     [0x05F3] = "'", [0x05F4] = '"'
   }
 
+  local phoenician = {
+    [0x05D0] = 0x10900, [0x05D1] = 0x10901, [0x05D2] = 0x10902,
+    [0x05D3] = 0x10903, [0x05D4] = 0x10904, [0x05D5] = 0x10905,
+    [0x05D6] = 0x10906, [0x05D7] = 0x10907, [0x05D8] = 0x10908,
+    [0x05D9] = 0x10909, [0x05DA] = 0x1090A, [0x05DB] = 0x1090A,
+    [0x05DC] = 0x1090B, [0x05DD] = 0x1090C, [0x05DE] = 0x1090C,
+    [0x05DF] = 0x1090D, [0x05E0] = 0x1090D, [0x05E1] = 0x1090E,
+    [0x05E2] = 0x1090F, [0x05E3] = 0x10910, [0x05E4] = 0x10910,
+    [0x05E5] = 0x10911, [0x05E6] = 0x10911, [0x05E7] = 0x10912,
+    [0x05E8] = 0x10913, [0x05E9] = 0x10914, [0x05EA] = 0x10915
+  }
+
+  function paleotex.hebrew_to_phoenician(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = phoenician[code]
+      if mapped ~= nil then
+        table.insert(out, utf8.char(mapped))
+      else
+        mapped = hebrew_punctuation[code]
+        if mapped ~= nil then
+          table.insert(out, mapped)
+        elseif not is_hebrew_mark(code) then
+          table.insert(out, utf8.char(code))
+        end
+      end
+    end
+    return table.concat(out)
+  end
+
   function paleotex.hebrew_for_paleo_unicode(s)
     local out = {}
     for pos, code in utf8.codes(s) do
@@ -396,6 +426,10 @@
   function hebrew_for_paleo_unicode(s)
     return paleotex.hebrew_for_paleo_unicode(s)
   end
+
+  function hebrew_to_phoenician(s)
+    return paleotex.hebrew_to_phoenician(s)
+  end
 }
 
 \newcommand{\HebrewNoNiqqud}[1]{%
@@ -410,10 +444,15 @@
   \directlua{tex.sprint(hebrew_for_paleo_unicode("\luaescapestring{\detokenize{#1}}"))}%
 }
 
+\newcommand{\HebrewToPhoenician}[1]{%
+  \directlua{tex.sprint(hebrew_to_phoenician("\luaescapestring{\detokenize{#1}}"))}%
+}
+
 \newcommand{\EncodeHebrewNoNiqqud}[1]{\HebrewNoNiqqud{#1}}
 \newcommand{\EncodeHebrewRaw}[1]{#1}
 \newcommand{\EncodePaleoASCII}[1]{\HebrewToPaleoASCII{#1}}
 \newcommand{\EncodePaleoUnicode}[1]{\HebrewForPaleoUnicode{#1}}
+\newcommand{\EncodePhoenician}[1]{\HebrewToPhoenician{#1}}
 
 \makeatletter
 \newcommand{\DeclareHebrewRenderer}[3]{%
@@ -432,6 +471,7 @@
 \DeclareHebrewRenderer{HebrewSquare}{\HebrewSquareFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{ProtoSinaiticBest}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{PaleoHebrewRobo}{\PaleoHebrewRoboFont}{\EncodePaleoUnicode}
+\DeclareHebrewRenderer{Phoenician}{\PhoenicianFont}{\EncodePhoenician}
 
 % ASCII historical renderers.  Use these with fonts that expect ABGDHWZX... input.
 \DeclareHebrewRenderer{ProtoASCIIFifteenthCentury}{\ProtoSinaiticFifteenthCenturyFont}{\EncodePaleoASCII}
@@ -460,7 +500,8 @@
 }
 \makeatother
 
-\DeclareSourceProfile{J}{\EnglishFont}{\color{Jcolor}\mdseries}{\PaleoHebrewRobo}{\color{Jcolor}\mdseries}
+% \DeclareSourceProfile{J}{\EnglishFont}{\color{Jcolor}\mdseries}{\PaleoHebrewRobo}{\color{Jcolor}\mdseries}
+\DeclareSourceProfile{J}{\EnglishFont}{\color{Jcolor}\mdseries}{\Phoenician}{\color{Jcolor}\mdseries}
 \DeclareSourceProfile{E}{\EnglishFont}{\color{Ecolor}\bfseries}{\HebrewDavid}{\addfontfeatures{Scale=1.42}\color{Ecolor}\bfseries}
 \DeclareSourceProfile{P}{\EnglishFont}{\color{Pcolor}\bfseries}{\HebrewEzraRaw}{\addfontfeatures{Scale=1.23}\color{Pcolor}\mdseries}
 \DeclareSourceProfile{DtrOne}{\EnglishFont}{\color{Dtr1color}\mdseries}{\HebrewEzraRaw}{\addfontfeatures{Scale=1.23}\color{Dtr1color}\mdseries}
