@@ -211,12 +211,11 @@ def format_long_arg_verbatim(indent, name, inner):
     raw_lines = strip_outer_blank_lines(raw_lines)
     raw_lines = [untab(x.rstrip()) for x in raw_lines]
 
-    base = min_indent(raw_lines)
     out = [indent + name + "{"]
 
     for line in raw_lines:
         if line.strip():
-            out.append(indent + INDENT + line[base:])
+            out.append(indent + INDENT + line)
         else:
             out.append("")
 
