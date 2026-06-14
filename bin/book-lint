@@ -92,7 +92,8 @@ def min_indent(lines):
     vals = [len(leading_ws(x)) for x in lines if x.strip()]
     return min(vals) if vals else 0
 
-def collect_macro(lines, start, hebrew_macros):
+
+def collect_macro(lines, start, hebrew_macros, width):
     first = untab(lines[start].rstrip())
     m = MACRO_START.match(first)
 
@@ -117,7 +118,7 @@ def collect_macro(lines, start, hebrew_macros):
     if depth != 0:
         return None
 
-    return i - start, format_macro_chunk(chunk, name)
+    return i - start, format_macro_chunk(chunk, name, width)
 
 def extract_inner(chunk, name):
     first = chunk[0]
@@ -142,28 +143,46 @@ def extract_inner(chunk, name):
 
     return inner
 
-def format_macro_chunk(chunk, name):
+def format_macro_chunk(chunk, name, width=80):
     indent = leading_ws(chunk[0])
     inner = extract_inner(chunk, name)
 
-    # Only block-format true long LaTeX arguments: ones with paragraph breaks.
-    # Short h/e/a args stay exactly as they are, except tabs are spaces.
-    if not has_paragraph_break(inner):
+    # Long LaTeX argument: paragraph break present.
+    # Only normalize wrapper + shift while preserving relative indent.
+    if has_paragraph_break(inner):
+        inner = strip_outer_blank_lines(inner)
+        base = min_indent(inner)
+
+        out = [indent + name + "{"]
+        for line in inner:
+            if line.strip():
+                out.append(indent + INDENT + line[base:])
+            else:
+                out.append("")
+        out.append(indent + "}")
+        return out
+
+    # Short argument: no paragraph break.
+    # Soft-wrap in \xx{first line / continuation line} style.
+    body = " ".join(x.strip() for x in inner).strip()
+
+    if not body or "{" in body or "}" in body:
         return chunk
 
-    inner = strip_outer_blank_lines(inner)
-    base = min_indent(inner)
+    prefer_hebrew = has_hebrew(body) or name.startswith("\\h")
+    opener = indent + name + "{"
+    cont = indent + INDENT
 
-    out = [indent + name + "{"]
+    lines = wrap_words(
+        body,
+        opener,
+        width,
+        is_hebrew_waw_word if prefer_hebrew else is_english_and_word,
+        cont,
+    )
 
-    for line in inner:
-        if line.strip():
-            out.append(indent + INDENT + line[base:])
-        else:
-            out.append("")
-
-    out.append(indent + "}")
-    return out
+    lines[-1] += "}"
+    return lines
 
 def lint_text(text, hebrew_macros=None):
     if hebrew_macros is None:
@@ -190,7 +209,7 @@ def lint_text(text, hebrew_macros=None):
             i += 1
             continue
 
-        block = collect_macro(lines, i, hebrew_macros)
+        block = collect_macro(lines, i, hebrew_macros, width)
         if block:
             used, formatted = block
             out.extend(formatted)
