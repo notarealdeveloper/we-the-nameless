@@ -1,8 +1,11 @@
 MAIN       := main
 PDF        := $(MAIN).pdf
 BUILD      := build
+CACHE      := $(abspath $(BUILD)/texmf-var)
 LATEX      := lualatex
 LATEXFLAGS := -interaction=nonstopmode -output-directory=$(BUILD)
+
+export TEXMFVAR := $(CACHE)
 
 INCLUDES := $(shell grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex)
 INCLUDE_BUILD_DIRS := $(addprefix $(BUILD)/,$(sort $(dir $(INCLUDES))))
@@ -12,7 +15,7 @@ INCLUDE_BUILD_DIRS := $(addprefix $(BUILD)/,$(sort $(dir $(INCLUDES))))
 all: $(PDF) open
 
 build-prepare:
-	mkdir -p $(BUILD) $(INCLUDE_BUILD_DIRS)
+	mkdir -p $(BUILD) $(CACHE) $(INCLUDE_BUILD_DIRS)
 
 $(PDF): $(MAIN).tex build-prepare
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
