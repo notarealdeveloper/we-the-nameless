@@ -1,1 +1,3 @@
-heb
+#!/usr/bin/env bash
+
+sefaria -l heb $@

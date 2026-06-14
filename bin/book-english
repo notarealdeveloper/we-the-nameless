@@ -1,1 +1,3 @@
-eng
+#!/usr/bin/env bash
+
+sefaria -l eng $@
