@@ -1018,6 +1018,12 @@
 
 \begin{document}
 
+\ifdefined\DevelopmentPart
+\pagestyle{empty}
+\pagenumbering{gobble}
+\DevelopmentPart
+\else
+
 \wetitlepage
 \input{cover}
 
@@ -1230,4 +1236,5 @@
 \Apocrypha{Genesis}
 \include{1-genesis/apocrypha}
 
+\fi
 \end{document}

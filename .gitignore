@@ -7,7 +7,7 @@
 *.toc
 __pycache__
 *.pyc
-build/main.pdf
+build/
 main.pdf
 *.gz
 *.luc

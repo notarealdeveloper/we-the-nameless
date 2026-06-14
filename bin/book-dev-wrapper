@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+import argparse
+from pathlib import Path
+
+
+BOOKS = {
+    "1-genesis": "Genesis",
+    "2-exodus": "Exodus",
+    "3-leviticus": "Leviticus",
+    "4-numbers": "Numbers",
+    "5-deuteronomy": "Dudetheyreontome",
+}
+
+
+def development_part(source: str) -> str:
+    path = Path(source)
+
+    if source == "title":
+        body = r"\wetitlepage"
+    elif source == "cover":
+        body = r"\input{cover}"
+    elif path.name == "apocrypha.tex":
+        body = "\n".join(
+            [
+                r"\mainmatter",
+                r"\chapter*{Apocrypha}%",
+                r"\Apocrypha{Genesis}",
+                r"\input{1-genesis/apocrypha}",
+            ]
+        )
+    else:
+        book = BOOKS.get(path.parent.as_posix())
+        if book is None:
+            raise SystemExit(f"unknown chapter directory: {path.parent}")
+
+        chapter_input = path.with_suffix("").as_posix()
+        lines = [r"\mainmatter", rf"\def\CurrentBook{{{book}}}%"]
+        if path.stem == "01":
+            lines.append(rf"\Book{{{book}}}")
+        lines.append(rf"\input{{{chapter_input}}}")
+        body = "\n".join(lines)
+
+    return "\n".join(
+        [
+            r"\def\DevelopmentPart{%",
+            body,
+            r"}",
+            r"\input{main.tex}",
+            "",
+        ]
+    )
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("source")
+    parser.add_argument("output", type=Path)
+    args = parser.parse_args()
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    content = development_part(args.source)
+    if not args.output.exists() or args.output.read_text() != content:
+        args.output.write_text(content)
+
+
+if __name__ == "__main__":
+    main()
