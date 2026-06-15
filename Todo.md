@@ -1,3 +1,12 @@
+Chapter 1 flowed effortlessly and took like an hour.
+Everything ground to a halt once the dialogues started.
+Opposite dynamic of Burn Math Class.
+Need to find a way to let the book be itself.
+And that means killing most of what we have so far.
+Keep Chapter 1, and then start over once we hit ביום.
+
+---
+
 Black is giving information.
 Red is asking questions.
 Blue is giving background.
