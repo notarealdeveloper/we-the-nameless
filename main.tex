@@ -59,64 +59,6 @@
     Scale=1.22
 ]{noto-sans-cuneiform-regular.ttf}
 
-\newfontfamily\UgariticFont[
-    Path=\LocalFontPath,
-	BoldFont=noto-sans-ugaritic-regular.ttf,
-    Scale=1.22
-]{noto-sans-ugaritic-regular.ttf}
-
-\newfontfamily\AramaicFont[
-    Path=\LocalFontPath,
-	BoldFont=noto-sans-imperial-aramaic-regular.ttf,
-    Scale=1.22
-]{noto-sans-imperial-aramaic-regular.ttf}
-
-\newfontfamily\PhoenicianFont[
-    Path=\LocalFontPath,
-    BoldFont=noto-sans-phoenician-regular.ttf,
-    Scale=1.22
-]{noto-sans-phoenician-regular.ttf}
-
-
-\newfontfamily\HebrewDavidFont[
-    Path=\LocalFontPath,
-    Script=Hebrew,
-    BoldFont=hebrew-david-bold.ttf,
-    Scale=1.22
-]{hebrew-david.ttf}
-
-\newfontfamily\HebrewEzraFont[
-    Path=\LocalFontPath,
-    Script=Hebrew,
-    Scale=1.10
-]{hebrew-ezra.ttf}
-
-\newfontfamily\HebrewOtherFont[
-    Path=\LocalFontPath,
-    Script=Hebrew,
-    Scale=1.10
-]{hebrew-other.ttf}
-
-\newfontfamily\HebrewSquareFont[
-    Path=\LocalFontPath,
-    Script=Hebrew,
-    Scale=1.00
-]{hebrew-square.ttf}
-
-% Compatibility names for included chapter files.
-\let\HebrewFont\HebrewDavidFont
-\let\hebrewfont\HebrewDavidFont
-
-% Arabic
-\newfontfamily\ArabicFont[
-    Path=\LocalFontPath,
-    Script=Arabic,
-    Renderer=HarfBuzz,
-    Scale=1.15
-]{arabic-amiri-regular.ttf}
-
-% ==========================================
-
 % Egyptian hieroglyphs
 \newfontfamily\EgyptianFont[
     Path=\LocalFontPath,
@@ -154,6 +96,12 @@
     BoldFont=proto-sinaitic-best-bold.ttf,
     Scale=1.42
 ]{proto-sinaitic-best.ttf}
+
+\newfontfamily\UgariticFont[
+    Path=\LocalFontPath,
+	BoldFont=noto-sans-ugaritic-regular.ttf,
+    Scale=1.22
+]{noto-sans-ugaritic-regular.ttf}
 
 \newfontfamily\PaleoHebrewFont[
     Path=\LocalFontPath,
@@ -233,6 +181,56 @@
     Renderer=HarfBuzz,
     Scale=1.42
 ]{paleo-hebrew-isaiah-scroll.ttf}
+
+\newfontfamily\AramaicFont[
+    Path=\LocalFontPath,
+	BoldFont=noto-sans-imperial-aramaic-regular.ttf,
+    Scale=1.22
+]{noto-sans-imperial-aramaic-regular.ttf}
+
+\newfontfamily\PhoenicianFont[
+    Path=\LocalFontPath,
+    BoldFont=noto-sans-phoenician-regular.ttf,
+    Scale=1.22
+]{noto-sans-phoenician-regular.ttf}
+
+\newfontfamily\HebrewDavidFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    BoldFont=hebrew-david-bold.ttf,
+    Scale=1.22
+]{hebrew-david.ttf}
+
+\newfontfamily\HebrewEzraFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=1.10
+]{hebrew-ezra.ttf}
+
+\newfontfamily\HebrewOtherFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=1.10
+]{hebrew-other.ttf}
+
+\newfontfamily\HebrewSquareFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=1.00
+]{hebrew-square.ttf}
+
+% Compatibility names for included chapter files.
+\let\HebrewFont\HebrewDavidFont
+\let\hebrewfont\HebrewDavidFont
+
+% Arabic
+\newfontfamily\ArabicFont[
+    Path=\LocalFontPath,
+    Script=Arabic,
+    Renderer=HarfBuzz,
+    Scale=1.15
+]{arabic-amiri-regular.ttf}
+
 
 \ExplSyntaxOn
 \NewDocumentCommand{\egypt}{ m }{
@@ -675,7 +673,8 @@
 }
 
 \newcommand{\Table}[2]{%
-  \par\vspace{1em}
+  \par
+  \vspace{1em}
   \begin{center}
     \color{DefColor}%
     \begin{tabular}{#1}
