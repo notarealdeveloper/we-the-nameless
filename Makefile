@@ -29,6 +29,7 @@ open:
 
 clean:
 	rm -rf $(BUILD)
+	rm -f $(PDF)
 	find . -type f \( \
 		-name '*.aux' -o \
 		-name '*.log' -o \
