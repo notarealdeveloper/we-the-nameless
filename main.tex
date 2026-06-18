@@ -1083,34 +1083,38 @@
     \tl_tail:n {#1}
 }
 
-\NewDocumentCommand{\defineword}{O{} m m}
+\NewDocumentCommand{\defineword}{m m O{}}
 {
-    \expandafter\DeclareRobustCommand\expandafter#2{#3}
+    \expandafter\DeclareRobustCommand\expandafter#1{#2}
 
     \expandafter\DeclareRobustCommand
-    \csname\expandafter\@gobble\string#2 Init\endcsname
+    \csname\expandafter\@gobble\string#1 Init\endcsname
     {
-        \tl_if_blank:nTF {#1}
-            { \book_capitalize:n {#3} }
-            { #1 }
+        \tl_if_blank:nTF {#3}
+            { \book_capitalize:n {#2} }
+            { #3 }
     }
 }
 
-\NewDocumentCommand{\redefineword}{O{} m m}
+\NewDocumentCommand{\redefineword}{m m O{}}
 {
-    \expandafter\renewcommand\expandafter#2{#3}
+    \expandafter\renewcommand\expandafter#1{#2}
 
     \expandafter\renewcommand
-    \csname\expandafter\@gobble\string#2 Init\endcsname
+    \csname\expandafter\@gobble\string#1 Init\endcsname
     {
-        \tl_if_blank:nTF {#1}
-            { \book_capitalize:n {#3} }
-            { #1 }
+        \tl_if_blank:nTF {#3}
+            { \book_capitalize:n {#2} }
+            { #3 }
     }
 }
 
 \makeatother
 \ExplSyntaxOff
+
+% \defineword{\God}{boop}
+% \God      % boop
+% \GodInit  % Boop
 
 \defineword{\God}{dave}
 
