@@ -1,9 +1,10 @@
-MAIN       := main
-PDF        := $(MAIN).pdf
-BUILD      := build
-CACHE      := $(abspath $(BUILD)/texmf-var)
+MAIN  := main
+PDF   := $(MAIN).pdf
+BUILD := build
+CACHE := $(abspath $(BUILD)/texmf-var)
+
 LATEX      := lualatex
-LATEXFLAGS := -interaction=nonstopmode -output-directory=$(BUILD)
+LATEXFLAGS := -interaction=nonstopmode -halt-on-error -output-directory=$(BUILD)
 
 export TEXMFVAR := $(CACHE)
 
@@ -11,37 +12,43 @@ INCLUDES := $(shell grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex)
 INCLUDE_SOURCES := $(addsuffix .tex,$(INCLUDES))
 INCLUDE_BUILD_DIRS := $(addprefix $(BUILD)/,$(sort $(dir $(INCLUDES))))
 
-.PHONY: all clean debug progress open build-prepare
+SOURCES := $(MAIN).tex cover.tex $(INCLUDE_SOURCES)
+
+.PHONY: all clean distclean debug progress open build-prepare draft c x list
 
 all: $(PDF) open
 
 build-prepare:
-	mkdir -p $(BUILD) $(CACHE) $(INCLUDE_BUILD_DIRS)
+	@mkdir -p $(BUILD) $(CACHE) $(INCLUDE_BUILD_DIRS)
 
-$(PDF): $(MAIN).tex cover.tex $(INCLUDE_SOURCES) | build-prepare
+$(PDF): $(SOURCES) | build-prepare
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
-	cp $(BUILD)/$(MAIN).log .
+	@if grep -q 'Rerun to get cross-references right' $(BUILD)/$(MAIN).log; then \
+		$(LATEX) $(LATEXFLAGS) $(MAIN).tex; \
+	fi
 	cp $(BUILD)/$(MAIN).pdf .
-	( sleep 5 && rm $(MAIN).log ) &
+	cp $(BUILD)/$(MAIN).log .
+
+draft: $(SOURCES) | build-prepare
+	$(LATEX) $(LATEXFLAGS) -draftmode $(MAIN).tex
 
 open:
 	xdg-open $(BUILD)/$(PDF) >/dev/null 2>&1 &
 
 clean:
-	find build -type f \( \
+	find $(BUILD) -type f \( \
 		-name '*.aux' -o \
 		-name '*.log' -o \
 		-name '*.toc' -o \
 		-name '*.out' -o \
-		-name '*.pdf' -o \
 		-name '*.fls' -o \
 		-name '*.fdb_latexmk' \
 	\) -delete
-	rm -f main.aux main.log main.toc main.out main.pdf
+	rm -f $(MAIN).aux $(MAIN).log $(MAIN).toc $(MAIN).out
 
 distclean:
-	rm -rf build
-	rm -f main.aux main.log main.toc main.out main.pdf
+	rm -rf $(BUILD)
+	rm -f $(MAIN).aux $(MAIN).log $(MAIN).toc $(MAIN).out $(MAIN).pdf
 
 # for giving examples of the format to agents
 c:
@@ -59,12 +66,9 @@ debug:
 		"$$(cat $(BUILD)/$(MAIN).log)")"
 
 list:
-	@( grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex | sort \
-		| sed -E 's@(.*)@\1.tex@'; ) \
-		| xargs -n1 echo
+	@printf '%s\n' $(INCLUDE_SOURCES) | sort
 
 progress:
-	( grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex | sort | head -n 5 \
-		| sed -E 's@(.*)@\1.tex@'; ) \
-		| xargs -n1 xdg-open & wait && xdg-open $(MAIN).tex
+	( printf '%s\n' $(INCLUDE_SOURCES) | sort | head -n 5 \
+		| xargs -n1 xdg-open ) & wait && xdg-open $(MAIN).tex
 	( sleep 5 && xdotool key ctrl+0 ) &
