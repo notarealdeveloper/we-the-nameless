@@ -124,7 +124,7 @@ def skip_comment(s, i):
 
 
 def skip_space_and_groups(s, i):
-    """
+    r"""
     For sentence-initial detection, ignore whitespace and harmless grouping braces.
 
     This means:
