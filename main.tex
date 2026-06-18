@@ -893,6 +893,9 @@
         \hss
         \vtop{%
             \hsize=\VerseColWidth
+            \rightskip=0pt plus 2em
+            \emergencystretch=3em
+            \tolerance=9999
             \begin{RTL}
             \HebrewFont
             \hebrewsize
@@ -901,6 +904,33 @@
         }%
     }%
 }
+
+%\newcommand{\VerseHebrew}[1]{%
+%    \hbox to \VerseColWidth{%
+%        \hss
+%        \vtop{%
+%            \hsize=\VerseColWidth
+%            \begin{RTL}
+%            \HebrewFont
+%            \hebrewsize
+%            #1\par
+%            \end{RTL}
+%        }%
+%    }%
+%}
+
+%\newcommand{\VerseHebrew}[1]{%
+%    \begin{minipage}[t]{\VerseColWidth}
+%        \begin{RTL}
+%        \HebrewFont
+%        \hebrewsize
+%        \raggedleft
+%        \sloppy
+%        \emergencystretch=3em
+%        #1\par
+%        \end{RTL}
+%    \end{minipage}%
+%}
 
 \newcommand{\VerseColumns}[2]{%
     \noindent
