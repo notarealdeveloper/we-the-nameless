@@ -28,20 +28,22 @@ open:
 	xdg-open $(BUILD)/$(PDF) >/dev/null 2>&1 &
 
 clean:
-	rm -rf $(BUILD)
-	rm -f $(PDF)
-	find . -type f \( \
+	find build -type f \( \
 		-name '*.aux' -o \
 		-name '*.log' -o \
 		-name '*.toc' -o \
 		-name '*.out' -o \
+		-name '*.pdf' -o \
 		-name '*.fls' -o \
-		-name '*.fdb_latexmk' -o \
-		-name '*.synctex.gz' \
+		-name '*.fdb_latexmk' \
 	\) -delete
+	rm -f main.aux main.log main.toc main.out main.pdf
 
+distclean:
+	rm -rf build
+	rm -f main.aux main.log main.toc main.out main.pdf
 
-# for giving examples of the format to agebts
+# for giving examples of the format to agents
 c:
 	cat $(MAIN).tex
 	cat 1-genesis/01.tex

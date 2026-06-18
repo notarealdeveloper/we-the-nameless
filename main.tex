@@ -688,34 +688,40 @@
 \ExplSyntaxOn
 
 \NewDocumentCommand{\Def}{ m O{} +m }{
-  \cs_set_protected:cpn { userdef/#1 } {
-    \DefBlock{DefColor}{#1}{#2}{#3}
+  \cs_set_protected:cpx { userdef/\tl_to_str:n {#1} } {
+    \exp_not:N \DefBlock {DefColor}
+      { \exp_not:n {#1} }
+      { \exp_not:n {#2} }
+      { \exp_not:n {#3} }
   }
   \DefBlock{DefColor}{#1}{#2}{#3}
 }
 
 \NewDocumentCommand{\DefA}{ m +m }{
-  \cs_set_protected:cpn { userdef/#1 } {
-    \DefBlock{Kcolor}{#1}{}{#2}
+  \cs_set_protected:cpx { userdef/\tl_to_str:n {#1} } {
+    \exp_not:N \DefBlock {Kcolor}
+      { \exp_not:n {#1} }
+      {}
+      { \exp_not:n {#2} }
   }
 }
 
 \NewDocumentCommand{\DefB}{ m +m }{
-  \cs_set_protected:cpn { userdef/#1 } {
-    \DefBlock{Redcolor}{#1}{}{#2}
+  \cs_set_protected:cpx { userdef/\tl_to_str:n {#1} } {
+    \exp_not:N \DefBlock {Redcolor}
+      { \exp_not:n {#1} }
+      {}
+      { \exp_not:n {#2} }
   }
 }
 
 \NewDocumentCommand{\DefC}{ m +m }{
-  \cs_set_protected:cpn { userdef/#1 } {
-    \DefBlock{Bluecolor}{#1}{}{#2}
+  \cs_set_protected:cpx { userdef/\tl_to_str:n {#1} } {
+    \exp_not:N \DefBlock {Bluecolor}
+      { \exp_not:n {#1} }
+      {}
+      { \exp_not:n {#2} }
   }
-}
-
-\NewDocumentCommand{\Define}{ m }{
-  \cs_if_exist_use:cTF { userdef/#1 }
-    { }
-    { \textbf{[Undefined definition: #1]} }
 }
 
 \ExplSyntaxOff
