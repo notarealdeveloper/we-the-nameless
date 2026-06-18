@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+import argparse
+import difflib
+import sys
+from pathlib import Path
+
+
+def find_matching_brace(s, i):
+    assert s[i] == "{"
+    depth = 0
+    escape = False
+    for j in range(i, len(s)):
+        c = s[j]
+        if escape:
+            escape = False
+            continue
+        if c == "\\":
+            escape = True
+            continue
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return j
+    raise ValueError("unmatched {")
+
+
+def skip_ws(s, i):
+    while i < len(s) and s[i].isspace():
+        i += 1
+    return i
+
+
+def comment_text(text):
+    out = []
+    line_start = True
+
+    for line in text.splitlines(keepends=True):
+        body = line.rstrip("\n")
+        nl = line[len(body):]
+
+        if body.strip() == "":
+            out.append(body + nl)
+        elif body.lstrip().startswith("%"):
+            out.append(body + nl)
+        else:
+            indent = body[:len(body) - len(body.lstrip())]
+            rest = body[len(indent):]
+            out.append(f"{indent}% {rest}{nl}")
+
+    return "".join(out)
+
+
+def transform(s):
+    out = []
+    i = 0
+
+    while True:
+        j = s.find(r"\Verse", i)
+        if j < 0:
+            out.append(s[i:])
+            break
+
+        out.append(s[i:j])
+        k = j + len(r"\Verse")
+
+        try:
+            blocks = []
+            p = skip_ws(s, k)
+
+            # \Verse{number}
+            if p >= len(s) or s[p] != "{":
+                out.append(s[j:k])
+                i = k
+                continue
+
+            q = find_matching_brace(s, p)
+            blocks.append((p, q))
+            p = q + 1
+
+            # Hebrew, English, commentary blocks
+            for _ in range(3):
+                p = skip_ws(s, p)
+                if p >= len(s) or s[p] != "{":
+                    raise ValueError("missing verse block")
+                q = find_matching_brace(s, p)
+                blocks.append((p, q))
+                p = q + 1
+
+            # Copy through start of commentary block, comment only its interior.
+            c0, c1 = blocks[3]
+            out.append(s[j:c0 + 1])
+            out.append(comment_text(s[c0 + 1:c1]))
+            out.append("}")
+            i = c1 + 1
+
+        except ValueError:
+            # If a malformed verse appears, leave it untouched.
+            out.append(s[j:k])
+            i = k
+
+    return "".join(out)
+
+
+def tex_files(paths, recursive=False):
+    for path in paths:
+        p = Path(path)
+
+        if p.is_dir():
+            if not recursive:
+                raise SystemExit(f"{p}: is a directory; use -r/--recursive")
+            yield from sorted(p.rglob("*.tex"))
+        else:
+            if p.suffix != ".tex":
+                raise SystemExit(f"{p}: refusing non-.tex file")
+            yield p
+
+
+def process_file(path, inplace):
+    old = path.read_text()
+    new = transform(old)
+
+    if inplace:
+        if new != old:
+            path.write_text(new)
+    else:
+        diff = difflib.unified_diff(
+            old.splitlines(keepends=True),
+            new.splitlines(keepends=True),
+            fromfile=str(path),
+            tofile=str(path) + " (commented)",
+        )
+        sys.stdout.writelines(diff)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-i", "--in-place", action="store_true",
+                    help="modify files in place")
+    ap.add_argument("-r", "--recursive", action="store_true",
+                    help="operate on all .tex files under directories")
+    ap.add_argument("paths", nargs="*",
+                    help=".tex files, or directories with -r; omit for stdin")
+    args = ap.parse_args()
+
+    if not args.paths:
+        if args.in_place:
+            raise SystemExit("-i does not apply to stdin")
+        sys.stdout.write(transform(sys.stdin.read()))
+        return
+
+    for path in tex_files(args.paths, args.recursive):
+        process_file(path, args.in_place)
+
+
+if __name__ == "__main__":
+    main()
