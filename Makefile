@@ -36,7 +36,7 @@ open:
 	xdg-open $(BUILD)/$(PDF) >/dev/null 2>&1 &
 
 clean:
-	find $(BUILD) -type f \( \
+	find [12345]-* $(BUILD) -type f \( \
 		-name '*.aux' -o \
 		-name '*.log' -o \
 		-name '*.toc' -o \
