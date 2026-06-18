@@ -1071,6 +1071,24 @@
 \NewDocumentCommand{\aOther}{ O{l} +m }{\as{\eOther}[#1]{#2}}
 
 % ------------------------------------------------------------
+% Dynamic words
+% ------------------------------------------------------------
+
+\makeatletter
+
+\newcommand{\defineword}[2]{%
+    \expandafter\newcommand\expandafter#1\expandafter{#2}%
+}
+
+\newcommand{\redefineword}[2]{%
+    \expandafter\renewcommand\expandafter#1\expandafter{#2}%
+}
+
+\makeatother
+
+\defineword{\God}{\heb{אל}}
+
+% ------------------------------------------------------------
 % Alignment sugar
 % ------------------------------------------------------------
 
@@ -1093,8 +1111,8 @@
 \DeclareSpeakerTriplet{J}
 \DeclareSpeakerTriplet{E}
 \DeclareSpeakerTriplet{P}
-\DeclareSpeakerTriplet{DtrOne}
-\DeclareSpeakerTriplet{DtrTwo}
+\DeclareSpeakerTriplet{DtrA}
+\DeclareSpeakerTriplet{DtrB}
 \DeclareSpeakerTriplet{Dtn}
 \DeclareSpeakerTriplet{R}
 \DeclareSpeakerTriplet{RJE}
