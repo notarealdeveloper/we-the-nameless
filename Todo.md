@@ -14,8 +14,8 @@ Blue is giving background.
 ---
 
 > A: If we start acting like characters, then soon there's gonna be a plot.
-
-> A: I mean a plot down here in the commentary in addition to the one up there in the text. That's a bit much.
+> B: What's wrong with a plot?
+> A: I mean a plot down here in the commentary, in addition to the one up there in the text. That's a bit much.
 
 > A: I'm trying to cut back.
 > B: Cut back on what?
