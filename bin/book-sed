@@ -3,18 +3,18 @@
 r"""
 book-sed
 
-Replace a case-sensitive prose word with a LaTeX macro of the same name.
+Only rewrites inside \eX{...} and \hX{...} blocks.
 
-Example:
-    book-sed God file.tex
-    book-sed -i God file.tex
-    book-sed -ri God chapters/
+Inside those blocks:
 
-Turns:
-    God saw that it was good.
+    God  -> {\God}
+    God at block start or after . ? ! -> {\GodInit}
 
-Into:
-    \God saw that it was good.
+Also upgrades existing:
+
+    {\God} -> {\GodInit}
+
+when sentence-initial.
 
 Dry-run by default: prints unified diffs.
 Use -i to modify files in place.
@@ -28,52 +28,10 @@ import sys
 from pathlib import Path
 
 
-SKIP_COMMANDS = {
-    # common LaTeX
-    "begin",
-    "end",
-    "label",
-    "ref",
-    "pageref",
-    "cite",
-    "footnote",
-    "emph",
-    "textit",
-    "textbf",
-    "textsc",
-    "textrm",
-    "texttt",
-    "mathrm",
-    "mathbf",
-    "mathit",
-    "mathbb",
-    "mathcal",
-    "frac",
-    "sqrt",
-    "include",
-    "input",
-    "chapter",
-    "section",
-    "subsection",
-    "subsubsection",
-    "paragraph",
-    "newcommand",
-    "renewcommand",
-    "def",
-    "usepackage",
-    "documentclass",
-
-    # obvious project commands
-    "Verse",
-    "Chapter",
-}
+SENTENCE_END = ".?!"
 
 
 def command_at(s, i):
-    """
-    If s[i] begins a LaTeX command, return (name, end_index).
-    Otherwise return None.
-    """
     if i >= len(s) or s[i] != "\\":
         return None
 
@@ -89,80 +47,188 @@ def command_at(s, i):
     return "", j
 
 
-def protect_ranges(s):
-    """
-    Ranges where replacements should not happen.
-    Currently:
-      - LaTeX command names
-      - rest of comment lines
-    """
-    ranges = []
-    i = 0
-    line_comment = False
+def is_target_block_command(name):
+    return re.fullmatch(r"[eh][A-Za-z]", name or "") is not None
+
+
+def find_matching_brace(s, open_i):
+    assert s[open_i] == "{"
+
+    depth = 0
+    i = open_i
 
     while i < len(s):
         c = s[i]
 
-        if c == "\n":
-            line_comment = False
-            i += 1
-            continue
-
-        if line_comment:
-            i += 1
+        if c == "\\":
+            i += 2
             continue
 
         if c == "%" and (i == 0 or s[i - 1] != "\\"):
-            start = i
             while i < len(s) and s[i] != "\n":
                 i += 1
-            ranges.append((start, i))
             continue
 
-        cmd = command_at(s, i)
-        if cmd:
-            _, end = cmd
-            ranges.append((i, end))
-            i = end
-            continue
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return i
 
         i += 1
 
-    return ranges
+    return None
 
 
-def in_ranges(i, ranges, cursor):
-    while cursor < len(ranges) and ranges[cursor][1] <= i:
-        cursor += 1
+def target_blocks(s):
+    """
+    Yield (body_start, body_end) for \eX{...} and \hX{...}.
+    body_start/body_end exclude the surrounding braces.
+    """
+    i = 0
 
-    if cursor < len(ranges):
-        start, end = ranges[cursor]
-        if start <= i < end:
-            return True, cursor
+    while i < len(s):
+        cmd = command_at(s, i)
+        if not cmd:
+            i += 1
+            continue
 
-    return False, cursor
+        name, end = cmd
+
+        if not is_target_block_command(name):
+            i = end
+            continue
+
+        j = end
+        while j < len(s) and s[j].isspace():
+            j += 1
+
+        if j >= len(s) or s[j] != "{":
+            i = end
+            continue
+
+        close = find_matching_brace(s, j)
+        if close is None:
+            i = end
+            continue
+
+        yield j + 1, close
+        i = close + 1
+
+
+def skip_comment(s, i):
+    while i < len(s) and s[i] != "\n":
+        i += 1
+    return i
+
+
+def skip_space_and_groups(s, i):
+    """
+    For sentence-initial detection, ignore whitespace and harmless grouping braces.
+
+    This means:
+
+        . {\God}
+        .
+            {\God}
+
+    both count as sentence-initial.
+    """
+    while i < len(s) and (s[i].isspace() or s[i] in "{}"):
+        i += 1
+    return i
+
+
+def replace_inside_block(body, word):
+    normal = "{\\" + word + "}"
+    init = "{\\" + word + "Init}"
+
+    raw_pat = re.compile(rf"(?<![\\A-Za-z]){re.escape(word)}(?![A-Za-z])")
+    macro_pat = re.compile(rf"\{{\\{re.escape(word)}\}}|\\{re.escape(word)}(?![A-Za-z])")
+
+    out = []
+    i = 0
+    sentence_start = True
+    normal_count = 0
+    init_count = 0
+
+    while i < len(body):
+        c = body[i]
+
+        if c == "%" and (i == 0 or body[i - 1] != "\\"):
+            j = skip_comment(body, i)
+            out.append(body[i:j])
+            i = j
+            continue
+
+        # Existing {\God} or \God.
+        m = macro_pat.match(body, i)
+        if m:
+            if sentence_start:
+                out.append(init)
+                init_count += 1
+            else:
+                out.append(m.group(0))
+            i = m.end()
+            sentence_start = False
+            continue
+
+        # Raw word.
+        m = raw_pat.match(body, i)
+        if m:
+            if sentence_start:
+                out.append(init)
+                init_count += 1
+            else:
+                out.append(normal)
+                normal_count += 1
+            i = m.end()
+            sentence_start = False
+            continue
+
+        # Other LaTeX commands: copy the command name untouched.
+        cmd = command_at(body, i)
+        if cmd:
+            _, end = cmd
+            out.append(body[i:end])
+            i = end
+            sentence_start = False
+            continue
+
+        out.append(c)
+        i += 1
+
+        if c in SENTENCE_END:
+            sentence_start = True
+            continue
+
+        if c.isspace() or c in "{}":
+            continue
+
+        sentence_start = False
+
+    return "".join(out), normal_count, init_count
 
 
 def replace_word(s, word):
-    macro = "{" + "\\" + word + "}"
-    ranges = protect_ranges(s)
-    cursor = 0
-    out = []
+    pieces = []
     last = 0
+    total_normal = 0
+    total_init = 0
 
-    pat = re.compile(rf"(?<![\\A-Za-z]){re.escape(word)}(?![A-Za-z])")
+    for start, end in target_blocks(s):
+        pieces.append(s[last:start])
 
-    for m in pat.finditer(s):
-        protected, cursor = in_ranges(m.start(), ranges, cursor)
-        if protected:
-            continue
+        new_body, normal_count, init_count = replace_inside_block(s[start:end], word)
+        pieces.append(new_body)
 
-        out.append(s[last:m.start()])
-        out.append(macro)
-        last = m.end()
+        total_normal += normal_count
+        total_init += init_count
+        last = end
 
-    out.append(s[last:])
-    return "".join(out)
+    pieces.append(s[last:])
+    return "".join(pieces), total_normal, total_init
 
 
 def tex_files(paths, recursive):
@@ -181,50 +247,54 @@ def tex_files(paths, recursive):
 
 def process_file(path, word, inplace):
     old = path.read_text()
-    new = replace_word(old, word)
+    new, normal_count, init_count = replace_word(old, word)
 
-    if new == old:
-        return
+    if new != old:
+        if inplace:
+            path.write_text(new)
+        else:
+            diff = difflib.unified_diff(
+                old.splitlines(keepends=True),
+                new.splitlines(keepends=True),
+                fromfile=str(path),
+                tofile=str(path) + " (book-sed)",
+            )
+            sys.stdout.writelines(diff)
 
-    if inplace:
-        path.write_text(new)
-        return
-
-    diff = difflib.unified_diff(
-        old.splitlines(keepends=True),
-        new.splitlines(keepends=True),
-        fromfile=str(path),
-        tofile=str(path) + " (book-sed)",
-    )
-    sys.stdout.writelines(diff)
+    return normal_count, init_count
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("-i", "--in-place", action="store_true",
-                    help="modify files in place")
-    ap.add_argument("-r", "--recursive", action="store_true",
-                    help="recurse into directories and process .tex files")
-    ap.add_argument("word",
-                    help="case-sensitive word to replace with {\\WORD}")
-    ap.add_argument("paths", nargs="*",
-                    help=".tex files, or directories with -r; omit for stdin")
+    ap.add_argument("-i", "--in-place", action="store_true")
+    ap.add_argument("-r", "--recursive", action="store_true")
+    ap.add_argument("word", help="word/macro name, e.g. God for \\God and \\GodInit")
+    ap.add_argument("paths", nargs="*")
     args = ap.parse_args()
 
     if not re.fullmatch(r"[A-Za-z]+", args.word):
         raise SystemExit("word must be ASCII letters only")
 
-    if args.word in SKIP_COMMANDS:
-        print(f"warning: {args.word!r} is in the built-in skip list", file=sys.stderr)
+    total_normal = 0
+    total_init = 0
 
     if not args.paths:
         if args.in_place:
             raise SystemExit("-i does not apply to stdin")
-        sys.stdout.write(replace_word(sys.stdin.read(), args.word))
-        return
 
-    for path in tex_files(args.paths, args.recursive):
-        process_file(path, args.word, args.in_place)
+        new, total_normal, total_init = replace_word(sys.stdin.read(), args.word)
+        sys.stdout.write(new)
+    else:
+        for path in tex_files(args.paths, args.recursive):
+            normal_count, init_count = process_file(path, args.word, args.in_place)
+            total_normal += normal_count
+            total_init += init_count
+
+    print(
+        f"summary: replaced {total_normal} \\{args.word}, "
+        f"{total_init} \\{args.word}Init",
+        file=sys.stderr,
+    )
 
 
 if __name__ == "__main__":
