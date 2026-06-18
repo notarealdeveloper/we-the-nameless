@@ -82,7 +82,7 @@ def find_matching_brace(s, open_i):
 
 
 def target_blocks(s):
-    """
+    r"""
     Yield (body_start, body_end) for \eX{...} and \hX{...}.
     body_start/body_end exclude the surrounding braces.
     """
