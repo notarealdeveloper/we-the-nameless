@@ -1,0 +1,164 @@
+#!/usr/bin/env python
+
+"""
+book-him
+
+Lowercase He/Him/His inside \\eX{...} blocks only.
+
+Dry-run by default: prints unified diffs.
+Use -i to modify files in place.
+Use -r to recurse through directories for .tex files.
+"""
+
+import argparse
+import difflib
+import re
+import sys
+from pathlib import Path
+
+
+COMMAND_RE = re.compile(r"\\e[A-Za-z]+\s*\{")
+
+
+def find_matching_brace(s, open_i):
+    depth = 0
+    escape = False
+
+    for i in range(open_i, len(s)):
+        c = s[i]
+
+        if escape:
+            escape = False
+            continue
+
+        if c == "\\":
+            escape = True
+            continue
+
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return i
+
+    raise ValueError("unmatched brace")
+
+
+def at_sentence_start(s, i):
+    """
+    True if s[i:] begins a sentence-ish line/segment.
+
+    Protects:
+      He went...
+      \\eP{He went...}
+      ... . He went...
+      ... ? Him...
+      ... ! His...
+
+    Allows:
+      God saw that He was good.
+    """
+    j = i - 1
+
+    while j >= 0 and s[j].isspace():
+        j -= 1
+
+    if j < 0:
+        return True
+
+    return s[j] in ".?!"
+
+
+def lower_pronouns(text):
+    def repl(m):
+        if at_sentence_start(text, m.start()):
+            return m.group(0)
+        return m.group(0).lower()
+
+    return re.sub(r"\b(?:He|Him|His)\b", repl, text)
+
+
+def transform(s):
+    out = []
+    i = 0
+
+    while True:
+        m = COMMAND_RE.search(s, i)
+        if not m:
+            out.append(s[i:])
+            break
+
+        open_i = m.end() - 1
+
+        try:
+            close_i = find_matching_brace(s, open_i)
+        except ValueError:
+            out.append(s[i:])
+            break
+
+        out.append(s[i:open_i + 1])
+        out.append(lower_pronouns(s[open_i + 1:close_i]))
+        out.append("}")
+
+        i = close_i + 1
+
+    return "".join(out)
+
+
+def tex_files(paths, recursive):
+    for arg in paths:
+        p = Path(arg)
+
+        if p.is_dir():
+            if not recursive:
+                raise SystemExit(f"{p}: is a directory; use -r/--recursive")
+            yield from sorted(p.rglob("*.tex"))
+        else:
+            if p.suffix != ".tex":
+                raise SystemExit(f"{p}: refusing non-.tex file")
+            yield p
+
+
+def process_file(path, inplace):
+    old = path.read_text()
+    new = transform(old)
+
+    if new == old:
+        return
+
+    if inplace:
+        path.write_text(new)
+        return
+
+    diff = difflib.unified_diff(
+        old.splitlines(keepends=True),
+        new.splitlines(keepends=True),
+        fromfile=str(path),
+        tofile=str(path) + " (book-him)",
+    )
+    sys.stdout.writelines(diff)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-i", "--in-place", action="store_true",
+                    help="modify files in place")
+    ap.add_argument("-r", "--recursive", action="store_true",
+                    help="recurse into directories and process .tex files")
+    ap.add_argument("paths", nargs="*",
+                    help=".tex files, or directories with -r; omit for stdin")
+    args = ap.parse_args()
+
+    if not args.paths:
+        if args.in_place:
+            raise SystemExit("-i does not apply to stdin")
+        sys.stdout.write(transform(sys.stdin.read()))
+        return
+
+    for path in tex_files(args.paths, args.recursive):
+        process_file(path, args.in_place)
+
+
+if __name__ == "__main__":
+    main()
