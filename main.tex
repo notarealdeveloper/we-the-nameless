@@ -33,8 +33,10 @@
 \usepackage{needspace}
 \usepackage{graphicx}
 \usepackage{float}
-
-%\usepackage{showframe}
+\usepackage{stackengine}
+\usepackage{wrapfig}
+\usepackage{tikz}
+\usepackage{shapepar}
 
 % ------------------------------------------------------------
 % Compile with:
@@ -300,6 +302,11 @@
 }
 
 \ExplSyntaxOff
+
+\def\refootnote#1{\textsuperscript{\ref{#1}}}
+
+\newcommand{\Above}[3]{\smash{\stackon[0.8pt]{#3}{\size{#1}{#2}}}}
+\newcommand{\Below}[3]{\smash{\stackunder[2.2pt]{#3}{\size{#1}{#2}}}}
 
 % ------------------------------------------------------------
 % Global layout
