@@ -1078,29 +1078,41 @@
 \makeatletter
 
 \cs_new:Npn \book_capitalize:n #1
-  {
+{
     \tl_upper_case:n { \tl_head:n {#1} }
     \tl_tail:n {#1}
-  }
-
-\newcommand{\defineword}[2]{%
-  \expandafter\DeclareRobustCommand\expandafter#1{#2}%
-  \expandafter\DeclareRobustCommand
-    \csname\expandafter\@gobble\string#1 Cap\endcsname
-    {\book_capitalize:n {#2}}%
 }
 
-\newcommand{\redefineword}[2]{%
-  \expandafter\RenewDocumentCommand\expandafter#1{}{#2}%
-  \expandafter\RenewDocumentCommand
-    \csname\expandafter\@gobble\string#1 Cap\endcsname
-    {}{\book_capitalize:n {#2}}%
+\NewDocumentCommand{\defineword}{O{} m m}
+{
+    \expandafter\DeclareRobustCommand\expandafter#2{#3}
+
+    \expandafter\DeclareRobustCommand
+    \csname\expandafter\@gobble\string#2 Init\endcsname
+    {
+        \tl_if_blank:nTF {#1}
+            { \book_capitalize:n {#3} }
+            { #1 }
+    }
+}
+
+\NewDocumentCommand{\redefineword}{O{} m m}
+{
+    \expandafter\renewcommand\expandafter#2{#3}
+
+    \expandafter\renewcommand
+    \csname\expandafter\@gobble\string#2 Init\endcsname
+    {
+        \tl_if_blank:nTF {#1}
+            { \book_capitalize:n {#3} }
+            { #1 }
+    }
 }
 
 \makeatother
 \ExplSyntaxOff
 
-\defineword{\God}{god}
+\defineword{\God}{dave}
 
 % ------------------------------------------------------------
 % Alignment sugar
