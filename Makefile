@@ -44,7 +44,7 @@ clean:
 		-name '*.fls' -o \
 		-name '*.fdb_latexmk' \
 	\) -delete
-	rm -f $(MAIN).aux $(MAIN).log $(MAIN).toc $(MAIN).out
+	rm -f $(MAIN).aux $(MAIN).log $(MAIN).toc $(MAIN).out $(MAIN).pdf
 
 distclean:
 	rm -rf $(BUILD)
