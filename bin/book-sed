@@ -144,7 +144,7 @@ def in_ranges(i, ranges, cursor):
 
 
 def replace_word(s, word):
-    macro = "\\" + word
+    macro = "{" + "\\" + word + "}"
     ranges = protect_ranges(s)
     cursor = 0
     out = []
@@ -206,7 +206,7 @@ def main():
     ap.add_argument("-r", "--recursive", action="store_true",
                     help="recurse into directories and process .tex files")
     ap.add_argument("word",
-                    help="case-sensitive word to replace with \\WORD")
+                    help="case-sensitive word to replace with {\\WORD}")
     ap.add_argument("paths", nargs="*",
                     help=".tex files, or directories with -r; omit for stdin")
     args = ap.parse_args()
