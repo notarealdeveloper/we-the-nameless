@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""
+r"""
 book-sed
 
 Replace a case-sensitive prose word with a LaTeX macro of the same name.
