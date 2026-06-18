@@ -1,0 +1,231 @@
+#!/usr/bin/env python
+
+"""
+book-sed
+
+Replace a case-sensitive prose word with a LaTeX macro of the same name.
+
+Example:
+    book-sed God file.tex
+    book-sed -i God file.tex
+    book-sed -ri God chapters/
+
+Turns:
+    God saw that it was good.
+
+Into:
+    \God saw that it was good.
+
+Dry-run by default: prints unified diffs.
+Use -i to modify files in place.
+Use -r to recurse through directories for .tex files.
+"""
+
+import argparse
+import difflib
+import re
+import sys
+from pathlib import Path
+
+
+SKIP_COMMANDS = {
+    # common LaTeX
+    "begin",
+    "end",
+    "label",
+    "ref",
+    "pageref",
+    "cite",
+    "footnote",
+    "emph",
+    "textit",
+    "textbf",
+    "textsc",
+    "textrm",
+    "texttt",
+    "mathrm",
+    "mathbf",
+    "mathit",
+    "mathbb",
+    "mathcal",
+    "frac",
+    "sqrt",
+    "include",
+    "input",
+    "chapter",
+    "section",
+    "subsection",
+    "subsubsection",
+    "paragraph",
+    "newcommand",
+    "renewcommand",
+    "def",
+    "usepackage",
+    "documentclass",
+
+    # obvious project commands
+    "Verse",
+    "Chapter",
+}
+
+
+def command_at(s, i):
+    """
+    If s[i] begins a LaTeX command, return (name, end_index).
+    Otherwise return None.
+    """
+    if i >= len(s) or s[i] != "\\":
+        return None
+
+    j = i + 1
+    if j < len(s) and s[j].isalpha():
+        while j < len(s) and s[j].isalpha():
+            j += 1
+        return s[i + 1:j], j
+
+    if j < len(s):
+        return s[j], j + 1
+
+    return "", j
+
+
+def protect_ranges(s):
+    """
+    Ranges where replacements should not happen.
+    Currently:
+      - LaTeX command names
+      - rest of comment lines
+    """
+    ranges = []
+    i = 0
+    line_comment = False
+
+    while i < len(s):
+        c = s[i]
+
+        if c == "\n":
+            line_comment = False
+            i += 1
+            continue
+
+        if line_comment:
+            i += 1
+            continue
+
+        if c == "%" and (i == 0 or s[i - 1] != "\\"):
+            start = i
+            while i < len(s) and s[i] != "\n":
+                i += 1
+            ranges.append((start, i))
+            continue
+
+        cmd = command_at(s, i)
+        if cmd:
+            _, end = cmd
+            ranges.append((i, end))
+            i = end
+            continue
+
+        i += 1
+
+    return ranges
+
+
+def in_ranges(i, ranges, cursor):
+    while cursor < len(ranges) and ranges[cursor][1] <= i:
+        cursor += 1
+
+    if cursor < len(ranges):
+        start, end = ranges[cursor]
+        if start <= i < end:
+            return True, cursor
+
+    return False, cursor
+
+
+def replace_word(s, word):
+    macro = "\\" + word
+    ranges = protect_ranges(s)
+    cursor = 0
+    out = []
+    last = 0
+
+    pat = re.compile(rf"(?<![\\A-Za-z]){re.escape(word)}(?![A-Za-z])")
+
+    for m in pat.finditer(s):
+        protected, cursor = in_ranges(m.start(), ranges, cursor)
+        if protected:
+            continue
+
+        out.append(s[last:m.start()])
+        out.append(macro)
+        last = m.end()
+
+    out.append(s[last:])
+    return "".join(out)
+
+
+def tex_files(paths, recursive):
+    for arg in paths:
+        p = Path(arg)
+
+        if p.is_dir():
+            if not recursive:
+                raise SystemExit(f"{p}: is a directory; use -r/--recursive")
+            yield from sorted(p.rglob("*.tex"))
+        else:
+            if p.suffix != ".tex":
+                raise SystemExit(f"{p}: refusing non-.tex file")
+            yield p
+
+
+def process_file(path, word, inplace):
+    old = path.read_text()
+    new = replace_word(old, word)
+
+    if new == old:
+        return
+
+    if inplace:
+        path.write_text(new)
+        return
+
+    diff = difflib.unified_diff(
+        old.splitlines(keepends=True),
+        new.splitlines(keepends=True),
+        fromfile=str(path),
+        tofile=str(path) + " (book-sed)",
+    )
+    sys.stdout.writelines(diff)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-i", "--in-place", action="store_true",
+                    help="modify files in place")
+    ap.add_argument("-r", "--recursive", action="store_true",
+                    help="recurse into directories and process .tex files")
+    ap.add_argument("word",
+                    help="case-sensitive word to replace with \\WORD")
+    ap.add_argument("paths", nargs="*",
+                    help=".tex files, or directories with -r; omit for stdin")
+    args = ap.parse_args()
+
+    if not re.fullmatch(r"[A-Za-z]+", args.word):
+        raise SystemExit("word must be ASCII letters only")
+
+    if args.word in SKIP_COMMANDS:
+        print(f"warning: {args.word!r} is in the built-in skip list", file=sys.stderr)
+
+    if not args.paths:
+        if args.in_place:
+            raise SystemExit("-i does not apply to stdin")
+        sys.stdout.write(replace_word(sys.stdin.read(), args.word))
+        return
+
+    for path in tex_files(args.paths, args.recursive):
+        process_file(path, args.word, args.in_place)
+
+
+if __name__ == "__main__":
+    main()
