@@ -347,9 +347,9 @@
 \definecolor{Jcolor}{RGB}{0,120,0}
 \definecolor{Ecolor}{RGB}{0,120,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
-\definecolor{Dtr1color}{RGB}{0,70,170}
-\definecolor{Dtr2color}{RGB}{0,70,170}
-\definecolor{Dtncolor}{RGB}{0,120,0}
+\definecolor{Dtr1color}{RGB}{150,0,0}
+\definecolor{Dtr2color}{RGB}{150,0,0}
+\definecolor{Dtncolor}{RGB}{217,90,65}
 
 \definecolor{Rcolor}{RGB}{0,70,170}
 \definecolor{Rbgcolor}{RGB}{220,235,255}
@@ -683,7 +683,10 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto}
+\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other}
+\newcommand{\eProto}[1]{{\estyleProto #1}}
+\newcommand{\hProto}[1]{\hProtoRenderer{\hstyleProto}{#1}}
+\newcommand{\sProto}[1]{{\estyleProto #1}}
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
@@ -917,7 +920,7 @@
     	% which we create manually below.
     \def\CurrentBook{#1 Apocryphon}%
     %\addcontentsline{toc}{section}{#1 Apocryphon}%
-} 
+}
 
 % \Apocryphon defines an apocryphal Chapter
 \newcommand{\Apocryphon}[1]{%
@@ -1203,7 +1206,7 @@
 
 \include{1-genesis/01}
 \include{1-genesis/02}
-%\include{1-genesis/03}
+\include{1-genesis/03}
 %\include{1-genesis/04}
 %\include{1-genesis/05}
 %\include{1-genesis/06}
@@ -1251,8 +1254,8 @@
 %\include{1-genesis/48}
 \include{1-genesis/49}
 %\include{1-genesis/50}
-%
-%\Book{Exodus}
+
+\Book{Exodus}
 %\include{2-exodus/01}
 %\include{2-exodus/02}
 %\include{2-exodus/03}
@@ -1293,9 +1296,9 @@
 %\include{2-exodus/38}
 %\include{2-exodus/39}
 %\include{2-exodus/40}
-%
-%\Book{Leviticus}
-%\include{3-leviticus/01}
+
+\Book{Leviticus}
+\include{3-leviticus/01}
 %\include{3-leviticus/02}
 %\include{3-leviticus/03}
 %\include{3-leviticus/04}
@@ -1313,7 +1316,7 @@
 %\include{3-leviticus/16}
 %\include{3-leviticus/17}
 %\include{3-leviticus/18}
-%\include{3-leviticus/19}
+\include{3-leviticus/19}
 %\include{3-leviticus/20}
 %\include{3-leviticus/21}
 %\include{3-leviticus/22}
@@ -1322,9 +1325,9 @@
 %\include{3-leviticus/25}
 %\include{3-leviticus/26}
 %\include{3-leviticus/27}
-%
-%\Book{Numbers}
-%\include{4-numbers/01}
+
+\Book{Numbers}
+\include{4-numbers/01}
 %\include{4-numbers/02}
 %\include{4-numbers/03}
 %\include{4-numbers/04}
@@ -1360,10 +1363,9 @@
 %\include{4-numbers/34}
 %\include{4-numbers/35}
 %\include{4-numbers/36}
-%
-%
-%\Book{Dudetheyreontome}
-%\include{5-deuteronomy/01}
+
+\Book{Dudetheyreontome}
+\include{5-deuteronomy/01}
 %\include{5-deuteronomy/02}
 %\include{5-deuteronomy/03}
 %\include{5-deuteronomy/04}
@@ -1391,15 +1393,15 @@
 %\include{5-deuteronomy/26}
 %\include{5-deuteronomy/27}
 %\include{5-deuteronomy/28}
-%\include{5-deuteronomy/29}
-%\include{5-deuteronomy/30}
-%\include{5-deuteronomy/31}
-%\include{5-deuteronomy/32}
-%\include{5-deuteronomy/33}
-%\include{5-deuteronomy/34}
+\include{5-deuteronomy/29}
+\include{5-deuteronomy/30}
+\include{5-deuteronomy/31}
+\include{5-deuteronomy/32}
+\include{5-deuteronomy/33}
+\include{5-deuteronomy/34}
 
-%\chapter*{Apocrypha}%
-%\addcontentsline{toc}{chapter}{Apocrypha}
-%\include{apocrypha}
+\chapter*{Apocrypha}%
+\addcontentsline{toc}{chapter}{Apocrypha}
+\include{apocrypha}
 
 \end{document}
