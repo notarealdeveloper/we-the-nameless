@@ -349,6 +349,16 @@
 % Colors
 % ------------------------------------------------------------
 
+\definecolor{ProtoColor}{RGB}{100,100,100}
+\definecolor{PaleoColor}{RGB}{0,120,0}
+\colorlet{ProtoAColor}{ProtoColor}
+\colorlet{ProtoBColor}{ProtoColor}
+\colorlet{ProtoCColor}{ProtoColor}
+\colorlet{ProtoDColor}{ProtoColor}
+\colorlet{ProtoEColor}{ProtoColor}
+\colorlet{ProtoFColor}{ProtoColor}
+\colorlet{ProtoGColor}{ProtoColor}
+
 \definecolor{Jcolor}{RGB}{0,120,0}
 \definecolor{Ecolor}{RGB}{0,120,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
@@ -364,15 +374,6 @@
 
 \definecolor{RecordsColor}{RGB}{0,70,170}
 \definecolor{OtherColor}{RGB}{0,120,0}
-\definecolor{ProtoColor}{RGB}{100,100,100}
-\definecolor{PaleoColor}{RGB}{100,100,100}
-\colorlet{ProtoAColor}{ProtoColor}
-\colorlet{ProtoBColor}{ProtoColor}
-\colorlet{ProtoCColor}{ProtoColor}
-\colorlet{ProtoDColor}{ProtoColor}
-\colorlet{ProtoEColor}{ProtoColor}
-\colorlet{ProtoFColor}{ProtoColor}
-\colorlet{ProtoGColor}{ProtoColor}
 
 \definecolor{Kcolor}{RGB}{0,0,0}
 \definecolor{Redcolor}{RGB}{130,0,0}
@@ -716,7 +717,7 @@
 \DeclareHebrewRenderer{PaleoGFont}{\PaleoHebrewMoabiteFont}{\EncodePaleoLower}
 \DeclareHebrewRenderer{PaleoHFont}{\PaleoHebrewFont}{\EncodePaleoH}
 \DeclareHebrewRenderer{PaleoIFont}{\PaleoHebrewFont}{\EncodePaleoI}
-\DeclareHebrewRenderer{PaleoJFont}{\PaleoHebrewRoboFont}{\EncodePaleoUnicode}
+\DeclareHebrewRenderer{PaleoJFont}{\Phoenician}{\EncodePhoenician}
 \DeclareHebrewRenderer{PaleoKFont}{\PaleoHebrewSiloamFont}{\EncodePaleoK}
 \DeclareHebrewRenderer{PaleoLFont}{\PaleoHebrewSiloamFont}{\EncodePaleoL}
 \DeclareHebrewRenderer{PaleoMFont}{\PaleoHebrewKetefHinnomAFont}{\EncodePaleoUpper}
@@ -731,6 +732,7 @@
 \DeclareHebrewRenderer{PaleoVFont}{\PaleoHebrewLachishCFont}{\EncodePaleoUpper}
 \DeclareHebrewRenderer{PaleoWFont}{\PaleoHebrewIsaiahScrollFont}{\EncodePaleoW}
 \DeclareHebrewRenderer{PaleoXFont}{\PaleoHebrewIsaiahScrollFont}{\EncodePaleoX}
+\DeclareHebrewRenderer{PaleoYFont}{\PaleoHebrewRoboFont}{\EncodePaleoUnicode}
 
 % Source profiles bundle the English font/style with the Hebrew renderer/style.
 % These declarations are the only source-to-font bindings normally changed.
@@ -742,53 +744,7 @@
 }
 \makeatother
 
-% J
-
-\DeclareSourceProfile{J}
-    {\EnglishFont} {\color{Jcolor}\mdseries}
-    {\Phoenician}  {\color{Jcolor}\mdseries}
-
-% Mushites
-
-\DeclareSourceProfile{E}
-    {\EnglishFont} {\color{Ecolor}\bfseries}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Ecolor}\bfseries}
-
-\DeclareSourceProfile{DtrA}
-    {\EnglishFont} {\color{Dtr1color}\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Dtr1color}\mdseries}
-
-\DeclareSourceProfile{DtrB}
-    {\EnglishFont} {\color{Dtr2color}\bfseries}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Dtr2color}\bfseries}
-
-\DeclareSourceProfile{Dtn}
-    {\EnglishFont} {\color{Dtncolor}\itshape}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Dtncolor}\itshape}
-
-% Aaronids
-
-\DeclareSourceProfile{P}
-    {\EnglishFont}   {\color{Pcolor}\bfseries}
-    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Pcolor}\mdseries}
-
-\DeclareSourceProfile{R}
-    {\EnglishFont}   {\color{Rcolor}\mdseries}
-    {\HebrewEzraRaw} {\color{Rcolor}\mdseries}
-
-% Others
-
-\DeclareSourceProfile{RJE}
-    {\EnglishFont} {\color{RJEcolor}\mdseries}
-    {\HebrewEzra}  {\color{RJEcolor}\mdseries}
-
-\DeclareSourceProfile{Records}
-    {\EnglishFont} 		{\color{RecordsColor}\itshape}
-    {\PaleoASCIISiloam} 	{\color{RecordsColor}\itshape}
-
-\DeclareSourceProfile{Other}
-    {\EnglishFont}  		{\color{OtherColor}\itshape}
-    {\PaleoASCIIMoabite} {\color{OtherColor}\itshape}
+% The Sources
 
 \DeclareSourceProfile{Proto}
     {\EnglishProtoFont} 	{\color{ProtoColor}\mdseries}
@@ -824,7 +780,7 @@
 
 \DeclareSourceProfile{Paleo}
     {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
-    {\PaleoAFont} 		{\color{PaleoColor}\mdseries}
+    {\PaleoJFont} 		{\color{PaleoColor}\mdseries}
 
 \DeclareSourceProfile{PaleoA}
     {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
@@ -921,6 +877,54 @@
 \DeclareSourceProfile{PaleoX}
     {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
     {\PaleoXFont} 		{\color{PaleoColor}\mdseries}
+
+% J
+
+\DeclareSourceProfile{J}
+    {\EnglishFont} {\color{Jcolor}\mdseries}
+    {\PaleoJFont}  {\color{Jcolor}\mdseries}
+
+% Mushites
+
+\DeclareSourceProfile{E}
+    {\EnglishFont} {\color{Ecolor}\bfseries}
+    {\HebrewDavid} {\HebrewDavidLarge\color{Ecolor}\bfseries}
+
+\DeclareSourceProfile{DtrA}
+    {\EnglishFont} {\color{Dtr1color}\mdseries}
+    {\HebrewDavid} {\HebrewDavidLarge\color{Dtr1color}\mdseries}
+
+\DeclareSourceProfile{DtrB}
+    {\EnglishFont} {\color{Dtr2color}\bfseries}
+    {\HebrewDavid} {\HebrewDavidLarge\color{Dtr2color}\bfseries}
+
+\DeclareSourceProfile{Dtn}
+    {\EnglishFont} {\color{Dtncolor}\itshape}
+    {\HebrewDavid} {\HebrewDavidLarge\color{Dtncolor}\itshape}
+
+% Aaronids
+
+\DeclareSourceProfile{P}
+    {\EnglishFont}   {\color{Pcolor}\bfseries}
+    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Pcolor}\mdseries}
+
+\DeclareSourceProfile{R}
+    {\EnglishFont}   {\color{Rcolor}\mdseries}
+    {\HebrewEzraRaw} {\color{Rcolor}\mdseries}
+
+% Others
+
+\DeclareSourceProfile{RJE}
+    {\EnglishFont} {\color{RJEcolor}\mdseries}
+    {\HebrewEzra}  {\color{RJEcolor}\mdseries}
+
+\DeclareSourceProfile{Records}
+    {\EnglishFont} 		{\color{RecordsColor}\itshape}
+    {\PaleoASCIISiloam} 	{\color{RecordsColor}\itshape}
+
+\DeclareSourceProfile{Other}
+    {\EnglishFont}  		{\color{OtherColor}\itshape}
+    {\PaleoASCIIMoabite} {\color{OtherColor}\itshape}
 
 \newcommand{\InlineHebrewRenderer}{\HebrewDavid}
 
