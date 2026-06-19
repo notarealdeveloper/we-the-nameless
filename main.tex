@@ -621,6 +621,7 @@
 \newcommand{\eJ}[1]{{\estyleJ #1}}
 \newcommand{\eE}[1]{{\estyleE #1}}
 \newcommand{\eP}[1]{{\estyleP #1}}
+\newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtrOne}[1]{{\estyleDtrOne #1}}
 \newcommand{\eDtrTwo}[1]{{\estyleDtrTwo #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrOne{#2}\or\eDtrTwo{#2}\fi}
@@ -1096,7 +1097,7 @@
 
 \NewDocumentCommand{\aJ}{ O{l} +m }{\as{\eJ}[#1]{#2}}
 \NewDocumentCommand{\aE}{ O{l} +m }{\as{\eE}[#1]{#2}}
-\NewDocumentCommand{\aP}{ O{l} +m }{\as{\eP}[#1]{#2}}
+\NewDocumentCommand{\aP}{ O{l} +m }{\as{\aPEnglish}[#1]{#2}}
 \NewDocumentCommand{\aDtrOne}{ O{l} +m }{\as{\eDtrOne}[#1]{#2}}
 \NewDocumentCommand{\aDtrTwo}{ O{l} +m }{\as{\eDtrTwo}[#1]{#2}}
 \NewDocumentCommand{\aDtn}{ O{l} +m }{\as{\eDtn}[#1]{#2}}
@@ -1145,7 +1146,7 @@
 
 \makeatother
 
-\defineword{\God}{god}
+\defineword{\God}{God}
 
 % Rename God to dave dynamically throughout arbitrary
 % subsections of the document, redefining at any point.
