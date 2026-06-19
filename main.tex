@@ -567,17 +567,45 @@
 }
 \makeatother
 
-% \DeclareSourceProfile{J}{\EnglishFont}{\color{Jcolor}\mdseries}{\PaleoHebrewRobo}{\color{Jcolor}\mdseries}
-\DeclareSourceProfile{J}{\EnglishFont}{\color{Jcolor}\mdseries}{\Phoenician}{\color{Jcolor}\mdseries}
-\DeclareSourceProfile{E}{\EnglishFont}{\color{Ecolor}\bfseries}{\HebrewDavid}{\addfontfeatures{Scale=1.42}\color{Ecolor}\bfseries}
-\DeclareSourceProfile{P}{\EnglishFont}{\color{Pcolor}\bfseries}{\HebrewEzraRaw}{\addfontfeatures{Scale=1.23}\color{Pcolor}\mdseries}
-\DeclareSourceProfile{DtrOne}{\EnglishFont}{\color{Dtr1color}\mdseries}{\HebrewEzraRaw}{\addfontfeatures{Scale=1.23}\color{Dtr1color}\mdseries}
-\DeclareSourceProfile{DtrTwo}{\EnglishFont}{\color{Dtr2color}\bfseries}{\HebrewEzraRaw}{\addfontfeatures{Scale=1.23}\color{Dtr2color}\bfseries}
-\DeclareSourceProfile{Dtn}{\EnglishFont}{\color{Dtncolor}\itshape}{\HebrewDavid}{\addfontfeatures{Scale=1.42}\color{Dtncolor}\itshape}
-\DeclareSourceProfile{R}{\EnglishFont}{\color{Rcolor}\mdseries}{\HebrewEzraRaw}{\color{Rcolor}\mdseries}
-\DeclareSourceProfile{RJE}{\EnglishFont}{\color{RJEcolor}\mdseries}{\HebrewEzra}{\color{RJEcolor}\mdseries}
-\DeclareSourceProfile{Records}{\EnglishFont}{\color{RecordsColor}\itshape}{\HebrewEzra}{\color{RecordsColor}\itshape}
-\DeclareSourceProfile{Other}{\EnglishFont}{\color{OtherColor}\itshape}{\HebrewOther}{\color{OtherColor}\itshape}
+\DeclareSourceProfile{J}
+    {\EnglishFont} {\color{Jcolor}\mdseries}
+    {\Phoenician}  {\color{Jcolor}\mdseries}
+
+\DeclareSourceProfile{E}
+    {\EnglishFont} {\color{Ecolor}\bfseries}
+    {\HebrewDavid} {\addfontfeatures{Scale=1.42}\color{Ecolor}\bfseries}
+
+\DeclareSourceProfile{P}
+    {\EnglishFont}   {\color{Pcolor}\bfseries}
+    {\HebrewEzraRaw} {\addfontfeatures{Scale=1.23}\color{Pcolor}\mdseries}
+
+\DeclareSourceProfile{DtrOne}
+    {\EnglishFont}   {\color{Dtr1color}\mdseries}
+    {\HebrewEzraRaw} {\addfontfeatures{Scale=1.23}\color{Dtr1color}\mdseries}
+
+\DeclareSourceProfile{DtrTwo}
+    {\EnglishFont}   {\color{Dtr2color}\bfseries}
+    {\HebrewEzraRaw} {\addfontfeatures{Scale=1.23}\color{Dtr2color}\bfseries}
+
+\DeclareSourceProfile{Dtn}
+    {\EnglishFont} {\color{Dtncolor}\itshape}
+    {\HebrewDavid} {\addfontfeatures{Scale=1.42}\color{Dtncolor}\itshape}
+
+\DeclareSourceProfile{R}
+    {\EnglishFont}   {\color{Rcolor}\mdseries}
+    {\HebrewEzraRaw} {\color{Rcolor}\mdseries}
+
+\DeclareSourceProfile{RJE}
+    {\EnglishFont} {\color{RJEcolor}\mdseries}
+    {\HebrewEzra}  {\color{RJEcolor}\mdseries}
+
+\DeclareSourceProfile{Records}
+    {\EnglishFont} {\color{RecordsColor}\itshape}
+    {\HebrewEzra}  {\color{RecordsColor}\itshape}
+
+\DeclareSourceProfile{Other}
+    {\EnglishFont}  {\color{OtherColor}\itshape}
+    {\HebrewOther}  {\color{OtherColor}\itshape}
 
 \newcommand{\InlineHebrewRenderer}{\HebrewDavid}
 
@@ -1077,15 +1105,18 @@
 
 \makeatletter
 
-\newcommand{\bookautoInit}[1]{%
-    \text_titlecase_first:n{#1}%
-}
+\ExplSyntaxOn
+\cs_new_protected:Npn \bookautoInit #1
+  {
+    \text_titlecase_first:n { #1 }
+  }
+\ExplSyntaxOff
 
-\NewDocumentCommand{\defineword}{m m O{}}{%
+\NewDocumentCommand{\defineword}{m m o}{%
     \expandafter\gdef\expandafter#1\expandafter{#2}%
 
     \expandafter\gdef
-    \csname\expandafter\@gobble\string#1 Init\endcsname
+    \csname\expandafter\@gobble\string#1Init\endcsname
     {%
         \IfNoValueTF{#3}
             {\bookautoInit{#2}}
@@ -1093,11 +1124,11 @@
     }%
 }
 
-\NewDocumentCommand{\redefineword}{m m O{}}{%
-    \expandafter\def\expandafter#1\expandafter{#2}%
+\NewDocumentCommand{\redefineword}{m m o}{%
+    \expandafter\gdef\expandafter#1\expandafter{#2}%
 
-    \expandafter\def
-    \csname\expandafter\@gobble\string#1 Init\endcsname
+    \expandafter\gdef
+    \csname\expandafter\@gobble\string#1Init\endcsname
     {%
         \IfNoValueTF{#3}
             {\bookautoInit{#2}}
@@ -1107,15 +1138,22 @@
 
 \makeatother
 
-% \defineword{\God}{boop}
+% \defineword{\God}{god}
 
 % Rename God to dave dynamically throughout arbitrary
 % subsections of the document, redefining at any point.
-% \defineword{\God}{dave}
 
-% For weird wrapped substitutions, use the optional third argument
+% Normal usage
+%
+% \defineword{\God}{dave}
+% \redefineword{\God}{bob}
+
+% For weird wrapped substitutions, for example ones
+% involving colors, use the optional third argument
 % to make sentence initial capitals work right.
+%
 % \defineword{\God}{\cR{dave}}[\cR{Dave}]
+% \redefineword{\God}{\cB{bob}}[\cB{Bob}]
 
 % ------------------------------------------------------------
 % Alignment sugar
