@@ -237,6 +237,8 @@
 \newfontfamily\HebrewEzraFont[
     Path=\LocalFontPath,
     Script=Hebrew,
+    BoldFont=hebrew-ezra.ttf,
+    BoldFeatures={FakeBold=2.0},
     Scale=1.10
 ]{hebrew-ezra.ttf}
 
@@ -419,11 +421,15 @@
 \definecolor{Jcolor}{RGB}{0,120,0}
 \definecolor{Ecolor}{RGB}{185,145,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
-\definecolor{Dtr1color}{RGB}{170,130,0}
-\definecolor{Dtr2color}{RGB}{185,115,0}
-\definecolor{Dtncolor}{RGB}{185,145,0}
+\colorlet{Dtr1color}{Ecolor!92!black}
+\colorlet{Dtr2color}{Ecolor!65!orange}
+\colorlet{Dtncolor}{Ecolor}
+\colorlet{Jbgcolor}{Jcolor!12!white}
+\colorlet{Ebgcolor}{Ecolor!16!white}
+\colorlet{Pbgcolor}{Pcolor!14!white}
 \definecolor{Dtr1bgcolor}{RGB}{255,244,180}
 \definecolor{Dtr2bgcolor}{RGB}{255,222,175}
+\colorlet{Dtnbgcolor}{Dtncolor!16!white}
 
 \definecolor{Rcolor}{RGB}{0,70,170}
 \definecolor{Rbgcolor}{RGB}{220,235,255}
@@ -432,10 +438,12 @@
 \definecolor{RJEbgcolor}{RGB}{225,245,225}
 
 \colorlet{RecordsColor}{Rcolor}
+\colorlet{Recordsbgcolor}{RecordsColor!14!white}
 %\definecolor{RecordsColor}{RGB}{0,70,170}
 %\definecolor{Recordsbgcolor}{RGB}{235,235,235}
 
 \definecolor{OtherColor}{RGB}{80,80,80}
+\colorlet{Otherbgcolor}{OtherColor!12!white}
 %\definecolor{OtherColor}{RGB}{0,120,0}
 
 \definecolor{Kcolor}{RGB}{0,0,0}
@@ -481,12 +489,16 @@
     \colorlet{Jcolor}{ObsGreen!87!fg}
     \colorlet{Ecolor}{ObsYellow!65!fg}
     \colorlet{Pcolor}{ObsBlue!65!fg}
+    \colorlet{Jbgcolor}{Jcolor!18!bg}
+    \colorlet{Ebgcolor}{Ecolor!20!bg}
+    \colorlet{Pbgcolor}{Pcolor!22!bg}
 
-    \colorlet{Dtr1color}{ObsYellow!74!fg}
-    \colorlet{Dtr2color}{ObsYellow!55!ObsOrange}
+    \colorlet{Dtr1color}{Ecolor!84!fg}
+    \colorlet{Dtr2color}{Ecolor!60!ObsOrange}
     \colorlet{Dtncolor}{Ecolor}
     \definecolor{Dtr1bgcolor}{HTML}{5a4d30}
     \definecolor{Dtr2bgcolor}{HTML}{5f4534}
+    \colorlet{Dtnbgcolor}{Ebgcolor}
 
     \colorlet{Rcolor}{ObsBlue!65!fg}
     \definecolor{Rbgcolor}{HTML}{34404f}
@@ -494,7 +506,9 @@
     \definecolor{RJEbgcolor}{HTML}{344837}
 
     \colorlet{RecordsColor}{ObsBlue!65!fg}
+    \colorlet{Recordsbgcolor}{RecordsColor!22!bg}
     \colorlet{OtherColor}{ObsGray!88!fg}
+    \colorlet{Otherbgcolor}{OtherColor!18!bg}
 
     \colorlet{Kcolor}{fg}
     \colorlet{Redcolor}{ObsRed!58!fg}
@@ -878,6 +892,22 @@
 }
 \makeatother
 
+% Source traits. These compose in source profiles and can be used inline.
+\newcommand{\SourceBgColor}{Rbgcolor}
+\newcommand{\SourceBackground}[1]{\def\SourceBgColor{#1}}
+\newcommand{\Levite}{\bfseries}
+\newcommand{\Mushite}{\color{Ecolor}}
+\newcommand{\Aaronid}{\color{Pcolor}}
+\newcommand{\Yahwist}{\color{Jcolor}}
+\newcommand{\Records}{\color{RecordsColor}\itshape}
+\newcommand{\OtherSource}{\color{OtherColor}\itshape}
+\newcommand{\DeuteronomistA}{\Mushite\color{Dtr1color}}
+\newcommand{\DeuteronomistB}{\Mushite\color{Dtr2color}}
+\newcommand{\DeuteronomicLaw}{\Mushite\color{Dtncolor}}
+\makeatletter
+\newcommand{\Redactor}{\@highLight[\SourceBgColor]}
+\makeatother
+
 % The Sources
 
 \newcommand{\ProtoSinaiticBestWeight}{\bfseries}
@@ -1018,50 +1048,50 @@
 % J
 
 \DeclareSourceProfile{J}
-    {\EnglishFont} {\color{Jcolor}\mdseries}
-    {\PaleoHebrewPhoenician}  {\color{Jcolor}\mdseries}
+    {\EnglishFont} {\SourceBackground{Jbgcolor}\Yahwist\mdseries}
+    {\PaleoHebrewPhoenician}  {\SourceBackground{Jbgcolor}\Yahwist\mdseries}
 
 % Mushites
 
 \DeclareSourceProfile{E}
-    {\EnglishFont} {\color{Ecolor}\Eweight}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Ecolor}\Eweight}
+    {\EnglishFont} {\SourceBackground{Ebgcolor}\Levite\Mushite}
+    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Ebgcolor}\Levite\Mushite}
 
 \DeclareSourceProfile{DtrA}
-    {\EnglishFont} {\color{Dtr1color}\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Dtr1color}\mdseries}
+    {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\Levite\DeuteronomistA}
+    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr1bgcolor}\Levite\DeuteronomistA}
 
 \DeclareSourceProfile{DtrB}
-    {\EnglishFont} {\color{Dtr2color}\bfseries}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Dtr2color}\bfseries}
+    {\EnglishFont} {\SourceBackground{Dtr2bgcolor}\Levite\DeuteronomistB}
+    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr2bgcolor}\Levite\DeuteronomistB}
 
 \DeclareSourceProfile{Dtn}
-    {\LawFont} {\color{Dtncolor}\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Dtncolor}\mdseries}
+    {\LawFont} {\SourceBackground{Dtnbgcolor}\Levite\DeuteronomicLaw}
+    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtnbgcolor}\Levite\DeuteronomicLaw}
 
 % Aaronids
 
 \DeclareSourceProfile{P}
-    {\EnglishFont}   {\color{Pcolor}\Pweight}
-    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Pcolor}\mdseries}
+    {\EnglishFont}   {\SourceBackground{Pbgcolor}\Levite\Aaronid}
+    {\HebrewEzraRaw} {\HebrewEzraLarge\SourceBackground{Pbgcolor}\Levite\Aaronid}
 
 \DeclareSourceProfile{R}
-    {\EnglishFont}   {\color{Rcolor}\mdseries}
-    {\HebrewEzraRaw} {\color{Rcolor}\mdseries}
+    {\EnglishFont}   {\SourceBackground{Rbgcolor}\Levite\Aaronid\Redactor}
+    {\HebrewEzraRaw} {\SourceBackground{Rbgcolor}\Levite\Aaronid\Redactor}
 
 % Others
 
 \DeclareSourceProfile{RJE}
-    {\EnglishFont} {\color{RJEcolor}\mdseries}
-    {\HebrewEzra}  {\color{RJEcolor}\mdseries}
+    {\EnglishFont} {\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\mdseries}
+    {\HebrewEzra}  {\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\mdseries}
 
 \DeclareSourceProfile{Records}
-    {\EnglishFont} 		{\color{RecordsColor}\itshape}
-    {\PaleoASCIISiloam} 	{\color{RecordsColor}\itshape}
+    {\EnglishFont} 		{\SourceBackground{Recordsbgcolor}\Records}
+    {\PaleoASCIISiloam} 	{\SourceBackground{Recordsbgcolor}\Records}
 
 \DeclareSourceProfile{Other}
-    {\EnglishFont}  		{\color{OtherColor}\itshape}
-    {\PaleoASCIIMoabite} {\color{OtherColor}\itshape}
+    {\EnglishFont}  		{\SourceBackground{Otherbgcolor}\OtherSource}
+    {\PaleoASCIIMoabite} {\SourceBackground{Otherbgcolor}\OtherSource}
 
 \newcommand{\InlineHebrewRenderer}{\HebrewDavid}
 
@@ -1088,16 +1118,16 @@
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
-\newcommand{\DtrALabel}{\highLight[Dtr1bgcolor]{\color{Dtr1color}D}}
-\newcommand{\DtrBLabel}{\highLight[Dtr2bgcolor]{\color{Dtr2color}D}}
-\newcommand{\DtnLabel}{{\LawFont\color{Dtncolor}Dtn}}
-\newcommand{\eR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
-\newcommand{\eRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
+\newcommand{\DtrALabel}{\eDtrA{D}}
+\newcommand{\DtrBLabel}{\eDtrB{D}}
+\newcommand{\DtnLabel}{\eDtn{Dtn}}
+\newcommand{\eR}[1]{{\estyleR #1}}
+\newcommand{\eRJE}[1]{{\estyleRJE #1}}
 \newcommand{\hDtr}[2]{\ifcase#1\or\hDtrA{#2}\or\hDtrB{#2}\fi}
-\newcommand{\hR}[1]{\highLight[Rbgcolor]{\hRRenderer{\hstyleR}{#1}}}
-\newcommand{\hRJE}[1]{\highLight[RJEbgcolor]{\hRJERenderer{\hstyleRJE}{#1}}}
-\newcommand{\sR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
-\newcommand{\sRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
+\newcommand{\hR}[1]{\hRRenderer{\hstyleR}{#1}}
+\newcommand{\hRJE}[1]{\hRJERenderer{\hstyleRJE}{#1}}
+\newcommand{\sR}[1]{{\estyleR #1}}
+\newcommand{\sRJE}[1]{{\estyleRJE #1}}
 \newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
 \newcommand{\hBookOfRecords}[1]{\hRecordsRenderer{\hstyleRecords}{#1}}
 \newcommand{\sBookOfRecords}[1]{{\estyleRecords #1}}
@@ -1294,13 +1324,13 @@
 }
 
 \newcommand{\LawRows}{%
-    \LawRow{\cB{Aaronid Laws}}{\cB{Leviticus; Exodus 25--40.}}%
-    \LawRow{\cY{Mushite Laws}}{\cY{Covenant Code in Exodus; Deuteronomistic Law Code.}}%
+    \LawRow{{\Aaronid Aaronid Laws}}{\Aaronid Leviticus; Exodus 25--40.}%
+    \LawRow{{\Mushite Mushite Laws}}{\Mushite Covenant Code in Exodus; Deuteronomistic Law Code.}%
     \LawRow{\cG{J Laws}}{\cG{Rare. Possibly a joke.\footnote{J is the funny one.}}}%
 }
 
 \newcommand{\LeviteBlend}{%
-    \cY{Of the Levites} \cY{in the South}%
+    {\Levite\Mushite Of the Levites in the South}%
 }
 
 \newcommand{\FontChoicePage}{%
@@ -1346,19 +1376,20 @@
     \noindent\begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
         Regular
         & The People. We write regular. Bold is for the bold.\\
-        \textbf{Bold} & \textbf{The Priests. Or the Levites. Same thing.}%
+        {\Levite Bold} & {\Levite The Priests. Or the Levites. Same thing.}%
         \footnote{According to the Mushites, but not the Aaronids. That'll make sense eventually.}%
         (\PriestSourceRefs.)\\
 
-        \eR{Background}
-        & \eR{Redactors. Editors, occasionally write small amounts of glue prose to make multiple sources consistent,} \eRJE{while others write less and delete more from their sources.}\\[0.7em]
+        {\SourceBackground{Rbgcolor}\Redactor Background}
+        & {\SourceBackground{Rbgcolor}\Redactor Redactors. Editors, occasionally write small amounts of glue prose to make multiple sources consistent,} {\SourceBackground{RJEbgcolor}\Redactor while others write less and delete more from their sources.}\\[0.7em]
         \eJ{Green} & \eJ{J. The first author of the bible.\footnote{Aside from a few brief archaic songs.}
             The first author of prose on earth.\footnote{As far as we know.}
             The author of nearly all the most popular bible stories.\footnote{Not including the Jesus bits, though J's at least tied.}
             The author in the bible with the best sense of humor.\footnote{And the most misunderstood.}}\\
-        \eE{Yellow} & \eE{Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh.} (\MushiteSourceRefs.)\\
-        \eP{Blue} & \eP{Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem. (P, R)}\\
-        {\itshape Italics} & {\itshape Songs, Early poetry \LeviteBlend{} (Exodus 15), \cG{Israelites in the North} (Judges 5, Genesis 49), \cY{Deuteronomy 32}.}\\
+        {\Mushite Yellow} & {\Levite\Mushite Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh.} (\MushiteSourceRefs.)\\
+        {\Aaronid Blue} & {\Levite\Aaronid Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem.} (\eP{P}, \eR{R}.)\\
+        {\DeuteronomistB Orange} & {\Levite\DeuteronomistB Deuteronomists. Mushites after the yellow has been left in the theological toaster.} (\DtrALabel, \DtrBLabel, \DtnLabel.)\\
+        {\itshape Italics} & {\itshape Songs, Early poetry \LeviteBlend{} (Exodus 15), \cG{Israelites in the North} (Judges 5, Genesis 49), {\Mushite Deuteronomy 32}.}\\
         {\color{Graycolor}Grey} & {\color{Graycolor}Bureaucracy: records, begat lists, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
         {\LawFont Mono} & {\LawFont All forms of code, including legal codes, for reasons that need not be explained.}\\
         \LawRows
