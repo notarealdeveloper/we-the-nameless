@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+
+Almost perfect now!
+
+1. Revert R's name to just being R, and not italic.
+2. Make P bold again.
+3. Make E bold.
+4. Header should be, in this order: J, E, P, R
+5. Generate a legend *page* right after the table of contents that says this, in whatever nice table format or other format you think is best:
+
+    The Authors
+
+    Or
+
+    We: The Nameless
+
+    Regular:        Authors. Usually early. Some later. (J, Records, Songs.)
+    Bold:           Priests. Usually later. Some early. (E, P, Dtr1, Dtr2, Dtn.)
+    Background:     Redactors. Primarily Editors, rarely or less frequently Authors.
+    No Background:  Redactors. Primarily Editors, rarely or less frequently Authors.
+
+    Green:          J. The first author. The oldest source in the bible, with the exception of archaic songs. (J)
+    Yellow:         Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. (E, Dtr1, Dtr2, Jeremiah)
+    Blue:           Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem. (P, R)
+    Red:            Songs. Early poetry of Levites in the south, Israelites in the north, or other sources. (Genesis 49, Exodus 15, Deuteronomy 32)
+    Grey:           Other. Records, Begat lists, genealogies, external documents. (Genesis 5, Genesis 14.)
+
+    Dark:           Laws.
+    Dark Blue:      Aaronid Laws. (Leviticus, Exodus 25-40.)
+    Dark Yellow:    Mushite Laws. (Covenant code in Exodus, Deuteronomistic Law code.)
+    Dark Green:     J Laws.       (Rare, outside of a version of the 10 commandments, which may have been a joke.\footnote{J is the funny one.})
+EOF
