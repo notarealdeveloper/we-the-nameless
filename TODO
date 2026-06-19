@@ -268,7 +268,7 @@ Only improve comments and internal consistency where helpful.
 
 10. Use fonts that each Author of the Torah might have written in.
 
-Based on all the fonts in fonts/ and the screenshots in current directory showing what each looks like, change the fonts in main.tex so that the J, E, P, R, and D sources are all using a version of Hebrew from the time when they most likely wrote. J should be around 922 BC, E should be soon after, P should be pre-722 BC, R should be Ezra after Babylonian Exile so maybe Aramaic, and the Book of Records and so on should likely be an early-ish Palo Hebrew but not Proto Sinaitic. Also add a command \hProto and \eProto which we can currently format with J's english font but I want ProtoSinaitic for the Hebrew font. Change Song of the Sea, Blessing of Jacob, the songs in Numbers 21 and 23, Deut 32 and Deut 33 to use ProtoSinaitic via the \hProto{} wrapper.
+Based on all the fonts in fonts/ and the images shown in fonts.pdf in the current directory showing what each font looks like, change the fonts in main.tex so that the J, E, P, R, and D sources are all using a version of Hebrew from the time when they most likely wrote. J should be around 922 BC, E should be soon after, P should be pre-722 BC, R should be Ezra after Babylonian Exile so maybe Aramaic, and the Book of Records and so on should likely be an early-ish Palo Hebrew but not Proto Sinaitic. Also add a command \hProto and \eProto which we can currently format with J's english font but I want ProtoSinaitic for the Hebrew font. Change Song of the Sea, Blessing of Jacob, the songs in Numbers 21 and 23, Deut 32 and Deut 33 to use ProtoSinaitic via the \hProto{} wrapper.
 
 # Non-goals
 
