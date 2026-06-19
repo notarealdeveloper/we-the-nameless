@@ -12,7 +12,7 @@ INCLUDES := $(shell grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex)
 INCLUDE_SOURCES := $(addsuffix .tex,$(INCLUDES))
 INCLUDE_BUILD_DIRS := $(addprefix $(BUILD)/,$(sort $(dir $(INCLUDES))))
 
-SOURCES := $(MAIN).tex config.tex cover.tex $(INCLUDE_SOURCES)
+SOURCES := $(MAIN).tex cover.tex $(INCLUDE_SOURCES)
 
 .PHONY: all clean distclean debug progress open build-prepare draft c x list
 
