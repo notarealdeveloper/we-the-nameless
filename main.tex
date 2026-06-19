@@ -425,14 +425,14 @@
 \definecolor{Rcolor}{RGB}{0,70,170}
 \definecolor{Rbgcolor}{RGB}{220,235,255}
 
-\definecolor{RJEcolor}{RGB}{0,120,0}
+\definecolor{RJEcolor}{RGB}{0,100,0}
 \definecolor{RJEbgcolor}{RGB}{225,245,225}
 
 \colorlet{RecordsColor}{Rcolor}
 %\definecolor{RecordsColor}{RGB}{0,70,170}
 %\definecolor{Recordsbgcolor}{RGB}{235,235,235}
 
-\colorlet{OtherColor}{ProtoColor}
+\definecolor{OtherColor}{RGB}{80,80,80}
 %\definecolor{OtherColor}{RGB}{0,120,0}
 
 \definecolor{Kcolor}{RGB}{0,0,0}
@@ -485,12 +485,11 @@
 
     \colorlet{Rcolor}{ObsBlue!65!fg}
     \definecolor{Rbgcolor}{HTML}{34404f}
-    \colorlet{RJEcolor}{Jcolor}
-    \colorlet{RJEbgcolor}{Ecolor}
+    \colorlet{RJEcolor}{ObsGreen!82!fg}
+    \definecolor{RJEbgcolor}{HTML}{344837}
 
     \colorlet{RecordsColor}{ObsBlue!65!fg}
-    \definecolor{Recordsbgcolor}{HTML}{575d5f}
-    \colorlet{OtherColor}{ObsGray!90!fg}
+    \colorlet{OtherColor}{ObsGray!88!fg}
 
     \colorlet{Kcolor}{fg}
     \colorlet{Redcolor}{ObsRed!58!fg}
@@ -1091,9 +1090,9 @@
 \newcommand{\hRJE}[1]{\highLight[RJEbgcolor]{\hRJERenderer{\hstyleRJE}{#1}}}
 \newcommand{\sR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
 \newcommand{\sRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
-\newcommand{\eBookOfRecords}[1]{{\estyleRecords\highLight[Recordsbgcolor]{#1}}}
-\newcommand{\hBookOfRecords}[1]{\highLight[Recordsbgcolor]{\hRecordsRenderer{\hstyleRecords}{#1}}}
-\newcommand{\sBookOfRecords}[1]{{\estyleRecords\highLight[Recordsbgcolor]{#1}}}
+\newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
+\newcommand{\hBookOfRecords}[1]{\hRecordsRenderer{\hstyleRecords}{#1}}
+\newcommand{\sBookOfRecords}[1]{{\estyleRecords #1}}
 
 % ------------------------------------------------------------
 % Inline Hebrew with explicit font selection
@@ -1226,7 +1225,7 @@
 % ------------------------------------------------------------
 
 \newcommand{\RSourceName}{R}
-\newcommand{\RJESourceName}{\ensuremath{R^{\mathrm{E}}_{\mathrm{J}}}}
+\newcommand{\RJESourceName}{R}
 
 \newcommand{\SourceLegendItems}[2]{%
     \eJ{J}\quad
@@ -1274,6 +1273,21 @@
     {\bfseries\color{Dtncolor}Dtn}%
 }
 
+\newcommand{\MushiteSourceRefs}{%
+    \eE{E}, %
+    {\bfseries\color{Dtr1color}Dtr1}, %
+    {\bfseries\color{Dtr2color}Dtr2}, %
+    {\bfseries\color{Dtncolor}Dtn}, %
+    {\color{Dtncolor}Jeremiah}%
+}
+
+\newcommand{\LawSample}{%
+    \texttt{\cK{Laws.} %
+    \cB{Aaronid Laws. (Leviticus, Exodus 25-40.)} %
+    \cY{Mushite Laws. (Covenant code in Exodus, Deuteronomistic Law code.)} %
+    \cG{J Laws. (Rare, outside of a version of the 10 commandments, which may have been a joke.\footnote{J is the funny one.})}}%
+}
+
 \newcommand{\SourceLegendTitle}{%
     \begin{center}
         {\scshape\Large The Authors}\\[0.35em]
@@ -1286,13 +1300,12 @@
 \newcommand{\SourceLegendPage}{%
     \cleardoublepage
     \thispagestyle{plain}
-    \chapter*{}
-    \vspace*{-3.5em}
+    \vspace*{-1.2em}
     \SourceLegendTitle
-    \vspace{1.5em}
+    \vspace{0.8em}
     \begingroup
-    \small
-    \renewcommand{\arraystretch}{1.35}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.22}
     \noindent\begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
         Regular
         & Authors. Usually early. Some later. (\SourceRefs.)\\
@@ -1307,14 +1320,12 @@
             The first author of prose on earth.\footnotemark{}
             The author of nearly all the most popular bible stories.\footnotemark{}
             The author in the bible with the best sense of humor.\footnotemark{}}\\
-        \eE{Yellow} & \eE{Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. (E, Dtr1, Dtr2, Jeremiah)}\\
+        \eE{Yellow} & \eE{Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh.} (\MushiteSourceRefs.)\\
         \eP{Blue} & \eP{Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem. (P, R)}\\
-        {\color{Redcolor}Red} & {\color{Redcolor}Songs. Early poetry of Levites in the south, Israelites in the north, or other sources. (Genesis 49, Exodus 15, Deuteronomy 32)}\\
-        {\color{Graycolor}Grey} & {\color{Graycolor}Other. Records, Begat lists, genealogies, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
-        \cK{Dark} & \cK{Laws.}\\
-        \cB{Dark Blue} & \cB{Aaronid Laws. (Leviticus, Exodus 25-40.)}\\
-        \cY{Dark Yellow} & \cY{Mushite Laws. (Covenant code in Exodus, Deuteronomistic Law code.)}\\
-        \cG{Dark Green} & \cG{J Laws. (Rare, outside of a version of the 10 commandments, which may have been a joke.\footnote{J is the funny one.})}\\
+        \multicolumn{2}{@{}p{0.94\linewidth}@{}}{\textit{Italics are for things we don't usually put in books. Red is the passionate creative stuff like songs. Grey is the bureaucracy like begat lists.}}\\
+        {\itshape\color{Redcolor}Red} & {\itshape\color{Redcolor}Songs. Early poetry of Levites in the south, Israelites in the north, or other sources. (Genesis 49, Exodus 15, Deuteronomy 32)}\\
+        {\itshape\color{Graycolor}Grey} & {\itshape\color{Graycolor}Other. Records, Begat lists, genealogies, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
+        \texttt{Monospaced} & Any code of any form, including legal codes, are displayed in monospaced font, for reasons that need not be explained. The color indicates the author or group of authors. \LawSample\\
     \end{tabular}
     \footnotetext{Aside from a few brief archaic songs.}
     \footnotetext{As far as we know.}
