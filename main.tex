@@ -365,10 +365,14 @@
 \definecolor{RecordsColor}{RGB}{0,70,170}
 \definecolor{OtherColor}{RGB}{0,120,0}
 \definecolor{ProtoColor}{RGB}{100,100,100}
-\definecolor{ProtoAColor}{RGB}{100,100,100}
-\definecolor{ProtoBColor}{RGB}{0,70,170}
-\definecolor{ProtoCColor}{RGB}{0,120,0}
-\definecolor{ProtoDColor}{RGB}{130,0,0}
+\definecolor{PaleoColor}{RGB}{100,100,100}
+\colorlet{ProtoAColor}{ProtoColor}
+\colorlet{ProtoBColor}{ProtoColor}
+\colorlet{ProtoCColor}{ProtoColor}
+\colorlet{ProtoDColor}{ProtoColor}
+\colorlet{ProtoEColor}{ProtoColor}
+\colorlet{ProtoFColor}{ProtoColor}
+\colorlet{ProtoGColor}{ProtoColor}
 
 \definecolor{Kcolor}{RGB}{0,0,0}
 \definecolor{Redcolor}{RGB}{130,0,0}
@@ -438,6 +442,65 @@
     [0x05BE] = "-", [0x05C0] = "|", [0x05C3] = "",
     [0x05F3] = "'", [0x05F4] = '"'
   }
+
+  local hebrew_letters = {
+    0x05D0, 0x05D1, 0x05D2, 0x05D3, 0x05D4, 0x05D5, 0x05D6, 0x05D7,
+    0x05D8, 0x05D9, 0x05DB, 0x05DC, 0x05DE, 0x05E0, 0x05E1, 0x05E2,
+    0x05E4, 0x05E6, 0x05E7, 0x05E8, 0x05E9, 0x05EA
+  }
+
+  local final_letters = {
+    [0x05DA] = 0x05DB, [0x05DD] = 0x05DE, [0x05DF] = 0x05E0,
+    [0x05E3] = 0x05E4, [0x05E5] = 0x05E6
+  }
+
+  local function variant_map(chars)
+    local map = {}
+    for i, code in ipairs(hebrew_letters) do
+      map[code] = chars[i]
+    end
+    for final, normal in pairs(final_letters) do
+      map[final] = map[normal]
+    end
+    return map
+  end
+
+  local bs = string.char(92)
+
+  local ascii_variants = {
+    proto_a = nil,
+    proto_b = variant_map {"a","b","g","s","h","w","Z","x","j","y","k","l","m","n",bs..";","]","p",bs..";c"..bs..",","q"..bs..",","r"..bs..",","f"..bs..",","t"},
+    proto_c = variant_map {"A","B","G","S","H","W","Z","X","j","Y",bs..";K","L","M"..bs..",","N"..bs..";","]","P"..bs..";","C"..bs..",","Q"..bs..",","R"..bs..",","V"..bs..",","T"},
+    proto_d = variant_map {"A","B","G","D",bs.."!h","w"..bs.."!","Z","X","J","Y","K","L","M","N","S","]"..bs..";","P"..bs..";","C"..bs..";","Q"..bs..";","R"..bs..";","V"..bs..";","T"},
+    proto_e = variant_map {"a","b"..bs.."!","g","d","H","W"..bs.."!","z","x","j","y","k","l","M","n","s","]"..bs..";","p","c","q"..bs..";","r"..bs..",","v"..bs..",","t"},
+    proto_f = variant_map {"A","B","G","D","H"..bs..";","W","Z","X","J"..bs.."!","Y"..bs.."!","K","L"..bs..";","","N","S","]","P","C"..bs..";","Q"..bs..";","R"..bs..",","V",bs..",T"},
+    proto_g = variant_map {"a","b","g","d","h"..bs..";","w","z","x","j"..bs.."!","y","k","l","","n","s","]","p"..bs.."!","c"..bs..",","q","R",bs..",v",bs..",t"},
+    paleo_upper = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
+    paleo_lower = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"},
+    paleo_a = variant_map {"a","b","g","d","h","w",bs.."!z","x","j","y","k","l","m","n","s","]","p"..bs.."!","c","q"..bs..",","r"..bs..",","v"..bs..",","t"},
+    paleo_b = variant_map {"A",bs..";B","G"..bs..",","D","H"..bs..";","W","Z","X"," ","Y","K","L","M"," ","S","]","P","C","Q","R","V","T"},
+    paleo_c = variant_map {"a",bs..",b","g",bs.."!d","h"..bs.."!","w","z","x"," ","y","k","l","m"..bs..";"," ","s","]","p"..bs.."!","c","q","r","v","t"},
+    paleo_h = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
+    paleo_i = variant_map {"a","b","g","d","h","w","z"..bs..",","x","j","y"..bs..";","k","l","m","n","s","]","p","c",bs..",q"..bs..",","r","v","t"},
+    paleo_k = variant_map {"A","B","G","D","H","W","Z","X","J","Y"..bs..",","K"..bs..",","L"..bs..",","M"..bs..",","N","S","]","P","C","Q","R","V","T"},
+    paleo_l = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c"..bs..",","q"..bs..",","r"..bs..",","v","t"},
+    paleo_w = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K"..bs..",","L"..bs..",","M"..bs..",","N","S","]","P","C","Q","R","V","T"},
+    paleo_x = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"}
+  }
+
+  local function hebrew_to_ascii_variant(s, variant)
+    local map = ascii_variants[variant]
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = (map and map[code]) or hebrew_punctuation[code]
+      if mapped ~= nil then
+        table.insert(out, mapped)
+      elseif not is_hebrew_mark(code) then
+        table.insert(out, utf8.char(code))
+      end
+    end
+    return table.concat(out)
+  end
 
   local phoenician = {
     [0x05D0] = 0x10900, [0x05D1] = 0x10901, [0x05D2] = 0x10902,
@@ -525,12 +588,20 @@
     return table.concat(out)
   end
 
+  function paleotex.hebrew_to_ascii_variant(s, variant)
+    return hebrew_to_ascii_variant(s, variant)
+  end
+
   function strip_hebrew_niqqud(s)
     return paleotex.strip_hebrew_niqqud(s)
   end
 
   function hebrew_to_paleo_ascii(s)
     return paleotex.hebrew_to_paleo_ascii(s)
+  end
+
+  function hebrew_to_ascii_variant(s, variant)
+    return paleotex.hebrew_to_ascii_variant(s, variant)
   end
 
   function hebrew_for_paleo_unicode(s)
@@ -572,6 +643,26 @@
 \newcommand{\EncodePaleoUnicode}[1]{\HebrewForPaleoUnicode{#1}}
 \newcommand{\EncodePhoenician}[1]{\HebrewToPhoenician{#1}}
 \newcommand{\EncodeAramaic}[1]{\HebrewToAramaic{#1}}
+\newcommand{\EncodeASCIIVariant}[2]{%
+  \directlua{tex.sprint(hebrew_to_ascii_variant("\luaescapestring{\detokenize{#2}}", "\luaescapestring{#1}"))}%
+}
+\newcommand{\EncodeProtoB}[1]{\EncodeASCIIVariant{proto_b}{#1}}
+\newcommand{\EncodeProtoC}[1]{\EncodeASCIIVariant{proto_c}{#1}}
+\newcommand{\EncodeProtoD}[1]{\EncodeASCIIVariant{proto_d}{#1}}
+\newcommand{\EncodeProtoE}[1]{\EncodeASCIIVariant{proto_e}{#1}}
+\newcommand{\EncodeProtoF}[1]{\EncodeASCIIVariant{proto_f}{#1}}
+\newcommand{\EncodeProtoG}[1]{\EncodeASCIIVariant{proto_g}{#1}}
+\newcommand{\EncodePaleoUpper}[1]{\EncodeASCIIVariant{paleo_upper}{#1}}
+\newcommand{\EncodePaleoLower}[1]{\EncodeASCIIVariant{paleo_lower}{#1}}
+\newcommand{\EncodePaleoA}[1]{\EncodeASCIIVariant{paleo_a}{#1}}
+\newcommand{\EncodePaleoB}[1]{\EncodeASCIIVariant{paleo_b}{#1}}
+\newcommand{\EncodePaleoC}[1]{\EncodeASCIIVariant{paleo_c}{#1}}
+\newcommand{\EncodePaleoH}[1]{\EncodeASCIIVariant{paleo_h}{#1}}
+\newcommand{\EncodePaleoI}[1]{\EncodeASCIIVariant{paleo_i}{#1}}
+\newcommand{\EncodePaleoK}[1]{\EncodeASCIIVariant{paleo_k}{#1}}
+\newcommand{\EncodePaleoL}[1]{\EncodeASCIIVariant{paleo_l}{#1}}
+\newcommand{\EncodePaleoW}[1]{\EncodeASCIIVariant{paleo_w}{#1}}
+\newcommand{\EncodePaleoX}[1]{\EncodeASCIIVariant{paleo_x}{#1}}
 
 \makeatletter
 \newcommand{\DeclareHebrewRenderer}[3]{%
@@ -597,6 +688,13 @@
 \DeclareHebrewRenderer{ProtoASCIIFifteenthCentury}{\ProtoSinaiticFifteenthCenturyFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{ProtoASCIIThirteenthCentury}{\ProtoSinaiticThirteenthCenturyFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{ProtoASCIIFromIzbetSartah}{\ProtoSinaiticIzbetSartahFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{ProtoAFont}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{ProtoBFont}{\ProtoSinaiticFifteenthCenturyFont}{\EncodeProtoB}
+\DeclareHebrewRenderer{ProtoCFont}{\ProtoSinaiticFifteenthCenturyFont}{\EncodeProtoC}
+\DeclareHebrewRenderer{ProtoDFont}{\ProtoSinaiticThirteenthCenturyFont}{\EncodeProtoD}
+\DeclareHebrewRenderer{ProtoEFont}{\ProtoSinaiticThirteenthCenturyFont}{\EncodeProtoE}
+\DeclareHebrewRenderer{ProtoFFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoF}
+\DeclareHebrewRenderer{ProtoGFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoG}
 \DeclareHebrewRenderer{PaleoASCIIStandard}{\PaleoHebrewFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIITelZayit}{\PaleoHebrewTelZayitFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIIGezer}{\PaleoHebrewGezerFont}{\EncodePaleoASCII}
@@ -609,6 +707,30 @@
 \DeclareHebrewRenderer{PaleoASCIILachishB}{\PaleoHebrewLachishBFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIILachishC}{\PaleoHebrewLachishCFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIIIsaiahScroll}{\PaleoHebrewIsaiahScrollFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoAFont}{\PaleoHebrewTelZayitFont}{\EncodePaleoA}
+\DeclareHebrewRenderer{PaleoBFont}{\PaleoHebrewGezerFont}{\EncodePaleoB}
+\DeclareHebrewRenderer{PaleoCFont}{\PaleoHebrewGezerFont}{\EncodePaleoC}
+\DeclareHebrewRenderer{PaleoDFont}{\PaleoHebrewTelDanFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoEFont}{\PaleoHebrewTelDanFont}{\EncodePaleoLower}
+\DeclareHebrewRenderer{PaleoFFont}{\PaleoHebrewMoabiteFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoGFont}{\PaleoHebrewMoabiteFont}{\EncodePaleoLower}
+\DeclareHebrewRenderer{PaleoHFont}{\PaleoHebrewFont}{\EncodePaleoH}
+\DeclareHebrewRenderer{PaleoIFont}{\PaleoHebrewFont}{\EncodePaleoI}
+\DeclareHebrewRenderer{PaleoJFont}{\PaleoHebrewRoboFont}{\EncodePaleoUnicode}
+\DeclareHebrewRenderer{PaleoKFont}{\PaleoHebrewSiloamFont}{\EncodePaleoK}
+\DeclareHebrewRenderer{PaleoLFont}{\PaleoHebrewSiloamFont}{\EncodePaleoL}
+\DeclareHebrewRenderer{PaleoMFont}{\PaleoHebrewKetefHinnomAFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoNFont}{\PaleoHebrewKetefHinnomAFont}{\EncodePaleoLower}
+\DeclareHebrewRenderer{PaleoOFont}{\PaleoHebrewKetefHinnomBFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoPFont}{\PaleoHebrewKetefHinnomBFont}{\EncodePaleoLower}
+\DeclareHebrewRenderer{PaleoQFont}{\PaleoHebrewLachishAFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoRFont}{\PaleoHebrewLachishAFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoSFont}{\PaleoHebrewLachishBFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoTFont}{\PaleoHebrewLachishBFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoUFont}{\PaleoHebrewLachishCFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoVFont}{\PaleoHebrewLachishCFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoWFont}{\PaleoHebrewIsaiahScrollFont}{\EncodePaleoW}
+\DeclareHebrewRenderer{PaleoXFont}{\PaleoHebrewIsaiahScrollFont}{\EncodePaleoX}
 
 % Source profiles bundle the English font/style with the Hebrew renderer/style.
 % These declarations are the only source-to-font bindings normally changed.
@@ -673,20 +795,132 @@
     {\ProtoASCIIFifteenthCentury} {\color{ProtoColor}\mdseries}
 
 \DeclareSourceProfile{ProtoA}
-    {\EnglishProtoFont} {\color{ProtoAColor}\mdseries}
-    {\ProtoASCIIFifteenthCentury} {\color{ProtoAColor}\mdseries}
+    {\EnglishProtoFont} 	{\color{ProtoAColor}\mdseries}
+    {\ProtoAFont} 		{\color{ProtoAColor}\mdseries}
 
 \DeclareSourceProfile{ProtoB}
-    {\EnglishProtoFont} {\color{ProtoBColor}\mdseries}
-    {\ProtoASCIIThirteenthCentury} {\color{ProtoBColor}\mdseries}
+    {\EnglishProtoFont} 	{\color{ProtoBColor}\mdseries}
+    {\ProtoBFont} 		{\color{ProtoBColor}\mdseries}
 
 \DeclareSourceProfile{ProtoC}
-    {\EnglishProtoFont} {\color{ProtoCColor}\mdseries}
-    {\ProtoASCIIFromIzbetSartah} {\color{ProtoCColor}\mdseries}
+    {\EnglishProtoFont} 	{\color{ProtoCColor}\mdseries}
+    {\ProtoCFont} 		{\color{ProtoCColor}\mdseries}
 
 \DeclareSourceProfile{ProtoD}
-    {\EnglishProtoFont} {\color{ProtoDColor}\mdseries}
-    {\ProtoSinaiticBest} {\color{ProtoDColor}\mdseries}
+    {\EnglishProtoFont} 	{\color{ProtoDColor}\mdseries}
+    {\ProtoDFont} 		{\color{ProtoDColor}\mdseries}
+
+\DeclareSourceProfile{ProtoE}
+    {\EnglishProtoFont} 	{\color{ProtoEColor}\mdseries}
+    {\ProtoEFont} 		{\color{ProtoEColor}\mdseries}
+
+\DeclareSourceProfile{ProtoF}
+    {\EnglishProtoFont} 	{\color{ProtoFColor}\mdseries}
+    {\ProtoFFont} 		{\color{ProtoFColor}\mdseries}
+
+\DeclareSourceProfile{ProtoG}
+    {\EnglishProtoFont} 	{\color{ProtoGColor}\mdseries}
+    {\ProtoGFont} 		{\color{ProtoGColor}\mdseries}
+
+\DeclareSourceProfile{Paleo}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoAFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoA}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoAFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoB}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoBFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoC}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoCFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoD}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoDFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoE}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoEFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoF}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoFFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoG}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoGFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoH}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoHFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoI}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoIFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoJ}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoJFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoK}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoKFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoL}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoLFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoM}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoMFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoN}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoNFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoO}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoOFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoP}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoPFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoQ}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoQFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoR}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoRFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoS}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoSFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoT}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoTFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoU}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoUFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoV}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoVFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoW}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoWFont} 		{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoX}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoXFont} 		{\color{PaleoColor}\mdseries}
 
 \newcommand{\InlineHebrewRenderer}{\HebrewDavid}
 
@@ -709,7 +943,7 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD}
+\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX}
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
