@@ -6,7 +6,7 @@
 \def\ConfigCommentary{true}
 
 % choices: light, dark
-\def\ConfigTheme{light}
+\def\ConfigTheme{dark}
 
 
 %%%%%%%%%%%%%%%%
@@ -803,37 +803,40 @@
 
 % The Sources
 
+\newcommand{\ProtoSinaiticBestWeight}{\bfseries}
+\newcommand{\ProtoSinaiticASCIIWeight}{\mdseries}
+
 \DeclareSourceProfile{Proto}
     {\EnglishProtoFont} 	{\color{ProtoColor}\mdseries}
-    {\ProtoSinaiticBest} 	{\color{ProtoColor}\mdseries}
+    {\ProtoSinaiticBest} 	{\color{ProtoColor}\ProtoSinaiticBestWeight}
 
 \DeclareSourceProfile{ProtoA}
     {\EnglishProtoFont} 	{\color{ProtoAColor}\mdseries}
-    {\ProtoAFont} 		{\color{ProtoAColor}\mdseries}
+    {\ProtoAFont} 		{\color{ProtoAColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{ProtoB}
     {\EnglishProtoFont} 	{\color{ProtoBColor}\mdseries}
-    {\ProtoBFont} 		{\color{ProtoBColor}\mdseries}
+    {\ProtoBFont} 		{\color{ProtoBColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{ProtoC}
     {\EnglishProtoFont} 	{\color{ProtoCColor}\mdseries}
-    {\ProtoCFont} 		{\color{ProtoCColor}\mdseries}
+    {\ProtoCFont} 		{\color{ProtoCColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{ProtoD}
     {\EnglishProtoFont} 	{\color{ProtoDColor}\mdseries}
-    {\ProtoDFont} 		{\color{ProtoDColor}\mdseries}
+    {\ProtoDFont} 		{\color{ProtoDColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{ProtoE}
     {\EnglishProtoFont} 	{\color{ProtoEColor}\mdseries}
-    {\ProtoEFont} 		{\color{ProtoEColor}\mdseries}
+    {\ProtoEFont} 		{\color{ProtoEColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{ProtoF}
     {\EnglishProtoFont} 	{\color{ProtoFColor}\mdseries}
-    {\ProtoFFont} 		{\color{ProtoFColor}\mdseries}
+    {\ProtoFFont} 		{\color{ProtoFColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{ProtoG}
     {\EnglishProtoFont} 	{\color{ProtoGColor}\mdseries}
-    {\ProtoGFont} 		{\color{ProtoGColor}\mdseries}
+    {\ProtoGFont} 		{\color{ProtoGColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{Paleo}
     {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
