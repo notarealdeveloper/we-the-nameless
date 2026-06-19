@@ -93,17 +93,30 @@
     Scale=1.27
 ]{proto-sinaitic-best-bold.ttf}
 
+\newfontfamily\ProtoSinaiticOtherFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{proto-sinaitic-other.ttf}
+
 \newfontfamily\UgariticFont[
     Path=\LocalFontPath,
 	BoldFont=noto-sans-ugaritic-regular.ttf,
     Scale=1.22
 ]{noto-sans-ugaritic-regular.ttf}
 
-\newfontfamily\PaleoHebrewFont[
+\newfontfamily\PaleoHebrewOtherFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
     Scale=1.49
-]{paleo-hebrew.ttf}
+]{paleo-hebrew-other.ttf}
+
+\newfontfamily\PaleoHebrewFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    BoldFont=paleo-hebrew-phoenician.ttf,
+    Scale=1.22
+]{paleo-hebrew-phoenician.ttf}
 
 \newfontfamily\PaleoHebrewRoboFont[
     Path=\LocalFontPath,
@@ -184,11 +197,12 @@
     Scale=1.22
 ]{noto-sans-imperial-aramaic-regular.ttf}
 
-\newfontfamily\PhoenicianFont[
+\newfontfamily\PaleoHebrewPhoenicianFont[
     Path=\LocalFontPath,
-    BoldFont=noto-sans-phoenician-regular.ttf,
+    Renderer=HarfBuzz,
+    BoldFont=paleo-hebrew-phoenician.ttf,
     Scale=1.22
-]{noto-sans-phoenician-regular.ttf}
+]{paleo-hebrew-phoenician.ttf}
 
 \newfontfamily\HebrewDavidFont[
     Path=\LocalFontPath,
@@ -284,7 +298,7 @@
   {\leavevmode\textdir TRT\ProtoSinaiticFifteenthCenturyFont\tl_reverse:n { #1 }}
 }
 \NewDocumentCommand{\paleo}{ m }{
-  {\leavevmode\textdir TRT\PaleoHebrewFont\tl_reverse:n { #1 }}
+  {\PaleoHebrewPhoenician{}{#1}}
 }
 
 \NewDocumentCommand{\chinese}{ m }{{\leavevmode\TraditionalChineseFont { #1 }}}
@@ -466,26 +480,24 @@
     return map
   end
 
-  local bs = string.char(92)
-
   local ascii_variants = {
-    proto_a = nil,
-    proto_b = variant_map {"a","b","g","s","h","w","Z","x","j","y","k","l","m","n",bs..";","]","p",bs..";c"..bs..",","q"..bs..",","r"..bs..",","f"..bs..",","t"},
-    proto_c = variant_map {"A","B","G","S","H","W","Z","X","j","Y",bs..";K","L","M"..bs..",","N"..bs..";","]","P"..bs..";","C"..bs..",","Q"..bs..",","R"..bs..",","V"..bs..",","T"},
-    proto_d = variant_map {"A","B","G","D",bs.."!h","w"..bs.."!","Z","X","J","Y","K","L","M","N","S","]"..bs..";","P"..bs..";","C"..bs..";","Q"..bs..";","R"..bs..";","V"..bs..";","T"},
-    proto_e = variant_map {"a","b"..bs.."!","g","d","H","W"..bs.."!","z","x","j","y","k","l","M","n","s","]"..bs..";","p","c","q"..bs..";","r"..bs..",","v"..bs..",","t"},
-    proto_f = variant_map {"A","B","G","D","H"..bs..";","W","Z","X","J"..bs.."!","Y"..bs.."!","K","L"..bs..";","","N","S","]","P","C"..bs..";","Q"..bs..";","R"..bs..",","V",bs..",T"},
-    proto_g = variant_map {"a","b","g","d","h"..bs..";","w","z","x","j"..bs.."!","y","k","l","","n","s","]","p"..bs.."!","c"..bs..",","q","R",bs..",v",bs..",t"},
+    proto_a = variant_map {"a","b","g","s","h","w","Z","x","j","y","k","l","m","n","","]","p","c","q","r","f","t"},
+    proto_b = variant_map {"a","b","g","s","h","w","Z","x","j","y","k","l","m","n","","]","p","c","q","r","f","t"},
+    proto_c = variant_map {"A","B","G","S","H","W","Z","X","j","Y","K","L","M","N","","]","P","C","Q","R","V","T"},
+    proto_d = variant_map {"A","B","G","D","h","w","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
+    proto_e = variant_map {"a","b","g","d","H","W","z","x","j","y","k","l","M","n","s","]","p","c","q","r","v","t"},
+    proto_f = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","","N","S","]","P","C","Q","R","V","T"},
+    proto_g = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","","n","s","]","p","c","q","R","v","t"},
     paleo_upper = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
     paleo_lower = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"},
-    paleo_a = variant_map {"a","b","g","d","h","w",bs.."!z","x","j","y","k","l","m","n","s","]","p"..bs.."!","c","q"..bs..",","r"..bs..",","v"..bs..",","t"},
-    paleo_b = variant_map {"A",bs..";B","G"..bs..",","D","H"..bs..";","W","Z","X"," ","Y","K","L","M"," ","S","]","P","C","Q","R","V","T"},
-    paleo_c = variant_map {"a",bs..",b","g",bs.."!d","h"..bs.."!","w","z","x"," ","y","k","l","m"..bs..";"," ","s","]","p"..bs.."!","c","q","r","v","t"},
+    paleo_a = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"},
+    paleo_b = variant_map {"A","B","G","D","H","W","Z","X","","Y","K","L","M","","S","]","P","C","Q","R","V","T"},
+    paleo_c = variant_map {"a","b","g","d","h","w","z","x","","y","k","l","m","","s","]","p","c","q","r","v","t"},
     paleo_h = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
-    paleo_i = variant_map {"a","b","g","d","h","w","z"..bs..",","x","j","y"..bs..";","k","l","m","n","s","]","p","c",bs..",q"..bs..",","r","v","t"},
-    paleo_k = variant_map {"A","B","G","D","H","W","Z","X","J","Y"..bs..",","K"..bs..",","L"..bs..",","M"..bs..",","N","S","]","P","C","Q","R","V","T"},
-    paleo_l = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c"..bs..",","q"..bs..",","r"..bs..",","v","t"},
-    paleo_w = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K"..bs..",","L"..bs..",","M"..bs..",","N","S","]","P","C","Q","R","V","T"},
+    paleo_i = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"},
+    paleo_k = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
+    paleo_l = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"},
+    paleo_w = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
     paleo_x = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"}
   }
 
@@ -503,7 +515,7 @@
     return table.concat(out)
   end
 
-  local phoenician = {
+  local paleo_hebrew_phoenician = {
     [0x05D0] = 0x10900, [0x05D1] = 0x10901, [0x05D2] = 0x10902,
     [0x05D3] = 0x10903, [0x05D4] = 0x10904, [0x05D5] = 0x10905,
     [0x05D6] = 0x10906, [0x05D7] = 0x10907, [0x05D8] = 0x10908,
@@ -545,10 +557,10 @@
     return table.concat(out)
   end
 
-  function paleotex.hebrew_to_phoenician(s)
+  function paleotex.hebrew_to_paleo_hebrew_phoenician(s)
     local out = {}
     for pos, code in utf8.codes(s) do
-      local mapped = phoenician[code]
+      local mapped = paleo_hebrew_phoenician[code]
       if mapped ~= nil then
         table.insert(out, utf8.char(mapped))
       else
@@ -609,8 +621,8 @@
     return paleotex.hebrew_for_paleo_unicode(s)
   end
 
-  function hebrew_to_phoenician(s)
-    return paleotex.hebrew_to_phoenician(s)
+  function hebrew_to_paleo_hebrew_phoenician(s)
+    return paleotex.hebrew_to_paleo_hebrew_phoenician(s)
   end
 
   function hebrew_to_aramaic(s)
@@ -630,8 +642,8 @@
   \directlua{tex.sprint(hebrew_for_paleo_unicode("\luaescapestring{\detokenize{#1}}"))}%
 }
 
-\newcommand{\HebrewToPhoenician}[1]{%
-  \directlua{tex.sprint(hebrew_to_phoenician("\luaescapestring{\detokenize{#1}}"))}%
+\newcommand{\HebrewToPaleoHebrewPhoenician}[1]{%
+  \directlua{tex.sprint(hebrew_to_paleo_hebrew_phoenician("\luaescapestring{\detokenize{#1}}"))}%
 }
 
 \newcommand{\HebrewToAramaic}[1]{%
@@ -642,7 +654,8 @@
 \newcommand{\EncodeHebrewRaw}[1]{#1}
 \newcommand{\EncodePaleoASCII}[1]{\HebrewToPaleoASCII{#1}}
 \newcommand{\EncodePaleoUnicode}[1]{\HebrewForPaleoUnicode{#1}}
-\newcommand{\EncodePhoenician}[1]{\HebrewToPhoenician{#1}}
+\newcommand{\EncodeProtoA}[1]{\EncodeASCIIVariant{proto_a}{#1}}
+\newcommand{\EncodePaleoHebrewPhoenician}[1]{\HebrewToPaleoHebrewPhoenician{#1}}
 \newcommand{\EncodeAramaic}[1]{\HebrewToAramaic{#1}}
 \newcommand{\EncodeASCIIVariant}[2]{%
   \directlua{tex.sprint(paleotex.hebrew_to_ascii_variant("\luaescapestring{\detokenize{#2}}", "\luaescapestring{#1}"))}%
@@ -683,20 +696,20 @@
 \DeclareHebrewRenderer{HebrewSquare}{\HebrewSquareFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{ProtoSinaiticBest}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{PaleoHebrewRobo}{\PaleoHebrewRoboFont}{\EncodePaleoUnicode}
-\DeclareHebrewRenderer{Phoenician}{\PhoenicianFont}{\EncodePhoenician}
+\DeclareHebrewRenderer{PaleoHebrewPhoenician}{\PaleoHebrewPhoenicianFont}{\EncodePaleoHebrewPhoenician}
 
 % ASCII historical renderers.  Use these with fonts that expect ABGDHWZX... input.
 \DeclareHebrewRenderer{ProtoASCIIFifteenthCentury}{\ProtoSinaiticFifteenthCenturyFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{ProtoASCIIThirteenthCentury}{\ProtoSinaiticThirteenthCenturyFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{ProtoASCIIFromIzbetSartah}{\ProtoSinaiticIzbetSartahFont}{\EncodePaleoASCII}
-\DeclareHebrewRenderer{ProtoAFont}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{ProtoAFont}{\ProtoSinaiticFifteenthCenturyFont}{\EncodeProtoA}
 \DeclareHebrewRenderer{ProtoBFont}{\ProtoSinaiticFifteenthCenturyFont}{\EncodeProtoB}
 \DeclareHebrewRenderer{ProtoCFont}{\ProtoSinaiticFifteenthCenturyFont}{\EncodeProtoC}
 \DeclareHebrewRenderer{ProtoDFont}{\ProtoSinaiticThirteenthCenturyFont}{\EncodeProtoD}
 \DeclareHebrewRenderer{ProtoEFont}{\ProtoSinaiticThirteenthCenturyFont}{\EncodeProtoE}
 \DeclareHebrewRenderer{ProtoFFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoF}
 \DeclareHebrewRenderer{ProtoGFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoG}
-\DeclareHebrewRenderer{PaleoASCIIStandard}{\PaleoHebrewFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIIStandard}{\PaleoHebrewOtherFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIITelZayit}{\PaleoHebrewTelZayitFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIIGezer}{\PaleoHebrewGezerFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIITelDan}{\PaleoHebrewTelDanFont}{\EncodePaleoASCII}
@@ -715,9 +728,9 @@
 \DeclareHebrewRenderer{PaleoEFont}{\PaleoHebrewTelDanFont}{\EncodePaleoLower}
 \DeclareHebrewRenderer{PaleoFFont}{\PaleoHebrewMoabiteFont}{\EncodePaleoUpper}
 \DeclareHebrewRenderer{PaleoGFont}{\PaleoHebrewMoabiteFont}{\EncodePaleoLower}
-\DeclareHebrewRenderer{PaleoHFont}{\PaleoHebrewFont}{\EncodePaleoH}
-\DeclareHebrewRenderer{PaleoIFont}{\PaleoHebrewFont}{\EncodePaleoI}
-\DeclareHebrewRenderer{PaleoJFont}{\Phoenician}{\EncodePhoenician}
+\DeclareHebrewRenderer{PaleoHFont}{\PaleoHebrewOtherFont}{\EncodePaleoH}
+\DeclareHebrewRenderer{PaleoIFont}{\PaleoHebrewOtherFont}{\EncodePaleoI}
+\DeclareHebrewRenderer{PaleoJFont}{\PaleoHebrewPhoenicianFont}{\EncodePaleoHebrewPhoenician}
 \DeclareHebrewRenderer{PaleoKFont}{\PaleoHebrewSiloamFont}{\EncodePaleoK}
 \DeclareHebrewRenderer{PaleoLFont}{\PaleoHebrewSiloamFont}{\EncodePaleoL}
 \DeclareHebrewRenderer{PaleoMFont}{\PaleoHebrewKetefHinnomAFont}{\EncodePaleoUpper}
@@ -748,7 +761,7 @@
 
 \DeclareSourceProfile{Proto}
     {\EnglishProtoFont} 	{\color{ProtoColor}\mdseries}
-    {\ProtoAFont} 		{\color{ProtoColor}\mdseries}
+    {\ProtoSinaiticBest} 	{\color{ProtoColor}\mdseries}
 
 \DeclareSourceProfile{ProtoA}
     {\EnglishProtoFont} 	{\color{ProtoAColor}\mdseries}
@@ -780,7 +793,7 @@
 
 \DeclareSourceProfile{Paleo}
     {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
-    {\PaleoJFont} 		{\color{PaleoColor}\mdseries}
+    {\PaleoHebrewPhoenician} 	{\color{PaleoColor}\mdseries}
 
 \DeclareSourceProfile{PaleoA}
     {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
@@ -882,7 +895,7 @@
 
 \DeclareSourceProfile{J}
     {\EnglishFont} {\color{Jcolor}\mdseries}
-    {\PaleoJFont}  {\color{Jcolor}\mdseries}
+    {\PaleoHebrewPhoenician}  {\color{Jcolor}\mdseries}
 
 % Mushites
 
@@ -929,7 +942,7 @@
 \newcommand{\InlineHebrewRenderer}{\HebrewDavid}
 
 % Direct helpers for experiments.
-\newcommand{\Paleo}[1]{\Phoenician{}{#1}}
+\newcommand{\Paleo}[1]{\PaleoHebrewPhoenician{}{#1}}
 
 % Cleaner alphabet-test helpers.  These let the title/demo pages feed Hebrew once.
 \newcommand{\HebrewAlphabet}{אבגדהוזחטיכלמנסעפצקרשת}
@@ -948,10 +961,6 @@
 \makeatother
 
 \DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX}
-
-\renewcommand{\hProto}{\hProtoA}
-\renewcommand{\hPaleo}{\hPaleoA}
-\renewcommand{\hJ}{\hPaleo}
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
@@ -1006,7 +1015,7 @@
 }
 
 \newcommand{\phn}[1]{%
-    {\leavevmode\textdir TRT\PhoenicianFont #1}%
+    {\leavevmode\textdir TRT\PaleoHebrewPhoenicianFont #1}%
 }
 
 \newcommand{\hs}[2]{#1{#2}}
