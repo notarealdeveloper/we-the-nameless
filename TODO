@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+
 Refactor main.tex for readability, maintainability, and reduction of duplication without changing rendered output.
 
 Use the current main.tex as the source of truth.
@@ -284,4 +288,4 @@ Based on all the fonts in fonts/ and the images shown in fonts.pdf in the curren
 2. Short summary of each refactor.
 3. Compile result.
 4. Any remaining duplication that was intentionally left unchanged and why.
-
+EOF
