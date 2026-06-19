@@ -1,0 +1,1 @@
+These aren't used in the book, they're the obsidian theme css that we're trying to match for dark mode, though we apparently can't directly use the numerical values because latex is rendering them differently.

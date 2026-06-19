@@ -436,14 +436,22 @@
 \colorlet{RuleColor}{TextColor}
 
 \ifx\ConfigTheme\ConfigThemeDark
-    % Everforest dark, slightly Obsidian-muted
+    % Everforest dark, tuned for PDF instead of copied from screen CSS.
     \definecolor{bg}{HTML}{2d353b}
-    \definecolor{fg}{HTML}{d0c2a8}
+    \definecolor{fg}{HTML}{cfc0a5}
     \colorlet{TextColor}{fg}
-    \colorlet{RuleColor}{fg!55!bg}
+    \colorlet{RuleColor}{fg!45!bg}
 
-    \definecolor{ProtoColor}{HTML}{9da9a0}
-    \definecolor{PaleoColor}{HTML}{a7bd82}
+    \definecolor{ObsGreen}{HTML}{a7c080}
+    \definecolor{ObsYellow}{HTML}{dbbc7f}
+    \definecolor{ObsAqua}{HTML}{7fbbb3}
+    \definecolor{ObsBlue}{HTML}{7f9fcf}
+    \definecolor{ObsRed}{HTML}{e67e80}
+    \definecolor{ObsOrange}{HTML}{e69875}
+    \definecolor{ObsGray}{HTML}{9aa79d}
+
+    \colorlet{ProtoColor}{ObsGray!65!fg}
+    \colorlet{PaleoColor}{ObsGreen!62!fg}
 
     \colorlet{ProtoAColor}{ProtoColor}
     \colorlet{ProtoBColor}{ProtoColor}
@@ -453,34 +461,40 @@
     \colorlet{ProtoFColor}{ProtoColor}
     \colorlet{ProtoGColor}{ProtoColor}
 
-    \definecolor{Jcolor}{HTML}{a7bd82}      % muted green
-    \definecolor{Ecolor}{HTML}{d6b979}      % softer yellow
-    \definecolor{Pcolor}{HTML}{83b7b0}      % less cyan than 7fbbb3
+    \colorlet{Jcolor}{ObsGreen!62!fg}
+    \colorlet{Ecolor}{ObsYellow!65!fg}
+    \colorlet{Pcolor}{ObsAqua!45!fg}
 
-    \definecolor{Dtr1color}{HTML}{df7c7e}
-    \definecolor{Dtr2color}{HTML}{df7c7e}
-    \definecolor{Dtncolor}{HTML}{df9270}
+    \colorlet{Dtr1color}{ObsRed!58!fg}
+    \colorlet{Dtr2color}{ObsRed!58!fg}
+    \colorlet{Dtncolor}{ObsOrange!60!fg}
 
-    \definecolor{Rcolor}{HTML}{df7c7e}
-    \definecolor{Rbgcolor}{HTML}{4a3a40}    % darker, less glowing
-    \definecolor{RJEcolor}{HTML}{a7bd82}
+    \colorlet{Rcolor}{ObsBlue!65!fg}
+    \definecolor{Rbgcolor}{HTML}{34404f}
+    \colorlet{RJEcolor}{ObsGreen!55!fg}
     \definecolor{RJEbgcolor}{HTML}{3d4942}
 
-    \definecolor{RecordsColor}{HTML}{83b7b0}
-    \definecolor{OtherColor}{HTML}{a7bd82}
+    \colorlet{RecordsColor}{ObsAqua!45!fg}
+    \colorlet{OtherColor}{ObsGray!70!fg}
 
-    \definecolor{Kcolor}{HTML}{d0c2a8}
-    \definecolor{Redcolor}{HTML}{df7c7e}
-    \definecolor{Bluecolor}{HTML}{83b7b0}
-    \definecolor{Greencolor}{HTML}{a7bd82}
-    \definecolor{Graycolor}{HTML}{9da9a0}
-    \definecolor{DefColor}{HTML}{d6b979}
+    \colorlet{Kcolor}{fg}
+    \colorlet{Redcolor}{ObsRed!58!fg}
+    \colorlet{Bluecolor}{ObsBlue!58!fg}
+    \colorlet{Greencolor}{ObsGreen!62!fg}
+    \colorlet{Graycolor}{ObsGray!70!fg}
+    \colorlet{DefColor}{ObsAqua!42!fg}
 
     \pagecolor{bg}
     \AtBeginDocument{\color{TextColor}}
 \fi
 
 \arrayrulecolor{RuleColor}
+\renewcommand{\headrule}{%
+    {\color{RuleColor}\hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}%
+}
+\renewcommand{\footrule}{%
+    {\color{RuleColor}\hrule width\headwidth height\footrulewidth \vskip-\footrulewidth}%
+}
 
 % ------------------------------------------------------------
 % Plain color commands
@@ -1211,7 +1225,11 @@
 
 \DeclareRobustCommand{\SourceLegendHeader}{%
     {\scriptsize
-    \SourceLegendItems{Rec}{Oth}%
+    \eJ{J}\quad
+    \eE{E}\quad
+    \eP{P}\quad
+    \eR{R}\quad
+    \eRJE{RJE}\quad
     }%
 }
 
