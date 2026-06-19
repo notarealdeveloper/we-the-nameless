@@ -949,10 +949,9 @@
 
 \DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX}
 
-\newcommand{\hProtoVariant}{\hProtoA}
-\newcommand{\hPaleoVariant}{\hPaleoA}
-\renewcommand{\hProto}[1]{\hProtoVariant{#1}}
-\renewcommand{\hPaleo}[1]{\hPaleoVariant{#1}}
+\renewcommand{\hProto}{\hProtoA}
+\renewcommand{\hPaleo}{\hPaleoA}
+\renewcommand{\hJ}{\hPaleo}
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
