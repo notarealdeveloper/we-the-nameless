@@ -416,11 +416,11 @@
 \colorlet{ProtoGColor}{ProtoColor}
 
 \definecolor{Jcolor}{RGB}{0,120,0}
-\definecolor{Ecolor}{RGB}{0,120,0}
+\definecolor{Ecolor}{RGB}{170,120,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
-\definecolor{Dtr1color}{RGB}{150,0,0}
-\definecolor{Dtr2color}{RGB}{150,0,0}
-\definecolor{Dtncolor}{RGB}{217,90,65}
+\definecolor{Dtr1color}{RGB}{170,120,0}
+\definecolor{Dtr2color}{RGB}{195,135,0}
+\definecolor{Dtncolor}{RGB}{150,95,0}
 
 \definecolor{Rcolor}{RGB}{0,70,170}
 \definecolor{Rbgcolor}{RGB}{220,235,255}
@@ -429,12 +429,14 @@
 \definecolor{RJEbgcolor}{RGB}{225,245,225}
 
 \definecolor{RecordsColor}{RGB}{0,70,170}
+\definecolor{Recordsbgcolor}{RGB}{235,235,235}
 \definecolor{OtherColor}{RGB}{0,120,0}
 
 \definecolor{Kcolor}{RGB}{0,0,0}
 \definecolor{Redcolor}{RGB}{130,0,0}
 \definecolor{Bluecolor}{RGB}{0,70,170}
 \definecolor{Greencolor}{RGB}{0,120,0}
+\definecolor{Yellowcolor}{RGB}{170,120,0}
 \definecolor{Graycolor}{RGB}{110,110,110}
 
 \definecolor{DefColor}{RGB}{0,70,170}
@@ -447,7 +449,7 @@
 \ifx\ConfigTheme\ConfigThemeDark
     % Everforest dark, tuned for PDF instead of copied from screen CSS.
     \definecolor{bg}{HTML}{2d353b}
-    \definecolor{fg}{HTML}{cfc0a5}
+    \definecolor{fg}{HTML}{e8e2d2}
     \colorlet{TextColor}{fg}
     \colorlet{RuleColor}{fg!45!bg}
 
@@ -474,9 +476,9 @@
     \colorlet{Ecolor}{ObsYellow!65!fg}
     \colorlet{Pcolor}{ObsBlue!65!fg}
 
-    \colorlet{Dtr1color}{ObsRed!58!fg}
-    \colorlet{Dtr2color}{ObsRed!58!fg}
-    \colorlet{Dtncolor}{ObsOrange!60!fg}
+    \colorlet{Dtr1color}{Ecolor}
+    \colorlet{Dtr2color}{ObsOrange!72!ObsYellow}
+    \colorlet{Dtncolor}{ObsOrange!78!fg}
 
     \colorlet{Rcolor}{ObsBlue!65!fg}
     \definecolor{Rbgcolor}{HTML}{34404f}
@@ -484,12 +486,14 @@
     \colorlet{RJEbgcolor}{Ecolor}
 
     \colorlet{RecordsColor}{ObsBlue!65!fg}
-    \colorlet{OtherColor}{ObsGray!70!fg}
+    \definecolor{Recordsbgcolor}{HTML}{575d5f}
+    \colorlet{OtherColor}{ObsGray!90!fg}
 
     \colorlet{Kcolor}{fg}
     \colorlet{Redcolor}{ObsRed!58!fg}
     \colorlet{Bluecolor}{ObsBlue!65!fg}
     \colorlet{Greencolor}{ObsGreen!62!fg}
+    \colorlet{Yellowcolor}{Dtncolor}
     \colorlet{Graycolor}{ObsGray!70!fg}
     \colorlet{DefColor}{ObsBlue!65!fg}
     \pagecolor{bg}
@@ -513,12 +517,14 @@
 \newcommand{\cR}[1]{{\color{Redcolor}#1}}
 \newcommand{\cB}[1]{{\color{Bluecolor}#1}}
 \newcommand{\cG}[1]{{\color{Greencolor}#1}}
+\newcommand{\cY}[1]{{\color{Yellowcolor}#1}}
 \newcommand{\cGray}[1]{{\color{Graycolor}#1}}
 
 \let\cBlack\cK
 \let\cRed\cR
 \let\cBlue\cB
 \let\cGreen\cG
+\let\cYellow\cY
 \let\cGrey\cGray
 
 % ------------------------------------------------------------
@@ -1030,7 +1036,7 @@
 
 \DeclareSourceProfile{P}
     {\EnglishFont}   {\color{Pcolor}\Pweight}
-    {\HebrewEzraBoldRaw} {\HebrewEzraLarge\color{Pcolor}}
+    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Pcolor}\mdseries}
 
 \DeclareSourceProfile{R}
     {\EnglishFont}   {\color{Rcolor}\mdseries}
@@ -1082,9 +1088,9 @@
 \newcommand{\hRJE}[1]{\highLight[RJEbgcolor]{\hRJERenderer{\hstyleRJE}{#1}}}
 \newcommand{\sR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
 \newcommand{\sRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
-\let\eBookOfRecords\eRecords
-\let\hBookOfRecords\hRecords
-\let\sBookOfRecords\sRecords
+\newcommand{\eBookOfRecords}[1]{{\estyleRecords\highLight[Recordsbgcolor]{#1}}}
+\newcommand{\hBookOfRecords}[1]{\highLight[Recordsbgcolor]{\hRecordsRenderer{\hstyleRecords}{#1}}}
+\newcommand{\sBookOfRecords}[1]{{\estyleRecords\highLight[Recordsbgcolor]{#1}}}
 
 % ------------------------------------------------------------
 % Inline Hebrew with explicit font selection
@@ -1251,32 +1257,53 @@
     \endgroup
 }
 
+\newcommand{\SourceRefs}{%
+    \eJ{J}, %
+    \eBookOfRecords{Records}, %
+    {\color{Redcolor}Songs}%
+}
+
+\newcommand{\PriestSourceRefs}{%
+    \eE{E}, %
+    \eP{P}, %
+    {\bfseries\color{Dtr1color}Dtr1}, %
+    {\bfseries\color{Dtr2color}Dtr2}, %
+    {\bfseries\color{Dtncolor}Dtn}%
+}
+
+\newcommand{\SourceLegendTitle}{%
+    \begin{center}
+        {\scshape\Large The Authors}\\[0.35em]
+        {\itshape\large or}\\[0.35em]
+        {\Huge We: The Nameless}\\[0.8em]
+        {\footnotesize\SourceLegendItems{Records}{Other}}%
+    \end{center}
+}
+
 \newcommand{\SourceLegendPage}{%
     \cleardoublepage
     \thispagestyle{plain}
-    \chapter*{The Authors}
-    \begin{center}
-        {\Large Or}\\[0.4em]
-        {\huge We: The Nameless}
-    \end{center}
+    \chapter*{}
+    \vspace*{-3.5em}
+    \SourceLegendTitle
     \vspace{1.5em}
     \begingroup
     \small
     \renewcommand{\arraystretch}{1.35}
     \noindent\begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
-        Regular & Authors. Usually early. Some later. (J, Records, Songs.)\\
-        Bold & \textbf{Priests. Usually later. Some early. (E, P, Dtr1, Dtr2, Dtn.)}\\
-        Background & \LegendSample{\colorbox{Rbgcolor}{\strut Redactors.}} Primarily Editors, rarely or less frequently Authors.\\
-        No Background & Redactors. Primarily Editors, rarely or less frequently Authors.\\[0.7em]
-        Green & \eJ{J. The first author. The oldest source in the bible, with the exception of archaic songs. (J)}\\
-        Yellow & \eE{Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. (E, Dtr1, Dtr2, Jeremiah)}\\
-        Blue & \eP{Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem. (P, R)}\\
-        Red & {\color{Redcolor}Songs. Early poetry of Levites in the south, Israelites in the north, or other sources. (Genesis 49, Exodus 15, Deuteronomy 32)}\\
-        Grey & {\color{Graycolor}Other. Records, Begat lists, genealogies, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
-        Dark & \cK{Laws.}\\
-        Dark Blue & \cB{Aaronid Laws. (Leviticus, Exodus 25-40.)}\\
-        Dark Yellow & \cR{Mushite Laws. (Covenant code in Exodus, Deuteronomistic Law code.)}\\
-        Dark Green & \cK{J Laws. (Rare, outside of a version of the 10 commandments, which may have been a joke.\footnote{J is the funny one.})}\\
+        Regular & Authors. Usually early. Some later. (\SourceRefs.)\\
+        \textbf{Bold} & \textbf{Priests. Usually later. Some early. (\PriestSourceRefs.)}\\
+        \eR{Background} & \eR{Redactors.} Primarily Editors, rarely or less frequently Authors.\\
+        \estyleR{No Background} & \estyleR{Redactors. Primarily Editors, rarely or less frequently Authors.}\\[0.7em]
+        \eJ{Green} & \eJ{J. The first author. The oldest source in the bible, with the exception of archaic songs. (J)}\\
+        \eE{Yellow} & \eE{Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. (E, Dtr1, Dtr2, Jeremiah)}\\
+        \eP{Blue} & \eP{Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem. (P, R)}\\
+        {\color{Redcolor}Red} & {\color{Redcolor}Songs. Early poetry of Levites in the south, Israelites in the north, or other sources. (Genesis 49, Exodus 15, Deuteronomy 32)}\\
+        {\color{Graycolor}Grey} & {\color{Graycolor}Other. Records, Begat lists, genealogies, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
+        \cK{Dark} & \cK{Laws.}\\
+        \cB{Dark Blue} & \cB{Aaronid Laws. (Leviticus, Exodus 25-40.)}\\
+        \cY{Dark Yellow} & \cY{Mushite Laws. (Covenant code in Exodus, Deuteronomistic Law code.)}\\
+        \cG{Dark Green} & \cG{J Laws. (Rare, outside of a version of the 10 commandments, which may have been a joke.\footnote{J is the funny one.})}\\
     \end{tabular}
     \endgroup
     \cleardoublepage
