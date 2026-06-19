@@ -48,14 +48,6 @@
 
 \setmainfont{FreeSerif}
 
-% Reusable font catalog. Source profiles below bind these fonts to J/E/P/etc.
-\newfontfamily\EnglishFont{FreeSerif}
-\newfontfamily\EnglishProtoFont[
-	Path=\LocalFontPath,
-	Scale=1.22,
-]{english-im-fell-english-sc-regular.ttf}
-%]{english-alegreya-sc-regular.ttf}
-
 % The Ancients
 \newfontfamily\Cun[
     Path=\LocalFontPath,
@@ -276,6 +268,14 @@
 
 \def\TraditionalChineseFont{\TraditionalChineseFontA}
 
+% Reusable font catalog. Source profiles below bind these fonts to J/E/P/etc.
+\newfontfamily\EnglishFont{FreeSerif}
+\newfontfamily\EnglishProtoFont[
+	Path=\LocalFontPath,
+	Scale=1.22,
+]{english-im-fell-english-sc-regular.ttf}
+%]{english-alegreya-sc-regular.ttf}
+
 \ExplSyntaxOn
 \NewDocumentCommand{\egypt}{ m }{
   {\leavevmode\EgyptianFont\tl_reverse:n { #1 }}
@@ -365,6 +365,10 @@
 \definecolor{RecordsColor}{RGB}{0,70,170}
 \definecolor{OtherColor}{RGB}{0,120,0}
 \definecolor{ProtoColor}{RGB}{100,100,100}
+\definecolor{ProtoAColor}{RGB}{100,100,100}
+\definecolor{ProtoBColor}{RGB}{0,70,170}
+\definecolor{ProtoCColor}{RGB}{0,120,0}
+\definecolor{ProtoDColor}{RGB}{130,0,0}
 
 \definecolor{Kcolor}{RGB}{0,0,0}
 \definecolor{Redcolor}{RGB}{130,0,0}
@@ -668,6 +672,22 @@
     {\EnglishProtoFont} {\color{ProtoColor}\mdseries}
     {\ProtoASCIIFifteenthCentury} {\color{ProtoColor}\mdseries}
 
+\DeclareSourceProfile{ProtoA}
+    {\EnglishProtoFont} {\color{ProtoAColor}\mdseries}
+    {\ProtoASCIIFifteenthCentury} {\color{ProtoAColor}\mdseries}
+
+\DeclareSourceProfile{ProtoB}
+    {\EnglishProtoFont} {\color{ProtoBColor}\mdseries}
+    {\ProtoASCIIThirteenthCentury} {\color{ProtoBColor}\mdseries}
+
+\DeclareSourceProfile{ProtoC}
+    {\EnglishProtoFont} {\color{ProtoCColor}\mdseries}
+    {\ProtoASCIIFromIzbetSartah} {\color{ProtoCColor}\mdseries}
+
+\DeclareSourceProfile{ProtoD}
+    {\EnglishProtoFont} {\color{ProtoDColor}\mdseries}
+    {\ProtoSinaiticBest} {\color{ProtoDColor}\mdseries}
+
 \newcommand{\InlineHebrewRenderer}{\HebrewDavid}
 
 % Direct helpers for experiments.
@@ -689,10 +709,7 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other}
-\newcommand{\eProto}[1]{{\estyleProto #1}}
-\newcommand{\hProto}[1]{\hProtoRenderer{\hstyleProto}{#1}}
-\newcommand{\sProto}[1]{{\estyleProto #1}}
+\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD}
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
