@@ -50,6 +50,11 @@
 
 % Reusable font catalog. Source profiles below bind these fonts to J/E/P/etc.
 \newfontfamily\EnglishFont{FreeSerif}
+\newfontfamily\EnglishProtoFont[
+	Path=\LocalFontPath,
+	Scale=1.22,
+]{english-im-fell-english-sc-regular.ttf}
+%]{english-alegreya-sc-regular.ttf}
 
 % The Ancients
 \newfontfamily\Cun[
@@ -359,6 +364,7 @@
 
 \definecolor{RecordsColor}{RGB}{0,70,170}
 \definecolor{OtherColor}{RGB}{0,120,0}
+\definecolor{ProtoColor}{RGB}{100,100,100}
 
 \definecolor{Kcolor}{RGB}{0,0,0}
 \definecolor{Redcolor}{RGB}{130,0,0}
@@ -659,8 +665,8 @@
     {\PaleoASCIIMoabite}  {\color{OtherColor}\itshape}
 
 \DeclareSourceProfile{Proto}
-    {\EnglishFont} {\color{Jcolor}\mdseries}
-    {\ProtoASCIIFifteenthCentury} {\color{Jcolor}\mdseries}
+    {\EnglishProtoFont} {\color{ProtoColor}\mdseries}
+    {\ProtoASCIIFifteenthCentury} {\color{ProtoColor}\mdseries}
 
 \newcommand{\InlineHebrewRenderer}{\HebrewDavid}
 
