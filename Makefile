@@ -1,7 +1,5 @@
 MAIN  := main
 PDF   := $(MAIN).pdf
-TORAH := torah
-TORAH_PDF := $(TORAH).pdf
 BUILD := build
 CACHE := $(abspath $(BUILD)/texmf-var)
 
@@ -14,9 +12,9 @@ INCLUDES := $(shell grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex)
 INCLUDE_SOURCES := $(addsuffix .tex,$(INCLUDES))
 INCLUDE_BUILD_DIRS := $(addprefix $(BUILD)/,$(sort $(dir $(INCLUDES))))
 
-SOURCES := $(MAIN).tex cover.tex $(INCLUDE_SOURCES)
+SOURCES := $(MAIN).tex config.tex cover.tex $(INCLUDE_SOURCES)
 
-.PHONY: all clean distclean debug progress open build-prepare draft torah c x list
+.PHONY: all clean distclean debug progress open build-prepare draft c x list
 
 all: $(PDF) open
 
@@ -30,16 +28,6 @@ $(PDF): $(SOURCES) | build-prepare
 	fi
 	cp $(BUILD)/$(MAIN).pdf .
 	cp $(BUILD)/$(MAIN).log .
-
-torah: $(TORAH_PDF)
-
-$(TORAH_PDF): $(SOURCES) | build-prepare
-	$(LATEX) $(LATEXFLAGS) -jobname=$(TORAH) '\def\COMMENTARY{0}\input{$(MAIN).tex}'
-	@if grep -q 'Rerun to get cross-references right' $(BUILD)/$(TORAH).log; then \
-		$(LATEX) $(LATEXFLAGS) -jobname=$(TORAH) '\def\COMMENTARY{0}\input{$(MAIN).tex}'; \
-	fi
-	cp $(BUILD)/$(TORAH).pdf .
-	cp $(BUILD)/$(TORAH).log .
 
 draft: $(SOURCES) | build-prepare
 	$(LATEX) $(LATEXFLAGS) -draftmode $(MAIN).tex
@@ -57,12 +45,10 @@ clean:
 		-name '*.fdb_latexmk' \
 	\) -delete
 	rm -f $(MAIN).aux $(MAIN).log $(MAIN).toc $(MAIN).out $(MAIN).pdf
-	rm -f $(TORAH).aux $(TORAH).log $(TORAH).toc $(TORAH).out $(TORAH).pdf
 
 distclean:
 	rm -rf $(BUILD)
 	rm -f $(MAIN).aux $(MAIN).log $(MAIN).toc $(MAIN).out $(MAIN).pdf
-	rm -f $(TORAH).aux $(TORAH).log $(TORAH).toc $(TORAH).out $(TORAH).pdf
 
 # for giving examples of the format to agents
 c:
