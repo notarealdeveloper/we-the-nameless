@@ -7,6 +7,14 @@
 %   lualatex main.tex
 % ------------------------------------------------------------
 
+\ifdefined\COMMENTARY\else\def\COMMENTARY{1}\fi
+\newif\ifcommentary
+\ifnum\COMMENTARY=0
+    \commentaryfalse
+\else
+    \commentarytrue
+\fi
+
 \documentclass[11pt]{book}
 
 % ------------------------------------------------------------
@@ -1287,12 +1295,14 @@
     \VerseColumns{#3}{#2}%
     \endgroup
     \vspace{0.8em}%
+    \ifcommentary
     \begingroup
     \hbadness=10000
     \hfuzz=3em
     #4\par
     \endgroup
     \vspace{0.8em}%
+    \fi
 }
 
 % ------------------------------------------------------------
@@ -1467,6 +1477,7 @@
   {\setlength{\fboxsep}{0pt}%
    \colorbox{Pcolor}{\strut\phantom{#1}}}%
 }
+
 
 % ------------------------------------------------------------
 % Document
