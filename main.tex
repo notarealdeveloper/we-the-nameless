@@ -832,7 +832,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[C]{\SourceLegendHeader}
+\fancyhead[C]{\hbox to 0pt{\hss\SourceLegendHeader\hss}}
 \fancyhead[LE]{\nouppercase{\rightmark}}
 \fancyhead[RO]{\nouppercase{\rightmark}}
 \fancyfoot[C]{\thepage}
@@ -1000,12 +1000,15 @@
     \vspace{0.3em}%
     \begingroup
     \hbadness=10000
-    \hfuzz=2em
+    \hfuzz=3em
     \VerseColumns{#3}{#2}%
     \endgroup
     \vspace{0.8em}%
-    #4
-    \par
+    \begingroup
+    \hbadness=10000
+    \hfuzz=3em
+    #4\par
+    \endgroup
     \vspace{0.8em}%
 }
 
@@ -1045,6 +1048,9 @@
     \Needspace{#1\baselineskip}
 
     \begingroup
+
+    \hbadness=10000
+    \hfuzz=3em
 
     % Discourage page breaks within the block.
     \interlinepenalty=#2\relax
