@@ -47,6 +47,7 @@
 \usepackage{titlesec}
 \usepackage{tocloft}
 \usepackage{xcolor}
+\usepackage{colortbl}
 \usepackage{setspace}
 \usepackage{fancyhdr}
 \usepackage{xparse}
@@ -430,11 +431,15 @@
 
 \definecolor{DefColor}{RGB}{0,70,170}
 
+\colorlet{TextColor}{black}
+\colorlet{RuleColor}{TextColor}
+
 \ifx\ConfigTheme\ConfigThemeDark
     % Everforest dark, slightly Obsidian-muted
     \definecolor{bg}{HTML}{2d353b}
-    \definecolor{fg}{HTML}{d3c6aa}
-    \definecolor{RuleColor}{HTML}{859289}
+    \definecolor{fg}{HTML}{d0c2a8}
+    \colorlet{TextColor}{fg}
+    \colorlet{RuleColor}{fg!55!bg}
 
     \definecolor{ProtoColor}{HTML}{9da9a0}
     \definecolor{PaleoColor}{HTML}{a7bd82}
@@ -463,7 +468,7 @@
     \definecolor{RecordsColor}{HTML}{83b7b0}
     \definecolor{OtherColor}{HTML}{a7bd82}
 
-    \definecolor{Kcolor}{HTML}{d3c6aa}
+    \definecolor{Kcolor}{HTML}{d0c2a8}
     \definecolor{Redcolor}{HTML}{df7c7e}
     \definecolor{Bluecolor}{HTML}{83b7b0}
     \definecolor{Greencolor}{HTML}{a7bd82}
@@ -471,8 +476,10 @@
     \definecolor{DefColor}{HTML}{d6b979}
 
     \pagecolor{bg}
-    \AtBeginDocument{\color{fg}}
+    \AtBeginDocument{\color{TextColor}}
 \fi
+
+\arrayrulecolor{RuleColor}
 
 % ------------------------------------------------------------
 % Plain color commands
@@ -1213,10 +1220,10 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[C]{\hbox to 0pt{\hss\SourceLegendHeader\hss}}
-\fancyhead[LE]{\nouppercase{\rightmark}}
-\fancyhead[RO]{\nouppercase{\rightmark}}
-\fancyfoot[C]{\thepage}
+\fancyhead[C]{\color{TextColor}\hbox to 0pt{\hss\SourceLegendHeader\hss}}
+\fancyhead[LE]{\color{TextColor}\nouppercase{\rightmark}}
+\fancyhead[RO]{\color{TextColor}\nouppercase{\rightmark}}
+\fancyfoot[C]{\color{TextColor}\thepage}
 
 % ------------------------------------------------------------
 % Title page
@@ -1321,25 +1328,25 @@
     \noindent
     \VerseEnglish{#1}%
     \hspace{\VerseGap}%
-    \vrule width \VerseRuleWidth%
+    {\color{RuleColor}\vrule width \VerseRuleWidth}%
     \hspace{\VerseGap}%
     \VerseHebrew{#2}%
     \par
 }
 
+\newcommand{\VerseRule}{%
+    {\color{RuleColor}\hrule}%
+}
+
 \newcommand{\VerseHeader}[1]{%
     %\Needspace{6\baselineskip}
     \vspace{0.8em}%
-    \hrule
+    \VerseRule
     \vspace{0.25em}%
     {\centering \large \CurrentBook\ \CurrentChapter:#1\par}%
     \vspace{0.8em}%
-    \hrule
+    \VerseRule
     \vspace{0.3em}%
-}
-
-\newcommand{\VerseRule}{%
-    {\color{RuleColor}\hrule}%
 }
 
 \newcommand{\Verse}[4]{%
