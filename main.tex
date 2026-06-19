@@ -434,6 +434,8 @@
 
 \colorlet{TextColor}{black}
 \colorlet{RuleColor}{TextColor}
+\newcommand{\Eweight}{\bfseries}
+\newcommand{\Pweight}{\bfseries}
 
 \ifx\ConfigTheme\ConfigThemeDark
     % Everforest dark, tuned for PDF instead of copied from screen CSS.
@@ -463,7 +465,7 @@
 
     \colorlet{Jcolor}{ObsGreen!62!fg}
     \colorlet{Ecolor}{ObsYellow!65!fg}
-    \colorlet{Pcolor}{ObsAqua!45!fg}
+    \colorlet{Pcolor}{ObsBlue!65!fg}
 
     \colorlet{Dtr1color}{ObsRed!58!fg}
     \colorlet{Dtr2color}{ObsRed!58!fg}
@@ -471,18 +473,20 @@
 
     \colorlet{Rcolor}{ObsBlue!65!fg}
     \definecolor{Rbgcolor}{HTML}{34404f}
-    \colorlet{RJEcolor}{ObsGreen!55!fg}
-    \definecolor{RJEbgcolor}{HTML}{3d4942}
+    \colorlet{RJEcolor}{Jcolor}
+    \colorlet{RJEbgcolor}{Ecolor}
 
-    \colorlet{RecordsColor}{ObsAqua!45!fg}
+    \colorlet{RecordsColor}{ObsBlue!65!fg}
     \colorlet{OtherColor}{ObsGray!70!fg}
 
     \colorlet{Kcolor}{fg}
     \colorlet{Redcolor}{ObsRed!58!fg}
-    \colorlet{Bluecolor}{ObsBlue!58!fg}
+    \colorlet{Bluecolor}{ObsBlue!65!fg}
     \colorlet{Greencolor}{ObsGreen!62!fg}
     \colorlet{Graycolor}{ObsGray!70!fg}
-    \colorlet{DefColor}{ObsAqua!42!fg}
+    \colorlet{DefColor}{ObsBlue!65!fg}
+    \renewcommand{\Eweight}{\mdseries}
+    \renewcommand{\Pweight}{\mdseries}
 
     \pagecolor{bg}
     \AtBeginDocument{\color{TextColor}}
@@ -1002,8 +1006,8 @@
 % Mushites
 
 \DeclareSourceProfile{E}
-    {\EnglishFont} {\color{Ecolor}\bfseries}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Ecolor}\bfseries}
+    {\EnglishFont} {\color{Ecolor}\Eweight}
+    {\HebrewDavid} {\HebrewDavidLarge\color{Ecolor}\Eweight}
 
 \DeclareSourceProfile{DtrA}
     {\EnglishFont} {\color{Dtr1color}\mdseries}
@@ -1020,7 +1024,7 @@
 % Aaronids
 
 \DeclareSourceProfile{P}
-    {\EnglishFont}   {\color{Pcolor}\bfseries}
+    {\EnglishFont}   {\color{Pcolor}\Pweight}
     {\HebrewEzraRaw} {\HebrewEzraLarge\color{Pcolor}\mdseries}
 
 \DeclareSourceProfile{R}
@@ -1207,12 +1211,15 @@
 % Legend
 % ------------------------------------------------------------
 
+\newcommand{\RSourceName}{\ensuremath{R^{\mathrm{P}}_{\mathrm{JE}}}}
+\newcommand{\RJESourceName}{\ensuremath{R^{\mathrm{E}}_{\mathrm{J}}}}
+
 \newcommand{\SourceLegendItems}[2]{%
     \eJ{J}\quad
     \eE{E}\quad
     \eP{P}\quad
-    \eR{R}\quad
-    \eRJE{RJE}\quad
+    \eR{\RSourceName}\quad
+    \eRJE{\RJESourceName}\quad
     \eBookOfRecords{#1}\quad
     \eOther{#2}\quad
 }
@@ -1228,8 +1235,7 @@
     \eJ{J}\quad
     \eE{E}\quad
     \eP{P}\quad
-    \eR{R}\quad
-    \eRJE{RJE}\quad
+    \eR{\RSourceName}\quad
     }%
 }
 
@@ -1564,7 +1570,7 @@
 
 \newcommand{\redacted}[1]{%
   {\setlength{\fboxsep}{0pt}%
-   \colorbox{Pcolor}{\strut\phantom{#1}}}%
+   \colorbox{Rcolor}{\strut\phantom{#1}}}%
 }
 
 
