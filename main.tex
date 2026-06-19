@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
 %%% We the Nameless %%%
 %%%%%%%%%%%%%%%%%%%%%%%
 
@@ -405,7 +405,7 @@
 % Colors
 % ------------------------------------------------------------
 
-\definecolor{ProtoColor}{RGB}{100,100,100}
+\definecolor{ProtoColor}{RGB}{150,150,150}
 \definecolor{PaleoColor}{RGB}{0,120,0}
 \colorlet{ProtoAColor}{ProtoColor}
 \colorlet{ProtoBColor}{ProtoColor}
@@ -428,9 +428,12 @@
 \definecolor{RJEcolor}{RGB}{0,120,0}
 \definecolor{RJEbgcolor}{RGB}{225,245,225}
 
-\definecolor{RecordsColor}{RGB}{0,70,170}
-\definecolor{Recordsbgcolor}{RGB}{235,235,235}
-\definecolor{OtherColor}{RGB}{0,120,0}
+\colorlet{RecordsColor}{Rcolor}
+%\definecolor{RecordsColor}{RGB}{0,70,170}
+%\definecolor{Recordsbgcolor}{RGB}{235,235,235}
+
+\colorlet{OtherColor}{ProtoColor}
+%\definecolor{OtherColor}{RGB}{0,120,0}
 
 \definecolor{Kcolor}{RGB}{0,0,0}
 \definecolor{Redcolor}{RGB}{130,0,0}
@@ -1295,7 +1298,10 @@
         \textbf{Bold} & \textbf{Priests. Usually later. Some early. (\PriestSourceRefs.)}\\
         \eR{Background} & \eR{Redactors.} Primarily Editors, rarely or less frequently Authors.\\
         \estyleR{No Background} & \estyleR{Redactors. Primarily Editors, rarely or less frequently Authors.}\\[0.7em]
-        \eJ{Green} & \eJ{J. The first author. The oldest source in the bible, with the exception of archaic songs. (J)}\\
+        \eJ{Green} & \eJ{J. The first author of the bible.\footnotemark{}
+            The first author of prose on earth.\footnotemark{}
+            The author of nearly all the most popular bible stories.\footnotemark{}
+            The author in the bible with the best sense of humor.\footnotemark{}}\\
         \eE{Yellow} & \eE{Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. (E, Dtr1, Dtr2, Jeremiah)}\\
         \eP{Blue} & \eP{Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem. (P, R)}\\
         {\color{Redcolor}Red} & {\color{Redcolor}Songs. Early poetry of Levites in the south, Israelites in the north, or other sources. (Genesis 49, Exodus 15, Deuteronomy 32)}\\
@@ -1305,6 +1311,10 @@
         \cY{Dark Yellow} & \cY{Mushite Laws. (Covenant code in Exodus, Deuteronomistic Law code.)}\\
         \cG{Dark Green} & \cG{J Laws. (Rare, outside of a version of the 10 commandments, which may have been a joke.\footnote{J is the funny one.})}\\
     \end{tabular}
+    \footnotetext{Aside from a few brief archaic songs.}
+    \footnotetext{As far as we know.}
+    \footnotetext{Not including the Jesus bits, though J's at least tied.}
+    \footnotetext{And the most misunderstood.}
     \endgroup
     \cleardoublepage
 }
