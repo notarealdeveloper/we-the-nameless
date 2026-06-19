@@ -218,6 +218,9 @@
     Scale=1.00
 ]{hebrew-square.ttf}
 
+\newcommand{\HebrewDavidLarge}{\addfontfeatures{Scale=1.42}}
+\newcommand{\HebrewEzraLarge}{\addfontfeatures{Scale=1.23}}
+
 % Compatibility names for included chapter files.
 \let\HebrewFont\HebrewDavidFont
 \let\hebrewfont\HebrewDavidFont
@@ -569,27 +572,35 @@
 
 \DeclareSourceProfile{J}
     {\EnglishFont} {\color{Jcolor}\mdseries}
-    {\Phoenician}  {\color{Jcolor}\mdseries}
+    {\PaleoASCIIGezer} {\color{Jcolor}\mdseries}
 
 \DeclareSourceProfile{E}
     {\EnglishFont} {\color{Ecolor}\bfseries}
-    {\HebrewDavid} {\addfontfeatures{Scale=1.42}\color{Ecolor}\bfseries}
+    {\PaleoASCIISiloam} {\color{Ecolor}\bfseries}
 
 \DeclareSourceProfile{P}
-    {\EnglishFont}   {\color{Pcolor}\bfseries}
-    {\HebrewEzraRaw} {\addfontfeatures{Scale=1.23}\color{Pcolor}\mdseries}
+    {\EnglishFont} {\color{Pcolor}\bfseries}
+    {\PaleoASCIITelDan} {\color{Pcolor}\mdseries}
 
 \DeclareSourceProfile{DtrOne}
     {\EnglishFont}   {\color{Dtr1color}\mdseries}
-    {\HebrewEzraRaw} {\addfontfeatures{Scale=1.23}\color{Dtr1color}\mdseries}
+    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Dtr1color}\mdseries}
 
 \DeclareSourceProfile{DtrTwo}
     {\EnglishFont}   {\color{Dtr2color}\bfseries}
-    {\HebrewEzraRaw} {\addfontfeatures{Scale=1.23}\color{Dtr2color}\bfseries}
+    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Dtr2color}\bfseries}
+
+\DeclareSourceProfile{DtrA}
+    {\EnglishFont}   {\color{Dtr1color}\mdseries}
+    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Dtr1color}\mdseries}
+
+\DeclareSourceProfile{DtrB}
+    {\EnglishFont}   {\color{Dtr2color}\bfseries}
+    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Dtr2color}\bfseries}
 
 \DeclareSourceProfile{Dtn}
     {\EnglishFont} {\color{Dtncolor}\itshape}
-    {\HebrewDavid} {\addfontfeatures{Scale=1.42}\color{Dtncolor}\itshape}
+    {\HebrewDavid} {\HebrewDavidLarge\color{Dtncolor}\itshape}
 
 \DeclareSourceProfile{R}
     {\EnglishFont}   {\color{Rcolor}\mdseries}
@@ -602,11 +613,15 @@
 
 \DeclareSourceProfile{Records}
     {\EnglishFont} {\color{RecordsColor}\itshape}
-    {\HebrewEzra}  {\color{RecordsColor}\itshape}
+    {\PaleoASCIITelZayit} {\color{RecordsColor}\itshape}
 
 \DeclareSourceProfile{Other}
     {\EnglishFont}  {\color{OtherColor}\itshape}
     {\HebrewOther}  {\color{OtherColor}\itshape}
+
+\DeclareSourceProfile{Proto}
+    {\EnglishFont} {\color{Jcolor}\mdseries}
+    {\ProtoASCIIFifteenthCentury} {\color{Jcolor}\mdseries}
 
 \newcommand{\InlineHebrewRenderer}{\HebrewDavid}
 
@@ -618,30 +633,31 @@
 \newcommand{\ShowHebrewAlphabet}[1]{#1{}{\HebrewAlphabet}\\}
 
 % Public source commands. Each one applies its source profile as a bundle.
-\newcommand{\eJ}[1]{{\estyleJ #1}}
-\newcommand{\eE}[1]{{\estyleE #1}}
-\newcommand{\eP}[1]{{\estyleP #1}}
+\makeatletter
+\newcommand{\DeclareSourceCommands}[1]{%
+  \expandafter\newcommand\csname e#1\endcsname[1]{{\csname estyle#1\endcsname ##1}}%
+  \expandafter\newcommand\csname h#1\endcsname[1]{\csname h#1Renderer\endcsname{\csname hstyle#1\endcsname}{##1}}%
+  \expandafter\newcommand\csname s#1\endcsname[1]{{\csname estyle#1\endcsname ##1}}%
+}
+\newcommand{\DeclareSourceCommandList}[1]{%
+  \@for\SourceName:=#1\do{\expandafter\DeclareSourceCommands\expandafter{\SourceName}}%
+}
+\makeatother
+
+\DeclareSourceCommandList{J,E,P,DtrOne,DtrTwo,DtrA,DtrB,Dtn,Records,Other,Proto}
+
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
-\newcommand{\eDtrOne}[1]{{\estyleDtrOne #1}}
-\newcommand{\eDtrTwo}[1]{{\estyleDtrTwo #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrOne{#2}\or\eDtrTwo{#2}\fi}
-\newcommand{\eDtn}[1]{{\estyleDtn #1}}
 \newcommand{\eR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
 \newcommand{\eRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
-\newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
-\newcommand{\eOther}[1]{{\estyleOther #1}}
-
-\newcommand{\hJ}[1]{\hJRenderer{\hstyleJ}{#1}}
-\newcommand{\hE}[1]{\hERenderer{\hstyleE}{#1}}
-\newcommand{\hP}[1]{\hPRenderer{\hstyleP}{#1}}
-\newcommand{\hDtrOne}[1]{\hDtrOneRenderer{\hstyleDtrOne}{#1}}
-\newcommand{\hDtrTwo}[1]{\hDtrTwoRenderer{\hstyleDtrTwo}{#1}}
 \newcommand{\hDtr}[2]{\ifcase#1\or\hDtrOne{#2}\or\hDtrTwo{#2}\fi}
-\newcommand{\hDtn}[1]{\hDtnRenderer{\hstyleDtn}{#1}}
 \newcommand{\hR}[1]{{\leavevmode\textdir TRT\HebrewEzraFont\hstyleR\highLight[Rbgcolor]{#1}}}
 \newcommand{\hRJE}[1]{{\leavevmode\textdir TRT\HebrewEzraFont\hstyleRJE\highLight[RJEbgcolor]{\HebrewNoNiqqud{#1}}}}
-\newcommand{\hBookOfRecords}[1]{\hRecordsRenderer{\hstyleRecords}{#1}}
-\newcommand{\hOther}[1]{\hOtherRenderer{\hstyleOther}{#1}}
+\newcommand{\sR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
+\newcommand{\sRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
+\let\eBookOfRecords\eRecords
+\let\hBookOfRecords\hRecords
+\let\sBookOfRecords\sRecords
 
 % ------------------------------------------------------------
 % Inline Hebrew with explicit font selection
@@ -656,29 +672,9 @@
 \newcommand{\hCP}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cB\small #1}}}
 
 % ------------------------------------------------------------
-% Compatibility source commands
-%
-% These let old included files keep using \sJ, \sP, \sR, etc.
-%
-% Convention:
-% - On the English side, \sJ etc. will do the English thing.
-% - On the Hebrew side, prefer the explicit \hJ/\hP/\hR family.
-%
-% If old Hebrew files used \sJ inside an outer Hebrew context,
-% these usually still work visually, since the current font can
-% already be Hebrew. But for future correctness, prefer \hJ etc.
-% ------------------------------------------------------------
-
-\newcommand{\sJ}[1]{{\estyleJ #1}}
-\newcommand{\sE}[1]{{\estyleE #1}}
-\newcommand{\sP}[1]{{\estyleP #1}}
-\newcommand{\sDtrOne}[1]{{\estyleDtrOne #1}}
-\newcommand{\sDtrTwo}[1]{{\estyleDtrTwo #1}}
-\newcommand{\sDtn}[1]{{\estyleDtn #1}}
-\newcommand{\sR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
-\newcommand{\sRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
-\newcommand{\sBookOfRecords}[1]{{\estyleRecords #1}}
-\newcommand{\sOther}[1]{{\estyleOther #1}}
+% Compatibility source commands:
+% generated \sX commands behave like the matching English source command.
+% Prefer \hX for Hebrew when the source font matters.
 
 % ------------------------------------------------------------
 % Inline language helpers for commentary/definitions
@@ -793,38 +789,25 @@
 % Legend
 % ------------------------------------------------------------
 
-% The Deuteronomy bits of the legend work, but we don't
-% need to keep them hanging around the whole time.
-% We can just toss them up there once we get to
-% Dudetheyreontome.
-
-\newcommand{\SourceLegend}{%
-    {\footnotesize
+\newcommand{\SourceLegendItems}[2]{%
     \eJ{J}\quad
     \eE{E}\quad
     \eP{P}\quad
     \eR{R}\quad
     \eRJE{RJE}\quad
-    \eBookOfRecords{Records}\quad
-    \eOther{Other}\quad
-    %\eDtrOne{Dtr1}\quad
-    %\eDtrTwo{Dtr2}\quad
-    %\eDtn{Dtn}\quad
+    \eBookOfRecords{#1}\quad
+    \eOther{#2}\quad
+}
+
+\newcommand{\SourceLegend}{%
+    {\footnotesize
+    \SourceLegendItems{Records}{Other}%
     }%
 }
 
 \DeclareRobustCommand{\SourceLegendHeader}{%
     {\scriptsize
-    \eJ{J}\quad
-    \eE{E}\quad
-    \eP{P}\quad
-    \eR{R}\quad
-    \eRJE{RJE}\quad
-    \eBookOfRecords{Rec}\quad
-    \eOther{Oth}\quad
-    %\eDtrOne{Dtr1}\quad
-    %\eDtrTwo{Dtr2}\quad
-    %\eDtn{Dtn}\quad
+    \SourceLegendItems{Rec}{Oth}%
     }%
 }
 
@@ -938,21 +921,6 @@
     }%
 }
 
-%\newcommand{\VerseHebrew}[1]{%
-%    \hbox to \VerseColWidth{%
-%        \hss
-%        \vtop{%
-%            \hsize=\VerseColWidth
-%            \begin{RTL}
-%            \HebrewFont
-%            \hebrewsize
-%            #1\par
-%            \end{RTL}
-%        }%
-%    }%
-%}
-
-
 \newcommand{\VerseColumns}[2]{%
     \noindent
     \VerseEnglish{#1}%
@@ -973,22 +941,6 @@
     \hrule
     \vspace{0.3em}%
 }
-
-%\newcommand{\Verse}[4]{%
-%    \begin{together}
-%    \par
-%    %\Needspace{6\baselineskip}%
-%    \VerseHeader{#1}%
-%    \begingroup
-%    \hbadness=10000
-%    \hfuzz=2em
-%    \VerseColumns{#3}{#2}%
-%    \endgroup
-%    \end{together}
-%    \vspace{0.8em}%
-%    #4\par
-%    \vspace{0.8em}%
-%}
 
 \newcommand{\Verse}[4]{%
     \par
@@ -1091,20 +1043,24 @@
 % Speaker shortcuts
 % ------------------------------------------------------------
 
-\NewDocumentCommand{\aA}{ O{l} +m }{\as{\cK}[#1]{#2}}
-\NewDocumentCommand{\aB}{ O{l} +m }{\as{\cR}[#1]{#2}}
-\NewDocumentCommand{\aC}{ O{l} +m }{\as{\cB}[#1]{#2}}
+\newcommand{\DeclareSpeakerShortcut}[2]{%
+  \expandafter\NewDocumentCommand\csname a#1\endcsname{ O{l} +m }{\as{#2}[##1]{##2}}%
+}
 
-\NewDocumentCommand{\aJ}{ O{l} +m }{\as{\eJ}[#1]{#2}}
-\NewDocumentCommand{\aE}{ O{l} +m }{\as{\eE}[#1]{#2}}
-\NewDocumentCommand{\aP}{ O{l} +m }{\as{\aPEnglish}[#1]{#2}}
-\NewDocumentCommand{\aDtrOne}{ O{l} +m }{\as{\eDtrOne}[#1]{#2}}
-\NewDocumentCommand{\aDtrTwo}{ O{l} +m }{\as{\eDtrTwo}[#1]{#2}}
-\NewDocumentCommand{\aDtn}{ O{l} +m }{\as{\eDtn}[#1]{#2}}
+\DeclareSpeakerShortcut{A}{\cK}
+\DeclareSpeakerShortcut{B}{\cR}
+\DeclareSpeakerShortcut{C}{\cB}
+\DeclareSpeakerShortcut{J}{\eJ}
+\DeclareSpeakerShortcut{E}{\eE}
+\DeclareSpeakerShortcut{P}{\aPEnglish}
+\DeclareSpeakerShortcut{DtrOne}{\eDtrOne}
+\DeclareSpeakerShortcut{DtrTwo}{\eDtrTwo}
+\DeclareSpeakerShortcut{Dtn}{\eDtn}
+\DeclareSpeakerShortcut{Records}{\eBookOfRecords}
+\DeclareSpeakerShortcut{Other}{\eOther}
+
 \NewDocumentCommand{\aR}{ O{l} +m }{\smash{\as{\eR}[#1]{#2}}}
 \NewDocumentCommand{\aRJE}{ O{l} +m }{\smash{\as{\eRJE}[#1]{#2}}}
-\NewDocumentCommand{\aRecords}{ O{l} +m }{\as{\eBookOfRecords}[#1]{#2}}
-\NewDocumentCommand{\aOther}{ O{l} +m }{\as{\eOther}[#1]{#2}}
 
 
 % ------------------------------------------------------------
@@ -1120,29 +1076,19 @@
   }
 \ExplSyntaxOff
 
-\NewDocumentCommand{\defineword}{m m o}{%
-    \expandafter\gdef\expandafter#1\expandafter{#2}%
-
-    \expandafter\gdef
-    \csname\expandafter\@gobble\string#1Init\endcsname
+\NewDocumentCommand{\setword}{m m m o}{%
+    \expandafter#1\expandafter#2\expandafter{#3}%
+    \expandafter#1%
+    \csname\expandafter\@gobble\string#2Init\endcsname
     {%
-        \IfNoValueTF{#3}
-            {\bookautoInit{#2}}
-            {#3}%
+        \IfNoValueTF{#4}
+            {\bookautoInit{#3}}
+            {#4}%
     }%
 }
 
-\NewDocumentCommand{\redefineword}{m m o}{%
-    \expandafter\gdef\expandafter#1\expandafter{#2}%
-
-    \expandafter\gdef
-    \csname\expandafter\@gobble\string#1Init\endcsname
-    {%
-        \IfNoValueTF{#3}
-            {\bookautoInit{#2}}
-            {#3}%
-    }%
-}
+\NewDocumentCommand{\defineword}{m m o}{\setword{\gdef}{#1}{#2}[#3]}
+\NewDocumentCommand{\redefineword}{m m o}{\setword{\def}{#1}{#2}[#3]}
 
 \makeatother
 
@@ -1167,6 +1113,7 @@
 % Alignment sugar
 % ------------------------------------------------------------
 
+\makeatletter
 \newcommand{\DeclareSpeakerTriplet}[1]{%
     \expandafter\newcommand\csname a#1l\endcsname[1]{%
 		\csname a#1\endcsname[l]{##1}%
@@ -1179,18 +1126,12 @@
     }%
 }
 
-\DeclareSpeakerTriplet{A}
-\DeclareSpeakerTriplet{B}
-\DeclareSpeakerTriplet{C}
+\newcommand{\DeclareSpeakerTripletList}[1]{%
+  \@for\SpeakerName:=#1\do{\expandafter\DeclareSpeakerTriplet\expandafter{\SpeakerName}}%
+}
+\makeatother
 
-\DeclareSpeakerTriplet{J}
-\DeclareSpeakerTriplet{E}
-\DeclareSpeakerTriplet{P}
-\DeclareSpeakerTriplet{DtrOne}
-\DeclareSpeakerTriplet{DtrTwo}
-\DeclareSpeakerTriplet{Dtn}
-\DeclareSpeakerTriplet{R}
-\DeclareSpeakerTriplet{RJE}
+\DeclareSpeakerTripletList{A,B,C,J,E,P,DtrOne,DtrTwo,Dtn,R,RJE,Records,Other}
 
 
 \newcommand{\redacted}[1]{%
