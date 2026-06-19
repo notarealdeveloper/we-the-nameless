@@ -441,6 +441,36 @@
     [0x05E8] = 0x10913, [0x05E9] = 0x10914, [0x05EA] = 0x10915
   }
 
+  local aramaic = {
+    [0x05D0] = 0x10840, [0x05D1] = 0x10841, [0x05D2] = 0x10842,
+    [0x05D3] = 0x10843, [0x05D4] = 0x10844, [0x05D5] = 0x10845,
+    [0x05D6] = 0x10846, [0x05D7] = 0x10847, [0x05D8] = 0x10848,
+    [0x05D9] = 0x10849, [0x05DA] = 0x1084A, [0x05DB] = 0x1084A,
+    [0x05DC] = 0x1084B, [0x05DD] = 0x1084C, [0x05DE] = 0x1084C,
+    [0x05DF] = 0x1084D, [0x05E0] = 0x1084D, [0x05E1] = 0x1084E,
+    [0x05E2] = 0x1084F, [0x05E3] = 0x10850, [0x05E4] = 0x10850,
+    [0x05E5] = 0x10851, [0x05E6] = 0x10851, [0x05E7] = 0x10852,
+    [0x05E8] = 0x10853, [0x05E9] = 0x10854, [0x05EA] = 0x10855
+  }
+
+  function paleotex.hebrew_to_aramaic(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = aramaic[code]
+      if mapped ~= nil then
+        table.insert(out, utf8.char(mapped))
+      else
+        mapped = hebrew_punctuation[code]
+        if mapped ~= nil then
+          table.insert(out, mapped)
+        elseif not is_hebrew_mark(code) then
+          table.insert(out, utf8.char(code))
+        end
+      end
+    end
+    return table.concat(out)
+  end
+
   function paleotex.hebrew_to_phoenician(s)
     local out = {}
     for pos, code in utf8.codes(s) do
@@ -500,6 +530,10 @@
   function hebrew_to_phoenician(s)
     return paleotex.hebrew_to_phoenician(s)
   end
+
+  function hebrew_to_aramaic(s)
+    return paleotex.hebrew_to_aramaic(s)
+  end
 }
 
 \newcommand{\HebrewNoNiqqud}[1]{%
@@ -518,11 +552,16 @@
   \directlua{tex.sprint(hebrew_to_phoenician("\luaescapestring{\detokenize{#1}}"))}%
 }
 
+\newcommand{\HebrewToAramaic}[1]{%
+  \directlua{tex.sprint(hebrew_to_aramaic("\luaescapestring{\detokenize{#1}}"))}%
+}
+
 \newcommand{\EncodeHebrewNoNiqqud}[1]{\HebrewNoNiqqud{#1}}
 \newcommand{\EncodeHebrewRaw}[1]{#1}
 \newcommand{\EncodePaleoASCII}[1]{\HebrewToPaleoASCII{#1}}
 \newcommand{\EncodePaleoUnicode}[1]{\HebrewForPaleoUnicode{#1}}
 \newcommand{\EncodePhoenician}[1]{\HebrewToPhoenician{#1}}
+\newcommand{\EncodeAramaic}[1]{\HebrewToAramaic{#1}}
 
 \makeatletter
 \newcommand{\DeclareHebrewRenderer}[3]{%
@@ -537,6 +576,7 @@
 \DeclareHebrewRenderer{HebrewDavidRaw}{\HebrewDavidFont}{\EncodeHebrewRaw}
 \DeclareHebrewRenderer{HebrewEzra}{\HebrewEzraFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{HebrewEzraRaw}{\HebrewEzraFont}{\EncodeHebrewRaw}
+\DeclareHebrewRenderer{Aramaic}{\AramaicFont}{\EncodeAramaic}
 \DeclareHebrewRenderer{HebrewOther}{\HebrewOtherFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{HebrewSquare}{\HebrewSquareFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{ProtoSinaiticBest}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
@@ -582,14 +622,6 @@
     {\EnglishFont} {\color{Pcolor}\bfseries}
     {\PaleoASCIITelDan} {\color{Pcolor}\mdseries}
 
-\DeclareSourceProfile{DtrOne}
-    {\EnglishFont}   {\color{Dtr1color}\mdseries}
-    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Dtr1color}\mdseries}
-
-\DeclareSourceProfile{DtrTwo}
-    {\EnglishFont}   {\color{Dtr2color}\bfseries}
-    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Dtr2color}\bfseries}
-
 \DeclareSourceProfile{DtrA}
     {\EnglishFont}   {\color{Dtr1color}\mdseries}
     {\HebrewEzraRaw} {\HebrewEzraLarge\color{Dtr1color}\mdseries}
@@ -605,7 +637,7 @@
 \DeclareSourceProfile{R}
     {\EnglishFont}   {\color{Rcolor}\mdseries}
     %{\HebrewEzraRaw} {\color{Rcolor}\mdseries}
-    {\AramaicFont} {\color{Rcolor}\mdseries}
+    {\Aramaic} {\color{Rcolor}\mdseries}
 
 \DeclareSourceProfile{RJE}
     {\EnglishFont} {\color{RJEcolor}\mdseries}
@@ -644,15 +676,15 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,E,P,DtrOne,DtrTwo,DtrA,DtrB,Dtn,Records,Other,Proto}
+\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto}
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
-\newcommand{\eDtr}[2]{\ifcase#1\or\eDtrOne{#2}\or\eDtrTwo{#2}\fi}
+\newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
 \newcommand{\eR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
 \newcommand{\eRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
-\newcommand{\hDtr}[2]{\ifcase#1\or\hDtrOne{#2}\or\hDtrTwo{#2}\fi}
-\newcommand{\hR}[1]{{\leavevmode\textdir TRT\HebrewEzraFont\hstyleR\highLight[Rbgcolor]{#1}}}
-\newcommand{\hRJE}[1]{{\leavevmode\textdir TRT\HebrewEzraFont\hstyleRJE\highLight[RJEbgcolor]{\HebrewNoNiqqud{#1}}}}
+\newcommand{\hDtr}[2]{\ifcase#1\or\hDtrA{#2}\or\hDtrB{#2}\fi}
+\newcommand{\hR}[1]{\highLight[Rbgcolor]{\hRRenderer{\hstyleR}{#1}}}
+\newcommand{\hRJE}[1]{\highLight[RJEbgcolor]{\hRJERenderer{\hstyleRJE}{#1}}}
 \newcommand{\sR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
 \newcommand{\sRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
 \let\eBookOfRecords\eRecords
@@ -1053,8 +1085,8 @@
 \DeclareSpeakerShortcut{J}{\eJ}
 \DeclareSpeakerShortcut{E}{\eE}
 \DeclareSpeakerShortcut{P}{\aPEnglish}
-\DeclareSpeakerShortcut{DtrOne}{\eDtrOne}
-\DeclareSpeakerShortcut{DtrTwo}{\eDtrTwo}
+\DeclareSpeakerShortcut{DtrA}{\eDtrA}
+\DeclareSpeakerShortcut{DtrB}{\eDtrB}
 \DeclareSpeakerShortcut{Dtn}{\eDtn}
 \DeclareSpeakerShortcut{Records}{\eBookOfRecords}
 \DeclareSpeakerShortcut{Other}{\eOther}
@@ -1131,7 +1163,7 @@
 }
 \makeatother
 
-\DeclareSpeakerTripletList{A,B,C,J,E,P,DtrOne,DtrTwo,Dtn,R,RJE,Records,Other}
+\DeclareSpeakerTripletList{A,B,C,J,E,P,DtrA,DtrB,Dtn,R,RJE,Records,Other}
 
 
 \newcommand{\redacted}[1]{%
