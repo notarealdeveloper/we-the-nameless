@@ -244,7 +244,7 @@
     Scale=1.15
 ]{arabic-amiri-regular.ttf}
 
-% Traditional Chinese
+% Chinese
 \newfontfamily\TraditionalChineseFontA[
     Path=\LocalFontPath,
     Script=CJK,
@@ -327,12 +327,25 @@
 \newcommand{\Above}[3]{\smash{\stackon[0.8pt]{#3}{\size{#1}{#2}}}}
 \newcommand{\Below}[3]{\smash{\stackunder[2.2pt]{#3}{\size{#1}{#2}}}}
 
-\newcommand{\hangingfootnote}[2]{%
-    \parbox[t]{\linewidth}{%
+% ------------------------------------------------------------
+% Hanging paragraphs and hanging footnotes
+% ------------------------------------------------------------
+
+\NewDocumentCommand{\hangingblock}{ O{1.5em} +m }{%
+    \begingroup
         \parindent=0pt
-        \everypar{\hangindent=#1\hangafter=1}%
-        #2%
-    }%
+        \hangindent=#1
+        \hangafter=1
+        #2\par
+    \endgroup
+}
+
+\NewDocumentCommand{\hangingpar}{ O{1.5em} +m }{%
+    \hangingblock[#1]{#2}%
+}
+
+\NewDocumentCommand{\hangingfootnote}{ O{1.5em} +m }{%
+    \footnote{\hangingblock[#1]{#2}}%
 }
 
 % ------------------------------------------------------------
