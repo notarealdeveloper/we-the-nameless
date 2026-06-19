@@ -239,6 +239,13 @@
     Scale=1.10
 ]{hebrew-ezra.ttf}
 
+\newfontfamily\HebrewEzraBoldFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=1.10,
+    FakeBold=2.0
+]{hebrew-ezra.ttf}
+
 \newfontfamily\HebrewOtherFont[
     Path=\LocalFontPath,
     Script=Hebrew,
@@ -485,9 +492,6 @@
     \colorlet{Greencolor}{ObsGreen!62!fg}
     \colorlet{Graycolor}{ObsGray!70!fg}
     \colorlet{DefColor}{ObsBlue!65!fg}
-    \renewcommand{\Eweight}{\mdseries}
-    \renewcommand{\Pweight}{\mdseries}
-
     \pagecolor{bg}
     \AtBeginDocument{\color{TextColor}}
 \fi
@@ -794,6 +798,7 @@
 \DeclareHebrewRenderer{HebrewDavidRaw}{\HebrewDavidFont}{\EncodeHebrewRaw}
 \DeclareHebrewRenderer{HebrewEzra}{\HebrewEzraFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{HebrewEzraRaw}{\HebrewEzraFont}{\EncodeHebrewRaw}
+\DeclareHebrewRenderer{HebrewEzraBoldRaw}{\HebrewEzraBoldFont}{\EncodeHebrewRaw}
 \DeclareHebrewRenderer{Aramaic}{\AramaicFont}{\EncodeAramaic}
 \DeclareHebrewRenderer{HebrewOther}{\HebrewOtherFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{HebrewSquare}{\HebrewSquareFont}{\EncodeHebrewNoNiqqud}
@@ -1025,7 +1030,7 @@
 
 \DeclareSourceProfile{P}
     {\EnglishFont}   {\color{Pcolor}\Pweight}
-    {\HebrewEzraRaw} {\HebrewEzraLarge\color{Pcolor}\mdseries}
+    {\HebrewEzraBoldRaw} {\HebrewEzraLarge\color{Pcolor}}
 
 \DeclareSourceProfile{R}
     {\EnglishFont}   {\color{Rcolor}\mdseries}
@@ -1211,7 +1216,7 @@
 % Legend
 % ------------------------------------------------------------
 
-\newcommand{\RSourceName}{\ensuremath{R^{\mathrm{P}}_{\mathrm{JE}}}}
+\newcommand{\RSourceName}{R}
 \newcommand{\RJESourceName}{\ensuremath{R^{\mathrm{E}}_{\mathrm{J}}}}
 
 \newcommand{\SourceLegendItems}[2]{%
@@ -1237,6 +1242,44 @@
     \eP{P}\quad
     \eR{\RSourceName}\quad
     }%
+}
+
+\newcommand{\LegendSample}[1]{%
+    \begingroup
+    \setlength{\fboxsep}{3pt}%
+    #1%
+    \endgroup
+}
+
+\newcommand{\SourceLegendPage}{%
+    \cleardoublepage
+    \thispagestyle{plain}
+    \chapter*{The Authors}
+    \begin{center}
+        {\Large Or}\\[0.4em]
+        {\huge We: The Nameless}
+    \end{center}
+    \vspace{1.5em}
+    \begingroup
+    \small
+    \renewcommand{\arraystretch}{1.35}
+    \noindent\begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
+        Regular & Authors. Usually early. Some later. (J, Records, Songs.)\\
+        Bold & \textbf{Priests. Usually later. Some early. (E, P, Dtr1, Dtr2, Dtn.)}\\
+        Background & \LegendSample{\colorbox{Rbgcolor}{\strut Redactors.}} Primarily Editors, rarely or less frequently Authors.\\
+        No Background & Redactors. Primarily Editors, rarely or less frequently Authors.\\[0.7em]
+        Green & \eJ{J. The first author. The oldest source in the bible, with the exception of archaic songs. (J)}\\
+        Yellow & \eE{Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. (E, Dtr1, Dtr2, Jeremiah)}\\
+        Blue & \eP{Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem. (P, R)}\\
+        Red & {\color{Redcolor}Songs. Early poetry of Levites in the south, Israelites in the north, or other sources. (Genesis 49, Exodus 15, Deuteronomy 32)}\\
+        Grey & {\color{Graycolor}Other. Records, Begat lists, genealogies, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
+        Dark & \cK{Laws.}\\
+        Dark Blue & \cB{Aaronid Laws. (Leviticus, Exodus 25-40.)}\\
+        Dark Yellow & \cR{Mushite Laws. (Covenant code in Exodus, Deuteronomistic Law code.)}\\
+        Dark Green & \cK{J Laws. (Rare, outside of a version of the 10 commandments, which may have been a joke.\footnote{J is the funny one.})}\\
+    \end{tabular}
+    \endgroup
+    \cleardoublepage
 }
 
 % ------------------------------------------------------------
@@ -1585,6 +1628,7 @@
 
 \frontmatter
 \tableofcontents
+\SourceLegendPage
 \mainmatter
 
 \Book{Genesis}
