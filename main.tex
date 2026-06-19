@@ -488,7 +488,7 @@
     paleo_x = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"}
   }
 
-  local function hebrew_to_ascii_variant(s, variant)
+  local function encode_ascii_variant(s, variant)
     local map = ascii_variants[variant]
     local out = {}
     for pos, code in utf8.codes(s) do
@@ -589,7 +589,7 @@
   end
 
   function paleotex.hebrew_to_ascii_variant(s, variant)
-    return hebrew_to_ascii_variant(s, variant)
+    return encode_ascii_variant(s, variant)
   end
 
   function strip_hebrew_niqqud(s)
@@ -644,7 +644,7 @@
 \newcommand{\EncodePhoenician}[1]{\HebrewToPhoenician{#1}}
 \newcommand{\EncodeAramaic}[1]{\HebrewToAramaic{#1}}
 \newcommand{\EncodeASCIIVariant}[2]{%
-  \directlua{tex.sprint(hebrew_to_ascii_variant("\luaescapestring{\detokenize{#2}}", "\luaescapestring{#1}"))}%
+  \directlua{tex.sprint(paleotex.hebrew_to_ascii_variant("\luaescapestring{\detokenize{#2}}", "\luaescapestring{#1}"))}%
 }
 \newcommand{\EncodeProtoB}[1]{\EncodeASCIIVariant{proto_b}{#1}}
 \newcommand{\EncodeProtoC}[1]{\EncodeASCIIVariant{proto_c}{#1}}
@@ -944,6 +944,11 @@
 \makeatother
 
 \DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX}
+
+\newcommand{\hProtoVariant}{\hProtoA}
+\newcommand{\hPaleoVariant}{\hPaleoA}
+\renewcommand{\hProto}[1]{\hProtoVariant{#1}}
+\renewcommand{\hPaleo}[1]{\hPaleoVariant{#1}}
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}

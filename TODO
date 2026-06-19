@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+I said this:
+
+---
+
+I think there's a bug in \encodeASCIIVariant or something like that.
+
+I can set the Proto font to \ProtoCFont like this
+
+\DeclareSourceProfile{Proto}
+    {\EnglishProtoFont} 	{\color{ProtoColor}\mdseries}
+    {\ProtoCFont} 		{\color{ProtoColor}\mdseries}
+
+But this fails for all other letters X
+
+\DeclareSourceProfile{Proto}
+    {\EnglishProtoFont} 	{\color{ProtoColor}\mdseries}
+    {\ProtoXFont} 		{\color{ProtoColor}\mdseries}
+
+Any ideas what broke? This is from a recent commit of yours.
+
+Also let me know the best way to toggle between Proto fonts on
+a file by file basis with \renewcommand as needed.
+
+---
+
+You responded with this:
+
+---
+
+codex
+Bug is here:
+
+\newcommand{\EncodeASCIIVariant}[2]{%
+  \directlua{tex.sprint(hebrew_to_ascii_variant(...))}%
+}
+
+`hebrew_to_ascii_variant` never becomes a Lua global. The recent commit introduced:
+
+local function hebrew_to_ascii_variant(...)
+...
+function hebrew_to_ascii_variant(...)
+...
+
+Inside the same Lua chunk, that second definition hits the local name, not `_G`. So later `\directlua` calls see nil. Classic Lua footgun; Unix still innocent.
+
+Fix either side:
+
+\newcommand{\EncodeASCIIVariant}[2]{%
+  \directlua{tex.sprint(paleotex.hebrew_to_ascii_variant("\luaescapestring{\detokenize{#2}}", "\luaescapestring{#1}"))}%
+}
+
+or rename the local implementation and export explicitly:
+
+local function encode_ascii_variant(s, variant)
+...
+end
+
+function paleotex.hebrew_to_ascii_variant(s, variant)
+  return encode_ascii_variant(s, variant)
+end
+
+function hebrew_to_ascii_variant(s, variant)
+  return paleotex.hebrew_to_ascii_variant(s, variant)
+end
+
+Best file-local toggle:
+
+\begingroup
+\renewcommand{\hProtoRenderer}{\ProtoCFont}
+\include{1-genesis/49}
+\endgroup
+
+Or for another file:
+
+\begingroup
+\renewcommand{\hProtoRenderer}{\ProtoDFont}
+\include{2-exodus/15}
+\endgroup
+
+Do not rerun `\DeclareSourceProfile{Proto}` for toggling; it uses `\newcommand`, so it is a declaration-time thing, not a knob.
+
+---
+
+Now, I want you to:
+1. Fix the bug you mentioned above.
+2. If possible, make it easier to toggle between whether \hPaleo (for example)
+   means \hPaleoA, \hPaleoB, etc, on a file by file basis by using \renewcommand
+   or \RenewDocumentCommand or however you have to do it.
+EOF
