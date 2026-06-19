@@ -68,6 +68,7 @@
 \newcommand{\LocalFontPath}{./fonts/}
 
 \setmainfont{FreeSerif}
+\newfontfamily\LawFont{DejaVu Sans Mono}
 
 % The Ancients
 \newfontfamily\Cun[
@@ -416,11 +417,13 @@
 \colorlet{ProtoGColor}{ProtoColor}
 
 \definecolor{Jcolor}{RGB}{0,120,0}
-\definecolor{Ecolor}{RGB}{170,120,0}
+\definecolor{Ecolor}{RGB}{185,145,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
-\definecolor{Dtr1color}{RGB}{170,120,0}
-\definecolor{Dtr2color}{RGB}{195,135,0}
-\definecolor{Dtncolor}{RGB}{150,95,0}
+\definecolor{Dtr1color}{RGB}{170,130,0}
+\definecolor{Dtr2color}{RGB}{185,115,0}
+\definecolor{Dtncolor}{RGB}{185,145,0}
+\definecolor{Dtr1bgcolor}{RGB}{255,244,180}
+\definecolor{Dtr2bgcolor}{RGB}{255,222,175}
 
 \definecolor{Rcolor}{RGB}{0,70,170}
 \definecolor{Rbgcolor}{RGB}{220,235,255}
@@ -439,7 +442,7 @@
 \definecolor{Redcolor}{RGB}{130,0,0}
 \definecolor{Bluecolor}{RGB}{0,70,170}
 \definecolor{Greencolor}{RGB}{0,120,0}
-\definecolor{Yellowcolor}{RGB}{170,120,0}
+\definecolor{Yellowcolor}{RGB}{185,145,0}
 \definecolor{Graycolor}{RGB}{110,110,110}
 
 \definecolor{DefColor}{RGB}{0,70,170}
@@ -479,9 +482,11 @@
     \colorlet{Ecolor}{ObsYellow!65!fg}
     \colorlet{Pcolor}{ObsBlue!65!fg}
 
-    \colorlet{Dtr1color}{Ecolor}
-    \colorlet{Dtr2color}{ObsOrange!72!ObsYellow}
-    \colorlet{Dtncolor}{ObsOrange!78!fg}
+    \colorlet{Dtr1color}{ObsYellow!74!fg}
+    \colorlet{Dtr2color}{ObsYellow!55!ObsOrange}
+    \colorlet{Dtncolor}{Ecolor}
+    \definecolor{Dtr1bgcolor}{HTML}{5a4d30}
+    \definecolor{Dtr2bgcolor}{HTML}{5f4534}
 
     \colorlet{Rcolor}{ObsBlue!65!fg}
     \definecolor{Rbgcolor}{HTML}{34404f}
@@ -495,7 +500,7 @@
     \colorlet{Redcolor}{ObsRed!58!fg}
     \colorlet{Bluecolor}{ObsBlue!65!fg}
     \colorlet{Greencolor}{ObsGreen!62!fg}
-    \colorlet{Yellowcolor}{Dtncolor}
+    \colorlet{Yellowcolor}{Ecolor}
     \colorlet{Graycolor}{ObsGray!70!fg}
     \colorlet{DefColor}{ObsBlue!65!fg}
     \pagecolor{bg}
@@ -1031,8 +1036,8 @@
     {\HebrewDavid} {\HebrewDavidLarge\color{Dtr2color}\bfseries}
 
 \DeclareSourceProfile{Dtn}
-    {\EnglishFont} {\color{Dtncolor}\itshape}
-    {\HebrewDavid} {\HebrewDavidLarge\color{Dtncolor}\itshape}
+    {\LawFont} {\color{Dtncolor}\mdseries}
+    {\HebrewDavid} {\HebrewDavidLarge\color{Dtncolor}\mdseries}
 
 % Aaronids
 
@@ -1083,6 +1088,9 @@
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
+\newcommand{\DtrALabel}{\highLight[Dtr1bgcolor]{\color{Dtr1color}D}}
+\newcommand{\DtrBLabel}{\highLight[Dtr2bgcolor]{\color{Dtr2color}D}}
+\newcommand{\DtnLabel}{{\LawFont\color{Dtncolor}Dtn}}
 \newcommand{\eR}[1]{{\estyleR\highLight[Rbgcolor]{#1}}}
 \newcommand{\eRJE}[1]{{\estyleRJE\highLight[RJEbgcolor]{#1}}}
 \newcommand{\hDtr}[2]{\ifcase#1\or\hDtrA{#2}\or\hDtrB{#2}\fi}
@@ -1268,21 +1276,21 @@
 \newcommand{\PriestSourceRefs}{%
     \eE{E}, %
     \eP{P}, %
-    {\bfseries\color{Dtr1color}Dtr1}, %
-    {\bfseries\color{Dtr2color}Dtr2}, %
-    {\bfseries\color{Dtncolor}Dtn}%
+    \DtrALabel, %
+    \DtrBLabel, %
+    \DtnLabel%
 }
 
 \newcommand{\MushiteSourceRefs}{%
     \eE{E}, %
-    {\bfseries\color{Dtr1color}Dtr1}, %
-    {\bfseries\color{Dtr2color}Dtr2}, %
-    {\bfseries\color{Dtncolor}Dtn}, %
+    \DtrALabel, %
+    \DtrBLabel, %
+    \DtnLabel, %
     {\itshape\color{Yellowcolor}Jeremiah}%
 }
 
 \newcommand{\LawRow}[2]{%
-    \texttt{#1} & {\raggedright\arraybackslash\texttt{#2}}\\%
+    {\LawFont #1} & {\raggedright\arraybackslash\LawFont #2}\\%
 }
 
 \newcommand{\LawRows}{%
@@ -1292,7 +1300,7 @@
 }
 
 \newcommand{\LeviteBlend}{%
-    \cY{Of the Levites} \cB{in the South}%
+    \cY{Of the Levites} \cY{in the South}%
 }
 
 \newcommand{\FontChoicePage}{%
@@ -1337,13 +1345,13 @@
     \renewcommand{\arraystretch}{1.22}
     \noindent\begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
         Regular
-        & Authors. Usually early. Some later. (\SourceRefs.)\\
+        & People. The regular ones. We write regular.\\
         \textbf{Bold} & \textbf{Priests. Or the Levites. Same thing.}%
         \footnote{According to the Mushites, but not the Aaronids. That'll make sense eventually.}%
         (\PriestSourceRefs.)\\
 
         \eR{Background}
-        & \eR{Redactors. Primarily editors, occasionally writers of glue prose.}\\[0.7em]
+        & \eR{Redactors. Editors, occasionally write small amounts of glue prose to make multiple sources consistent,} \eRJE{while others write less and delete more from their sources.}\\[0.7em]
         \eJ{Green} & \eJ{J. The first author of the bible.\footnote{Aside from a few brief archaic songs.}
             The first author of prose on earth.\footnote{As far as we know.}
             The author of nearly all the most popular bible stories.\footnote{Not including the Jesus bits, though J's at least tied.}
@@ -1351,10 +1359,9 @@
         \eE{Yellow} & \eE{Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh.} (\MushiteSourceRefs.)\\
         \eP{Blue} & \eP{Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem. (P, R)}\\
         \textit{Italics} & \textit{Songs, poetry, and prophecy.}\\
-        {\itshape Songs} & {\itshape Early poetry: \LeviteBlend{} (Exodus 15), \cG{Israelites in the North} (Judges 5, Genesis 49), or \cY{Deuteronomy 32}.}\\
-        {\itshape\color{Yellowcolor}Prophecy} & {\itshape\color{Yellowcolor}Jeremiah and other prophetic material.}\\
-        {\itshape\color{Graycolor}Grey} & {\itshape\color{Graycolor}Bureaucracy: records, begat lists, genealogies, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
-        \texttt{Mono} & \texttt{All forms of code, including legal codes.}\\
+        {\itshape Songs} & {\itshape Early poetry: \LeviteBlend{} (Exodus 15), \cG{Israelites in the North} (Judges 5, Genesis 49), \cY{Deuteronomy 32}, Jeremiah, and other prophetic material.}\\
+        {\color{Graycolor}Grey} & {\color{Graycolor}Bureaucracy: records, begat lists, genealogies, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
+        {\LawFont Mono} & {\LawFont All forms of code, including legal codes.}\\
         \LawRows
     \end{tabular}
     \endgroup
@@ -1703,24 +1710,26 @@
 
 \begin{document}
 
+\pagenumbering{gobble}
+\pagestyle{empty}
 \wetitlepage
 \input{cover}
 
 \frontmatter
+\pagenumbering{gobble}
+\pagestyle{empty}
 \tableofcontents
 \SourceLegendPage
 \mainmatter
+\pagenumbering{gobble}
+\pagestyle{empty}
 
 \Book{Genesis}
 
-	\vspace*{\fill}
-	\aB{
-		\begin{center}
-			Ok so... (
-		\end{center}
-	}
-	\vspace*{\fill}
-
+\cleardoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{fancy}
 \include{1-genesis/01}
 \include{1-genesis/02}
 \include{1-genesis/03}
