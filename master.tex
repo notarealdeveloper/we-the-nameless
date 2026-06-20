@@ -1207,7 +1207,8 @@
 
 \DeclareSourceProfile{E}
     {\EnglishFont} {\addfontfeatures{Scale=0.96}\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
-    {\PaleoASCIIStandard} {\addfontfeatures{Scale=1.10}\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
+    {\PaleoASCIIStandard} {\addfontfeatures{Scale=1.35}\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
+	% Don't change this font scale!
 
 \DeclareSourceProfile{DtrA}
     {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\DeuteronomistAStyle\Redactor\mdseries}
@@ -1225,7 +1226,8 @@
 
 \DeclareSourceProfile{P}
     {\EnglishFont}   {\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
-    {\HebrewEzraRaw} {\SourceBackground{Pbgcolor}\AaronidStyle\addfontfeatures{Scale=1.20}\mdseries}
+    {\HebrewEzraRaw} {\SourceBackground{Pbgcolor}\AaronidStyle\addfontfeatures{Scale=1.40}\mdseries}
+	% Don't change this font scale!
 
 \DeclareSourceProfile{PP}
     {\EnglishFont}       {\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
@@ -1233,7 +1235,8 @@
 
 \DeclareSourceProfile{R}
     {\EnglishFont}   {\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\mdseries}
-    {\HebrewEzraRaw} {\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Scale=1.10}\mdseries}
+    {\HebrewEzraRaw} {\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Scale=1.40}\mdseries}
+	% Don't change this font scale!
 
 % Others
 
@@ -1534,7 +1537,7 @@
             The author of nearly all the most popular bible stories.
             (That is, not including the Jesus ones.
             (Though J's at least tied.))
-            The author in the bible with the best sense of humor.\LegendFootmark{SourceLegendMisunderstoodFootnote}
+            The author in the bible with the best sense of humor.
         }
         \\
 
@@ -1592,8 +1595,7 @@
 
     \SourceLegendRow{{\Record Grey}}{%
         {\Record
-            Records, begat lists, genealogies, external documents.\par
-            (Genesis 5, Genesis 14.)
+            Records, begat lists, genealogies, misc documents (Gen 5, Gen 14.)\par
         }
     }
 
@@ -1606,10 +1608,7 @@
 
     \SourceLegendRow{{\LawFont Mono}}{%
         {\LawFont
-            Laws.\par
-            All forms of code, legal and otherwise, are written in mono%
-            spaced font, for reasons that need not be explained.\par
-
+            Laws.\LegendFootmark{SourceLegendMonoFootnote}\par
             \smallskip
             \noindent
                 \begin{tabular}[t]{@{}>{\RaggedRight\arraybackslash}l@{\quad}>{\RaggedRight\arraybackslash}p{0.72\linewidth}@{}}
@@ -1634,10 +1633,9 @@
 
             {\Yahwist J Laws:} &
             {\Yahwist Nonexistent. Except for a weird version of the 10
-            commandments. Joke? Maybe. J is f\redacted{ucking}\eR{oundational
-            to the biblical text and an essential path to understanding
-            God's} awesome \eR{power.}}%
-            \LegendFootmarkJ{SourceLegendThanksFootnote}%
+            commandments, which may well have been a joke, because J is
+            f\redacted{ucking}\eR{oundational to a\linebreak[1] understanding of God's
+            mysteries and} awesome \eR{power.}}\LegendFootmarkJ{SourceLegendThanksFootnote}%
             \end{tabular}%
         }
     }
@@ -1646,7 +1644,8 @@
         though {\MushiteStyle these guys} agree.}
     \footnotetext[\SourceLegendSongsFootnote]{Aside from a few archaic songs.}
     \footnotetext[\SourceLegendEarthFootnote]{Here on Earth, that is, as far as we know.}
-    \footnotetext[\SourceLegendMisunderstoodFootnote]{And the most misunderstood.}
+    \footnotetext[\SourceLegendMonoFootnote]{All forms of code, legal and otherwise,
+    	are written in monospaced font, for reasons that need not be explained.}
     \footnotetext[\SourceLegendThanksFootnote]{{\Yahwist S}he says thanks, welcome to We.}
     \endgroup
 
