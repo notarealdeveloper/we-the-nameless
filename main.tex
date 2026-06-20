@@ -133,6 +133,12 @@
     Scale=1.49
 ]{paleo-hebrew-other.ttf}
 
+\newfontfamily\PaleoHebrewStandardFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.49
+]{paleo-hebrew.ttf}
+
 \newfontfamily\PaleoHebrewFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
@@ -1594,6 +1600,108 @@
     \pagestyle{fancy}
 }
 
+\newcommand{\BookCoverPage}[2]{%
+    \clearpage
+    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \pagestyle{empty}
+    {
+    \centering
+    \vspace*{0.2\textheight}
+    {\fontsize{64}{76}\fontfamily{lmr}\selectfont\textsc{#1}\par}
+    \vspace*{0.18\textheight}
+    {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{#2}\par}
+    \vspace*{\fill}
+    \newpage
+    }
+    \restoregeometry
+    \pagestyle{fancy}
+}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\AlphabetHistoryASCII}{ m m m }{
+  {\leavevmode\textdir TRT\scalebox{#2}{#1\tl_reverse:n { #3 }}}
+}
+\NewDocumentCommand{\AlphabetHistoryRightToLeft}{ m m m }{
+  {\leavevmode\textdir TRT\scalebox{#2}{#1 { #3 }}}
+}
+\ExplSyntaxOff
+
+\def\paleoupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleolower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\protoalower{{abgshwZxjyklmn\;]p\;c\,q\,r\,f\,t}}
+\def\protoaupper{{ABGSHWZXjY\;KLM\,N\;]P\;C\,Q\,R\,V\,T}}
+
+\def\protobupper{{ABGD\!hw\!ZXJYKLMNS]\;P\;C\;Q\;R\;V\;T}}
+\def\protoblower{{ab\!gdHW\!zxjyklMns]\;pcq\;r\,v\,t}}
+
+\def\protocupper{{ABGDH\;WZXJ\!Y\!KL\;NS]PC\;Q\;R\,V\,T}}
+\def\protoclower{{abgdh\;wzxj\!yklns]p\!c\,q\,R\,v\,t}}
+
+\def\paleoalower{{abgdhw\!zxjyklmns]p\!cq\,r\,v\,t}}
+
+\def\paleobupper{{A\;BG\,DH\;WZX YKLM S]PCQRVT}}
+\def\paleoblower{{a\,bg\!dh\!wzx yklm\;s]p\!cqrvt}}
+
+\def\paleoeupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoelower{{abgdhwz\,xjy\;klmns]pc\,q\,rvt}}
+
+\def\paleofupper{{ABGDHWZXJY\,K\,L\,M\,NS]PCQRVT}}
+\def\paleoflower{{abgdhwzxjyklmns]pc\,q\,r\,vt}}
+
+\def\paleoijkupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoijklower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\paleolupper{{ABGDHWZXJYK\,L\,M\,NS]PCQRVT}}
+\def\paleollower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
+
+\newcommand{\AlphabetHistoryPage}{%
+    \clearpage
+    \thispagestyle{empty}
+    \begin{flushright}
+    \egypt{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}
+    \AlphabetHistoryASCII{\ProtoSinaiticBestFont}{1.81}{\healphabet}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoalower}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoaupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protobupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protoblower}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protocupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protoclower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelZayitFont}{1.81}{\paleoalower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleobupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleoblower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewMoabiteFont}{1.81}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewMoabiteFont}{1.81}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewStandardFont}{1.81}{\paleoeupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewStandardFont}{1.81}{\paleoelower}\\
+    \AlphabetHistoryRightToLeft{\PaleoHebrewRoboFont}{1.81}{\healphabet}\\
+    \AlphabetHistoryRightToLeft{\PaleoHebrewPhoenicianFont}{2.13}{𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕}\\
+
+    \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleofupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleoflower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomAFont}{1.82}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomAFont}{1.82}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomBFont}{1.82}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomBFont}{1.82}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishAFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishAFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishBFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishBFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishCFont}{1.82}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishCFont}{1.82}{\paleoijkupper}\\
+    \AlphabetHistoryRightToLeft{\AramaicFont}{2.13}{𐡀𐡁𐡂𐡃𐡄𐡅𐡆𐡇𐡈𐡉𐡊𐡋𐡌𐡍𐡎𐡏𐡐𐡑𐡒𐡓𐡔𐡕}\\
+    \AlphabetHistoryASCII{\PaleoHebrewIsaiahScrollFont}{1.81}{\paleolupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewIsaiahScrollFont}{1.81}{\paleollower}\\
+    \AlphabetHistoryASCII{\HebrewDavidFont}{2.66}{\healphabet}\\
+    \AlphabetHistoryASCII{\HebrewEzraFont}{2.68}{\healphabet}\\
+    \end{flushright}
+    \cleardoublepage
+}
+
 % ------------------------------------------------------------
 % Book / chapter headings
 % ------------------------------------------------------------
@@ -1906,7 +2014,7 @@
 \pagenumbering{gobble}
 \pagestyle{empty}
 \wetitlepage
-\input{cover}
+\AlphabetHistoryPage
 
 \frontmatter
 \pagenumbering{gobble}
@@ -2086,44 +2194,45 @@
 %\include{4-numbers/35}
 %\include{4-numbers/36}
 
+\BookCoverPage{Dudetheyreontome}{Chapter 1: On the Lamb}
 \Book{Dudetheyreontome}
-\include{5-deuteronomy/01}
-%\include{5-deuteronomy/02}
-%\include{5-deuteronomy/03}
-%\include{5-deuteronomy/04}
-%\include{5-deuteronomy/05}
-%\include{5-deuteronomy/06}
-%\include{5-deuteronomy/07}
-%\include{5-deuteronomy/08}
-%\include{5-deuteronomy/09}
-%\include{5-deuteronomy/10}
-%\include{5-deuteronomy/11}
-%\include{5-deuteronomy/12}
-%\include{5-deuteronomy/13}
-%\include{5-deuteronomy/14}
-%\include{5-deuteronomy/15}
-%\include{5-deuteronomy/16}
-%\include{5-deuteronomy/17}
-%\include{5-deuteronomy/18}
-%\include{5-deuteronomy/19}
-%\include{5-deuteronomy/20}
-%\include{5-deuteronomy/21}
-%\include{5-deuteronomy/22}
-%\include{5-deuteronomy/23}
-%\include{5-deuteronomy/24}
-%\include{5-deuteronomy/25}
-%\include{5-deuteronomy/26}
-%\include{5-deuteronomy/27}
-%\include{5-deuteronomy/28}
-\include{5-deuteronomy/29}
-\include{5-deuteronomy/30}
-\include{5-deuteronomy/31}
-\include{5-deuteronomy/32}
-\include{5-deuteronomy/33}
-\include{5-deuteronomy/34}
+\include{5-dudetheyreontome/5-deuteronomy/01}
+%\include{5-dudetheyreontome/5-deuteronomy/02}
+%\include{5-dudetheyreontome/5-deuteronomy/03}
+%\include{5-dudetheyreontome/5-deuteronomy/04}
+%\include{5-dudetheyreontome/5-deuteronomy/05}
+%\include{5-dudetheyreontome/5-deuteronomy/06}
+%\include{5-dudetheyreontome/5-deuteronomy/07}
+%\include{5-dudetheyreontome/5-deuteronomy/08}
+%\include{5-dudetheyreontome/5-deuteronomy/09}
+%\include{5-dudetheyreontome/5-deuteronomy/10}
+%\include{5-dudetheyreontome/5-deuteronomy/11}
+%\include{5-dudetheyreontome/5-deuteronomy/12}
+%\include{5-dudetheyreontome/5-deuteronomy/13}
+%\include{5-dudetheyreontome/5-deuteronomy/14}
+%\include{5-dudetheyreontome/5-deuteronomy/15}
+%\include{5-dudetheyreontome/5-deuteronomy/16}
+%\include{5-dudetheyreontome/5-deuteronomy/17}
+%\include{5-dudetheyreontome/5-deuteronomy/18}
+%\include{5-dudetheyreontome/5-deuteronomy/19}
+%\include{5-dudetheyreontome/5-deuteronomy/20}
+%\include{5-dudetheyreontome/5-deuteronomy/21}
+%\include{5-dudetheyreontome/5-deuteronomy/22}
+%\include{5-dudetheyreontome/5-deuteronomy/23}
+%\include{5-dudetheyreontome/5-deuteronomy/24}
+%\include{5-dudetheyreontome/5-deuteronomy/25}
+%\include{5-dudetheyreontome/5-deuteronomy/26}
+%\include{5-dudetheyreontome/5-deuteronomy/27}
+%\include{5-dudetheyreontome/5-deuteronomy/28}
+\include{5-dudetheyreontome/5-deuteronomy/29}
+\include{5-dudetheyreontome/5-deuteronomy/30}
+\include{5-dudetheyreontome/5-deuteronomy/31}
+\include{5-dudetheyreontome/5-deuteronomy/32}
+\include{5-dudetheyreontome/5-deuteronomy/33}
+\include{5-dudetheyreontome/5-deuteronomy/34}
 
 \chapter*{Apocrypha}%
 \addcontentsline{toc}{chapter}{Apocrypha}
-\include{apocrypha}
+\include{5-dudetheyreontome/apocrypha}
 
 \end{document}
