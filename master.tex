@@ -78,7 +78,7 @@
 \newcommand{\LocalFontPath}{./fonts/}
 
 \setmainfont{FreeSerif}
-\newfontfamily\LawFont{DejaVu Sans Mono}
+\newfontfamily\LawFont[Scale=0.90]{DejaVu Sans Mono}
 
 % The Ancients
 \newfontfamily\Cun[
@@ -1154,7 +1154,7 @@
 
 \DeclareSourceProfile{Records}
     {\EnglishFont} 		{\SourceBackground{Recordsbgcolor}\Records}
-    {\PaleoASCIIGezer} 	{\SourceBackground{Recordsbgcolor}\Records}
+    {\PaleoHebrewMono} 	{\SourceBackground{Recordsbgcolor}\Records}
 
 \DeclareSourceProfile{Other}
     {\EnglishFont}  		{\SourceBackground{Otherbgcolor}\OtherSource}
@@ -1469,16 +1469,12 @@
         {\Poetry Italics}
         &
         {\Poetry
-            Songs, early poetry,
-            of the {\Levite Levites} in the South
-            {\Mushite (}{\Aaronid Exodus 15}{\Mushite )},
+            Songs and early poetry,
+            from the {\Levite Levites} in the South
+            {\Mushite (}{\Aaronid Exodus 15}{\Mushite , Numbers 21, 23--24, Deuteronomy 33}{\Mushite )},
             \newline
             of the \cG{Israelites} in the North
-            \cG{(Judges 5, Genesis 49)},
-            \newline
-            and possibly older texts later included by the
-            Deuteronomistic Historians
-            {\Mushite (Deuteronomy 32).}
+            \cG{(Judges 5, Genesis 49).}
         }
         \\
 
@@ -1530,27 +1526,39 @@
     \endgroup
 
     \cleardoublepage
-    \FontChoicePage
+    \PrimevalSourceFontsPage
+    \PrimarySourceFontsPage
 }
 
 \iffalse
 \section{nav: authors}
 \fi
 
-\newcommand{\FontChoicePage}{%
+\newcommand{\FontPageHeading}[1]{%
+    \SourceLegendTitle
+    \vspace{0.45em}
+    \begin{center}
+        {\scshape\Large #1}\\[0.8em]
+    \end{center}
+}
+
+\newcommand{\PrimevalSourceFontsPage}{%
     \cleardoublepage
     \thispagestyle{plain}
 
     \HiddenChapterHeading{}%
-    \vspace*{-2.2em}
+    \vspace*{-5.5em}
 
-    \begin{center}
-        {\scshape\Large Fonts}\\[0.8em]
-    \end{center}
+    \FontPageHeading{The Primeval Sources}
 
     \begingroup
     \footnotesize
     \renewcommand{\arraystretch}{1.45}
+
+    Songs, records, and old blessings get older alphabets than the main
+    narrative sources. The rule is boring enough to be true: older text,
+    older font.
+    \par\smallskip
 
     \noindent
     \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
@@ -1558,18 +1566,69 @@
         \hProtoA{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eProtoA{
-            Early Levite poetry uses a fifteenth-century Proto-Sinaitic hand:
-            older, rougher, and good for the Song of the Sea.
+            Song of the Sea uses the oldest Proto-Sinaitic font here:
+            early, rough, and right for a south-Levite victory song.
         }
         \\
 
         \hProto{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eProto{
-            Early Israelite poetry uses the thirteenth-century Proto-Sinaitic hand:
-            still old, less cave-wall-on-fire, and right for the Blessing of Jacob.
+            Early Israelite poetry and the oldest Deuteronomy material use
+            the second Proto-Sinaitic font. On this page, call it
+            Proto-Canaanite: same alphabet road, less Sinai tourism.
         }
         \\
+
+        \hProtoF{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eProtoF{
+            Numbers 21 and the old Balaam poems in Numbers 23--24 use the
+            third Proto-Sinaitic font: still primeval, but a little later
+            and a little more alphabet-shaped.
+        }
+        \\
+
+        \hPaleoM{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eP{
+            The Priestly Blessing in Numbers 6 uses a Ketef Hinnom scroll
+            font because that blessing is the oldest biblical text yet found.
+        }
+        \\
+
+        \hRecords{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eBookOfRecords{
+            Records use Paleo Hebrew Mono and grey text: bureaucracy,
+            accounting, begats. A spreadsheet wearing sandals. The mono font
+            fits the Book of Records because it probably preserves
+            pre-monarchic or early-monarchic official lists: old enough for
+            Paleo-Hebrew, orderly enough for mono.
+        }
+        \\
+
+    \end{tabular}
+    \endgroup
+
+    \cleardoublepage
+}
+
+\newcommand{\PrimarySourceFontsPage}{%
+    \cleardoublepage
+    \thispagestyle{plain}
+
+    \HiddenChapterHeading{}%
+    \vspace*{-5.5em}
+
+    \FontPageHeading{The Primary Sources}
+
+    \begingroup
+    \footnotesize
+    \renewcommand{\arraystretch}{1.45}
+
+    \noindent
+    \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
 
         \hJ{אבגדהוזחטיכלמנסעפצקרשת}
         &
@@ -1582,8 +1641,8 @@
         \hE{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eE{
-            E is Mushite and Levite, but uses the cleaner Tel Dan Paleo-Hebrew
-            hand. Less chaos, same priestly north/south argument.
+            E is Mushite and Levite, but uses a clean Paleo-Hebrew font.
+            Less chaos, same priestly north/south argument.
         }
         \\
 
@@ -1607,19 +1666,13 @@
         }
         \\
 
-        \hRecords{אבגדהוזחטיכלמנסעפצקרשת}
-        &
-        \eBookOfRecords{
-            Records use Gezer Paleo-Hebrew and grey text: bureaucracy,
-            accounting, begats. A spreadsheet wearing sandals.
-        }
-        \\
-
     \end{tabular}
     \endgroup
 
     \cleardoublepage
 }
+
+\let\FontChoicePage\PrimevalSourceFontsPage
 
 % ------------------------------------------------------------
 % Header / footer
@@ -1721,12 +1774,12 @@
     \thispagestyle{empty}
     \begin{flushright}
     \egypt{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}
-    \AlphabetHistoryASCII{\ProtoSinaiticBestFont}{1.81}{\healphabet}\\
     \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoalower}\\
-    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoaupper}\\
     \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protobupper}\\
-    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protoblower}\\
     \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protocupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticBestFont}{1.81}{\healphabet}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoaupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protoblower}\\
     \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protoclower}\\
     \AlphabetHistoryASCII{\PaleoHebrewTelZayitFont}{1.81}{\paleoalower}\\
     \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleobupper}\\
