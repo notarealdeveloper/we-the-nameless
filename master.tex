@@ -70,6 +70,7 @@
 \usepackage{float}
 \usepackage{stackengine}
 \usepackage{wrapfig}
+\usepackage{array}
 
 % ------------------------------------------------------------
 % Languages and fonts
@@ -1421,7 +1422,7 @@
 }
 
 \DeclareRobustCommand{\SourceLegendHeader}{%
-    {\scriptsize
+    {\footnotesize
     \eJ{J}\quad
     \eE{E}\quad
     \eP{P}\quad
@@ -1452,10 +1453,10 @@
 
 \newcommand{\SourceLegendTitle}{%
     \begin{center}
-        {\scshape\large The Authors}\\[0.2em]
-        {\itshape\normalsize or}\\[0.45em]
-        {\LARGE We: The Nameless}\\[0.45em]
-        {\footnotesize
+        {\scshape\Large The Authors}\\[0.2em]
+        {\itshape\large or}\\[0.45em]
+        {\Huge We: The Nameless}\\[0.45em]
+        {\large
             \eJ{J}\quad
             \eE{E}\quad
             \eP{P}\quad
@@ -1466,11 +1467,11 @@
 }
 
 \newcommand{\SourceLegendPage}{%
-    \cleardoublepage
+    \clearpage
     \thispagestyle{plain}
 
-    \HiddenChapterHeading{}%
-    \vspace*{-7.5em}
+    \markboth{}{}%
+    \vspace*{-8.2em}
 
     \SourceLegendTitle
     \vspace{0.25em}
@@ -1481,7 +1482,7 @@
     \renewcommand{\arraystretch}{0.98}
 
     \noindent
-    \begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
+    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.23\linewidth}>{\RaggedRight\arraybackslash}p{0.71\linewidth}@{}}
 
         Regular
         &
@@ -1557,8 +1558,8 @@
     \clearpage
     \thispagestyle{plain}
 
-    \HiddenChapterHeading{}%
-    \vspace*{-7.5em}
+    \markboth{}{}%
+    \vspace*{-8.2em}
 
     \SourceLegendTitle
     \vspace{0.25em}
@@ -1568,9 +1569,9 @@
     \renewcommand{\arraystretch}{0.98}
     \newcommand{\SourceLegendRow}[2]{%
         \noindent
-        \begin{minipage}[t]{0.23\linewidth}##1\end{minipage}%
+        \begin{minipage}[t]{0.23\linewidth}\RaggedRight ##1\end{minipage}%
         \hfill
-        \begin{minipage}[t]{0.71\linewidth}##2\end{minipage}%
+        \begin{minipage}[t]{0.71\linewidth}\RaggedRight ##2\end{minipage}%
         \par\vspace{0.7em}%
     }
 
@@ -1628,9 +1629,9 @@
     \footnotetext[\SourceLegendThanksFootnote]{{\Yahwist S}he says thanks, welcome to We.}
     \endgroup
 
-    \cleardoublepage
     \PrimevalSourceFontsPage
     \PrimarySourceFontsPage
+    \SourceTimelinePage
 }
 
 \newcommand{\FontPageHeading}[1]{%
@@ -1641,12 +1642,14 @@
     \end{center}
 }
 
+\newcommand{\FontKeySample}[1]{\makebox[0.43\linewidth][l]{\scalebox{0.88}{#1}}}
+
 \newcommand{\PrimevalSourceFontsPage}{%
-    \cleardoublepage
+    \clearpage
     \thispagestyle{plain}
 
-    \HiddenChapterHeading{}%
-    \vspace*{-5.5em}
+    \markboth{}{}%
+    \vspace*{-6.2em}
 
     \FontPageHeading{The Primeval Sources}
 
@@ -1660,9 +1663,9 @@
     \par\smallskip
 
     \noindent
-    \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
+    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.43\linewidth}>{\RaggedRight\arraybackslash}p{0.51\linewidth}@{}}
 
-        \hProtoA{אבגדהוזחטיכלמנסעפצקרשת}
+        \FontKeySample{\hProtoA{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eProtoA{
             Song of the Sea uses the oldest Proto-Sinaitic font here:
@@ -1670,7 +1673,7 @@
         }
         \\
 
-        \hProto{אבגדהוזחטיכלמנסעפצקרשת}
+        \FontKeySample{\hProto{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eProto{
             Early Israelite poetry and the oldest Deuteronomy material use
@@ -1679,7 +1682,7 @@
         }
         \\
 
-        \hProtoF{אבגדהוזחטיכלמנסעפצקרשת}
+        \FontKeySample{\hProtoF{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eProtoF{
             Numbers 21 and the old Balaam poems in Numbers 23--24 use the
@@ -1688,7 +1691,7 @@
         }
         \\
 
-        \hPaleoM{אבגדהוזחטיכלמנסעפצקרשת}
+        \FontKeySample{\hPaleoM{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eP{
             The Priestly Blessing in Numbers 6 uses a Ketef Hinnom scroll
@@ -1696,7 +1699,7 @@
         }
         \\
 
-        \hRecords{אבגדהוזחטיכלמנסעפצקרשת}
+        \FontKeySample{\hRecords{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eBookOfRecords{
             Records use Paleo Hebrew Mono and grey text: bureaucracy,
@@ -1710,15 +1713,15 @@
     \end{tabular}
     \endgroup
 
-    \cleardoublepage
+    \clearpage
 }
 
 \newcommand{\PrimarySourceFontsPage}{%
-    \cleardoublepage
+    \clearpage
     \thispagestyle{plain}
 
-    \HiddenChapterHeading{}%
-    \vspace*{-5.5em}
+    \markboth{}{}%
+    \vspace*{-6.2em}
 
     \FontPageHeading{The Primary Sources}
 
@@ -1727,9 +1730,9 @@
     \renewcommand{\arraystretch}{1.45}
 
     \noindent
-    \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
+    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.43\linewidth}>{\RaggedRight\arraybackslash}p{0.51\linewidth}@{}}
 
-        \hJ{אבגדהוזחטיכלמנסעפצקרשת}
+        \FontKeySample{\hJ{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eJ{
             J is native to the land, non-bold, and in Paleo-Hebrew because J
@@ -1737,7 +1740,7 @@
         }
         \\
 
-        \hE{אבגדהוזחטיכלמנסעפצקרשת}
+        \FontKeySample{\hE{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eE{
             E is Mushite and Levite, but uses a clean Paleo-Hebrew font.
@@ -1745,7 +1748,7 @@
         }
         \\
 
-        \hP{אבגדהוזחטיכלמנסעפצקרשת}
+        \FontKeySample{\hP{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eP{
             P defaults to Ezra square script with niqqud: anachronistic,
@@ -1756,7 +1759,7 @@
         }
         \\
 
-        \hR{אבגדהוזחטיכלמנסעפצקרשת}
+        \FontKeySample{\hR{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eR{
             R uses square script in Ezra font with no niqqud,
@@ -1768,7 +1771,46 @@
     \end{tabular}
     \endgroup
 
-    \cleardoublepage
+    \clearpage
+}
+
+\newcommand{\TimelineYear}[1]{{\fontsize{8}{10}\selectfont #1}}
+\newcommand{\TimelineGlyph}[1]{{\TraditionalChineseFontA\fontsize{21}{24}\selectfont #1}}
+\newcommand{\TimelineWord}[1]{{\EnglishFont\fontsize{18}{22}\selectfont #1}}
+\newcommand{\TimelineMark}[2]{{\setlength{\fboxsep}{2pt}\colorbox{#1bgcolor}{\color{#1color}\EnglishFont\bfseries\fontsize{16}{18}\selectfont #2}}}
+\newcommand{\TimelineMarkDtrA}{{\setlength{\fboxsep}{2pt}\colorbox{Dtr1bgcolor}{\color{Dtr1color}\EnglishFont\bfseries\fontsize{16}{18}\selectfont D}}}
+\newcommand{\TimelineMarkDtrB}{{\setlength{\fboxsep}{2pt}\colorbox{Dtr2bgcolor}{\color{Dtr2color}\EnglishFont\bfseries\fontsize{16}{18}\selectfont D}}}
+\newcommand{\TimelineMarkRJE}{{\setlength{\fboxsep}{2pt}\colorbox{RJEbgcolor}{\color{RJEcolor}\EnglishFont\bfseries\fontsize{16}{18}\selectfont R}}}
+
+\newcommand{\SourceTimelinePage}{%
+    \clearpage
+    \thispagestyle{plain}
+    \markboth{}{}%
+    \vspace*{-5.8em}
+    \begin{center}
+    \begingroup
+    \setlength{\tabcolsep}{0pt}%
+    \renewcommand{\arraystretch}{1.35}%
+    \begin{tabular}{@{}r@{\hspace{1.2em}}c@{\hspace{1.9em}}c@{\hspace{1.9em}}c@{}}
+        & \TimelineGlyph{月} & & \TimelineGlyph{日} \\
+        \TimelineYear{1000} & & & \\
+        & \TimelineMark{J}{J} & & \\
+        \TimelineYear{922} & & & \TimelineMark{E}{E} \\
+        \TimelineYear{722} & & \TimelineMarkRJE & \\
+        & \TimelineMark{J}{J}\TimelineMark{E}{E} & & \\
+        \TimelineYear{715} & & \TimelineMark{P}{P} & \\
+        \TimelineYear{686} & & & \\
+        \TimelineYear{640} & & & \TimelineMarkDtrA \\
+        \TimelineYear{609} & & & \\
+        \TimelineYear{587} & & \TimelineMarkDtrB & \\
+        \TimelineYear{538} & & \TimelineMark{R}{R} & \\
+        & \TimelineGlyph{山三} & & \\
+        & \multicolumn{3}{c}{\TimelineWord{The Nameless}} \\
+        & \TimelineGlyph{曰} & & \\
+    \end{tabular}
+    \endgroup
+    \end{center}
+    \clearpage
 }
 
 \let\FontChoicePage\PrimevalSourceFontsPage
@@ -1961,7 +2003,7 @@
 \newcommand{\Chapter}[1]{%
     \ChapterHeading{#1}%
     \def\CurrentChapter{#1}%
-    %\addcontentsline{toc}{section}{#1}%
+    \addcontentsline{toc}{section}{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
 }
 
@@ -1977,7 +2019,7 @@
 \newcommand{\Apocryphon}[1]{%
     \ChapterHeading{#1}%
     \def\CurrentChapter{#1}%
-    %\addcontentsline{toc}{section}{#1}%
+    \addcontentsline{toc}{section}{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
 }
 
