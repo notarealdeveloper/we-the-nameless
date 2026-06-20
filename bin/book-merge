@@ -16,6 +16,20 @@ BOOK_TITLES = {
     "11-ezra": "Ezra",
 }
 
+BOOK_PARTS = {
+    "08-samuel": {
+        "1-": "I Samuel",
+        "2-": "II Samuel",
+    },
+    "09-kings": {
+        "1-": "I Kings",
+        "2-": "II Kings",
+    },
+    "11-ezra": {
+        "nehemiah-": "Nehemiah",
+    },
+}
+
 KJV_CHAPTERS = [
     ("Genesis", 50),
     ("Exodus", 40),
@@ -305,10 +319,19 @@ def include_block(root, books):
     for book, chapters in books.items():
         lines.append("")
         lines.append(f"\\Book{{{BOOK_TITLES[book]}}}")
+        current_part = None
         for chapter in chapters:
+            part = None
+            for prefix, title in BOOK_PARTS.get(book, {}).items():
+                if chapter.startswith(prefix):
+                    part = title
+                    break
+            if part and part != current_part:
+                lines.append(f"\\BookPart{{{part}}}")
+                current_part = part
             lines.append(f"\\include{{{book}/{chapter}}}")
     lines.append("")
-    lines.append(r"\include{apocrypha}")
+    lines.append(r"%\include{apocrypha}")
     lines.append("")
     lines.append(r"\end{document}")
     return "\n".join(lines)
@@ -319,7 +342,7 @@ def update_master_includes(root, books):
     text = master.read_text(encoding="utf-8")
     ensure_x_source(master)
     text = master.read_text(encoding="utf-8")
-    m = re.search(r"\n%?\\Book\{Joshua\}.*?\n\\include\{apocrypha\}\s*\n\\end\{document\}\s*$", text, re.S)
+    m = re.search(r"\n%?\\Book\{Joshua\}.*?\n%?\\include\{apocrypha\}\s*\n\\end\{document\}\s*$", text, re.S)
     if not m:
         die("master.tex: cannot find Joshua-to-end include block")
     text = text[:m.start()] + include_block(root, books) + "\n"

@@ -1969,6 +1969,10 @@
     \addcontentsline{toc}{chapter}{#1}%
 }
 
+\newcommand{\BookPart}[1]{%
+    \def\CurrentBook{#1}%
+}
+
 \iffalse
 \section{nav: chapters}
 \fi
@@ -2586,6 +2590,7 @@
 \include{07-judges/21}
 
 \Book{Samuel}
+\BookPart{I Samuel}
 \include{08-samuel/1-01}
 \include{08-samuel/1-02}
 \include{08-samuel/1-03}
@@ -2617,6 +2622,7 @@
 \include{08-samuel/1-29}
 \include{08-samuel/1-30}
 \include{08-samuel/1-31}
+\BookPart{II Samuel}
 \include{08-samuel/2-01}
 \include{08-samuel/2-02}
 \include{08-samuel/2-03}
@@ -2643,6 +2649,7 @@
 \include{08-samuel/2-24}
 
 \Book{Kings}
+\BookPart{I Kings}
 \include{09-kings/1-01}
 \include{09-kings/1-02}
 \include{09-kings/1-03}
@@ -2665,6 +2672,7 @@
 \include{09-kings/1-20}
 \include{09-kings/1-21}
 \include{09-kings/1-22}
+\BookPart{II Kings}
 \include{09-kings/2-01}
 \include{09-kings/2-02}
 \include{09-kings/2-03}
@@ -2714,19 +2722,20 @@
 \include{11-ezra/08}
 \include{11-ezra/09}
 \include{11-ezra/10}
-\include{11-ezra/11}
-\include{11-ezra/12}
-\include{11-ezra/13}
-\include{11-ezra/14}
-\include{11-ezra/15}
-\include{11-ezra/16}
-\include{11-ezra/17}
-\include{11-ezra/18}
-\include{11-ezra/19}
-\include{11-ezra/20}
-\include{11-ezra/21}
-\include{11-ezra/22}
-\include{11-ezra/23}
+\BookPart{Nehemiah}
+\include{11-ezra/nehemiah-01}
+\include{11-ezra/nehemiah-02}
+\include{11-ezra/nehemiah-03}
+\include{11-ezra/nehemiah-04}
+\include{11-ezra/nehemiah-05}
+\include{11-ezra/nehemiah-06}
+\include{11-ezra/nehemiah-07}
+\include{11-ezra/nehemiah-08}
+\include{11-ezra/nehemiah-09}
+\include{11-ezra/nehemiah-10}
+\include{11-ezra/nehemiah-11}
+\include{11-ezra/nehemiah-12}
+\include{11-ezra/nehemiah-13}
 
 %\include{apocrypha}
 
