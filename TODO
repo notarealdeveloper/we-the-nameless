@@ -11,6 +11,10 @@ Don't overwrite the tex files we have in [12345]-*/*.tex
 
 Just generate python code that can reliably merge the files in heb/ and eng/ into files in the latter books starting at 6-joshua and continuing until we're done with everything we have available at present.
 
+Then run that code, and keep iterating until you're confident that you've got correct latex files for every book we have available, and all of its chapters, and that the hebrew and english of each sentence match.
+
+Once you get to a place where we no longer have a source map, generate two plain modern blah (for light mode) and white (for dark mode) normal english font and normal hebrew font sources called \\hX and \\eX, and wrap the rest of the verses of every chapter of every book in those until we're done, and add those \\hX and \\eX definitions to master.tex.
+
 End by making sure the \\includes at the end of master.tex are in the right order and not missing any books or chapters, that they're formatted consistently, and then uncomment all of them.
 
 Don't commit or try to build the full uncommented book yet.
