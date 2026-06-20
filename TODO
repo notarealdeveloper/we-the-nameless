@@ -2,10 +2,46 @@
 
 lord --verbose << "EOF"
 
-Fix these parsing problems:
-    Genesis 47:31
+1. In the font legend, where we say:
 
-Make these global adjustments:
-    P's Hebrew font should be slightly bigger, without making it bold.
+    The Priestly Blessing in Numbers 6 uses a Ketef Hinnom
+    scroll font because that blessing is the oldest biblical text
+    yet found.
 
+We need the Hebrew font on the left to be P color, not J color,
+same as the English there.
+
+2. Make the E font slightly smaller globally.
+
+3. In the font legend, The Prımary Sources, don't use the term "font."
+   Also don't reference LaTeX.
+
+4. In the front matter, like the contents and source font legend pages,
+    TURN OFF the xviii and so on. They're STILL THERE, in black.
+
+5. Make it be like this:
+
+Mono                Laws.
+                    All forms of code, legal and otherwise, are written in mono\
+                    spaced font, for reasons that need not be explained.
+
+                    Mushite Laws: Covenant Code (Exodus 20:22–23:19)
+                                  Deuteronomistic Law Code (Dtn).
+
+                    Aaronid Laws: Dear lord.
+                                  % Exodus 25 onward, where P talks how it's the law
+                                  % to make him pretty clothes and bring him gold
+                                  % and he doesn't stop until damn well into like
+                                  % Numbers, somewhere around the part where they
+                                  % have repetitive gift lists for 12 Days & that
+                                  % was pretty clearly what the authors of The 12
+                                  % Days Christmas had in mind when they invented
+                                  % the song, I mean they actually even say ``two
+                                  % turtledoves,'' in that shit it's not subtle.
+
+                    J Laws: Nonexistent, with the exception of a weird version of
+                            the 10 commandments, which may well have been a joke.
+                            J is f\redacted{ucking}\eR{oundational to the biblical text and
+                            an essential path to understanding God's} awesome \eR{power.}}%
+                            \LegendFootmarkJ{SourceLegendThanksFootnote}%
 EOF

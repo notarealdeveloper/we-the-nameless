@@ -1206,8 +1206,8 @@
 % Mushites
 
 \DeclareSourceProfile{E}
-    {\EnglishFont} {\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
-    {\PaleoASCIIStandard} {\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
+    {\EnglishFont} {\addfontfeatures{Scale=0.96}\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
+    {\PaleoASCIIStandard} {\addfontfeatures{Scale=0.96}\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
 
 \DeclareSourceProfile{DtrA}
     {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\DeuteronomistAStyle\Redactor\mdseries}
@@ -1483,7 +1483,7 @@
 
 \newcommand{\SourceLegendPage}{%
     \cleardoublepage
-    \thispagestyle{plain}
+    \thispagestyle{empty}
 
     \HiddenChapterHeading{}%
     \vspace*{-7.5em}
@@ -1571,7 +1571,7 @@
     \endgroup
 
     \clearpage
-    \thispagestyle{plain}
+    \thispagestyle{empty}
 
     \HiddenChapterHeading{}%
     \vspace*{-7.5em}
@@ -1607,32 +1607,38 @@
     \SourceLegendRow{{\LawFont Mono}}{%
         {\LawFont
             Laws.\par
-            All forms of code, legal and otherwise, are written in mono\textbackslash{}\par
+            All forms of code, legal and otherwise, are written in mono%
             spaced font, for reasons that need not be explained.\par
 
+            \smallskip
+            \noindent
+            \begin{tabular}[t]{@{}l@{\quad}p{0.72\linewidth}@{}}
             {\MushiteStyle
-            Mushite Laws\\
-            Covenant Code (Exodus 20:22–23:19)\\
-            Deuteronomistic Law Code (Dtn).}\par
+            Mushite Laws:} &
+            {\MushiteStyle Covenant Code (Exodus 20:22--23:19)}\\
+            &
+            {\MushiteStyle Deuteronomistic Law Code (Dtn).}\\[0.7em]
 
             {\AaronidStyle
-            Aaronid Laws\\
-            Exodus 25--40, where P talks how it's the law\\
-            to make him pretty clothes and bring him gold\\
-            and he doesn't stop until damn well into like\\
-            Numbers, somewhere around the part where they\\
-            have repetitive gift lists for 12 Days \& that\\
-            was pretty clearly what the authors of The 12\\
-            Days Christmas had in mind when they invented\\
-            the song, I mean they actually even say ``two\\
-			turtledoves,'' in that shit it's not subtle.}\par
+            Aaronid Laws:} &
+            {\AaronidStyle Dear lord.}\\[0.7em]
+            % Exodus 25 onward, where P talks how it's the law
+            % to make him pretty clothes and bring him gold
+            % and he doesn't stop until damn well into like
+            % Numbers, somewhere around the part where they
+            % have repetitive gift lists for 12 Days & that
+            % was pretty clearly what the authors of The 12
+            % Days Christmas had in mind when they invented
+            % the song, I mean they actually even say ``two
+            % turtledoves,'' in that shit it's not subtle.
 
-            {\Yahwist J Laws\par
-            Nonexistent. With the exception of a weird version of
+            {\Yahwist J Laws:} &
+            {\Yahwist Nonexistent, with the exception of a weird version of
             the 10 commandments, which may well have been a joke.
             J is f\redacted{ucking}\eR{oundational to the biblical text and
             an essential path to understanding God's} awesome \eR{power.}}%
             \LegendFootmarkJ{SourceLegendThanksFootnote}%
+            \end{tabular}%
         }
     }
 
@@ -1659,7 +1665,7 @@
 
 \newcommand{\PrimevalSourceFontsPage}{%
     \cleardoublepage
-    \thispagestyle{plain}
+    \thispagestyle{empty}
 
     \HiddenChapterHeading{}%
     \vspace*{-5.5em}
@@ -1704,7 +1710,7 @@
         }
         \\
 
-        \hPaleoM{אבגדהוזחטיכלמנסעפצקרשת}
+        \PaleoMFont{\color{Pcolor}\mdseries}{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eP{
             The Priestly Blessing in Numbers 6 uses a Ketef Hinnom scroll
@@ -1731,7 +1737,7 @@
 
 \newcommand{\PrimarySourceFontsPage}{%
     \cleardoublepage
-    \thispagestyle{plain}
+    \thispagestyle{empty}
 
     \HiddenChapterHeading{}%
     \vspace*{-5.5em}
@@ -1756,7 +1762,7 @@
         \hE{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eE{
-            E is Mushite and Levite, but uses a clean Paleo-Hebrew font.
+            E is Mushite and Levite, but uses a clean Paleo-Hebrew hand.
             Less chaos, same priestly north/south argument.
         }
         \\
@@ -1765,17 +1771,16 @@
         &
         \eP{
             P defaults to Ezra square script with niqqud: anachronistic,
-            but spiritually correct, because P loves the dots. Use PP,
-            or \texttt{\string\UsePaleoP}, when you want the Hezekiah-era
-            Paleo-Hebrew version P probably would have written; use
-            \texttt{\string\UseSquareP} to return to square P.
+            but spiritually correct, because P loves the dots. A
+            Hezekiah-era Paleo-Hebrew version is available when P needs to
+            look like what P probably would have written.
         }
         \\
 
         \hR{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eR{
-            R uses square script in Ezra font with no niqqud,
+            R uses Ezra square script with no niqqud,
             because he's writing after the Babylonian exile,
             and is probably literally Ezra.
         }
@@ -2329,7 +2334,8 @@
 \wetitlepage
 
 \frontmatter
-\pagestyle{plain}
+\pagenumbering{gobble}
+\pagestyle{empty}
 \tableofcontents
 \SourceLegendPage
 \mainmatter
