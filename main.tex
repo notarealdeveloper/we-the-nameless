@@ -421,8 +421,8 @@
 \definecolor{Jcolor}{RGB}{0,120,0}
 \definecolor{Ecolor}{RGB}{185,145,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
-\colorlet{Dtr1color}{Ecolor!92!black}
-\colorlet{Dtr2color}{Ecolor!65!orange}
+\colorlet{Dtr1color}{Ecolor!78!black}
+\colorlet{Dtr2color}{orange!72!black}
 \colorlet{Dtncolor}{Ecolor}
 \colorlet{Jbgcolor}{Jcolor!12!white}
 \colorlet{Ebgcolor}{Ecolor!16!white}
@@ -493,8 +493,8 @@
     \colorlet{Ebgcolor}{Ecolor!20!bg}
     \colorlet{Pbgcolor}{Pcolor!22!bg}
 
-    \colorlet{Dtr1color}{Ecolor!84!fg}
-    \colorlet{Dtr2color}{Ecolor!60!ObsOrange}
+    \colorlet{Dtr1color}{ObsYellow!82!bg}
+    \colorlet{Dtr2color}{ObsOrange!82!bg}
     \colorlet{Dtncolor}{Ecolor}
     \definecolor{Dtr1bgcolor}{HTML}{5a4d30}
     \definecolor{Dtr2bgcolor}{HTML}{5f4534}
@@ -1055,19 +1055,19 @@
 
 \DeclareSourceProfile{E}
     {\EnglishFont} {\SourceBackground{Ebgcolor}\Levite\Mushite}
-    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Ebgcolor}\Levite\Mushite}
+    {\PaleoASCIIGezer} {\SourceBackground{Ebgcolor}\Levite\Mushite}
 
 \DeclareSourceProfile{DtrA}
-    {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\Levite\DeuteronomistA}
-    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr1bgcolor}\Levite\DeuteronomistA}
+    {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\DeuteronomistA\Redactor\mdseries}
+    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr1bgcolor}\DeuteronomistA\Redactor\mdseries}
 
 \DeclareSourceProfile{DtrB}
-    {\EnglishFont} {\SourceBackground{Dtr2bgcolor}\Levite\DeuteronomistB}
-    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr2bgcolor}\Levite\DeuteronomistB}
+    {\EnglishFont} {\SourceBackground{Dtr2bgcolor}\DeuteronomistB\Redactor\mdseries}
+    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr2bgcolor}\DeuteronomistB\Redactor\mdseries}
 
 \DeclareSourceProfile{Dtn}
-    {\LawFont} {\SourceBackground{Dtnbgcolor}\Levite\DeuteronomicLaw}
-    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtnbgcolor}\Levite\DeuteronomicLaw}
+    {\LawFont} {\Levite\DeuteronomicLaw}
+    {\HebrewDavid} {\HebrewDavidLarge\Levite\DeuteronomicLaw}
 
 % Aaronids
 
@@ -1076,8 +1076,8 @@
     {\HebrewEzraRaw} {\HebrewEzraLarge\SourceBackground{Pbgcolor}\Levite\Aaronid}
 
 \DeclareSourceProfile{R}
-    {\EnglishFont}   {\SourceBackground{Rbgcolor}\Levite\Aaronid\Redactor}
-    {\HebrewEzraRaw} {\SourceBackground{Rbgcolor}\Levite\Aaronid\Redactor}
+    {\EnglishFont}   {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
+    {\HebrewEzraRaw} {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
 
 % Others
 
@@ -1118,8 +1118,8 @@
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
-\newcommand{\DtrALabel}{\eDtrA{D}}
-\newcommand{\DtrBLabel}{\eDtrB{D}}
+\newcommand{\DtrALabel}{\eDtrA{Dtr1}}
+\newcommand{\DtrBLabel}{\eDtrB{Dtr2}}
 \newcommand{\DtnLabel}{\eDtn{Dtn}}
 \newcommand{\eR}[1]{{\estyleR #1}}
 \newcommand{\eRJE}[1]{{\estyleRJE #1}}
@@ -1324,9 +1324,9 @@
 }
 
 \newcommand{\LawRows}{%
-    \LawRow{{\Aaronid Aaronid Laws}}{\Aaronid Leviticus; Exodus 25--40.}%
+    \LawRow{{\Aaronid Aaronid Laws}}{\Aaronid Leviticus; Exodus 25-40.}%
     \LawRow{{\Mushite Mushite Laws}}{\Mushite Covenant Code in Exodus; Deuteronomistic Law Code.}%
-    \LawRow{\cG{J Laws}}{\cG{Rare. Possibly a joke.\footnote{J is the funny one.}}}%
+    \LawRow{\cG{J Laws}}{\cG{Rare. Possibly a joke.\textsuperscript{6}}}%
 }
 
 \newcommand{\LeviteBlend}{%
@@ -1345,10 +1345,10 @@
     \footnotesize
     \renewcommand{\arraystretch}{1.45}
     \noindent\begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
-        \hJ{אבגדהוזחטיכלמנסעפצקרשת} & \eJ{J: explain this}\\
-        \hE{אבגדהוזחטיכלמנסעפצקרשת} & \eE{E: explain this}\\
-        \hP{אבגדהוזחטיכלמנסעפצקרשת} & \eP{P: explain this}\\
-        \hR{אבגדהוזחטיכלמנסעפצקרשת} & \eR{R: explain this}\\
+        \hJ{אבגדהוזחטיכלמנסעפצקרשת} & \eJ{J is in Paleo-Hebrew because J dates to around 922 B.C.}\\
+        \hE{אבגדהוזחטיכלמנסעפצקרשת} & \eE{E is in Paleo-Hebrew from soon after J.}\\
+        \hP{אבגדהוזחטיכלמנסעפצקרשת} & \eP{P is the exception: he would have updated the spelling and script to the new writing system, because he was not making any good letter-shape puns anyway. He would have loved niqqud if he had known about them. Aaronids are all about the exact right way to do stuff. P loves the dots. P basically is the dots.}\\
+        \hR{אבגדהוזחטיכלמנסעפצקרשת} & \eR{R is in square script because he is probably Ezra, after the Babylonian exile.}\\
     \end{tabular}
     \endgroup
     \cleardoublepage
@@ -1357,7 +1357,7 @@
 \newcommand{\SourceLegendTitle}{%
     \begin{center}
         {\scshape\Large The Authors}\\[0.35em]
-        {\itshape\large or}\\[0.35em]
+        {\itshape\large or}\\[0.8em]
         {\Huge We: The Nameless}\\[0.8em]
         {\footnotesize\SourceLegendItems{Records}{Other}}%
     \end{center}
@@ -1377,23 +1377,32 @@
         Regular
         & The People. We write regular. Bold is for the bold.\\
         {\Levite Bold} & {\Levite The Priests. Or the Levites. Same thing.}%
-        \footnote{According to the Mushites, but not the Aaronids. That'll make sense eventually.}%
+        \textsuperscript{1}%
         (\PriestSourceRefs.)\\
 
-        {\SourceBackground{Rbgcolor}\Redactor Background}
-        & {\SourceBackground{Rbgcolor}\Redactor Redactors. Editors, occasionally write small amounts of glue prose to make multiple sources consistent,} {\SourceBackground{RJEbgcolor}\Redactor while others write less and delete more from their sources.}\\[0.7em]
-        \eJ{Green} & \eJ{J. The first author of the bible.\footnote{Aside from a few brief archaic songs.}
-            The first author of prose on earth.\footnote{As far as we know.}
-            The author of nearly all the most popular bible stories.\footnote{Not including the Jesus bits, though J's at least tied.}
-            The author in the bible with the best sense of humor.\footnote{And the most misunderstood.}}\\
+        \eR{Background} \eRJE{Background}
+        & \eR{Redactors. Editors, occasionally write small amounts of glue prose to make multiple sources consistent,} \eRJE{while others write less and delete more from their sources.}\\[0.7em]
+        \eJ{Green} & \eJ{J. The first author of the bible.\textsuperscript{2}
+            The first author of prose on earth.\textsuperscript{3}
+            The author of nearly all the most popular bible stories.\textsuperscript{4}
+            The author in the bible with the best sense of humor.\textsuperscript{5}}\\
         {\Mushite Yellow} & {\Levite\Mushite Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh.} (\MushiteSourceRefs.)\\
         {\Aaronid Blue} & {\Levite\Aaronid Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem.} (\eP{P}, \eR{R}.)\\
         {\DeuteronomistB Orange} & {\Levite\DeuteronomistB Deuteronomists. Mushites after the yellow has been left in the theological toaster.} (\DtrALabel, \DtrBLabel, \DtnLabel.)\\
-        {\itshape Italics} & {\itshape Songs, Early poetry \LeviteBlend{} (Exodus 15), \cG{Israelites in the North} (Judges 5, Genesis 49), {\Mushite Deuteronomy 32}.}\\
         {\color{Graycolor}Grey} & {\color{Graycolor}Bureaucracy: records, begat lists, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
+        {\itshape Italics} & {\itshape Songs, Early poetry \LeviteBlend{} (Exodus 15), \cG{Israelites in the North} (Judges 5, Genesis 49), {\Mushite Deuteronomy 32}.}\\
         {\LawFont Mono} & {\LawFont All forms of code, including legal codes, for reasons that need not be explained.}\\
         \LawRows
     \end{tabular}
+    \par\smallskip
+    {\scriptsize
+    \textsuperscript{1}According to the Mushites, but not the Aaronids. That'll make sense eventually.\par
+    \textsuperscript{2}Aside from a few brief archaic songs.\par
+    \textsuperscript{3}As far as we know.\par
+    \textsuperscript{4}Not including the Jesus bits, though J's at least tied.\par
+    \textsuperscript{5}And the most misunderstood.\par
+    \textsuperscript{6}J is the funny one.\par
+    }
     \endgroup
     \cleardoublepage
     \FontChoicePage
