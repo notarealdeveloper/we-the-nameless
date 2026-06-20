@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+
+Make this symmetric by using the same syntax for both
+
+    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.23\linewidth}>{\RaggedRight\arraybackslash}p{0.71\linewidth}@{}}
+
+    \newcommand{\SourceLegendRow}[2]{%
+        \noindent
+        \begin{minipage}[t]{0.23\linewidth}\RaggedRight ##1\end{minipage}%
+        \hfill
+        \begin{minipage}[t]{0.71\linewidth}\RaggedRight ##2\end{minipage}%
+        \par\vspace{0.7em}%
+    }
+EOF
