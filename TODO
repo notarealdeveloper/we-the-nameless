@@ -1,42 +1,72 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Very good work!
 
-Ok, now:
+0. Fix these warnings
+    Underfull \hbox (badness 10000) in paragraph at lines 2277--2277
+    There's several.
 
-1. In master.tex, try to put similar functionality near other similar functionality,
-   try not to duplicate nav names, but if you need to complexify the code to do so,
-   then DON'T do that, just move similar nav named blocks around to try to consolidate
-   them and not repeat the same nav name, but not in a way that complexifies the code.
+1. Add back chapters to the ToC.
 
-2. In source legend, remove backgrounds in the Bold row.
+2. You have a blank page between every two pages of the source key and font key,
+    I want none of those 4 blank pages.
 
-3. Replace the word Yellohist with Elohist yellow.
+3. The header font feels too small on the pages that say
 
-4. Make R's background a *bit* lighter.
+    The Authors
+        or
+    We: The Nameless
+     J E P R R
 
-5. Make this at the bottom where mono is.
+    I want those bigger, they're pretty.
 
-Mono            Laws.\\
-                All forms of code, legal and otherwise, are written in mono\textbackslash\\
-                spaced font, for reasons that need not be explained.
+4. Can we try one page as an experiment after the source key and font key,
+    where we have
 
-                Mushite Laws\\
-                - Covenant Code (Exodus 20:22–23:19)
-                - Deuteronomistic Law Code (Dtn).
+---------------------------------------------------------------------------
 
-                Aaronid Laws\\
-                - Exodus 25-40, where P talks how it's the law
-                  to make him pretty clothes and bring him gold and doesn't
-                  stop until damn well into Numbers, somewhere around the part
-                  that's clearly the origin of the 12 Days of Christmas song.
-                  They even say ``two turtledoves,'' it's not subtle.
+                      月                日
+           1000
 
-                J Laws\\
-                - Nonexistent. With the exception of a weird version of
-                  the 10 commandments, which may well have been a joke.
-                  J is f\redacted{ucking}\eR{oundational to the biblical text and
-                  an essential path to understanding God's} awesome \eR{power.}
+
+                       J
+
+            922
+
+                                        E
+
+            722
+                              R
+
+                       JE
+            715
+                              P
+            686
+            640
+                                        D
+            609
+            587                    D
+
+            538               R
+
+                      山三
+
+                  The Nameless
+
+                       曰
+
+---------------------------------------------------------------------------
+
+In a sort of zigzagging line that looks like a 3 or a sideways W,
+and where the columns in my monospaced text file right here are
+vertically aligned on the latex page? Also make the years be much
+smaller text than the rest, and make everyone's letters be colored.
+The first R is RJE, but write it as R, just make it green with RJE's
+green background.
+
+Do that now.
+
+Don't stop until everything is done, and make sure item 4 looks good
+as a first pass experiment.
 
 EOF
