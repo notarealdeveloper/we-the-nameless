@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+1. Make Records use Paleo Hebrew Mono
+2. Explain why in the source fonts page at the beginning
+3. On that same page, move Records up above J alongside the poetry
+4. Early Israelite poetry uses the 13th century Proto-Sinaitic font
+   at present, but call it Proto-Canaanite in the source fonts page.
+   The early Levite poetry font you're currently using is great,
+   keep that for Song of the Sea, but for the oldest parts of
+   Deuteronomy, and for the oldest parts of Balaam stuff in Numbers,
+   use one of the alternative Proto Sinaitic fonts. Make both of those
+   one of the top 3 fonts in the long history of the alphabet page,
+   I mean the three fonts immediately after egyptian at the top should
+   be the 3 Proto Sinaitic fonts from that page. Use the oldest one for
+   Song of the Sea, use the second oldest for oldest parts of Deuteronomy
+   and use the third for the oldest parts of Numbers. Then write the Priestly
+   Blessing from Numbers in the Ketef Hinnom scroll font since that's the
+   oldest part of the bible ever found. Explain the reasons for all of
+   the above on the source fonts page at the beginning.
+   To keep things simple and elegant, maybe have one fonts page for all
+   the non-primary authors (Proto authors, like the early songs and records
+   and blessing of Jacob etc) and then start a new page explaining the
+   choices for the fonts of the Primary authors. Call the two pages
+   The Primeval Sources and The Primary Sources in their headings at the top.
+   The heading that currently says Fonts at the top of that page should die.
+   Replace it with the same heading from the source key page that says
+
+The Authors
+    or
+We: The Nameless
+
+    I want that at the top of all three of these pages.
+
+5. Make the monospaced law font smaller. It's too big now.
+
+6. Change this:
+
+Songs, early poetry, of the Levites in the South (Exodus 15),
+of the Israelites in the North (Judges 5, Genesis 49),
+and possibly older texts later included by the Deuteronomistic Historians (Deuteron-
+omy 32).
+
+To this
+
+Songs and early poetry, from the Levites in the South (Exodus 15, Numbers XX, Deuteronomy 3X),
+and the Israelites in the North (Judges 5, Genesis 49).
+
+Figure out which parts of Numbers and Deuteronomy to put in the XX and X parts, if any.
+Could be Deuteronomy 29, 30, 31, 32, 33 or a subset. Could be Numbers 21, 23, 24,
+or a subset. Give it your best guess, we can change it later if it's not perfect.
+
+7. Also offer an explanation of the choice of Book of Records font based on when it was probably from.
+
+8. Don't use the word 'hand' in the fonts page, use a simpler term.
+EOF

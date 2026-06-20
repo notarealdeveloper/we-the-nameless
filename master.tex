@@ -146,6 +146,7 @@
 \newfontfamily\PaleoHebrewStandardFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
+    BoldFont=paleo-hebrew.ttf,
     Scale=1.49
 ]{paleo-hebrew.ttf}
 
@@ -261,15 +262,14 @@
     Path=\LocalFontPath,
     Script=Hebrew,
     BoldFont=hebrew-ezra.ttf,
-    BoldFeatures={FakeBold=2.0},
     Scale=1.10
 ]{hebrew-ezra.ttf}
 
 \newfontfamily\HebrewEzraBoldFont[
     Path=\LocalFontPath,
     Script=Hebrew,
-    Scale=1.10,
-    FakeBold=2.0
+    BoldFont=hebrew-ezra.ttf,
+    Scale=1.10
 ]{hebrew-ezra.ttf}
 
 \newfontfamily\HebrewOtherFont[
@@ -488,6 +488,7 @@
 \definecolor{Graycolor}{RGB}{110,110,110}
 
 \definecolor{DefColor}{RGB}{0,70,170}
+\definecolor{RedactedColor}{RGB}{0,70,170}
 
 \colorlet{TextColor}{black}
 \colorlet{RuleColor}{TextColor}
@@ -522,7 +523,7 @@
 
     \colorlet{Jcolor}{ObsGreen!87!fg}
     \colorlet{Ecolor}{ObsYellow!65!fg}
-    \colorlet{Pcolor}{ObsBlue!65!fg}
+    \colorlet{Pcolor}{ObsBlue!78!bg}
     \colorlet{Jbgcolor}{Jcolor!18!bg}
     \colorlet{Ebgcolor}{Ecolor!20!bg}
     \colorlet{Pbgcolor}{Pcolor!22!bg}
@@ -535,7 +536,7 @@
     \colorlet{Dtnbgcolor}{Ebgcolor}
 
     \colorlet{Rcolor}{ObsBlue!65!fg}
-    \definecolor{Rbgcolor}{HTML}{34404f}
+    \definecolor{Rbgcolor}{HTML}{3a4960}
     \colorlet{RJEcolor}{ObsGreen!82!fg}
     \definecolor{RJEbgcolor}{HTML}{344837}
 
@@ -585,6 +586,12 @@
 \let\cGreen\cG
 \let\cYellow\cY
 \let\cGrey\cGray
+
+\makeatletter
+\newcommand{\hlA}[1]{{\@highLight[Kcolor]#1}}
+\newcommand{\hlB}[1]{{\@highLight[Redcolor]#1}}
+\newcommand{\hlC}[1]{{\@highLight[Bluecolor]#1}}
+\makeatother
 
 % ------------------------------------------------------------
 % Hebrew text encoders and font profiles
@@ -885,7 +892,7 @@
 \DeclareHebrewRenderer{ProtoEFont}{\ProtoSinaiticThirteenthCenturyFont}{\EncodeProtoE}
 \DeclareHebrewRenderer{ProtoFFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoF}
 \DeclareHebrewRenderer{ProtoGFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoG}
-\DeclareHebrewRenderer{PaleoASCIIStandard}{\PaleoHebrewOtherFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIIStandard}{\PaleoHebrewStandardFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIITelZayit}{\PaleoHebrewTelZayitFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIIGezer}{\PaleoHebrewGezerFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIITelDan}{\PaleoHebrewTelDanFont}{\EncodePaleoASCII}
@@ -1111,7 +1118,7 @@
 
 \DeclareSourceProfile{E}
     {\EnglishFont} {\SourceBackground{Ebgcolor}\Mushite}
-    {\PaleoASCIITelDan} {\SourceBackground{Ebgcolor}\Mushite}
+    {\PaleoASCIIStandard} {\SourceBackground{Ebgcolor}\Mushite}
 
 \DeclareSourceProfile{DtrA}
     {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\DeuteronomistA\Redactor\mdseries}
@@ -1131,9 +1138,13 @@
     {\EnglishFont}   {\SourceBackground{Pbgcolor}\Aaronid}
     {\HebrewEzraRaw} {\SourceBackground{Pbgcolor}\Aaronid}
 
+\DeclareSourceProfile{PP}
+    {\EnglishFont}       {\SourceBackground{Pbgcolor}\Aaronid}
+    {\PaleoASCIIStandard}{\SourceBackground{Pbgcolor}\Aaronid}
+
 \DeclareSourceProfile{R}
     {\EnglishFont}   {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
-    {\HebrewEzra} {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
+    {\HebrewEzraRaw} {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
 
 % Others
 
@@ -1170,7 +1181,14 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
+\DeclareSourceCommandList{J,E,P,PP,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
+
+% P defaults to square Ezra. Use \UsePaleoP for occasional Hezekiah-era Paleo-P,
+% then \UseSquareP to switch P back.
+\let\SquarePhRenderer\hPRenderer
+\let\SquarePhStyle\hstyleP
+\newcommand{\UsePaleoP}{\let\hPRenderer\hPPRenderer\let\hstyleP\hstylePP}
+\newcommand{\UseSquareP}{\let\hPRenderer\SquarePhRenderer\let\hstyleP\SquarePhStyle}
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
@@ -1346,7 +1364,13 @@
         {\scshape\Large The Authors}\\[0.35em]
         {\itshape\large or}\\[0.8em]
         {\Huge We: The Nameless}\\[0.8em]
-        {\footnotesize\SourceLegendItems{Records}{Other}}%
+        {\footnotesize
+            \eJ{J}\quad
+            \eE{E}\quad
+            \eP{P}\quad
+            \eR{R}\quad
+            \eRJE{R}\quad
+        }%
     \end{center}
 }
 
@@ -1383,10 +1407,10 @@
         (\eE{E}, \eP{P}, \DtrALabel, \DtrBLabel, \DtnLabel.)
         \\
 
-        \eR{Background} \eRJE{Background}
+        \eR{Background}
         &
         \eR{
-            Redactors. Editors, occasionally write small amounts of glue prose
+            Redactors, Editors. Occasionally write small amounts of glue prose
             to make multiple sources consistent,
         }
         \eRJE{
@@ -1446,8 +1470,8 @@
         &
         {\Poetry
             Songs, early poetry,
-            of the \Levite{Levites} in the South
-            \Mushite{(}\Aaronid{Exodus 15}\Mushite{)},
+            of the {\Levite Levites} in the South
+            {\Mushite (}{\Aaronid Exodus 15}{\Mushite )},
             \newline
             of the \cG{Israelites} in the North
             \cG{(Judges 5, Genesis 49)},
@@ -1566,10 +1590,11 @@
         \hP{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eP{
-            P uses the Isaiah Scroll Paleo-Hebrew hand. The niqqud are
-            anachronistic, but he would have loved them if the font gods had
-            cooperated. Aaronids are all about the exact right way to do stuff.
-            P loves the dots. P basically is the dots.
+            P defaults to Ezra square script with niqqud: anachronistic,
+            but spiritually correct, because P loves the dots. Use PP,
+            or \texttt{\string\UsePaleoP}, when you want the Hezekiah-era
+            Paleo-Hebrew version P probably would have written; use
+            \texttt{\string\UseSquareP} to return to square P.
         }
         \\
 
@@ -2076,7 +2101,7 @@
 
 \newcommand{\redacted}[1]{%
   {\setlength{\fboxsep}{0pt}%
-   \colorbox{Rcolor}{\strut\phantom{#1}}}%
+   \colorbox{RedactedColor}{\strut\phantom{#1}}}%
 }
 
 
