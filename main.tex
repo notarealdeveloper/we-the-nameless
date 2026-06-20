@@ -13,13 +13,14 @@
 %%% main.tex %%%
 %%%%%%%%%%%%%%%%
 
+\iffalse
+\section{nav: config}
+\fi
+
 % ------------------------------------------------------------
 % Compile with:
 %   lualatex main.tex
 % ------------------------------------------------------------
-\iffalse
-\section{nav: compile/config}
-\fi
 
 \def\ConfigTrue{true}
 \def\ConfigThemeDark{dark}
@@ -36,7 +37,7 @@
 % Packages
 % ------------------------------------------------------------
 \iffalse
-\section{nav: packages}
+\section{nav: imports}
 \fi
 
 \usepackage[
@@ -71,7 +72,7 @@
 % Languages and fonts
 % ------------------------------------------------------------
 \iffalse
-\section{nav: languages/fonts}
+\section{nav: the tower of babel}
 \fi
 
 \newcommand{\LocalFontPath}{./fonts/}
@@ -385,7 +386,7 @@
 % Hanging paragraphs and hanging footnotes
 % ------------------------------------------------------------
 \iffalse
-\section{nav: hanging paragraphs/footnotes}
+\section{nav: footnotes}
 \fi
 
 \NewDocumentCommand{\hangingblock}{ O{1.5em} +m }{%
@@ -409,7 +410,7 @@
 % Global layout
 % ------------------------------------------------------------
 \iffalse
-\section{nav: global layout}
+\section{nav: pages}
 \fi
 
 \setlength{\parindent}{0pt}
@@ -424,7 +425,7 @@
 % Side-by-side verse geometry
 % ------------------------------------------------------------
 \iffalse
-\section{nav: verse geometry}
+\section{nav: verse}
 \fi
 
 \newlength{\VerseGap}
@@ -568,7 +569,7 @@
 % These ONLY change text color.
 % ------------------------------------------------------------
 \iffalse
-\section{nav: plain color commands}
+\section{nav: color commands}
 \fi
 
 \newcommand{\cK}[1]{{\color{Kcolor}#1}}
@@ -593,7 +594,7 @@
 % and transliterates the Hebrew consonants before selecting the font.
 % ------------------------------------------------------------
 \iffalse
-\section{nav: hebrew encoders/font profiles}
+\section{nav: turing tarpit}
 \fi
 
 \directlua{
@@ -1187,7 +1188,7 @@
 % Inline Hebrew with explicit font selection
 % ------------------------------------------------------------
 \iffalse
-\section{nav: explicit hebrew font helpers}
+\section{nav: deprecated hebrew commands}
 \fi
 
 \newcommand{\hAJ}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cK\small #1}}}
@@ -1207,7 +1208,7 @@
 % Inline language helpers for commentary/definitions
 % ------------------------------------------------------------
 \iffalse
-\section{nav: inline language helpers}
+\section{nav: the tower of babel also}
 \fi
 
 \newcommand{\heb}[1]{%
@@ -1319,7 +1320,7 @@
 % Legend
 % ------------------------------------------------------------
 \iffalse
-\section{nav: legend/pages}
+\section{nav: sources revealed}
 \fi
 
 \newcommand{\RSourceName}{R}
@@ -1357,88 +1358,6 @@
     \endgroup
 }
 
-\newcommand{\FontChoicePage}{%
-    \cleardoublepage
-    \thispagestyle{plain}
-
-    \chapter*{}
-    \vspace*{-2.2em}
-
-    \begin{center}
-        {\scshape\Large Fonts}\\[0.8em]
-    \end{center}
-
-    \begingroup
-    \footnotesize
-    \renewcommand{\arraystretch}{1.45}
-
-    \noindent
-    \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
-
-        \hProtoA{אבגדהוזחטיכלמנסעפצקרשת}
-        &
-        \eProtoA{
-            Early Levite poetry uses a fifteenth-century Proto-Sinaitic hand:
-            older, rougher, and good for the Song of the Sea.
-        }
-        \\
-
-        \hProto{אבגדהוזחטיכלמנסעפצקרשת}
-        &
-        \eProto{
-            Early Israelite poetry uses the thirteenth-century Proto-Sinaitic hand:
-            still old, less cave-wall-on-fire, and right for the Blessing of Jacob.
-        }
-        \\
-
-        \hJ{אבגדהוזחטיכלמנסעפצקרשת}
-        &
-        \eJ{
-            J is native to the land, non-bold, and in Paleo-Hebrew because J
-            dates to around 922 B.C.
-        }
-        \\
-
-        \hE{אבגדהוזחטיכלמנסעפצקרשת}
-        &
-        \eE{
-            E is Mushite and Levite, but uses the cleaner Tel Dan Paleo-Hebrew
-            hand. Less chaos, same priestly north/south argument.
-        }
-        \\
-
-        \hP{אבגדהוזחטיכלמנסעפצקרשת}
-        &
-        \eP{
-            P uses the Isaiah Scroll Paleo-Hebrew hand. The niqqud are
-            anachronistic, but he would have loved them if the font gods had
-            cooperated. Aaronids are all about the exact right way to do stuff.
-            P loves the dots. P basically is the dots.
-        }
-        \\
-
-        \hR{אבגדהוזחטיכלמנסעפצקרשת}
-        &
-        \eR{
-            R uses square script in Ezra font with no niqqud,
-            because he's writing after the Babylonian exile,
-            and is probably literally Ezra.
-        }
-        \\
-
-        \hRecords{אבגדהוזחטיכלמנסעפצקרשת}
-        &
-        \eBookOfRecords{
-            Records use Gezer Paleo-Hebrew and grey text: bureaucracy,
-            accounting, begats. A spreadsheet wearing sandals.
-        }
-        \\
-
-    \end{tabular}
-    \endgroup
-
-    \cleardoublepage
-}
 
 \newcommand{\SourceLegendTitle}{%
     \begin{center}
@@ -1448,6 +1367,10 @@
         {\footnotesize\SourceLegendItems{Records}{Other}}%
     \end{center}
 }
+
+\iffalse
+\subsection{nav: colors and fonts}
+\fi
 
 \newcommand{\SourceLegendPage}{%
     \cleardoublepage
@@ -1602,6 +1525,93 @@
 
     \cleardoublepage
     \FontChoicePage
+}
+
+\iffalse
+\subsection{nav: fonts show the eras}
+\fi
+
+\newcommand{\FontChoicePage}{%
+    \cleardoublepage
+    \thispagestyle{plain}
+
+    \chapter*{}
+    \vspace*{-2.2em}
+
+    \begin{center}
+        {\scshape\Large Fonts}\\[0.8em]
+    \end{center}
+
+    \begingroup
+    \footnotesize
+    \renewcommand{\arraystretch}{1.45}
+
+    \noindent
+    \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
+
+        \hProtoA{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eProtoA{
+            Early Levite poetry uses a fifteenth-century Proto-Sinaitic hand:
+            older, rougher, and good for the Song of the Sea.
+        }
+        \\
+
+        \hProto{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eProto{
+            Early Israelite poetry uses the thirteenth-century Proto-Sinaitic hand:
+            still old, less cave-wall-on-fire, and right for the Blessing of Jacob.
+        }
+        \\
+
+        \hJ{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eJ{
+            J is native to the land, non-bold, and in Paleo-Hebrew because J
+            dates to around 922 B.C.
+        }
+        \\
+
+        \hE{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eE{
+            E is Mushite and Levite, but uses the cleaner Tel Dan Paleo-Hebrew
+            hand. Less chaos, same priestly north/south argument.
+        }
+        \\
+
+        \hP{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eP{
+            P uses the Isaiah Scroll Paleo-Hebrew hand. The niqqud are
+            anachronistic, but he would have loved them if the font gods had
+            cooperated. Aaronids are all about the exact right way to do stuff.
+            P loves the dots. P basically is the dots.
+        }
+        \\
+
+        \hR{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eR{
+            R uses square script in Ezra font with no niqqud,
+            because he's writing after the Babylonian exile,
+            and is probably literally Ezra.
+        }
+        \\
+
+        \hRecords{אבגדהוזחטיכלמנסעפצקרשת}
+        &
+        \eBookOfRecords{
+            Records use Gezer Paleo-Hebrew and grey text: bureaucracy,
+            accounting, begats. A spreadsheet wearing sandals.
+        }
+        \\
+
+    \end{tabular}
+    \endgroup
+
+    \cleardoublepage
 }
 
 % ------------------------------------------------------------
