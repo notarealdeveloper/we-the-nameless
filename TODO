@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+
+1. Fix all the font warnings like this:
+
+LaTeX Font Warning: Font shape `TU/paleo-hebrew-tel-dan.ttf(0)/b/n' undefined
+(Font)              using `TU/paleo-hebrew-tel-dan.ttf(0)/m/n' instead on input
+ line 2101.
+
+2. Fix the incorrect Levite Mushite highlighting on the 'key to sources' page
+in the italics section that causes too much stuff to be yellow and then bleeds
+into the footnotes.
+
+3. The word 'background' is there twice on the key to sources page. Remove the
+green one from the background section.
+
+4. 'Redactors. Editors, occasionally'... should be 'Redactors, Editors. Occasionally'...
+on the same page.
+
+5. Remove Records and Other from the header (but not the body) on the same page.
+
+6. Unbold P's Hebrew font. I know he's a Levite and that's how it should work,
+but P's Hebrew is already bold enough. Can we fix this at the font loading step?
+It applies to all \Levite's who use that font, which also includes R, so at the
+Ezra font load step it would be best to fix it there.
+
+7. P's blue needs to be a bit darker in dark mode, it's a little too soothing,
+and P's a threating sort of guy, so it should be darker.
+
+8. The footnotes here need % on the line before them to prevent the space
+
+And there’s still no land. 5
+Also the day ends before he got a chance to say “it was good.” 6
+
+9. R's background needs to be *slightly* more visible in dark mode.
+Not sure what the best way to do that is, but consider the aesthetics
+carefully before you do.
+
+10. You messed up the \redacted color in dark mode when you made master.tex,
+it's better in old/main.tex, unless you changed it there, in which case
+look through the git history and find the brighter darker version.
+It should be the same color as Rcolor in light mode if I'm not mistaken,
+even though that feels a bit inconsistent, it's needed for visibility
+and intensity.
+
+11. 'Translator's Aside' around Genesis 1:21/1:22 should be a footnote, but
+it popped out of footnote mode somehow. Fix that. It should be a hangingfootnote
+or whatever we called those, there's a function for it.
+
+12. R should have niqqud too, but keep RJE without them.
+
+13. In Genesis 2:7 where you see me highlighting hebrew and english *bible*
+text with red and blue, I want you to write \\hlA, \\hlB, and \\hlC functions
+that will *highlight* by adding as a background color the foreground color of
+the commentary characters A, B, and C. B is always red, C is always blue, but
+A is black in light mode and white in dark mode. The highlight functions should
+preserve the foreground colors, and you should replace all \\cK in bible text
+with \\hlA, all \\cR with \\hlB, and all \\cB with \\hlC. Only in bible text,
+english or hebrew, in [12345]-* dirs. Don't make those replacements in commentary
+text.
+
+14. Use Paleo Hebrew Standard font for E.
+
+15. Add a source PaleoP, we'll call it PP for short. Keep P as is, but if we occasionally
+want to point out that P *would have* probably written in Paleo Hebrew since he
+wrote around the time of Hezekiah, then we can switch to PP with some simple
+\renewcommand or something. Add support for this, summarize the gist in the source fonts
+page P section at the beginning of the book, and then add a comment somewhere noticeable
+saying how to switch to PaleoP and then back to SquareP.
+EOF
