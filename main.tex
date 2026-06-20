@@ -437,10 +437,9 @@
 \definecolor{RJEcolor}{RGB}{0,100,0}
 \definecolor{RJEbgcolor}{RGB}{225,245,225}
 
-\colorlet{RecordsColor}{Rcolor}
-\colorlet{Recordsbgcolor}{RecordsColor!14!white}
-%\definecolor{RecordsColor}{RGB}{0,70,170}
-%\definecolor{Recordsbgcolor}{RGB}{235,235,235}
+\definecolor{Recordcolor}{RGB}{110,110,110}
+\colorlet{RecordsColor}{Recordcolor}
+\colorlet{Recordsbgcolor}{Recordcolor!14!white}
 
 \definecolor{OtherColor}{RGB}{80,80,80}
 \colorlet{Otherbgcolor}{OtherColor!12!white}
@@ -505,8 +504,9 @@
     \colorlet{RJEcolor}{ObsGreen!82!fg}
     \definecolor{RJEbgcolor}{HTML}{344837}
 
-    \colorlet{RecordsColor}{ObsBlue!65!fg}
-    \colorlet{Recordsbgcolor}{RecordsColor!22!bg}
+    \colorlet{Recordcolor}{ObsGray!78!fg}
+    \colorlet{RecordsColor}{Recordcolor}
+    \colorlet{Recordsbgcolor}{Recordcolor!18!bg}
     \colorlet{OtherColor}{ObsGray!88!fg}
     \colorlet{Otherbgcolor}{OtherColor!18!bg}
 
@@ -896,14 +896,20 @@
 \newcommand{\SourceBgColor}{Rbgcolor}
 \newcommand{\SourceBackground}[1]{\def\SourceBgColor{#1}}
 \newcommand{\Levite}{\bfseries}
-\newcommand{\Mushite}{\color{Ecolor}}
-\newcommand{\Aaronid}{\color{Pcolor}}
-\newcommand{\Yahwist}{\color{Jcolor}} % Or: Creator. We who cause it to be.
-\newcommand{\Records}{\color{RecordsColor}\itshape}
+\newcommand{\Native}{\mdseries}
+\newcommand{\Mushite}{\Levite\color{Ecolor}}
+\newcommand{\Aaronid}{\Levite\color{Pcolor}}
+\newcommand{\Yahwist}{\Native\color{Jcolor}} % Or: Creator. We who cause it to be.
+\newcommand{\Record}{\color{Recordcolor}}
+\newcommand{\Records}{\Record}
+\newcommand{\Poetry}{\itshape}
 \newcommand{\OtherSource}{\color{OtherColor}\itshape}
-\newcommand{\DeuteronomistA}{\Mushite\color{Dtr1color}}
-\newcommand{\DeuteronomistB}{\Mushite\color{Dtr2color}}
-\newcommand{\DeuteronomicLaw}{\Mushite\color{Dtncolor}}
+\newcommand{\DeuterA}{\Mushite\color{Dtr1color}}
+\newcommand{\DeuterB}{\Mushite\color{Dtr2color}}
+\newcommand{\DeuterN}{\Mushite\color{Dtncolor}}
+\let\DeuteronomistA\DeuterA
+\let\DeuteronomistB\DeuterB
+\let\DeuteronomicLaw\DeuterN
 \makeatletter
 \newcommand{\Redactor}{\@highLight[\SourceBgColor]}
 \makeatother
@@ -915,7 +921,7 @@
 
 \DeclareSourceProfile{Proto}
     {\EnglishProtoFont} 	{\color{ProtoColor}\mdseries}
-    {\ProtoSinaiticBest} 	{\color{ProtoColor}\ProtoSinaiticBestWeight}
+    {\ProtoDFont} 		{\color{ProtoColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{ProtoA}
     {\EnglishProtoFont} 	{\color{ProtoAColor}\mdseries}
@@ -1054,8 +1060,8 @@
 % Mushites
 
 \DeclareSourceProfile{E}
-    {\EnglishFont} {\SourceBackground{Ebgcolor}\Levite\Mushite}
-    {\PaleoASCIIGezer} {\SourceBackground{Ebgcolor}\Levite\Mushite}
+    {\EnglishFont} {\SourceBackground{Ebgcolor}\Mushite}
+    {\PaleoASCIITelDan} {\SourceBackground{Ebgcolor}\Mushite}
 
 \DeclareSourceProfile{DtrA}
     {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\DeuteronomistA\Redactor\mdseries}
@@ -1072,12 +1078,12 @@
 % Aaronids
 
 \DeclareSourceProfile{P}
-    {\EnglishFont}   {\SourceBackground{Pbgcolor}\Levite\Aaronid}
-    {\HebrewEzraRaw} {\HebrewEzraLarge\SourceBackground{Pbgcolor}\Levite\Aaronid}
+    {\EnglishFont}   {\SourceBackground{Pbgcolor}\Aaronid}
+    {\PaleoASCIIIsaiahScroll} {\SourceBackground{Pbgcolor}\Aaronid}
 
 \DeclareSourceProfile{R}
     {\EnglishFont}   {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
-    {\HebrewEzraRaw} {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
+    {\HebrewEzra} {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
 
 % Others
 
@@ -1087,7 +1093,7 @@
 
 \DeclareSourceProfile{Records}
     {\EnglishFont} 		{\SourceBackground{Recordsbgcolor}\Records}
-    {\PaleoASCIISiloam} 	{\SourceBackground{Recordsbgcolor}\Records}
+    {\PaleoASCIIGezer} 	{\SourceBackground{Recordsbgcolor}\Records}
 
 \DeclareSourceProfile{Other}
     {\EnglishFont}  		{\SourceBackground{Otherbgcolor}\OtherSource}
@@ -1345,10 +1351,13 @@
     \footnotesize
     \renewcommand{\arraystretch}{1.45}
     \noindent\begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
-        \hJ{אבגדהוזחטיכלמנסעפצקרשת} & \eJ{J is in Paleo-Hebrew because J dates to around 922 B.C.}\\
-        \hE{אבגדהוזחטיכלמנסעפצקרשת} & \eE{E is in Paleo-Hebrew from soon after J.}\\
-        \hP{אבגדהוזחטיכלמנסעפצקרשת} & \eP{P is the exception: he would have updated the spelling and script to the new writing system, because he was not making any good letter-shape puns anyway. He would have loved niqqud if he had known about them. Aaronids are all about the exact right way to do stuff. P loves the dots. P basically is the dots.}\\
-        \hR{אבגדהוזחטיכלמנסעפצקרשת} & \eR{R is in square script because he is probably Ezra, after the Babylonian exile.}\\
+        \hProtoA{אבגדהוזחטיכלמנסעפצקרשת} & \eProtoA{Early Levite poetry uses a fifteenth-century Proto-Sinaitic hand: older, rougher, and good for the Song of the Sea.}\\
+        \hProto{אבגדהוזחטיכלמנסעפצקרשת} & \eProto{Early Israelite poetry uses the thirteenth-century Proto-Sinaitic hand: still old, less cave-wall-on-fire, and right for the Blessing of Jacob.}\\
+        \hJ{אבגדהוזחטיכלמנסעפצקרשת} & \eJ{J is native to the land, non-bold, and in Paleo-Hebrew because J dates to around 922 B.C.}\\
+        \hE{אבגדהוזחטיכלמנסעפצקרשת} & \eE{E is Mushite and Levite, but uses the cleaner Tel Dan Paleo-Hebrew hand. Less chaos, same priestly north/south argument.}\\
+        \hP{אבגדהוזחטיכלמנסעפצקרשת} & \eP{P uses the Isaiah Scroll Paleo-Hebrew hand. The niqqud are anachronistic, but he would have loved them if the font gods had cooperated. Aaronids are all about the exact right way to do stuff. P loves the dots. P basically is the dots.}\\
+        \hR{אבגדהוזחטיכלמנסעפצקרשת} & \eR{R uses Ezra square script with no niqqud because he is probably Ezra, after the Babylonian exile.}\\
+        \hRecords{אבגדהוזחטיכלמנסעפצקרשת} & \eBookOfRecords{Records use Gezer Paleo-Hebrew and grey text: bureaucracy, accounting, begats. A spreadsheet wearing sandals.}\\
     \end{tabular}
     \endgroup
     \cleardoublepage
@@ -1386,11 +1395,11 @@
             The first author of prose on earth.\textsuperscript{3}
             The author of nearly all the most popular bible stories.\textsuperscript{4}
             The author in the bible with the best sense of humor.\textsuperscript{5}}\\
-        {\Mushite Yellow} & {\Levite\Mushite Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh.} (\MushiteSourceRefs.)\\
-        {\Aaronid Blue} & {\Levite\Aaronid Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem.} (\eP{P}, \eR{R}.)\\
-        {\DeuteronomistB Orange} & {\Levite\DeuteronomistB Deuteronomists. Mushites after the yellow has been left in the theological toaster.} (\DtrALabel, \DtrBLabel, \DtnLabel.)\\
-        {\color{Graycolor}Grey} & {\color{Graycolor}Bureaucracy: records, begat lists, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
-        {\itshape Italics} & {\itshape Songs, Early poetry \LeviteBlend{} (Exodus 15), \cG{Israelites in the North} (Judges 5, Genesis 49), {\Mushite Deuteronomy 32}.}\\
+        {\Mushite Yellow} & {\Mushite Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh.} (\MushiteSourceRefs.)\\
+        {\Aaronid Blue} & {\Aaronid Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem.} (\eP{P}, \eR{R}.)\\
+        {\DeuterB Orange} & {\DeuterB Deuteronomists. Mushites after the yellow has been left in the theological toaster.} (\DtrALabel, \DtrBLabel, \DtnLabel.)\\
+        {\Record Grey} & {\Record Bureaucracy: records, accounting, begat lists, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
+        {\Poetry Italics} & {\Poetry Songs, early poetry \LeviteBlend{} (Exodus 15), \cG{Israelites in the North} (Judges 5, Genesis 49), {\Mushite Deuteronomy 32}, and maybe prophecy when prophecy starts singing.}\\
         {\LawFont Mono} & {\LawFont All forms of code, including legal codes, for reasons that need not be explained.}\\
         \LawRows
     \end{tabular}
