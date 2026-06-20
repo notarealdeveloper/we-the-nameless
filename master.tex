@@ -1456,9 +1456,40 @@
   \vspace{1em}
 }
 
-% ------------------------------------------------------------
-% Legend
-% ------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 					  The Authors						 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+%%%                           月               日
+%%%
+%%%               1000
+%%%
+%%%                           J
+%%%
+%%%                922
+%%%
+%%%                                            E
+%%%
+%%%                722
+%%%                                  R
+%%%
+%%%                           JE
+%%%                715
+%%%                                  P
+%%%                686
+%%%                640
+%%%                                            D
+%%%                609
+%%%                587                    D
+%%%
+%%%                538               R
+%%%
+%%%                          山三
+%%%
+%%%                      The Nameless
+%%%
+%%%                           曰
+
 \iffalse
 \section{nav: authors}
 \fi
@@ -1480,7 +1511,7 @@
 }
 
 \DeclareRobustCommand{\SourceLegendHeader}{%
-    {\footnotesize
+    {\scriptsize
     \eJ{J}\quad
     \eE{E}\quad
     \eP{P}\quad
@@ -1511,10 +1542,10 @@
 
 \newcommand{\SourceLegendTitle}{%
     \begin{center}
-        {\scshape\Large The Authors}\\[0.2em]
-        {\itshape\large or}\\[0.45em]
-        {\Huge We: The Nameless}\\[0.45em]
-        {\large
+        {\scshape\large The Authors}\\[0.2em]
+        {\itshape\normalsize or}\\[0.45em]
+        {\LARGE We: The Nameless}\\[0.45em]
+        {\footnotesize
             \eJ{J}\quad
             \eE{E}\quad
             \eP{P}\quad
@@ -1525,11 +1556,11 @@
 }
 
 \newcommand{\SourceLegendPage}{%
-    \clearpage
+    \cleardoublepage
     \thispagestyle{plain}
 
-    \markboth{}{}%
-    \vspace*{-8.2em}
+    \HiddenChapterHeading{}%
+    \vspace*{-7.5em}
 
     \SourceLegendTitle
     \vspace{0.25em}
@@ -1540,7 +1571,7 @@
     \renewcommand{\arraystretch}{0.98}
 
     \noindent
-    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.23\linewidth}>{\RaggedRight\arraybackslash}p{0.71\linewidth}@{}}
+    \begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
 
         Regular
         &
@@ -1616,8 +1647,8 @@
     \clearpage
     \thispagestyle{plain}
 
-    \markboth{}{}%
-    \vspace*{-8.2em}
+    \HiddenChapterHeading{}%
+    \vspace*{-7.5em}
 
     \SourceLegendTitle
     \vspace{0.25em}
@@ -1627,9 +1658,9 @@
     \renewcommand{\arraystretch}{0.98}
     \newcommand{\SourceLegendRow}[2]{%
         \noindent
-        \begin{minipage}[t]{0.23\linewidth}\RaggedRight ##1\end{minipage}%
+        \begin{minipage}[t]{0.23\linewidth}##1\end{minipage}%
         \hfill
-        \begin{minipage}[t]{0.71\linewidth}\RaggedRight ##2\end{minipage}%
+        \begin{minipage}[t]{0.71\linewidth}##2\end{minipage}%
         \par\vspace{0.7em}%
     }
 
@@ -1687,9 +1718,9 @@
     \footnotetext[\SourceLegendThanksFootnote]{{\Yahwist S}he says thanks, welcome to We.}
     \endgroup
 
+    \cleardoublepage
     \PrimevalSourceFontsPage
     \PrimarySourceFontsPage
-    \SourceTimelinePage
 }
 
 \newcommand{\FontPageHeading}[1]{%
@@ -1700,14 +1731,12 @@
     \end{center}
 }
 
-\newcommand{\FontKeySample}[1]{\makebox[0.43\linewidth][l]{\scalebox{0.88}{#1}}}
-
 \newcommand{\PrimevalSourceFontsPage}{%
-    \clearpage
+    \cleardoublepage
     \thispagestyle{plain}
 
-    \markboth{}{}%
-    \vspace*{-6.2em}
+    \HiddenChapterHeading{}%
+    \vspace*{-5.5em}
 
     \FontPageHeading{The Primeval Sources}
 
@@ -1721,9 +1750,9 @@
     \par\smallskip
 
     \noindent
-    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.43\linewidth}>{\RaggedRight\arraybackslash}p{0.51\linewidth}@{}}
+    \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
 
-        \FontKeySample{\hProtoA{אבגדהוזחטיכלמנסעפצקרשת}}
+        \hProtoA{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eProtoA{
             Song of the Sea uses the oldest Proto-Sinaitic font here:
@@ -1731,7 +1760,7 @@
         }
         \\
 
-        \FontKeySample{\hProto{אבגדהוזחטיכלמנסעפצקרשת}}
+        \hProto{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eProto{
             Early Israelite poetry and the oldest Deuteronomy material use
@@ -1740,7 +1769,7 @@
         }
         \\
 
-        \FontKeySample{\hProtoF{אבגדהוזחטיכלמנסעפצקרשת}}
+        \hProtoF{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eProtoF{
             Numbers 21 and the old Balaam poems in Numbers 23--24 use the
@@ -1749,7 +1778,7 @@
         }
         \\
 
-        \FontKeySample{\hPaleoM{אבגדהוזחטיכלמנסעפצקרשת}}
+        \hPaleoM{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eP{
             The Priestly Blessing in Numbers 6 uses a Ketef Hinnom scroll
@@ -1757,7 +1786,7 @@
         }
         \\
 
-        \FontKeySample{\hRecords{אבגדהוזחטיכלמנסעפצקרשת}}
+        \hRecords{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eBookOfRecords{
             Records use Paleo Hebrew Mono and grey text: bureaucracy,
@@ -1771,15 +1800,15 @@
     \end{tabular}
     \endgroup
 
-    \clearpage
+    \cleardoublepage
 }
 
 \newcommand{\PrimarySourceFontsPage}{%
-    \clearpage
+    \cleardoublepage
     \thispagestyle{plain}
 
-    \markboth{}{}%
-    \vspace*{-6.2em}
+    \HiddenChapterHeading{}%
+    \vspace*{-5.5em}
 
     \FontPageHeading{The Primary Sources}
 
@@ -1788,9 +1817,9 @@
     \renewcommand{\arraystretch}{1.45}
 
     \noindent
-    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.43\linewidth}>{\RaggedRight\arraybackslash}p{0.51\linewidth}@{}}
+    \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
 
-        \FontKeySample{\hJ{אבגדהוזחטיכלמנסעפצקרשת}}
+        \hJ{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eJ{
             J is native to the land, non-bold, and in Paleo-Hebrew because J
@@ -1798,7 +1827,7 @@
         }
         \\
 
-        \FontKeySample{\hE{אבגדהוזחטיכלמנסעפצקרשת}}
+        \hE{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eE{
             E is Mushite and Levite, but uses a clean Paleo-Hebrew font.
@@ -1806,7 +1835,7 @@
         }
         \\
 
-        \FontKeySample{\hP{אבגדהוזחטיכלמנסעפצקרשת}}
+        \hP{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eP{
             P defaults to Ezra square script with niqqud: anachronistic,
@@ -1817,7 +1846,7 @@
         }
         \\
 
-        \FontKeySample{\hR{אבגדהוזחטיכלמנסעפצקרשת}}
+        \hR{אבגדהוזחטיכלמנסעפצקרשת}
         &
         \eR{
             R uses square script in Ezra font with no niqqud,
@@ -1829,46 +1858,7 @@
     \end{tabular}
     \endgroup
 
-    \clearpage
-}
-
-\newcommand{\TimelineYear}[1]{{\fontsize{8}{10}\selectfont #1}}
-\newcommand{\TimelineGlyph}[1]{{\TraditionalChineseFontA\fontsize{21}{24}\selectfont #1}}
-\newcommand{\TimelineWord}[1]{{\EnglishFont\fontsize{18}{22}\selectfont #1}}
-\newcommand{\TimelineMark}[2]{{\setlength{\fboxsep}{2pt}\colorbox{#1bgcolor}{\color{#1color}\EnglishFont\bfseries\fontsize{16}{18}\selectfont #2}}}
-\newcommand{\TimelineMarkDtrA}{{\setlength{\fboxsep}{2pt}\colorbox{Dtr1bgcolor}{\color{Dtr1color}\EnglishFont\bfseries\fontsize{16}{18}\selectfont D}}}
-\newcommand{\TimelineMarkDtrB}{{\setlength{\fboxsep}{2pt}\colorbox{Dtr2bgcolor}{\color{Dtr2color}\EnglishFont\bfseries\fontsize{16}{18}\selectfont D}}}
-\newcommand{\TimelineMarkRJE}{{\setlength{\fboxsep}{2pt}\colorbox{RJEbgcolor}{\color{RJEcolor}\EnglishFont\bfseries\fontsize{16}{18}\selectfont R}}}
-
-\newcommand{\SourceTimelinePage}{%
-    \clearpage
-    \thispagestyle{plain}
-    \markboth{}{}%
-    \vspace*{-5.8em}
-    \begin{center}
-    \begingroup
-    \setlength{\tabcolsep}{0pt}%
-    \renewcommand{\arraystretch}{1.35}%
-    \begin{tabular}{@{}r@{\hspace{1.2em}}c@{\hspace{1.9em}}c@{\hspace{1.9em}}c@{}}
-        & \TimelineGlyph{月} & & \TimelineGlyph{日} \\
-        \TimelineYear{1000} & & & \\
-        & \TimelineMark{J}{J} & & \\
-        \TimelineYear{922} & & & \TimelineMark{E}{E} \\
-        \TimelineYear{722} & & \TimelineMarkRJE & \\
-        & \TimelineMark{J}{J}\TimelineMark{E}{E} & & \\
-        \TimelineYear{715} & & \TimelineMark{P}{P} & \\
-        \TimelineYear{686} & & & \\
-        \TimelineYear{640} & & & \TimelineMarkDtrA \\
-        \TimelineYear{609} & & & \\
-        \TimelineYear{587} & & \TimelineMarkDtrB & \\
-        \TimelineYear{538} & & \TimelineMark{R}{R} & \\
-        & \TimelineGlyph{山三} & & \\
-        & \multicolumn{3}{c}{\TimelineWord{The Nameless}} \\
-        & \TimelineGlyph{曰} & & \\
-    \end{tabular}
-    \endgroup
-    \end{center}
-    \clearpage
+    \cleardoublepage
 }
 
 \let\FontChoicePage\PrimevalSourceFontsPage
@@ -2357,151 +2347,6 @@
 }
 
 % ------------------------------------------------------------
-% Experimental front page: fixed terminal cells, wide CJK cells.
-% ------------------------------------------------------------
-\newlength{\NamelessCell}
-\setlength{\NamelessCell}{0.112in}
-\newlength{\NamelessLineHeight}
-\setlength{\NamelessLineHeight}{0.159in}
-
-\newcommand{\NamelessTeletypeLine}[1]{%
-    \hbox to 5.6in{#1\hss}%
-    \par
-}
-
-\begin{luacode*}
-  nameless_art = nameless_art or {}
-
-  local art = {
-    "                     We",
-    "                The Nameless",
-    "                    H       ש",
-    "                  h   η   Σ  ϻ",
-    "               h       n      Ϻ",
-    "                  н     ш   Ш",
-    "                       山",
-    "                     SH█N",
-    "                    N█H█S",
-    "                    S█N█H",
-    "                    S█N█",
-    "                       三",
-    "",
-    "                    LꞀ",
-    "",
-    "",
-    "                LꞀ        LꞀ",
-    "",
-    "                    ¿     ?",
-    "                    ρ ר",
-    "            1. 日 (H█R█Б)",
-    "            2. 月 (S█נ██)",
-    "            3. 曰 (N█████σ.ס)",
-    "",
-    "            你 好 世. ... 界",
-    "            N. H. S. ... J",
-    "            S. N. H. ... 山",
-    "            H. S. N. ... 三",
-    "            山 三. .. ... 曰",
-    "",
-    "        ===.==.===================",
-    "        |   ..",
-    "        | ..  '",
-    "    > If the heavens ever did speak",
-    "    >   |   what would they say",
-    "    > & |   who would they say it to",
-    "    > would we be able to hear it",
-    "         .. ωη",
-    "N         .  וה",
-    "H           𐤅  𐤄",
-    "S                𐤉",
-    "         LꞀ",
-    "      山    三",
-    "         曰",
-    "",
-    "",
-  }
-
-  local function is_cjk_wide(code)
-    return (code >= 0x2E80 and code <= 0xA4CF)
-      or (code >= 0xAC00 and code <= 0xD7A3)
-      or (code >= 0xF900 and code <= 0xFAFF)
-      or (code >= 0x20000 and code <= 0x2FFFD)
-      or (code >= 0x30000 and code <= 0x3FFFD)
-  end
-
-  local function font_for(code)
-    if code >= 0x0590 and code <= 0x05FF then
-      return "\\HebrewDavidFont"
-    elseif code >= 0x10900 and code <= 0x1091F then
-      return "\\PaleoHebrewPhoenicianFont"
-    elseif code == 0x03FA or code == 0x03FB or code == 0xA780 then
-      return "\\NamelessFallbackFont"
-    else
-      return "\\NamelessMonoFont"
-    end
-  end
-
-  local function glyph_box(code, cells)
-    local hex = string.format("%X", code)
-    return string.format(
-      "\\makebox[%d\\NamelessCell][c]{{%s\\char\"%s}}",
-      cells, font_for(code), hex
-    )
-  end
-
-  local function emit_line(line)
-    local out = {"\\NamelessTeletypeLine{"}
-    local pending_spaces = 0
-    for pos, code in utf8.codes(line) do
-      if code == 0x20 then
-        pending_spaces = pending_spaces + 1
-      else
-        if pending_spaces > 0 then
-          table.insert(out, string.format("\\kern\\dimexpr%d\\NamelessCell\\relax ", pending_spaces))
-          pending_spaces = 0
-        end
-        table.insert(out, glyph_box(code, is_cjk_wide(code) and 2 or 1))
-      end
-    end
-    table.insert(out, "}\\vspace*{0pt}\\par")
-    tex.sprint(table.concat(out))
-  end
-
-  function nameless_art.print()
-    for _, line in ipairs(art) do
-      emit_line(line)
-    end
-  end
-\end{luacode*}
-
-\newcommand{\NamelessExperimentalPage}{%
-    \clearpage
-    \thispagestyle{empty}
-    \newgeometry{left=0.45in,right=0.45in,top=0.56in,bottom=0.56in}
-    \begingroup
-    \parindent=0pt
-    \parskip=0pt
-    \lineskip=0pt
-    \baselineskip=\NamelessLineHeight
-    \setlength{\fboxsep}{0.16in}%
-    \setlength{\fboxrule}{0.42pt}%
-    \centering
-    \vspace*{-0.10in}
-    \fbox{%
-      \vbox{%
-        \hsize=5.6in
-        \offinterlineskip
-        \directlua{nameless_art.print()}%
-      }%
-    }%
-    \par
-    \endgroup
-    \restoregeometry
-    \cleardoublepage
-}
-
-
-% ------------------------------------------------------------
 % Document
 % ------------------------------------------------------------
 \iffalse
@@ -2513,8 +2358,6 @@
 \pagenumbering{gobble}
 \pagestyle{empty}
 \wetitlepage
-\NamelessExperimentalPage
-\AlphabetHistoryPage
 
 \frontmatter
 \pagestyle{plain}
