@@ -31,7 +31,7 @@ open:
 	xdg-open $(BUILD)/$(PDF) >/dev/null 2>&1 &
 
 clean:
-	find [12345]-* $(BUILD) -type f \( \
+	find [0-9][0-9]-* $(BUILD) -type f \( \
 		-name '*.aux' -o \
 		-name '*.log' -o \
 		-name '*.toc' -o \
@@ -48,9 +48,9 @@ distclean:
 # for giving examples of the format to agents
 c:
 	cat $(MAIN).tex
-	cat 1-genesis/01.tex
-	cat 1-genesis/02.tex
-	cat 1-genesis/03.tex
+	cat 01-genesis/01.tex
+	cat 01-genesis/02.tex
+	cat 01-genesis/03.tex
 
 x:
 	make c | xc

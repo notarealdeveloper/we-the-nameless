@@ -4,11 +4,11 @@ from pathlib import Path
 
 
 BOOKS = {
-    "1-genesis": "Genesis",
-    "2-exodus": "Exodus",
-    "3-leviticus": "Leviticus",
-    "4-numbers": "Numbers",
-    "5-deuteronomy": "Dudetheyreontome",
+    "01-genesis": "Genesis",
+    "02-exodus": "Exodus",
+    "03-leviticus": "Leviticus",
+    "04-numbers": "Numbers",
+    "05-deuteronomy": "Dudetheyreontome",
 }
 
 
@@ -25,7 +25,7 @@ def development_part(source: str) -> str:
                 r"\mainmatter",
                 r"\chapter*{Apocrypha}%",
                 r"\Apocrypha{Genesis}",
-                r"\input{1-genesis/apocrypha}",
+                r"\input{01-genesis/apocrypha}",
             ]
         )
     else:
