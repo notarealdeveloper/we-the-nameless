@@ -1773,14 +1773,22 @@
     {0.75em}
     {}
 
+\newcommand{\BookHeading}[1]{%
+    \csname chapter\endcsname*{#1}%
+}
+
+\newcommand{\ChapterHeading}[1]{%
+    \csname section\endcsname*{#1}%
+}
+
 \newcommand{\Book}[1]{%
-    \chapter*{#1}%
+    \BookHeading{#1}%
     \def\CurrentBook{#1}%
     \addcontentsline{toc}{chapter}{#1}%
 }
 
 \newcommand{\Chapter}[1]{%
-    \section*{#1}%
+    \ChapterHeading{#1}%
     \def\CurrentChapter{#1}%
     \addcontentsline{toc}{section}{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
@@ -1796,7 +1804,7 @@
 
 % \Apocryphon defines an apocryphal Chapter
 \newcommand{\Apocryphon}[1]{%
-    \section*{#1}%
+    \ChapterHeading{#1}%
     \def\CurrentChapter{#1}%
     \addcontentsline{toc}{section}{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
