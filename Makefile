@@ -8,20 +8,14 @@ LATEXFLAGS := -interaction=nonstopmode -halt-on-error -output-directory=$(BUILD)
 
 export TEXMFVAR := $(CACHE)
 
-INCLUDES := $(shell grep -Po '(?<=^\\include[{]).*(?=[}])' $(MAIN).tex)
-INCLUDE_SOURCES := $(addsuffix .tex,$(INCLUDES))
-INCLUDE_BUILD_DIRS := $(addprefix $(BUILD)/,$(sort $(dir $(INCLUDES))))
-
-SOURCES := $(MAIN).tex $(INCLUDE_SOURCES)
-
-.PHONY: all clean distclean debug progress open build-prepare draft c x list
+.PHONY: all clean distclean debug progress open build-prepare draft c x
 
 all: $(PDF) open
 
 build-prepare:
-	@mkdir -p $(BUILD) $(CACHE) $(INCLUDE_BUILD_DIRS)
+	@mkdir -p $(BUILD) $(CACHE)
 
-$(PDF): $(SOURCES) | build-prepare
+$(PDF): $(MAIN).tex | build-prepare
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
 	@if grep -q 'Rerun to get cross-references right' $(BUILD)/$(MAIN).log; then \
 		$(LATEX) $(LATEXFLAGS) $(MAIN).tex; \
@@ -29,7 +23,7 @@ $(PDF): $(SOURCES) | build-prepare
 	cp $(BUILD)/$(MAIN).pdf .
 	cp $(BUILD)/$(MAIN).log .
 
-draft: $(SOURCES) | build-prepare
+draft: $(MAIN).tex | build-prepare
 	$(LATEX) $(LATEXFLAGS) -draftmode $(MAIN).tex
 
 open:
@@ -65,10 +59,5 @@ debug:
 		'This LuaLaTeX build failed. Read the log below and explain the likely cause and exact fix.' \
 		"$$(cat $(BUILD)/$(MAIN).log)")"
 
-list:
-	@printf '%s\n' $(INCLUDE_SOURCES) | sort
-
 progress:
-	( printf '%s\n' $(INCLUDE_SOURCES) | sort | head -n 5 \
-		| xargs -n1 xdg-open ) & wait && xdg-open $(MAIN).tex
-	( sleep 5 && xdotool key ctrl+0 ) &
+	xdg-open $(MAIN).tex >/dev/null 2>&1 &
