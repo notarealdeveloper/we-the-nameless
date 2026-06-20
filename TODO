@@ -1,34 +1,68 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
+I've added nav sections throughout main.tex to clarify goals
 
-Almost perfect now!
+I want you to look at the new organization and try to use it
+as a template for how to refactor the code we have so far in
+order to simplify the implementation and improve readability
+and maintainability and usability of the code for the future
 
-1. Revert R's name to just being R, and not italic.
-2. Make P bold again.
-3. Make E bold.
-4. Header should be, in this order: J, E, P, R
-5. Generate a legend *page* right after the table of contents that says this, in whatever nice table format or other format you think is best:
+The more we can preseve what we already have while making it
+simpler in its implementation, the easier it will be to move
+quickly and modify things in whatever unforseen ways we will
+have to in the near and distant future. Now I want you to...
 
-    The Authors
+1.  Delete the things marked as deprecated from both main.tex
+    and from the rest of the book.
+2.  Move the implementations of various \def's, \newcommand's
+    \NewDocumentCommand's, \DeclareRobustCommand's, & all the
+    various things like that into the part of the nav-rrative
+    where they belong. The nav is organized like a narrative,
+    and I don't want you to introduce anything into a part in
+    which it doesn't belong. This will help us keep things in
+    the right level of abstraction, decoupled from stuff they
+    have no business coupling with. For example, you will see
+    the stuff in the tower of babel section of the preamble's
+    all about languages and writing systems themselves, while
+    the patriarchal history section is about the authors: who
+    wrote the bible, what groups they belonged to, and defn's
+    to make it easier to refer to their fonts, bg & fg colors
+    or the attributes of groups to which they belong, like in
+    our (first drafts of) the \Levite, \Aaronid, and \Mushite
+    commands that exist to help force the book's decisions to
+    be principled, by giving a meaning to every color & every
+    font weight & every font attribute both of the Hebrew and
+    of the English. That said, we need to be able to override
+    attributes or change implementations easy, if for example
+    P's Hebrew font is already bold looking by default and so
+    making it bold with the \Levite command is visually a bit
+    too much. That's ok, because if we have the correct level
+    of abstraction for all the primitives in the book then we
+    can just change P's Hebrew Boldness by removing '\Levite'
+    from one place and nowhere else, and then adding comments
+    saying "P's Hebrew font is already bold, so we're already
+    obeying the rules. By making MOST things programmatic and
+    yet still making the implementations easy to change, weve
+    got the best of both worlds.
 
-    Or
+With that in mind, read main.tex, look at what I'm aiming for,
+and use what I've just told you to reimplement the entire file
+as dramatically and totally as you would at your highest level
+of ambition and care. Feel free to start completely from first
+principles, start from scratch, and reimplement everything you
+think could be made better. Store the results in a file called
+master.tex, and switch the Makefile to use master.tex, instead
+of main.tex, and continue to refer to main.tex while you write
+master.tex. We'll iterate until the system is much better, and
+simpler, with fewer moving parts and hard coded names, and all
+the same functionality from fewer functions called lotsa times
+in the definitions of other functions, so the result will be a
+lot smaller and yet much easier to change in one-off ways when
+exceptions and special cases arise, like the case of Ps hebrew
+font weight above. Also make sure to add back the niqqud to Ps
+Hebrew while you're there. Have fun and be ambitious...  first
+principles and elegance or bust.
 
-    We: The Nameless
-
-    Regular:        Authors. Usually early. Some later. (J, Records, Songs.)
-    Bold:           Priests. Usually later. Some early. (E, P, Dtr1, Dtr2, Dtn.)
-    Background:     Redactors. Primarily Editors, rarely or less frequently Authors.
-    No Background:  Redactors. Primarily Editors, rarely or less frequently Authors.
-
-    Green:          J. The first author. The oldest source in the bible, with the exception of archaic songs. (J)
-    Yellow:         Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. (E, Dtr1, Dtr2, Jeremiah)
-    Blue:           Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem. (P, R)
-    Red:            Songs. Early poetry of Levites in the south, Israelites in the north, or other sources. (Genesis 49, Exodus 15, Deuteronomy 32)
-    Grey:           Other. Records, Begat lists, genealogies, external documents. (Genesis 5, Genesis 14.)
-
-    Dark:           Laws.
-    Dark Blue:      Aaronid Laws. (Leviticus, Exodus 25-40.)
-    Dark Yellow:    Mushite Laws. (Covenant code in Exodus, Deuteronomistic Law code.)
-    Dark Green:     J Laws.       (Rare, outside of a version of the 10 commandments, which may have been a joke.\footnote{J is the funny one.})
+-J
 EOF
