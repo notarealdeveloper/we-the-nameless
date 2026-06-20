@@ -1,0 +1,362 @@
+#!/usr/bin/env python3
+import argparse
+import os
+import re
+import sys
+import textwrap
+from pathlib import Path
+
+
+BOOK_TITLES = {
+    "06-joshua": "Joshua",
+    "07-judges": "Judges",
+    "08-samuel": "Samuel",
+    "09-kings": "Kings",
+    "10-esther": "Esther",
+    "11-ezra": "Ezra",
+}
+
+KJV_CHAPTERS = [
+    ("Genesis", 50),
+    ("Exodus", 40),
+    ("Leviticus", 27),
+    ("Numbers", 36),
+    ("Deuteronomy", 34),
+    ("Joshua", 24),
+    ("Judges", 21),
+    ("Ruth", 4),
+    ("1 Samuel", 31),
+    ("2 Samuel", 24),
+    ("1 Kings", 22),
+    ("2 Kings", 25),
+    ("1 Chronicles", 29),
+    ("2 Chronicles", 36),
+    ("Ezra", 10),
+    ("Nehemiah", 13),
+    ("Esther", 10),
+]
+
+SUPER = "⁰¹²³⁴⁵⁶⁷⁸⁹"
+
+
+def die(message):
+    print(message, file=sys.stderr)
+    raise SystemExit(1)
+
+
+def latex_escape(s):
+    out = []
+    for c in s:
+        if c == "\\":
+            out.append(r"\textbackslash{}")
+        elif c in "{}%&#_$":
+            out.append("\\" + c)
+        elif c == "~":
+            out.append(r"\textasciitilde{}")
+        elif c == "^":
+            out.append(r"\textasciicircum{}")
+        else:
+            out.append(c)
+    return "".join(out)
+
+
+def clean_hebrew(s):
+    s = re.sub(r"\s*\{[פס]\}\s*", "", s)
+    return " ".join(s.split())
+
+
+def parse_hebrew(path):
+    verses = {}
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        if not line.strip():
+            continue
+        if "\t" not in line:
+            die(f"{path}: no tab in Hebrew line: {line!r}")
+        label, text = line.split("\t", 1)
+        m = re.search(r"(\d+):(\d+)\s*$", label)
+        if not m:
+            die(f"{path}: cannot parse Hebrew label: {label!r}")
+        verses[int(m.group(2))] = clean_hebrew(text)
+    return verses
+
+
+def strip_leading_verse_number(s):
+    return re.sub(rf"^[{SUPER}]+\s+", "", s.strip())
+
+
+def parse_english_md(path):
+    verses = {}
+    notes = {}
+    current = None
+    in_note = False
+    buf = []
+    note = []
+
+    def flush():
+        nonlocal buf, note, in_note
+        if current is None:
+            buf = []
+            note = []
+            in_note = False
+            return
+        if buf:
+            text = " ".join(" ".join(buf).split())
+            verses[current] = strip_leading_verse_number(text)
+        if note:
+            notes[current] = " ".join(" ".join(note).split())
+        buf = []
+        note = []
+        in_note = False
+
+    for raw in path.read_text(encoding="utf-8-sig").splitlines():
+        line = raw.strip()
+        m = re.match(r"^##\s+.*?\s+\d+:(\d+)\s*$", line)
+        if m:
+            flush()
+            current = int(m.group(1))
+            continue
+        if current is None or not line or set(line) == {"-"}:
+            continue
+        if line == "---":
+            in_note = True
+            continue
+        if line.startswith("Footnote "):
+            in_note = True
+        if in_note:
+            note.append(line)
+        else:
+            buf.append(line)
+    flush()
+    return verses, notes
+
+
+def parse_kjv(path):
+    books = {}
+    current_book = 0
+    current_chapter = 1
+    chapter_limit = KJV_CHAPTERS[current_book][1]
+    last_chapter = 0
+
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        m = re.match(r"^(\d+):(\d+)\s+(.*)$", line)
+        if not m:
+            continue
+        chapter = int(m.group(1))
+        verse = int(m.group(2))
+        text = m.group(3).strip()
+        if chapter < last_chapter or chapter > chapter_limit:
+            current_book += 1
+            if current_book >= len(KJV_CHAPTERS):
+                break
+            chapter_limit = KJV_CHAPTERS[current_book][1]
+        last_chapter = chapter
+        book = KJV_CHAPTERS[current_book][0]
+        books.setdefault(book, {}).setdefault(chapter, {})[verse] = text
+    if "Esther" in books and 9 in books["Esther"]:
+        books["Esther"][9].setdefault(
+            27,
+            "The Jews ordained, and took upon them, and upon their seed, and upon all such as joined themselves unto them, "
+            "so as it should not fail, that they would keep these two days according to their writing, and according to "
+            "their appointed time every year;",
+        )
+        books["Esther"][9].setdefault(
+            28,
+            "And that these days should be remembered and kept throughout every generation, every family, every province, "
+            "and every city; and that these days of Purim should not fail from among the Jews, nor the memorial of them "
+            "perish from their seed.",
+        )
+    return books
+
+
+def english_for_chapter(root, book, chapter, kjv):
+    path = root / "eng" / book / f"{chapter}.md"
+    if path.exists():
+        return parse_english_md(path)
+    if book == "10-esther":
+        ch = int(chapter)
+        try:
+            return kjv["Esther"][ch], {}
+        except KeyError:
+            die(f"missing Esther {ch} in eng/kjv.txt")
+    die(f"missing English source for {book}/{chapter}")
+
+
+def verify_pair(book, chapter, hebrew, english):
+    hv = sorted(hebrew)
+    ev = sorted(english)
+    if hv != ev:
+        hset = set(hv)
+        eset = set(ev)
+        die(
+            f"{book}/{chapter}: verse mismatch "
+            f"missing English={sorted(hset - eset)} missing Hebrew={sorted(eset - hset)}"
+        )
+
+
+def apply_versification(root, book, chapter, hebrew):
+    if book == "08-samuel" and chapter == "2-18":
+        next_hebrew = parse_hebrew(root / "heb" / book / "2-19.tex")
+        hebrew = dict(hebrew)
+        hebrew[33] = next_hebrew[1]
+    elif book == "08-samuel" and chapter == "2-19":
+        hebrew = {verse - 1: text for verse, text in hebrew.items() if verse > 1}
+    elif book == "09-kings" and chapter == "2-11":
+        next_hebrew = parse_hebrew(root / "heb" / book / "2-12.tex")
+        hebrew = dict(hebrew)
+        hebrew[21] = next_hebrew[1]
+    elif book == "09-kings" and chapter == "2-12":
+        hebrew = {verse - 1: text for verse, text in hebrew.items() if verse > 1}
+    return hebrew
+
+
+def wrap_text(prefix, text, width=68):
+    lines = textwrap.wrap(text, width=width, break_long_words=False, break_on_hyphens=False)
+    if not lines:
+        return [f"\t\\{prefix}{{}}"]
+    if len(lines) == 1:
+        return [f"\t\\{prefix}{{{lines[0]}}}"]
+    out = [f"\t\\{prefix}{{"]
+    out.extend(f"\t\t{line}" for line in lines)
+    out[-1] += ""
+    out.append("\t}")
+    return out
+
+
+def render_chapter(book, chapter, hebrew, english, notes):
+    title = BOOK_TITLES[book]
+    label = f"{book}/{chapter}.tex"
+    rule = "%" * (len(label) + 8)
+    out = [rule, f"%%% {label} %%%", rule, "", f"\\Chapter{{{int(chapter.split('-')[-1])}}}", ""]
+    for verse in sorted(hebrew):
+        out.extend([f"\\Verse{{{verse}}}", "{"])
+        out.extend(wrap_text("hX", latex_escape(hebrew[verse]), width=180))
+        out.extend(["}", "{"])
+        out.extend(wrap_text("eX", latex_escape(english[verse]), width=64))
+        out.extend(["}", "{"])
+        if verse in notes:
+            out.append("%\t\\footnote{")
+            for line in textwrap.wrap(latex_escape(notes[verse]), width=82, break_long_words=False):
+                out.append(f"%\t\t{line}")
+            out.append("%\t}")
+        out.extend(["}", ""])
+    return "\n".join(out).rstrip() + "\n"
+
+
+def source_chapters(root):
+    books = {}
+    for hbook in sorted((root / "heb").glob("[0-9][0-9]-*")):
+        if not hbook.is_dir():
+            continue
+        book = hbook.name
+        if book < "06-joshua":
+            continue
+        chapters = []
+        for hpath in sorted(hbook.glob("*.tex")):
+            chapter = hpath.stem
+            epath = root / "eng" / book / f"{chapter}.md"
+            if epath.exists() or book == "10-esther":
+                chapters.append(chapter)
+        if chapters:
+            books[book] = chapters
+    return books
+
+
+def write_chapters(root):
+    kjv = parse_kjv(root / "eng" / "kjv.txt")
+    written = []
+    books = source_chapters(root)
+    for book, chapters in books.items():
+        outdir = root / book
+        outdir.mkdir(exist_ok=True)
+        for chapter in chapters:
+            target = outdir / f"{chapter}.tex"
+            if target.exists():
+                continue
+            hebrew = parse_hebrew(root / "heb" / book / f"{chapter}.tex")
+            hebrew = apply_versification(root, book, chapter, hebrew)
+            english, notes = english_for_chapter(root, book, chapter, kjv)
+            verify_pair(book, chapter, hebrew, english)
+            target.write_text(render_chapter(book, chapter, hebrew, english, notes), encoding="utf-8")
+            written.append(target)
+    return books, written
+
+
+def ensure_x_source(master):
+    text = master.read_text(encoding="utf-8")
+    if r"\DeclareSourceProfile{X}" not in text:
+        marker = "% Others\n\n"
+        insert = (
+            "\\DeclareSourceProfile{X}\n"
+            "    {\\EnglishFont} {\\color{TextColor}\\mdseries}\n"
+            "    {\\HebrewDavid} {\\HebrewDavidLarge\\color{TextColor}\\mdseries}\n\n"
+        )
+        if marker not in text:
+            die("master.tex: cannot find source-profile insertion point")
+        text = text.replace(marker, marker + insert, 1)
+    old = r"\DeclareSourceCommandList{J,E,P,PP,DtrA,DtrB,Dtn,Records,Other,"
+    new = r"\DeclareSourceCommandList{J,E,P,PP,DtrA,DtrB,Dtn,Records,Other,X,"
+    if old in text and new not in text:
+        text = text.replace(old, new, 1)
+    master.write_text(text, encoding="utf-8")
+
+
+def include_block(root, books):
+    lines = []
+    for book, chapters in books.items():
+        lines.append("")
+        lines.append(f"\\Book{{{BOOK_TITLES[book]}}}")
+        for chapter in chapters:
+            lines.append(f"\\include{{{book}/{chapter}}}")
+    lines.append("")
+    lines.append(r"\include{apocrypha}")
+    lines.append("")
+    lines.append(r"\end{document}")
+    return "\n".join(lines)
+
+
+def update_master_includes(root, books):
+    master = root / "master.tex"
+    text = master.read_text(encoding="utf-8")
+    ensure_x_source(master)
+    text = master.read_text(encoding="utf-8")
+    m = re.search(r"\n%?\\Book\{Joshua\}.*?\n\\include\{apocrypha\}\s*\n\\end\{document\}\s*$", text, re.S)
+    if not m:
+        die("master.tex: cannot find Joshua-to-end include block")
+    text = text[:m.start()] + include_block(root, books) + "\n"
+    master.write_text(text, encoding="utf-8")
+
+
+def verify_outputs(root, books):
+    errors = []
+    for book, chapters in books.items():
+        for chapter in chapters:
+            path = root / book / f"{chapter}.tex"
+            if not path.exists():
+                errors.append(f"missing output {path}")
+                continue
+            text = path.read_text(encoding="utf-8")
+            verses = re.findall(r"\\Verse\{(\d+)\}", text)
+            h = text.count(r"\hX{")
+            e = text.count(r"\eX{")
+            if not verses or h != len(verses) or e != len(verses):
+                errors.append(f"{path}: verses={len(verses)} hX={h} eX={e}")
+    if errors:
+        die("\n".join(errors))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("target", nargs="?", default="all")
+    ap.add_argument("--update-master", action="store_true")
+    args = ap.parse_args()
+    root = Path.cwd()
+    books, written = write_chapters(root)
+    if args.update_master:
+        update_master_includes(root, books)
+    verify_outputs(root, books)
+    for path in written:
+        print(path)
+
+
+if __name__ == "__main__":
+    main()
