@@ -1125,7 +1125,7 @@
 
 \DeclareSourceProfile{P}
     {\EnglishFont}   {\SourceBackground{Pbgcolor}\Aaronid}
-    {\PaleoASCIIIsaiahScroll} {\SourceBackground{Pbgcolor}\Aaronid}
+    {\HebrewEzraRaw} {\SourceBackground{Pbgcolor}\Aaronid}
 
 \DeclareSourceProfile{R}
     {\EnglishFont}   {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
@@ -1185,25 +1185,6 @@
 \newcommand{\sBookOfRecords}[1]{{\estyleRecords #1}}
 
 % ------------------------------------------------------------
-% Inline Hebrew with explicit font selection
-% ------------------------------------------------------------
-\iffalse
-\section{nav: deprecated hebrew commands}
-\fi
-
-\newcommand{\hAJ}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cK\small #1}}}
-\newcommand{\hBJ}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cR\small #1}}}
-\newcommand{\hCJ}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cB\small #1}}}
-
-\newcommand{\hAP}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cK\small #1}}}
-\newcommand{\hBP}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cR\small #1}}}
-\newcommand{\hCP}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cB\small #1}}}
-
-% ------------------------------------------------------------
-% Compatibility source commands:
-% generated \sX commands behave like the matching English source command.
-% Prefer \hX for Hebrew when the source font matters.
-
 % ------------------------------------------------------------
 % Inline language helpers for commentary/definitions
 % ------------------------------------------------------------
@@ -1323,15 +1304,12 @@
 \section{nav: sources revealed}
 \fi
 
-\newcommand{\RSourceName}{R}
-\newcommand{\RJESourceName}{R}
-
 \newcommand{\SourceLegendItems}[2]{%
     \eJ{J}\quad
     \eE{E}\quad
     \eP{P}\quad
-    \eR{\RSourceName}\quad
-    \eRJE{\RJESourceName}\quad
+    \eR{R}\quad
+    \eRJE{R}\quad
     \eBookOfRecords{#1}\quad
     \eOther{#2}\quad
 }
@@ -1347,7 +1325,7 @@
     \eJ{J}\quad
     \eE{E}\quad
     \eP{P}\quad
-    \eR{\RSourceName}\quad
+    \eR{R}\quad
     }%
 }
 

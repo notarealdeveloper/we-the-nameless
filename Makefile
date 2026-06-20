@@ -1,4 +1,4 @@
-MAIN  := main
+MAIN  := master
 PDF   := $(MAIN).pdf
 BUILD := build
 CACHE := $(abspath $(BUILD)/texmf-var)
