@@ -81,7 +81,7 @@
 \newcommand{\LocalFontPath}{./fonts/}
 
 \setmainfont{FreeSerif}
-\newfontfamily\LawFont[Scale=0.90]{DejaVu Sans Mono}
+\newfontfamily\LawFont[Scale=0.82]{DejaVu Sans Mono}
 
 % The Ancients
 \newfontfamily\Cun[
@@ -460,6 +460,7 @@
 \definecolor{Ecolor}{RGB}{185,145,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
 \colorlet{Levitecolor}{Ecolor!50!Pcolor!65!black}
+\colorlet{MushiteAaronidcolor}{Ecolor!50!Pcolor}
 \colorlet{Dtr1color}{Ecolor!78!black}
 \colorlet{Dtr2color}{Ecolor!45!orange!70!black}
 \colorlet{Jeremiahcolor}{Ecolor!20!orange!45!black}
@@ -533,6 +534,7 @@
     \colorlet{Ecolor}{ObsYellow!65!fg}
     \colorlet{Pcolor}{ObsBlue!78!bg}
     \colorlet{Levitecolor}{Ecolor!50!Pcolor!55!black}
+    \colorlet{MushiteAaronidcolor}{Ecolor!50!Pcolor}
     \colorlet{Jbgcolor}{Jcolor!18!bg}
     \colorlet{Ebgcolor}{Ecolor!20!bg}
     \colorlet{Pbgcolor}{Pcolor!22!bg}
@@ -1445,9 +1447,9 @@
 
 \newcommand{\SourceLegendTitle}{%
     \begin{center}
-        {\scshape\Large The Authors}\\[0.35em]
-        {\itshape\large or}\\[0.8em]
-        {\Huge We: The Nameless}\\[0.8em]
+        {\scshape\large The Authors}\\[0.2em]
+        {\itshape\normalsize or}\\[0.45em]
+        {\LARGE We: The Nameless}\\[0.45em]
         {\footnotesize
             \eJ{J}\quad
             \eE{E}\quad
@@ -1463,15 +1465,15 @@
     \thispagestyle{plain}
 
     \HiddenChapterHeading{}%
-    \vspace*{-5.5em}
+    \vspace*{-7.5em}
 
     \SourceLegendTitle
-    \vspace{0.8em}
+    \vspace{0.25em}
 
     \begingroup
-    \footnotesize
+    \tiny
     \setcounter{footnote}{0}%
-    \renewcommand{\arraystretch}{1.22}
+    \renewcommand{\arraystretch}{0.98}
 
     \noindent
     \begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
@@ -1492,7 +1494,7 @@
         \SourceDecorate[aaronid,priest]{R}.)
         \\
 
-        \eR{Background}
+        \eR{Highlights}
         &
         \eR{
             Redactors, Editors. Occasionally write small amounts of glue prose
@@ -1556,7 +1558,7 @@
         &
         {\Poetry
             Songs and early poetry, from the Levites in the South and the Israelites in the North
-            (\cG{\Levite{Exodus 15}}, \cG{Judges 5}, \cG{Genesis 49}, \Mushite{Numbers 21, 23-24, Deut 33}.)
+            (\Levite{\color{MushiteAaronidcolor}Exodus 15}, \cG{Judges 5}, \cG{Genesis 49}, \Mushite{Numbers 21, 23-24, Deut 33}.)
         }
         \\
 
@@ -1567,18 +1569,18 @@
             All forms of code, legal and otherwise, are written in mono\textbackslash{}\par
             spaced font, for reasons that need not be explained.\par
 
-            Mushite Laws\par
+            \Mushite{Mushite Laws}\par
             - Covenant Code (Exodus 20:22–23:19)\par
             - Deuteronomistic Law Code (Dtn).\par
 
-            Aaronid Laws\par
+            \Aaronid{Aaronid Laws}\par
             - Exodus 25-40, where P talks how it's the law
             to make him pretty clothes and bring him gold and doesn't
             stop until damn well into Numbers, somewhere around the part
             that's clearly the origin of the 12 Days of Christmas song.
             They even say ``two turtledoves,'' it's not subtle.\par
 
-            J Laws\par
+            \eJ{J Laws}\par
             - Nonexistent. With the exception of a weird version of
             the 10 commandments, which may well have been a joke.
             J is f\redacted{ucking}\eR{oundational to the biblical text and
