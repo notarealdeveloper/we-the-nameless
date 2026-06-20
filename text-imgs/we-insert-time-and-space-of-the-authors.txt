@@ -1,11 +1,5 @@
-#!/usr/bin/env bash
-
-lord --verbose << "EOF"
-Generate me an image in the same style as the cover/*5*up png
-of the following content.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% 					  The Timeline						 %%%
+%%% 					  The Authors						 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%
 %%%                           月               日
@@ -37,11 +31,4 @@ of the following content.
 %%%                      The Nameless
 %%%
 %%%                           曰
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Add a right side boundary of aligned %%% characters and add any
-minor to moderate aesthetic corrections you think would make it
-mesh well with the aesthetics of the cover top half png mentioned
-above.
-
-EOF
