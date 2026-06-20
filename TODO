@@ -1,29 +1,29 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Write a python script that will take any chapter of any book that exists in both eng/ and heb/ and turn it into a combined latex file of the type that we have in [12345]-*/.tex
-
-Then add support for recursively merging all the chapters in a given book.
-
-Then add support for recursively merging all the books that don't yet have latex files.
-
-Don't overwrite the tex files we have in [12345]-*/*.tex
-
-Just generate python code that can reliably merge the files in heb/ and eng/ into files in the latter books starting at 6-joshua and continuing until we're done with everything we have available at present.
-
-Then run that code, and keep iterating until you're confident that you've got correct latex files for every book we have available, and all of its chapters, and that the hebrew and english of each sentence match.
-
-Once you get to a place where we no longer have a source map, generate two plain modern blah (for light mode) and white (for dark mode) normal english font and normal hebrew font sources called \\hX and \\eX, and wrap the rest of the verses of every chapter of every book in those until we're done, and add those \\hX and \\eX definitions to master.tex.
-
-End by making sure the \\includes at the end of master.tex are in the right order and not missing any books or chapters, that they're formatted consistently, and then uncomment all of them.
-
-Don't commit or try to build the full uncommented book yet.
-
-Once you've uncommented them all, you're done.
-
-We'll resume in the morning.
-
-Or rather, the afternoon.
-
-It's late.
+Go through the heb/, eng/ and the current working directory's many
+[0123456789]-* subdirs where the final tex files live, and make sure
+that the merged names like "Samuel" and "Kings" are in the table of
+contents, but that the original "I Samuel" and "II Kings" and so on
+names are in the verse by verse headings and the page headings, and
+to do that you'll first have to check the heb/ files and use them
+to make everything consistent. I want *11* books in the table of
+contents in the end, with the ambiguous ones being always called
+*Samuel* and *Kings* and *Ezra* in the table of contents, but
+the chapters inside those books and the naming of the files that
+make them up should reflect the "I Samuel" and "II Samuel" and
+"I Kings" and "II Kings" and "Ezra" and "Nehemiah" naming of the
+books and numbering of the chapters within them. Keep checking
+until you're confident you got it right. This shouldn't require
+much or any changing the heb/ or eng/ files and probably not
+any changing of the combined tex files, but you will have to
+change a good number of filenames and you'll have to look inside
+a good deal of files to make sure we know where things should
+start and end. And you'll have to change master.tex to make
+sure the table of contents reflects the 11 books but the
+chapter by chapter includes reflect the filenames that you
+decide are best to maintain this sort of system, which is
+likely going to be something like 08-samuel/1-02.tex for
+1st samuel chapter 2, with the 08 being the position of the
+book within the other books of the overall volume. Go!
 EOF
