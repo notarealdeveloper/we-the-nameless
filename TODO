@@ -2,71 +2,70 @@
 
 lord --verbose << "EOF"
 
-0. Fix these warnings
-    Underfull \hbox (badness 10000) in paragraph at lines 2277--2277
-    There's several.
+Make me an experimental page near the beginning
+that looks something like this.
 
-1. Add back chapters to the ToC.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                     We                     %%%
+%%% 			   The Nameless				   %%%
+%%%		   			   H       ש  			   %%%
+%%%				     h   η   Σ  ϻ			   %%%
+%%%                h       n      Ϻ			   %%%
+%%%                    н     ш   Ш			   %%%
+%%%                       山			           %%%
+%%%						 SH█N	               %%%
+%%% 					N█H█S				   %%%
+%%% 					S█N█H                  %%%
+%%%						S█N█                   %%%
+%%%	 					 三                    %%%
+%%%                                            %%%
+%%%                 	LꞀ                     %%%
+%%%                                            %%%
+%%%                                            %%%
+%%%                LꞀ        LꞀ                %%%
+%%%                                            %%%
+%%%					 ¿     ?                   %%%
+%%%                    ρ ר                     %%%
+%%%            1. 日 (H█R█Б)                   %%%
+%%%            2. 月 (S█נ██)                   %%%
+%%%            3. 曰 (N█████σ.ס)               %%%
+%%%                                            %%%
+%%%            你 好 世. ... 界                 %%%
+%%%            N. H. S. ... J                  %%%
+%%%            S. N. H. ... 山                 %%%
+%%%            H. S. N. ... 三                 %%%
+%%%            山 三. .. ... 曰                 %%%
+%%%                                            %%%
+%%%        ===.==.===================          %%%
+%%%        |   ..                              %%%
+%%%        | ..  '                             %%%
+%%%    > If the heavens ever did speak         %%%
+%%%    >   |   what would they say             %%%
+%%%    > & |   who would they say it to        %%%
+%%%    > would we be able to hear it           %%%
+%%%         .. ωη                              %%%
+%N%         .  וה                              %%%
+%H%           𐤅  𐤄                             %%%
+%S%                𐤉                           %%%
+%%%         LꞀ                                 %%%
+%%%      山    三                               %%%
+%%%         曰                                 %%%
+%%%                                            %%%
+%%%                                            %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-2. You have a blank page between every two pages of the source key and font key,
-    I want none of those 4 blank pages.
-
-3. The header font feels too small on the pages that say
-
-    The Authors
-        or
-    We: The Nameless
-     J E P R R
-
-    I want those bigger, they're pretty.
-
-4. Can we try one page as an experiment after the source key and font key,
-    where we have
-
----------------------------------------------------------------------------
-
-                      月                日
-           1000
-
-
-                       J
-
-            922
-
-                                        E
-
-            722
-                              R
-
-                       JE
-            715
-                              P
-            686
-            640
-                                        D
-            609
-            587                    D
-
-            538               R
-
-                      山三
-
-                  The Nameless
-
-                       曰
-
----------------------------------------------------------------------------
-
-In a sort of zigzagging line that looks like a 3 or a sideways W,
-and where the columns in my monospaced text file right here are
-vertically aligned on the latex page? Also make the years be much
-smaller text than the rest, and make everyone's letters be colored.
-The first R is RJE, but write it as R, just make it green with RJE's
-green background.
-
-Do that now.
-
-Don't stop until everything is done, and make sure item 4 looks good
-as a first pass experiment.
-
+Fix up the spacing where tabs vs spaces are making obvious silliness.
+Draw it with the best Latex Box drawing tools available.
+Keep exactly the unicode characters I used there.
+You MUST keep it monospaced, and be religious about
+the spacing differences between CJK characters and the rest.
+Also fix up the same picture at the top of master.tex,
+based on top-down knowledge of what it is and what's
+going on in the 2-dimensional monospaced relationships
+between the chatacters and their neighbors w.r.t.
+spatial proximity and which letters derived from
+which others historically or share similarities of
+shape or sound. Do all that now, and make it perfect.
 EOF
