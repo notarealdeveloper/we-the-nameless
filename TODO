@@ -1,27 +1,12 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Turn this into an image, by reading the image we.png
-and comparing the visual layout you see in the image
-with your knowledge of the exact Unicode characters
-I used in the text below, based on your total sum of
-knowledge of what it is and what's going on in the
-2-dimensional monospaced relationships between the
-chatacters and their neighbors w.r.t. spatial proximity
-and which letters derived from which others historically
-or share similarities of shape or sound.
 
-You must pay attention to the exact unicode characters
-I used here in the text. You MUST keep it monospaced,
-and be religious about the spacing differences between
-CJK characters and the rest, knowing that there is
-information running both horizontally and vertically,
-through similarities of sound, shape, the history of
-writing, puns available only in adjads and especially
-in defectively spelled orthographies like the older
-strata of Classical Biblical Hebrew.
+Good start! Now turn it into an image that doesn't just look the exact same. I mean turn it into an image with all the same *information* in its 2-dimensional prose and layout and omni-lingual playfulness, then elaborate on that image as if you were a book jacket designer creating the title for a book of the same content we often talk about, and base the cover on all that information in the image, and in the monospaced 2-dimensional unicode content of the text below.
 
-Do all that now, and make it perfect.
+Refer to we.png for layout of the text, and we-cover.png for ideas of what I mean.
+
+Just generate the front cover, straight on, in high detail.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
