@@ -17,6 +17,9 @@
 % Compile with:
 %   lualatex main.tex
 % ------------------------------------------------------------
+\iffalse
+\section{nav: compile/config}
+\fi
 
 \def\ConfigTrue{true}
 \def\ConfigThemeDark{dark}
@@ -32,6 +35,9 @@
 % ------------------------------------------------------------
 % Packages
 % ------------------------------------------------------------
+\iffalse
+\section{nav: packages}
+\fi
 
 \usepackage[
     paperwidth=7in,
@@ -64,6 +70,9 @@
 % ------------------------------------------------------------
 % Languages and fonts
 % ------------------------------------------------------------
+\iffalse
+\section{nav: languages/fonts}
+\fi
 
 \newcommand{\LocalFontPath}{./fonts/}
 
@@ -375,6 +384,9 @@
 % ------------------------------------------------------------
 % Hanging paragraphs and hanging footnotes
 % ------------------------------------------------------------
+\iffalse
+\section{nav: hanging paragraphs/footnotes}
+\fi
 
 \NewDocumentCommand{\hangingblock}{ O{1.5em} +m }{%
     \begingroup
@@ -396,6 +408,9 @@
 % ------------------------------------------------------------
 % Global layout
 % ------------------------------------------------------------
+\iffalse
+\section{nav: global layout}
+\fi
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.5em}
@@ -408,6 +423,9 @@
 % ------------------------------------------------------------
 % Side-by-side verse geometry
 % ------------------------------------------------------------
+\iffalse
+\section{nav: verse geometry}
+\fi
 
 \newlength{\VerseGap}
 \newlength{\VerseRuleWidth}
@@ -420,6 +438,9 @@
 % ------------------------------------------------------------
 % Colors
 % ------------------------------------------------------------
+\iffalse
+\section{nav: colors}
+\fi
 
 \definecolor{ProtoColor}{RGB}{150,150,150}
 \definecolor{PaleoColor}{RGB}{0,120,0}
@@ -546,6 +567,9 @@
 % Plain color commands
 % These ONLY change text color.
 % ------------------------------------------------------------
+\iffalse
+\section{nav: plain color commands}
+\fi
 
 \newcommand{\cK}[1]{{\color{Kcolor}#1}}
 \newcommand{\cR}[1]{{\color{Redcolor}#1}}
@@ -568,6 +592,9 @@
 % their glyphs in ASCII slots, so Lua strips cantillation and vowel marks
 % and transliterates the Hebrew consonants before selecting the font.
 % ------------------------------------------------------------
+\iffalse
+\section{nav: hebrew encoders/font profiles}
+\fi
 
 \directlua{
   paleotex = paleotex or {}
@@ -1159,6 +1186,9 @@
 % ------------------------------------------------------------
 % Inline Hebrew with explicit font selection
 % ------------------------------------------------------------
+\iffalse
+\section{nav: explicit hebrew font helpers}
+\fi
 
 \newcommand{\hAJ}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cK\small #1}}}
 \newcommand{\hBJ}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cR\small #1}}}
@@ -1176,6 +1206,9 @@
 % ------------------------------------------------------------
 % Inline language helpers for commentary/definitions
 % ------------------------------------------------------------
+\iffalse
+\section{nav: inline language helpers}
+\fi
 
 \newcommand{\heb}[1]{%
     {\InlineHebrewRenderer{}{#1}}%
@@ -1285,6 +1318,9 @@
 % ------------------------------------------------------------
 % Legend
 % ------------------------------------------------------------
+\iffalse
+\section{nav: legend/pages}
+\fi
 
 \newcommand{\RSourceName}{R}
 \newcommand{\RJESourceName}{R}
@@ -1571,6 +1607,9 @@
 % ------------------------------------------------------------
 % Header / footer
 % ------------------------------------------------------------
+\iffalse
+\section{nav: header/footer}
+\fi
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -1582,6 +1621,9 @@
 % ------------------------------------------------------------
 % Title page
 % ------------------------------------------------------------
+\iffalse
+\section{nav: title/cover/alphabet pages}
+\fi
 
 \newcommand{\wetitlepage}{%
     \clearpage
@@ -1705,6 +1747,9 @@
 % ------------------------------------------------------------
 % Book / chapter headings
 % ------------------------------------------------------------
+\iffalse
+\section{nav: book/chapter headings}
+\fi
 
 \titleformat{\chapter}[display]
     {\normalfont\huge\bfseries}
@@ -1750,6 +1795,9 @@
 % ------------------------------------------------------------
 % Verse layout
 % ------------------------------------------------------------
+\iffalse
+\section{nav: verse layout}
+\fi
 
 \def\englishsize{\normalsize}
 \def\hebrewsize{\normalsize}
@@ -1856,6 +1904,9 @@
 % \end{together}
 
 % ------------------------------------------------------------
+\iffalse
+\section{nav: keeping chunks together}
+\fi
 
 \makeatletter
 
@@ -1893,6 +1944,9 @@
 % Generic form:
 %   \as{<style macro>}[l|c|r]{text}
 % ------------------------------------------------------------
+\iffalse
+\section{nav: commentary layer}
+\fi
 
 \def\commentarysize{\normalsize}
 
@@ -1907,6 +1961,9 @@
 % ------------------------------------------------------------
 % Speaker shortcuts
 % ------------------------------------------------------------
+\iffalse
+\section{nav: speaker shortcuts}
+\fi
 
 \newcommand{\DeclareSpeakerShortcut}[2]{%
   \expandafter\NewDocumentCommand\csname a#1\endcsname{ O{l} +m }{\as{#2}[##1]{##2}}%
@@ -1931,6 +1988,9 @@
 % ------------------------------------------------------------
 % Dynamic words
 % ------------------------------------------------------------
+\iffalse
+\section{nav: dynamic words}
+\fi
 
 \makeatletter
 
@@ -1977,6 +2037,9 @@
 % ------------------------------------------------------------
 % Alignment sugar
 % ------------------------------------------------------------
+\iffalse
+\section{nav: alignment sugar}
+\fi
 
 \makeatletter
 \newcommand{\DeclareSpeakerTriplet}[1]{%
@@ -2008,6 +2071,9 @@
 % ------------------------------------------------------------
 % Document
 % ------------------------------------------------------------
+\iffalse
+\section{nav: document/include map}
+\fi
 
 \begin{document}
 
