@@ -2,6 +2,9 @@
 %%% We the Nameless %%%
 %%%%%%%%%%%%%%%%%%%%%%%
 
+% Read lord.tex before changing the source-key styling. Do not delete this input.
+\input{lord.tex}
+
 % choices: true, false
 \def\ConfigCommentary{true}
 
@@ -456,14 +459,19 @@
 \definecolor{Jcolor}{RGB}{0,120,0}
 \definecolor{Ecolor}{RGB}{185,145,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
+\colorlet{Levitecolor}{Ecolor!50!Pcolor!65!black}
 \colorlet{Dtr1color}{Ecolor!78!black}
-\colorlet{Dtr2color}{orange!72!black}
+\colorlet{Dtr2color}{Ecolor!45!orange!70!black}
+\colorlet{Jeremiahcolor}{Ecolor!20!orange!45!black}
+\colorlet{Ezekielcolor}{Pcolor!68!white}
 \colorlet{Dtncolor}{Ecolor}
 \colorlet{Jbgcolor}{Jcolor!12!white}
 \colorlet{Ebgcolor}{Ecolor!16!white}
 \colorlet{Pbgcolor}{Pcolor!14!white}
 \definecolor{Dtr1bgcolor}{RGB}{255,244,180}
 \definecolor{Dtr2bgcolor}{RGB}{255,222,175}
+\colorlet{Jeremiahbgcolor}{Jeremiahcolor!18!white}
+\colorlet{Ezekielbgcolor}{Ezekielcolor!14!white}
 \colorlet{Dtnbgcolor}{Dtncolor!16!white}
 
 \definecolor{Rcolor}{RGB}{0,70,170}
@@ -524,15 +532,20 @@
     \colorlet{Jcolor}{ObsGreen!87!fg}
     \colorlet{Ecolor}{ObsYellow!65!fg}
     \colorlet{Pcolor}{ObsBlue!78!bg}
+    \colorlet{Levitecolor}{Ecolor!50!Pcolor!55!black}
     \colorlet{Jbgcolor}{Jcolor!18!bg}
     \colorlet{Ebgcolor}{Ecolor!20!bg}
     \colorlet{Pbgcolor}{Pcolor!22!bg}
 
-    \colorlet{Dtr1color}{ObsYellow!82!bg}
-    \colorlet{Dtr2color}{ObsOrange!82!bg}
+    \colorlet{Dtr1color}{Ecolor!74!bg}
+    \colorlet{Dtr2color}{Ecolor!38!ObsOrange!70!bg}
+    \colorlet{Jeremiahcolor}{Ecolor!18!ObsOrange!52!bg}
+    \colorlet{Ezekielcolor}{Pcolor!74!fg}
     \colorlet{Dtncolor}{Ecolor}
     \definecolor{Dtr1bgcolor}{HTML}{5a4d30}
     \definecolor{Dtr2bgcolor}{HTML}{5f4534}
+    \definecolor{Jeremiahbgcolor}{HTML}{604035}
+    \colorlet{Ezekielbgcolor}{Ezekielcolor!20!bg}
     \colorlet{Dtnbgcolor}{Ebgcolor}
 
     \colorlet{Rcolor}{ObsBlue!65!fg}
@@ -948,24 +961,81 @@
 % Source traits. These compose in source profiles and can be used inline.
 \newcommand{\SourceBgColor}{Rbgcolor}
 \newcommand{\SourceBackground}[1]{\def\SourceBgColor{#1}}
-\newcommand{\Levite}{\bfseries}
+\makeatletter
+\newcommand{\Redactor}{\@highLight[\SourceBgColor]}
+\makeatother
+\newcommand{\PriestStyle}{\bfseries}
+\newcommand{\LeviteStyle}{\color{Levitecolor}}
 \newcommand{\Native}{\mdseries}
-\newcommand{\Mushite}{\Levite\color{Ecolor}}
-\newcommand{\Aaronid}{\Levite\color{Pcolor}}
+\newcommand{\MushiteStyle}{\color{Ecolor}}
+\newcommand{\AaronidStyle}{\color{Pcolor}}
 \newcommand{\Yahwist}{\Native\color{Jcolor}} % Or: Creator. We who cause it to be.
 \newcommand{\Record}{\color{Recordcolor}}
 \newcommand{\Records}{\Record}
 \newcommand{\Poetry}{\itshape}
 \newcommand{\OtherSource}{\color{OtherColor}\itshape}
-\newcommand{\DeuterA}{\Mushite\color{Dtr1color}}
-\newcommand{\DeuterB}{\Mushite\color{Dtr2color}}
-\newcommand{\DeuterN}{\Mushite\color{Dtncolor}}
+\newcommand{\DeuterAStyle}{\MushiteStyle\color{Dtr1color}}
+\newcommand{\DeuterBStyle}{\MushiteStyle\color{Dtr2color}}
+\newcommand{\DeuterNStyle}{\MushiteStyle\color{Dtncolor}}
+\newcommand{\JeremiahStyle}{\MushiteStyle\color{Jeremiahcolor}}
+\newcommand{\EzekielStyle}{\AaronidStyle\color{Ezekielcolor}}
+\newcommand{\RedactorStyle}{\SourceBackground{Rbgcolor}\Redactor}
+\let\DeuteronomistAStyle\DeuterAStyle
+\let\DeuteronomistBStyle\DeuterBStyle
+\let\DeuteronomicLawStyle\DeuterNStyle
+
+\ExplSyntaxOn
+\NewDocumentCommand{\SourceDecorate}{ O{} +m }{%
+    \group_begin:
+    \clist_map_inline:nn {#1} {
+        \str_case:nn {##1} {
+            {plain}{\mdseries}
+            {regular}{\mdseries}
+            {native}{\mdseries}
+            {priest}{\PriestStyle}
+            {bold}{\PriestStyle}
+            {nopriest}{\mdseries}
+            {nobold}{\mdseries}
+            {levite}{\LeviteStyle}
+            {mushite}{\MushiteStyle}
+            {aaronid}{\AaronidStyle}
+            {yahwist}{\Yahwist}
+            {dtr1}{\DeuterAStyle}
+            {dtr2}{\DeuterBStyle}
+            {dtn}{\DeuterNStyle}
+            {jeremiah}{\JeremiahStyle}
+            {ezekiel}{\EzekielStyle}
+            {record}{\Record}
+            {records}{\Records}
+            {other}{\OtherSource}
+            {poetry}{\Poetry}
+            {italic}{\itshape}
+            {noitalic}{\upshape}
+            {mono}{\LawFont}
+            {law}{\LawFont}
+            {redactor}{\RedactorStyle}
+            {bg}{\RedactorStyle}
+            {noredactor}{}
+            {nobg}{}
+        }
+    }
+    #2%
+    \group_end:
+}
+\ExplSyntaxOff
+
+\NewDocumentCommand{\Priest}{ O{} +m }{\SourceDecorate[priest,#1]{#2}}
+\NewDocumentCommand{\Levite}{ O{} +m }{\SourceDecorate[levite,#1]{#2}}
+\NewDocumentCommand{\Mushite}{ O{} +m }{\SourceDecorate[mushite,#1]{#2}}
+\NewDocumentCommand{\Aaronid}{ O{} +m }{\SourceDecorate[aaronid,#1]{#2}}
+\NewDocumentCommand{\DeuterA}{ O{} +m }{\SourceDecorate[dtr1,#1]{#2}}
+\NewDocumentCommand{\DeuterB}{ O{} +m }{\SourceDecorate[dtr2,#1]{#2}}
+\NewDocumentCommand{\DeuterN}{ O{} +m }{\SourceDecorate[dtn,#1]{#2}}
+\NewDocumentCommand{\Jeremiah}{ O{} +m }{\SourceDecorate[jeremiah,#1]{#2}}
+\NewDocumentCommand{\Ezekiel}{ O{} +m }{\SourceDecorate[ezekiel,#1]{#2}}
 \let\DeuteronomistA\DeuterA
 \let\DeuteronomistB\DeuterB
 \let\DeuteronomicLaw\DeuterN
-\makeatletter
-\newcommand{\Redactor}{\@highLight[\SourceBgColor]}
-\makeatother
 
 % The Sources
 
@@ -1117,34 +1187,34 @@
 % Mushites
 
 \DeclareSourceProfile{E}
-    {\EnglishFont} {\SourceBackground{Ebgcolor}\Mushite}
-    {\PaleoASCIIStandard} {\SourceBackground{Ebgcolor}\Mushite}
+    {\EnglishFont} {\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
+    {\PaleoASCIIStandard} {\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
 
 \DeclareSourceProfile{DtrA}
-    {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\DeuteronomistA\Redactor\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr1bgcolor}\DeuteronomistA\Redactor\mdseries}
+    {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\DeuteronomistAStyle\Redactor\mdseries}
+    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr1bgcolor}\DeuteronomistAStyle\Redactor\mdseries}
 
 \DeclareSourceProfile{DtrB}
-    {\EnglishFont} {\SourceBackground{Dtr2bgcolor}\DeuteronomistB\Redactor\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr2bgcolor}\DeuteronomistB\Redactor\mdseries}
+    {\EnglishFont} {\SourceBackground{Dtr2bgcolor}\DeuteronomistBStyle\Redactor\mdseries}
+    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr2bgcolor}\DeuteronomistBStyle\Redactor\mdseries}
 
 \DeclareSourceProfile{Dtn}
-    {\LawFont} {\Levite\DeuteronomicLaw}
-    {\HebrewDavid} {\HebrewDavidLarge\Levite\DeuteronomicLaw}
+    {\LawFont} {\DeuteronomicLawStyle}
+    {\HebrewDavid} {\HebrewDavidLarge\DeuteronomicLawStyle}
 
 % Aaronids
 
 \DeclareSourceProfile{P}
-    {\EnglishFont}   {\SourceBackground{Pbgcolor}\Aaronid}
-    {\HebrewEzraRaw} {\SourceBackground{Pbgcolor}\Aaronid}
+    {\EnglishFont}   {\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
+    {\HebrewEzraRaw} {\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
 
 \DeclareSourceProfile{PP}
-    {\EnglishFont}       {\SourceBackground{Pbgcolor}\Aaronid}
-    {\PaleoASCIIStandard}{\SourceBackground{Pbgcolor}\Aaronid}
+    {\EnglishFont}       {\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
+    {\PaleoASCIIStandard}{\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
 
 \DeclareSourceProfile{R}
-    {\EnglishFont}   {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
-    {\HebrewEzraRaw} {\SourceBackground{Rbgcolor}\Aaronid\Redactor\mdseries}
+    {\EnglishFont}   {\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\mdseries}
+    {\HebrewEzraRaw} {\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\mdseries}
 
 % Others
 
@@ -1358,6 +1428,14 @@
     \endgroup
 }
 
+\makeatletter
+\newcommand{\LegendFootmark}[1]{%
+    \refstepcounter{footnote}%
+    \expandafter\xdef\csname #1\endcsname{\the\value{footnote}}%
+    \textsuperscript{\thefootnote}%
+}
+\makeatother
+
 
 \newcommand{\SourceLegendTitle}{%
     \begin{center}
@@ -1390,6 +1468,7 @@
 
     \begingroup
     \footnotesize
+    \setcounter{footnote}{0}%
     \renewcommand{\arraystretch}{1.22}
 
     \noindent
@@ -1400,11 +1479,15 @@
         The People. We write regular. Bold is for the bold.
         \\
 
-        {\Levite Bold}
+        {\Priest{Bold}}
         &
-        {\Levite The Priests. Or the Levites. Same thing.}%
-        \textsuperscript{1}%
-        (\eE{E}, \eP{P}, \DtrALabel, \DtrBLabel, \DtnLabel.)
+        {\Priest{The Priests. Or the Levites. Same thing.}}%
+        \LegendFootmark{SourceLegendPriestFootnote}%
+        (\Priest{\Mushite{E}},
+        \SourceDecorate[dtr1,redactor,priest]{Dtr1},
+        \SourceDecorate[dtr2,redactor,priest]{Dtr2},
+        \Jeremiah[priest]{Jeremiah},
+        \SourceDecorate[aaronid,redactor,priest]{R}.)
         \\
 
         \eR{Background}
@@ -1421,47 +1504,48 @@
         \eJ{Green}
         &
         \eJ{
-            J. The first author of the bible.\textsuperscript{2}
-            The first author of prose.\textsuperscript{3}
+            J. The first author of the bible.\LegendFootmark{SourceLegendSongsFootnote}
+            The first author of prose.\LegendFootmark{SourceLegendEarthFootnote}
             The author of nearly all the most popular bible stories.
             (That is, not including the Jesus ones.
             (Though J's at least tied.))
-            The author in the bible with the best sense of humor.\textsuperscript{4}
+            The author in the bible with the best sense of humor.\LegendFootmark{SourceLegendMisunderstoodFootnote}
         }
         \\
 
         {\Mushite{Yellow}}
         &
-        {\Mushite
+        \Mushite{
             Mushites. A group of Levite priests who claim descent from Moses.
             Associated with the first temple in the city of Shiloh.
         }
-        (\eE{E}, \DtrALabel, \DtrBLabel, \DtnLabel,
-        {\itshape\color{Yellowcolor}Jeremiah}.)
+        (\Mushite{E}, \DeuterA{Dtr1}, \DeuterB{Dtr2}, \Jeremiah{Jeremiah}.)
         \\
 
         {\Aaronid{Blue}}
         &
-        {\Aaronid
+        \Aaronid{
             Aaronids. A group of Levite priests who claim descent from Aaron.
             Associated with the first and second temple in the city of Jerusalem.
         }
-        (\eP{P}, \eR{R}.)
+        (\Aaronid[priest]{P},
+        \Aaronid[redactor,nopriest]{R},
+        \Aaronid[ezekiel,italic,nopriest]{Ezekiel}.)
         \\
 
-        {\DeuterB{\Redactor Orange}}
+        {\DeuterB{Orange}}
         &
-        {\DeuterB
+        \DeuterB{
             Deuteronomists. Mushites after the Yellohist has been left in the
             theological toaster.
         }
-        (\DtrALabel, \DtrBLabel, \DtnLabel.)
+        (\DeuterA{Dtr1}, \DeuterB{Dtr2}, \Jeremiah{Jeremiah}.)
         \\
 
         {\Record Grey}
         &
         {\Record
-            Records, begat lists, genealogies, external documents.\\
+            Records, begat lists, genealogies, external documents.\par
             (Genesis 5, Genesis 14.)
         }
         \\[0.7em]
@@ -1482,42 +1566,29 @@
         }
         \\
 
-        {\LawFont{\Aaronid Aaronid Laws}}
+        {\LawFont{\Aaronid{Aaronid Laws}}}
         &
-        {\LawFont{\Aaronid Leviticus; Exodus 25-40.}}
+        {\LawFont{\Aaronid{Leviticus; Exodus 25-40.}}}
         \\
 
-        {\LawFont{\Mushite Mushite Laws}}
+        {\LawFont{\Mushite{Mushite Laws}}}
         &
-        {\LawFont{\Mushite Covenant Code in Exodus; Deuteronomistic Law Code.}}
+        {\LawFont{\Mushite{Covenant Code in Exodus}; \Mushite[mono]{Deuteronomistic Law Code} (\Mushite[mono]{Dtn}).}}
         \\
 
         {\LawFont\cG{J Laws}}
         &
-        {\LawFont\cG{Rare. Possibly a joke.\textsuperscript{5}}}
+        {\LawFont\cG{Rare. Possibly a joke.\LegendFootmark{SourceLegendFunnyFootnote}}}
         \\
 
     \end{tabular}
 
-    \par\smallskip
-
-    {\scriptsize
-        \textsuperscript{1}
-        Not according to \Aaronid{these guys},
-        though \Mushite{these guys} agree.\par
-
-        \textsuperscript{2}
-        Aside from a few archaic songs.\par
-
-        \textsuperscript{3}
-        Here on Earth, that is, as far as we know.\par
-
-        \textsuperscript{4}
-        And the most misunderstood.\par
-
-        \textsuperscript{5}
-        She's the funny one.\par
-    }
+    \footnotetext[\SourceLegendPriestFootnote]{Not according to \Aaronid{these guys},
+        though \Mushite{these guys} agree.}
+    \footnotetext[\SourceLegendSongsFootnote]{Aside from a few archaic songs.}
+    \footnotetext[\SourceLegendEarthFootnote]{Here on Earth, that is, as far as we know.}
+    \footnotetext[\SourceLegendMisunderstoodFootnote]{And the most misunderstood.}
+    \footnotetext[\SourceLegendFunnyFootnote]{She's the funny one.}
 
     \endgroup
 
@@ -2169,8 +2240,7 @@
 \AlphabetHistoryPage
 
 \frontmatter
-\pagenumbering{gobble}
-\pagestyle{empty}
+\pagestyle{plain}
 \tableofcontents
 \SourceLegendPage
 \mainmatter
