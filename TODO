@@ -3,7 +3,9 @@
 lord --verbose << "EOF"
 
 Fix these parsing problems:
+    Genesis 47:31
 
-Genesis 47:31
+Make these global adjustments:
+    P's Hebrew font should be slightly bigger, without making it bold.
 
 EOF
