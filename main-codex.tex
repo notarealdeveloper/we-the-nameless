@@ -407,6 +407,21 @@
 }
 
 % ------------------------------------------------------------
+% Global layout
+% ------------------------------------------------------------
+\iffalse
+\section{nav: pages}
+\fi
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlength{\footskip}{24pt}
+\setlength{\headheight}{22pt}
+\setlength{\emergencystretch}{2em}
+\onehalfspacing
+\raggedbottom
+
+% ------------------------------------------------------------
 % Side-by-side verse geometry
 % ------------------------------------------------------------
 \iffalse
@@ -553,6 +568,9 @@
 % Plain color commands
 % These ONLY change text color.
 % ------------------------------------------------------------
+\iffalse
+\section{nav: color commands}
+\fi
 
 \newcommand{\cK}[1]{{\color{Kcolor}#1}}
 \newcommand{\cR}[1]{{\color{Redcolor}#1}}
@@ -576,7 +594,7 @@
 % and transliterates the Hebrew consonants before selecting the font.
 % ------------------------------------------------------------
 \iffalse
-\section{nav: turing codex}
+\section{nav: turing tarpit}
 \fi
 
 \directlua{
@@ -1170,7 +1188,7 @@
 % Inline Hebrew with explicit font selection
 % ------------------------------------------------------------
 \iffalse
-\section{nav: deprecated commands}
+\section{nav: deprecated hebrew commands}
 \fi
 
 \newcommand{\hAJ}[1]{{\leavevmode\textdir TRT{\HebrewSquareFont\cK\small #1}}}
@@ -1298,138 +1316,11 @@
   \vspace{1em}
 }
 
-
-% ------------------------------------------------------------
-% Title page
-% ------------------------------------------------------------
-\iffalse
-\section{nav: cover}
-\fi
-
-\newcommand{\wetitlepage}{%
-    \clearpage
-    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
-    \pagestyle{empty}
-    {
-    \centering
-    \vspace*{0.2\textheight}
-    {\fontsize{100}{120}\fontfamily{lmr}\selectfont\textsc{We}\par}
-    \vspace*{0.2\textheight}
-    {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
-    \vspace*{\fill}
-    \newpage
-    }
-    \restoregeometry
-    \pagestyle{fancy}
-}
-
-\newcommand{\BookCoverPage}[2]{%
-    \clearpage
-    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
-    \pagestyle{empty}
-    {
-    \centering
-    \vspace*{0.2\textheight}
-    {\fontsize{64}{76}\fontfamily{lmr}\selectfont\textsc{#1}\par}
-    \vspace*{0.18\textheight}
-    {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{#2}\par}
-    \vspace*{\fill}
-    \newpage
-    }
-    \restoregeometry
-    \pagestyle{fancy}
-}
-
-\ExplSyntaxOn
-\NewDocumentCommand{\AlphabetHistoryASCII}{ m m m }{
-  {\leavevmode\textdir TRT\scalebox{#2}{#1\tl_reverse:n { #3 }}}
-}
-\NewDocumentCommand{\AlphabetHistoryRightToLeft}{ m m m }{
-  {\leavevmode\textdir TRT\scalebox{#2}{#1 { #3 }}}
-}
-\ExplSyntaxOff
-
-\def\paleoupper{{ABGDHWZXJYKLMNS]PCQRVT}}
-\def\paleolower{{abgdhwzxjyklmns]pcqrvt}}
-
-\def\protoalower{{abgshwZxjyklmn\;]p\;c\,q\,r\,f\,t}}
-\def\protoaupper{{ABGSHWZXjY\;KLM\,N\;]P\;C\,Q\,R\,V\,T}}
-
-\def\protobupper{{ABGD\!hw\!ZXJYKLMNS]\;P\;C\;Q\;R\;V\;T}}
-\def\protoblower{{ab\!gdHW\!zxjyklMns]\;pcq\;r\,v\,t}}
-
-\def\protocupper{{ABGDH\;WZXJ\!Y\!KL\;NS]PC\;Q\;R\,V\,T}}
-\def\protoclower{{abgdh\;wzxj\!yklns]p\!c\,q\,R\,v\,t}}
-
-\def\paleoalower{{abgdhw\!zxjyklmns]p\!cq\,r\,v\,t}}
-
-\def\paleobupper{{A\;BG\,DH\;WZX YKLM S]PCQRVT}}
-\def\paleoblower{{a\,bg\!dh\!wzx yklm\;s]p\!cqrvt}}
-
-\def\paleoeupper{{ABGDHWZXJYKLMNS]PCQRVT}}
-\def\paleoelower{{abgdhwz\,xjy\;klmns]pc\,q\,rvt}}
-
-\def\paleofupper{{ABGDHWZXJY\,K\,L\,M\,NS]PCQRVT}}
-\def\paleoflower{{abgdhwzxjyklmns]pc\,q\,r\,vt}}
-
-\def\paleoijkupper{{ABGDHWZXJYKLMNS]PCQRVT}}
-\def\paleoijklower{{abgdhwzxjyklmns]pcqrvt}}
-
-\def\paleolupper{{ABGDHWZXJYK\,L\,M\,NS]PCQRVT}}
-\def\paleollower{{abgdhwzxjyklmns]pcqrvt}}
-
-\def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
-
-\newcommand{\AlphabetHistoryPage}{%
-    \clearpage
-    \thispagestyle{empty}
-    \begin{flushright}
-    \egypt{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}
-    \AlphabetHistoryASCII{\ProtoSinaiticBestFont}{1.81}{\healphabet}\\
-    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoalower}\\
-    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoaupper}\\
-    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protobupper}\\
-    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protoblower}\\
-    \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protocupper}\\
-    \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protoclower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewTelZayitFont}{1.81}{\paleoalower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleobupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleoblower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleoupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleolower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewMoabiteFont}{1.81}{\paleoupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewMoabiteFont}{1.81}{\paleolower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewStandardFont}{1.81}{\paleoeupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewStandardFont}{1.81}{\paleoelower}\\
-    \AlphabetHistoryRightToLeft{\PaleoHebrewRoboFont}{1.81}{\healphabet}\\
-    \AlphabetHistoryRightToLeft{\PaleoHebrewPhoenicianFont}{2.13}{𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕}\\
-
-    \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleofupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleoflower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomAFont}{1.82}{\paleoupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomAFont}{1.82}{\paleolower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomBFont}{1.82}{\paleoupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomBFont}{1.82}{\paleolower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewLachishAFont}{1.81}{\paleoijkupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewLachishAFont}{1.81}{\paleoijkupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewLachishBFont}{1.81}{\paleoijkupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewLachishBFont}{1.81}{\paleoijkupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewLachishCFont}{1.82}{\paleoijkupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewLachishCFont}{1.82}{\paleoijkupper}\\
-    \AlphabetHistoryRightToLeft{\AramaicFont}{2.13}{𐡀𐡁𐡂𐡃𐡄𐡅𐡆𐡇𐡈𐡉𐡊𐡋𐡌𐡍𐡎𐡏𐡐𐡑𐡒𐡓𐡔𐡕}\\
-    \AlphabetHistoryASCII{\PaleoHebrewIsaiahScrollFont}{1.81}{\paleolupper}\\
-    \AlphabetHistoryASCII{\PaleoHebrewIsaiahScrollFont}{1.81}{\paleollower}\\
-    \AlphabetHistoryASCII{\HebrewDavidFont}{2.66}{\healphabet}\\
-    \AlphabetHistoryASCII{\HebrewEzraFont}{2.68}{\healphabet}\\
-    \end{flushright}
-    \cleardoublepage
-}
-
 % ------------------------------------------------------------
 % Legend
 % ------------------------------------------------------------
 \iffalse
-\subsection{nav: source legend header}
+\section{nav: sources revealed}
 \fi
 
 \newcommand{\RSourceName}{R}
@@ -1478,7 +1369,7 @@
 }
 
 \iffalse
-\section{nav: source page colors}
+\section{nav: source colors and fonts}
 \fi
 
 \newcommand{\SourceLegendPage}{%
@@ -1637,7 +1528,7 @@
 }
 
 \iffalse
-\section{nav: source page fonts}
+\section{nav: source eras}
 \fi
 
 \newcommand{\FontChoicePage}{%
@@ -1724,70 +1615,150 @@
 }
 
 % ------------------------------------------------------------
-% Keeping chunks together
-%
-% \begin{together}
-% ...
-% \end{together}
-%
-% where:
-%
-% First argument  = minimum remaining lines required before starting
-% Second argument = page-break strength (0–10000)
-%
-% \begin{together}[20]
-% ...
-% \end{together}
-%
-% \begin{together}[][8000]
-% ...
-% \end{together}
-%
-% \begin{together}[20][10000]
-% ...
-% \end{together}
-
+% Header / footer
 % ------------------------------------------------------------
 \iffalse
-\section{nav: binding}
+\section{nav: header/footer}
 \fi
 
-\makeatletter
-
-\NewDocumentEnvironment{together}{ O{10} O{5000} }
-{
-    \par
-
-    % Start a new page if fewer than N lines remain.
-    \Needspace{#1\baselineskip}
-
-    \begingroup
-
-    \hbadness=10000
-    \hfuzz=3em
-
-    % Discourage page breaks within the block.
-    \interlinepenalty=#2\relax
-    \predisplaypenalty=#2\relax
-    \postdisplaypenalty=#2\relax
-    \interdisplaylinepenalty=#2\relax
-    \@beginparpenalty=#2\relax
-    \@endparpenalty=#2\relax
-    \@itempenalty=#2\relax
-}
-{
-    \par
-    \endgroup
-}
-
-\makeatother
-
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\color{TextColor}\hbox to 0pt{\hss\SourceLegendHeader\hss}}
+\fancyhead[LE]{\color{TextColor}\nouppercase{\rightmark}}
+\fancyhead[RO]{\color{TextColor}\nouppercase{\rightmark}}
+\fancyfoot[C]{\color{TextColor}\thepage}
 
 % ------------------------------------------------------------
-% Book layout
+% Title page
 % ------------------------------------------------------------
 \iffalse
-\section{nav: books}
+\section{nav: title/cover/alphabet pages}
+\fi
+
+\newcommand{\wetitlepage}{%
+    \clearpage
+    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \pagestyle{empty}
+    {
+    \centering
+    \vspace*{0.2\textheight}
+    {\fontsize{100}{120}\fontfamily{lmr}\selectfont\textsc{We}\par}
+    \vspace*{0.2\textheight}
+    {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
+    \vspace*{\fill}
+    \newpage
+    }
+    \restoregeometry
+    \pagestyle{fancy}
+}
+
+\newcommand{\BookCoverPage}[2]{%
+    \clearpage
+    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \pagestyle{empty}
+    {
+    \centering
+    \vspace*{0.2\textheight}
+    {\fontsize{64}{76}\fontfamily{lmr}\selectfont\textsc{#1}\par}
+    \vspace*{0.18\textheight}
+    {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{#2}\par}
+    \vspace*{\fill}
+    \newpage
+    }
+    \restoregeometry
+    \pagestyle{fancy}
+}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\AlphabetHistoryASCII}{ m m m }{
+  {\leavevmode\textdir TRT\scalebox{#2}{#1\tl_reverse:n { #3 }}}
+}
+\NewDocumentCommand{\AlphabetHistoryRightToLeft}{ m m m }{
+  {\leavevmode\textdir TRT\scalebox{#2}{#1 { #3 }}}
+}
+\ExplSyntaxOff
+
+\def\paleoupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleolower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\protoalower{{abgshwZxjyklmn\;]p\;c\,q\,r\,f\,t}}
+\def\protoaupper{{ABGSHWZXjY\;KLM\,N\;]P\;C\,Q\,R\,V\,T}}
+
+\def\protobupper{{ABGD\!hw\!ZXJYKLMNS]\;P\;C\;Q\;R\;V\;T}}
+\def\protoblower{{ab\!gdHW\!zxjyklMns]\;pcq\;r\,v\,t}}
+
+\def\protocupper{{ABGDH\;WZXJ\!Y\!KL\;NS]PC\;Q\;R\,V\,T}}
+\def\protoclower{{abgdh\;wzxj\!yklns]p\!c\,q\,R\,v\,t}}
+
+\def\paleoalower{{abgdhw\!zxjyklmns]p\!cq\,r\,v\,t}}
+
+\def\paleobupper{{A\;BG\,DH\;WZX YKLM S]PCQRVT}}
+\def\paleoblower{{a\,bg\!dh\!wzx yklm\;s]p\!cqrvt}}
+
+\def\paleoeupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoelower{{abgdhwz\,xjy\;klmns]pc\,q\,rvt}}
+
+\def\paleofupper{{ABGDHWZXJY\,K\,L\,M\,NS]PCQRVT}}
+\def\paleoflower{{abgdhwzxjyklmns]pc\,q\,r\,vt}}
+
+\def\paleoijkupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoijklower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\paleolupper{{ABGDHWZXJYK\,L\,M\,NS]PCQRVT}}
+\def\paleollower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
+
+\newcommand{\AlphabetHistoryPage}{%
+    \clearpage
+    \thispagestyle{empty}
+    \begin{flushright}
+    \egypt{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}
+    \AlphabetHistoryASCII{\ProtoSinaiticBestFont}{1.81}{\healphabet}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoalower}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoaupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protobupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protoblower}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protocupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protoclower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelZayitFont}{1.81}{\paleoalower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleobupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleoblower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewMoabiteFont}{1.81}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewMoabiteFont}{1.81}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewStandardFont}{1.81}{\paleoeupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewStandardFont}{1.81}{\paleoelower}\\
+    \AlphabetHistoryRightToLeft{\PaleoHebrewRoboFont}{1.81}{\healphabet}\\
+    \AlphabetHistoryRightToLeft{\PaleoHebrewPhoenicianFont}{2.13}{𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕}\\
+
+    \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleofupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleoflower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomAFont}{1.82}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomAFont}{1.82}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomBFont}{1.82}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomBFont}{1.82}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishAFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishAFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishBFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishBFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishCFont}{1.82}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishCFont}{1.82}{\paleoijkupper}\\
+    \AlphabetHistoryRightToLeft{\AramaicFont}{2.13}{𐡀𐡁𐡂𐡃𐡄𐡅𐡆𐡇𐡈𐡉𐡊𐡋𐡌𐡍𐡎𐡏𐡐𐡑𐡒𐡓𐡔𐡕}\\
+    \AlphabetHistoryASCII{\PaleoHebrewIsaiahScrollFont}{1.81}{\paleolupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewIsaiahScrollFont}{1.81}{\paleollower}\\
+    \AlphabetHistoryASCII{\HebrewDavidFont}{2.66}{\healphabet}\\
+    \AlphabetHistoryASCII{\HebrewEzraFont}{2.68}{\healphabet}\\
+    \end{flushright}
+    \cleardoublepage
+}
+
+% ------------------------------------------------------------
+% Book / chapter headings
+% ------------------------------------------------------------
+\iffalse
+\section{nav: book/chapter headings}
 \fi
 
 \titleformat{\chapter}[display]
@@ -1803,31 +1774,26 @@
     {}
 
 \newcommand{\BookHeading}[1]{%
-    \csname chapter\endcsname*{#1}%
+    \HiddenChapterHeading{#1}%
 }
 
 \newcommand{\ChapterHeading}[1]{%
-    \csname section\endcsname*{#1}%
+    \HiddenSectionHeading{#1}%
 }
 
-\makeatletter
 \newcommand{\HiddenChapterHeading}[1]{%
     \csname chapter\endcsname*{#1}%
 }
-\makeatother
+
+\newcommand{\HiddenSectionHeading}[1]{%
+    \csname section\endcsname*{#1}%
+}
 
 \newcommand{\Book}[1]{%
     \BookHeading{#1}%
     \def\CurrentBook{#1}%
     \addcontentsline{toc}{chapter}{#1}%
 }
-
-% ------------------------------------------------------------
-% Chapter layout
-% ------------------------------------------------------------
-\iffalse
-\section{nav: chapters}
-\fi
 
 \newcommand{\Chapter}[1]{%
     \ChapterHeading{#1}%
@@ -1853,36 +1819,10 @@
 }
 
 % ------------------------------------------------------------
-% Page layout
-% ------------------------------------------------------------
-\iffalse
-\section{nav: pages}
-\fi
-
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.5em}
-\setlength{\footskip}{24pt}
-\setlength{\headheight}{22pt}
-\setlength{\emergencystretch}{2em}
-\onehalfspacing
-\raggedbottom
-
-% ------------------------------------------------------------
-% Header / footer
-% ------------------------------------------------------------
-
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[C]{\color{TextColor}\hbox to 0pt{\hss\SourceLegendHeader\hss}}
-\fancyhead[LE]{\color{TextColor}\nouppercase{\rightmark}}
-\fancyhead[RO]{\color{TextColor}\nouppercase{\rightmark}}
-\fancyfoot[C]{\color{TextColor}\thepage}
-
-% ------------------------------------------------------------
 % Verse layout
 % ------------------------------------------------------------
 \iffalse
-\section{nav: verses}
+\section{nav: verse layout}
 \fi
 
 \def\englishsize{\normalsize}
@@ -1965,12 +1905,117 @@
     \fi
 }
 
+% ------------------------------------------------------------
+% Keeping chunks together
+%
+% \begin{together}
+% ...
+% \end{together}
+%
+% where:
+%
+% First argument  = minimum remaining lines required before starting
+% Second argument = page-break strength (0–10000)
+%
+% \begin{together}[20]
+% ...
+% \end{together}
+%
+% \begin{together}[][8000]
+% ...
+% \end{together}
+%
+% \begin{together}[20][10000]
+% ...
+% \end{together}
+
+% ------------------------------------------------------------
+\iffalse
+\section{nav: keeping chunks together}
+\fi
+
+\makeatletter
+
+\NewDocumentEnvironment{together}{ O{10} O{5000} }
+{
+    \par
+
+    % Start a new page if fewer than N lines remain.
+    \Needspace{#1\baselineskip}
+
+    \begingroup
+
+    \hbadness=10000
+    \hfuzz=3em
+
+    % Discourage page breaks within the block.
+    \interlinepenalty=#2\relax
+    \predisplaypenalty=#2\relax
+    \postdisplaypenalty=#2\relax
+    \interdisplaylinepenalty=#2\relax
+    \@beginparpenalty=#2\relax
+    \@endparpenalty=#2\relax
+    \@itempenalty=#2\relax
+}
+{
+    \par
+    \endgroup
+}
+
+\makeatother
+
+% ------------------------------------------------------------
+% Commentary / utterance layer
+%
+% Generic form:
+%   \as{<style macro>}[l|c|r]{text}
+% ------------------------------------------------------------
+\iffalse
+\section{nav: commentary layer}
+\fi
+
+\def\commentarysize{\normalsize}
+
+\NewDocumentCommand{\as}{ m O{l} +m }{%
+    \begingroup
+    \commentarysize
+    \rmfamily
+    #1{#3}%
+    \endgroup
+}
+
+% ------------------------------------------------------------
+% Speaker shortcuts
+% ------------------------------------------------------------
+\iffalse
+\section{nav: speaker shortcuts}
+\fi
+
+\newcommand{\DeclareSpeakerShortcut}[2]{%
+  \expandafter\NewDocumentCommand\csname a#1\endcsname{ O{l} +m }{\as{#2}[##1]{##2}}%
+}
+
+\DeclareSpeakerShortcut{A}{\cK}
+\DeclareSpeakerShortcut{B}{\cR}
+\DeclareSpeakerShortcut{C}{\cB}
+\DeclareSpeakerShortcut{J}{\eJ}
+\DeclareSpeakerShortcut{E}{\eE}
+\DeclareSpeakerShortcut{P}{\aPEnglish}
+\DeclareSpeakerShortcut{DtrA}{\eDtrA}
+\DeclareSpeakerShortcut{DtrB}{\eDtrB}
+\DeclareSpeakerShortcut{Dtn}{\eDtn}
+\DeclareSpeakerShortcut{Records}{\eBookOfRecords}
+\DeclareSpeakerShortcut{Other}{\eOther}
+
+\NewDocumentCommand{\aR}{ O{l} +m }{\smash{\as{\eR}[#1]{#2}}}
+\NewDocumentCommand{\aRJE}{ O{l} +m }{\smash{\as{\eRJE}[#1]{#2}}}
+
 
 % ------------------------------------------------------------
 % Dynamic words
 % ------------------------------------------------------------
 \iffalse
-\section{nav: words}
+\section{nav: dynamic words}
 \fi
 
 \makeatletter
@@ -2016,48 +2061,11 @@
 % \redefineword{\God}{\cB{bob}}[\cB{Bob}]
 
 % ------------------------------------------------------------
-% Commentary / utterance layer
-%
-% Generic form:
-%   \as{<style macro>}[l|c|r]{text}
-% ------------------------------------------------------------
-\iffalse
-\section{nav: commentary}
-\fi
-
-\def\commentarysize{\normalsize}
-
-\NewDocumentCommand{\as}{ m O{l} +m }{%
-    \begingroup
-    \commentarysize
-    \rmfamily
-    #1{#3}%
-    \endgroup
-}
-
-\newcommand{\DeclareSpeakerShortcut}[2]{%
-  \expandafter\NewDocumentCommand\csname a#1\endcsname{ O{l} +m }{\as{#2}[##1]{##2}}%
-}
-
-\DeclareSpeakerShortcut{A}{\cK}
-\DeclareSpeakerShortcut{B}{\cR}
-\DeclareSpeakerShortcut{C}{\cB}
-\DeclareSpeakerShortcut{J}{\eJ}
-\DeclareSpeakerShortcut{E}{\eE}
-\DeclareSpeakerShortcut{P}{\aPEnglish}
-\DeclareSpeakerShortcut{DtrA}{\eDtrA}
-\DeclareSpeakerShortcut{DtrB}{\eDtrB}
-\DeclareSpeakerShortcut{Dtn}{\eDtn}
-\DeclareSpeakerShortcut{Records}{\eBookOfRecords}
-\DeclareSpeakerShortcut{Other}{\eOther}
-
-\NewDocumentCommand{\aR}{ O{l} +m }{\smash{\as{\eR}[#1]{#2}}}
-\NewDocumentCommand{\aRJE}{ O{l} +m }{\smash{\as{\eRJE}[#1]{#2}}}
-
-
-% ------------------------------------------------------------
 % Alignment sugar
 % ------------------------------------------------------------
+\iffalse
+\section{nav: alignment sugar}
+\fi
 
 \makeatletter
 \newcommand{\DeclareSpeakerTriplet}[1]{%
@@ -2085,11 +2093,12 @@
    \colorbox{Rcolor}{\strut\phantom{#1}}}%
 }
 
+
 % ------------------------------------------------------------
 % Document
 % ------------------------------------------------------------
 \iffalse
-\section{nav: creation}
+\section{nav: document/include map}
 \fi
 
 \begin{document}
