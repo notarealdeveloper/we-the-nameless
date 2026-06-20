@@ -1478,7 +1478,7 @@
 }
 
 \iffalse
-\section{nav: source page colors}
+\section{nav: source page colors and fonts}
 \fi
 
 \newcommand{\SourceLegendPage}{%
@@ -1637,7 +1637,7 @@
 }
 
 \iffalse
-\section{nav: source page fonts}
+\section{nav: source page eras}
 \fi
 
 \newcommand{\FontChoicePage}{%
@@ -1803,18 +1803,20 @@
     {}
 
 \newcommand{\BookHeading}[1]{%
-    \csname chapter\endcsname*{#1}%
+    \HiddenChapterHeading{#1}%
 }
 
 \newcommand{\ChapterHeading}[1]{%
-    \csname section\endcsname*{#1}%
+    \HiddenSectionHeading{#1}%
 }
 
-\makeatletter
 \newcommand{\HiddenChapterHeading}[1]{%
     \csname chapter\endcsname*{#1}%
 }
-\makeatother
+
+\newcommand{\HiddenSectionHeading}[1]{%
+    \csname section\endcsname*{#1}%
+}
 
 \newcommand{\Book}[1]{%
     \BookHeading{#1}%
