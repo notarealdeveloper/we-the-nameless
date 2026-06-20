@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+# Source Key
+
+1. Currently have 'Not according to {\blue\bold these guys, though} {\yellow\bold these guys agree}.
+   in the visual pdf, even though the code is
+
+    Not according to \Aaronid{these guys},
+    though \Mushite{these guys} agree.\par
+
+    Something about the \Aaronid scope is leaking. And then the rest of these footnotes are yellow:
+
+    {\scriptsize
+        \textsuperscript{1}
+        Not according to \Aaronid{these guys},
+        though \Mushite{these guys} agree.\par
+
+        \textsuperscript{2}
+        Aside from a few archaic songs.\par
+
+        \textsuperscript{3}
+        Here on Earth, that is, as far as we know.\par
+
+        \textsuperscript{4}
+        And the most misunderstood.\par
+
+        \textsuperscript{5}
+        She's the funny one.\par
+    }
+
+Stop trying to fake footnotes. These should be REAL footnotes. Suck it up and figure out
+how to make the pages before page 1 into normal pages without having to fake footnotes.
+
+2. I want the:
+    \Mushite command to make you E's yellow.
+    \Aaronid command to make you P's blue.
+    \Levite command to make you *dark green,* a different shade than J's.
+    \Priest command to make you bold in whatever color you currently are.
+
+I want the shade of green of the \Levite command to come from *mixing* the
+yellow shade of \Mushite and the blue shade of \Aaronid, using some color
+mixing command within Latex, so that if either the \Mushite yellow or
+\Aaronid blue changes, then so will the \Levite green. This will let us
+match Friedman's assignment of E to green, and also to explain the later
+fracturing into yellow and blue as arising from the fracturing of the Mushite
+and Aaronid priesthoods. The Deuteronomic darkening of Yellohist Elohist yellow
+comes after the banishing of Abiathar the priest and the elevation of Zadok
+with the reign of Solomon, and continuing as the Zadokites become the exclusive
+priesthood which continues through Ezekiel on to Ezra. Because of that, Ezra's
+light background meshes with the darker colors of the latter Mushites like
+Dtr2 and especially Jeremiah, who's associated with the Northern Mushite priesthood
+at Shiloh and said to be son of Hilkaiah of the priests of Anathoth.
+
+Make everything I just said be true, fix the formatting, use real footnotes,
+and make the commands work in a perfectly consistent way like I just said.
+
+3. Speaking of which, your Dtr colors are all wrong. Take the background off
+the word Orange in the source key page, and rewrite the page as follows:
+
+    When Dtr1 and Dtr2 appear in the Bold row, they should both be BOLD,
+    with a background, but Dtr1 should be a darker yellow than E,
+    and Dtr2 should be an even darker almost orange color.
+    Jeremiah should be there too, not italicized, but
+    should be bold and the darkest orange of all, as he represents
+    the most burnt out depressed and darkest nadir of the Mushites,
+    their final form. R should be in that line too, with a background
+    color AND bold. Dtn should not be there.
+
+    In the Mushite row, you should list the same Mushites you listed in
+    the Bold Priest row, but just the Mushites.
+
+    In the Aaronid line, you should list P, R, and Ezekiel.
+    R has the redactor background. Ezekiel is lighter blue than P.
+    They're all priests, and we emphasize P in bold here, R in non-bold
+    WITH a redactor background, and E in non-bold *in italics*.
+    In this row: they're all BLUE, because it's the Aaronid row.
+    They're allowed to preserve their *other* individual qualities.
+    But they're all blue in this row.
+
+    The word 'Deuteronomistic Law Code' should be E color yellow, and monospaced.
+    The abbreviation Dtn should be the same.
+
+    In other words: When they're *in the bold row*, we bold them.
+    When they're in *other rows*, we emphasize the things they are
+    that put them in that row. We need not emphasize every attribute
+    of everyone at all times, but we should emphasize everything we're
+    confidently sure of everywhere all the time, and emphasize things
+    we're less sure of stochastically, or less consistently, or less
+    emphatically in contexts where we're not talking about it.
+    Jeremiah need not be italicized when he's not being singled out
+    as a prophet or actively doing poetry. Jeremiah should be bold
+    when we're reminding the reader he's a priest, but his boldness
+    should fade as the Aaronids take over. Correspondingly, the Aaronid
+    boldness should increase as they gain power and the exclusive right
+    to the priesthood, since boldness means priesthood. Abiathar's name
+    should be bold and yellow when David's in charge and he's one of
+    the two high priests, and his name should become less bold but still
+    yellow once he's banished. The Mushites as a whole should become less
+    bold after Solomon banishes Abiathar and empowers Zadok, EXCEPT when
+    we're reminding the reader that Abiathar is a priest.
+
+    IN OTHER WORDS
+
+    These features of the fonts and writing are *abbreviations for entire sentences*,
+    they're ways of emphasizing things that are true about the
+    authors in question. When we line everyone up who belongs in a row,
+    we put the Priest (Bold) or the Redactor (background) hat on them.
+    We need not do that at all times. Every choice must be carefully
+    considered and easily changeable. Therefore, the names of these
+    people should ALL be (or have) FUNCTIONS with OPTIONAL ARGUMENTS
+    that allow us to toggle on and off any of their attributes.
+
+    Now, write this prompt to a new .tex file called lord.tex,
+    commented out with %, in the root directory, and then write a comment
+    at the top of master.tex that \\includes lord.tex and reminds the
+    reader, human or otherwise, to read that file and not delete the
+    line that includes it.
+
+    Then do everything else in this message, one step at a time,
+    until you're satisfied you've completely nailed it and got
+    a system in place that will make it trivial in the future
+    to apply any of the above types of changes *inline*, at any
+    part of the bible, both for humans and non-human agents who
+    might be needing to emphasize something about some character
+    or scene, and want to do so with colors, shapes, and backgrounds,
+    and without words.
+
+    Ready.
+    Set.
+    Go.
+EOF
