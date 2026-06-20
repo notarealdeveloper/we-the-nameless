@@ -1,47 +1,32 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
+1. Fix these bad boxes permanently.
 
-1. In the font legend, where we say:
+    Underfull \hbox (badness 10000) in paragraph at lines 2340--2340
+    \TU/DejaVuSansMono(0)/m/n/9 have been a joke. J is f[][]\TU/FreeSerif(1)/m/n/9
+    oun-da-tional to the
+    [15] [16]
+    Overfull \hbox (4.5176pt too wide) in paragraph at lines 2340--2340
+    []|\TU/proto-sinaitic-15.ttf(0)/m/n/9 abgsh-wZxjyklmn]pc-
 
-    The Priestly Blessing in Numbers 6 uses a Ketef Hinnom
-    scroll font because that blessing is the oldest biblical text
-    yet found.
+    Underfull \hbox (badness 4084) in paragraph at lines 2340--2340
+    []|\TU/english-im-fell-english-sc-regular.ttf(0)/m/n/9 Song of the Sea uses the
+     old-est Proto-
 
-We need the Hebrew font on the left to be P color, not J color,
-same as the English there.
+    Underfull \hbox (badness 10000) in paragraph at lines 2340--2340
+    []|\TU/english-im-fell-english-sc-regular.ttf(0)/m/n/9 Early Is-raelite po-etry
+     and the old-est
 
-2. Make the E font slightly smaller globally.
+    Underfull \hbox (badness 10000) in paragraph at lines 2340--2340
+    \TU/english-im-fell-english-sc-regular.ttf(0)/m/n/9 Deuteron-omy ma-te-rial use
+     the sec-ond
 
-3. In the font legend, The Prımary Sources, don't use the term "font."
-   Also don't reference LaTeX.
+    Underfull \hbox (badness 2368) in paragraph at lines 2340--2340
+    []|\TU/english-im-fell-english-sc-regular.ttf(0)/m/n/9 Num-bers 21 and the old
+    Bal-aam po-ems in
 
-4. In the front matter, like the contents and source font legend pages,
-    TURN OFF the xviii and so on. They're STILL THERE, in black.
-
-5. Make it be like this:
-
-Mono                Laws.
-                    All forms of code, legal and otherwise, are written in mono\
-                    spaced font, for reasons that need not be explained.
-
-                    Mushite Laws: Covenant Code (Exodus 20:22–23:19)
-                                  Deuteronomistic Law Code (Dtn).
-
-                    Aaronid Laws: Dear lord.
-                                  % Exodus 25 onward, where P talks how it's the law
-                                  % to make him pretty clothes and bring him gold
-                                  % and he doesn't stop until damn well into like
-                                  % Numbers, somewhere around the part where they
-                                  % have repetitive gift lists for 12 Days & that
-                                  % was pretty clearly what the authors of The 12
-                                  % Days Christmas had in mind when they invented
-                                  % the song, I mean they actually even say ``two
-                                  % turtledoves,'' in that shit it's not subtle.
-
-                    J Laws: Nonexistent, with the exception of a weird version of
-                            the 10 commandments, which may well have been a joke.
-                            J is f\redacted{ucking}\eR{oundational to the biblical text and
-                            an essential path to understanding God's} awesome \eR{power.}}%
-                            \LegendFootmarkJ{SourceLegendThanksFootnote}%
+2. Resize the E Hebrew and P Hebrew fonts without changing which fonts they are, in order
+   to exactly match the size of the J Hebrew font on the page, visually. You'll need
+   different scale factors to achieve this. Keep J the same.
 EOF

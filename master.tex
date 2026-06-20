@@ -1497,7 +1497,7 @@
     \renewcommand{\arraystretch}{0.98}
 
     \noindent
-    \begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
+    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.23\linewidth}>{\RaggedRight\arraybackslash}p{0.71\linewidth}@{}}
 
         Regular
         &
@@ -1612,7 +1612,7 @@
 
             \smallskip
             \noindent
-            \begin{tabular}[t]{@{}l@{\quad}p{0.72\linewidth}@{}}
+                \begin{tabular}[t]{@{}>{\RaggedRight\arraybackslash}l@{\quad}>{\RaggedRight\arraybackslash}p{0.72\linewidth}@{}}
             {\MushiteStyle
             Mushite Laws:} &
             {\MushiteStyle Covenant Code (Exodus 20:22--23:19)}\\
@@ -1663,6 +1663,10 @@
     \end{center}
 }
 
+\newcommand{\LegendFontSample}[1]{%
+    \makebox[\linewidth][r]{\resizebox{0.96\linewidth}{!}{#1}}%
+}
+
 \newcommand{\PrimevalSourceFontsPage}{%
     \cleardoublepage
     \thispagestyle{empty}
@@ -1682,9 +1686,9 @@
     \par\smallskip
 
     \noindent
-    \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
+    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.43\linewidth}>{\RaggedRight\arraybackslash}p{0.51\linewidth}@{}}
 
-        \hProtoA{אבגדהוזחטיכלמנסעפצקרשת}
+        \LegendFontSample{\hProtoA{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eProtoA{
             Song of the Sea uses the oldest Proto-Sinaitic font here:
@@ -1692,7 +1696,7 @@
         }
         \\
 
-        \hProto{אבגדהוזחטיכלמנסעפצקרשת}
+        \LegendFontSample{\hProto{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eProto{
             Early Israelite poetry and the oldest Deuteronomy material use
@@ -1701,7 +1705,7 @@
         }
         \\
 
-        \hProtoF{אבגדהוזחטיכלמנסעפצקרשת}
+        \LegendFontSample{\hProtoF{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eProtoF{
             Numbers 21 and the old Balaam poems in Numbers 23--24 use the
@@ -1710,7 +1714,7 @@
         }
         \\
 
-        \PaleoMFont{\color{Pcolor}\mdseries}{אבגדהוזחטיכלמנסעפצקרשת}
+        \LegendFontSample{\PaleoMFont{\color{Pcolor}\mdseries}{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eP{
             The Priestly Blessing in Numbers 6 uses a Ketef Hinnom scroll
@@ -1718,7 +1722,7 @@
         }
         \\
 
-        \hRecords{אבגדהוזחטיכלמנסעפצקרשת}
+        \LegendFontSample{\hRecords{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eBookOfRecords{
             Records use Paleo Hebrew Mono and grey text: bureaucracy,
@@ -1749,9 +1753,9 @@
     \renewcommand{\arraystretch}{1.45}
 
     \noindent
-    \begin{tabular}{@{}p{0.43\linewidth}p{0.51\linewidth}@{}}
+    \begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.43\linewidth}>{\RaggedRight\arraybackslash}p{0.51\linewidth}@{}}
 
-        \hJ{אבגדהוזחטיכלמנסעפצקרשת}
+        \LegendFontSample{\hJ{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eJ{
             J is native to the land, non-bold, and in Paleo-Hebrew because J
@@ -1759,7 +1763,7 @@
         }
         \\
 
-        \hE{אבגדהוזחטיכלמנסעפצקרשת}
+        \LegendFontSample{\hE{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eE{
             E is Mushite and Levite, but uses a clean Paleo-Hebrew hand.
@@ -1767,7 +1771,7 @@
         }
         \\
 
-        \hP{אבגדהוזחטיכלמנסעפצקרשת}
+        \LegendFontSample{\hP{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eP{
             P defaults to Ezra square script with niqqud: anachronistic,
@@ -1777,7 +1781,7 @@
         }
         \\
 
-        \hR{אבגדהוזחטיכלמנסעפצקרשת}
+        \LegendFontSample{\hR{אבגדהוזחטיכלמנסעפצקרשת}}
         &
         \eR{
             R uses Ezra square script with no niqqud,
