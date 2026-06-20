@@ -1,47 +1,34 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Generate me an image in the same style as the cover/*5*up png
-of the following content.
+I want you to read through ALL of [12345]-*.tex, just the Hebrew and English, and ignoring my comments.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% 					  The Timeline						 %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%
-%%%                           月               日
-%%%
-%%%               1000
-%%%
-%%%                           J
-%%%
-%%%                922
-%%%
-%%%                                            E
-%%%
-%%%                722
-%%%                                  R
-%%%
-%%%                           JE
-%%%                715
-%%%                                  P
-%%%                686
-%%%                640
-%%%                                            D
-%%%                609
-%%%                587                    D
-%%%
-%%%                538               R
-%%%
-%%%                          山三
-%%%
-%%%                      The Nameless
-%%%
-%%%                           曰
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+As you're doing that, I want you to write yourself a massive mega-prompt
+explaining everything you notice about the style of Friedman's english
+translation and the habits it has about how to translate which Hebrew
+words, phrases, grammar, etc. into English.
 
-Add a right side boundary of aligned %%% characters and add any
-minor to moderate aesthetic corrections you think would make it
-mesh well with the aesthetics of the cover top half png mentioned
-above.
+Take note of his habits regarding every single Hebrew word.
+Does he always translate it to the same English word?
+What word is that? How does he choose to represent the Hebrew
+grammar of different authors and sources in English?
 
+I want you to take these notes and write this massive mega-prompt
+because I want to eventually use that prompt as notes with the
+intention of having you read the remaining books of the Hebrew
+bible in Hebrew and translate them all into English *exactly
+how you would if you were Friedman.* That English translation
+will be the basis of what we do going forward. That's the goal.
+
+For now, don't try to generate english translations of hebrew
+books we haven't covered yet. Just read the torah, as found in
+the combined tex files in [12345]-*.tex, and take exhaustive
+concordance-like notes (in addition to some style and vibes
+and personality type notes) on everything you think you'll
+eventually need to know in order to simulate the same
+incredible translation style on books he never had time
+to get around to translating. We're gonna make this guy
+immortal, eternal, and Nameless.
+
+Go do that now, and make it perfect.
 EOF
