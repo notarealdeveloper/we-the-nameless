@@ -1,22 +1,25 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Here we go!
+Write a python script that will take any chapter of any book that exists in both eng/ and heb/ and turn it into a combined latex file of the type that we have in [12345]-*/.tex
 
-Following the rules for translation laid out in the file translation-megaprompt.txt,
-I want you to read through the first book you find in heb/ that you don't find in eng/,
-and translate it into a set of files in eng/ that correspond exactly to the files in heb/,
-as if the translation had been painstakingly carried out over years by the person described
-in the file translation-megaprompt.txt. Add footnotes in the generated english, of the same
-type you find in the footnotes in eng/[1-5]-*, whenever you encounter a hebrew verse in the heb/
-books heb/6-* and onward that you have an interesting comment about, or which you think the translator
-described in translation-megaprompt.txt might have an interesting comment about. Make sure to separate
-any comments you make from the ongoing translation, and remember: accurately reproducing his translation
-style is the most important thing by far. Any additional comments are optional, and just for fun.
+Then add support for recursively merging all the chapters in a given book.
 
-You can use eng/kjv.txt if it helps to have an english scaffolding, but you MUST not leave
-any kjv diction in the final translation. Your goal is to sound like Friedman, no matter how
-much work it takes to do so.
+Then add support for recursively merging all the books that don't yet have latex files.
 
-Do that now, and make it perfect.
+Don't overwrite the tex files we have in [12345]-*/*.tex
+
+Just generate python code that can reliably merge the files in heb/ and eng/ into files in the latter books starting at 6-joshua and continuing until we're done with everything we have available at present.
+
+End by making sure the \\includes at the end of master.tex are in the right order and not missing any books or chapters, that they're formatted consistently, and then uncomment all of them.
+
+Don't commit or try to build the full uncommented book yet.
+
+Once you've uncommented them all, you're done.
+
+We'll resume in the morning.
+
+Or rather, the afternoon.
+
+It's late.
 EOF
