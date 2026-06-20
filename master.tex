@@ -571,6 +571,12 @@
 \fi
 
 \arrayrulecolor{RuleColor}
+\newcommand{\TocFont}{\EnglishFont\color{TextColor}}
+\renewcommand{\cfttoctitlefont}{\TocFont\Huge\bfseries}
+\renewcommand{\cftchapfont}{\TocFont}
+\renewcommand{\cftchappagefont}{\TocFont}
+\renewcommand{\cftsecfont}{\TocFont}
+\renewcommand{\cftsecpagefont}{\TocFont}
 \renewcommand{\headrule}{%
     {\color{RuleColor}\hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}%
 }
@@ -1922,7 +1928,7 @@
 \newcommand{\Chapter}[1]{%
     \ChapterHeading{#1}%
     \def\CurrentChapter{#1}%
-    \addcontentsline{toc}{section}{#1}%
+    %\addcontentsline{toc}{section}{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
 }
 
@@ -1938,7 +1944,7 @@
 \newcommand{\Apocryphon}[1]{%
     \ChapterHeading{#1}%
     \def\CurrentChapter{#1}%
-    \addcontentsline{toc}{section}{#1}%
+    %\addcontentsline{toc}{section}{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
 }
 
