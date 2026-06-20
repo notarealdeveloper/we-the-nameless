@@ -214,6 +214,13 @@
     Scale=1.60
 ]{paleo-hebrew-isaiah-scroll.ttf}
 
+\newfontfamily\PaleoHebrewMonoFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{paleo-hebrew-mono.ttf}
+
 \newfontfamily\AramaicFont[
     Path=\LocalFontPath,
 	BoldFont=noto-sans-imperial-aramaic-regular.ttf,
@@ -880,7 +887,8 @@
 \DeclareHebrewRenderer{PaleoVFont}{\PaleoHebrewLachishCFont}{\EncodePaleoUpper}
 \DeclareHebrewRenderer{PaleoWFont}{\PaleoHebrewIsaiahScrollFont}{\EncodePaleoW}
 \DeclareHebrewRenderer{PaleoXFont}{\PaleoHebrewIsaiahScrollFont}{\EncodePaleoX}
-\DeclareHebrewRenderer{PaleoYFont}{\PaleoHebrewRoboFont}{\EncodePaleoUnicode}
+\DeclareHebrewRenderer{PaleoYFont}{\PaleoHebrewMonoFont}{\EncodePaleoUnicode}
+\DeclareHebrewRenderer{PaleoHebrewMono}{\PaleoHebrewMonoFont}{\EncodePaleoUnicode}
 
 % Source profiles bundle the English font/style with the Hebrew renderer/style.
 % These declarations are the only source-to-font bindings normally changed.
@@ -1051,6 +1059,10 @@
     {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
     {\PaleoXFont} 		{\color{PaleoColor}\mdseries}
 
+\DeclareSourceProfile{PaleoY}
+    {\EnglishProtoFont} 	{\color{PaleoColor}\mdseries}
+    {\PaleoYFont} 		{\color{PaleoColor}\mdseries}
+
 % J
 
 \DeclareSourceProfile{J}
@@ -1120,7 +1132,7 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX}
+\DeclareSourceCommandList{J,E,P,DtrA,DtrB,Dtn,Records,Other,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
 
 \newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
 \newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
@@ -1303,38 +1315,6 @@
     \endgroup
 }
 
-\newcommand{\SourceRefs}{%
-    \eJ{J}, %
-    \eBookOfRecords{Records}, %
-    \textit{Songs}%
-}
-
-\newcommand{\PriestSourceRefs}{%
-    \eE{E}, %
-    \eP{P}, %
-    \DtrALabel, %
-    \DtrBLabel, %
-    \DtnLabel%
-}
-
-\newcommand{\MushiteSourceRefs}{%
-    \eE{E}, %
-    \DtrALabel, %
-    \DtrBLabel, %
-    \DtnLabel, %
-    {\itshape\color{Yellowcolor}Jeremiah}%
-}
-
-\newcommand{\LawRow}[2]{%
-    {\LawFont #1} & {\raggedright\arraybackslash\LawFont #2}\\%
-}
-
-\newcommand{\LawRows}{%
-    \LawRow{{\Aaronid Aaronid Laws}}{\Aaronid Leviticus; Exodus 25-40.}%
-    \LawRow{{\Mushite Mushite Laws}}{\Mushite Covenant Code in Exodus; Deuteronomistic Law Code.}%
-    \LawRow{\cG{J Laws}}{\cG{Rare. Possibly a joke.\textsuperscript{5}}}%
-}
-
 \newcommand{\FontChoicePage}{%
     \cleardoublepage
     \thispagestyle{plain}
@@ -1381,28 +1361,38 @@
     \noindent\begin{tabular}{@{}p{0.23\linewidth}p{0.71\linewidth}@{}}
         Regular
         & The People. We write regular. Bold is for the bold.\\
-        {\Levite Bold} & {\Levite The Priests. Or the Levites. Same thing.}%
-        \textsuperscript{1}%
-        (\PriestSourceRefs.)\\
+        {\Levite Bold}
+        & {\Levite The Priests. Or the Levites. Same thing.}%
+          \textsuperscript{1}%
+          (\eE{E}, \eP{P}, \DtrALabel, \DtrBLabel, \DtnLabel.)\\
 
         \eR{Background} \eRJE{Background}
         & \eR{Redactors. Editors, occasionally write small amounts of glue prose to make multiple sources consistent,} \eRJE{while others write less and delete more from their sources.}\\[0.7em]
+
         \eJ{Green} & \eJ{J. The first author of the bible.\textsuperscript{2}
             The first author of prose.\textsuperscript{3}
             The author of nearly all the most popular bible stories.
             (That is, not including the Jesus ones.
             (Though J's at least tied.))
             The author in the bible with the best sense of humor.\textsuperscript{4}}\\
-        {\Mushite{Yellow}} & {\Mushite Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh.} (\MushiteSourceRefs.)\\
+
+        {\Mushite{Yellow}}
+        & {\Mushite Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh.}
+          (\eE{E}, \DtrALabel, \DtrBLabel, \DtnLabel, {\itshape\color{Yellowcolor}Jeremiah}.)\\
+
         {\Aaronid{Blue}} & {\Aaronid Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in the city of Jerusalem.} (\eP{P}, \eR{R}.)\\
         {\DeuterB{\Redactor Orange}} & {\DeuterB Deuteronomists. Mushites after the Yellohist has been left in the theological toaster.} (\DtrALabel, \DtrBLabel, \DtnLabel.)\\
         {\Record Grey} & {\Record Bureaucracy: records, accounting, begat lists, external documents. (Genesis 5, Genesis 14.)}\\[0.7em]
+
         {\Poetry Italics} & {\Poetry Songs, early poetry,
-        	of the \Levite{Levites} in the South \Mushite{(}\Aaronid{Exodus 15}\Mushite{)},\\
-        	of the \cG{Israelites} in the North \cG{(Judges 5, Genesis 49)},\\
+        	of the \Levite{Levites} in the South \Mushite{(}\Aaronid{Exodus 15}\Mushite{)},\newline
+        	of the \cG{Israelites} in the North \cG{(Judges 5, Genesis 49)},\newline
         	and possibly older texts later included by the Deuteronomistic Historians {\Mushite (Deuteronomy 32).}}\\
+
         {\LawFont Mono} & {\LawFont All forms of code, including legal codes, for reasons that need not be explained.}\\
-        \LawRows
+        {\LawFont{\Aaronid Aaronid Laws}} & {\LawFont{\Aaronid Leviticus; Exodus 25-40.}}\\
+        {\LawFont{\Mushite Mushite Laws}} & {\LawFont{\Mushite Covenant Code in Exodus; Deuteronomistic Law Code.}}\\
+        {\LawFont\cG{J Laws}} & {\LawFont\cG{Rare. Possibly a joke.\textsuperscript{5}}}\\
     \end{tabular}
     \par\smallskip
     {\scriptsize
