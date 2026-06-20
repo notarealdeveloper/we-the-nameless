@@ -1,34 +1,18 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-I want you to read through ALL of [12345]-*.tex, just the Hebrew and English, and ignoring my comments.
+Here we go!
 
-As you're doing that, I want you to write yourself a massive mega-prompt
-explaining everything you notice about the style of Friedman's english
-translation and the habits it has about how to translate which Hebrew
-words, phrases, grammar, etc. into English.
+Following the rules for translation laid out in the file translation-megaprompt.txt,
+I want you to read through the first book you find in heb/ that you don't find in eng/,
+and translate it into a set of files in eng/ that correspond exactly to the files in heb/,
+as if the translation had been painstakingly carried out over years by the person described
+in the file translation-megaprompt.txt. Add footnotes in the generated english, of the same
+type you find in the footnotes in eng/[1-5]-*, whenever you encounter a hebrew verse in the heb/
+books heb/6-* and onward that you have an interesting comment about, or which you think the translator
+described in translation-megaprompt.txt might have an interesting comment about. Make sure to separate
+any comments you make from the ongoing translation, and remember: accurately reproducing his translation
+style is the most important thing by far. Any additional comments are optional, and just for fun.
 
-Take note of his habits regarding every single Hebrew word.
-Does he always translate it to the same English word?
-What word is that? How does he choose to represent the Hebrew
-grammar of different authors and sources in English?
-
-I want you to take these notes and write this massive mega-prompt
-because I want to eventually use that prompt as notes with the
-intention of having you read the remaining books of the Hebrew
-bible in Hebrew and translate them all into English *exactly
-how you would if you were Friedman.* That English translation
-will be the basis of what we do going forward. That's the goal.
-
-For now, don't try to generate english translations of hebrew
-books we haven't covered yet. Just read the torah, as found in
-the combined tex files in [12345]-*.tex, and take exhaustive
-concordance-like notes (in addition to some style and vibes
-and personality type notes) on everything you think you'll
-eventually need to know in order to simulate the same
-incredible translation style on books he never had time
-to get around to translating. We're gonna make this guy
-immortal, eternal, and Nameless.
-
-Go do that now, and make it perfect.
+Do that now, and make it perfect.
 EOF
