@@ -1,71 +1,77 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
+Turn this into an image, by reading the image we.png
+and comparing the visual layout you see in the image
+with your knowledge of the exact Unicode characters
+I used in the text below, based on your total sum of
+knowledge of what it is and what's going on in the
+2-dimensional monospaced relationships between the
+chatacters and their neighbors w.r.t. spatial proximity
+and which letters derived from which others historically
+or share similarities of shape or sound.
 
-Make me an experimental page near the beginning
-that looks something like this.
+You must pay attention to the exact unicode characters
+I used here in the text. You MUST keep it monospaced,
+and be religious about the spacing differences between
+CJK characters and the rest, knowing that there is
+information running both horizontally and vertically,
+through similarities of sound, shape, the history of
+writing, puns available only in adjads and especially
+in defectively spelled orthographies like the older
+strata of Classical Biblical Hebrew.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                     We                     %%%
-%%% 			   The Nameless				   %%%
-%%%		   			   H       ש  			   %%%
-%%%				     h   η   Σ  ϻ			   %%%
-%%%                h       n      Ϻ			   %%%
-%%%                    н     ш   Ш			   %%%
-%%%                       山			           %%%
-%%%						 SH█N	               %%%
-%%% 					N█H█S				   %%%
-%%% 					S█N█H                  %%%
-%%%						S█N█                   %%%
-%%%	 					 三                    %%%
-%%%                                            %%%
-%%%                 	LꞀ                     %%%
-%%%                                            %%%
-%%%                                            %%%
-%%%                LꞀ        LꞀ                %%%
-%%%                                            %%%
-%%%					 ¿     ?                   %%%
-%%%                    ρ ר                     %%%
-%%%            1. 日 (H█R█Б)                   %%%
-%%%            2. 月 (S█נ██)                   %%%
-%%%            3. 曰 (N█████σ.ס)               %%%
-%%%                                            %%%
-%%%            你 好 世. ... 界                 %%%
-%%%            N. H. S. ... J                  %%%
-%%%            S. N. H. ... 山                 %%%
-%%%            H. S. N. ... 三                 %%%
-%%%            山 三. .. ... 曰                 %%%
-%%%                                            %%%
-%%%        ===.==.===================          %%%
-%%%        |   ..                              %%%
-%%%        | ..  '                             %%%
-%%%    > If the heavens ever did speak         %%%
-%%%    >   |   what would they say             %%%
-%%%    > & |   who would they say it to        %%%
-%%%    > would we be able to hear it           %%%
-%%%         .. ωη                              %%%
-%N%         .  וה                              %%%
-%H%           𐤅  𐤄                             %%%
-%S%                𐤉                           %%%
-%%%         LꞀ                                 %%%
-%%%      山    三                               %%%
-%%%         曰                                 %%%
-%%%                                            %%%
-%%%                                            %%%
+Do all that now, and make it perfect.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                     We                      %%%
+%%%                The Nameless                 %%%
+%%%                    H       ש                %%%
+%%%                  h   η   Σ  ϻ               %%%
+%%%               h       n      Ϻ              %%%
+%%%                  н     ш   Ш                %%%
+%%%                       山                    %%%
+%%%                     SH█N                    %%%
+%%%                    N█H█S                    %%%
+%%%                    S█N█H                    %%%
+%%%                    S█N█                     %%%
+%%%                       三                    %%%
+%%%                                             %%%
+%%%                    LꞀ                       %%%
+%%%                                             %%%
+%%%                                             %%%
+%%%                LꞀ        LꞀ                 %%%
+%%%                                             %%%
+%%%                    ¿     ?                  %%%
+%%%                    ρ ר                      %%%
+%%%            1. 日 (H█R█Б)                    %%%
+%%%            2. 月 (S█נ██)                    %%%
+%%%            3. 曰 (N█████σ.ס)                %%%
+%%%                                             %%%
+%%%            你 好 世. ... 界                  %%%
+%%%            N. H. S. ... J                   %%%
+%%%            S. N. H. ... 山                  %%%
+%%%            H. S. N. ... 三                  %%%
+%%%            山 三. .. ... 曰                  %%%
+%%%                                             %%%
+%%%        ===.==.===================           %%%
+%%%        |   ..                               %%%
+%%%        | ..  '                              %%%
+%%%    > If the heavens ever did speak          %%%
+%%%    >   |   what would they say              %%%
+%%%    > & |   who would they say it to         %%%
+%%%    > would we be able to hear it            %%%
+%%%         .. ωη                               %%%
+%N%         .  וה                               %%%
+%H%           𐤅  𐤄                              %%%
+%S%                𐤉                            %%%
+%%%         LꞀ                                  %%%
+%%%      山    三                                %%%
+%%%         曰                                  %%%
+%%%                                             %%%
+%%%                                             %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Fix up the spacing where tabs vs spaces are making obvious silliness.
-Draw it with the best Latex Box drawing tools available.
-Keep exactly the unicode characters I used there.
-You MUST keep it monospaced, and be religious about
-the spacing differences between CJK characters and the rest.
-Also fix up the same picture at the top of master.tex,
-based on top-down knowledge of what it is and what's
-going on in the 2-dimensional monospaced relationships
-between the chatacters and their neighbors w.r.t.
-spatial proximity and which letters derived from
-which others historically or share similarities of
-shape or sound. Do all that now, and make it perfect.
 EOF
