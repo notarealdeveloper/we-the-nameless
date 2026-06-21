@@ -67,4 +67,4 @@ debug:
 		"$$(cat $(BUILD)/$(MAIN).log)")"
 
 progress:
-	xdg-open $(MAIN).tex >/dev/null 2>&1 &
+	bin/git-recent -n 3 | while IFS= read -r f; do xdg-open "$$f" >/dev/null 2>&1 & done
