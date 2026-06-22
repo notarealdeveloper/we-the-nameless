@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+lord --verbose --dont-panic << "EOF"
+edit bin/git-recent so that it takes any number of filename on the command line as positional arguments and restricts its output to those files.
+EOF

@@ -62,12 +62,16 @@ def tied_at_cutoff(counts, n):
     return items[n - 1][1] == items[n][1]
 
 
-def recent_files(commits, n):
-    revs = git("rev-list", "HEAD").splitlines()
+def recent_files(commits, n, files=()):
+    targets = set(files)
+    rev_args = ("HEAD", "--") + tuple(files) if files else ("HEAD",)
+    revs = git("rev-list", *rev_args).splitlines()
     counts = Counter()
 
     for i, commit in enumerate(revs, 1):
         for path in commit_files(commit):
+            if targets and path not in targets:
+                continue
             counts[path] += 1
 
         if i >= commits and not tied_at_cutoff(counts, n):
@@ -81,6 +85,7 @@ def main(argv):
     p.add_argument("-c", "--commits", type=int, default=10)
     p.add_argument("-n", "--numfiles", type=int, default=5)
     p.add_argument("-u", "--unlines", action="store_true")
+    p.add_argument("files", nargs="*")
     args = p.parse_args(argv)
 
     if args.commits < 1:
@@ -88,7 +93,7 @@ def main(argv):
     if args.numfiles < 1:
         die("--numfiles must be positive")
 
-    paths = recent_files(args.commits, args.numfiles)
+    paths = recent_files(args.commits, args.numfiles, args.files)
 
     if args.unlines:
         print(" ".join(shell_escape(x) for x in paths))
