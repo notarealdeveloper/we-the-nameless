@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+lord --verbose --dont-panic << "EOF"
+Refactor the bin/{n,h,s} commands to do the following:
+
+1. n should create a new directory in .lord/$n/ where $n is the lowest available number: 1, but 2 if 1 is taken, etc.
+2. n should use the 'new -n "$path" 2' command to create a new todo file in .lord/1/n with the here doc as shown in the current script.
+3. h should run the todo if there's only one, or if there's more than one, then present the user with an *interactive* menu asking which to run after catting each existing todo.
+4. After it knows which to run, h should execute .lord/$n/h and send all its logging output to .lord/$n/h 
+5. s should git add the changes made by that particular todo in the course of its execution, and then git commit with the prompt itself as the commit message. If the prompt contains two consecutive lines as the first 2 lines with no blank line between them, then git will complain, so add a blank line yourself in that case, but make no other modifications to the prompt. The prompt should be all "software 1.0", aka no AI or agent calls. Before adding and committing
+6. s should always 'git add .' if there's only one active todo directory in .lord, but if there's ambiguity, then it should tell the user that, and present an interactive menu asking the user if they want to git add --patch, or have codex exec try to infer what to add by reading the .lord/$n directory, or quit.
+
+The commands should all interoperate with other running instances the same way git does: By using knowledge stored by other instances of the command in the .lord directory. No fancy IPC or locking. All IPC occurs through the filesystem in .lord, and all the good locking in the kernel's filesystem code we get for free just by using the filesystem itself.
+
+Actually I changed my mind on one point: ALL THREE commands should end their activities with a git commit. n should commit .lord/$n/n, h should commit .lord/$n/h. s should add an empty file to .lord/$n/s and then commit .lord/$n/s plus any repo changes that were made to accomplish the todo item, making the original prompt into the commit.
+
+If I contradicted myself above, then try to figure out the best design for the system that resolves the contradictions. We can iterate and improve later. But this is the workflow I want.
+
+Do that now, and make it perfect.
+EOF

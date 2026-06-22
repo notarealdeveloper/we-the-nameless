@@ -5,12 +5,7 @@ die() { echo "h: $*" >&2; exit 1; }
 
 [[ -d .lord ]] || die "no .lord directory here; refusing to run"
 
-marker='# The lord command is already working on this file.'
-
-task_file() {
-    local d=$1
-    [[ -f "$d/n" ]] && printf '%s\n' "$d/n"
-}
+command -v fixnames >/dev/null || die "missing command: fixnames"
 
 task_id() {
     local path=$1
@@ -19,21 +14,25 @@ task_id() {
 }
 
 prompt_of() {
-    awk '/^EOF$/ { exit } { print }' "$1"
+    awk '
+        in_prompt && /^EOF$/ { exit }
+        in_prompt { print }
+        /<<[[:space:]]*"?EOF"?/ { in_prompt = 1 }
+    ' "$1"
 }
 
 short_of() {
-    local file=$1 dir short
-    dir=${file%/*}
+    local file=$1 first id
 
-    if [[ -f "$dir/short" ]]; then
-        cat "$dir/short"
-    else
+    id=$(task_id "$file")
+    first=$(
         prompt_of "$file" |
             sed '/^[[:space:]]*$/d' |
-            head -n 1 |
-            fixnames -s
-    fi
+            head -n 1
+    )
+
+    [[ -n "$first" ]] || first="task-$id"
+    fixnames -s "$first"
 }
 
 banner() {
@@ -45,57 +44,82 @@ banner() {
     printf '#########################\n'
 }
 
-execute_task() {
-    local file=$1
-    shift
+task_files() {
+    local d
 
-    [[ -f "$file" ]] || die "$file is not a regular file"
-    [[ -x "$file" ]] || die "$file is not executable"
-
-    if grep -Fqx "$marker" "$file"; then
-        die "refusing to execute $file; lord is already working on it"
-    fi
-
-    if ! grep -qx 'EOF' "$file"; then
-        die "refusing to execute $file; no EOF line found"
-    fi
-
-    printf '\n%s\n' "$marker" >> "$file" ||
-        die "failed to mark $file as in progress"
-
-    "./$file" "$@"
+    for d in .lord/[0-9]*; do
+        [[ -f "$d/n" ]] || continue
+        [[ ! -e "$d/h" ]] || continue
+        [[ ! -e "$d/s" ]] || continue
+        printf '%s\n' "$d/n"
+    done | sort -V
 }
 
-mapfile -t files < <(
-    for d in .lord/[0-9]*; do
-        [[ -d "$d" ]] || continue
-        task_file "$d"
-    done | sort -V
-)
+select_task() {
+    local -a files
+    local file choice
 
-((${#files[@]})) || die "no TODO tasks found"
+    mapfile -t files < <(task_files)
+    ((${#files[@]})) || die "no runnable TODO tasks found"
 
-if ((${#files[@]} == 1)); then
-    execute_task "${files[0]}" "$@"
-    exit
+    if ((${#files[@]} == 1)); then
+        printf '%s\n' "${files[0]}"
+        return
+    fi
+
+    for file in "${files[@]}"; do
+        banner "$file"
+        cat "$file"
+        printf '\n'
+    done
+
+    printf 'Which TODO? ' >&2
+    read -r choice
+
+    [[ "$choice" =~ ^[0-9]+$ ]] || die "invalid choice: $choice"
+
+    for file in "${files[@]}"; do
+        [[ "$(task_id "$file")" == "$choice" ]] && {
+            printf '%s\n' "$file"
+            return
+        }
+    done
+
+    die "no such TODO task: $choice"
+}
+
+append_log() {
+    local hfile=$1 logfile=$2
+
+    {
+        printf '\n: <<'\''LORD_H_LOG'\''\n'
+        cat "$logfile"
+        printf '\nLORD_H_LOG\n'
+    } >> "$hfile" || die "failed to append log to $hfile"
+}
+
+nfile=$(select_task)
+dir=${nfile%/*}
+id=$(task_id "$nfile")
+hfile="$dir/h"
+short=$(short_of "$nfile") || die "failed to compute short name"
+
+if ! (set -C; : > "$hfile") 2>/dev/null; then
+    die "$hfile already exists; another h may be working on it"
 fi
+cat "$nfile" > "$hfile" || die "failed to write $hfile"
+chmod +x "$hfile" || die "chmod +x $hfile failed"
 
-for file in "${files[@]}"; do
-    banner "$file"
-    cat "$file"
-    printf '\n'
-done
+logfile=$(mktemp) || die "mktemp failed"
+trap 'rm -f "$logfile"' EXIT
 
-printf 'Which TODO? '
-read -r choice
+"./$hfile" "$@" >"$logfile" 2>&1
+status=$?
 
-[[ "$choice" =~ ^[0-9]+$ ]] || die "invalid choice: $choice"
+append_log "$hfile" "$logfile"
+cat "$logfile" >&2
 
-for file in "${files[@]}"; do
-    [[ "$(task_id "$file")" == "$choice" ]] && {
-        execute_task "$file" "$@"
-        exit
-    }
-done
+git add -- "$hfile" || die "git add $hfile failed"
+git commit -m "h: $short" || die "git commit failed"
 
-die "no such TODO task: $choice"
+exit "$status"

@@ -8,41 +8,50 @@ die() { echo "n: $*" >&2; exit 1; }
 command -v new >/dev/null || die "missing command: new"
 command -v fixnames >/dev/null || die "missing command: fixnames"
 
-next_id() {
-    local max=0 base
-    for d in .lord/[0-9]*; do
-        [[ -d "$d" ]] || continue
-        base=${d##*/}
-        [[ "$base" =~ ^[0-9]+$ ]] || continue
-        (( base > max )) && max=$base
-    done
-    printf '%s\n' "$((max + 1))"
+prompt_of() {
+    awk '
+        in_prompt && /^EOF$/ { exit }
+        in_prompt { print }
+        /<<[[:space:]]*"?EOF"?/ { in_prompt = 1 }
+    ' "$1"
 }
 
-id=$(next_id)
-dir=".lord/$id"
+first_prompt_line() {
+    prompt_of "$1" |
+        sed '/^[[:space:]]*$/d' |
+        head -n 1
+}
+
+claim_dir() {
+    local id dir
+
+    id=1
+    while :; do
+        dir=".lord/$id"
+        if mkdir "$dir" 2>/dev/null; then
+            printf '%s\n' "$dir"
+            return
+        fi
+        [[ -e "$dir" ]] || die "failed to create $dir"
+        id=$((id + 1))
+    done
+}
+
+dir=$(claim_dir)
+id=${dir##*/}
 file="$dir/n"
 
-mkdir -pv "$dir" || die "failed to create $dir"
-
-new 2 -n "$file" || die "new 2 -n $file failed"
+new -n "$file" 2 || die "new -n $file 2 failed"
 [[ -f "$file" ]] || die "new claimed success, but $file does not exist"
 
 vim -c 'normal 4gg' -c 'startinsert' "$file"
 
-prompt=$(
-    awk '/^EOF$/ { exit } { print }' "$file"
-)
+prompt=$(prompt_of "$file")
+first=$(first_prompt_line "$file")
+[[ -n "$first" ]] || first="task-$id"
+short=$(fixnames -s "$first") || die "fixnames failed"
 
-first_line=$(
-    printf '%s\n' "$prompt" |
-        sed '/^[[:space:]]*$/d' |
-        head -n 1
-)
+[[ -n "$prompt" ]] || die "$file has empty prompt"
 
-[[ -n "$first_line" ]] || first_line="task-$id"
-
-short=$(fixnames -s "$first_line") || die "fixnames failed"
-
-printf '%s\n' "$short" > "$dir/short"
-printf '%s\n' "$prompt" > "$dir/prompt"
+git add -- "$file" || die "git add $file failed"
+git commit -m "n: $short" || die "git commit failed"
