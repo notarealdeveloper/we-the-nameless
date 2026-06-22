@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Change the \\hl{A,B,C} highlight colors to look better in dark mode, I want the \\hlB to be more like transparent red almost as if the red character is briefly acting as a redactor. \\hlA should be dark grey but lighter than the page background in dark mode, and light grey in light mode. \\hlC can be the same as R's background but not blue text.
+EOF
