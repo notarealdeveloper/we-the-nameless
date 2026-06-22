@@ -1998,7 +1998,10 @@
     \AlphabetHistoryASCII{\PaleoHebrewStandardFont}{1.81}{\paleoelower}\\
     \AlphabetHistoryRightToLeft{\PaleoHebrewRoboFont}{1.81}{\healphabet}\\
     \AlphabetHistoryRightToLeft{\PaleoHebrewPhoenicianFont}{2.13}{𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕}\\
-
+    \end{flushright}
+    \clearpage
+    \thispagestyle{empty}
+    \begin{flushright}
     \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleofupper}\\
     \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleoflower}\\
     \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomAFont}{1.82}{\paleoupper}\\
@@ -2014,8 +2017,8 @@
     \AlphabetHistoryRightToLeft{\AramaicFont}{2.13}{𐡀𐡁𐡂𐡃𐡄𐡅𐡆𐡇𐡈𐡉𐡊𐡋𐡌𐡍𐡎𐡏𐡐𐡑𐡒𐡓𐡔𐡕}\\
     \AlphabetHistoryASCII{\PaleoHebrewIsaiahScrollFont}{1.81}{\paleolupper}\\
     \AlphabetHistoryASCII{\PaleoHebrewIsaiahScrollFont}{1.81}{\paleollower}\\
-    \AlphabetHistoryASCII{\HebrewDavidFont}{2.66}{\healphabet}\\
-    \AlphabetHistoryASCII{\HebrewEzraFont}{2.68}{\healphabet}\\
+    \AlphabetHistoryASCII{\HebrewDavidFont}{2.18}{\healphabet}\\
+    \AlphabetHistoryASCII{\HebrewEzraFont}{2.20}{\healphabet}\\
     \end{flushright}
     %\cleardoublepage
 }
@@ -2413,38 +2416,25 @@
 
 \begin{document}
 
+\frontmatter
 \pagenumbering{gobble}
 \pagestyle{empty}
+
 \wetitlepage
-
-%\frontmatter
-%\pagestyle{empty}
-
-\pagenumbering{gobble}
 \pagestyle{empty}
+
 \tableofcontents
 
-\pagenumbering{gobble}
-\pagestyle{empty}
+\cleardoublepage
 \AlphabetHistoryPage
 
-\pagenumbering{gobble}
-\pagestyle{empty}
+\cleardoublepage
 \SourceLegendPage
 
-%\pagenumbering{gobble}
-%\pagestyle{empty}
-%\mainmatter
-
-\Book{Genesis}
-
-\vspace*{\fill}
-\vspace*{\fill}
-
-\cleardoublepage
-\pagenumbering{arabic}
-\setcounter{page}{1}
+\mainmatter
 \pagestyle{fancy}
+\BookPart{Genesis}
+\addcontentsline{toc}{chapter}{Genesis}
 \include{01-genesis/01}
 \include{01-genesis/02}
 \include{01-genesis/03}
