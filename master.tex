@@ -486,7 +486,7 @@
 \colorlet{Dtnbgcolor}{Dtncolor!16!white}
 
 \definecolor{Rcolor}{RGB}{0,70,170}
-\definecolor{Rbgcolor}{RGB}{230,240,255}
+\colorlet{Rbgcolor}{Rcolor!12!white}
 
 \definecolor{RJEcolor}{RGB}{0,100,0}
 \definecolor{RJEbgcolor}{RGB}{225,245,225}
@@ -508,6 +508,9 @@
 
 \definecolor{DefColor}{RGB}{0,70,170}
 \definecolor{RedactedColor}{RGB}{0,70,170}
+\colorlet{HLAbgcolor}{Kcolor!22!white}
+\colorlet{HLBbgcolor}{Redcolor!22!white}
+\colorlet{HLCbgcolor}{Bluecolor!32!white}
 
 \colorlet{TextColor}{black}
 \colorlet{RuleColor}{TextColor}
@@ -561,7 +564,7 @@
     \colorlet{Dtnbgcolor}{Ebgcolor}
 
     \colorlet{Rcolor}{ObsBlue!65!fg}
-    \definecolor{Rbgcolor}{HTML}{43536c}
+    \colorlet{Rbgcolor}{Rcolor!22!bg}
     \colorlet{RJEcolor}{ObsGreen!82!fg}
     \definecolor{RJEbgcolor}{HTML}{344837}
 
@@ -578,6 +581,9 @@
     \colorlet{Yellowcolor}{Ecolor}
     \colorlet{Graycolor}{ObsGray!70!fg}
     \colorlet{DefColor}{ObsBlue!65!fg}
+    \colorlet{HLAbgcolor}{Kcolor!12!bg}
+    \colorlet{HLBbgcolor}{Redcolor!22!bg}
+    \colorlet{HLCbgcolor}{Bluecolor!32!bg}
     \pagecolor{bg}
     \AtBeginDocument{\color{TextColor}}
 \fi
@@ -620,9 +626,9 @@
 \let\cGrey\cGray
 
 \makeatletter
-\newcommand{\hlA}[1]{{\@highLight[Kcolor]#1}}
-\newcommand{\hlB}[1]{{\@highLight[Redcolor]#1}}
-\newcommand{\hlC}[1]{{\@highLight[Bluecolor]#1}}
+\newcommand{\hlA}[1]{{\@highLight[HLAbgcolor]#1}}
+\newcommand{\hlB}[1]{{\@highLight[HLBbgcolor]#1}}
+\newcommand{\hlC}[1]{{\@highLight[HLCbgcolor]#1}}
 \makeatother
 
 % ------------------------------------------------------------
