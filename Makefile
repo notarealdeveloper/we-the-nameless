@@ -67,4 +67,4 @@ debug:
 		"$$(cat $(BUILD)/$(MAIN).log)")"
 
 progress:
-	bin/git-recent -n 3 | while IFS= read -r f; do xdg-open "$$f" >/dev/null 2>&1 & done
+	echo master.tex 01-genesis/0[123]*.tex | lines | while IFS= read -r f; do xdg-open "$$f" >/dev/null 2>&1 & done
