@@ -1025,6 +1025,60 @@
   \hJ{\directlua{tex.sprint(mark_hebrew("\luaescapestring{\detokenize{#1}}"))}}%
 }
 
+\directlua{
+  local h_defective = {
+    ["פִּישׁוֹן"] = "פִּ\\mHE{י}שׁ\\mHE{וֹ}ן",
+    ["שֵּׁנִי"] = "שֵּׁנִ\\mHE{י}",
+    ["גִּיחוֹן"] = "גִּ\\mHE{י}ח\\mHE{וֹ}ן",
+    ["בְּיוֹם"] = "בְּי\\mHE{וֹ}ם",
+    ["מֶּנּוּ"] = "מֶּנּ\\mHE{וּ}",
+    ["מוֹת"] = "מ\\mHE{וֹ}ת",
+    ["תָּמוּת"] = "תָּמ\\mHE{וּ}ת",
+    ["נַפְשׁוֹ"] = "נַפְשׁ\\mHE{וֹ}",
+    ["אֲדֹנִיָּהוּ"] = "אֲדֹנִ\\mHE{יָּ}ה\\mHE{וּ}",
+    ["יִּמְשְׁחוּ"] = "יִּמְשְׁח\\mHE{וּ}",
+    ["אֹתוֹ"] = "אֹת\\mHE{וֹ}",
+    ["צָדוֹק"] = "צָד\\mHE{וֹ}ק",
+    ["הַנָּבִיא"] = "הַנָּבִ\\mHE{י}א",
+    ["גִחוֹן"] = "גִח\\mHE{וֹ}ן",
+    ["יָהוּ"] = "יָה\\mHE{וּ}",
+    ["יְהוֹ"] = "יְה\\mHE{וֹ}",
+  }
+
+  local e_defective = {
+    ["PŠWN"] = "PŠ\\mTR{w}N",
+    ["ŠNY"] = "ŠN\\mTR{y}",
+    ["GYḤWN"] = "G\\mTR{y}Ḥ\\mTR{w}N",
+    ["BYWM"] = "BY\\mTR{w}M",
+    ["MNW"] = "MN\\mTR{w}",
+    ["MWT"] = "M\\mTR{w}T",
+    ["TMWT"] = "TM\\mTR{w}T",
+    ["NPŠW"] = "NPŠ\\mTR{w}",
+    ["ADNYHW"] = "ADN\\mTR{y}H\\mTR{w}",
+    ["YMŠḤW"] = "YMŠḤ\\mTR{w}",
+    ["ATW"] = "AT\\mTR{w}",
+    ["CDWQ"] = "CD\\mTR{w}Q",
+    ["NBYA"] = "NB\\mTR{y}A",
+    ["GḤWN"] = "GḤ\\mTR{w}N",
+    ["YHW"] = "YH\\mTR{w}",
+  }
+
+  function mark_hebrew_defective(s)
+    return h_defective[s] or s
+  end
+
+  function mark_translit_defective(s)
+    return e_defective[s] or s
+  end
+}
+
+\newcommand{\eDefective}[1]{%
+  \directlua{tex.sprint(mark_translit_defective("\luaescapestring{\detokenize{#1}}"))}%
+}
+\newcommand{\hDefective}[1]{%
+  \hJ{\directlua{tex.sprint(mark_hebrew_defective("\luaescapestring{\detokenize{#1}}"))}}%
+}
+
 
 \iffalse
 \section{nav: source styles}
