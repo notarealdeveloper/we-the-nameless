@@ -475,7 +475,7 @@
 \colorlet{Dtr2color}{Ecolor!45!orange!70!black}
 \colorlet{Jeremiahcolor}{Ecolor!20!orange!45!black}
 \colorlet{Ezekielcolor}{Pcolor!68!white}
-\colorlet{Dtncolor}{Ecolor}
+\colorlet{Dtncolor}{Dtr1color}
 \colorlet{Jbgcolor}{Jcolor!12!white}
 \colorlet{Ebgcolor}{Ecolor!16!white}
 \colorlet{Pbgcolor}{Pcolor!14!white}
@@ -1514,7 +1514,7 @@
     \LegendColumns{0.23\linewidth}{0.71\linewidth}
 
     \LegendRow{Regular}{%
-        The People. Regular ones. Bold is for the bold.\\
+        The People. We don't write in bold by default. Bold is for the bold.\\
     }
 
     \LegendRow{{\Priest{Bold}}}{%
@@ -1527,52 +1527,65 @@
         \SourceDecorate[aaronid,priest]{R}.)
     }
 
-    \LegendRow{\eR{Highlights}}{%
-        \eR{
-            Redactors, Editors. Occasionally write small amounts of glue prose
-            to make multiple sources consistent,
-        }
-        \eRJE{
-            while others write less and delete more from their sources.
-        }
-    }
-
     \LegendRow{\eJ{Green}}{%
         \eJ{
-            J. The first author of the bible.\LegendFootmark{SourceLegendSongsFootnote}
-            The first author of prose.\LegendFootmark{SourceLegendEarthFootnote}
-            The author of nearly all the most popular bible stories.
-            (That is, not including the Jesus ones.
-            (Though J's at least tied.))
-            The author in the bible with the best sense of humor.
+            J. The first author of the bible.%
+            \LegendFootmark{SourceLegendSongsFootnote}
+            %
+            The first author of prose.%
+            \LegendFootmark{SourceLegendEarthFootnote}\\
+            The author of the most remembered bible stories.\\
+            The author with the best sense of humor.\\
         }
     }
 
     \LegendRow{{\Mushite{Yellow}}}{%
         \Mushite{
-            Mushites. A group of Levite priests who claim descent from Moses.
-            Associated with the first temple in the city of Shiloh.
+            Mushites. A group of Levite priests who claim descent from Moses.\\
+            Associated with the first temple in the city of Shiloh.\\
+            The first author in this group is commonly known as the Elohist, or E.\\
         }
         (\Mushite{E}, \DeuterA{Dtr1}, \DeuterB{Dtr2}, \Jeremiah{Jeremiah}.)
     }
 
     \LegendRow{{\Aaronid{Blue}}}{%
         \Aaronid{
-            Aaronids. A group of Levite priests who claim descent from Aaron.
-            Associated with the first and second temple in the city of Jerusalem.
+            Aaronids. A group of Levite priests who claim descent from Aaron.\\
+            Associated with the first and second temple in the city of Jerusalem.\\
+            The first author in this group is known as the Priestly source, or P.\\
+            Associated with king Hezekiah, the Jerusalem priesthood,\\
+            and the prophet Ezekiel.\\
         }
         (\Aaronid[priest]{P},
         \Aaronid[redactor,nopriest]{R},
-        \Aaronid[ezekiel,italic,nopriest]{Ezekiel}.)
+        \Aaronid[ezekiel,nopriest]{Ezekiel}.)
     }
 
     \LegendRow{{\DeuterB{Orange}}}{%
         \DeuterB{
-            Deuteronomists. Mushites after the Elohist yellow has been left in the
-            theological toaster.
+            Deuteronomists. The later Mushite tradition. Used to refer to the\\
+            group after their loss of power in the Jerusalem temple priesthood\\
+            with Solomon's rise to power, leading to the exile of the Mushite\\
+            high priest Abiathar and the empowering of Zadok and the Aaronids.\\
+            Associated with king Josiah, the Shiloh and Anathoth priesthood,\\
+            and the prophet Jeremiah.\\
         }
         (\DeuterA{Dtr1}, \DeuterB{Dtr2}, \Jeremiah{Jeremiah}.)
     }
+
+
+    \LegendRow{\eR{Highlights}}{%
+        \eR{
+            Editors. Called Redactors in bible circles, presumably since E was already taken.\\
+            Don't write much, but may occasionally write small amounts of glue prose to make\\
+            multiple sources consistent. Some redactors prefer to include both copies of a\\
+            story when merging two texts with different versions of the same event\\
+        }
+        \eRJE{
+            while others prefer to choose one and exclude the other.
+        }
+    }
+
     \endgroup
 
     \clearpage
@@ -1602,10 +1615,11 @@
         {\LawFont
             Laws.\LegendFootmark{SourceLegendMonoFootnote}\par
             \smallskip
-            {\MushiteStyle Mushite Laws: Covenant Code (Exodus 20:22--23:19);
-            Deuteronomistic Law Code (Dtn).}\par\smallskip
+            {\MushiteStyle Mushite Laws: The Covenant Code (E; Exodus 20:22-23:19).}\par\smallskip
 
-            {\AaronidStyle Aaronid Laws: Dear lord.}\par\smallskip
+            {\DeuterNStyle Deuteronomic Laws: The Deuteronomic Law Code (Dtn; Deut 12-26).}\par\smallskip
+
+            {\AaronidStyle Aaronid Laws: Strap in. There's a lot.}\par\smallskip
             % Exodus 25 onward, where P talks how it's the law
             % to make him pretty clothes and bring him gold
             % and he doesn't stop until damn well into like
@@ -1616,10 +1630,11 @@
             % the song, I mean they actually even say ``two
             % turtledoves,'' in that shit it's not subtle.
 
-            {\Yahwist J Laws: Nonexistent. Except for a weird version of the 10
-            commandments, which may well have been a joke, because J is
-            f\redacted{ucking}\eR{oundational to a\linebreak[1] understanding of God's
-            mysteries and} awesome \eR{power.}}\LegendFootmarkJ{SourceLegendThanksFootnote}%
+            {\Yahwist J Laws: Nonexistent. Except for a weird version of\\
+            the 10 commandments, which may well have been a joke, because\\
+            J is f\redacted{ucking}\eR{oundational to an  understanding of\\
+            God's mysteries and} awesome \eR{power.}}%
+            \LegendFootmarkJ{SourceLegendThanksFootnote}%
         }
     }
 
