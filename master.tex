@@ -68,6 +68,7 @@
 \usepackage{needspace}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{multicol}
 \usepackage{stackengine}
 \usepackage{wrapfig}
 \usepackage{array}
@@ -978,6 +979,36 @@
   \expandafter\newcommand\csname hstyle#1\endcsname{#5}%
 }
 \makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Matres in small grey %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\MatresColor}{gray}
+\newcommand{\mTR}[1]{\textcolor{\MatresColor}{\MakeLowercase{#1}}}
+\newcommand{\mHE}[1]{\textcolor{\MatresColor}{\scriptsize #1}}
+
+\directlua{
+function mark_translit(s)
+  local matres = { W=true, Y=true, H=true }
+  return (s:gsub("[%z\1-\127\194-\244][\128-\191]*", function(c)
+    if matres[c] then return "\\mTR{" .. c:lower() .. "}" end
+    return c
+  end))
+end
+
+function mark_hebrew(s)
+  local matres = { ["י"]=true, ["ו"]=true } -- add ["ה"]=true if wanted
+  return (s:gsub("[%z\1-\127\194-\244][\128-\191]*", function(c)
+    if matres[c] then return "\\mHE{" .. c .. "}" end
+    return c
+  end))
+end
+}
+
+\newcommand{\trM}[1]{\directlua{tex.sprint(mark_translit([[#1]]))}}
+\newcommand{\hJM}[1]{\hJ{\directlua{tex.sprint(mark_hebrew([[#1]]))}}}
+
 
 \iffalse
 \section{nav: source styles}
