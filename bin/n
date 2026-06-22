@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -u
+
+die() { echo "n: $*" >&2; exit 1; }
+
+[[ -d .lord ]] || die "no .lord directory here; refusing to run"
+
+command -v new >/dev/null || die "missing command: new"
+command -v fixnames >/dev/null || die "missing command: fixnames"
+
+next_id() {
+    local max=0 base
+    for d in .lord/[0-9]*; do
+        [[ -d "$d" ]] || continue
+        base=${d##*/}
+        [[ "$base" =~ ^[0-9]+$ ]] || continue
+        (( base > max )) && max=$base
+    done
+    printf '%s\n' "$((max + 1))"
+}
+
+id=$(next_id)
+dir=".lord/$id"
+file="$dir/n"
+
+mkdir -pv "$dir" || die "failed to create $dir"
+
+new 2 -n "$file" || die "new 2 -n $file failed"
+[[ -f "$file" ]] || die "new claimed success, but $file does not exist"
+
+vim -c 'normal 4gg' -c 'startinsert' "$file"
+
+prompt=$(
+    awk '/^EOF$/ { exit } { print }' "$file"
+)
+
+first_line=$(
+    printf '%s\n' "$prompt" |
+        sed '/^[[:space:]]*$/d' |
+        head -n 1
+)
+
+[[ -n "$first_line" ]] || first_line="task-$id"
+
+short=$(fixnames -s "$first_line") || die "fixnames failed"
+
+printf '%s\n' "$short" > "$dir/short"
+printf '%s\n' "$prompt" > "$dir/prompt"

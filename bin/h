@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+set -u
+
+die() { echo "h: $*" >&2; exit 1; }
+
+[[ -d .lord ]] || die "no .lord directory here; refusing to run"
+
+marker='# The lord command is already working on this file.'
+
+task_file() {
+    local d=$1
+    [[ -f "$d/n" ]] && printf '%s\n' "$d/n"
+}
+
+task_id() {
+    local path=$1
+    path=${path#.lord/}
+    printf '%s\n' "${path%%/*}"
+}
+
+prompt_of() {
+    awk '/^EOF$/ { exit } { print }' "$1"
+}
+
+short_of() {
+    local file=$1 dir short
+    dir=${file%/*}
+
+    if [[ -f "$dir/short" ]]; then
+        cat "$dir/short"
+    else
+        prompt_of "$file" |
+            sed '/^[[:space:]]*$/d' |
+            head -n 1 |
+            fixnames -s
+    fi
+}
+
+banner() {
+    local file=$1 short
+    short=$(short_of "$file" 2>/dev/null || printf '%s' "$file")
+
+    printf '#########################\n'
+    printf '### %s: %s ###\n' "$(task_id "$file")" "$short"
+    printf '#########################\n'
+}
+
+execute_task() {
+    local file=$1
+    shift
+
+    [[ -f "$file" ]] || die "$file is not a regular file"
+    [[ -x "$file" ]] || die "$file is not executable"
+
+    if grep -Fqx "$marker" "$file"; then
+        die "refusing to execute $file; lord is already working on it"
+    fi
+
+    if ! grep -qx 'EOF' "$file"; then
+        die "refusing to execute $file; no EOF line found"
+    fi
+
+    printf '\n%s\n' "$marker" >> "$file" ||
+        die "failed to mark $file as in progress"
+
+    "./$file" "$@"
+}
+
+mapfile -t files < <(
+    for d in .lord/[0-9]*; do
+        [[ -d "$d" ]] || continue
+        task_file "$d"
+    done | sort -V
+)
+
+((${#files[@]})) || die "no TODO tasks found"
+
+if ((${#files[@]} == 1)); then
+    execute_task "${files[0]}" "$@"
+    exit
+fi
+
+for file in "${files[@]}"; do
+    banner "$file"
+    cat "$file"
+    printf '\n'
+done
+
+printf 'Which TODO? '
+read -r choice
+
+[[ "$choice" =~ ^[0-9]+$ ]] || die "invalid choice: $choice"
+
+for file in "${files[@]}"; do
+    [[ "$(task_id "$file")" == "$choice" ]] && {
+        execute_task "$file" "$@"
+        exit
+    }
+done
+
+die "no such TODO task: $choice"

@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+set -u
+
+die() { echo "s: $*" >&2; exit 1; }
+
+[[ -d .lord ]] || die "no .lord directory here; refusing to run"
+
+command -v fixnames >/dev/null || die "missing command: fixnames"
+
+marker='# The lord command is already working on this file.'
+
+task_id() {
+    local path=$1
+    path=${path#.lord/}
+    printf '%s\n' "${path%%/*}"
+}
+
+prompt_of() {
+    awk '/^EOF$/ { exit } { print }' "$1"
+}
+
+short_of() {
+    local file=$1 dir first
+    dir=${file%/*}
+
+    if [[ -f "$dir/short" ]]; then
+        cat "$dir/short"
+        return
+    fi
+
+    first=$(
+        prompt_of "$file" |
+            sed '/^[[:space:]]*$/d' |
+            head -n 1
+    )
+
+    [[ -n "$first" ]] || first="task-$(task_id "$file")"
+    fixnames -s "$first"
+}
+
+select_task() {
+    local -a files
+    local file choice
+
+    mapfile -t files < <(
+        for d in .lord/[0-9]*; do
+            [[ -f "$d/n" ]] && printf '%s\n' "$d/n"
+        done | sort -V
+    )
+
+    ((${#files[@]})) || die "no TODO tasks found"
+
+    if ((${#files[@]} == 1)); then
+        printf '%s\n' "${files[0]}"
+        return
+    fi
+
+    for file in "${files[@]}"; do
+        printf '%s) %s\n' "$(task_id "$file")" "$(short_of "$file")"
+    done
+
+    printf 'Commit which TODO? ' >&2
+    read -r choice
+
+    [[ "$choice" =~ ^[0-9]+$ ]] || die "invalid choice: $choice"
+
+    for file in "${files[@]}"; do
+        [[ "$(task_id "$file")" == "$choice" ]] && {
+            printf '%s\n' "$file"
+            return
+        }
+    done
+
+    die "no such TODO task: $choice"
+}
+
+if (($#)); then
+    file=".lord/$1/n"
+else
+    file=$(select_task)
+fi
+
+[[ -f "$file" ]] || die "$file does not exist"
+
+dir=${file%/*}
+id=$(task_id "$file")
+short=$(short_of "$file") || die "failed to compute short name"
+title=${short//-/ }
+
+prompt=$(prompt_of "$file")
+
+[[ -n "$prompt" ]] || die "$file has empty prompt"
+
+msgfile=$(mktemp) || die "mktemp failed"
+trap 'rm -f "$msgfile"' EXIT
+
+{
+    printf '%s\n\n' "$title"
+    printf 'And the Authors spoke to the lord command, saying:\n\n'
+    printf '%s\n' "$prompt"
+} > "$msgfile" || die "failed to write commit message"
+
+git add -A -- . ':!.lord' || die "git add failed"
+
+git diff --cached --quiet && die "nothing staged to commit"
+
+git commit -e -F "$msgfile" || die "git commit failed"
+
+mkdir -p .lord/done || die "failed to create .lord/done"
+mv "$dir" ".lord/done/$id" || die "commit succeeded, but failed to archive $dir"
