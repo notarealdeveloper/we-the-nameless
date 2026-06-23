@@ -565,7 +565,7 @@
     \colorlet{Dtnbgcolor}{Ebgcolor}
 
     \colorlet{Rcolor}{ObsBlue!65!fg}
-    \colorlet{Rbgcolor}{Rcolor!22!bg}
+    \colorlet{Rbgcolor}{Rcolor!17!bg}
     \colorlet{RJEcolor}{ObsGreen!82!fg}
     \definecolor{RJEbgcolor}{HTML}{344837}
 
@@ -1532,9 +1532,9 @@
 \newcommand{\SourceLegendItems}[2]{%
     \eJ{J}\quad
     \eE{E}\quad
+    %\eRJE{R}\quad
     \eP{P}\quad
     \eR{R}\quad
-    \eRJE{R}\quad
     \eBookOfRecords{#1}\quad
     \eOther{#2}\quad
 }
@@ -1571,9 +1571,15 @@
 }
 \newcommand{\LegendRow}[2]{%
     \noindent
-    \begin{minipage}[t]{\LegendLeftWidth}\RaggedRight #1\end{minipage}%
+    \begin{minipage}[t]{\LegendLeftWidth}%
+        \vspace{0pt}%
+        \RaggedRight #1%
+    \end{minipage}%
     \hfill
-    \begin{minipage}[t]{\LegendRightWidth}\RaggedRight #2\end{minipage}%
+    \begin{minipage}[t]{\LegendRightWidth}%
+        \vspace{0pt}%
+        \RaggedRight #2%
+    \end{minipage}%
     \par\vspace{\LegendRowSep}%
 }
 
@@ -1599,9 +1605,9 @@
         {\footnotesize
             \eJ{J}\quad
             \eE{E}\quad
+            %\eRJE{R}\quad
             \eP{P}\quad
             \eR{R}\quad
-            \eRJE{R}\quad
         }%
     \end{center}
 }
@@ -1822,6 +1828,15 @@
         }
     }
 
+    \LegendRow{\LegendFontAlphabet{\hRecords}}{%
+        \eBookOfRecords{
+            The block variant of Paleo Hebrew bureaucracy is used for\\
+            excerpts from the Book of Records containing begat lists,\\
+            genealogies, ages at birth of first child, at death, etc.\\
+            (Genesis 5, Genesis 10.)
+        }
+    }
+
     \LegendRow{\LegendFontSampleRows{\PaleoMFont{\color{Pcolor}\mdseries}{אבגדהוזחטיכ}}{\PaleoMFont{\color{Pcolor}\mdseries}{למנסעפצקרשת}}}{%
         \eP{
             The Ketef Hinnom variant of Paleo-Hebrew is used for the\\
@@ -1830,14 +1845,6 @@
         }
     }
 
-    \LegendRow{\LegendFontAlphabet{\hRecords}}{%
-        \eBookOfRecords{
-            The block variant of Paleo Hebrew bureaucracy is used for\\
-            excerpts from the Book of Records containing begat lists,\\
-            genealogies, and ages at birth of first child and at death\\
-            (Genesis 5, Genesis 10.)
-        }
-    }
     \endgroup
 
     \clearpage
@@ -1873,7 +1880,6 @@
 			In all likelihood, the Priestly source was originally written
 			Paleo-Hebrew script of the age of Hezekiah. The present
 			representation is therefore an anachronism.
-
 			Nevertheless, much to our frustration, P insisted that his
 			source material be represented in this manner, and he spoke
 			to us, saying:
@@ -1901,10 +1907,11 @@
 			methods of ambiguity, that person shall be cut off from his people,
 			and will not be buried in the home of his fathers, nor will he be
 			gathered to his people, but fire will come out from YHWH and consume
-			him and his sons and his sons wives with him. I am YHWH.''
+			him and his sons and his sons wives with him. These are my words,
+			according the words I have said as I said them.
 			}
 
-			We have complied, reluctantly, and trust the reader will pardon the
+			We have complied, reluctantly, and we trust the reader will pardon the
 			anachronism.
         }
     }
@@ -1912,7 +1919,7 @@
     \LegendRow{\LegendFontAlphabet{\hR}}{%
         \eR{
             R uses the Ezra variant of the Hebrew square script with no niqqud,
-            because he (1) is writing after the Babylonian exile, and (2) is Ezra.
+            since he is both: 1. writing after the Babylonian exile, and 2. Ezra.
         }
     }
     \endgroup
