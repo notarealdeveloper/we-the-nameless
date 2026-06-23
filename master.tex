@@ -1563,6 +1563,8 @@
 
 \newlength{\LegendLeftWidth}
 \newlength{\LegendRightWidth}
+\newlength{\LegendRowSep}
+\setlength{\LegendRowSep}{0.7em}
 \newcommand{\LegendColumns}[2]{%
     \setlength{\LegendLeftWidth}{#1}%
     \setlength{\LegendRightWidth}{#2}%
@@ -1572,7 +1574,7 @@
     \begin{minipage}[t]{\LegendLeftWidth}\RaggedRight #1\end{minipage}%
     \hfill
     \begin{minipage}[t]{\LegendRightWidth}\RaggedRight #2\end{minipage}%
-    \par\vspace{0.7em}%
+    \par\vspace{\LegendRowSep}%
 }
 
 \makeatletter
@@ -1764,6 +1766,15 @@
 \newcommand{\LegendFontSample}[1]{%
     \makebox[\linewidth][r]{#1}%
 }
+\newcommand{\LegendFontSampleRows}[2]{%
+    \makebox[\linewidth][r]{\shortstack[r]{\resizebox{0.94\linewidth}{!}{#1}\\[-0.1em]\resizebox{0.94\linewidth}{!}{#2}}}%
+}
+\newcommand{\LegendFontAlphabet}[1]{%
+    \LegendFontSampleRows{#1{אבגדהוזחטיכ}}{#1{למנסעפצקרשת}}%
+}
+\newcommand{\LegendPFontAlphabet}{%
+    \LegendFontSampleRows{\hP{אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻ}}{\hP{לֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ}}%
+}
 
 \newcommand{\PrimevalSourceFontsPage}{%
     \clearpage
@@ -1775,27 +1786,28 @@
 
     \begingroup
     \footnotesize
-    \LegendColumns{0.50\linewidth}{0.44\linewidth}
+    \setlength{\LegendRowSep}{0.45em}%
+    \LegendColumns{0.27\linewidth}{0.67\linewidth}
 
     Songs, records, and old blessings get older alphabets than the main
     narrative sources. The rule is boring enough to be true: older text,
     older font.
     \par\smallskip
 
-    \LegendRow{\LegendFontSample{\hProtoA{אבגדהוזחטיכלמנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontAlphabet{\hProtoA}}{%
         \eProtoA{
             The Proto-Sinaitic script is used for the oldest strata of biblical songs.\\
             The southern variant of Proto-Sinaitic is used for Song of the Sea (Exodus 15).
         }
     }
 
-    \LegendRow{\LegendFontSample{\hProtoB{אבגדהוזחטיכלמנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontAlphabet{\hProtoB}}{%
         \eProtoA{
             The northern variant of Proto-Sinaitic is used for the Song of Deborah (Judges 5).
         }
     }
 
-    \LegendRow{\LegendFontSample{\hProto{אבגדהוזחטיכלמנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontAlphabet{\hProto}}{%
         \eProto{
             A northern variant of the Proto-Canaanite script is used\\
             for early Israelite poetry such as the Blessing of Jacob\\
@@ -1803,14 +1815,14 @@
         }
     }
 
-    \LegendRow{\LegendFontSample{\hProtoF{אבגדהוזחטיכלמנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontAlphabet{\hProtoF}}{%
         \eProtoF{
             A southern variant of the Proto-Canaanite script is used\\
 			for Numbers 21 and the old Balaam poems in Numbers 23-24.
         }
     }
 
-    \LegendRow{\LegendFontSample{\PaleoMFont{\color{Pcolor}\mdseries}{אבגדהוזחטיכלמנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontSampleRows{\PaleoMFont{\color{Pcolor}\mdseries}{אבגדהוזחטיכ}}{\PaleoMFont{\color{Pcolor}\mdseries}{למנסעפצקרשת}}}{%
         \eP{
             The Ketef Hinnom variant of Paleo-Hebrew is used for the\\
             Priestly Blessing in Numbers 6. This is the oldest biblical\\
@@ -1818,7 +1830,7 @@
         }
     }
 
-    \LegendRow{\LegendFontSample{\hRecords{אבגדהוזחטיכלמנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontAlphabet{\hRecords}}{%
         \eBookOfRecords{
             The block variant of Paleo Hebrew bureaucracy is used for\\
             excerpts from the Book of Records containing begat lists,\\
@@ -1838,23 +1850,24 @@
     \FontPageHeading{The Primary Sources}
 
     \begingroup
-    \footnotesize
-    \LegendColumns{0.50\linewidth}{0.44\linewidth}
+    \scriptsize
+    \setlength{\LegendRowSep}{0.35em}%
+    \LegendColumns{0.27\linewidth}{0.67\linewidth}
 
-    \LegendRow{\LegendFontSample{\hJ{אבגדהוזחטיכלמנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontAlphabet{\hJ}}{%
         \eJ{
             J is written in the Paleo-Hebrew script of around 922 B.C.
         }
     }
 
-    \LegendRow{\LegendFontSample{\hE{אבגדהוזחטיכלמנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontAlphabet{\hE}}{%
         \eE{
             E is uses a norther variant of the Paleo-Hebrew script\\
             from soon after the time of J.
         }
     }
 
-    \LegendRow{\LegendFontSample{\hP{אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ}}}{%
+    \LegendRow{\LegendPFontAlphabet}{%
         \eP{
 			P is represented in the Hebrew square script with niqqud.\\
 			In all likelihood, the Priestly source was originally written\\
@@ -1896,7 +1909,7 @@
         }
     }
 
-    \LegendRow{\LegendFontSample{\hR{אבגדהוזחטיכלמנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontAlphabet{\hR}}{%
         \eR{
             R uses Ezra square script with no niqqud,
             because he's writing after the Babylonian exile,
