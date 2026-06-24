@@ -14,7 +14,7 @@ all: $(PDF) open
 
 build-prepare:
 	@mkdir -p $(BUILD) $(CACHE)
-	@find . -maxdepth 1 -type d -name '[0-9]*-*' -printf '$(BUILD)/%f\n' | xargs -r mkdir -p
+	@sed -n 's|^[[:space:]]*\\include{\([^}]*\)}.*|$(BUILD)/\1|p' $(MAIN).tex | xargs -r dirname | sort -u | xargs -r mkdir -p
 
 $(PDF): $(MAIN).tex | build-prepare
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
