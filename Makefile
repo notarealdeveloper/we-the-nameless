@@ -12,6 +12,10 @@ export TEXMFVAR := $(CACHE)
 
 all: $(PDF) open
 
+again:
+	mv master.pdf mistress.pdf
+	make
+
 build-prepare:
 	@mkdir -p $(BUILD) $(CACHE)
 	@sed -n 's|^[[:space:]]*\\include{\([^}]*\)}.*|$(BUILD)/\1|p' $(MAIN).tex | xargs -r dirname | sort -u | xargs -r mkdir -p
