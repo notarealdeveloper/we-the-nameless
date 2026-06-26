@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-lord --verbose << "EOF"
+codex exec << "EOF"
 1. Move the alphabet history page ahead of the TOC in master.tex
 2. Move the Regular and Bold sections on the source key to the
     next page, so the source key starts with J.

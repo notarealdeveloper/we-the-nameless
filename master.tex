@@ -486,7 +486,7 @@
 \colorlet{Ezekielbgcolor}{Ezekielcolor!14!white}
 \colorlet{Dtnbgcolor}{Dtncolor!16!white}
 
-\definecolor{Rcolor}{RGB}{0,70,170}
+\colorlet{Rcolor}{Pcolor}
 \colorlet{Rbgcolor}{Rcolor!12!white}
 
 \definecolor{RJEcolor}{RGB}{0,100,0}
@@ -564,8 +564,8 @@
     \colorlet{Ezekielbgcolor}{Ezekielcolor!20!bg}
     \colorlet{Dtnbgcolor}{Ebgcolor}
 
-    \colorlet{Rcolor}{ObsBlue!65!fg}
-    \colorlet{Rbgcolor}{Rcolor!17!bg}
+    \colorlet{Rcolor}{Pcolor}
+    \colorlet{Rbgcolor}{Rcolor!14!bg}
     \colorlet{RJEcolor}{ObsGreen!82!fg}
     \definecolor{RJEbgcolor}{HTML}{344837}
 
@@ -1317,12 +1317,16 @@
 	% Don't change this font scale!
 
 \DeclareSourceProfile{DtrA}
-    {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\DeuteronomistAStyle\Redactor\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr1bgcolor}\DeuteronomistAStyle\Redactor\mdseries}
+%   {\EnglishFont} {\SourceBackground{Dtr1bgcolor}\DeuteronomistAStyle\Redactor\mdseries}
+%   {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr1bgcolor}\DeuteronomistAStyle\Redactor\mdseries}
+    {\EnglishFont} {\DeuteronomistAStyle\mdseries}
+    {\HebrewDavid} {\HebrewDavidLarge\DeuteronomistAStyle\mdseries}
 
 \DeclareSourceProfile{DtrB}
-    {\EnglishFont} {\SourceBackground{Dtr2bgcolor}\DeuteronomistBStyle\Redactor\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr2bgcolor}\DeuteronomistBStyle\Redactor\mdseries}
+%   {\EnglishFont} {\SourceBackground{Dtr2bgcolor}\DeuteronomistBStyle\Redactor\mdseries}
+%   {\HebrewDavid} {\HebrewDavidLarge\SourceBackground{Dtr2bgcolor}\DeuteronomistBStyle\Redactor\mdseries}
+    {\EnglishFont} {\DeuteronomistBStyle\mdseries}
+    {\HebrewDavid} {\HebrewDavidLarge\DeuteronomistBStyle\mdseries}
 
 \DeclareSourceProfile{Dtn}
     {\LawFont} {\DeuteronomicLawStyle}
@@ -1624,26 +1628,6 @@
     \setcounter{footnote}{0}%
     \LegendColumns{0.23\linewidth}{0.71\linewidth}
 
-    \LegendRow{Regular}{%
-        We the People. We write regular.\\
-        We're not always bold. Bold is for the bold.\\
-        We're not always italic. Italic is for the Italians.\\
-        We're not always highlighted. Highlit is for the high \& lit.\\
-        We're not always mono. Mono is for the mono.\\
-        Whatever you get it, let's move on to the others.\\
-    }
-
-    \LegendRow{{\Priest{Bold}}}{%
-        {\Priest{The Priests. Or the Levites. Whatever, same thing.}}%
-        \LegendFootmark{SourceLegendPriestFootnote}\par
-        (\Priest{\Mushite{E}},
-        \SourceDecorate[dtr1,priest]{Dtr1},
-        \SourceDecorate[dtr2,priest]{Dtr2},
-        \Jeremiah[priest]{Jeremiah},
-        \SourceDecorate[aaronid,priest]{P}.
-        \SourceDecorate[aaronid,priest]{R}.)
-    }
-
     \LegendRow{\eJ{Green}}{%
         \eJ{
             J. The first author of the bible.%
@@ -1713,6 +1697,26 @@
     \begingroup
     \footnotesize
     \LegendColumns{0.23\linewidth}{0.71\linewidth}
+
+    \LegendRow{Regular}{%
+        We the People. We write regular.\\
+        We're not always bold. Bold is for the bold.\\
+        We're not always italic. Italic is for the Italians.\\
+        We're not always highlighted. Highlit is for the high \& lit.\\
+        We're not always mono. Mono is for the mono.\\
+        Whatever you get it, let's move on to the others.\\
+    }
+
+    \LegendRow{{\Priest{Bold}}}{%
+        {\Priest{The Priests. Or the Levites. Whatever, same thing.}}%
+        \LegendFootmark{SourceLegendPriestFootnote}\par
+        (\Priest{\Mushite{E}},
+        \SourceDecorate[dtr1,priest]{Dtr1},
+        \SourceDecorate[dtr2,priest]{Dtr2},
+        \Jeremiah[priest]{Jeremiah},
+        \SourceDecorate[aaronid,priest]{P}.
+        \SourceDecorate[aaronid,priest]{R}.)
+    }
 
     \LegendRow{{\Record Grey}}{%
         {\Record
@@ -2484,10 +2488,11 @@
 \wetitlepage
 \pagestyle{empty}
 
-\tableofcontents
-
 \cleardoublepage
 \AlphabetHistoryPage
+
+\cleardoublepage
+\tableofcontents
 
 \cleardoublepage
 \SourceLegendPage
