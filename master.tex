@@ -1796,6 +1796,9 @@
 \newcommand{\LegendFontAlphabet}[1]{%
     \LegendFontSampleRows{#1{אבגדהוזחטיכ}}{#1{למנסעפצקרשת}}%
 }
+\newcommand{\hKetefHinnomLegend}[1]{%
+    \PaleoMFont{\Record\mdseries}{#1}%
+}
 \newcommand{\LegendPFontAlphabet}{%
     \LegendFontSampleRows{\hP{אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻ}}{\hP{לֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ}}%
 }
@@ -1862,7 +1865,7 @@
         }
     }
 
-    \LegendRow{\LegendFontSampleRows{\PaleoMFont{\color{Pcolor}\mdseries}{אבגדהוזחטיכ}}{\PaleoMFont{\color{Pcolor}\mdseries}{למנסעפצקרשת}}}{%
+    \LegendRow{\LegendFontAlphabet{\hKetefHinnomLegend}}{%
         \eProto{
             The Ketef Hinnom variant of Paleo-Hebrew is
             used for the Priestly Blessing in Numbers 6.
@@ -1902,12 +1905,13 @@
     \LegendRow{\LegendPFontAlphabet}{%
         \eP{
 			P is rendered in the modern Hebrew square script with niqqud.
-			In all likelihood, the Priestly source was originally written
-			in a Paleo-Hebrew script during the reign of king Hezekiah.
-			The present representation is therefore an anachronism.
-			Nevertheless, much to our frustration, P insisted that his
-			source material be represented in this manner, and he spoke
-			to us, saying:
+			This representation is undeniably an anachronism,
+			seeing as the linguistic evidence suggests that the
+			Priestly source was originally written in the Paleo-Hebrew
+			script during the reign of king Hezekiah.
+			Nevertheless, much to our frustration, P insisted that
+			his material be represented in this manner,
+			and he spoke to us, saying:
 
 			\eP{
 			\textquotedblleft{}The niqqud provide the \textsc{Author} with a method,
@@ -1936,8 +1940,8 @@
 			according to the words I have said as I said them.\textquotedblright{}
 			}
 
-			We have complied, reluctantly, and we trust the reader will pardon the
-			anachronism.
+			We have complied, reluctantly.\\
+			We hope the reader will pardon the anachronism.
         }
     }
 
