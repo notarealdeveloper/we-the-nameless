@@ -1124,8 +1124,8 @@
 \newcommand{\Yahwist}{\Native\color{Jcolor}} % Or: Creator. We who cause it to be.
 \newcommand{\Record}{\color{Recordcolor}}
 \newcommand{\Records}{\Record}
-\newcommand{\Poetry}{\itshape}
-\newcommand{\OtherSource}{\color{OtherColor}\itshape}
+\newcommand{\Poetry}{\slshape}
+\newcommand{\OtherSource}{\color{OtherColor}\slshape}
 \newcommand{\DeuterAStyle}{\MushiteStyle\color{Dtr1color}}
 \newcommand{\DeuterBStyle}{\MushiteStyle\color{Dtr2color}}
 \newcommand{\DeuterNStyle}{\MushiteStyle\color{Dtncolor}}
@@ -1161,7 +1161,7 @@
             {records}{\Records}
             {other}{\OtherSource}
             {poetry}{\Poetry}
-            {italic}{\itshape}
+            {italic}{\slshape}
             {noitalic}{\upshape}
             {mono}{\LawFont}
             {law}{\LawFont}
@@ -1736,7 +1736,7 @@
 
     \LegendRow{{\LawFont Mono}}{%
         {\LawFont
-            Laws.
+            The Law.
             All forms of code, legal and otherwise, are written in
             monospaced font, for reasons that need not be explained.
             \par\smallskip
@@ -1813,25 +1813,28 @@
     \setlength{\LegendRowSep}{0.45em}%
     \LegendColumns{0.27\linewidth}{0.67\linewidth}
 
-    Songs, records, and old blessings get older alphabets than the main narrative sources.
+    Archaic songs, poetry, and blessings are rendered in a version
+    of the Hebrew alphabet that best matches their time and place
+    of composition.
     \par\smallskip
 
 	The Proto-Sinaitic script is used for the oldest strata of biblical songs.
+    \par\smallskip
 
     \LegendRow{\LegendFontAlphabet{\hProtoA}}{%
         \eProtoA{
-            A southern (Egyptian) variant of the Proto-Sinaitic script,
-            resembling the Wadi el-Hol inscriptions, is used for the
-            oldest source in the bible, the Song of the Sea (Exodus 15).
+            A southern (Egyptian) variant of Proto-Sinaitic resembling the Wadi el-Hol
+            inscriptions is used for the oldest source in the bible,
+            the Song of the Sea (Exodus 15).
         }
     }
 
     \LegendRow{\LegendFontAlphabet{\hProtoC}}{%
         \eProtoF{
-            A more northern (Sinai peninsula) variant
-            of the Proto-Sinaitic script, resembling the
-            Serabit el-Khadim inscriptions, is used for
-            Numbers 21 and the Balaam poems in Numbers 23-24.
+            A more northern variant of the Proto-Sinaitic script,
+            resembling the Serabit el-Khadim inscriptions in the
+            Sinai peninsula, is used for Numbers 21, and the Balaam
+            poems in Numbers 23-24.
         }
     }
 
@@ -1860,7 +1863,7 @@
     }
 
     \LegendRow{\LegendFontSampleRows{\PaleoMFont{\color{Pcolor}\mdseries}{אבגדהוזחטיכ}}{\PaleoMFont{\color{Pcolor}\mdseries}{למנסעפצקרשת}}}{%
-        \eP{
+        \eProto{
             The Ketef Hinnom variant of Paleo-Hebrew is
             used for the Priestly Blessing in Numbers 6.
             This is the oldest biblical text yet found.
