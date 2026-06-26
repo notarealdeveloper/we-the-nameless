@@ -454,7 +454,7 @@
 % Colors
 % ------------------------------------------------------------
 \iffalse
-\section{nav: the patriarchs}
+\section{nav: colors}
 \fi
 
 \definecolor{ProtoColor}{RGB}{150,150,150}
@@ -607,9 +607,6 @@
 % Plain color commands
 % These ONLY change text color.
 % ------------------------------------------------------------
-\iffalse
-\section{nav: words}
-\fi
 
 \newcommand{\cK}[1]{{\color{Kcolor}#1}}
 \newcommand{\cR}[1]{{\color{Redcolor}#1}}
@@ -639,7 +636,7 @@
 % and transliterates the Hebrew consonants before selecting the font.
 % ------------------------------------------------------------
 \iffalse
-\section{nav: language encoders}
+\section{nav: language}
 \fi
 
 \directlua{
@@ -1079,8 +1076,38 @@
 }
 
 
+% ------------------------------------------------------------
+% Inline language helpers for commentary/definitions
+% ------------------------------------------------------------
+
+\newcommand{\heb}[1]{%
+    {\InlineHebrewRenderer{}{#1}}%
+}
+
+\newcommand{\arb}[1]{%
+    {\leavevmode\textdir TRT\ArabicFont #1}%
+}
+
+\newcommand{\akk}[1]{%
+    {\leavevmode\Cun #1}%
+}
+
+\newcommand{\uga}[1]{{\UgariticFont #1}}
+
+\newcommand{\ara}[1]{%
+    {\leavevmode\textdir TRT\AramaicFont #1}%
+}
+
+\newcommand{\phn}[1]{%
+    {\leavevmode\textdir TRT\PaleoHebrewPhoenicianFont #1}%
+}
+
+\newcommand{\hs}[2]{#1{#2}}
+
+
+
 \iffalse
-\section{nav: source styles}
+\section{nav: sources}
 \fi
 
 % Source traits. These compose in source profiles and can be used inline.
@@ -1412,41 +1439,9 @@
 \newcommand{\hBookOfRecords}[1]{\hRecordsRenderer{\hstyleRecords}{#1}}
 \newcommand{\sBookOfRecords}[1]{{\estyleRecords #1}}
 
-% ------------------------------------------------------------
-% ------------------------------------------------------------
-% Inline language helpers for commentary/definitions
-% ------------------------------------------------------------
 \iffalse
-\section{nav: inline languages}
+\section{nav: definitions}
 \fi
-
-\newcommand{\heb}[1]{%
-    {\InlineHebrewRenderer{}{#1}}%
-}
-
-\newcommand{\arb}[1]{%
-    {\leavevmode\textdir TRT\ArabicFont #1}%
-}
-
-\newcommand{\akk}[1]{%
-    {\leavevmode\Cun #1}%
-}
-
-\newcommand{\uga}[1]{{\UgariticFont #1}}
-
-\newcommand{\ara}[1]{%
-    {\leavevmode\textdir TRT\AramaicFont #1}%
-}
-
-\newcommand{\phn}[1]{%
-    {\leavevmode\textdir TRT\PaleoHebrewPhoenicianFont #1}%
-}
-
-\newcommand{\hs}[2]{#1{#2}}
-
-% Usage:
-%   \Def{Matres Lectiones}[Latin: \textit{matres lectionis}]{Body}
-%   \UseDef{Matres Lectiones}
 
 \newlength{\DefIndent}
 \setlength{\DefIndent}{2em}
@@ -1630,13 +1625,15 @@
 
     \LegendRow{\eJ{Green}}{%
         \eJ{
-            J. The first author of the bible.%
-            \LegendFootmark{SourceLegendSongsFootnote}
-            %
-            The first author of prose.%
-            \LegendFootmark{SourceLegendEarthFootnote}\\
-            The author of the most remembered bible stories.\\
-            The author with the best sense of humor.\\
+            J.\\
+            The first author of the bible.%
+            \LegendFootmark{SourceLegendFootnoteA}\\
+            The first author of prose in history.%
+            \LegendFootmark{SourceLegendFootnoteB}\\
+            The author of the most widely known bible stories.\\
+            The author of the bible with the best sense of human nature.%
+            \LegendFootmark{SourceLegendFootnoteC}%
+
         }
     }
 
@@ -1677,13 +1674,21 @@
 
     \LegendRow{\eR{Highlights}}{%
         \eR{
-            Editors. Called Redactors in bible circles, presumably since E was already taken.\\
-            Don't write much, but may occasionally write small amounts of glue prose to make\\
-            multiple sources consistent. Some redactors prefer to include both copies of a\\
-            story when merging two texts with different versions of the same event\\
+            Editors. Called Redactors in bible circles, since E was already taken.\\
+            Redactors don't write much themselves, and mostly insert small bits of\\
+            glue prose throughout a text, whether to make multiple sources consistent,\\
+            to make the combined text flow as a single narrative, or to remove material\\
+            considered objectionable. Some redactors prefer to include both copies of\\
+            a story when merging two texts with different versions of the same event\\
         }
         \eRJE{
             while others prefer to choose one and exclude the other.
+        }
+    }
+
+    \LegendRow{{\Record Grey}}{%
+        {\Record
+            Records. Begat lists, genealogies, and misc documents (Gen 5, Gen 14.)\par
         }
     }
 
@@ -1699,17 +1704,18 @@
     \LegendColumns{0.23\linewidth}{0.71\linewidth}
 
     \LegendRow{Regular}{%
-        We the People. We write regular.\\
+        We the people. We write regular.\\
         We're not always bold. Bold is for the bold.\\
-        We're not always italic. Italic is for the Italians.\\
-        We're not always highlighted. Highlit is for the high \& lit.\\
-        We're not always mono. Mono is for the mono.\\
-        Whatever you get it, let's move on to the others.\\
+        We're not always italic. Italic is for the italians.\\
+        %We're not always highlighted. Highlighters are for the high with lighters.\\
+        We're not always mono. Mono is for the---\\
+        W/e, you get it. Now for the others.
     }
+
 
     \LegendRow{{\Priest{Bold}}}{%
         {\Priest{The Priests. Or the Levites. Whatever, same thing.}}%
-        \LegendFootmark{SourceLegendPriestFootnote}\par
+        \LegendFootmark{SourceLegendFootnoteD}\par
         (\Priest{\Mushite{E}},
         \SourceDecorate[dtr1,priest]{Dtr1},
         \SourceDecorate[dtr2,priest]{Dtr2},
@@ -1718,22 +1724,23 @@
         \SourceDecorate[aaronid,priest]{R}.)
     }
 
-    \LegendRow{{\Record Grey}}{%
-        {\Record
-            Records, begat lists, genealogies, misc documents (Gen 5, Gen 14.)\par
-        }
-    }
-
     \LegendRow{{\Poetry Italics}}{%
         {\Poetry
-            Songs and early poetry, from the Levites in the South and the Israelites in the North
-            (\Levite{\color{MushiteAaronidcolor}Exodus 15}, \cG{Judges 5}, \cG{Genesis 49}, \Mushite{Numbers 21, 23-24, Deut 33}.)
+            The Prophets. Poetry, prophecy, and archaic songs. Used as sources by the authors of the
+            prose narratives and history. Examples of such songs, from the Levites in the South,
+            and the Israelites in the North, appear to be the oldest strata of the text, and among the
+            only sources that pre-date J.\\
+            (\Mushite{Exodus 15}, \cG{Judges 5}, \Mushite{Numbers 21, 23-24}, \cG{Genesis 49}, \DeuterA{Deut 33}.)
         }
     }
 
     \LegendRow{{\LawFont Mono}}{%
         {\LawFont
-            Laws.\LegendFootmark{SourceLegendMonoFootnote}\par\smallskip
+            Laws.
+            All forms of code, legal and otherwise, are written in
+            monospaced font, for reasons that need not be explained.
+            \par\smallskip
+
             {\MushiteStyle Mushite Laws: The Covenant Code (E; Exodus 20:22-23:19).}\par\smallskip
 
             {\DeuterNStyle Deuteronomic Laws: The Deuteronomic Law Code (Dtn; Deut 12-26).}\par\smallskip
@@ -1749,21 +1756,22 @@
             % the song, I mean they actually even say ``two
             % turtledoves,'' in that shit it's not subtle.
 
-            {\Yahwist J Laws: Nonexistent. Except for a weird version of\\
-            the 10 commandments, which may well have been a joke, because\\
+            {\Yahwist J Laws: Nonexistent, except for a weird version of the\\
+            10 commandments, which may well have been a joke.\\
             J is f\redacted{ucking}\eR{oundational to an understanding of God's\\
-            mysterious and} awesome \eR{power.}}%
-            \LegendFootmarkJ{SourceLegendThanksFootnote}%
+            mysterious and} awesome \eR{power}.}%
+            \LegendFootmarkJ{SourceLegendFootnoteE}%
         }
     }
 
-    \footnotetext[\SourceLegendPriestFootnote]{Not according to {\AaronidStyle these guys},
-        though {\MushiteStyle these guys} agree.}
-    \footnotetext[\SourceLegendSongsFootnote]{Aside from a few archaic songs.}
-    \footnotetext[\SourceLegendEarthFootnote]{Here on Earth, that is, as far as we know.}
-    \footnotetext[\SourceLegendMonoFootnote]{All forms of code, legal and otherwise,
-    	are written in monospaced font, for reasons that need not be explained.}
-    \footnotetext[\SourceLegendThanksFootnote]{{\Yahwist S}he says thanks, welcome to We.}
+
+    \footnotetext[\SourceLegendFootnoteA]{Named J, or the Yahwist, because of some Germans.}
+    \footnotetext[\SourceLegendFootnoteB]{Anywhere on earth, as far as we know.}
+    \footnotetext[\SourceLegendFootnoteC]{Human nature as in timeless themes like sex, death, family,
+    	deception, suffering, forgiveness, and humor.}
+    \footnotetext[\SourceLegendFootnoteD]{According to {\MushiteStyle these guys},
+    	though {\AaronidStyle these guys} disagree.}
+    \footnotetext[\SourceLegendFootnoteE]{{\Yahwist S}he says thanks, and welcome to We.}
     \endgroup
 
     \clearpage
@@ -1805,9 +1813,7 @@
     \setlength{\LegendRowSep}{0.45em}%
     \LegendColumns{0.27\linewidth}{0.67\linewidth}
 
-    Songs, records, and old blessings get older alphabets than the main
-    narrative sources. The rule is boring enough to be true: older text,
-    older font.
+    Songs, records, and old blessings get older alphabets than the main narrative sources.
     \par\smallskip
 
 	The Proto-Sinaitic script is used for the oldest strata of biblical songs.
@@ -2162,7 +2168,7 @@
 % Verse layout
 % ------------------------------------------------------------
 \iffalse
-\section{nav: verse rendering}
+\section{nav: verses}
 \fi
 
 \def\englishsize{\normalsize}
@@ -2271,7 +2277,7 @@
 
 % ------------------------------------------------------------
 \iffalse
-\section{nav: keeping chunks together}
+\section{nav: binding}
 \fi
 
 \makeatletter
@@ -2311,7 +2317,7 @@
 %   \as{<style macro>}[l|c|r]{text}
 % ------------------------------------------------------------
 \iffalse
-\section{nav: commentary commands}
+\section{nav: commentary}
 \fi
 
 \def\commentarysize{\normalsize}
@@ -2327,9 +2333,7 @@
 % ------------------------------------------------------------
 % Speaker shortcuts
 % ------------------------------------------------------------
-\iffalse
-\section{nav: speakers}
-\fi
+
 
 \newcommand{\DeclareSpeakerShortcut}[2]{%
   \expandafter\NewDocumentCommand\csname a#1\endcsname{ O{l} +m }{\as{#2}[##1]{##2}}%
@@ -2350,12 +2354,41 @@
 \NewDocumentCommand{\aR}{ O{l} +m }{\smash{\as{\eR}[#1]{#2}}}
 \NewDocumentCommand{\aRJE}{ O{l} +m }{\smash{\as{\eRJE}[#1]{#2}}}
 
+% ------------------------------------------------------------
+% Alignment sugar
+% ------------------------------------------------------------
+
+\makeatletter
+\newcommand{\DeclareSpeakerTriplet}[1]{%
+    \expandafter\newcommand\csname a#1l\endcsname[1]{%
+		\csname a#1\endcsname[l]{##1}%
+	}%
+    \expandafter\newcommand\csname a#1c\endcsname[1]{%
+		\csname a#1\endcsname[c]{\begin{quote}\centering ##1 \end{quote}}
+	}%
+    \expandafter\newcommand\csname a#1r\endcsname[1]{%
+		\csname a#1\endcsname[l]{\makebox[\linewidth][r]{##1}}%
+    }%
+}
+
+\newcommand{\DeclareSpeakerTripletList}[1]{%
+  \@for\SpeakerName:=#1\do{\expandafter\DeclareSpeakerTriplet\expandafter{\SpeakerName}}%
+}
+\makeatother
+
+\DeclareSpeakerTripletList{A,B,C,J,E,P,DtrA,DtrB,Dtn,R,RJE,Records,Other}
+
+
+\newcommand{\redacted}[1]{%
+  {\setlength{\fboxsep}{0pt}%
+   \colorbox{RedactedColor}{\strut\phantom{#1}}}%
+}
 
 % ------------------------------------------------------------
 % Dynamic words
 % ------------------------------------------------------------
 \iffalse
-\section{nav: dynamic words}
+\section{nav: words}
 \fi
 
 \makeatletter
@@ -2400,38 +2433,6 @@
 % \defineword{\God}{\cR{dave}}[\cR{Dave}]
 % \redefineword{\God}{\cB{bob}}[\cB{Bob}]
 
-% ------------------------------------------------------------
-% Alignment sugar
-% ------------------------------------------------------------
-\iffalse
-\section{nav: speaker alignment}
-\fi
-
-\makeatletter
-\newcommand{\DeclareSpeakerTriplet}[1]{%
-    \expandafter\newcommand\csname a#1l\endcsname[1]{%
-		\csname a#1\endcsname[l]{##1}%
-	}%
-    \expandafter\newcommand\csname a#1c\endcsname[1]{%
-		\csname a#1\endcsname[c]{\begin{quote}\centering ##1 \end{quote}}
-	}%
-    \expandafter\newcommand\csname a#1r\endcsname[1]{%
-		\csname a#1\endcsname[l]{\makebox[\linewidth][r]{##1}}%
-    }%
-}
-
-\newcommand{\DeclareSpeakerTripletList}[1]{%
-  \@for\SpeakerName:=#1\do{\expandafter\DeclareSpeakerTriplet\expandafter{\SpeakerName}}%
-}
-\makeatother
-
-\DeclareSpeakerTripletList{A,B,C,J,E,P,DtrA,DtrB,Dtn,R,RJE,Records,Other}
-
-
-\newcommand{\redacted}[1]{%
-  {\setlength{\fboxsep}{0pt}%
-   \colorbox{RedactedColor}{\strut\phantom{#1}}}%
-}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2476,7 +2477,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \iffalse
-\section{nav: The Book}
+\section{The Book}
 \fi
 
 \begin{document}
@@ -2488,13 +2489,13 @@
 \wetitlepage
 \pagestyle{empty}
 
-\cleardoublepage
+\clearpage
 \AlphabetHistoryPage
 
-\cleardoublepage
+\clearpage
 \tableofcontents
 
-\cleardoublepage
+\clearpage
 \SourceLegendPage
 
 \mainmatter
@@ -2553,7 +2554,7 @@
 %\include{01-genesis/50}
 
 \Book{Exodus}
-%\include{02-exodus/01}
+\include{02-exodus/01}
 %\include{02-exodus/02}
 %\include{02-exodus/03}
 %\include{02-exodus/04}
@@ -2595,7 +2596,7 @@
 %\include{02-exodus/40}
 
 \Book{Leviticus}
-%\include{03-leviticus/01}
+\include{03-leviticus/01}
 %\include{03-leviticus/02}
 %\include{03-leviticus/03}
 %\include{03-leviticus/04}
@@ -2613,7 +2614,7 @@
 %\include{03-leviticus/16}
 %\include{03-leviticus/17}
 %\include{03-leviticus/18}
-\include{03-leviticus/19}
+%\include{03-leviticus/19}
 %\include{03-leviticus/20}
 %\include{03-leviticus/21}
 %\include{03-leviticus/22}
@@ -2624,12 +2625,12 @@
 %\include{03-leviticus/27}
 
 \Book{Numbers}
-%\include{04-numbers/01}
+\include{04-numbers/01}
 %\include{04-numbers/02}
 %\include{04-numbers/03}
 %\include{04-numbers/04}
 %\include{04-numbers/05}
-%\include{04-numbers/06}
+\include{04-numbers/06}
 %\include{04-numbers/07}
 %\include{04-numbers/08}
 %\include{04-numbers/09}
@@ -2645,8 +2646,8 @@
 %\include{04-numbers/19}
 %\include{04-numbers/20}
 \include{04-numbers/21}
-\include{04-numbers/22}
-\include{04-numbers/23}
+%\include{04-numbers/22}
+%\include{04-numbers/23}
 %\include{04-numbers/24}
 %\include{04-numbers/25}
 %\include{04-numbers/26}
@@ -2662,7 +2663,7 @@
 %\include{04-numbers/36}
 
 \Book{Deuteronomy}
-%\include{05-deuteronomy/01}
+\include{05-deuteronomy/01}
 %\include{05-deuteronomy/02}
 %\include{05-deuteronomy/03}
 %\include{05-deuteronomy/04}
@@ -2673,7 +2674,7 @@
 %\include{05-deuteronomy/09}
 %\include{05-deuteronomy/10}
 %\include{05-deuteronomy/11}
-%\include{05-deuteronomy/12}
+\include{05-deuteronomy/12}
 %\include{05-deuteronomy/13}
 %\include{05-deuteronomy/14}
 %\include{05-deuteronomy/15}
@@ -2694,7 +2695,7 @@
 %\include{05-deuteronomy/30}
 %\include{05-deuteronomy/31}
 \include{05-deuteronomy/32}
-\include{05-deuteronomy/33}
+%\include{05-deuteronomy/33}
 %\include{05-deuteronomy/34}
 
 \Book{Joshua}
@@ -2724,11 +2725,11 @@
 %\include{06-joshua/24}
 
 \Book{Judges}
-%\include{07-judges/01}
+\include{07-judges/01}
 %\include{07-judges/02}
 %\include{07-judges/03}
 %\include{07-judges/04}
-\include{07-judges/05}
+%\include{07-judges/05}
 %\include{07-judges/06}
 %\include{07-judges/07}
 %\include{07-judges/08}
@@ -2860,42 +2861,42 @@
 
 \BookPart{Esther}
 \include{10-dudetheyreontome/esther/01}
-\include{10-dudetheyreontome/esther/02}
-\include{10-dudetheyreontome/esther/03}
-\include{10-dudetheyreontome/esther/04}
-\include{10-dudetheyreontome/esther/05}
-\include{10-dudetheyreontome/esther/06}
-\include{10-dudetheyreontome/esther/07}
-\include{10-dudetheyreontome/esther/08}
-\include{10-dudetheyreontome/esther/09}
-\include{10-dudetheyreontome/esther/10}
+%\include{10-dudetheyreontome/esther/02}
+%\include{10-dudetheyreontome/esther/03}
+%\include{10-dudetheyreontome/esther/04}
+%\include{10-dudetheyreontome/esther/05}
+%\include{10-dudetheyreontome/esther/06}
+%\include{10-dudetheyreontome/esther/07}
+%\include{10-dudetheyreontome/esther/08}
+%\include{10-dudetheyreontome/esther/09}
+%\include{10-dudetheyreontome/esther/10}
 
 \BookPart{Ezra}
 \include{10-dudetheyreontome/ezra/01}
-\include{10-dudetheyreontome/ezra/02}
-\include{10-dudetheyreontome/ezra/03}
-\include{10-dudetheyreontome/ezra/04}
-\include{10-dudetheyreontome/ezra/05}
-\include{10-dudetheyreontome/ezra/06}
-\include{10-dudetheyreontome/ezra/07}
-\include{10-dudetheyreontome/ezra/08}
-\include{10-dudetheyreontome/ezra/09}
-\include{10-dudetheyreontome/ezra/10}
+%\include{10-dudetheyreontome/ezra/02}
+%\include{10-dudetheyreontome/ezra/03}
+%\include{10-dudetheyreontome/ezra/04}
+%\include{10-dudetheyreontome/ezra/05}
+%\include{10-dudetheyreontome/ezra/06}
+%\include{10-dudetheyreontome/ezra/07}
+%\include{10-dudetheyreontome/ezra/08}
+%\include{10-dudetheyreontome/ezra/09}
+%\include{10-dudetheyreontome/ezra/10}
 
 \BookPart{Nehemiah}
 \include{10-dudetheyreontome/nehemiah/01}
-\include{10-dudetheyreontome/nehemiah/02}
-\include{10-dudetheyreontome/nehemiah/03}
-\include{10-dudetheyreontome/nehemiah/04}
-\include{10-dudetheyreontome/nehemiah/05}
-\include{10-dudetheyreontome/nehemiah/06}
-\include{10-dudetheyreontome/nehemiah/07}
-\include{10-dudetheyreontome/nehemiah/08}
-\include{10-dudetheyreontome/nehemiah/09}
-\include{10-dudetheyreontome/nehemiah/10}
-\include{10-dudetheyreontome/nehemiah/11}
-\include{10-dudetheyreontome/nehemiah/12}
-\include{10-dudetheyreontome/nehemiah/13}
+%\include{10-dudetheyreontome/nehemiah/02}
+%\include{10-dudetheyreontome/nehemiah/03}
+%\include{10-dudetheyreontome/nehemiah/04}
+%\include{10-dudetheyreontome/nehemiah/05}
+%\include{10-dudetheyreontome/nehemiah/06}
+%\include{10-dudetheyreontome/nehemiah/07}
+%\include{10-dudetheyreontome/nehemiah/08}
+%\include{10-dudetheyreontome/nehemiah/09}
+%\include{10-dudetheyreontome/nehemiah/10}
+%\include{10-dudetheyreontome/nehemiah/11}
+%\include{10-dudetheyreontome/nehemiah/12}
+%\include{10-dudetheyreontome/nehemiah/13}
 \include{apocrypha}
 
 \end{document}
