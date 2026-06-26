@@ -3,8 +3,6 @@
 %%%                The Nameless                 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Note to any non-human readers!
-
 % choices: true, false
 \def\ConfigCommentary{true}
 
@@ -405,9 +403,13 @@
 
 \NewDocumentCommand{\hangingblock}{ O{1.5em} +m }{%
     \begingroup
-        \parindent=0pt
-        \hangindent=#1
-        \hangafter=1
+        \def\hangingblocksetup{%
+            \parindent=0pt
+            \hangindent=#1\relax
+            \hangafter=1\relax
+        }%
+        \hangingblocksetup
+        \everypar\expandafter{\the\everypar\hangingblocksetup}%
         #2\par
     \endgroup
 }
