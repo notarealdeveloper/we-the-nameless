@@ -8,21 +8,13 @@ from pathlib import Path
 
 INCLUDE = re.compile(r"^(\s*)%?\s*(\\include\{([^}]+)\})\s*$")
 
-BOOKS = {
-    "01-genesis",
-    "02-exodus",
-    "03-leviticus",
-    "04-numbers",
-    "05-deuteronomy",
-    "06-joshua",
-    "07-judges",
-    "08-samuel",
-    "09-kings",
-    "10-esther",
-    "11-ezra",
+KEEP_COMMENT = {
+    "01-genesis/01",
+    "01-genesis/02",
+    "01-genesis/03",
 }
 
-KEEP = {
+KEEP_HALFCOMMENT = {
     "01-genesis/01",
     "01-genesis/02",
     "01-genesis/03",
@@ -39,26 +31,20 @@ KEEP = {
     "08-samuel/2-01",
     "09-kings/1-01",
     "09-kings/2-01",
-    "10-esther/01",
-    "11-ezra/01",
-    "11-ezra/nehemiah-01",
+    "10-dudetheyreontome/esther/01",
+    "10-dudetheyreontome/ezra/01",
+    "10-dudetheyreontome/nehemiah/01",
+    "apocrypha",
 }
 
 
-def is_target(path):
-    return path.split("/", 1)[0] in BOOKS
-
-
-def edit_line(line, uncomment):
+def edit_line(line, keep):
     m = INCLUDE.match(line.rstrip("\n"))
     if not m:
         return line
 
     indent, include, path = m.groups()
-    if not is_target(path):
-        return line
-
-    if uncomment or path in KEEP:
+    if keep is None or path in keep:
         return indent + include + "\n"
 
     return indent + "%" + include + "\n"
@@ -68,14 +54,20 @@ def main():
     p = argparse.ArgumentParser()
     g = p.add_mutually_exclusive_group(required=True)
     g.add_argument("-c", "--comment", action="store_true")
+    g.add_argument("--halfcomment", action="store_true")
     g.add_argument("-u", "--uncomment", action="store_true")
     p.add_argument("files", nargs="+")
     args = p.parse_args()
+    keep = None
+    if args.comment:
+        keep = KEEP_COMMENT
+    elif args.halfcomment:
+        keep = KEEP_HALFCOMMENT
 
     for name in args.files:
         path = Path(name)
         old = path.read_text()
-        new = "".join(edit_line(line, args.uncomment) for line in old.splitlines(True))
+        new = "".join(edit_line(line, keep) for line in old.splitlines(True))
         if new != old:
             path.write_text(new)
 

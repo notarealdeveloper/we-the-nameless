@@ -8,7 +8,7 @@ LATEXFLAGS := -interaction=nonstopmode -halt-on-error -output-directory=$(BUILD)
 
 export TEXMFVAR := $(CACHE)
 
-.PHONY: all clean distclean debug progress open build-prepare draft c x comment uncomment
+.PHONY: all clean distclean debug progress open build-prepare draft c x comment halfcomment uncomment
 
 all: $(PDF) open
 
@@ -33,6 +33,9 @@ draft: $(MAIN).tex | build-prepare
 
 comment:
 	bin/comments --comment $(MAIN).tex
+
+halfcomment:
+	bin/comments --halfcomment $(MAIN).tex
 
 uncomment:
 	bin/comments --uncomment $(MAIN).tex

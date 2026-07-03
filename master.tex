@@ -512,9 +512,9 @@
 
 \definecolor{DefColor}{RGB}{0,70,170}
 \definecolor{RedactedColor}{RGB}{0,70,170}
-\colorlet{HLAbgcolor}{Kcolor!22!white}
-\colorlet{HLBbgcolor}{Redcolor!22!white}
-\colorlet{HLCbgcolor}{Bluecolor!32!white}
+\colorlet{HLAbgcolor}{Kcolor!13!white}
+\colorlet{HLBbgcolor}{Redcolor!14!white}
+\colorlet{HLCbgcolor}{Bluecolor!18!white}
 
 \colorlet{TextColor}{black}
 \colorlet{RuleColor}{TextColor}
@@ -586,9 +586,9 @@
     \colorlet{Yellowcolor}{Ecolor}
     \colorlet{Graycolor}{ObsGray!70!fg}
     \colorlet{DefColor}{ObsBlue!65!fg}
-    \colorlet{HLAbgcolor}{Kcolor!12!bg}
-    \colorlet{HLBbgcolor}{Redcolor!22!bg}
-    \colorlet{HLCbgcolor}{Bluecolor!32!bg}
+    \colorlet{HLAbgcolor}{Kcolor!10!bg}
+    \colorlet{HLBbgcolor}{Redcolor!16!bg}
+    \colorlet{HLCbgcolor}{Bluecolor!22!bg}
     \pagecolor{bg}
     \AtBeginDocument{\color{TextColor}}
 \fi
@@ -1146,8 +1146,8 @@
         \SourceBackground{Dtr2bgcolor}\Redactor%
     \fi%
 }
-\newcommand{\DeuterAPlainStyle}{\MushiteStyle\color{Dtr1color}}
-\newcommand{\DeuterBPlainStyle}{\MushiteStyle\color{Dtr2color}}
+\newcommand{\DeuterAPlainStyle}{\MushiteStyle\color{Dtr1color}\PriestStyle}
+\newcommand{\DeuterBPlainStyle}{\MushiteStyle\color{Dtr2color}\PriestStyle}
 \newcommand{\DeuterAStyle}{\DeuterAPlainStyle\DeuterABackground}
 \newcommand{\DeuterBStyle}{\DeuterBPlainStyle\DeuterBBackground}
 \newcommand{\DeuterNStyle}{\MushiteStyle\color{Dtncolor}}
@@ -1366,12 +1366,12 @@
 	% Don't change this font scale!
 
 \DeclareSourceProfile{DtrA}
-    {\EnglishFont} {\DeuteronomistAStyle\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\DeuteronomistAStyle\mdseries}
+    {\EnglishFont} {\DeuteronomistAStyle}
+    {\HebrewDavid} {\HebrewDavidLarge\DeuteronomistAStyle}
 
 \DeclareSourceProfile{DtrB}
-    {\EnglishFont} {\DeuteronomistBStyle\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\DeuteronomistBStyle\mdseries}
+    {\EnglishFont} {\DeuteronomistBStyle}
+    {\HebrewDavid} {\HebrewDavidLarge\DeuteronomistBStyle}
 
 \DeclareSourceProfile{Dtn}
     {\LawFont} {\DeuteronomicLawStyle}
@@ -1566,8 +1566,8 @@
     {\large
     \eJ{J}\quad
     \eE{E}\quad
-    {\EnglishFont\DeuterAPlainStyle\mdseries D}\quad
     \eP{P}\quad
+    {\EnglishFont\DeuterAPlainStyle D}\quad
     \eR{R}\quad
     }%
 }
