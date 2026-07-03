@@ -460,6 +460,7 @@
 \fi
 
 \definecolor{ProtoColor}{RGB}{150,150,150}
+\definecolor{PrimevalSourceLegendColor}{RGB}{125,125,125}
 \definecolor{PaleoColor}{RGB}{0,120,0}
 \colorlet{ProtoAColor}{ProtoColor}
 \colorlet{ProtoBColor}{ProtoColor}
@@ -536,6 +537,7 @@
     \definecolor{ObsGray}{HTML}{9aa79d}
 
     \colorlet{ProtoColor}{ObsGray!65!fg}
+    \colorlet{PrimevalSourceLegendColor}{ObsGray!72!fg}
     \colorlet{PaleoColor}{ObsGreen!62!fg}
 
     \colorlet{ProtoAColor}{ProtoColor}
@@ -1799,8 +1801,18 @@
 \newcommand{\LegendFontAlphabet}[1]{%
     \LegendFontSampleRows{#1{אבגדהוזחטיכ}}{#1{למנסעפצקרשת}}%
 }
-\newcommand{\hKetefHinnomLegend}[1]{%
-    \PaleoMFont{\Record\mdseries}{#1}%
+\makeatletter
+\newcommand{\PrimevalLegendHebrew}[2]{%
+    \csname h#1Renderer\endcsname{\color{PrimevalSourceLegendColor}\mdseries}{#2}%
+}
+\makeatother
+\newcommand{\PrimevalLegendAlphabet}[1]{%
+    \LegendFontSampleRows
+        {\PrimevalLegendHebrew{#1}{אבגדהוזחטיכ}}
+        {\PrimevalLegendHebrew{#1}{למנסעפצקרשת}}%
+}
+\newcommand{\PrimevalLegendText}[1]{%
+    {\EnglishProtoFont\color{PrimevalSourceLegendColor}\mdseries #1}%
 }
 \newcommand{\LegendPFontAlphabet}{%
     \LegendFontSampleRows{\hP{אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻ}}{\hP{לֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ}}%
@@ -1824,8 +1836,8 @@
 	The Proto-Sinaitic script is used for the oldest strata of biblical songs.
     \par\smallskip
 
-    \LegendRow{\LegendFontAlphabet{\hProtoA}}{%
-        \eProtoA{
+    \LegendRow{\PrimevalLegendAlphabet{ProtoA}}{%
+        \PrimevalLegendText{
             A southern (Egyptian) variant of Proto-Sinaitic\\
             resembling the Wadi el-Hol inscriptions is used for\\
             the oldest source in the bible, the Song of the Sea\\
@@ -1833,40 +1845,40 @@
         }
     }
 
-    \LegendRow{\LegendFontAlphabet{\hProtoC}}{%
-        \eProtoF{
+    \LegendRow{\PrimevalLegendAlphabet{ProtoC}}{%
+        \PrimevalLegendText{
             A northern (Sinaitic) variant of Proto-Sinaitic\\
             resembling the Serabit el-Khadim inscriptions is used for\\
             Numbers 21, and the Balaam poems in Numbers 23-24.
         }
     }
 
-    \LegendRow{\LegendFontAlphabet{\hProtoE}}{%
-        \eProtoA{
+    \LegendRow{\PrimevalLegendAlphabet{ProtoE}}{%
+        \PrimevalLegendText{
             A northern variant of the Proto-Canaanite script\\
             is used for early native Israelite poetry such as\\
             the Song of Deborah (Judges 5).
         }
     }
 
-    \LegendRow{\LegendFontAlphabet{\hProto}}{%
-        \eProto{
+    \LegendRow{\PrimevalLegendAlphabet{Proto}}{%
+        \PrimevalLegendText{
             A related variant of the Proto-Canaanite script is used
             for early Israelite poetry such as the Blessing
             of Jacob (Genesis 49).
         }
     }
 
-    \LegendRow{\LegendFontAlphabet{\hRecords}}{%
-        \eProto{
+    \LegendRow{\PrimevalLegendAlphabet{Records}}{%
+        \PrimevalLegendText{
             The monospaced block variant of Paleo Hebrew is
             used for records, begat lists, and genealogies
             from the Book of Records. (Genesis 5, Genesis 11:10-26.)
         }
     }
 
-    \LegendRow{\LegendFontAlphabet{\hKetefHinnomLegend}}{%
-        \eProto{
+    \LegendRow{\PrimevalLegendAlphabet{PaleoM}}{%
+        \PrimevalLegendText{
             The Ketef Hinnom variant of Paleo-Hebrew is used for\\
             the Priestly Blessing in Numbers 6. This is the oldest\\
             biblical text yet found.
