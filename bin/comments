@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 INCLUDE = re.compile(r"^(\s*)%?\s*(\\include\{([^}]+)\})\s*$")
+BOOK_COMMAND = re.compile(r"^(\s*)%?\s*(\\(Book|BookPart)\{([^}]+)\})\s*$")
 
 KEEP_COMMENT = {
     "01-genesis/01",
@@ -40,7 +41,19 @@ KEEP_HALFCOMMENT = {
 }
 
 
-def edit_line(line, keep):
+KEEP_COMMENT_BOOKS = {
+    "Genesis",
+}
+
+
+def edit_line(line, keep, keep_books):
+    m = BOOK_COMMAND.match(line.rstrip("\n"))
+    if m:
+        indent, command, kind, name = m.groups()
+        if keep_books is None or (kind == "Book" and name in keep_books):
+            return indent + command + "\n"
+        return indent + "%" + command + "\n"
+
     m = INCLUDE.match(line.rstrip("\n"))
     if not m:
         return line
@@ -61,15 +74,17 @@ def main():
     p.add_argument("files", nargs="+")
     args = p.parse_args()
     keep = None
+    keep_books = None
     if args.comment:
         keep = KEEP_COMMENT
+        keep_books = KEEP_COMMENT_BOOKS
     elif args.halfcomment:
         keep = KEEP_HALFCOMMENT
 
     for name in args.files:
         path = Path(name)
         old = path.read_text()
-        new = "".join(edit_line(line, keep) for line in old.splitlines(True))
+        new = "".join(edit_line(line, keep, keep_books) for line in old.splitlines(True))
         if new != old:
             path.write_text(new)
 
