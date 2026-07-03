@@ -12,6 +12,8 @@ KEEP_COMMENT = {
     "01-genesis/01",
     "01-genesis/02",
     "01-genesis/03",
+    "01-genesis/04",
+    "01-genesis/05",
 }
 
 KEEP_HALFCOMMENT = {

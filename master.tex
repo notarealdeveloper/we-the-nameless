@@ -1999,6 +1999,11 @@
 \fancyhead[LE]{\color{TextColor}\nouppercase{\rightmark}}
 \fancyhead[RO]{\color{TextColor}\nouppercase{\rightmark}}
 \fancyfoot[C]{\color{TextColor}\thepage}
+\fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyfoot[C]{\color{TextColor}\thepage}%
+    \renewcommand{\headrulewidth}{0pt}%
+}
 
 % ------------------------------------------------------------
 % Title page
