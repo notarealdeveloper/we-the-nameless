@@ -14,7 +14,7 @@ import fontforge
 ROOT = Path(__file__).resolve().parents[1]
 FONT_DIR = ROOT / "fonts-master"
 README = FONT_DIR / "README.md"
-MASTER_KEYS = ["a", "b", "g", "d", "e", "w", "z", "h", "T", "y", "k", "l", "m", "n", "S", "o", "p", "c", "q", "r", "s", "t"]
+TABLE_KEYS = ["a", "b", "g", "d", "e", "w", "z", "h", "T", "y", "k", "l", "m", "n", "S", "o", "p", "c", "q", "r", "s", "t"]
 MIN_AREA = 10_000
 
 RENAMES = {
@@ -73,6 +73,14 @@ SUBSTITUTION_OVERRIDES = {
 BOLDEN_FONTS = {
     "03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf",
     "03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf",
+}
+
+FINAL_FORM_FALLBACKS = {
+    "K": "k",
+    "M": "m",
+    "N": "n",
+    "P": "p",
+    "C": "c",
 }
 
 
@@ -204,15 +212,20 @@ def main() -> int:
         font.encoding = "UnicodeFull"
     substitutions: list[tuple[str, str, str, str]] = []
 
+    master_keys = list(alphabet.MASTER_ASCII.keys())
+
     for filename in filenames:
         font = fonts[filename]
-        for char in MASTER_KEYS:
+        for char in master_keys:
             if has_real_glyph(font, char):
                 continue
-            source_name, source_char = SUBSTITUTION_OVERRIDES.get(
-                (filename, char),
-                nearest_valid_source(fonts, filenames, filename, char),
-            )
+            if char in FINAL_FORM_FALLBACKS and has_real_glyph(font, FINAL_FORM_FALLBACKS[char]):
+                source_name, source_char = filename, FINAL_FORM_FALLBACKS[char]
+            else:
+                source_name, source_char = SUBSTITUTION_OVERRIDES.get(
+                    (filename, char),
+                    nearest_valid_source(fonts, filenames, filename, char),
+                )
             copy_glyph(fonts[source_name], source_char, font, char)
             substitutions.append((filename, char, source_name, source_char))
 
@@ -223,7 +236,7 @@ def main() -> int:
             if key == source_char:
                 continue
             copy_glyph(font, source_char, font, key)
-        if filename in BOLDEN_FONTS:
+        if filename in BOLDEN_FONTS and getattr(font, "version", "") != "1.1":
             embolden(font)
         update_metadata(font, filename)
 

@@ -28,6 +28,10 @@ The following master-letter glyphs were absent, encoded as `.notdef`, or represe
 | `07-bc10c-paleo-hebrew-gezer-b.ttf` | `e` | ה | `07-bc10c-paleo-hebrew-gezer-a.ttf` | `e` |
 | `07-bc10c-paleo-hebrew-gezer-b.ttf` | `T` | ט | `07-bc10c-paleo-hebrew-gezer-a.ttf` | `T` |
 | `07-bc10c-paleo-hebrew-gezer-b.ttf` | `n` | נ | `07-bc10c-paleo-hebrew-gezer-a.ttf` | `n` |
+| `06-bc12c-proto-canaanite-izbet-sartah-a.ttf` | `M` | ם | same font | `m` |
+| `06-bc12c-proto-canaanite-izbet-sartah-b.ttf` | `M` | ם | same font | `m` |
+| `07-bc10c-paleo-hebrew-gezer-a.ttf` | `N` | ן | same font | `n` |
+| `07-bc10c-paleo-hebrew-gezer-b.ttf` | `N` | ן | same font | `n` |
 | `07-bc10c-paleo-hebrew-gezer-b.ttf` | `o` | ע | `07-bc10c-paleo-hebrew-gezer-a.ttf` | `o` |
 | `07-bc10c-paleo-hebrew-tel-zayit.ttf` | `o` | ע | `07-bc10c-paleo-hebrew-gezer-b.ttf` | `o` |
 | `08-bc09c-paleo-hebrew-mesha-stele-a.ttf` | `o` | ע | `07-bc10c-phoenician-noto-sans.ttf` | `o` |

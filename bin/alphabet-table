@@ -80,16 +80,23 @@ def draw_pdf(font_dir: Path, fonts: list[str], output: Path) -> None:
     def text_left(x: float, y: float, text: str, font, fill: str = "black") -> None:
         draw.text(xy(x, y), text, font=font, fill=fill)
 
-    def text_center(x: float, y: float, text: str, font, fill: str = "black") -> None:
+    def text_center(x: float, y: float, text: str, font, fill: str = "black", stroke_width: int = 0) -> None:
         bbox = draw.textbbox((0, 0), text, font=font)
         width = bbox[2] - bbox[0]
-        draw.text((int(round(x * scale - width / 2)), int(round(y * scale))), text, font=font, fill=fill)
+        draw.text(
+            (int(round(x * scale - width / 2)), int(round(y * scale))),
+            text,
+            font=font,
+            fill=fill,
+            stroke_width=stroke_width * scale,
+            stroke_fill=fill,
+        )
 
     text_left(margin, margin, "WTN Ancient Alphabet Font Comparison", body_bold)
     text_left(
         margin,
         margin + 30,
-        f"Directory: {font_dir.name}. Ugaritic and light variants intentionally omitted.",
+        f"Directory: {font_dir.name}. Ugaritic and light styles intentionally omitted.",
         body_font,
     )
 
@@ -116,7 +123,8 @@ def draw_pdf(font_dir: Path, fonts: list[str], output: Path) -> None:
         text_left(left + 4, y_mid + 6, filename, small_font)
         for index, key in enumerate(HEBREW_ORDER):
             x = left + font_col_width + (index * cell_width)
-            text_center(x + (cell_width / 2), y_mid, key, row_font)
+            stroke_width = 1 if filename.startswith("01-bc32c-egyptian") else 0
+            text_center(x + (cell_width / 2), y_mid, key, row_font, stroke_width=stroke_width)
         line(left, y_top + row_height, page_width - margin, y_top + row_height, "#ded8cf")
 
     image.save(output, "PDF", resolution=144.0)
