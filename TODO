@@ -180,7 +180,6 @@ term fonts-ascii.
 Do that now, and don't stop til you're done.
 
 # PROMPT 9
-# (CURRENT PROMPT)
 
 1. Fix up the tofu problems in the serabit and wadi-el-hol proto-sinaitic fonts by examining the glyphs and how they rendered in the pdf. 
 2. Fix up the serabit and wadi-el-hol fonts to make their weight more bold so that it matches the other proto-sinatic fonts bold weight.
@@ -188,5 +187,52 @@ Do that now, and don't stop til you're done.
 4. Substitute glyphs from nearby proto sinaitic fonts whenever wadi or serabit are missing a glyph. Try to use different glyphs when both are missing one.
 5. Whenever ANY of the fonts in fonts-master are missing a glyph, substitute a nearby glyph, and write a README in the fonts-master directory saying which ones are substituted.
 6. Make the egyptian row at the top bold.
+
+
+# PROMPT 9
+# (CURRENT PROMPT)
+
+You've already done most of the work for this, but you crashed, so I want you to finish up.
+
+Here's the prompt.
+
+1. Glyphs:
+
+Your serabit, wadi, and generic proto sinaitic fonts have:
+- An incorrect teth
+
+Your serabit and wadi proto sinaitic fonts have:
+- Strange hollow outlined qoph
+- Strange hollow outlined ayin
+- Strange hollow outlined zayin
+
+Serabit has:
+- An incorrect shin
+
+Egyptian has:
+- Two pe variants, delete the second because it's getting interpreted as tsade and messing up everything after that.
+
+Wadi should be before serabit. Right after Egypt.
+
+Wadi has an incorrect:
+- Kaph
+- Lamed
+- Samekh
+- Tsade
+- Qoph
+- Nun
+
+2. Serabit and wadi belong before the other proto sinaitic fonts. Update filenames and Familieis as needed with the following info:
+
+    The two earliest corpora of alphabetic inscriptions are generally dated as follows:
+    Corpus	Most likely date	Conservative scholarly range
+    Wadi el-Hol	ca. 1900–1800 BCE	ca. 1950–1800 BCE
+    Serabit el-Khadim (Proto-Sinaitic)	ca. 1850–1550 BCE (with many inscriptions clustering around the 18th century BCE)	ca. 1900–1500 BCE
+
+3. Make the egyptian row at the top slightly more bold without making it as light as it was before, if possible. But focus on the other problems first.
+4. Using everything you've learned about my preferences from the above prompts, fix up ./XCompose
+5. Rename fonts-master/08-bc10c-phoenician-noto-sans.ttf by replacing phoenician with paleo-hebrew
+6. Don't call isaiah scroll paleo-hebrew in the fonts dir, call it dead-sea-scrolls or whatever.
+
 EOF
 

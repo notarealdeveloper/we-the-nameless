@@ -14,7 +14,7 @@ import psMat
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FONT_DIR = os.path.join(ROOT, "fonts-master")
-BASE_FONT = os.path.join(FONT_DIR, "03-bc15c-proto-sinaitic-serabit-el-khadim-bold-ascii.ttf")
+BASE_FONT = os.path.join(FONT_DIR, "04-bc15c-proto-sinaitic-15th-century.ttf")
 if not os.path.exists(BASE_FONT):
     BASE_FONT = os.path.join(FONT_DIR, "03-bc15c-proto-sinaitic-15th-century.ttf")
 
@@ -75,8 +75,8 @@ GENERIC = {
 
 FONTS = [
     {
-        "filename": "03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf",
-        "family": "WTN Proto Sinaitic Wadi el-Hol Inscription",
+        "filename": "02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf",
+        "family": "WTN Proto Sinaitic Wadi el-Hol 19th Century BCE",
         "source": "Wadi el-Hol SVG reconstructions with generic Proto-Semitic and fifteenth-century fallbacks",
         "description": "Inscription-style Proto-Sinaitic font using available Wadi el-Hol SVG letter drawings where present.",
         "svg": {
@@ -93,8 +93,8 @@ FONTS = [
         },
     },
     {
-        "filename": "03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf",
-        "family": "WTN Proto Sinaitic Serabit el-Khadim Inscription",
+        "filename": "03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf",
+        "family": "WTN Proto Sinaitic Serabit el-Khadim 18th Century BCE",
         "source": "Serabit el-Khadim SVG reconstructions with generic Proto-Semitic and fifteenth-century fallbacks",
         "description": "Inscription-style Proto-Sinaitic font using available Serabit el-Khadim SVG letter drawings where present.",
         "svg": {
