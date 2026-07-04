@@ -17,6 +17,7 @@ FONT_DIR = ROOT / "fonts-master"
 README = FONT_DIR / "README.md"
 TABLE_KEYS = ["a", "b", "g", "d", "e", "w", "z", "h", "T", "y", "k", "l", "m", "n", "S", "o", "p", "c", "q", "r", "s", "t"]
 MIN_AREA = 10_000
+REPAIR_VERSION = "1.3"
 
 RENAMES = {
     "03-bc15c-proto-sinaitic-variant-a.ttf": "03-bc15c-proto-sinaitic-generic-a.ttf",
@@ -38,6 +39,7 @@ RENAMES = {
     "07-bc10c-paleo-hebrew-gezer-b.ttf": "08-bc10c-paleo-hebrew-gezer-b.ttf",
     "07-bc10c-paleo-hebrew-tel-zayit.ttf": "08-bc10c-paleo-hebrew-tel-zayit.ttf",
     "07-bc10c-phoenician-noto-sans.ttf": "08-bc10c-phoenician-noto-sans.ttf",
+    "08-bc10c-phoenician-noto-sans.ttf": "08-bc10c-paleo-hebrew-noto-sans.ttf",
     "08-bc09c-paleo-hebrew-mesha-stele-a.ttf": "09-bc09c-paleo-hebrew-mesha-stele-a.ttf",
     "08-bc09c-paleo-hebrew-mesha-stele-b.ttf": "09-bc09c-paleo-hebrew-mesha-stele-b.ttf",
     "08-bc09c-paleo-hebrew-mono.ttf": "09-bc09c-paleo-hebrew-mono.ttf",
@@ -59,6 +61,8 @@ RENAMES = {
     "12-bc05c-imperial-aramaic-noto-sans.ttf": "13-bc05c-imperial-aramaic-noto-sans.ttf",
     "13-bc02c-paleo-hebrew-isaiah-scroll-a.ttf": "14-bc02c-paleo-hebrew-isaiah-scroll-a.ttf",
     "13-bc02c-paleo-hebrew-isaiah-scroll-b.ttf": "14-bc02c-paleo-hebrew-isaiah-scroll-b.ttf",
+    "14-bc02c-paleo-hebrew-isaiah-scroll-a.ttf": "14-bc02c-dead-sea-scrolls-isaiah-a.ttf",
+    "14-bc02c-paleo-hebrew-isaiah-scroll-b.ttf": "14-bc02c-dead-sea-scrolls-isaiah-b.ttf",
 }
 
 METADATA = {
@@ -71,6 +75,9 @@ METADATA = {
         "WTN Proto Sinaitic Serabit el-Khadim 18th Century BCE",
         "Bold",
     ),
+    "08-bc10c-paleo-hebrew-noto-sans.ttf": ("WTN Paleo Hebrew Noto Sans", "Regular"),
+    "14-bc02c-dead-sea-scrolls-isaiah-a.ttf": ("WTN Dead Sea Scrolls Isaiah A", "Regular"),
+    "14-bc02c-dead-sea-scrolls-isaiah-b.ttf": ("WTN Dead Sea Scrolls Isaiah B", "Regular"),
     "04-bc15c-proto-sinaitic-generic-a.ttf": ("WTN Proto Sinaitic Generic A", "Regular"),
     "04-bc15c-proto-sinaitic-generic-b.ttf": ("WTN Proto Sinaitic Generic B", "Regular"),
 }
@@ -275,15 +282,15 @@ def update_metadata(font, filename: str) -> None:
     font.fullname = f"{family} {style}"
     font.weight = style
     font.copyright = "Prepared for We The Nameless from source fonts and inscriptional SVG reconstructions."
-    font.version = "1.2"
+    font.version = REPAIR_VERSION
     font.sfnt_names = tuple(
         row for row in font.sfnt_names if row[1] not in {"Family", "SubFamily", "Fullname", "UniqueID", "Version"}
     ) + (
         ("English (US)", "Family", family),
         ("English (US)", "SubFamily", style),
         ("English (US)", "Fullname", f"{family} {style}"),
-        ("English (US)", "UniqueID", f"{family} {style} 1.2"),
-        ("English (US)", "Version", "Version 1.2"),
+        ("English (US)", "UniqueID", f"{family} {style} {REPAIR_VERSION}"),
+        ("English (US)", "Version", f"Version {REPAIR_VERSION}"),
     )
 
 
@@ -308,6 +315,18 @@ def embolden(font, amount: int = 34) -> None:
         glyph.stroke("circular", amount)
         glyph.removeOverlap()
         glyph.simplify()
+
+
+def embolden_char(font, char: str, amount: int) -> None:
+    codepoint = ord(char)
+    if codepoint not in font:
+        return
+    glyph = font[codepoint]
+    if glyph.glyphname == ".notdef" or not glyph.isWorthOutputting() or glyph_area(glyph) < MIN_AREA:
+        return
+    glyph.stroke("circular", amount)
+    glyph.removeOverlap()
+    glyph.simplify()
 
 
 def repair_egyptian_tail(font) -> None:
@@ -381,6 +400,7 @@ def main() -> int:
     rename_files()
     filenames = [path.name for path in font_files()]
     fonts = {path.name: fontforge.open(str(path)) for path in font_files()}
+    original_versions = {name: getattr(font, "version", "") for name, font in fonts.items()}
     for font in fonts.values():
         font.encoding = "UnicodeFull"
     substitutions: list[tuple[str, str, str, str]] = []
@@ -409,6 +429,8 @@ def main() -> int:
     for (filename, char), (source_name, source_char) in GLYPH_REPLACEMENTS.items():
         if filename in fonts and source_name in fonts:
             copy_glyph(fonts[source_name], source_char, fonts[filename], char)
+            if filename in BOLDEN_FONTS and original_versions.get(filename) in {"1.2", REPAIR_VERSION}:
+                embolden_char(fonts[filename], char, 24)
             replacements.append((filename, char, source_name, source_char))
 
     for filename in filenames:
@@ -418,10 +440,10 @@ def main() -> int:
             if key == source_char:
                 continue
             copy_glyph(font, source_char, font, key)
-        if filename in BOLDEN_FONTS and getattr(font, "version", "") != "1.2":
+        if filename in BOLDEN_FONTS and original_versions.get(filename) not in {"1.2", REPAIR_VERSION}:
             embolden(font, 24)
-        if filename == EGYPTIAN_FONT and getattr(font, "version", "") != "1.2":
-            embolden(font, 10)
+        if filename == EGYPTIAN_FONT and original_versions.get(filename) != REPAIR_VERSION:
+            embolden(font, 6)
         update_metadata(font, filename)
         prune_to_key_layer(font, {ord(key) for key in key_to_hebrew} | {ord(" "), 0, 13})
 

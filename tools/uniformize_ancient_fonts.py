@@ -185,8 +185,8 @@ SPECS = [
     {"source": "paleo-hebrew-lachish-3.ttf", "output": "paleo-hebrew-lachish-3.ttf", "scale": 1.81, "mapping": variant(ASCII_UPPER)},
     {"source": "paleo-hebrew-lachish-4.ttf", "output": "paleo-hebrew-lachish-4.ttf", "scale": 1.81, "mapping": variant(ASCII_UPPER)},
     {"source": "paleo-hebrew-lachish-5.ttf", "output": "paleo-hebrew-lachish-5.ttf", "scale": 1.82, "mapping": variant(ASCII_UPPER)},
-    {"source": "paleo-hebrew-isaiah-scroll.ttf", "output": "paleo-hebrew-isaiah-scroll-upper.ttf", "scale": 1.81, "mapping": variant(ASCII_UPPER)},
-    {"source": "paleo-hebrew-isaiah-scroll.ttf", "output": "paleo-hebrew-isaiah-scroll-lower.ttf", "scale": 1.81, "mapping": variant(ASCII_LOWER)},
+    {"source": "dead-sea-scrolls-isaiah.ttf", "output": "dead-sea-scrolls-isaiah-upper.ttf", "scale": 1.81, "mapping": variant(ASCII_UPPER)},
+    {"source": "dead-sea-scrolls-isaiah.ttf", "output": "dead-sea-scrolls-isaiah-lower.ttf", "scale": 1.81, "mapping": variant(ASCII_LOWER)},
 ]
 
 

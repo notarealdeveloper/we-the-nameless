@@ -16,7 +16,7 @@ current_name	new_name	estimate	family	style	source	description
 08-bc10c-paleo-hebrew-gezer-a.ttf	08-bc10c-paleo-hebrew-gezer-a.ttf	bc10c	WTN Paleo Hebrew Gezer A	Regular	Gezer Calendar / Kris J. Udd	Gezer Calendar hand; usually placed around the tenth century BCE.
 08-bc10c-paleo-hebrew-gezer-b.ttf	08-bc10c-paleo-hebrew-gezer-b.ttf	bc10c	WTN Paleo Hebrew Gezer B	Regular	Gezer Calendar / Kris J. Udd	Gezer Calendar hand; usually placed around the tenth century BCE.
 08-bc10c-paleo-hebrew-tel-zayit.ttf	08-bc10c-paleo-hebrew-tel-zayit.ttf	bc10c	WTN Paleo Hebrew Tel Zayit	Regular	Tel Zayit / Kris J. Udd	Tel Zayit abecedary hand; tenth century BCE.
-08-bc10c-phoenician-noto-sans.ttf	08-bc10c-phoenician-noto-sans.ttf	bc10c	WTN Phoenician Noto Sans	Regular	Noto Sans Phoenician	Early Phoenician/Paleo-Hebrew comparison row from the Unicode Phoenician block.
+08-bc10c-paleo-hebrew-noto-sans.ttf	08-bc10c-paleo-hebrew-noto-sans.ttf	bc10c	WTN Paleo Hebrew Noto Sans	Regular	Noto Sans Phoenician	Early Paleo-Hebrew/Phoenician comparison row from the Unicode Phoenician block.
 09-bc09c-paleo-hebrew-mono.ttf	09-bc09c-paleo-hebrew-mono.ttf	bc09c	WTN Paleo Hebrew Mono	Regular	Paleo Hebrew Mono / Cezary M. Kruk	Modern monospaced reconstruction of Paleo-Hebrew, placed with monarchic Paleo-Hebrew for sorting.
 09-bc09c-paleo-hebrew-yoram-gnat.ttf	09-bc09c-paleo-hebrew-yoram-gnat.ttf	bc09c	WTN Paleo Hebrew Yoram Gnat	Regular	Paleo Hebrew / Yoram Gnat	Modern Paleo-Hebrew reconstruction by Yoram Gnat.
 09-bc09c-paleo-hebrew-robo.ttf	09-bc09c-paleo-hebrew-robo.ttf	bc09c	WTN Paleo Hebrew Robo	Regular	Paleo Hebrew Robo	Modern reconstruction of Paleo-Hebrew, placed with monarchic Paleo-Hebrew for sorting.
@@ -36,5 +36,5 @@ current_name	new_name	estimate	family	style	source	description
 12-bc06c-paleo-hebrew-lachish-4.ttf	12-bc06c-paleo-hebrew-lachish-4.ttf	bc06c	WTN Paleo Hebrew Lachish 4	Regular	Lachish Letter 4 / Kris J. Udd	Lachish ostracon 4 hand; early sixth century BCE.
 12-bc06c-paleo-hebrew-lachish-5.ttf	12-bc06c-paleo-hebrew-lachish-5.ttf	bc06c	WTN Paleo Hebrew Lachish 5	Regular	Lachish Letter 5 / Kris J. Udd	Lachish ostracon 5 hand; early sixth century BCE.
 13-bc05c-imperial-aramaic-noto-sans.ttf	13-bc05c-imperial-aramaic-noto-sans.ttf	bc05c	WTN Imperial Aramaic Noto Sans	Regular	Noto Sans Imperial Aramaic	Imperial Aramaic administrative script; Persian-period fifth century BCE.
-14-bc02c-paleo-hebrew-isaiah-scroll-a.ttf	14-bc02c-paleo-hebrew-isaiah-scroll-a.ttf	bc02c	WTN Paleo Hebrew Isaiah Scroll A	Regular	Isaiah Scroll / Kris J. Udd	Dead Sea Scrolls Paleo-Hebrew style; estimated to the second century BCE.
-14-bc02c-paleo-hebrew-isaiah-scroll-b.ttf	14-bc02c-paleo-hebrew-isaiah-scroll-b.ttf	bc02c	WTN Paleo Hebrew Isaiah Scroll B	Regular	Isaiah Scroll / Kris J. Udd	Dead Sea Scrolls Paleo-Hebrew style; estimated to the second century BCE.
+14-bc02c-dead-sea-scrolls-isaiah-a.ttf	14-bc02c-dead-sea-scrolls-isaiah-a.ttf	bc02c	WTN Dead Sea Scrolls Isaiah A	Regular	Isaiah Scroll / Kris J. Udd	Dead Sea Scrolls Isaiah hand; estimated to the second century BCE.
+14-bc02c-dead-sea-scrolls-isaiah-b.ttf	14-bc02c-dead-sea-scrolls-isaiah-b.ttf	bc02c	WTN Dead Sea Scrolls Isaiah B	Regular	Isaiah Scroll / Kris J. Udd	Dead Sea Scrolls Isaiah hand; estimated to the second century BCE.
