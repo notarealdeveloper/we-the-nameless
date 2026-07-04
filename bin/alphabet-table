@@ -1,0 +1,147 @@
+#!/usr/bin/env python3
+"""Build the WTN ancient-font alphabet comparison PDF."""
+
+from __future__ import annotations
+
+import argparse
+import importlib.util
+import os
+import sys
+from importlib.machinery import SourceFileLoader
+from pathlib import Path
+
+from PIL import Image, ImageDraw, ImageFont
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_FONT_DIR = ROOT / "fonts-master"
+DEFAULT_OUTPUT = ROOT / "fonts-master-alphabet-table.pdf"
+FONT_EXCLUDE = ("ugaritic", "serabit")
+HEBREW_ORDER = ["a", "b", "g", "d", "e", "w", "z", "h", "T", "y", "k", "l", "m", "n", "S", "o", "p", "c", "q", "r", "s", "t"]
+
+
+def load_alphabet():
+    path = ROOT / "bin" / "alphabet"
+    spec = importlib.util.spec_from_loader(
+        "wtn_alphabet",
+        SourceFileLoader("wtn_alphabet", str(path)),
+    )
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"could not load {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def tex_escape(value: str) -> str:
+    return value
+
+
+def font_files(font_dir: Path) -> list[str]:
+    return [
+        path.name
+        for path in sorted(font_dir.iterdir())
+        if path.suffix.lower() in {".ttf", ".otf"}
+        and not any(term in path.name.lower() for term in FONT_EXCLUDE)
+    ]
+
+
+def draw_pdf(font_dir: Path, fonts: list[str], output: Path) -> None:
+    alphabet = load_alphabet()
+    key_to_hebrew = alphabet.key_to_hebrew()
+
+    scale = 2
+    page_width = 2400
+    page_height = 1400
+    margin = 34
+    title_height = 72
+    header_height = 48
+    font_col_width = 460
+    cell_width = (page_width - (2 * margin) - font_col_width) / len(HEBREW_ORDER)
+    row_height = (page_height - (2 * margin) - title_height - header_height) / len(fonts)
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    image = Image.new("RGB", (page_width * scale, page_height * scale), "white")
+    draw = ImageDraw.Draw(image)
+    body_font = ImageFont.load_default(size=11 * scale)
+    body_bold = ImageFont.load_default(size=13 * scale)
+    small_font = ImageFont.load_default(size=10 * scale)
+    header_hebrew_font = body_bold
+    header_hebrew_path = ROOT / "fonts" / "hebrew-square.ttf"
+    if header_hebrew_path.exists():
+        header_hebrew_font = ImageFont.truetype(str(header_hebrew_path), 17 * scale)
+
+    def xy(x: float, y: float) -> tuple[int, int]:
+        return int(round(x * scale)), int(round(y * scale))
+
+    def line(x1: float, y1: float, x2: float, y2: float, fill: str = "#b8b0a6", width: int = 1) -> None:
+        draw.line((*xy(x1, y1), *xy(x2, y2)), fill=fill, width=width * scale)
+
+    def text_left(x: float, y: float, text: str, font, fill: str = "black") -> None:
+        draw.text(xy(x, y), text, font=font, fill=fill)
+
+    def text_center(x: float, y: float, text: str, font, fill: str = "black") -> None:
+        bbox = draw.textbbox((0, 0), text, font=font)
+        width = bbox[2] - bbox[0]
+        draw.text((int(round(x * scale - width / 2)), int(round(y * scale))), text, font=font, fill=fill)
+
+    text_left(margin, margin, "WTN Ancient Alphabet Font Comparison", body_bold)
+    text_left(
+        margin,
+        margin + 30,
+        f"Directory: {font_dir.name}. Ugaritic and Serabit el-Khadim rows intentionally omitted.",
+        body_font,
+    )
+
+    top = margin + title_height
+    left = margin
+    line(left, top, page_width - margin, top)
+
+    text_left(left + 4, top + 16, "Font", body_bold)
+    for index, key in enumerate(HEBREW_ORDER):
+        x = left + font_col_width + (index * cell_width)
+        text_center(x + (cell_width / 2), top + 8, key_to_hebrew[key], header_hebrew_font)
+        text_center(x + (cell_width / 2), top + 29, key, small_font)
+        line(x, top, x, page_height - margin, "#ded8cf")
+    line(page_width - margin, top, page_width - margin, page_height - margin, "#ded8cf")
+    line(left, top + header_height, page_width - margin, top + header_height)
+
+    for row_index, filename in enumerate(fonts):
+        font_path = font_dir / filename
+        row_font = ImageFont.truetype(str(font_path), max(16, int(row_height * 0.70 * scale)))
+        y_top = top + header_height + (row_index * row_height)
+        y_mid = y_top + (row_height * 0.18)
+        if row_index % 2:
+            draw.rectangle((*xy(left, y_top), *xy(page_width - margin, y_top + row_height)), fill="#f7f4ef")
+        text_left(left + 4, y_mid + 6, filename, small_font)
+        for index, key in enumerate(HEBREW_ORDER):
+            x = left + font_col_width + (index * cell_width)
+            text_center(x + (cell_width / 2), y_mid, key, row_font)
+        line(left, y_top + row_height, page_width - margin, y_top + row_height, "#ded8cf")
+
+    image.save(output, "PDF", resolution=144.0)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--font-dir", type=Path, default=None)
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    args = parser.parse_args()
+
+    font_dir = args.font_dir or DEFAULT_FONT_DIR
+    if not font_dir.is_dir():
+        print(f"missing font directory: {font_dir}", file=sys.stderr)
+        return 1
+
+    fonts = font_files(font_dir)
+    if not fonts:
+        print(f"no fonts found in {font_dir}", file=sys.stderr)
+        return 1
+
+    draw_pdf(font_dir.resolve(), fonts, args.output)
+    print(args.output)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

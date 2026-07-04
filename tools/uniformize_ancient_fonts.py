@@ -40,8 +40,8 @@ FINALS = {
 ASCII_UPPER = "ABGDHWZXJYKLMNS]PCQRVT"
 ASCII_LOWER = "abgdhwzxjyklmns]pcqrvt"
 
-PROTO_A_LOWER = ["a", "b", "g", "s", "h", "w", "Z", "x", "j", "y", "k", "l", "m", "n", None, "]", "p", "c", "q", "r", "f", "t"]
-PROTO_A_UPPER = ["A", "B", "G", "S", "H", "W", "Z", "X", "j", "Y", "K", "L", "M", "N", None, "]", "P", "C", "Q", "R", "V", "T"]
+PROTO_A_LOWER = ["a", "b", "g", "d", "h", "w", "Z", "x", "j", "y", "k", "l", "m", "n", "s", "]", "p", "c", "q", "r", "f", "t"]
+PROTO_A_UPPER = ["A", "B", "G", "D", "H", "W", "Z", "X", "j", "Y", "K", "L", "M", "N", "S", "]", "P", "C", "Q", "R", "V", "T"]
 PROTO_B_LOWER = ["a", "b", "g", "d", "H", "W", "z", "x", "j", "y", "k", "l", "M", "n", "s", "]", "p", "c", "q", "r", "v", "t"]
 PROTO_B_UPPER = ["A", "B", "G", "D", "h", "w", "Z", "X", "J", "Y", "K", "L", "M", "N", "S", "]", "P", "C", "Q", "R", "V", "T"]
 PROTO_C_UPPER = ["A", "B", "G", "D", "H", "W", "Z", "X", "J", "Y", "K", "L", None, "N", "S", "]", "P", "C", "Q", "R", "V", "T"]
@@ -143,7 +143,7 @@ def build_font(spec: dict[str, object]) -> list[str]:
     dst.os2_typodescent = -200
     dst.os2_winascent = 900
     dst.os2_windescent = 300
-    dst.generate(output_path, flags=("opentype", "dummy-dsig"))
+    dst.generate(output_path, flags=("dummy-dsig",))
     dst.close()
     src.close()
     return missing

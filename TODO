@@ -111,7 +111,6 @@ Invert the numerical prefixes on the fonts-ascii/* filenames so they sort from o
 
 
 # PROMPT 6
-# (CURRENT PROMPT)
 
 1. Give the fonts in fonts-ascii/ more useful Family names for fontconfig.
 They don't have to match the filenames exactly, they should be useful.
@@ -129,5 +128,46 @@ shapes if necessary as part of your chronology and naming system.
 3. Finally, regenerate the fonts-ascii visualization page, but this time
 make it into a table with a column for each letter, in hebrew alphabet order.
 
+
+# PROMPT 7
+# (CURRENT PROMPT)
+
+Compare fonts-ascii to the fonts in fonts/ and fonts2/, and use the
+information you find there and in master.tex to fix up the fonts in
+fonts-ascii, specifically as regards:
+
+1. incorrectly mapped dalet vs samekh in certain proto-sinaitic fonts.
+2. egyptian-noto-sans ascii becomes incorrectly mapped starting at tsade
+    and then continues wrong for q,r,s,t.
+3. ugaritic and serabit el khadem don't need to be in the font comparison table pdf
+4. we need to decide on a transliteration once and for all. I want o to map to ayin, since
+   it's historically the ancestor of the letter o. I think he can be e and heth can be h,
+   since that's the ancestry there. But I also want certain letters to be accessible through
+   their non-ascii descendant letters. Russian с should map to samekh, Greek σ should be samekh too.
+   Russian п and Greek π should map to פ in every font of fonts-ascii. Similarly, Θ and θ should
+   map to teth, given the obvious similarity ancestry wise. All hebrew letters should map to
+   the correct glyphs in each font. All ascii letters should map to the ancestor of that letter
+   as described above (e.g., o is ayin, a is aleph, e is he, h is heth, etc.) Similarly,
+   Greek Η and η should map to Heth, since Heth is their ancestor. Russian И comes from Eta
+   and should therefore map to Heth. Russian Ш and ш should map to the glyph for Shin.
+   š and ʃ should map to shin too. Every hebrew letter should be accessible via at least
+   one ascii character, but it may be accessible from many more as well. The master key
+   to represent each hebrew letter is its ascii letter.
+
+First carefully consider the transliteration, make a big master dict for it in bin/
+that will define a map from (a) a configurable subset of unicode, the keys, to
+(b) the smaller number of letters represented by a given font, in this case, each
+font is just representing the hebrew alphabet, but in various ancient versions.
+Once the value space is set, the key space can be arbitrarily large and multilingual.
+So define the mappings above first, in a file called (say) bin/alphabet, and then
+use that script as your guide to fix up all the fonts in fonts-ascii/. Remember,
+you may need to use information in master.tex and in fonts/ and fonts2/ to help you too.
+Finally regenerate the full pdf table of the alphabet, and move the script you used to
+do so into bin/, and name it something simple and memorable.
+
+Go do that now, and don't stop until you're confident that you've mapped
+all the glyphs in fonts-ascii correctly. Then delete fonts2, and rename
+fonts-ascii to fonts-master, and fix up any scripts that used to use the
+term fonts-ascii.
 EOF
 
