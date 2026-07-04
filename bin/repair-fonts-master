@@ -1,0 +1,240 @@
+#!/usr/bin/env python3
+"""Repair and normalize the WTN ancient alphabet master fonts."""
+
+from __future__ import annotations
+
+import importlib.util
+import shutil
+from importlib.machinery import SourceFileLoader
+from pathlib import Path
+
+import fontforge
+
+
+ROOT = Path(__file__).resolve().parents[1]
+FONT_DIR = ROOT / "fonts-master"
+README = FONT_DIR / "README.md"
+MASTER_KEYS = ["a", "b", "g", "d", "e", "w", "z", "h", "T", "y", "k", "l", "m", "n", "S", "o", "p", "c", "q", "r", "s", "t"]
+MIN_AREA = 10_000
+
+RENAMES = {
+    "03-bc15c-proto-sinaitic-variant-a.ttf": "03-bc15c-proto-sinaitic-generic-a.ttf",
+    "03-bc15c-proto-sinaitic-variant-b.ttf": "03-bc15c-proto-sinaitic-generic-b.ttf",
+}
+
+METADATA = {
+    "03-bc15c-proto-sinaitic-generic-a.ttf": ("WTN Proto Sinaitic Generic A", "Regular"),
+    "03-bc15c-proto-sinaitic-generic-b.ttf": ("WTN Proto Sinaitic Generic B", "Regular"),
+    "03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf": (
+        "WTN Proto Sinaitic Serabit el-Khadim Inscription",
+        "Bold",
+    ),
+    "03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf": (
+        "WTN Proto Sinaitic Wadi el-Hol Inscription",
+        "Bold",
+    ),
+}
+
+SUBSTITUTION_OVERRIDES = {
+    ("03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "e"): (
+        "03-bc15c-proto-sinaitic-15th-century.ttf",
+        "e",
+    ),
+    ("03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "S"): (
+        "03-bc15c-proto-sinaitic-15th-century.ttf",
+        "S",
+    ),
+    ("03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "s"): (
+        "03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf",
+        "s",
+    ),
+    ("03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf", "d"): (
+        "03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf",
+        "d",
+    ),
+    ("03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf", "k"): (
+        "03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf",
+        "k",
+    ),
+    ("03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf", "l"): (
+        "03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf",
+        "l",
+    ),
+    ("03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf", "S"): (
+        "03-bc15c-proto-sinaitic-generic-a.ttf",
+        "S",
+    ),
+    ("03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf", "c"): (
+        "03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf",
+        "c",
+    ),
+}
+
+BOLDEN_FONTS = {
+    "03-bc15c-proto-sinaitic-serabit-el-khadim-inscription.ttf",
+    "03-bc15c-proto-sinaitic-wadi-el-hol-inscription.ttf",
+}
+
+
+def load_alphabet():
+    path = ROOT / "bin" / "alphabet"
+    spec = importlib.util.spec_from_loader("wtn_alphabet", SourceFileLoader("wtn_alphabet", str(path)))
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"could not load {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def font_files() -> list[Path]:
+    return sorted(FONT_DIR.glob("*.ttf"))
+
+
+def glyph_area(glyph) -> float:
+    bbox = glyph.boundingBox()
+    return max(0.0, bbox[2] - bbox[0]) * max(0.0, bbox[3] - bbox[1])
+
+
+def has_real_glyph(font, char: str) -> bool:
+    codepoint = ord(char)
+    if codepoint not in font:
+        return False
+    glyph = font[codepoint]
+    return glyph.glyphname != ".notdef" and glyph.isWorthOutputting() and glyph_area(glyph) >= MIN_AREA
+
+
+def copy_glyph(source, source_char: str, target, target_char: str) -> None:
+    target.createChar(ord(target_char), target_char)
+    source.selection.none()
+    target.selection.none()
+    source.selection.select(ord(source_char))
+    source.copy()
+    target.selection.select(ord(target_char))
+    target.paste()
+    glyph = target[ord(target_char)]
+    glyph.glyphname = target_char
+    glyph.unicode = ord(target_char)
+
+
+def rename_files() -> None:
+    for old, new in RENAMES.items():
+        old_path = FONT_DIR / old
+        new_path = FONT_DIR / new
+        if old_path.exists() and not new_path.exists():
+            old_path.rename(new_path)
+
+
+def update_metadata(font, filename: str) -> None:
+    family, style = METADATA.get(filename, (font.familyname, font.weight or "Regular"))
+    font.familyname = family
+    font.fontname = family.replace(" ", "-")
+    font.fullname = f"{family} {style}"
+    font.weight = style
+    font.copyright = "Prepared for We The Nameless from source fonts and inscriptional SVG reconstructions."
+    font.version = "1.1"
+    font.sfnt_names = tuple(
+        row for row in font.sfnt_names if row[1] not in {"Family", "SubFamily", "Fullname", "UniqueID", "Version"}
+    ) + (
+        ("English (US)", "Family", family),
+        ("English (US)", "SubFamily", style),
+        ("English (US)", "Fullname", f"{family} {style}"),
+        ("English (US)", "UniqueID", f"{family} {style} 1.1"),
+        ("English (US)", "Version", "Version 1.1"),
+    )
+
+
+def nearest_valid_source(fonts: dict[str, object], filenames: list[str], filename: str, char: str) -> tuple[str, str]:
+    index = filenames.index(filename)
+    candidates = []
+    for source_index, source_name in enumerate(filenames):
+        if source_name == filename:
+            continue
+        if has_real_glyph(fonts[source_name], char):
+            candidates.append((abs(source_index - index), source_index, source_name))
+    if not candidates:
+        raise RuntimeError(f"no valid donor found for {filename}:{char}")
+    _, _, source_name = min(candidates)
+    return source_name, char
+
+
+def embolden(font) -> None:
+    for glyph in font.glyphs():
+        if glyph.unicode < 0 or glyph.glyphname == ".notdef" or not glyph.isWorthOutputting() or glyph_area(glyph) < MIN_AREA:
+            continue
+        glyph.stroke("circular", 34)
+        glyph.removeOverlap()
+        glyph.simplify()
+
+
+def write_readme(substitutions: list[tuple[str, str, str, str]]) -> None:
+    lines = [
+        "# WTN Master Font Repairs",
+        "",
+        "These fonts encode one semantic value space: the Hebrew alphabet rendered in several historical hands.",
+        "The canonical key map is `../bin/alphabet`; every Hebrew, Latin, Greek, and Cyrillic alias in that map is copied from the corresponding repaired master glyph inside each font.",
+        "",
+        "The following master-letter glyphs were absent, encoded as `.notdef`, or represented by a 1x1 placeholder and were substituted from nearby historical fonts.",
+        "",
+        "| Font | Letter key | Hebrew value | Donor font | Donor key |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    alphabet = load_alphabet()
+    key_to_hebrew = alphabet.key_to_hebrew()
+    for filename, char, source, source_char in substitutions:
+        lines.append(f"| `{filename}` | `{char}` | {key_to_hebrew[char]} | `{source}` | `{source_char}` |")
+    lines.extend(
+        [
+            "",
+            "The Serabit el-Khadim and Wadi el-Hol inscription fonts were also emboldened after substitution so their row weight matches the other fifteenth-century Proto-Sinaitic comparison fonts more closely.",
+            "",
+        ]
+    )
+    README.write_text("\n".join(lines), encoding="utf-8")
+
+
+def main() -> int:
+    alphabet = load_alphabet()
+    key_to_hebrew = alphabet.key_to_hebrew()
+    master_for_hebrew = {alphabet.HEBREW_BY_NAME[name]: key for key, name in alphabet.MASTER_ASCII.items()}
+
+    rename_files()
+    filenames = [path.name for path in font_files()]
+    fonts = {path.name: fontforge.open(str(path)) for path in font_files()}
+    for font in fonts.values():
+        font.encoding = "UnicodeFull"
+    substitutions: list[tuple[str, str, str, str]] = []
+
+    for filename in filenames:
+        font = fonts[filename]
+        for char in MASTER_KEYS:
+            if has_real_glyph(font, char):
+                continue
+            source_name, source_char = SUBSTITUTION_OVERRIDES.get(
+                (filename, char),
+                nearest_valid_source(fonts, filenames, filename, char),
+            )
+            copy_glyph(fonts[source_name], source_char, font, char)
+            substitutions.append((filename, char, source_name, source_char))
+
+    for filename in filenames:
+        font = fonts[filename]
+        for key, hebrew in key_to_hebrew.items():
+            source_char = master_for_hebrew[hebrew]
+            if key == source_char:
+                continue
+            copy_glyph(font, source_char, font, key)
+        if filename in BOLDEN_FONTS:
+            embolden(font)
+        update_metadata(font, filename)
+
+    for filename, font in fonts.items():
+        font.generate(str(FONT_DIR / filename))
+        font.close()
+
+    write_readme(substitutions)
+    print(f"repaired {len(filenames)} fonts; {len(substitutions)} master substitutions")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

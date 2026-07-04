@@ -170,7 +170,6 @@ fonts-ascii to fonts-master, and fix up any scripts that used to use the
 term fonts-ascii.
 
 # PROMPT 8
-# (CURRENT PROMPT)
 
 1. Remove the terms 'ascii' and upper/lower from the font filenames in fonts-master, and from their fontconfig family names if necessary.
 2. Change the fonts in fonts-ascii/ currently named wadi-el-hol and serabit to just proto sinaitic 15th century or something like that.
@@ -180,5 +179,14 @@ term fonts-ascii.
 
 Do that now, and don't stop til you're done.
 
+# PROMPT 9
+# (CURRENT PROMPT)
+
+1. Fix up the tofu problems in the serabit and wadi-el-hol proto-sinaitic fonts by examining the glyphs and how they rendered in the pdf. 
+2. Fix up the serabit and wadi-el-hol fonts to make their weight more bold so that it matches the other proto-sinatic fonts bold weight.
+3. Remove the word variant from the font names.
+4. Substitute glyphs from nearby proto sinaitic fonts whenever wadi or serabit are missing a glyph. Try to use different glyphs when both are missing one.
+5. Whenever ANY of the fonts in fonts-master are missing a glyph, substitute a nearby glyph, and write a README in the fonts-master directory saying which ones are substituted.
+6. Make the egyptian row at the top bold.
 EOF
 
