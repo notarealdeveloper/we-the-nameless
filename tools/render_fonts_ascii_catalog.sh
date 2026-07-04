@@ -35,34 +35,26 @@ rows=()
 for font in "$font_dir"/*.{ttf,otf}; do
   [[ -e "$font" ]] || continue
   base="$(basename "$font")"
-  family="${base%.*}"
-  matched="$(fc-match --format '%{file}' ":family=$family")"
-  if [[ "$(realpath "$matched")" != "$(realpath "$font")" ]]; then
-    echo "fontconfig matched $matched for $family" >&2
-    exit 1
-  fi
-
   i=$((i + 1))
-  glyph_png="$(printf '%s/glyph-%03d.png' "$work" "$i")"
   label_png="$(printf '%s/label-%03d.png' "$work" "$i")"
+  glyph_png="$(printf '%s/glyph-%03d.png' "$work" "$i")"
   row_png="$(printf '%s/row-%03d.png' "$work" "$i")"
-
-  pango-view \
-    --no-display \
-    --output="$glyph_png" \
-    --font="$family 42" \
-    --text="$sample" \
-    --margin=14 \
-    --foreground=black \
-    --background=white >/dev/null
 
   magick -size 900x92 xc:white \
     -gravity west \
     -font "$label_font" \
     -pointsize 24 \
     -fill '#202020' \
-    -annotate +18+0 "$family" \
+    -annotate +18+0 "$base" \
     "$label_png"
+
+  magick -size 1300x92 xc:white \
+    -gravity west \
+    -font "$font" \
+    -pointsize 42 \
+    -fill black \
+    -annotate +18+0 "$sample" \
+    "$glyph_png"
 
   magick "$label_png" "$glyph_png" +append -background white -gravity center -extent 2200x110 "$row_png"
   rows+=("$row_png")
@@ -86,5 +78,12 @@ magick -size 2200x130 xc:white \
   -annotate +18+72 "Sample: $sample" \
   "$header"
 
-magick "$header" "${rows[@]}" -append "$out"
+if [[ "${out,,}" == *.pdf ]]; then
+  catalog_png="$work/catalog.png"
+  magick "$header" "${rows[@]}" -append "$catalog_png"
+  page_size="$(identify -format '%wx%h' "$catalog_png")"
+  magick "$catalog_png" +repage -density 72 -units PixelsPerInch -page "$page_size" "$out"
+else
+  magick "$header" "${rows[@]}" -append "$out"
+fi
 echo "$out"
