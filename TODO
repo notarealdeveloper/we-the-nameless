@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+
+# PREVIOUS PROMPT
+
+Ok so, I'm using fontforge with a bunch of ancient fonts created by different people.
+They're all in fonts/.
+
+Some of these fonts put Paleo Hebrew in the Hebrew block.
+Others put it in the phoenician block.
+Others encode it with ascii latin letters.
+You can tell which does which by reading master.tex.
+
+I want you to help me make these fonts more uniform in how they work.
+
+Create a new directory fonts2/.
+
+Then go through each of the semitic or egyptian fonts in fonts/
+and help me uniformize them into a new font in fonts2/
+
+The new fonts should have:
+
+1. Metadata and font name matching the current filenames.
+2. Sizes appropriately scaled relative to one another.
+   You can find the rough relative scales in master.tex
+   where we build the alphabet history page.
+3. Sizes appropriately scaled relative to Noto Sans.
+4. All fonts in fonts2 should be empty, with zero glyphs
+   in them except for the Hebrew unicode block.
+   The letter aleph א should be rendered via each font
+   in fonts2 as either proto-sinaitic aleph, or paleo-hebrew
+   aleph, or whatever. You'll need to figure out where each
+   font stores its interesting glyphs in order to accomplish
+   this. Remember: some of them store the interesting glyphs
+   in the ascii letter range!
+5. In cases where a font provides multiple representations
+   of a given glyph, e.g. some proto-sinaitic fonts for
+   which 'a' and 'A' give different shapes of ancient aleph,
+   I want those fonts split out into TWO different fonts
+   in the fonts2 directory.
+
+Do that now, and then write me a bash script that uses pango-view
+to test all the fonts in fonts2, and verify that they do indeed
+render the standard Hebrew unicode range into the glyphs in question.
+
+# CURRENT PROMPT
+
+Take all the fonts in fonts2, and turn each one into an ascii representation
+of the same font, using the transliteration below:
+
+a    א
+b,v  ב
+g    ג
+d    ד
+e,h  ה
+w    ו
+z    ז
+x,H  ח
+T,0  ט
+i,j,y י
+k  כ
+K  ך
+l  ל
+m  מ
+M  ם
+n  נ
+N  ן
+S  ס
+o,A ע
+p  פ
+P  ף
+c  צ
+C  ץ
+q  ק
+r  ר
+s  ש
+t  ת
+
+whenever a given upper or lowercase ascii letter is not used in the transliteration,
+give it a meaningful value that reflects the choices made above.
+
+By doing this, create an entire fonts-ascii directory with each of the fonts in fonts2,
+but as an ascii representation.
+EOF
