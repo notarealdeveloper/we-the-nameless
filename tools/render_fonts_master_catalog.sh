@@ -31,13 +31,13 @@ fc-cache -f "$font_dir" >/dev/null
 
 labels=(aleph bet gimel dalet he waw zayin het tet yod kaf lamed mem nun samekh ayin pe tsade qof resh shin taw)
 hebrew=(א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת)
-ascii=(a b g d h w z H T y k l m n S A p c q r s t)
+keys=(a b g d h w z H T y k l m n S A p c q r s t)
 
 label_w=720
 cell_w=88
 row_h=92
 header_h=156
-table_w=$((label_w + (${#ascii[@]} * cell_w)))
+table_w=$((label_w + (${#keys[@]} * cell_w)))
 
 rows=()
 i=0
@@ -55,9 +55,9 @@ for font in "$font_dir"/*.{ttf,otf}; do
     -annotate +16+0 "$base" \
     "$row_png"
 
-  for idx in "${!ascii[@]}"; do
+  for idx in "${!keys[@]}"; do
     x=$((label_w + (idx * cell_w)))
-    char="${ascii[$idx]}"
+    char="${keys[$idx]}"
     magick "$row_png" \
       -fill '#ECE7DF' -draw "rectangle $x,0 $((x + cell_w - 1)),$row_h" \
       -stroke '#D8D1C8' -strokewidth 1 -draw "line $x,0 $x,$row_h" \
@@ -84,14 +84,14 @@ magick -size "${table_w}x${header_h}" xc:white \
   -pointsize 32 \
   -fill '#111111' \
   -gravity northwest \
-  -annotate +16+16 "ASCII ancient-script font catalog" \
+  -annotate +16+16 "Ancient-script font catalog" \
   -font "$label_font" \
   -pointsize 20 \
   -fill '#333333' \
-  -annotate +16+62 "Columns follow Hebrew alphabet order; cells render the ASCII key mapped to that Hebrew letter." \
+  -annotate +16+62 "Columns follow Hebrew alphabet order; cells render the master key mapped to that Hebrew letter." \
   "$header"
 
-for idx in "${!ascii[@]}"; do
+for idx in "${!keys[@]}"; do
   x=$((label_w + (idx * cell_w)))
   magick "$header" \
     -fill '#F6F3EE' -draw "rectangle $x,96 $((x + cell_w - 1)),$header_h" \
@@ -105,7 +105,7 @@ for idx in "${!ascii[@]}"; do
     -font "$label_font" \
     -pointsize 12 \
     -fill '#444444' \
-    -annotate "+$((x + 8))+128" "${labels[$idx]} / ${ascii[$idx]}" \
+    -annotate "+$((x + 8))+128" "${labels[$idx]} / ${keys[$idx]}" \
     "$header"
 done
 magick "$header" -stroke '#D8D1C8' -strokewidth 1 -draw "line 0,$((header_h - 1)) $table_w,$((header_h - 1))" "$header"

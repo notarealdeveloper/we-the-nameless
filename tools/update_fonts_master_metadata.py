@@ -54,7 +54,7 @@ def sfnt_names(font, row: dict[str, str]) -> tuple[tuple[str, str, str], ...]:
     style = row["style"] or "Regular"
     fullname = family if style == "Regular" else f"{family} {style}"
     postscript = ps_name(fullname)
-    unique_id = f"WTN normalized ASCII ancient-script font: {fullname}"
+    unique_id = f"WTN normalized ancient-script font: {fullname}"
     source = row["source"]
     description = row["description"]
     if source:

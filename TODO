@@ -130,7 +130,6 @@ make it into a table with a column for each letter, in hebrew alphabet order.
 
 
 # PROMPT 7
-# (CURRENT PROMPT)
 
 Compare fonts-ascii to the fonts in fonts/ and fonts2/, and use the
 information you find there and in master.tex to fix up the fonts in
@@ -169,5 +168,17 @@ Go do that now, and don't stop until you're confident that you've mapped
 all the glyphs in fonts-ascii correctly. Then delete fonts2, and rename
 fonts-ascii to fonts-master, and fix up any scripts that used to use the
 term fonts-ascii.
+
+# PROMPT 8
+# (CURRENT PROMPT)
+
+1. Remove the terms 'ascii' and upper/lower from the font filenames in fonts-master, and from their fontconfig family names if necessary.
+2. Change the fonts in fonts-ascii/ currently named wadi-el-hol and serabit to just proto sinaitic 15th century or something like that.
+3. Rename 03-bc15c-proto-sinaitic-serabit-el-khadim-ascii.ttf and 03-bc15c-proto-sinaitic-serabit-el-khadim-bold-ascii.ttf so that the one that's currently bold is just the default name, and the other one is that with -light in the name somewhere.
+4. Include the non-light version of the above in the chart, but not the light one. Still don't include ugaritic.
+5. After you've done all that, use the svgs in the fonts-proto-sinaitic-{serabit,wadi-el-hol,generic} directories to make two new fonts, resembling the wadi el hol inscriptions and the serabit el khadem inscriptions. Substitute existing 15th c glyphs whenever you need to, but try to keep the ones in those directories so we have letters that resemble the inscriptions in those fonts. Make sure the glyphs are all sensibly sized like the other fonts.
+
+Do that now, and don't stop til you're done.
+
 EOF
 

@@ -151,8 +151,7 @@ def normalize_size_and_spacing(font) -> None:
 def build_font(source_path: str) -> list[str]:
     source_filename = os.path.basename(source_path)
     source_family = os.path.splitext(source_filename)[0]
-    ascii_family = f"{source_family}-ascii"
-    output_path = os.path.join(TARGET_DIR, f"{ascii_family}.ttf")
+    output_path = os.path.join(TARGET_DIR, f"{source_family}.ttf")
 
     src = fontforge.open(source_path)
     dst = fontforge.font()
@@ -160,19 +159,19 @@ def build_font(source_path: str) -> list[str]:
     dst.em = src.em
     dst.ascent = src.ascent
     dst.descent = src.descent
-    dst.familyname = ascii_family
-    dst.fullname = ascii_family
-    dst.fontname = ps_name(ascii_family)
+    dst.familyname = source_family
+    dst.fullname = source_family
+    dst.fontname = ps_name(source_family)
     dst.weight = src.weight or "Regular"
     dst.copyright = src.copyright
     dst.version = src.version or "1.000"
-    dst.appendSFNTName("English (US)", "Family", ascii_family)
-    dst.appendSFNTName("English (US)", "Fullname", ascii_family)
-    dst.appendSFNTName("English (US)", "PostScriptName", ps_name(ascii_family))
+    dst.appendSFNTName("English (US)", "Family", source_family)
+    dst.appendSFNTName("English (US)", "Fullname", source_family)
+    dst.appendSFNTName("English (US)", "PostScriptName", ps_name(source_family))
     dst.appendSFNTName("English (US)", "SubFamily", "Regular")
-    dst.appendSFNTName("English (US)", "Preferred Family", ascii_family)
+    dst.appendSFNTName("English (US)", "Preferred Family", source_family)
     dst.appendSFNTName("English (US)", "Preferred Styles", "Regular")
-    dst.appendSFNTName("English (US)", "Compatible Full", ascii_family)
+    dst.appendSFNTName("English (US)", "Compatible Full", source_family)
 
     missing = []
     add_space(dst)
@@ -207,7 +206,7 @@ def main() -> int:
     for name in sorted(os.listdir(SOURCE_DIR)):
         if not name.endswith((".ttf", ".otf")):
             continue
-        print(f"building {os.path.splitext(name)[0]}-ascii.ttf")
+        print(f"building {os.path.splitext(name)[0]}.ttf")
         missing = build_font(os.path.join(SOURCE_DIR, name))
         if missing:
             blanked[name] = missing

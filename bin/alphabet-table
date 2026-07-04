@@ -16,7 +16,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_FONT_DIR = ROOT / "fonts-master"
 DEFAULT_OUTPUT = ROOT / "fonts-master-alphabet-table.pdf"
-FONT_EXCLUDE = ("ugaritic", "serabit")
+FONT_EXCLUDE = ("ugaritic", "-light")
 HEBREW_ORDER = ["a", "b", "g", "d", "e", "w", "z", "h", "T", "y", "k", "l", "m", "n", "S", "o", "p", "c", "q", "r", "s", "t"]
 
 
@@ -89,7 +89,7 @@ def draw_pdf(font_dir: Path, fonts: list[str], output: Path) -> None:
     text_left(
         margin,
         margin + 30,
-        f"Directory: {font_dir.name}. Ugaritic and Serabit el-Khadim rows intentionally omitted.",
+        f"Directory: {font_dir.name}. Ugaritic and light variants intentionally omitted.",
         body_font,
     )
 
