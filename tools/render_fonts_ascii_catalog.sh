@@ -4,7 +4,6 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 font_dir="$root/fonts-ascii"
 out="${1:-$root/fonts-ascii-catalog.png}"
-sample="${2:-abgdhwzxTyklmnSopcqrst}"
 label_font="$(fc-match --format '%{file}' 'DejaVu Sans')"
 label_bold_font="$(fc-match --format '%{file}' 'DejaVu Sans:style=Bold')"
 
@@ -30,33 +29,47 @@ XML
 export FONTCONFIG_FILE="$fontconfig_file"
 fc-cache -f "$font_dir" >/dev/null
 
-i=0
+labels=(aleph bet gimel dalet he waw zayin het tet yod kaf lamed mem nun samekh ayin pe tsade qof resh shin taw)
+hebrew=(א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת)
+ascii=(a b g d h w z H T y k l m n S A p c q r s t)
+
+label_w=720
+cell_w=88
+row_h=92
+header_h=156
+table_w=$((label_w + (${#ascii[@]} * cell_w)))
+
 rows=()
+i=0
 for font in "$font_dir"/*.{ttf,otf}; do
   [[ -e "$font" ]] || continue
   base="$(basename "$font")"
   i=$((i + 1))
-  label_png="$(printf '%s/label-%03d.png' "$work" "$i")"
-  glyph_png="$(printf '%s/glyph-%03d.png' "$work" "$i")"
   row_png="$(printf '%s/row-%03d.png' "$work" "$i")"
 
-  magick -size 900x92 xc:white \
-    -gravity west \
+  magick -size "${table_w}x${row_h}" xc:white \
     -font "$label_font" \
-    -pointsize 24 \
+    -pointsize 18 \
     -fill '#202020' \
-    -annotate +18+0 "$base" \
-    "$label_png"
-
-  magick -size 1300x92 xc:white \
     -gravity west \
-    -font "$font" \
-    -pointsize 42 \
-    -fill black \
-    -annotate +18+0 "$sample" \
-    "$glyph_png"
+    -annotate +16+0 "$base" \
+    "$row_png"
 
-  magick "$label_png" "$glyph_png" +append -background white -gravity center -extent 2200x110 "$row_png"
+  for idx in "${!ascii[@]}"; do
+    x=$((label_w + (idx * cell_w)))
+    char="${ascii[$idx]}"
+    magick "$row_png" \
+      -fill '#ECE7DF' -draw "rectangle $x,0 $((x + cell_w - 1)),$row_h" \
+      -stroke '#D8D1C8' -strokewidth 1 -draw "line $x,0 $x,$row_h" \
+      -stroke none \
+      -font "$font" \
+      -pointsize 42 \
+      -fill black \
+      -gravity northwest \
+      -annotate "+$((x + 22))+22" "$char" \
+      "$row_png"
+  done
+  magick "$row_png" -stroke '#D8D1C8' -strokewidth 1 -draw "line 0,$((row_h - 1)) $table_w,$((row_h - 1))" "$row_png"
   rows+=("$row_png")
 done
 
@@ -66,17 +79,36 @@ if [[ "${#rows[@]}" -eq 0 ]]; then
 fi
 
 header="$work/header.png"
-magick -size 2200x130 xc:white \
-  -gravity northwest \
+magick -size "${table_w}x${header_h}" xc:white \
   -font "$label_bold_font" \
-  -pointsize 34 \
+  -pointsize 32 \
   -fill '#111111' \
-  -annotate +18+18 "ASCII ancient-script font catalog" \
+  -gravity northwest \
+  -annotate +16+16 "ASCII ancient-script font catalog" \
   -font "$label_font" \
-  -pointsize 24 \
+  -pointsize 20 \
   -fill '#333333' \
-  -annotate +18+72 "Sample: $sample" \
+  -annotate +16+62 "Columns follow Hebrew alphabet order; cells render the ASCII key mapped to that Hebrew letter." \
   "$header"
+
+for idx in "${!ascii[@]}"; do
+  x=$((label_w + (idx * cell_w)))
+  magick "$header" \
+    -fill '#F6F3EE' -draw "rectangle $x,96 $((x + cell_w - 1)),$header_h" \
+    -stroke '#D8D1C8' -strokewidth 1 -draw "line $x,96 $x,$header_h" \
+    -stroke none \
+    -font "$label_bold_font" \
+    -pointsize 21 \
+    -fill '#111111' \
+    -gravity northwest \
+    -annotate "+$((x + 30))+101" "${hebrew[$idx]}" \
+    -font "$label_font" \
+    -pointsize 12 \
+    -fill '#444444' \
+    -annotate "+$((x + 8))+128" "${labels[$idx]} / ${ascii[$idx]}" \
+    "$header"
+done
+magick "$header" -stroke '#D8D1C8' -strokewidth 1 -draw "line 0,$((header_h - 1)) $table_w,$((header_h - 1))" "$header"
 
 if [[ "${out,,}" == *.pdf ]]; then
   catalog_png="$work/catalog.png"
@@ -86,4 +118,5 @@ if [[ "${out,,}" == *.pdf ]]; then
 else
   magick "$header" "${rows[@]}" -append "$out"
 fi
+
 echo "$out"

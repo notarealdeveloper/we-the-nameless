@@ -106,9 +106,28 @@ Go through fonts-ascii/ and use the file names and glyph shapes to:
    that shows all their letters.
 
 # PROMPT 5
-# (CURRENT PROMPT)
 
 Invert the numerical prefixes on the fonts-ascii/* filenames so they sort from oldest to newest. Keep the centuries.
+
+
+# PROMPT 6
+# (CURRENT PROMPT)
+
+1. Give the fonts in fonts-ascii/ more useful Family names for fontconfig.
+They don't have to match the filenames exactly, they should be useful.
+Also add any metadata that fonts typically contain.
+
+2. Check the dates and filenames against the information here:
+    https://www.bibleplaces.com/paleo_hebrew_fonts
+
+Compare the zip files linked on that page to the files in fonts-ascii,
+and use that information as needed to give the fonts more descriptive
+names, and more accurate names. For example, the wadi-el-hol and serabit
+parts of those filenames may not be entirely accurate, so use the glyph
+shapes if necessary as part of your chronology and naming system.
+
+3. Finally, regenerate the fonts-ascii visualization page, but this time
+make it into a table with a column for each letter, in hebrew alphabet order.
 
 EOF
 
