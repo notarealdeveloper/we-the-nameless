@@ -1,0 +1,38 @@
+old_name	new_name	estimate	note
+egyptian-hieroglyphs-regular-noto-sans-ascii.ttf	12-bc32c-egyptian-hieroglyphs-noto-sans-ascii.ttf	bc32c	Broad early dynastic reference point for Egyptian hieroglyphic signs; included as the deep ancestor row, not as an alphabetic witness.
+noto-sans-imperial-aramaic-regular-ascii.ttf	02-bc05c-imperial-aramaic-noto-sans-ascii.ttf	bc05c	Imperial Aramaic administrative script; estimated to the Persian-period fifth century BCE.
+noto-sans-ugaritic-regular-ascii.ttf	10-bc14c-ugaritic-noto-sans-ascii.ttf	bc14c	Ugaritic cuneiform alphabet; estimated to the Late Bronze Age fourteenth century BCE.
+paleo-hebrew-gezer-lower-ascii.ttf	07-bc10c-paleo-hebrew-gezer-lower-ascii.ttf	bc10c	Gezer Calendar hand; usually placed around the tenth century BCE.
+paleo-hebrew-gezer-upper-ascii.ttf	07-bc10c-paleo-hebrew-gezer-upper-ascii.ttf	bc10c	Gezer Calendar hand; usually placed around the tenth century BCE.
+paleo-hebrew-isaiah-scroll-lower-ascii.ttf	01-bc02c-paleo-hebrew-isaiah-scroll-lower-ascii.ttf	bc02c	Dead Sea Scrolls paleo-Hebrew style; estimated to the second century BCE.
+paleo-hebrew-isaiah-scroll-upper-ascii.ttf	01-bc02c-paleo-hebrew-isaiah-scroll-upper-ascii.ttf	bc02c	Dead Sea Scrolls paleo-Hebrew style; estimated to the second century BCE.
+paleo-hebrew-ketef-hinnom-1-lower-ascii.ttf	04-bc07c-paleo-hebrew-ketef-hinnom-1-lower-ascii.ttf	bc07c	Ketef Hinnom amulet hand; late seventh or early sixth century BCE, rounded here to bc07c.
+paleo-hebrew-ketef-hinnom-1-upper-ascii.ttf	04-bc07c-paleo-hebrew-ketef-hinnom-1-upper-ascii.ttf	bc07c	Ketef Hinnom amulet hand; late seventh or early sixth century BCE, rounded here to bc07c.
+paleo-hebrew-ketef-hinnom-2-lower-ascii.ttf	04-bc07c-paleo-hebrew-ketef-hinnom-2-lower-ascii.ttf	bc07c	Ketef Hinnom amulet hand; late seventh or early sixth century BCE, rounded here to bc07c.
+paleo-hebrew-ketef-hinnom-2-upper-ascii.ttf	04-bc07c-paleo-hebrew-ketef-hinnom-2-upper-ascii.ttf	bc07c	Ketef Hinnom amulet hand; late seventh or early sixth century BCE, rounded here to bc07c.
+paleo-hebrew-lachish-3-ascii.ttf	03-bc06c-paleo-hebrew-lachish-3-ascii.ttf	bc06c	Lachish ostraca hand; early sixth century BCE.
+paleo-hebrew-lachish-4-ascii.ttf	03-bc06c-paleo-hebrew-lachish-4-ascii.ttf	bc06c	Lachish ostraca hand; early sixth century BCE.
+paleo-hebrew-lachish-5-ascii.ttf	03-bc06c-paleo-hebrew-lachish-5-ascii.ttf	bc06c	Lachish ostraca hand; early sixth century BCE.
+paleo-hebrew-lower-ascii.ttf	06-bc09c-paleo-hebrew-standard-lower-ascii.ttf	bc09c	Generic paleo-Hebrew alphabet font; estimated to the monarchic-period ninth century BCE.
+paleo-hebrew-moabite-lower-ascii.ttf	05-bc09c-paleo-hebrew-moabite-lower-ascii.ttf	bc09c	Moabite/Mesha-style hand; ninth century BCE.
+paleo-hebrew-moabite-upper-ascii.ttf	05-bc09c-paleo-hebrew-moabite-upper-ascii.ttf	bc09c	Moabite/Mesha-style hand; ninth century BCE.
+paleo-hebrew-mono-ascii.ttf	06-bc09c-paleo-hebrew-mono-ascii.ttf	bc09c	Modern monospaced reconstruction of paleo-Hebrew; placed with monarchic paleo-Hebrew for sorting.
+paleo-hebrew-other-ascii.ttf	06-bc09c-paleo-hebrew-other-ascii.ttf	bc09c	Generic paleo-Hebrew alphabet font; estimated to the monarchic-period ninth century BCE.
+paleo-hebrew-phoenician-ascii.ttf	07-bc10c-phoenician-paleo-hebrew-ascii.ttf	bc10c	Phoenician block source font; estimated to the tenth century BCE for the early Phoenician/paleo-Hebrew comparison row.
+paleo-hebrew-robo-ascii.ttf	06-bc09c-paleo-hebrew-robo-ascii.ttf	bc09c	Modern reconstruction of paleo-Hebrew; placed with monarchic paleo-Hebrew for sorting.
+paleo-hebrew-siloam-lower-ascii.ttf	04-bc08c-paleo-hebrew-siloam-lower-ascii.ttf	bc08c	Siloam inscription hand; late eighth century BCE.
+paleo-hebrew-siloam-upper-ascii.ttf	04-bc08c-paleo-hebrew-siloam-upper-ascii.ttf	bc08c	Siloam inscription hand; late eighth century BCE.
+paleo-hebrew-tel-dan-lower-ascii.ttf	05-bc09c-paleo-hebrew-tel-dan-lower-ascii.ttf	bc09c	Tel Dan inscription hand; ninth century BCE estimate.
+paleo-hebrew-tel-dan-upper-ascii.ttf	05-bc09c-paleo-hebrew-tel-dan-upper-ascii.ttf	bc09c	Tel Dan inscription hand; ninth century BCE estimate.
+paleo-hebrew-tel-zayit-ascii.ttf	07-bc10c-paleo-hebrew-tel-zayit-ascii.ttf	bc10c	Tel Zayit abecedary hand; tenth century BCE.
+paleo-hebrew-upper-ascii.ttf	06-bc09c-paleo-hebrew-standard-upper-ascii.ttf	bc09c	Generic paleo-Hebrew alphabet font; estimated to the monarchic-period ninth century BCE.
+proto-sinaitic-13-izbet-sartah-lower-ascii.ttf	08-bc12c-proto-canaanite-izbet-sartah-lower-ascii.ttf	bc12c	Izbet Sartah abecedary; renamed from proto-sinaitic to proto-canaanite and rounded to the twelfth century BCE.
+proto-sinaitic-13-izbet-sartah-upper-ascii.ttf	08-bc12c-proto-canaanite-izbet-sartah-upper-ascii.ttf	bc12c	Izbet Sartah abecedary; renamed from proto-sinaitic to proto-canaanite and rounded to the twelfth century BCE.
+proto-sinaitic-13-lower-ascii.ttf	09-bc13c-proto-canaanite-lower-ascii.ttf	bc13c	Thirteenth-century northern alphabetic hand; renamed from proto-sinaitic to proto-canaanite.
+proto-sinaitic-13-upper-ascii.ttf	09-bc13c-proto-canaanite-upper-ascii.ttf	bc13c	Thirteenth-century northern alphabetic hand; renamed from proto-sinaitic to proto-canaanite.
+proto-sinaitic-15-lower-ascii.ttf	11-bc15c-proto-sinaitic-wadi-el-hol-lower-ascii.ttf	bc15c	Fifteenth-century Proto-Sinaitic/Wadi el-Hol row from master.tex.
+proto-sinaitic-15-upper-ascii.ttf	11-bc15c-proto-sinaitic-wadi-el-hol-upper-ascii.ttf	bc15c	Fifteenth-century Proto-Sinaitic/Wadi el-Hol row from master.tex.
+proto-sinaitic-best-ascii.ttf	11-bc15c-proto-sinaitic-serabit-el-khadim-ascii.ttf	bc15c	Serabit el-Khadim-style Proto-Sinaitic reconstruction; master.tex marks this as approximate.
+proto-sinaitic-best-bold-ascii.ttf	11-bc15c-proto-sinaitic-serabit-el-khadim-bold-ascii.ttf	bc15c	Serabit el-Khadim-style Proto-Sinaitic reconstruction; bold companion.
+proto-sinaitic-other-lower-ascii.ttf	11-bc15c-proto-sinaitic-other-lower-ascii.ttf	bc15c	Additional Proto-Sinaitic variant; grouped with the fifteenth-century Proto-Sinaitic rows.
+proto-sinaitic-other-upper-ascii.ttf	11-bc15c-proto-sinaitic-other-upper-ascii.ttf	bc15c	Additional Proto-Sinaitic variant; grouped with the fifteenth-century Proto-Sinaitic rows.
