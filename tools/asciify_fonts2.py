@@ -14,6 +14,7 @@ import re
 import sys
 
 import fontforge
+import psMat
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -86,6 +87,10 @@ ASCII_ALIASES = {
 
 ASCII_TO_HEBREW = {**HEBREW_BY_ASCII, **ASCII_ALIASES}
 
+REFERENCE_HEBREW_MEDIAN_HEIGHT = 584
+GLYPH_SIDE_BEARING = 60
+SPACE_WIDTH = 300
+
 
 def ps_name(name: str) -> str:
     return re.sub(r"[^A-Za-z0-9]", "", name)
@@ -126,7 +131,7 @@ def copy_glyph(src, dst, src_code: int, dst_code: int) -> bool:
     return True
 
 
-def blank_glyph(dst, dst_code: int, width: int = 300) -> None:
+def blank_glyph(dst, dst_code: int, width: int = SPACE_WIDTH) -> None:
     glyph = dst.createChar(dst_code)
     glyph.glyphname = glyph_name(dst_code)
     glyph.width = width
@@ -136,7 +141,59 @@ def blank_glyph(dst, dst_code: int, width: int = 300) -> None:
 def add_space(dst) -> None:
     glyph = dst.createChar(ord(" "))
     glyph.glyphname = "space"
-    glyph.width = 300
+    glyph.width = SPACE_WIDTH
+
+
+def ink_glyphs(font):
+    glyphs = []
+    for codepoint in ASCII_TO_HEBREW:
+        code = ord(codepoint)
+        if code not in font:
+            continue
+
+        glyph = font[code]
+        if not glyph.isWorthOutputting():
+            continue
+
+        xmin, ymin, xmax, ymax = glyph.boundingBox()
+        width = xmax - xmin
+        height = ymax - ymin
+        if width > 1 and height > 1:
+            glyphs.append(glyph)
+    return glyphs
+
+
+def median(values: list[float]) -> float:
+    values = sorted(values)
+    if not values:
+        return 0
+
+    midpoint = len(values) // 2
+    if len(values) % 2:
+        return values[midpoint]
+    return (values[midpoint - 1] + values[midpoint]) / 2
+
+
+def normalize_size_and_spacing(font) -> None:
+    glyphs = ink_glyphs(font)
+    median_height = median([
+        glyph.boundingBox()[3] - glyph.boundingBox()[1]
+        for glyph in glyphs
+    ])
+
+    if median_height > 0:
+        scale = REFERENCE_HEBREW_MEDIAN_HEIGHT / median_height
+        for glyph in glyphs:
+            glyph.transform(psMat.scale(scale))
+            glyph.round()
+
+    for glyph in ink_glyphs(font):
+        xmin, _ymin, xmax, _ymax = glyph.boundingBox()
+        glyph.transform(psMat.translate(GLYPH_SIDE_BEARING - xmin, 0))
+        glyph.width = int(round((xmax - xmin) + (2 * GLYPH_SIDE_BEARING)))
+
+    if ord(" ") in font:
+        font[ord(" ")].width = SPACE_WIDTH
 
 
 def build_font(source_path: str) -> list[str]:
@@ -171,6 +228,8 @@ def build_font(source_path: str) -> list[str]:
         if not copy_glyph(src, dst, ord(hebrew_char), ord(ascii_char)):
             blank_glyph(dst, ord(ascii_char))
             missing.append(f"{ascii_char}->U+{ord(hebrew_char):04X}")
+
+    normalize_size_and_spacing(dst)
 
     dst.os2_typoascent = src.os2_typoascent
     dst.os2_typodescent = src.os2_typodescent

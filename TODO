@@ -2,7 +2,7 @@
 
 lord --verbose << "EOF"
 
-# PREVIOUS PROMPT
+# PREVIOUS PROMPT 1
 
 Ok so, I'm using fontforge with a bunch of ancient fonts created by different people.
 They're all in fonts/.
@@ -44,7 +44,7 @@ Do that now, and then write me a bash script that uses pango-view
 to test all the fonts in fonts2, and verify that they do indeed
 render the standard Hebrew unicode range into the glyphs in question.
 
-# CURRENT PROMPT
+# PREVIOUS PROMPT 2
 
 Take all the fonts in fonts2, and turn each one into an ascii representation
 of the same font, using the transliteration below:
@@ -82,4 +82,11 @@ give it a meaningful value that reflects the choices made above.
 
 By doing this, create an entire fonts-ascii directory with each of the fonts in fonts2,
 but as an ascii representation.
+
+# CURRENT PROMPT
+
+Fix the spacing between the glyphs in the ascii fonts in fonts-ascii/.
+They're overlapping each other in ways that I expect are programmatically fixable.
+
+Also normalize their sizes so they roughly match Noto Sans of any given point size.
 EOF
