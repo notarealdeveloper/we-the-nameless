@@ -74,7 +74,9 @@
 
 ## Word by Word Translation
 
-<div lang="phn">
+%%
+div lang="phn" worked sort of 
+%%
 
 |  Line | Word           | Transliteration | Word-by-word gloss                 |
 | ----: | -------------- | --------------- | ---------------------------------- |
@@ -281,4 +283,4 @@
 |    22 | 𐤌𐤂𐤃𐤋𐤕𐤄   | mgdlth          | its towers                         |
 |       |                |                 |                                    |
 
-</div>
+
