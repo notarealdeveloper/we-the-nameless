@@ -93,7 +93,6 @@ They're overlapping each other in ways that I expect are programmatically fixabl
 Also normalize their sizes so they roughly match Noto Sans of any given point size.
 
 # PROMPT 4
-# (CURRENT PROMPT)
 
 Go through fonts-ascii/ and use the file names and glyph shapes to:
 1. Add estimated years to the file names, e.g., -15c- or -13c- for
@@ -105,6 +104,11 @@ Go through fonts-ascii/ and use the file names and glyph shapes to:
    chronological order.
 4. Generate one big png of them all rendering the same letter sequence
    that shows all their letters.
+
+# PROMPT 5
+# (CURRENT PROMPT)
+
+Invert the numerical prefixes on the fonts-ascii/* filenames so they sort from oldest to newest. Keep the centuries.
 
 EOF
 
