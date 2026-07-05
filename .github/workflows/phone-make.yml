@@ -1,0 +1,22 @@
+# .github/workflows/phone-make.yml
+name: Phone Make
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Make target
+        required: true
+        type: choice
+        options:
+          - test
+          - build
+          - deploy
+          - clean
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: make "${{ inputs.target }}"
