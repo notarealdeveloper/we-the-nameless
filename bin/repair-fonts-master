@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.util
+import math
 import shutil
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
@@ -17,7 +18,7 @@ FONT_DIR = ROOT / "fonts-master"
 README = FONT_DIR / "README.md"
 TABLE_KEYS = ["a", "b", "g", "d", "e", "w", "z", "h", "T", "y", "k", "l", "m", "n", "S", "o", "p", "c", "q", "r", "s", "t"]
 MIN_AREA = 10_000
-REPAIR_VERSION = "1.3"
+REPAIR_VERSION = "1.4"
 
 RENAMES = {
     "03-bc15c-proto-sinaitic-variant-a.ttf": "03-bc15c-proto-sinaitic-generic-a.ttf",
@@ -186,10 +187,41 @@ GLYPH_REPLACEMENTS = {
         "04-bc15c-proto-sinaitic-15th-century.ttf",
         "T",
     ),
+    ("04-bc15c-proto-sinaitic-generic-a.ttf", "z"): (
+        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "z",
+    ),
+    ("04-bc15c-proto-sinaitic-generic-a.ttf", "o"): (
+        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "o",
+    ),
+    ("04-bc15c-proto-sinaitic-generic-a.ttf", "q"): (
+        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "q",
+    ),
     ("04-bc15c-proto-sinaitic-generic-b.ttf", "T"): (
         "04-bc15c-proto-sinaitic-15th-century.ttf",
         "T",
     ),
+    ("04-bc15c-proto-sinaitic-generic-b.ttf", "z"): (
+        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "z",
+    ),
+    ("04-bc15c-proto-sinaitic-generic-b.ttf", "o"): (
+        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "o",
+    ),
+    ("04-bc15c-proto-sinaitic-generic-b.ttf", "q"): (
+        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "q",
+    ),
+}
+
+FILLED_OVAL_GLYPHS = {
+    ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "o"),
+    ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "o"),
+    ("04-bc15c-proto-sinaitic-generic-a.ttf", "o"),
+    ("04-bc15c-proto-sinaitic-generic-b.ttf", "o"),
 }
 
 BOLDEN_FONTS = {
@@ -198,7 +230,13 @@ BOLDEN_FONTS = {
 }
 EGYPTIAN_FONT = "01-bc32c-egyptian-hieroglyphs-noto-sans.ttf"
 EGYPTIAN_SOURCE = ROOT / "fonts" / "egyptian-hieroglyphs-regular-noto-sans.ttf"
-EGYPTIAN_EXTRA_TAW = 0x133F4
+EGYPTIAN_TAIL = {
+    "c": 0x131D1,
+    "q": 0x13397,
+    "r": 0x13076,
+    "s": 0x13314,
+    "t": 0x133F4,
+}
 
 FINAL_FORM_FALLBACKS = {
     "K": "k",
@@ -330,14 +368,43 @@ def embolden_char(font, char: str, amount: int) -> None:
 
 
 def repair_egyptian_tail(font) -> None:
-    # The older alphabet-history row had two Pe candidates.  Delete the second
-    # Pe by shifting Tsade through Shin left, then use the formerly orphaned
-    # final sign as Taw.
-    for target_char, source_char in (("c", "q"), ("q", "r"), ("r", "s"), ("s", "t")):
-        copy_glyph(font, source_char, font, target_char)
     source = fontforge.open(str(EGYPTIAN_SOURCE))
-    copy_source_codepoint(source, EGYPTIAN_EXTRA_TAW, font, "t")
+    for target_char, source_codepoint in EGYPTIAN_TAIL.items():
+        copy_source_codepoint(source, source_codepoint, font, target_char)
     source.close()
+
+
+def replace_with_filled_oval(font, char: str) -> None:
+    codepoint = ord(char)
+    if codepoint not in font:
+        return
+
+    glyph = font[codepoint]
+    xmin, ymin, xmax, ymax = glyph.boundingBox()
+    width = max(260.0, xmax - xmin)
+    height = max(150.0, ymax - ymin, width * 0.42)
+    cx = (xmin + xmax) / 2
+    cy = (ymin + ymax) / 2
+    rx = width / 2
+    ry = height / 2
+
+    glyph.clear()
+    glyph.width = int(round(width + 120))
+    glyph.glyphname = char
+    glyph.unicode = codepoint
+    pen = glyph.glyphPen()
+    steps = 32
+    for step in range(steps):
+        angle = (2 * math.pi * step) / steps
+        point = (cx + (rx * math.cos(angle)), cy + (ry * math.sin(angle)))
+        if step == 0:
+            pen.moveTo(point)
+        else:
+            pen.lineTo(point)
+    pen.closePath()
+    xmin, _ymin, xmax, _ymax = glyph.boundingBox()
+    glyph.transform(psMat.translate(60 - xmin, 0))
+    glyph.width = int(round((xmax - xmin) + 120))
 
 
 def prune_to_key_layer(font, allowed: set[int]) -> None:
@@ -383,9 +450,11 @@ def write_readme(
         lines.append(f"| `{filename}` | `{char}` | {key_to_hebrew[char]} | `{source}` | `{source_char}` |")
     lines.extend(
         [
-            "| `01-bc32c-egyptian-hieroglyphs-noto-sans.ttf` | `c`-`t` | צ-ת | same font plus original Noto Egyptian Taw sign | shifted after deleting the extra Pe candidate |",
+            "| `01-bc32c-egyptian-hieroglyphs-noto-sans.ttf` | `c` `q` `r` `s` `t` | צ ק ר ש ת | original Noto Egyptian signs | corrected ancestry order after deleting the extra Pe candidate |",
             "",
-            "The Serabit el-Khadim and Wadi el-Hol inscription fonts were also emboldened after substitution so their row weight matches the other Proto-Sinaitic comparison fonts more closely. The Egyptian row receives only a small outline stroke to keep it slightly darker without turning it into a bold style.",
+            "The outlined Proto-Sinaitic ayin forms in Wadi el-Hol, Serabit el-Khadim, and the generic Proto-Sinaitic rows were converted to generated filled ovals so the table no longer mixes hollow outline glyphs with filled inscriptional glyphs.",
+            "",
+            "The Serabit el-Khadim and Wadi el-Hol inscription fonts were also emboldened after substitution so their row weight matches the other Proto-Sinaitic comparison fonts more closely.",
             "",
         ]
     )
@@ -433,6 +502,10 @@ def main() -> int:
                 embolden_char(fonts[filename], char, 24)
             replacements.append((filename, char, source_name, source_char))
 
+    for filename, char in FILLED_OVAL_GLYPHS:
+        if filename in fonts:
+            replace_with_filled_oval(fonts[filename], char)
+
     for filename in filenames:
         font = fonts[filename]
         for key, hebrew in key_to_hebrew.items():
@@ -442,8 +515,6 @@ def main() -> int:
             copy_glyph(font, source_char, font, key)
         if filename in BOLDEN_FONTS and original_versions.get(filename) not in {"1.2", REPAIR_VERSION}:
             embolden(font, 24)
-        if filename == EGYPTIAN_FONT and original_versions.get(filename) != REPAIR_VERSION:
-            embolden(font, 6)
         update_metadata(font, filename)
         prune_to_key_layer(font, {ord(key) for key in key_to_hebrew} | {ord(" "), 0, 13})
 

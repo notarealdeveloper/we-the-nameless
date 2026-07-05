@@ -28,7 +28,15 @@ The following glyphs existed but were judged historically or visually wrong for 
 | `03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf` | `q` | ק | `04-bc15c-proto-sinaitic-15th-century.ttf` | `q` |
 | `03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf` | `s` | ש | `04-bc15c-proto-sinaitic-15th-century.ttf` | `s` |
 | `04-bc15c-proto-sinaitic-generic-a.ttf` | `T` | ט | `04-bc15c-proto-sinaitic-15th-century.ttf` | `T` |
+| `04-bc15c-proto-sinaitic-generic-a.ttf` | `z` | ז | `04-bc15c-proto-sinaitic-15th-century.ttf` | `z` |
+| `04-bc15c-proto-sinaitic-generic-a.ttf` | `o` | ע | `04-bc15c-proto-sinaitic-15th-century.ttf` | `o` |
+| `04-bc15c-proto-sinaitic-generic-a.ttf` | `q` | ק | `04-bc15c-proto-sinaitic-15th-century.ttf` | `q` |
 | `04-bc15c-proto-sinaitic-generic-b.ttf` | `T` | ט | `04-bc15c-proto-sinaitic-15th-century.ttf` | `T` |
-| `01-bc32c-egyptian-hieroglyphs-noto-sans.ttf` | `c`-`t` | צ-ת | same font plus original Noto Egyptian Taw sign | shifted after deleting the extra Pe candidate |
+| `04-bc15c-proto-sinaitic-generic-b.ttf` | `z` | ז | `04-bc15c-proto-sinaitic-15th-century.ttf` | `z` |
+| `04-bc15c-proto-sinaitic-generic-b.ttf` | `o` | ע | `04-bc15c-proto-sinaitic-15th-century.ttf` | `o` |
+| `04-bc15c-proto-sinaitic-generic-b.ttf` | `q` | ק | `04-bc15c-proto-sinaitic-15th-century.ttf` | `q` |
+| `01-bc32c-egyptian-hieroglyphs-noto-sans.ttf` | `c` `q` `r` `s` `t` | צ ק ר ש ת | original Noto Egyptian signs | corrected ancestry order after deleting the extra Pe candidate |
 
-The Serabit el-Khadim and Wadi el-Hol inscription fonts were also emboldened after substitution so their row weight matches the other Proto-Sinaitic comparison fonts more closely. The Egyptian row receives only a small outline stroke to keep it slightly darker without turning it into a bold style.
+The outlined Proto-Sinaitic ayin forms in Wadi el-Hol, Serabit el-Khadim, and the generic Proto-Sinaitic rows were converted to generated filled ovals so the table no longer mixes hollow outline glyphs with filled inscriptional glyphs.
+
+The Serabit el-Khadim and Wadi el-Hol inscription fonts were also emboldened after substitution so their row weight matches the other Proto-Sinaitic comparison fonts more closely.

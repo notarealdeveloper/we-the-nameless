@@ -23,6 +23,9 @@ REFERENCE_MAX_SVG_WIDTH = 900
 GLYPH_SIDE_BEARING = 60
 SPACE_WIDTH = 300
 SVG_BASELINE = 90
+SVG_SCALE_OVERRIDES = {
+    ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "aleph"): 1.18,
+}
 
 
 HEBREW = {
@@ -148,7 +151,7 @@ def copy_glyph(src, dst, src_code: int, dst_code: int) -> bool:
     return True
 
 
-def import_svg(dst, hebrew_char: str, svg_path: str) -> None:
+def import_svg(dst, hebrew_char: str, svg_path: str, extra_scale: float = 1.0) -> None:
     code = ord(hebrew_char)
     glyph = dst.createChar(code)
     glyph.clear()
@@ -163,7 +166,7 @@ def import_svg(dst, hebrew_char: str, svg_path: str) -> None:
         scale = min(
             REFERENCE_HEBREW_MEDIAN_HEIGHT / height,
             REFERENCE_MAX_SVG_WIDTH / width,
-        )
+        ) * extra_scale
         glyph.transform(psMat.scale(scale))
         glyph.round()
         xmin, ymin, _xmax, _ymax = glyph.boundingBox()
@@ -250,7 +253,8 @@ def build(spec: dict[str, object]) -> None:
 
     svg_map = {**GENERIC, **spec["svg"]}
     for name, svg_path in svg_map.items():
-        import_svg(font, HEBREW[name], svg_path)
+        extra_scale = SVG_SCALE_OVERRIDES.get((str(spec["filename"]), name), 1.0)
+        import_svg(font, HEBREW[name], svg_path, extra_scale)
 
     for final_char, base_char in FINAL_TO_BASE.items():
         copy_glyph(font, font, ord(base_char), ord(final_char))

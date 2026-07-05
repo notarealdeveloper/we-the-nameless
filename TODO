@@ -190,7 +190,6 @@ Do that now, and don't stop til you're done.
 
 
 # PROMPT 9
-# (CURRENT PROMPT)
 
 You've already done most of the work for this, but you crashed, so I want you to finish up.
 
@@ -233,6 +232,14 @@ Wadi has an incorrect:
 4. Using everything you've learned about my preferences from the above prompts, fix up ./XCompose
 5. Rename fonts-master/08-bc10c-phoenician-noto-sans.ttf by replacing phoenician with paleo-hebrew
 6. Don't call isaiah scroll paleo-hebrew in the fonts dir, call it dead-sea-scrolls or whatever.
+
+# PROMPT 10
+# (CURRENT PROMPT)
+
+1. Unbold the egyptian font.
+2. Replace all hollow glyphs with their filled-in counterparts, generate as needed.
+3. Scale wadi's aleph up a bit, it's too small.
+4. Your egyptian c,q,r,s,t are still wrong, make them match the others in terms of ancestry, this is the correct order: egypt{𓃾𓉐𓌙𓆟𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢𓈖𓆓𓊽𓁹𓂋𓇑𓎗𓁶𓌔𓏴}
 
 EOF
 

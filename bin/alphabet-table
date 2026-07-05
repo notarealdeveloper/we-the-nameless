@@ -123,8 +123,7 @@ def draw_pdf(font_dir: Path, fonts: list[str], output: Path) -> None:
         text_left(left + 4, y_mid + 6, filename, small_font)
         for index, key in enumerate(HEBREW_ORDER):
             x = left + font_col_width + (index * cell_width)
-            stroke_width = 1 if filename.startswith("01-bc32c-egyptian") else 0
-            text_center(x + (cell_width / 2), y_mid, key, row_font, stroke_width=stroke_width)
+            text_center(x + (cell_width / 2), y_mid, key, row_font)
         line(left, y_top + row_height, page_width - margin, y_top + row_height, "#ded8cf")
 
     image.save(output, "PDF", resolution=144.0)

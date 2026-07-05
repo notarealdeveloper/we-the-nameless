@@ -52,7 +52,7 @@ PALEO_B_LOWER = ["a", "b", "g", "d", "h", "w", "z", "x", None, "y", "k", "l", "m
 PHOENICIAN = "𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕"
 ARAMAIC = "𐡀𐡁𐡂𐡃𐡄𐡅𐡆𐡇𐡈𐡉𐡊𐡋𐡌𐡍𐡎𐡏𐡐𐡑𐡒𐡓𐡔𐡕"
 UGARITIC = "𐎀𐎁𐎂𐎄𐎅𐎆𐎇𐎈𐎉𐎊𐎋𐎍𐎎𐎐𐎒𐎓𐎔𐎕𐎖𐎗𐎌𐎚"
-EGYPTIAN = "𓃾𓉐𓌙𓆟𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢𓈖𓆓𓊽𓁹𓂋𓊋𓇑𓎗𓁶𓌔"
+EGYPTIAN = "𓃾𓉐𓌙𓆟𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢𓈖𓆓𓊽𓁹𓂋𓇑𓎗𓁶𓌔𓏴"
 
 
 def variant(chars) -> dict[int, int | None]:
