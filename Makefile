@@ -4,23 +4,29 @@ BUILD := build
 CACHE := $(abspath $(BUILD)/texmf-var)
 
 LATEX      := lualatex
-LATEXFLAGS := -interaction=nonstopmode -halt-on-error -output-directory=$(BUILD)
+LATEXFLAGS := -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
+
+TEX_SOURCES := $(shell find . -path './$(BUILD)' -prune -o -name '*.tex' -print)
 
 export TEXMFVAR := $(CACHE)
 
-.PHONY: all clean distclean debug progress open build-prepare draft c x comment halfcomment uncomment
+.PHONY: all pdf ci view open clean distclean debug progress build-prepare draft c x comment halfcomment uncomment again
 
-all: $(PDF) open
+all: $(PDF)
+
+pdf: $(PDF)
+
+ci: $(PDF)
 
 again:
-	mv master.pdf mistress.pdf
-	make
+	@if [ -f $(PDF) ]; then mv $(PDF) mistress.pdf; fi
+	$(MAKE) all
 
 build-prepare:
 	@mkdir -p $(BUILD) $(CACHE)
 	@sed -n 's|^[[:space:]]*\\include{\([^}]*\)}.*|$(BUILD)/\1|p' $(MAIN).tex | xargs -r dirname | sort -u | xargs -r mkdir -p
 
-$(PDF): $(MAIN).tex | build-prepare
+$(PDF): $(TEX_SOURCES) | build-prepare
 	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
 	@if grep -q 'Rerun to get cross-references right' $(BUILD)/$(MAIN).log; then \
 		$(LATEX) $(LATEXFLAGS) $(MAIN).tex; \
@@ -40,18 +46,24 @@ halfcomment:
 uncomment:
 	bin/comments --uncomment $(MAIN).tex
 
-open:
-	xdg-open $(BUILD)/$(PDF) >/dev/null 2>&1 &
+view open: $(PDF)
+	@if command -v xdg-open >/dev/null 2>&1; then \
+		xdg-open $(PDF) >/dev/null 2>&1 & \
+	else \
+		echo "Built $(PDF)"; \
+	fi
 
 clean:
-	find [0-9][0-9]-* $(BUILD) -type f \( \
-		-name '*.aux' -o \
-		-name '*.log' -o \
-		-name '*.toc' -o \
-		-name '*.out' -o \
-		-name '*.fls' -o \
-		-name '*.fdb_latexmk' \
-	\) -delete
+	@if [ -d $(BUILD) ]; then \
+		find $(BUILD) -type f \( \
+			-name '*.aux' -o \
+			-name '*.log' -o \
+			-name '*.toc' -o \
+			-name '*.out' -o \
+			-name '*.fls' -o \
+			-name '*.fdb_latexmk' \
+		\) -delete; \
+	fi
 	rm -f $(MAIN).aux $(MAIN).log $(MAIN).toc $(MAIN).out $(MAIN).pdf
 
 distclean:
@@ -66,7 +78,7 @@ c:
 	cat 01-genesis/03.tex
 
 x:
-	make c | xc
+	$(MAKE) c | xc
 
 debug:
 	codex exec "$$(printf '%s\n\n%s' \
