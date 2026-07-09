@@ -18,7 +18,7 @@ FONT_DIR = ROOT / "fonts-master"
 README = FONT_DIR / "README.md"
 TABLE_KEYS = ["a", "b", "g", "d", "e", "w", "z", "h", "T", "y", "k", "l", "m", "n", "S", "o", "p", "c", "q", "r", "s", "t"]
 MIN_AREA = 10_000
-REPAIR_VERSION = "1.5"
+REPAIR_VERSION = "1.6"
 
 RENAMES = {
     "03-bc15c-proto-sinaitic-variant-a.ttf": "03-bc15c-proto-sinaitic-generic-a.ttf",
@@ -28,9 +28,12 @@ RENAMES = {
     "03-bc15c-proto-sinaitic-15th-century-a.ttf": "04-bc15c-proto-sinaitic-15th-century-a.ttf",
     "03-bc15c-proto-sinaitic-15th-century-b.ttf": "04-bc15c-proto-sinaitic-15th-century-b.ttf",
     "03-bc15c-proto-sinaitic-15th-century-light.ttf": "04-bc15c-proto-sinaitic-15th-century-light.ttf",
-    "03-bc15c-proto-sinaitic-15th-century.ttf": "04-bc15c-proto-sinaitic-15th-century.ttf",
+    "03-bc15c-proto-sinaitic-15th-century.ttf": "04-bc15c-proto-sinaitic-15th-century-c.ttf",
     "03-bc15c-proto-sinaitic-generic-a.ttf": "04-bc15c-proto-sinaitic-generic-a.ttf",
     "03-bc15c-proto-sinaitic-generic-b.ttf": "04-bc15c-proto-sinaitic-generic-b.ttf",
+    "04-bc15c-proto-sinaitic-15th-century.ttf": "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+    "04-bc15c-proto-sinaitic-generic-a.ttf": "04-bc15c-proto-sinaitic-15th-century-d.ttf",
+    "04-bc15c-proto-sinaitic-generic-b.ttf": "04-bc15c-proto-sinaitic-15th-century-e.ttf",
     "04-bc14c-ugaritic-noto-sans.ttf": "05-bc14c-ugaritic-noto-sans.ttf",
     "05-bc13c-proto-canaanite-a.ttf": "06-bc13c-proto-canaanite-a.ttf",
     "05-bc13c-proto-canaanite-b.ttf": "06-bc13c-proto-canaanite-b.ttf",
@@ -83,21 +86,24 @@ METADATA = {
     "08-bc10c-paleo-hebrew-noto-sans.ttf": ("WTN Paleo Hebrew Noto Sans", "Regular"),
     "14-bc02c-dead-sea-scrolls-isaiah-a.ttf": ("WTN Dead Sea Scrolls Isaiah A", "Regular"),
     "14-bc02c-dead-sea-scrolls-isaiah-b.ttf": ("WTN Dead Sea Scrolls Isaiah B", "Regular"),
-    "04-bc15c-proto-sinaitic-generic-a.ttf": ("WTN Proto Sinaitic Generic A", "Regular"),
-    "04-bc15c-proto-sinaitic-generic-b.ttf": ("WTN Proto Sinaitic Generic B", "Regular"),
+    "04-bc15c-proto-sinaitic-15th-century-a.ttf": ("WTN Proto Sinaitic 15th Century A", "Regular"),
+    "04-bc15c-proto-sinaitic-15th-century-b.ttf": ("WTN Proto Sinaitic 15th Century B", "Regular"),
+    "04-bc15c-proto-sinaitic-15th-century-c.ttf": ("WTN Proto Sinaitic 15th Century C", "Regular"),
+    "04-bc15c-proto-sinaitic-15th-century-d.ttf": ("WTN Proto Sinaitic 15th Century D", "Regular"),
+    "04-bc15c-proto-sinaitic-15th-century-e.ttf": ("WTN Proto Sinaitic 15th Century E", "Regular"),
 }
 
 SUBSTITUTION_OVERRIDES = {
     ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "e"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "e",
     ),
     ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "S"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "S",
     ),
     ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "s"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "s",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "d"): (
@@ -105,129 +111,129 @@ SUBSTITUTION_OVERRIDES = {
         "d",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "K"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "k",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "k"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "k",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "l"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "l",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "S"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "S",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "C"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "c",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "c"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "c",
     ),
 }
 
 GLYPH_REPLACEMENTS = {
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "T"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "T",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "z"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "z",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "o"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "o",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "q"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "q",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "k"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "k",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "l"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "l",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "S"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "S",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "c"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "c",
     ),
     ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "n"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "n",
     ),
     ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "T"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "T",
     ),
     ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "z"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "z",
     ),
     ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "o"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "o",
     ),
     ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "q"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "q",
     ),
     ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "s"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "s",
     ),
-    ("04-bc15c-proto-sinaitic-generic-a.ttf", "T"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
-        "T",
-    ),
-    ("04-bc15c-proto-sinaitic-generic-a.ttf", "z"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
-        "z",
-    ),
-    ("04-bc15c-proto-sinaitic-generic-a.ttf", "o"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
-        "o",
-    ),
-    ("04-bc15c-proto-sinaitic-generic-a.ttf", "q"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
-        "q",
-    ),
-    ("04-bc15c-proto-sinaitic-generic-b.ttf", "T"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
-        "T",
-    ),
-    ("04-bc15c-proto-sinaitic-generic-b.ttf", "z"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
-        "z",
-    ),
-    ("04-bc15c-proto-sinaitic-generic-b.ttf", "o"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
-        "o",
-    ),
-    ("04-bc15c-proto-sinaitic-generic-b.ttf", "q"): (
-        "04-bc15c-proto-sinaitic-15th-century.ttf",
-        "q",
-    ),
-    ("04-bc15c-proto-sinaitic-generic-a.ttf", "S"): (
+    ("04-bc15c-proto-sinaitic-15th-century-a.ttf", "S"): (
         "08-bc10c-paleo-hebrew-gezer-a.ttf",
         "S",
     ),
-    ("04-bc15c-proto-sinaitic-generic-b.ttf", "T"): (
-        "04-bc15c-proto-sinaitic-generic-a.ttf",
+    ("04-bc15c-proto-sinaitic-15th-century-b.ttf", "S"): (
+        "08-bc10c-paleo-hebrew-gezer-b.ttf",
+        "S",
+    ),
+    ("04-bc15c-proto-sinaitic-15th-century-d.ttf", "T"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "T",
     ),
-    ("04-bc15c-proto-sinaitic-generic-b.ttf", "S"): (
+    ("04-bc15c-proto-sinaitic-15th-century-d.ttf", "z"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+        "z",
+    ),
+    ("04-bc15c-proto-sinaitic-15th-century-d.ttf", "o"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+        "o",
+    ),
+    ("04-bc15c-proto-sinaitic-15th-century-d.ttf", "q"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+        "q",
+    ),
+    ("04-bc15c-proto-sinaitic-15th-century-e.ttf", "T"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+        "T",
+    ),
+    ("04-bc15c-proto-sinaitic-15th-century-e.ttf", "z"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+        "z",
+    ),
+    ("04-bc15c-proto-sinaitic-15th-century-e.ttf", "o"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+        "o",
+    ),
+    ("04-bc15c-proto-sinaitic-15th-century-e.ttf", "q"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+        "q",
+    ),
+    ("04-bc15c-proto-sinaitic-15th-century-e.ttf", "S"): (
         "08-bc10c-paleo-hebrew-gezer-b.ttf",
         "S",
     ),
@@ -286,7 +292,7 @@ SVG_REPLACEMENTS = {
         "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-O.svg",
         1.0,
     ),
-    ("04-bc15c-proto-sinaitic-generic-a.ttf", "o"): (
+    ("04-bc15c-proto-sinaitic-15th-century-d.ttf", "o"): (
         "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
         1.0,
     ),
@@ -320,6 +326,11 @@ BOLDEN_FONTS = {
     "02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf",
     "03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf",
 }
+OBSOLETE_FONTS = {
+    "04-bc15c-proto-sinaitic-15th-century-light.ttf",
+}
+WADI_FONT = "02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf"
+SERABIT_FONT = "03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf"
 EGYPTIAN_FONT = "01-bc32c-egyptian-hieroglyphs-noto-sans.ttf"
 EGYPTIAN_SOURCE = ROOT / "fonts" / "egyptian-hieroglyphs-regular-noto-sans.ttf"
 EGYPTIAN_TAIL = {
@@ -397,6 +408,22 @@ def copy_source_codepoint(source, source_codepoint: int, target, target_char: st
     glyph.width = int(round((xmax - xmin) + 120))
 
 
+def fit_glyph(font, char: str, max_width: float = 720, max_height: float = 560) -> None:
+    glyph = font[ord(char)]
+    xmin, ymin, xmax, ymax = glyph.boundingBox()
+    width = xmax - xmin
+    height = ymax - ymin
+    if width <= 0 or height <= 0:
+        return
+    scale = min(max_width / width, max_height / height, 1.0)
+    glyph.transform(psMat.translate(-xmin, -ymin))
+    glyph.transform(psMat.scale(scale))
+    glyph.round()
+    xmin, ymin, xmax, _ymax = glyph.boundingBox()
+    glyph.transform(psMat.translate(60 - xmin, 90 - ymin))
+    glyph.width = int(round((xmax - xmin) + 120))
+
+
 def import_svg_to_key(font, char: str, svg_path: str, scale_factor: float = 1.0) -> None:
     glyph = font.createChar(ord(char), char)
     glyph.clear()
@@ -424,6 +451,10 @@ def rename_files() -> None:
         new_path = FONT_DIR / new
         if old_path.exists() and not new_path.exists():
             old_path.rename(new_path)
+    for filename in OBSOLETE_FONTS:
+        path = FONT_DIR / filename
+        if path.exists():
+            path.unlink()
 
 
 def preserve_serabit_light() -> None:
@@ -485,6 +516,43 @@ def embolden_char(font, char: str, amount: int) -> None:
     glyph.stroke("circular", amount)
     glyph.removeOverlap()
     glyph.simplify()
+
+
+def contour_bbox(contour) -> tuple[float, float, float, float]:
+    xs = [point.x for point in contour]
+    ys = [point.y for point in contour]
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+def bbox_contains(outer: tuple[float, float, float, float], inner: tuple[float, float, float, float]) -> bool:
+    ox1, oy1, ox2, oy2 = outer
+    ix1, iy1, ix2, iy2 = inner
+    return ox1 <= ix1 and oy1 <= iy1 and ox2 >= ix2 and oy2 >= iy2
+
+
+def bbox_area(bbox: tuple[float, float, float, float]) -> float:
+    x1, y1, x2, y2 = bbox
+    return max(0.0, x2 - x1) * max(0.0, y2 - y1)
+
+
+def fill_hollow_components(font) -> None:
+    for glyph in font.glyphs():
+        if glyph.unicode < 0 or glyph.glyphname == ".notdef" or not glyph.isWorthOutputting():
+            continue
+        layer = glyph.foreground.dup()
+        bboxes = [contour_bbox(contour) for contour in layer]
+        drop = set()
+        for index, bbox in enumerate(bboxes):
+            for other_index, other_bbox in enumerate(bboxes):
+                if index == other_index:
+                    continue
+                if bbox_area(other_bbox) > bbox_area(bbox) and bbox_contains(other_bbox, bbox):
+                    drop.add(index)
+                    break
+        for index in sorted(drop, reverse=True):
+            del layer[index]
+        glyph.foreground = layer
+        glyph.round()
 
 
 def repair_egyptian_tail(font) -> None:
@@ -616,37 +684,55 @@ def main() -> int:
         repair_egyptian_tail(fonts[EGYPTIAN_FONT])
 
     replacements: list[tuple[str, str, str, str]] = []
-    if "04-bc15c-proto-sinaitic-generic-b.ttf" in fonts:
-        generic_upper = fonts["04-bc15c-proto-sinaitic-generic-b.ttf"]
-        copy_glyph(generic_upper, "g", generic_upper, "s")
-        copy_glyph(generic_upper, "S", generic_upper, "g")
+    if "04-bc15c-proto-sinaitic-15th-century-e.ttf" in fonts:
+        generic_upper = fonts["04-bc15c-proto-sinaitic-15th-century-e.ttf"]
+        copy_glyph(generic_upper, "g", generic_upper, "d")
+        copy_glyph(fonts["04-bc15c-proto-sinaitic-15th-century-b.ttf"], "g", generic_upper, "g")
         replacements.append(
             (
-                "04-bc15c-proto-sinaitic-generic-b.ttf",
-                "s",
-                "04-bc15c-proto-sinaitic-generic-b.ttf",
+                "04-bc15c-proto-sinaitic-15th-century-e.ttf",
+                "d",
+                "04-bc15c-proto-sinaitic-15th-century-e.ttf",
                 "g",
             )
         )
         replacements.append(
             (
-                "04-bc15c-proto-sinaitic-generic-b.ttf",
+                "04-bc15c-proto-sinaitic-15th-century-e.ttf",
                 "g",
-                "04-bc15c-proto-sinaitic-generic-b.ttf",
-                "S",
+                "04-bc15c-proto-sinaitic-15th-century-b.ttf",
+                "g",
             )
         )
+
+    source_fonts: dict[str, object] = {}
+    if WADI_FONT in fonts:
+        source_name = "fonts/proto-sinaitic-15.ttf"
+        source_fonts[source_name] = fontforge.open(str(ROOT / source_name))
+        source_fonts[source_name].encoding = "UnicodeFull"
+        copy_glyph(source_fonts[source_name], "s", fonts[WADI_FONT], "d")
+        fit_glyph(fonts[WADI_FONT], "d")
+        replacements.append((WADI_FONT, "d", source_name, "s"))
+    if SERABIT_FONT in fonts:
+        source_name = "fonts/proto-sinaitic-other.ttf"
+        source_fonts[source_name] = fontforge.open(str(ROOT / source_name))
+        source_fonts[source_name].encoding = "UnicodeFull"
+        copy_glyph(source_fonts[source_name], "s", fonts[SERABIT_FONT], "d")
+        fit_glyph(fonts[SERABIT_FONT], "d")
+        replacements.append((SERABIT_FONT, "d", source_name, "s"))
+
     for (filename, char), (source_name, source_char) in GLYPH_REPLACEMENTS.items():
         if filename in fonts and source_name in fonts:
             copy_glyph(fonts[source_name], source_char, fonts[filename], char)
-            if filename in BOLDEN_FONTS and original_versions.get(filename) in {"1.2", REPAIR_VERSION}:
-                embolden_char(fonts[filename], char, 24)
             replacements.append((filename, char, source_name, source_char))
 
     for (filename, char), (svg_path, scale_factor) in SVG_REPLACEMENTS.items():
         if filename in fonts:
             import_svg_to_key(fonts[filename], char, svg_path, scale_factor)
             replacements.append((filename, char, svg_path, "svg"))
+
+    if WADI_FONT in fonts:
+        fill_hollow_components(fonts[WADI_FONT])
 
     for filename in filenames:
         font = fonts[filename]
@@ -655,13 +741,15 @@ def main() -> int:
             if key == source_char:
                 continue
             copy_glyph(font, source_char, font, key)
-        if filename in BOLDEN_FONTS and original_versions.get(filename) not in {"1.2", REPAIR_VERSION}:
+        if filename in BOLDEN_FONTS and not str(original_versions.get(filename, "")).startswith("1."):
             embolden(font, 24)
         update_metadata(font, filename)
         prune_to_key_layer(font, {ord(key) for key in key_to_hebrew} | {ord(" "), 0, 13})
 
     for filename, font in fonts.items():
         font.generate(str(FONT_DIR / filename))
+        font.close()
+    for font in source_fonts.values():
         font.close()
 
     write_readme(substitutions, replacements)
