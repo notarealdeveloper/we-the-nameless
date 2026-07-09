@@ -234,12 +234,28 @@ Wadi has an incorrect:
 6. Don't call isaiah scroll paleo-hebrew in the fonts dir, call it dead-sea-scrolls or whatever.
 
 # PROMPT 10
-# (CURRENT PROMPT)
 
 1. Unbold the egyptian font.
 2. Replace all hollow glyphs with their filled-in counterparts, generate as needed.
 3. Scale wadi's aleph up a bit, it's too small.
 4. Your egyptian c,q,r,s,t are still wrong, make them match the others in terms of ancestry, this is the correct order: egypt{𓃾𓉐𓌙𓆟𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢𓈖𓆓𓊽𓁹𓂋𓇑𓎗𓁶𓌔𓏴}
+
+# PROMPT 11
+# (CURRENT PROMPT)
+
+1. Your Tsade for Egyptian is a variant of P, the corner one, delete it.
+2. Your Samek for proto sinaitic variant lower is a fish, make it a samekh of the gezer lower variety.
+3. Your Gimel for proto sinaitic variant upper is wrong, take the symbol there and put it in Shin for the same font, and move the fish you have in samekh to G slot, and fill the samekh slot with gezer upper's samekh.
+4. Rename the serabit font to serabit light, and rename the bold serabit to the current name of the serabit regular font.
+5. You used to have better and more various Ayins, look in the file fonts-proto-sinaitic-generic/Proto-semiticO-01.svg and fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-O.svg and fill in the missing ayins in the wadi font and the proto sinaitic variant lower font. You're also missing ayin in the proto canaanity fonts, fill it in with something realistic, you may have luck with the fonts-proto-sinaitic-generic/Timna-0.png files.
+6. Wadi el hol's "Pe" should be fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-P02.svg
+7. Gezer is missing Gimel, He, Teth, Nun, and Ayin. Fill it in with Tel Zayit's versions of those letters. In the case of Ayin, both are missing Ayin, so do as instructed above to get the Ayins.
+8. Remove ugaritic from the font-ascii-catalog.png page.
+9. Remove the "light" serabit font that you renamed in item 4 from the font-ascii-catalog.png page.
+10. Your teth for proto sinaitic variant upper is a tsade. Replace it with the lower variant's teth.
+11. Move the serabit lines BELOW the proto-sinatic-variant{lower,upper} lines on font-ascii-catalog.png
+12. Mesha stele font and paleo hebrew standard upper and lower are missing ayin too. Fill them in with the tel dan ayin.
+
 
 EOF
 
