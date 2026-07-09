@@ -241,7 +241,6 @@ Wadi has an incorrect:
 4. Your egyptian c,q,r,s,t are still wrong, make them match the others in terms of ancestry, this is the correct order: egypt{𓃾𓉐𓌙𓆟𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢𓈖𓆓𓊽𓁹𓂋𓇑𓎗𓁶𓌔𓏴}
 
 # PROMPT 11
-# (CURRENT PROMPT)
 
 1. Your Tsade for Egyptian is a variant of P, the corner one, delete it.
 2. Your Samek for proto sinaitic variant lower is a fish, make it a samekh of the gezer lower variety.
@@ -256,6 +255,26 @@ Wadi has an incorrect:
 11. Move the serabit lines BELOW the proto-sinatic-variant{lower,upper} lines on font-ascii-catalog.png
 12. Mesha stele font and paleo hebrew standard upper and lower are missing ayin too. Fill them in with the tel dan ayin.
 
+# PROMPT 12
+
+You got interrupted in the middle of the previous prompt. Here's some remaining work I want you to do.
+
+Use fonts in fonts/ and in the other font* directories to fix the fonts in fonts-master/ as follows:
+
+In fonts-master/
+
+1. You G is a fish (D) for proto sinaitic generic b. Move that G into the D cell.
+2. All your Ayins are now Alephs! I think O is the ascii code for ayin in this transliteration.
+3. Your samekh is a fish for proto sinaitic 15th century a and b. Use those fish glyphs as the Dag (D) glyph for wadi el hol and serabit.
+4. You lost the serabit font from the table! I told you to make what used to be serabit bold the default serabit, and remove the lighter variant from the table. I still want the bold (regular) serabit font in the table!!
+5. All the glyphs in your wadi font are hollow. Keep the same shapes, but fill them in so they don't look hollow.
+6. You 04 fonts should be named more consistently. Just call them 04-bc15c-proto-sinaitic-15th-century-{a,b,c,d,e} to make the names consistent.
+7. Look at the actual glyphs with your eyes if you need to, these mistakes are avoidable if you just look to verify the shapes.
+
+# PROMPT 13
+# (CURRENT PROMPT)
+
+Just regenerate the font pngs and pdfs or whatever you've been updating most recently to show the state of the fonts in fonts-master.
 
 EOF
 

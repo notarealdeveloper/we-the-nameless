@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Look in we-obsidian-vault/6-joshua, and attribute to P anything you find attributed to P in that directory, by wrapping those verses in \eP{} and \hP{} in ./06-joshua/*.tex
+EOF
