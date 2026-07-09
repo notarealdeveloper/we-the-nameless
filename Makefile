@@ -12,7 +12,7 @@ export TEXMFVAR := $(CACHE)
 
 .PHONY: all pdf ci view open clean distclean debug progress build-prepare draft c x comment halfcomment uncomment again
 
-all: $(PDF)
+all: $(PDF) open
 
 pdf: $(PDF)
 
