@@ -18,7 +18,7 @@ FONT_DIR = ROOT / "fonts-master"
 README = FONT_DIR / "README.md"
 TABLE_KEYS = ["a", "b", "g", "d", "e", "w", "z", "h", "T", "y", "k", "l", "m", "n", "S", "o", "p", "c", "q", "r", "s", "t"]
 MIN_AREA = 10_000
-REPAIR_VERSION = "1.4"
+REPAIR_VERSION = "1.5"
 
 RENAMES = {
     "03-bc15c-proto-sinaitic-variant-a.ttf": "03-bc15c-proto-sinaitic-generic-a.ttf",
@@ -75,6 +75,10 @@ METADATA = {
     "03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf": (
         "WTN Proto Sinaitic Serabit el-Khadim 18th Century BCE",
         "Bold",
+    ),
+    "03-bc18c-proto-sinaitic-serabit-el-khadim-inscription-light.ttf": (
+        "WTN Proto Sinaitic Serabit el-Khadim 18th Century BCE",
+        "Light",
     ),
     "08-bc10c-paleo-hebrew-noto-sans.ttf": ("WTN Paleo Hebrew Noto Sans", "Regular"),
     "14-bc02c-dead-sea-scrolls-isaiah-a.ttf": ("WTN Dead Sea Scrolls Isaiah A", "Regular"),
@@ -215,13 +219,101 @@ GLYPH_REPLACEMENTS = {
         "04-bc15c-proto-sinaitic-15th-century.ttf",
         "q",
     ),
+    ("04-bc15c-proto-sinaitic-generic-a.ttf", "S"): (
+        "08-bc10c-paleo-hebrew-gezer-a.ttf",
+        "S",
+    ),
+    ("04-bc15c-proto-sinaitic-generic-b.ttf", "T"): (
+        "04-bc15c-proto-sinaitic-generic-a.ttf",
+        "T",
+    ),
+    ("04-bc15c-proto-sinaitic-generic-b.ttf", "S"): (
+        "08-bc10c-paleo-hebrew-gezer-b.ttf",
+        "S",
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-a.ttf", "g"): (
+        "08-bc10c-paleo-hebrew-tel-zayit.ttf",
+        "g",
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-a.ttf", "e"): (
+        "08-bc10c-paleo-hebrew-tel-zayit.ttf",
+        "e",
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-a.ttf", "T"): (
+        "08-bc10c-paleo-hebrew-tel-zayit.ttf",
+        "T",
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-a.ttf", "n"): (
+        "08-bc10c-paleo-hebrew-tel-zayit.ttf",
+        "n",
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-b.ttf", "g"): (
+        "08-bc10c-paleo-hebrew-tel-zayit.ttf",
+        "g",
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-b.ttf", "e"): (
+        "08-bc10c-paleo-hebrew-tel-zayit.ttf",
+        "e",
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-b.ttf", "T"): (
+        "08-bc10c-paleo-hebrew-tel-zayit.ttf",
+        "T",
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-b.ttf", "n"): (
+        "08-bc10c-paleo-hebrew-tel-zayit.ttf",
+        "n",
+    ),
+    ("09-bc09c-paleo-hebrew-mesha-stele-a.ttf", "o"): (
+        "09-bc09c-paleo-hebrew-tel-dan-a.ttf",
+        "o",
+    ),
+    ("09-bc09c-paleo-hebrew-mesha-stele-b.ttf", "o"): (
+        "09-bc09c-paleo-hebrew-tel-dan-a.ttf",
+        "o",
+    ),
+    ("09-bc09c-paleo-hebrew-standard-a.ttf", "o"): (
+        "09-bc09c-paleo-hebrew-tel-dan-a.ttf",
+        "o",
+    ),
+    ("09-bc09c-paleo-hebrew-standard-b.ttf", "o"): (
+        "09-bc09c-paleo-hebrew-tel-dan-a.ttf",
+        "o",
+    ),
 }
 
-FILLED_OVAL_GLYPHS = {
-    ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "o"),
-    ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "o"),
-    ("04-bc15c-proto-sinaitic-generic-a.ttf", "o"),
-    ("04-bc15c-proto-sinaitic-generic-b.ttf", "o"),
+SVG_REPLACEMENTS = {
+    ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "o"): (
+        "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-O.svg",
+        1.0,
+    ),
+    ("04-bc15c-proto-sinaitic-generic-a.ttf", "o"): (
+        "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
+        1.0,
+    ),
+    ("06-bc13c-proto-canaanite-a.ttf", "o"): (
+        "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
+        0.78,
+    ),
+    ("06-bc13c-proto-canaanite-b.ttf", "o"): (
+        "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
+        0.78,
+    ),
+    ("07-bc12c-proto-canaanite-izbet-sartah-a.ttf", "o"): (
+        "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
+        0.78,
+    ),
+    ("07-bc12c-proto-canaanite-izbet-sartah-b.ttf", "o"): (
+        "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
+        0.78,
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-a.ttf", "o"): (
+        "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
+        0.72,
+    ),
+    ("08-bc10c-paleo-hebrew-gezer-b.ttf", "o"): (
+        "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
+        0.72,
+    ),
 }
 
 BOLDEN_FONTS = {
@@ -305,12 +397,40 @@ def copy_source_codepoint(source, source_codepoint: int, target, target_char: st
     glyph.width = int(round((xmax - xmin) + 120))
 
 
+def import_svg_to_key(font, char: str, svg_path: str, scale_factor: float = 1.0) -> None:
+    glyph = font.createChar(ord(char), char)
+    glyph.clear()
+    glyph.glyphname = char
+    glyph.unicode = ord(char)
+    glyph.importOutlines(str(ROOT / svg_path))
+    glyph.removeOverlap()
+    glyph.correctDirection()
+    xmin, ymin, xmax, ymax = glyph.boundingBox()
+    width = xmax - xmin
+    height = ymax - ymin
+    if width <= 0 or height <= 0:
+        return
+    scale = min(584 / height, 900 / width) * scale_factor
+    glyph.transform(psMat.scale(scale))
+    glyph.round()
+    xmin, ymin, xmax, _ymax = glyph.boundingBox()
+    glyph.transform(psMat.translate(60 - xmin, 90 - ymin))
+    glyph.width = int(round((xmax - xmin) + 120))
+
+
 def rename_files() -> None:
     for old, new in RENAMES.items():
         old_path = FONT_DIR / old
         new_path = FONT_DIR / new
         if old_path.exists() and not new_path.exists():
             old_path.rename(new_path)
+
+
+def preserve_serabit_light() -> None:
+    regular = FONT_DIR / "03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf"
+    light = FONT_DIR / "03-bc18c-proto-sinaitic-serabit-el-khadim-inscription-light.ttf"
+    if regular.exists() and not light.exists():
+        shutil.copy2(regular, light)
 
 
 def update_metadata(font, filename: str) -> None:
@@ -452,7 +572,7 @@ def write_readme(
         [
             "| `01-bc32c-egyptian-hieroglyphs-noto-sans.ttf` | `c` `q` `r` `s` `t` | צ ק ר ש ת | original Noto Egyptian signs | corrected ancestry order after deleting the extra Pe candidate |",
             "",
-            "The outlined Proto-Sinaitic ayin forms in Wadi el-Hol, Serabit el-Khadim, and the generic Proto-Sinaitic rows were converted to generated filled ovals so the table no longer mixes hollow outline glyphs with filled inscriptional glyphs.",
+            "Several missing or weak ayin forms were replaced from local Proto-Sinaitic SVG drawings or the Tel Dan ayin, as listed above.",
             "",
             "The Serabit el-Khadim and Wadi el-Hol inscription fonts were also emboldened after substitution so their row weight matches the other Proto-Sinaitic comparison fonts more closely.",
             "",
@@ -467,6 +587,7 @@ def main() -> int:
     master_for_hebrew = {alphabet.HEBREW_BY_NAME[name]: key for key, name in alphabet.MASTER_ASCII.items()}
 
     rename_files()
+    preserve_serabit_light()
     filenames = [path.name for path in font_files()]
     fonts = {path.name: fontforge.open(str(path)) for path in font_files()}
     original_versions = {name: getattr(font, "version", "") for name, font in fonts.items()}
@@ -495,6 +616,26 @@ def main() -> int:
         repair_egyptian_tail(fonts[EGYPTIAN_FONT])
 
     replacements: list[tuple[str, str, str, str]] = []
+    if "04-bc15c-proto-sinaitic-generic-b.ttf" in fonts:
+        generic_upper = fonts["04-bc15c-proto-sinaitic-generic-b.ttf"]
+        copy_glyph(generic_upper, "g", generic_upper, "s")
+        copy_glyph(generic_upper, "S", generic_upper, "g")
+        replacements.append(
+            (
+                "04-bc15c-proto-sinaitic-generic-b.ttf",
+                "s",
+                "04-bc15c-proto-sinaitic-generic-b.ttf",
+                "g",
+            )
+        )
+        replacements.append(
+            (
+                "04-bc15c-proto-sinaitic-generic-b.ttf",
+                "g",
+                "04-bc15c-proto-sinaitic-generic-b.ttf",
+                "S",
+            )
+        )
     for (filename, char), (source_name, source_char) in GLYPH_REPLACEMENTS.items():
         if filename in fonts and source_name in fonts:
             copy_glyph(fonts[source_name], source_char, fonts[filename], char)
@@ -502,9 +643,10 @@ def main() -> int:
                 embolden_char(fonts[filename], char, 24)
             replacements.append((filename, char, source_name, source_char))
 
-    for filename, char in FILLED_OVAL_GLYPHS:
+    for (filename, char), (svg_path, scale_factor) in SVG_REPLACEMENTS.items():
         if filename in fonts:
-            replace_with_filled_oval(fonts[filename], char)
+            import_svg_to_key(fonts[filename], char, svg_path, scale_factor)
+            replacements.append((filename, char, svg_path, "svg"))
 
     for filename in filenames:
         font = fonts[filename]

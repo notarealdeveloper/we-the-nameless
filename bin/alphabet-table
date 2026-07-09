@@ -38,12 +38,18 @@ def tex_escape(value: str) -> str:
 
 
 def font_files(font_dir: Path) -> list[str]:
-    return [
+    fonts = [
         path.name
         for path in sorted(font_dir.iterdir())
         if path.suffix.lower() in {".ttf", ".otf"}
         and not any(term in path.name.lower() for term in FONT_EXCLUDE)
     ]
+    return sorted(
+        fonts,
+        key=lambda name: "04-bc15c-proto-sinaitic-generic-z.ttf"
+        if "serabit-el-khadim-inscription" in name
+        else name,
+    )
 
 
 def draw_pdf(font_dir: Path, fonts: list[str], output: Path) -> None:

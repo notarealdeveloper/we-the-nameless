@@ -41,7 +41,18 @@ table_w=$((label_w + (${#keys[@]} * cell_w)))
 
 rows=()
 i=0
-for font in "$font_dir"/*.{ttf,otf}; do
+mapfile -t font_files < <(
+  find "$font_dir" -maxdepth 1 -type f \( -name '*.ttf' -o -name '*.otf' \) |
+    awk '
+      /ugaritic/ || /-light[.]ttf$/ || /-light[.]otf$/ { next }
+      /serabit-el-khadim-inscription/ { print "04.9 " $0; next }
+      { print "00.0 " $0 }
+    ' |
+    sort -k1,1 -k2,2 |
+    cut -d" " -f2-
+)
+
+for font in "${font_files[@]}"; do
   [[ -e "$font" ]] || continue
   base="$(basename "$font")"
   i=$((i + 1))

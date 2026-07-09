@@ -89,7 +89,7 @@ FONTS = [
             "mem": "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-M02.svg",
             "nun": "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-N01.svg",
             "ayin": "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-O.svg",
-            "pe": "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-P01.svg",
+            "pe": "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-P02.svg",
             "resh": "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-R011.svg",
             "shin": "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-Š.svg",
             "taw": "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-T.svg",
