@@ -45,7 +45,6 @@ mapfile -t font_files < <(
   find "$font_dir" -maxdepth 1 -type f \( -name '*.ttf' -o -name '*.otf' \) |
     awk '
       /ugaritic/ || /-light[.]ttf$/ || /-light[.]otf$/ { next }
-      /serabit-el-khadim-inscription/ { print "04.9 " $0; next }
       { print "00.0 " $0 }
     ' |
     sort -k1,1 -k2,2 |
