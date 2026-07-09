@@ -11,6 +11,7 @@ from pathlib import Path
 
 import fontforge
 import psMat
+from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -173,6 +174,14 @@ GLYPH_REPLACEMENTS = {
         "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "n",
     ),
+    ("04-bc15c-proto-sinaitic-15th-century-a.ttf", "o"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+        "o",
+    ),
+    ("04-bc15c-proto-sinaitic-15th-century-b.ttf", "o"): (
+        "04-bc15c-proto-sinaitic-15th-century-c.ttf",
+        "o",
+    ),
     ("03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf", "T"): (
         "04-bc15c-proto-sinaitic-15th-century-c.ttf",
         "T",
@@ -292,10 +301,6 @@ SVG_REPLACEMENTS = {
         "fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-O.svg",
         1.0,
     ),
-    ("04-bc15c-proto-sinaitic-15th-century-d.ttf", "o"): (
-        "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
-        1.0,
-    ),
     ("06-bc13c-proto-canaanite-a.ttf", "o"): (
         "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
         0.78,
@@ -319,6 +324,13 @@ SVG_REPLACEMENTS = {
     ("08-bc10c-paleo-hebrew-gezer-b.ttf", "o"): (
         "fonts-proto-sinaitic-generic/Proto-semiticO-01.svg",
         0.72,
+    ),
+}
+
+BITMAP_REPLACEMENTS = {
+    ("02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf", "h"): (
+        "fonts-proto-sinaitic-serabit/Serabit-El-Khadim-Ḥ362.svg.webp",
+        0.84,
     ),
 }
 
@@ -438,6 +450,118 @@ def import_svg_to_key(font, char: str, svg_path: str, scale_factor: float = 1.0)
     if width <= 0 or height <= 0:
         return
     scale = min(584 / height, 900 / width) * scale_factor
+    glyph.transform(psMat.scale(scale))
+    glyph.round()
+    xmin, ymin, xmax, _ymax = glyph.boundingBox()
+    glyph.transform(psMat.translate(60 - xmin, 90 - ymin))
+    glyph.width = int(round((xmax - xmin) + 120))
+
+
+def bitmap_boundary_loops(mask: list[list[bool]]) -> list[list[tuple[int, int]]]:
+    height = len(mask)
+    width = len(mask[0]) if height else 0
+    edges: dict[tuple[int, int], list[tuple[int, int]]] = {}
+
+    def filled(x: int, y: int) -> bool:
+        return 0 <= x < width and 0 <= y < height and mask[y][x]
+
+    def add_edge(start: tuple[int, int], end: tuple[int, int]) -> None:
+        edges.setdefault(start, []).append(end)
+
+    for y in range(height):
+        for x in range(width):
+            if not mask[y][x]:
+                continue
+            if not filled(x, y - 1):
+                add_edge((x, y), (x + 1, y))
+            if not filled(x + 1, y):
+                add_edge((x + 1, y), (x + 1, y + 1))
+            if not filled(x, y + 1):
+                add_edge((x + 1, y + 1), (x, y + 1))
+            if not filled(x - 1, y):
+                add_edge((x, y + 1), (x, y))
+
+    loops = []
+    while edges:
+        start = next(iter(edges))
+        current = start
+        loop = [start]
+        while True:
+            next_points = edges.get(current)
+            if not next_points:
+                break
+            next_point = next_points.pop()
+            if not next_points:
+                del edges[current]
+            current = next_point
+            if current == start:
+                break
+            loop.append(current)
+        if len(loop) >= 3 and current == start:
+            loops.append(simplify_orthogonal_loop(loop))
+    return loops
+
+
+def simplify_orthogonal_loop(loop: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    changed = True
+    simplified = loop
+    while changed and len(simplified) > 3:
+        changed = False
+        result = []
+        count = len(simplified)
+        for index, point in enumerate(simplified):
+            prev_point = simplified[(index - 1) % count]
+            next_point = simplified[(index + 1) % count]
+            if (
+                (prev_point[0] == point[0] == next_point[0])
+                or (prev_point[1] == point[1] == next_point[1])
+            ):
+                changed = True
+                continue
+            result.append(point)
+        simplified = result
+    return simplified
+
+
+def import_bitmap_alpha_to_key(font, char: str, image_path: str, scale_factor: float = 1.0) -> None:
+    image = Image.open(ROOT / image_path).convert("RGBA")
+    alpha = image.getchannel("A")
+    bbox = alpha.getbbox()
+    if bbox is None:
+        return
+
+    alpha = alpha.crop(bbox)
+    target_height = 220
+    scale = target_height / alpha.height
+    target_width = max(1, int(round(alpha.width * scale)))
+    alpha = alpha.resize((target_width, target_height), Image.Resampling.LANCZOS)
+    threshold = 72
+    mask = [[alpha.getpixel((x, y)) > threshold for x in range(alpha.width)] for y in range(alpha.height)]
+    loops = bitmap_boundary_loops(mask)
+    if not loops:
+        return
+
+    glyph = font.createChar(ord(char), char)
+    glyph.clear()
+    glyph.glyphname = char
+    glyph.unicode = ord(char)
+    pen = glyph.glyphPen()
+    height = alpha.height
+    for loop in loops:
+        first_x, first_y = loop[0]
+        pen.moveTo((first_x, height - first_y))
+        for x, y in loop[1:]:
+            pen.lineTo((x, height - y))
+        pen.closePath()
+
+    glyph.removeOverlap()
+    glyph.correctDirection()
+    xmin, ymin, xmax, ymax = glyph.boundingBox()
+    width = xmax - xmin
+    glyph_height = ymax - ymin
+    if width <= 0 or glyph_height <= 0:
+        return
+    scale = min(584 / glyph_height, 900 / width) * scale_factor
     glyph.transform(psMat.scale(scale))
     glyph.round()
     xmin, ymin, xmax, _ymax = glyph.boundingBox()
@@ -733,6 +857,11 @@ def main() -> int:
 
     if WADI_FONT in fonts:
         fill_hollow_components(fonts[WADI_FONT])
+
+    for (filename, char), (image_path, scale_factor) in BITMAP_REPLACEMENTS.items():
+        if filename in fonts:
+            import_bitmap_alpha_to_key(fonts[filename], char, image_path, scale_factor)
+            replacements.append((filename, char, image_path, "bitmap alpha"))
 
     for filename in filenames:
         font = fonts[filename]

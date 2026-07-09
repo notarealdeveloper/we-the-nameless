@@ -26,6 +26,8 @@ The following glyphs existed but were judged historically or visually wrong for 
 | `02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf` | `S` | ס | `04-bc15c-proto-sinaitic-15th-century-c.ttf` | `S` |
 | `02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf` | `c` | צ | `04-bc15c-proto-sinaitic-15th-century-c.ttf` | `c` |
 | `02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf` | `n` | נ | `04-bc15c-proto-sinaitic-15th-century-c.ttf` | `n` |
+| `04-bc15c-proto-sinaitic-15th-century-a.ttf` | `o` | ע | `04-bc15c-proto-sinaitic-15th-century-c.ttf` | `o` |
+| `04-bc15c-proto-sinaitic-15th-century-b.ttf` | `o` | ע | `04-bc15c-proto-sinaitic-15th-century-c.ttf` | `o` |
 | `03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf` | `T` | ט | `04-bc15c-proto-sinaitic-15th-century-c.ttf` | `T` |
 | `03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf` | `z` | ז | `04-bc15c-proto-sinaitic-15th-century-c.ttf` | `z` |
 | `03-bc18c-proto-sinaitic-serabit-el-khadim-inscription.ttf` | `o` | ע | `04-bc15c-proto-sinaitic-15th-century-c.ttf` | `o` |
@@ -55,13 +57,13 @@ The following glyphs existed but were judged historically or visually wrong for 
 | `09-bc09c-paleo-hebrew-standard-a.ttf` | `o` | ע | `09-bc09c-paleo-hebrew-tel-dan-a.ttf` | `o` |
 | `09-bc09c-paleo-hebrew-standard-b.ttf` | `o` | ע | `09-bc09c-paleo-hebrew-tel-dan-a.ttf` | `o` |
 | `02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf` | `o` | ע | `fonts-proto-sinaitic-wadi-el-hol/Wadi_el-hol-O.svg` | `svg` |
-| `04-bc15c-proto-sinaitic-15th-century-d.ttf` | `o` | ע | `fonts-proto-sinaitic-generic/Proto-semiticO-01.svg` | `svg` |
 | `06-bc13c-proto-canaanite-a.ttf` | `o` | ע | `fonts-proto-sinaitic-generic/Proto-semiticO-01.svg` | `svg` |
 | `06-bc13c-proto-canaanite-b.ttf` | `o` | ע | `fonts-proto-sinaitic-generic/Proto-semiticO-01.svg` | `svg` |
 | `07-bc12c-proto-canaanite-izbet-sartah-a.ttf` | `o` | ע | `fonts-proto-sinaitic-generic/Proto-semiticO-01.svg` | `svg` |
 | `07-bc12c-proto-canaanite-izbet-sartah-b.ttf` | `o` | ע | `fonts-proto-sinaitic-generic/Proto-semiticO-01.svg` | `svg` |
 | `08-bc10c-paleo-hebrew-gezer-a.ttf` | `o` | ע | `fonts-proto-sinaitic-generic/Proto-semiticO-01.svg` | `svg` |
 | `08-bc10c-paleo-hebrew-gezer-b.ttf` | `o` | ע | `fonts-proto-sinaitic-generic/Proto-semiticO-01.svg` | `svg` |
+| `02-bc19c-proto-sinaitic-wadi-el-hol-inscription.ttf` | `h` | ח | `fonts-proto-sinaitic-serabit/Serabit-El-Khadim-Ḥ362.svg.webp` | `bitmap alpha` |
 | `01-bc32c-egyptian-hieroglyphs-noto-sans.ttf` | `c` `q` `r` `s` `t` | צ ק ר ש ת | original Noto Egyptian signs | corrected ancestry order after deleting the extra Pe candidate |
 
 Several missing or weak ayin forms were replaced from local Proto-Sinaitic SVG drawings or the Tel Dan ayin, as listed above.
