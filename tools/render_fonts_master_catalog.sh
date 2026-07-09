@@ -29,9 +29,9 @@ XML
 export FONTCONFIG_FILE="$fontconfig_file"
 fc-cache -f "$font_dir" >/dev/null
 
-labels=(aleph bet gimel dalet he waw zayin het tet yod kaf lamed mem nun samekh ayin pe tsade qof resh shin taw)
+labels=(aleph bet gimel dalet he waw zayin heth tet yod kaf lamed mem nun samekh ayin pe tsade qof resh shin taw)
 hebrew=(א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת)
-keys=(a b g d h w z H T y k l m n S A p c q r s t)
+keys=(a b g d e w z h T y k l m n S o p c q r s t)
 
 label_w=720
 cell_w=88

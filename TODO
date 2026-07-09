@@ -274,7 +274,13 @@ In fonts-master/
 # PROMPT 13
 # (CURRENT PROMPT)
 
-Just regenerate the font pngs and pdfs or whatever you've been updating most recently to show the state of the fonts in fonts-master.
+Your ayins are ALL alephs and your He's are all Heths.
+
+You're making some incorrect assumption about the transliteration.
+
+I'm guessing Ayin should be O and He should be E. Try that.
+
+Then regenerate the font pngs and pdfs or whatever you've been updating most recently to show the state of the fonts in fonts-master.
 
 EOF
 
