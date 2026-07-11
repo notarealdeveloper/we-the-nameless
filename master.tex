@@ -2229,6 +2229,8 @@
 \VerseLineBreakHorizontalPenalty=-700
 \VerseLineBreakVerticalPenalty=-50
 
+% TeX reads a control word through the next nonletter, so use this as
+% `\nl` followed by source whitespace or another delimiter.
 \newcommand{\nl}{%
     \ifhmode
         \unskip
