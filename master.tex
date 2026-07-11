@@ -2224,6 +2224,27 @@
 \def\englishsize{\normalsize}
 \def\hebrewsize{\normalsize}
 
+\newcount\VerseLineBreakHorizontalPenalty
+\newcount\VerseLineBreakVerticalPenalty
+\VerseLineBreakHorizontalPenalty=-700
+\VerseLineBreakVerticalPenalty=-50
+
+\newcommand{\nl}{%
+    \ifhmode
+        \unskip
+        \ifConfigVerseLayoutVertical
+            \penalty\VerseLineBreakVerticalPenalty
+        \else
+            \penalty\VerseLineBreakHorizontalPenalty
+        \fi
+        \hskip 0.333em plus 0.167em minus 0.111em\relax
+    \else
+        \ifvmode
+            \penalty\VerseLineBreakVerticalPenalty
+        \fi
+    \fi
+}
+
 \newcommand{\VerseEnglishAtWidth}[2]{%
     \begin{minipage}[t]{#1}
         \EnglishFont
