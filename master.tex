@@ -654,8 +654,76 @@
 \section{nav: language}
 \fi
 
+\newcommand{\QereKetivInline}[1]{\mbox{\textdir TRT#1}}
+
 \directlua{
   paleotex = paleotex or {}
+
+  local tab = string.char(9)
+  local newline = string.char(10)
+
+  local function is_space(c)
+    return c == " " or c == tab or c == newline
+  end
+
+  local mirrored_bracket = {
+    ["("] = ")",
+    [")"] = "(",
+    ["["] = "]",
+    ["]"] = "[",
+  }
+
+  local function mirror_ascii_brackets(s)
+    local out = {}
+    for i = 1, string.len(s) do
+      local c = s:sub(i, i)
+      table.insert(out, mirrored_bracket[c] or c)
+    end
+    return table.concat(out)
+  end
+
+  local function protect_bracket_pair(s, first_open, first_close, second_open, second_close)
+    s = tostring(s)
+    local out = {}
+    local i = 1
+    local s_len = string.len(s)
+    while i <= s_len do
+      local first_start = s:find(first_open, i, true)
+      if not first_start then
+        table.insert(out, s:sub(i))
+        break
+      end
+      local first_end = s:find(first_close, first_start + 1, true)
+      if not first_end then
+        table.insert(out, s:sub(i))
+        break
+      end
+      local second_start = first_end + 1
+      while second_start <= s_len and is_space(s:sub(second_start, second_start)) do
+        second_start = second_start + 1
+      end
+      if second_start == first_end + 1 or s:sub(second_start, second_start) ~= second_open then
+        table.insert(out, s:sub(i, first_start))
+        i = first_start + 1
+      else
+        local second_end = s:find(second_close, second_start + 1, true)
+        if not second_end then
+          table.insert(out, s:sub(i))
+          break
+        end
+        table.insert(out, s:sub(i, first_start - 1))
+        table.insert(out, "\\QereKetivInline{" .. mirror_ascii_brackets(s:sub(first_start, second_end)) .. "}")
+        i = second_end + 1
+      end
+    end
+    return table.concat(out)
+  end
+
+  function paleotex.protect_qere_ketiv(s)
+    s = protect_bracket_pair(s, "(", ")", "[", "]")
+    s = protect_bracket_pair(s, "[", "]", "(", ")")
+    return s
+  end
 
   local function is_hebrew_mark(code)
     return (code >= 0x0591 and code <= 0x05BD)
@@ -672,7 +740,7 @@
         table.insert(out, utf8.char(code))
       end
     end
-    return table.concat(out)
+    return paleotex.protect_qere_ketiv(table.concat(out))
   end
 
   local paleo_ascii = {
@@ -866,6 +934,10 @@
   \directlua{tex.sprint(strip_hebrew_niqqud("\luaescapestring{\detokenize{#1}}"))}%
 }
 
+\newcommand{\HebrewRaw}[1]{%
+  \directlua{tex.sprint(paleotex.protect_qere_ketiv("\luaescapestring{\detokenize{#1}}"))}%
+}
+
 \newcommand{\HebrewToPaleoASCII}[1]{%
   \directlua{tex.sprint(hebrew_to_paleo_ascii("\luaescapestring{\detokenize{#1}}"))}%
 }
@@ -883,7 +955,7 @@
 }
 
 \newcommand{\EncodeHebrewNoNiqqud}[1]{\HebrewNoNiqqud{#1}}
-\newcommand{\EncodeHebrewRaw}[1]{#1}
+\newcommand{\EncodeHebrewRaw}[1]{\HebrewRaw{#1}}
 \newcommand{\EncodePaleoASCII}[1]{\HebrewToPaleoASCII{#1}}
 \newcommand{\EncodePaleoUnicode}[1]{\HebrewForPaleoUnicode{#1}}
 \newcommand{\EncodeProtoA}[1]{\EncodeASCIIVariant{proto_a}{#1}}
