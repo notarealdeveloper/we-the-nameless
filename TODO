@@ -3,10 +3,8 @@
 lord --verbose << "EOF"
 1. Unbold the Deuteronomist in the source legend where it says "Deuteronomists. The later Mushite tradition." etc. No one else on that page is bold. Keep the priests bold elsewhere, but not here, because we haven't explained that yet.
 
-2. The font currently used for Genesis 49 (Blessing of Jacob) renders the first two words of the chapter as 'BQ]Y ARQYw'. I had to manually set ] to Ayin in that font in order to get it to spell 'Jacob' correctly. Can we fix this at the renderer level? What's the right way to fix this for ALL fonts in fonts-new?
+2. Make Judges 5 use one of the proto sinaitic fonts.
 
-3. Make Judges 5 use Serabit proto sinaitic font.
-
-3. Attempt to migrate the book from using the unprefixed fonts in fonts/ (the ones linked to fonts-old) to the prefixed ones in fonts/ (the ones linked to fonts-new). When there's no corresponding font in fonts-new (e.g., for Chinese and other non-semitic fonts, that is, ones not in the egyptian -> proto sinaitic -> proto canaanite -> paleo hebrew -> aramaic -> hebrew pipeline) then it's ok to keep using the old font. But migrate as much as you can to the fonts in fonts-new.
+3. Make Deuteronomy 33 use one of the proto sinaitic fonts.
 EOF
 
