@@ -1,0 +1,348 @@
+# Qere Ketiv Verses
+
+Total: 344
+
+- Genesis 8:17
+- Genesis 14:2
+- Genesis 14:8
+- Genesis 24:33
+- Genesis 25:23
+- Genesis 27:3
+- Genesis 27:29
+- Genesis 30:11
+- Genesis 36:5
+- Genesis 36:14
+- Genesis 39:20
+- Genesis 43:28
+- Exodus 4:2
+- Exodus 16:2
+- Exodus 16:7
+- Exodus 21:8
+- Exodus 37:8
+- Exodus 39:4
+- Leviticus 11:21
+- Leviticus 21:5
+- Leviticus 25:30
+- Numbers 1:16
+- Numbers 14:36
+- Numbers 16:11
+- Numbers 21:32
+- Numbers 23:13
+- Numbers 26:9
+- Numbers 32:7
+- Numbers 34:4
+- Deuteronomy 5:10
+- Deuteronomy 21:7
+- Deuteronomy 28:27
+- Deuteronomy 28:30
+- Deuteronomy 29:22
+- Deuteronomy 32:13
+- Deuteronomy 33:2
+- Joshua 2:13
+- Joshua 3:16
+- Joshua 4:18
+- Joshua 5:1
+- Joshua 6:5
+- Joshua 6:7
+- Joshua 6:9
+- Joshua 6:13
+- Joshua 7:21
+- Joshua 8:16
+- Joshua 9:7
+- Joshua 15:4
+- Joshua 15:47
+- Joshua 15:53
+- Joshua 15:63
+- Joshua 18:12
+- Joshua 18:14
+- Joshua 18:19
+- Joshua 18:24
+- Joshua 19:22
+- Joshua 19:29
+- Joshua 20:8
+- Joshua 21:27
+- Joshua 22:7
+- Joshua 24:3
+- Joshua 24:8
+- Joshua 24:15
+- Judges 1:27
+- Judges 4:11
+- Judges 6:5
+- Judges 7:21
+- Judges 9:8
+- Judges 9:12
+- Judges 11:37
+- Judges 13:17
+- Judges 16:18
+- Judges 16:21
+- Judges 16:25
+- Judges 16:26
+- Judges 17:2
+- Judges 19:3
+- Judges 19:21
+- Judges 19:25
+- Judges 21:20
+- Judges 21:22
+- 1 Samuel 2:3
+- 1 Samuel 2:16
+- 1 Samuel 4:13
+- 1 Samuel 5:6
+- 1 Samuel 5:9
+- 1 Samuel 5:12
+- 1 Samuel 6:4
+- 1 Samuel 6:5
+- 1 Samuel 7:9
+- 1 Samuel 9:1
+- 1 Samuel 9:26
+- 1 Samuel 10:7
+- 1 Samuel 11:6
+- 1 Samuel 11:9
+- 1 Samuel 12:10
+- 1 Samuel 13:8
+- 1 Samuel 13:19
+- 1 Samuel 14:27
+- 1 Samuel 14:32
+- 1 Samuel 15:16
+- 1 Samuel 17:7
+- 1 Samuel 17:23
+- 1 Samuel 18:1
+- 1 Samuel 18:6
+- 1 Samuel 18:9
+- 1 Samuel 19:18
+- 1 Samuel 19:19
+- 1 Samuel 19:22
+- 1 Samuel 19:23
+- 1 Samuel 20:1
+- 1 Samuel 20:2
+- 1 Samuel 20:24
+- 1 Samuel 20:38
+- 1 Samuel 22:15
+- 1 Samuel 22:17
+- 1 Samuel 22:18
+- 1 Samuel 22:22
+- 1 Samuel 24:5
+- 1 Samuel 24:9
+- 1 Samuel 24:19
+- 1 Samuel 25:3
+- 1 Samuel 25:18
+- 1 Samuel 25:34
+- 1 Samuel 26:22
+- 1 Samuel 27:4
+- 1 Samuel 27:8
+- 1 Samuel 28:8
+- 2 Samuel 1:8
+- 2 Samuel 1:16
+- 2 Samuel 3:2
+- 2 Samuel 3:3
+- 2 Samuel 3:15
+- 2 Samuel 3:25
+- 2 Samuel 5:2
+- 2 Samuel 5:8
+- 2 Samuel 5:24
+- 2 Samuel 8:3
+- 2 Samuel 10:9
+- 2 Samuel 12:9
+- 2 Samuel 12:22
+- 2 Samuel 12:24
+- 2 Samuel 12:31
+- 2 Samuel 13:8
+- 2 Samuel 13:37
+- 2 Samuel 14:7
+- 2 Samuel 14:11
+- 2 Samuel 14:22
+- 2 Samuel 14:30
+- 2 Samuel 15:8
+- 2 Samuel 15:20
+- 2 Samuel 15:28
+- 2 Samuel 16:2
+- 2 Samuel 16:10
+- 2 Samuel 16:12
+- 2 Samuel 16:18
+- 2 Samuel 17:12
+- 2 Samuel 18:3
+- 2 Samuel 18:8
+- 2 Samuel 18:12
+- 2 Samuel 18:13
+- 2 Samuel 19:6
+- 2 Samuel 19:31
+- 2 Samuel 19:40
+- 2 Samuel 20:5
+- 2 Samuel 20:14
+- 2 Samuel 20:23
+- 2 Samuel 20:25
+- 2 Samuel 21:4
+- 2 Samuel 21:6
+- 2 Samuel 21:9
+- 2 Samuel 21:12
+- 2 Samuel 21:16
+- 2 Samuel 21:20
+- 2 Samuel 21:21
+- 2 Samuel 22:8
+- 2 Samuel 22:15
+- 2 Samuel 22:33
+- 2 Samuel 22:34
+- 2 Samuel 22:51
+- 2 Samuel 23:8
+- 2 Samuel 23:9
+- 2 Samuel 23:13
+- 2 Samuel 23:18
+- 2 Samuel 23:20
+- 2 Samuel 23:21
+- 2 Samuel 23:35
+- 2 Samuel 23:37
+- 2 Samuel 24:16
+- 2 Samuel 24:18
+- 1 Kings 1:27
+- 1 Kings 1:37
+- 1 Kings 1:47
+- 1 Kings 2:24
+- 1 Kings 4:7
+- 1 Kings 5:17
+- 1 Kings 6:5
+- 1 Kings 6:6
+- 1 Kings 6:10
+- 1 Kings 6:16
+- 1 Kings 6:21
+- 1 Kings 7:20
+- 1 Kings 7:23
+- 1 Kings 7:36
+- 1 Kings 7:45
+- 1 Kings 8:26
+- 1 Kings 8:48
+- 1 Kings 9:9
+- 1 Kings 9:18
+- 1 Kings 12:3
+- 1 Kings 12:7
+- 1 Kings 12:21
+- 1 Kings 12:33
+- 1 Kings 14:2
+- 1 Kings 14:25
+- 1 Kings 15:15
+- 1 Kings 15:18
+- 1 Kings 16:26
+- 1 Kings 16:34
+- 1 Kings 17:14
+- 1 Kings 17:15
+- 1 Kings 18:36
+- 1 Kings 19:4
+- 1 Kings 20:41
+- 1 Kings 21:8
+- 1 Kings 22:13
+- 1 Kings 22:49
+- 2 Kings 2:16
+- 2 Kings 3:24
+- 2 Kings 4:2
+- 2 Kings 4:3
+- 2 Kings 4:5
+- 2 Kings 4:7
+- 2 Kings 4:16
+- 2 Kings 4:23
+- 2 Kings 5:12
+- 2 Kings 5:25
+- 2 Kings 6:25
+- 2 Kings 7:12
+- 2 Kings 7:13
+- 2 Kings 7:15
+- 2 Kings 8:1
+- 2 Kings 8:10
+- 2 Kings 8:17
+- 2 Kings 9:15
+- 2 Kings 9:33
+- 2 Kings 9:37
+- 2 Kings 10:27
+- 2 Kings 11:1
+- 2 Kings 11:2
+- 2 Kings 11:4
+- 2 Kings 11:9
+- 2 Kings 11:10
+- 2 Kings 11:15
+- 2 Kings 11:20
+- 2 Kings 12:9
+- 2 Kings 12:11
+- 2 Kings 14:2
+- 2 Kings 14:6
+- 2 Kings 14:7
+- 2 Kings 14:13
+- 2 Kings 15:25
+- 2 Kings 16:6
+- 2 Kings 16:15
+- 2 Kings 16:17
+- 2 Kings 16:18
+- 2 Kings 17:13
+- 2 Kings 17:16
+- 2 Kings 17:21
+- 2 Kings 17:31
+- 2 Kings 18:27
+- 2 Kings 19:23
+- 2 Kings 20:4
+- 2 Kings 20:18
+- 2 Kings 21:12
+- 2 Kings 22:5
+- 2 Kings 23:10
+- 2 Kings 23:33
+- 2 Kings 23:36
+- 2 Kings 24:10
+- 2 Kings 24:14
+- 2 Kings 24:15
+- 2 Kings 24:18
+- 2 Kings 25:17
+- Esther 1:16
+- Esther 3:4
+- Esther 4:4
+- Esther 4:7
+- Esther 8:1
+- Esther 8:7
+- Esther 8:13
+- Esther 9:15
+- Esther 9:18
+- Esther 9:19
+- Esther 9:27
+- Esther 10:1
+- Ezra 2:1
+- Ezra 2:46
+- Ezra 2:50
+- Ezra 3:3
+- Ezra 4:2
+- Ezra 4:4
+- Ezra 4:9
+- Ezra 4:11
+- Ezra 4:12
+- Ezra 5:1
+- Ezra 5:12
+- Ezra 5:15
+- Ezra 6:14
+- Ezra 6:17
+- Ezra 7:18
+- Ezra 7:25
+- Ezra 7:26
+- Ezra 8:14
+- Ezra 8:17
+- Ezra 8:25
+- Ezra 10:2
+- Ezra 10:12
+- Ezra 10:29
+- Ezra 10:35
+- Ezra 10:37
+- Ezra 10:43
+- Ezra 10:44
+- Nehemiah 1:9
+- Nehemiah 2:13
+- Nehemiah 3:15
+- Nehemiah 3:20
+- Nehemiah 3:30
+- Nehemiah 3:31
+- Nehemiah 4:7
+- Nehemiah 4:9
+- Nehemiah 5:7
+- Nehemiah 5:9
+- Nehemiah 7:3
+- Nehemiah 7:52
+- Nehemiah 9:6
+- Nehemiah 9:17
+- Nehemiah 10:20
+- Nehemiah 11:17
+- Nehemiah 12:9
+- Nehemiah 12:14
+- Nehemiah 12:16
+- Nehemiah 12:46
+- Nehemiah 13:23
