@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Network was blocked in the previous Codex session, so first run ./NEXT from the repository root. It should download the JPS 1985 English text from Sefaria into eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985, copy that result to eng/2-deutero-history-to-exile-translation-generated-in-style-of-friedman, replace divine-name occurrences of "the Lord" with YHWH in the Friedman-style copy, and change tumor/tumors to hemorrhoid/hemorrhoids only in 1 Samuel 5-6.
+
+After ./NEXT succeeds, inspect bin/sefaria if the English fetch failed. The intended interface is the same one that already works for Hebrew, for example ./bin/sefaria Joshua -l en -v "Tanakh: The Holy Scriptures, published by JPS" -o /tmp/joshua. Keep the default English translation aligned with JPS 1985, using Sefaria's actual version title if necessary.
+
+Then write a small parser script for the current LuaLaTeX verse files in the top-level numbered book directories, beginning with 06-joshua. Do not use a loose regex over TeX; parse balanced top-level verse commands so nested TeX in translation or commentary cannot confuse the edit. The script should read the downloaded English markdown files, match verses by book/chapter/verse reference, and replace only the English translation field in the existing .tex files, preserving source attributions, Hebrew, comments, spacing conventions, and commentary blocks.
+
+Start with Joshua only and produce a diff for review before applying the same mechanism to Judges, Samuel, Kings, Esther, and Ezra. Keep the parser reusable and deterministic, and add enough validation to report missing, duplicate, or unmatched verse references before it writes anything.
+EOF

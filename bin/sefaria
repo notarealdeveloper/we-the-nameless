@@ -42,15 +42,33 @@ HEBREW_MARKS_RE = re.compile(
 )
 
 PREFERRED_ENGLISH_VERSIONS = [
+    "Tanakh: The Holy Scriptures, published by JPS",
+    "JPS 1985",
+    "JPS Tanakh, 1985",
+    "The JPS Tanakh, 1985",
+]
+SIMILAR_ENGLISH_VERSIONS = [
+    "The Contemporary Torah, Jewish Publication Society, 2006",
     "HarperCollins Study Bible, New Revised Standard Version",
     "Harper Collins Study Bible, New Revised Standard Version",
     "New Revised Standard Version",
     "NRSV",
 ]
-SIMILAR_ENGLISH_VERSIONS = [
-    "Tanakh: The Holy Scriptures, published by JPS",
-    "The Contemporary Torah, Jewish Publication Society, 2006",
-]
+
+LANGUAGE_NAMES = {
+    "he": "hebrew",
+    "en": "english",
+}
+
+LANG_ALIASES = {
+    "he": "he",
+    "heb": "he",
+    "hebrew": "he",
+    "en": "en",
+    "eng": "en",
+    "english": "en",
+    "both": "both",
+}
 
 
 BOOKS = [
@@ -163,12 +181,22 @@ def is_whole_book(ref):
     return ":" not in ref and not re.search(r"\s+\d+$", ref)
 
 
+def version_param(lang, version=None):
+    language = LANGUAGE_NAMES[lang]
+
+    if not version:
+        return language
+
+    special_values = {"source", "translation", "primary", "all", language}
+    if "|" in version or version.lower() in special_values:
+        return version
+
+    return f"{language}|{version}"
+
+
 def fetch_one(ref, lang, version=None):
     params = {"return_format": "text_only"}
-    if version:
-        params["version"] = version
-    else:
-        params["version"] = {"he": "hebrew", "en": "english"}[lang]
+    params["version"] = version_param(lang, version)
 
     url = f"{API_BASE}/{quote(ref, safe='')}?{urlencode(params)}"
     req = Request(url, headers={"User-Agent": "sefaria"})
@@ -251,6 +279,36 @@ def fetch(ref, lang, version=None):
     en = fetch(ref, "en")
     data = dict(he)
     data["versions"] = (he.get("versions") or []) + (en.get("versions") or [])
+    return data
+
+
+def fetch_book(ref, lang, version=None):
+    data = fetch(ref, lang, version)
+
+    langs = ["he", "en"] if lang == "both" else [lang]
+
+    first_text, _title = get_text(data, langs[0])
+    if isinstance(first_text, list) and first_text and any(isinstance(x, list) for x in first_text):
+        return data
+
+    chapter_count = data.get("length")
+    if not isinstance(chapter_count, int):
+        return data
+
+    chapter_texts_by_lang = {chapter_lang: [] for chapter_lang in langs}
+    for chapter in range(1, chapter_count + 1):
+        chapter_data = fetch(f"{ref} {chapter}", lang, version)
+        for chapter_lang in langs:
+            chapter_text, _title = get_text(chapter_data, chapter_lang)
+            chapter_texts_by_lang[chapter_lang].append(chapter_text)
+
+    data = dict(data)
+    data["sections"] = []
+    data["toSections"] = []
+    for text_version in data.get("versions") or []:
+        version_lang = text_version.get("language")
+        if version_lang in chapter_texts_by_lang:
+            text_version["text"] = chapter_texts_by_lang[version_lang]
     return data
 
 
@@ -375,14 +433,18 @@ def main():
     )
     p.add_argument("ref", nargs="+")
     p.add_argument("-o", "--output", type=Path)
-    p.add_argument("-l", "--lang", choices=["he", "en", "both"], default="en")
+    p.add_argument("-l", "--lang", default="en")
     p.add_argument("-v", "--version")
     p.add_argument("-s", "--strip-niqqud", action="store_true")
     p.add_argument("--json", "--raw-json", action="store_true", dest="raw_json")
 
     args = p.parse_args()
+    args.lang = LANG_ALIASES.get(args.lang.lower(), args.lang.lower())
+    if args.lang not in ("he", "en", "both"):
+        p.error("--lang must be one of: he, heb, hebrew, en, eng, english, both")
+
     ref = build_ref(args.ref)
-    data = fetch(ref, args.lang, args.version)
+    data = fetch_book(ref, args.lang, args.version) if is_whole_book(ref) else fetch(ref, args.lang, args.version)
 
     if args.raw_json:
         output = json.dumps(data, ensure_ascii=False, indent=2)

@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+JPS_DIR="eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985"
+FRIEDMAN_DIR="eng/2-deutero-history-to-exile-translation-generated-in-style-of-friedman"
+SEFARIA_VERSION="${SEFARIA_VERSION:-Tanakh: The Holy Scriptures, published by JPS}"
+
+fetch_book() {
+  local ref="$1"
+  local outdir="$2"
+
+  rm -rf "$outdir"
+  ./bin/sefaria "$ref" -l en -v "$SEFARIA_VERSION" -o "$outdir"
+}
+
+copy_numbered_book() {
+  local tmpdir="$1"
+  local outdir="$2"
+
+  rm -rf "$outdir"
+  mkdir -p "$outdir"
+  cp "$tmpdir"/*.md "$outdir"/
+}
+
+copy_prefixed_book() {
+  local tmpdir="$1"
+  local outdir="$2"
+  local prefix="$3"
+
+  mkdir -p "$outdir"
+  for chapter in "$tmpdir"/*.md; do
+    cp "$chapter" "$outdir/$prefix-$(basename "$chapter")"
+  done
+}
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+rm -rf "$JPS_DIR" "$FRIEDMAN_DIR"
+mkdir -p "$JPS_DIR"
+
+fetch_book "Joshua" "$tmp/joshua"
+copy_numbered_book "$tmp/joshua" "$JPS_DIR/06-joshua"
+
+fetch_book "Judges" "$tmp/judges"
+copy_numbered_book "$tmp/judges" "$JPS_DIR/07-judges"
+
+fetch_book "I Samuel" "$tmp/1-samuel"
+fetch_book "II Samuel" "$tmp/2-samuel"
+mkdir -p "$JPS_DIR/08-samuel"
+copy_prefixed_book "$tmp/1-samuel" "$JPS_DIR/08-samuel" "1"
+copy_prefixed_book "$tmp/2-samuel" "$JPS_DIR/08-samuel" "2"
+
+fetch_book "I Kings" "$tmp/1-kings"
+fetch_book "II Kings" "$tmp/2-kings"
+mkdir -p "$JPS_DIR/09-kings"
+copy_prefixed_book "$tmp/1-kings" "$JPS_DIR/09-kings" "1"
+copy_prefixed_book "$tmp/2-kings" "$JPS_DIR/09-kings" "2"
+
+fetch_book "Esther" "$tmp/esther"
+copy_numbered_book "$tmp/esther" "$JPS_DIR/10-esther"
+
+fetch_book "Ezra" "$tmp/ezra"
+copy_numbered_book "$tmp/ezra" "$JPS_DIR/11-ezra"
+
+cp -a "$JPS_DIR" "$FRIEDMAN_DIR"
+
+find "$FRIEDMAN_DIR" -type f -name '*.md' -print0 |
+  xargs -0 perl -0pi -e 's/\b[Tt]he LORD\b/YHWH/g; s/\b[Tt]he Lord\b/YHWH/g'
+
+perl -0pi -e 's/\bTumors\b/Hemorrhoids/g; s/\btumors\b/hemorrhoids/g; s/\bTumor\b/Hemorrhoid/g; s/\btumor\b/hemorrhoid/g' \
+  "$FRIEDMAN_DIR/08-samuel/1-05.md" \
+  "$FRIEDMAN_DIR/08-samuel/1-06.md"
+
+printf 'Wrote %s\n' "$JPS_DIR"
+printf 'Wrote %s\n' "$FRIEDMAN_DIR"
