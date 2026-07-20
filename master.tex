@@ -12,6 +12,9 @@
 % choices: horizontal, vertical
 \def\ConfigVerseLayout{vertical}
 
+% choices: book, mobile
+\def\ConfigOutputMode{mobile}
+
 
 %%%%%%%%%%%%%%%%%%
 %%% master.tex %%%
@@ -30,8 +33,11 @@
 \def\ConfigThemeDark{dark}
 \def\ConfigVerseLayoutHorizontal{horizontal}
 \def\ConfigVerseLayoutVertical{vertical}
+\def\ConfigOutputModeBook{book}
+\def\ConfigOutputModeMobile{mobile}
 \newif\ifConfigCommentaryOn
 \newif\ifConfigVerseLayoutVertical
+\newif\ifConfigOutputModeMobile
 \ifx\ConfigCommentary\ConfigTrue
     \ConfigCommentaryOntrue
 \else
@@ -41,6 +47,11 @@
     \ConfigVerseLayoutVerticaltrue
 \else
     \ConfigVerseLayoutVerticalfalse
+\fi
+\ifx\ConfigOutputMode\ConfigOutputModeMobile
+    \ConfigOutputModeMobiletrue
+\else
+    \ConfigOutputModeMobilefalse
 \fi
 
 \documentclass[11pt]{book}
@@ -2294,8 +2305,13 @@
 \section{nav: verses}
 \fi
 
-\def\englishsize{\normalsize}
-\def\hebrewsize{\normalsize}
+\ifConfigOutputModeMobile
+    \def\englishsize{\large}
+    \def\hebrewsize{\large}
+\else
+    \def\englishsize{\normalsize}
+    \def\hebrewsize{\normalsize}
+\fi
 
 \newcount\VerseLineBreakHorizontalPenalty
 \newcount\VerseLineBreakVerticalPenalty
