@@ -14,8 +14,10 @@ BOOK_BY_DIR = {
     "08-samuel": None,
     "09-kings": None,
     "10-esther": "Esther",
+    "10-ezra": "Ezra",
+    "11-nehemiah": "Nehemiah",
     "11-ezra": "Ezra",
-    "11-ezra-nehemiah": "Ezra",
+    "02-esther": "Esther",
     "esther": "Esther",
     "ezra": "Ezra",
     "nehemiah": "Nehemiah",
@@ -120,7 +122,7 @@ def infer_book(path):
         if parent == parent_name and stem.startswith(prefix):
             return book
 
-    if parent in ("ezra", "11-ezra-nehemiah") and stem.startswith("nehemiah-"):
+    if parent in ("ezra", "11-ezra") and stem.startswith("nehemiah-"):
         return "Nehemiah"
 
     if parent in BOOK_BY_DIR:
@@ -140,7 +142,10 @@ def collect_tex_files(target):
             raise UpdateError(f"{target} is not a .tex file")
         return [target]
     if target.is_dir():
-        return sorted(target.rglob("*.tex"))
+        return sorted(
+            path for path in target.rglob("*.tex")
+            if "01-esther" not in path.parts
+        )
     raise UpdateError(f"{target} is neither a .tex file nor a directory")
 
 
@@ -267,7 +272,7 @@ def update_file(path, translations, preserve_missing=False):
             line, col = line_col(original, groups[0][0])
             raise UpdateError(f"{path}:{line}:{col}: verse label is not numeric: {verse_label!r}")
         ref = f"{book} {path.stem.split('-')[-1].lstrip('0') or '0'}:{verse_label}"
-        if path.parent.name in ("esther", "ezra", "nehemiah"):
+        if path.parent.name in ("esther", "ezra", "nehemiah", "10-ezra", "11-nehemiah", "02-esther"):
             ref = f"{book} {path.stem.split('-')[-1].lstrip('0') or '0'}:{verse_label}"
         seen.append(ref)
         replacement_ref = REF_ALIASES.get(ref, ref)

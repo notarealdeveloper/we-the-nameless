@@ -13,8 +13,9 @@ BOOK_TITLES = {
     "08-samuel": "Samuel",
     "09-kings": "Kings",
     "10-esther": "Esther",
+    "10-ezra": "Ezra",
+    "11-nehemiah": "Nehemiah",
     "11-ezra": "Ezra",
-    "11-ezra-nehemiah": "Ezra-Nehemiah",
     "12-dudetheyreontome": "Dudetheyreontome",
 }
 
@@ -27,19 +28,10 @@ BOOK_PARTS = {
         "1-": "I Kings",
         "2-": "II Kings",
     },
-    "11-ezra": {
-        "": "Ezra",
-        "nehemiah-": "Nehemiah",
-    },
-    "11-ezra-nehemiah": {
-        "": "Ezra",
-        "nehemiah-": "Nehemiah",
-    },
 }
 
 OUTPUT_BOOK_DIRS = {
-    "10-esther": "12-dudetheyreontome/esther",
-    "11-ezra": "11-ezra-nehemiah",
+    "10-esther": "12-dudetheyreontome/02-esther",
 }
 
 KJV_CHAPTERS = [
@@ -248,16 +240,26 @@ def wrap_text(prefix, text, width=68):
     return out
 
 
-def output_book_dir(book):
+def output_book_dir(book, chapter=None):
+    if book == "11-ezra":
+        if chapter and chapter.startswith("nehemiah-"):
+            return "11-nehemiah"
+        return "10-ezra"
     return OUTPUT_BOOK_DIRS.get(book, book)
 
 
-def book_title(book):
-    return BOOK_TITLES[output_book_dir(book)]
+def output_chapter_name(book, chapter):
+    if book == "11-ezra" and chapter.startswith("nehemiah-"):
+        return chapter.removeprefix("nehemiah-")
+    return chapter
+
+
+def book_title(book, chapter=None):
+    return BOOK_TITLES[output_book_dir(book, chapter)]
 
 
 def chapter_part(book, chapter):
-    parts = BOOK_PARTS.get(output_book_dir(book), {})
+    parts = BOOK_PARTS.get(output_book_dir(book, chapter), {})
     for prefix, title in sorted(parts.items(), key=lambda item: len(item[0]), reverse=True):
         if chapter.startswith(prefix):
             return title
@@ -265,7 +267,7 @@ def chapter_part(book, chapter):
 
 
 def render_chapter(book, chapter, hebrew, english, notes):
-    label = f"{output_book_dir(book)}/{chapter}.tex"
+    label = f"{output_book_dir(book, chapter)}/{output_chapter_name(book, chapter)}.tex"
     rule = "%" * (len(label) + 8)
     out = [rule, f"%%% {label} %%%", rule, "", f"\\Chapter{{{int(chapter.split('-')[-1])}}}", ""]
     for verse in sorted(hebrew):
@@ -307,10 +309,10 @@ def write_chapters(root):
     written = []
     books = source_chapters(root)
     for book, chapters in books.items():
-        outdir = root / output_book_dir(book)
-        outdir.mkdir(exist_ok=True)
         for chapter in chapters:
-            target = outdir / f"{chapter}.tex"
+            outdir = root / output_book_dir(book, chapter)
+            outdir.mkdir(exist_ok=True)
+            target = outdir / f"{output_chapter_name(book, chapter)}.tex"
             if target.exists():
                 continue
             hebrew = parse_hebrew(root / "heb" / book / f"{chapter}.tex")
@@ -343,26 +345,32 @@ def ensure_x_source(master):
 
 def include_block(root, books):
     lines = []
+    current_book_title = None
     for book, chapters in books.items():
         if book == "10-esther":
             continue
-        lines.append("")
-        lines.append(f"\\Book{{{book_title(book)}}}")
         current_part = None
         for chapter in chapters:
+            title = book_title(book, chapter)
+            if title != current_book_title:
+                lines.append("")
+                lines.append(f"\\Book{{{title}}}")
+                current_book_title = title
+                current_part = None
             part = chapter_part(book, chapter)
             if part and part != current_part:
                 lines.append(f"\\BookPart{{{part}}}")
                 current_part = part
-            lines.append(f"\\include{{{output_book_dir(book)}/{chapter}}}")
+            lines.append(f"\\include{{{output_book_dir(book, chapter)}/{output_chapter_name(book, chapter)}}}")
     lines.append("")
     lines.append(r"\Book{Dudetheyreontome}")
+    if (root / "12-dudetheyreontome" / "01-esther" / "01.tex").exists():
+        lines.append(r"\include{12-dudetheyreontome/01-esther/01}")
     if "10-esther" in books:
         lines.append(r"\BookPart{Esther}")
         for chapter in books["10-esther"]:
-            lines.append(f"\\include{{{output_book_dir('10-esther')}/{chapter}}}")
+            lines.append(f"\\include{{{output_book_dir('10-esther', chapter)}/{chapter}}}")
         lines.append("")
-    lines.append(r"%\include{12-dudetheyreontome/01}")
     lines.append("")
     lines.append(r"%\include{apocrypha}")
     lines.append("")
@@ -386,7 +394,7 @@ def verify_outputs(root, books):
     errors = []
     for book, chapters in books.items():
         for chapter in chapters:
-            path = root / output_book_dir(book) / f"{chapter}.tex"
+            path = root / output_book_dir(book, chapter) / f"{output_chapter_name(book, chapter)}.tex"
             if not path.exists():
                 errors.append(f"missing output {path}")
                 continue
