@@ -1,0 +1,355 @@
+#!/usr/bin/env python3
+
+import argparse
+import re
+import sys
+import textwrap
+from collections import Counter
+from pathlib import Path
+
+
+BOOK_BY_DIR = {
+    "06-joshua": "Joshua",
+    "07-judges": "Judges",
+    "08-samuel": None,
+    "09-kings": None,
+    "10-esther": "Esther",
+    "11-ezra": "Ezra",
+    "esther": "Esther",
+    "ezra": "Ezra",
+    "nehemiah": "Nehemiah",
+}
+
+BOOK_BY_PARENT_AND_STEM_PREFIX = {
+    ("08-samuel", "1-"): "I Samuel",
+    ("08-samuel", "2-"): "II Samuel",
+    ("09-kings", "1-"): "I Kings",
+    ("09-kings", "2-"): "II Kings",
+}
+
+SUPERSCRIPT_DIGITS = "⁰¹²³⁴⁵⁶⁷⁸⁹"
+
+REF_ALIASES = {
+    "II Samuel 18:33": "II Samuel 19:1",
+    **{f"II Samuel 19:{verse}": f"II Samuel 19:{verse + 1}" for verse in range(1, 44)},
+    "II Kings 11:21": "II Kings 12:1",
+    **{f"II Kings 12:{verse}": f"II Kings 12:{verse + 1}" for verse in range(1, 22)},
+}
+
+
+class UpdateError(Exception):
+    pass
+
+
+def line_col(text, offset):
+    line = text.count("\n", 0, offset) + 1
+    prev = text.rfind("\n", 0, offset)
+    return line, offset - prev
+
+
+def matching_brace(text, open_pos):
+    if open_pos >= len(text) or text[open_pos] != "{":
+        raise UpdateError(f"expected '{{' at offset {open_pos}")
+
+    depth = 0
+    escaped = False
+    for pos in range(open_pos, len(text)):
+        char = text[pos]
+        if escaped:
+            escaped = False
+            continue
+        if char == "\\":
+            escaped = True
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return pos
+
+    raise UpdateError(f"unclosed group at offset {open_pos}")
+
+
+def skip_space(text, pos):
+    while pos < len(text) and text[pos].isspace():
+        pos += 1
+    return pos
+
+
+def parse_group(text, pos):
+    pos = skip_space(text, pos)
+    if pos >= len(text) or text[pos] != "{":
+        raise UpdateError(f"expected group at offset {pos}")
+    end = matching_brace(text, pos)
+    return pos, end, text[pos + 1 : end]
+
+
+def iter_verse_commands(text):
+    pos = 0
+    needle = r"\Verse"
+    while True:
+        start = text.find(needle, pos)
+        if start == -1:
+            return
+        after = start + len(needle)
+        if after < len(text) and (text[after].isalpha() or text[after] == "@"):
+            pos = after
+            continue
+
+        groups = []
+        cursor = after
+        try:
+            for _ in range(4):
+                open_pos, close_pos, content = parse_group(text, cursor)
+                groups.append((open_pos, close_pos, content))
+                cursor = close_pos + 1
+        except UpdateError as exc:
+            line, col = line_col(text, start)
+            raise UpdateError(f"malformed \\Verse at {line}:{col}: {exc}") from exc
+
+        yield start, cursor, groups
+        pos = cursor
+
+
+def infer_book(path):
+    parent = path.parent.name
+    stem = path.stem
+    for (parent_name, prefix), book in BOOK_BY_PARENT_AND_STEM_PREFIX.items():
+        if parent == parent_name and stem.startswith(prefix):
+            return book
+
+    if parent == "ezra" and stem.startswith("nehemiah-"):
+        return "Nehemiah"
+
+    if parent in BOOK_BY_DIR:
+        book = BOOK_BY_DIR[parent]
+        if book:
+            return book
+
+    if path.name.startswith("nehemiah-"):
+        return "Nehemiah"
+
+    raise UpdateError(f"cannot infer book for {path}")
+
+
+def collect_tex_files(target):
+    if target.is_file():
+        if target.suffix != ".tex":
+            raise UpdateError(f"{target} is not a .tex file")
+        return [target]
+    if target.is_dir():
+        return sorted(target.rglob("*.tex"))
+    raise UpdateError(f"{target} is neither a .tex file nor a directory")
+
+
+def normalize_ws(text):
+    return " ".join(text.split())
+
+
+def strip_superscript_number(text):
+    return text.lstrip().lstrip(SUPERSCRIPT_DIGITS).lstrip()
+
+
+def load_markdown_translation(path):
+    text = path.read_text(encoding="utf-8")
+    verses = {}
+
+    tab_lines = [line for line in text.splitlines() if "\t" in line]
+    if tab_lines:
+        for line in tab_lines:
+            ref, verse_text = line.split("\t", 1)
+            verses[ref.strip()] = normalize_ws(verse_text)
+        return verses
+
+    matches = list(re.finditer(r"^##\s+(.+?)\s*$", text, flags=re.MULTILINE))
+    for index, match in enumerate(matches):
+        ref = match.group(1).strip()
+        body_start = match.end()
+        body_end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+        body = text[body_start:body_end]
+        lines = []
+        after_rule = False
+        for raw_line in body.splitlines():
+            line = raw_line.strip()
+            if not line:
+                continue
+            if set(line) == {"-"} and not after_rule:
+                after_rule = True
+                lines = []
+                continue
+            if set(line) == {"-"}:
+                continue
+            if not after_rule:
+                continue
+            lines.append(line)
+        if not lines:
+            verses[ref] = ""
+            continue
+        verses[ref] = normalize_ws(strip_superscript_number(" ".join(lines)))
+
+    if not verses:
+        raise UpdateError(f"{path}: no verse headers found")
+
+    return verses
+
+
+def load_translations(eng_dir):
+    translations = {}
+    duplicates = []
+    for path in sorted(eng_dir.rglob("*.md")):
+        for ref, text in load_markdown_translation(path).items():
+            if ref in translations:
+                duplicates.append(ref)
+            translations[ref] = text
+    if duplicates:
+        counts = Counter(duplicates)
+        detail = ", ".join(f"{ref} ({count + 1})" for ref, count in counts.items())
+        raise UpdateError(f"duplicate replacement references: {detail}")
+    return translations
+
+
+def tex_escape(text):
+    replacements = {
+        "\\": r"\textbackslash{}",
+        "{": r"\{",
+        "}": r"\}",
+        "#": r"\#",
+        "$": r"\$",
+        "%": r"\%",
+        "&": r"\&",
+        "_": r"\_",
+    }
+    return "".join(replacements.get(char, char) for char in text)
+
+
+def format_english_macro(macro, text, indent):
+    escaped = tex_escape(text)
+    lines = textwrap.wrap(
+        escaped,
+        width=66,
+        break_long_words=False,
+        break_on_hyphens=False,
+    )
+    if not lines:
+        return f"{indent}\\{macro}{{}}"
+    if len(lines) == 1 and len(lines[0]) <= 58:
+        return f"{indent}\\{macro}{{{lines[0]}}}"
+    body = "\n".join(f"{indent}\t{line}" for line in lines)
+    return f"{indent}\\{macro}{{\n{body}\n{indent}}}"
+
+
+def replace_english_group(group_text, replacement):
+    match = re.search(r"\\(e[A-Z][A-Za-z]*)\s*{", group_text)
+    if not match:
+        raise UpdateError("English group has no \\e...{...} macro")
+    macro = match.group(1)
+    line_start = group_text.rfind("\n", 0, match.start()) + 1
+    indent = "\t"
+    open_pos = group_text.find("{", match.end() - 1)
+    close_pos = matching_brace(group_text, open_pos)
+    new_macro = format_english_macro(macro, replacement, indent)
+    return group_text[:line_start] + new_macro + group_text[close_pos + 1 :]
+
+
+def update_file(path, translations, preserve_missing=False):
+    original = path.read_text(encoding="utf-8")
+    book = infer_book(path)
+    pieces = []
+    cursor = 0
+    seen = []
+    changed = False
+
+    for start, end, groups in iter_verse_commands(original):
+        verse_label = groups[0][2].strip()
+        if not verse_label.isdigit():
+            line, col = line_col(original, groups[0][0])
+            raise UpdateError(f"{path}:{line}:{col}: verse label is not numeric: {verse_label!r}")
+        ref = f"{book} {path.stem.split('-')[-1].lstrip('0') or '0'}:{verse_label}"
+        if path.parent.name in ("esther", "ezra", "nehemiah"):
+            ref = f"{book} {path.stem.split('-')[-1].lstrip('0') or '0'}:{verse_label}"
+        seen.append(ref)
+        replacement_ref = REF_ALIASES.get(ref, ref)
+        if replacement_ref not in translations:
+            raise UpdateError(f"{path}: no replacement English for {ref}")
+        if translations[replacement_ref] == "" and preserve_missing:
+            pieces.append(original[cursor:end])
+            cursor = end
+            continue
+
+        eng_open, eng_close, eng_group = groups[2]
+        try:
+            new_eng_group = replace_english_group(eng_group, translations[replacement_ref])
+        except UpdateError as exc:
+            line, col = line_col(original, eng_open)
+            raise UpdateError(f"{path}:{line}:{col}: {exc}") from exc
+
+        verse_text = original[start:end]
+        new_verse_text = (
+            original[start : eng_open + 1]
+            + new_eng_group
+            + original[eng_close:end]
+        )
+        pieces.append(original[cursor:start])
+        pieces.append(new_verse_text)
+        cursor = end
+        if new_verse_text != verse_text:
+            changed = True
+
+    pieces.append(original[cursor:])
+    if not seen:
+        raise UpdateError(f"{path}: no \\Verse commands found")
+    duplicates = [ref for ref, count in Counter(seen).items() if count > 1]
+    if duplicates:
+        raise UpdateError(f"{path}: duplicate TeX verse refs: {', '.join(duplicates)}")
+
+    return "".join(pieces), len(seen), changed
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Update only English verse blocks in TeX files from markdown translations."
+    )
+    parser.add_argument("target", type=Path, help=".tex file or directory of .tex files")
+    parser.add_argument("eng_dir", type=Path, help="eng subfolder containing markdown translation files")
+    parser.add_argument("--write", action="store_true", help="write changes instead of checking")
+    parser.add_argument(
+        "--preserve-missing",
+        action="store_true",
+        help="leave existing English unchanged when the replacement verse is present but empty",
+    )
+    args = parser.parse_args()
+
+    if not args.eng_dir.is_dir():
+        parser.error(f"{args.eng_dir} is not a directory")
+
+    try:
+        translations = load_translations(args.eng_dir)
+        files = collect_tex_files(args.target)
+        total_verses = 0
+        changed_files = 0
+        rendered = []
+        for path in files:
+            updated, verse_count, changed = update_file(path, translations, args.preserve_missing)
+            total_verses += verse_count
+            if changed:
+                changed_files += 1
+            rendered.append((path, updated, changed))
+
+        if args.write:
+            for path, updated, changed in rendered:
+                if changed:
+                    path.write_text(updated, encoding="utf-8")
+
+        action = "Updated" if args.write else "Checked"
+        change_label = "changed" if args.write else "would change"
+        print(f"{action} {len(files)} files, {total_verses} verses; {changed_files} files {change_label}.")
+    except UpdateError as exc:
+        print(f"update-english: {exc}", file=sys.stderr)
+        return 1
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
