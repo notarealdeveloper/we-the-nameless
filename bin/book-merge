@@ -14,6 +14,8 @@ BOOK_TITLES = {
     "09-kings": "Kings",
     "10-esther": "Esther",
     "11-ezra": "Ezra",
+    "11-ezra-nehemiah": "Ezra-Nehemiah",
+    "12-dudetheyreontome": "Dudetheyreontome",
 }
 
 BOOK_PARTS = {
@@ -26,8 +28,17 @@ BOOK_PARTS = {
         "2-": "II Kings",
     },
     "11-ezra": {
+        "": "Ezra",
         "nehemiah-": "Nehemiah",
     },
+    "11-ezra-nehemiah": {
+        "": "Ezra",
+        "nehemiah-": "Nehemiah",
+    },
+}
+
+OUTPUT_BOOK_DIRS = {
+    "11-ezra": "11-ezra-nehemiah",
 }
 
 KJV_CHAPTERS = [
@@ -236,9 +247,24 @@ def wrap_text(prefix, text, width=68):
     return out
 
 
+def output_book_dir(book):
+    return OUTPUT_BOOK_DIRS.get(book, book)
+
+
+def book_title(book):
+    return BOOK_TITLES[output_book_dir(book)]
+
+
+def chapter_part(book, chapter):
+    parts = BOOK_PARTS.get(output_book_dir(book), {})
+    for prefix, title in sorted(parts.items(), key=lambda item: len(item[0]), reverse=True):
+        if chapter.startswith(prefix):
+            return title
+    return None
+
+
 def render_chapter(book, chapter, hebrew, english, notes):
-    title = BOOK_TITLES[book]
-    label = f"{book}/{chapter}.tex"
+    label = f"{output_book_dir(book)}/{chapter}.tex"
     rule = "%" * (len(label) + 8)
     out = [rule, f"%%% {label} %%%", rule, "", f"\\Chapter{{{int(chapter.split('-')[-1])}}}", ""]
     for verse in sorted(hebrew):
@@ -280,7 +306,7 @@ def write_chapters(root):
     written = []
     books = source_chapters(root)
     for book, chapters in books.items():
-        outdir = root / book
+        outdir = root / output_book_dir(book)
         outdir.mkdir(exist_ok=True)
         for chapter in chapters:
             target = outdir / f"{chapter}.tex"
@@ -318,18 +344,17 @@ def include_block(root, books):
     lines = []
     for book, chapters in books.items():
         lines.append("")
-        lines.append(f"\\Book{{{BOOK_TITLES[book]}}}")
+        lines.append(f"\\Book{{{book_title(book)}}}")
         current_part = None
         for chapter in chapters:
-            part = None
-            for prefix, title in BOOK_PARTS.get(book, {}).items():
-                if chapter.startswith(prefix):
-                    part = title
-                    break
+            part = chapter_part(book, chapter)
             if part and part != current_part:
                 lines.append(f"\\BookPart{{{part}}}")
                 current_part = part
-            lines.append(f"\\include{{{book}/{chapter}}}")
+            lines.append(f"\\include{{{output_book_dir(book)}/{chapter}}}")
+    lines.append("")
+    lines.append(r"\Book{Dudetheyreontome}")
+    lines.append(r"%\include{12-dudetheyreontome/01}")
     lines.append("")
     lines.append(r"%\include{apocrypha}")
     lines.append("")
@@ -353,7 +378,7 @@ def verify_outputs(root, books):
     errors = []
     for book, chapters in books.items():
         for chapter in chapters:
-            path = root / book / f"{chapter}.tex"
+            path = root / output_book_dir(book) / f"{chapter}.tex"
             if not path.exists():
                 errors.append(f"missing output {path}")
                 continue

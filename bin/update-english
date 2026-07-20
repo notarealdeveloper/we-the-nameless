@@ -15,6 +15,7 @@ BOOK_BY_DIR = {
     "09-kings": None,
     "10-esther": "Esther",
     "11-ezra": "Ezra",
+    "11-ezra-nehemiah": "Ezra",
     "esther": "Esther",
     "ezra": "Ezra",
     "nehemiah": "Nehemiah",
@@ -119,7 +120,7 @@ def infer_book(path):
         if parent == parent_name and stem.startswith(prefix):
             return book
 
-    if parent == "ezra" and stem.startswith("nehemiah-"):
+    if parent in ("ezra", "11-ezra-nehemiah") and stem.startswith("nehemiah-"):
         return "Nehemiah"
 
     if parent in BOOK_BY_DIR:

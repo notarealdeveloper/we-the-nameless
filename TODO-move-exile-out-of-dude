@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Rename 10-dudetheyreontome/esther to 10-esther in the top level, rename 10-dudetheyreontome/ezra to 11-ezra-nehemiah, and put the ezra and nehemiah chapters inside the 11-ezra-nehemiah directory. Then rename 10-dudetheyreontome to 12-dudetheyreontome. Then edit master.tex and any helper scripts in bin to assume the new layout. 12-dudetheyreontome shouldn't have any tex files in it yet, but assume it will eventually, and add a \Book thingy to master.tex and a nominal 1st chapter commented out to master.tex as a preparation step for the future.
+Rename 10-dudetheyreontome/esther to 10-esther in the top level, rename 10-dudetheyreontome/ezra to 11-ezra-nehemiah, and put the ezra and nehemiah chapters inside the 11-ezra-nehemiah directory. Then rename 10-dudetheyreontome to 12-dudetheyreontome. Then edit master.tex and any helper scripts in bin to assume the new layout. 12-dudetheyreontome shouldn't have any tex files in it yet, but assume it will eventually, and add a \Book thingy to master.tex and a nominal 1st chapter commented out to master.tex as a preparation step for the future. Don't build the full pdf. Just rename the files and fix up the includes in master.tex. I'll build it.
 EOF
