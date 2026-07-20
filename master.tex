@@ -101,17 +101,6 @@
 \section{nav: the creations of man}
 \fi
 
-\ifConfigOutputModeMobile
-\usepackage[
-    paperwidth=3.07in,
-    paperheight=6.44in,
-    left=0.45in,
-    right=0.45in,
-    top=0.55in,
-    bottom=0.75in,
-    includefoot
-]{geometry}
-\else
 \usepackage[
     paperwidth=7in,
     paperheight=10in,
@@ -122,7 +111,6 @@
     bottom=0.75in,
     includefoot
 ]{geometry}
-\fi
 \usepackage[no-math]{fontspec}
 \usepackage{titlesec}
 \usepackage{tocloft}
@@ -1769,7 +1757,7 @@
 }
 
 \newcount\SourceFontLineBreakMobilePenalty
-\SourceFontLineBreakMobilePenalty=2000
+\SourceFontLineBreakMobilePenalty=200
 \newcommand{\SourceFontLineBreak}{%
     \ifConfigOutputModeMobile
         \ifhmode
@@ -1821,7 +1809,6 @@
     \begingroup
     \footnotesize
     \setcounter{footnote}{0}%
-    \let\nl\SourceFontLineBreak
     \LegendColumns{0.23\linewidth}{0.71\linewidth}
 
     \LegendRow{\eJ{Green}}{%
@@ -1841,20 +1828,20 @@
 
     \LegendRow{{\Mushite{Yellow}}}{%
         \Mushite{
-            Mushites. A group of Levite priests who claim descent from Moses.\nl
-            Associated with the first temple in the city of Shiloh.\nl
-            The first author in this group is commonly known as the Elohist, or E.\nl
+            Mushites. A group of Levite priests who claim descent from Moses.\\
+            Associated with the first temple in the city of Shiloh.\\
+            The first author in this group is commonly known as the Elohist, or E.\\
         }
         (\Mushite{E}, \DeuterA{Dtr1}, \DeuterB{Dtr2}, \Jeremiah{Jeremiah}.)
     }
 
     \LegendRow{{\Aaronid{Blue}}}{%
         \Aaronid{
-            Aaronids. A group of Levite priests who claim descent from Aaron.\nl
-            Associated with the first and second temple in the city of Jerusalem.\nl
-            The first author in this group is known as the Priestly source, or P.\nl
-            Associated with the reign of king Hezekiah and the Jerusalem priesthood.\nl
-            The prophet Ezekiel is also associated with this group.\nl
+            Aaronids. A group of Levite priests who claim descent from Aaron.\\
+            Associated with the first and second temple in the city of Jerusalem.\\
+            The first author in this group is known as the Priestly source, or P.\\
+            Associated with the reign of king Hezekiah and the Jerusalem priesthood.\\
+            The prophet Ezekiel is also associated with this group.\\
         }
         (\Aaronid[priest]{P},
         \Aaronid[redactor,nopriest]{R},
@@ -1863,12 +1850,12 @@
 
     \LegendRow{{\DeuterB[nopriest]{Orange}}}{%
         \DeuterB[nopriest]{
-            Deuteronomists. The later Mushite tradition. Used to refer to the\nl
-            group after their loss of power in the Jerusalem temple priesthood\nl
-            with Solomon's rise to power, leading to the exile of the Mushite\nl
-            high priest Abiathar and the empowering of Zadok and the Aaronids.\nl
-            Associated with king Josiah, the Shiloh and Anathoth priesthood,\nl
-            and the prophet Jeremiah.\nl
+            Deuteronomists. The later Mushite tradition. Used to refer to the\\
+            group after their loss of power in the Jerusalem temple priesthood\\
+            with Solomon's rise to power, leading to the exile of the Mushite\\
+            high priest Abiathar and the empowering of Zadok and the Aaronids.\\
+            Associated with king Josiah, the Shiloh and Anathoth priesthood,\\
+            and the prophet Jeremiah.\\
         }
         (\DeuterA[nopriest]{Dtr1}, \DeuterB[nopriest]{Dtr2}, \Jeremiah{Jeremiah}.)
     }
@@ -1876,12 +1863,12 @@
 
     \LegendRow{\eR{Highlights}}{%
         \eR{
-            Editors. Called Redactors in bible circles, since E was already taken.\nl
-            Redactors don't write much themselves, and mostly insert small bits of\nl
-            glue prose throughout a text, whether to make multiple sources consistent,\nl
-            to make the combined text flow as a single narrative, or to remove material\nl
-            considered objectionable. Some redactors prefer to include both copies of\nl
-            a story when merging two texts with different versions of the same event\nl
+            Editors. Called Redactors in bible circles, since E was already taken.\\
+            Redactors don't write much themselves, and mostly insert small bits of\\
+            glue prose throughout a text, whether to make multiple sources consistent,\\
+            to make the combined text flow as a single narrative, or to remove material\\
+            considered objectionable. Some redactors prefer to include both copies of\\
+            a story when merging two texts with different versions of the same event\\
         }
         \eRJE{
             while others prefer to choose one and exclude the other.
@@ -1958,7 +1945,7 @@
             % the song, I mean they actually even say ``two
             % turtledoves,'' in that shit it's not subtle.
 
-            {\Yahwist J Laws: Nonexistent, except for a weird version of the\nl
+            {\Yahwist J Laws: Nonexistent, except for a weird version of the\\
             10 commandments, which may well have been a joke.\\
             J is f\redacted{ucking}\eR{oundational to an understanding of God's\\
             mysterious and} awesome \eR{power}.}%
