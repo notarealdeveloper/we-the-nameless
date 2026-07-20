@@ -78,7 +78,7 @@
     \DeclareConfiguredTextSize{\scriptsize}{10pt}{11.875pt}%
     \DeclareConfiguredTextSize{\footnotesize}{11.25pt}{13.75pt}%
     \DeclareConfiguredTextSize{\small}{12.5pt}{15pt}%
-    \DeclareConfiguredTextSize{\normalsize}{13.6875pt}{17pt}%
+    \DeclareConfiguredTextSize{\normalsize}{13.68pt}{17pt}%
     \DeclareConfiguredTextSize{\large}{15pt}{17.5pt}%
     \DeclareConfiguredTextSize{\Large}{18pt}{22.5pt}%
     \DeclareConfiguredTextSize{\LARGE}{21.6pt}{27.5pt}%
@@ -101,16 +101,29 @@
 \section{nav: the creations of man}
 \fi
 
-\usepackage[
-    paperwidth=7in,
-    paperheight=10in,
-    twoside,
-    inner=0.8in,
-    outer=0.45in,
-    top=0.55in,
-    bottom=0.75in,
-    includefoot
-]{geometry}
+\ifConfigOutputModeMobile
+    % Keep the existing 7in width; expand height to match a 3.07 x 6.44 phone ratio.
+    \usepackage[
+        paperwidth=7in,
+        paperheight=14.68in,
+        left=0.625in,
+        right=0.625in,
+        top=0.55in,
+        bottom=0.75in,
+        includefoot
+    ]{geometry}
+\else
+    \usepackage[
+        paperwidth=7in,
+        paperheight=10in,
+        twoside,
+        inner=0.8in,
+        outer=0.45in,
+        top=0.55in,
+        bottom=0.75in,
+        includefoot
+    ]{geometry}
+\fi
 \usepackage[no-math]{fontspec}
 \usepackage{titlesec}
 \usepackage{tocloft}
