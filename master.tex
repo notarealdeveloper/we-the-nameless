@@ -56,25 +56,43 @@
 
 \documentclass[11pt]{book}
 
-\ifConfigOutputModeMobile
 \makeatletter
-% Mobile keeps the same typographic ladder as 11pt book mode, scaled together.
-% This preserves source/font relationships while making phone reading practical.
-\newcommand{\DeclareMobileTextSize}[3]{%
+\newcommand{\DeclareConfiguredTextSize}[3]{%
     \renewcommand#1{\@setfontsize#1{#2}{#3}}%
 }
-\DeclareMobileTextSize{\tiny}{7.5pt}{8.75pt}
-\DeclareMobileTextSize{\scriptsize}{10pt}{11.875pt}
-\DeclareMobileTextSize{\footnotesize}{11.25pt}{13.75pt}
-\DeclareMobileTextSize{\small}{12.5pt}{15pt}
-\DeclareMobileTextSize{\normalsize}{13.6875pt}{17pt}
-\DeclareMobileTextSize{\large}{15pt}{17.5pt}
-\DeclareMobileTextSize{\Large}{18pt}{22.5pt}
-\DeclareMobileTextSize{\LARGE}{21.6pt}{27.5pt}
-\DeclareMobileTextSize{\huge}{25.925pt}{31.25pt}
-\DeclareMobileTextSize{\Huge}{31.1pt}{37.5pt}
-\normalsize
+
+\newcommand{\BookModeTextSizes}{%
+    \DeclareConfiguredTextSize{\tiny}{6pt}{7pt}%
+    \DeclareConfiguredTextSize{\scriptsize}{8pt}{9.5pt}%
+    \DeclareConfiguredTextSize{\footnotesize}{9pt}{11pt}%
+    \DeclareConfiguredTextSize{\small}{10pt}{12pt}%
+    \DeclareConfiguredTextSize{\normalsize}{10.95pt}{13.6pt}%
+    \DeclareConfiguredTextSize{\large}{12pt}{14pt}%
+    \DeclareConfiguredTextSize{\Large}{14.4pt}{18pt}%
+    \DeclareConfiguredTextSize{\LARGE}{17.28pt}{22pt}%
+    \DeclareConfiguredTextSize{\huge}{20.74pt}{25pt}%
+    \DeclareConfiguredTextSize{\Huge}{24.88pt}{30pt}%
+}
+
+\newcommand{\MobileModeTextSizes}{%
+    \DeclareConfiguredTextSize{\tiny}{7.5pt}{8.75pt}%
+    \DeclareConfiguredTextSize{\scriptsize}{10pt}{11.875pt}%
+    \DeclareConfiguredTextSize{\footnotesize}{11.25pt}{13.75pt}%
+    \DeclareConfiguredTextSize{\small}{12.5pt}{15pt}%
+    \DeclareConfiguredTextSize{\normalsize}{13.6875pt}{17pt}%
+    \DeclareConfiguredTextSize{\large}{15pt}{17.5pt}%
+    \DeclareConfiguredTextSize{\Large}{18pt}{22.5pt}%
+    \DeclareConfiguredTextSize{\LARGE}{21.6pt}{27.5pt}%
+    \DeclareConfiguredTextSize{\huge}{25.925pt}{31.25pt}%
+    \DeclareConfiguredTextSize{\Huge}{31.1pt}{37.5pt}%
+}
 \makeatother
+
+\ifConfigOutputModeMobile
+% Mobile keeps the same typographic ladder as 11pt book mode, scaled together.
+% This preserves source/font relationships while making phone reading practical.
+\MobileModeTextSizes
+\normalsize
 \fi
 
 % ------------------------------------------------------------
