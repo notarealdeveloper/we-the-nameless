@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+I recently told you to do this:
+
+<prev1>
+The current eng/ directory contains a torah from friedman, in eng/1-torah-friedman-translation, and a generated 06-joshua through 11-ezra, in eng/2-deutero-history-to-exile-translation-generated-in-style-of-kvj.
+
+I really don't like the generated translation.
+
+It's far too KJV-ish, which is the worst a translation can be to me.
+
+I want you to
+
+(1) Fix bin/sefaria so that it can download english translations with '-l en' using the same interface as the current working '-l he'. The code is there but it doesn't work yet. Let's default to the JPS Tanakh, 1985 edition, which sefaria definitiely has.
+
+(2) Once you've got the english fetching support in place, use it to fetch the 'JPS, 1985' translation into eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985.
+
+(3) Copy eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985 to a new folder called eng/2-deutero-history-to-exile-translation-generated-in-style-of-friedman.
+
+Make no major changes to that folder yet, but in the 2-*-friedman directory, start by replacing all instances of 'the Lord' with YHWH, and replacing the word 'tumor(s)' in 1 Samuel 5-6 with 'hemorrhoid(s)'.
+
+Then stop your work, and I'll check it to make sure you've done as I asked, and we'll decide what to do next.
+</prev1>.
+
+Then I gave you the next prompt below, prev2:
+
+<prev2>
+You told me network is blocked here, so finish the prompt by creating a script called NEXT in the current directory that will download all the stuff I asked you to into the correct new directory, and then add an english prompt to the TODO file inside the heredoc, describing to yourself the next steps of the plan, which should include writing a script that will parse the current lualatex master.tex files in the top level numbered book directories, starting with 06-joshua, and replace the english of those files with the new english of the translation we just downloaded. After you've created the NEXT and TODO files and make them executable, you're done.
+</prev2>
+
+Ok so, here's the current prompt.
+
+1. I ran ./NEXT, and it worked great, very quickly too. Nice work.
+
+2. Now I want you to make sure the english downloading functionality in ./NEXT is integrated into bin/sefaria, and add a flag to the command line to list all available versions for a given language. For example, 'sefaria -l en' selects the en language, but 'sefaria -L en' or 'sefaria --list en' should list all available english versions that can be passed to the -v version argument.
+
+Add that functionality, for sefaria.
+
+3. Then, using sefaria if possible, or some other api if needed, get the full NRSV translation in english and store it in eng/2-*nrsv* (the full name should be similar to the other 2-* dirs in eng/.)
+
+4.
+- If you need to use something other than sefaria to do that, then add a new script to bin/ named after the api you used.
+- If you end up just using sefaria, keep bin/sefaria named as is, with no new script.
+- If you need to create another script, then keep its functionality in a new script in bin/ named after its api, and create a multiplexed script that allows the user to use both bin/sefaria and bin/<whatever-new-one-is-named> via one interface, delegating to the two other api specific programs as needed. If you need to create this new multiplexed script, call it bin/bible.
+
+5. Then edit the TODO file to remove the JPS and other stuff we've already done, and update it to be a prompt for yourself explaining that we should now write a script called bin/update-english which will take a .tex file or directory of .tex files and also an eng subfolder, and will update JUST the english sections of the verse blocks in those .tex files by copying the new english translation specified on the command line into the tex file or tex files in question. Don't DO this yet, just update the prompt in TODO to be a description from yourself to yourself specifying what will be needed in this step once we get there.
+EOF

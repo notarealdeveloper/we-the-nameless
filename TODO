@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Network was blocked in the previous Codex session, so first run ./NEXT from the repository root. It should download the JPS 1985 English text from Sefaria into eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985, copy that result to eng/2-deutero-history-to-exile-translation-generated-in-style-of-friedman, replace divine-name occurrences of "the Lord" with YHWH in the Friedman-style copy, and change tumor/tumors to hemorrhoid/hemorrhoids only in 1 Samuel 5-6.
+Write a script called bin/update-english.
 
-After ./NEXT succeeds, inspect bin/sefaria if the English fetch failed. The intended interface is the same one that already works for Hebrew, for example ./bin/sefaria Joshua -l en -v "Tanakh: The Holy Scriptures, published by JPS" -o /tmp/joshua. Keep the default English translation aligned with JPS 1985, using Sefaria's actual version title if necessary.
+The script should take:
 
-Then write a small parser script for the current LuaLaTeX verse files in the top-level numbered book directories, beginning with 06-joshua. Do not use a loose regex over TeX; parse balanced top-level verse commands so nested TeX in translation or commentary cannot confuse the edit. The script should read the downloaded English markdown files, match verses by book/chapter/verse reference, and replace only the English translation field in the existing .tex files, preserving source attributions, Hebrew, comments, spacing conventions, and commentary blocks.
+  1. a .tex file or a directory containing .tex files
+  2. an eng/ subfolder containing chapter markdown files from one downloaded English translation
 
-Start with Joshua only and produce a diff for review before applying the same mechanism to Judges, Samuel, Kings, Esther, and Ezra. Keep the parser reusable and deterministic, and add enough validation to report missing, duplicate, or unmatched verse references before it writes anything.
+Its job is to update only the English translation sections of the verse blocks in the selected LuaLaTeX source files. It must copy the replacement English from the specified eng subfolder into the matching verse blocks and must preserve everything else: source attribution, Hebrew, commentary, spacing conventions, command names, comments, and final commentary blocks.
+
+Do not use a loose regex over TeX. Parse balanced top-level verse commands so nested TeX inside English or commentary fields cannot confuse the edit. Start by inspecting the current top-level numbered book directories, beginning with 06-joshua, and identify the exact verse command shape before writing replacements.
+
+The script should validate before writing:
+
+  - every replacement verse has exactly one matching TeX verse block
+  - every updated TeX verse has exactly one replacement English line
+  - missing, duplicate, malformed, or unmatched references are reported clearly
+  - the operation is deterministic
+
+Prefer a dry-run mode by default or an explicit --check mode before writes, and provide a way to update a single file first so Joshua can be reviewed before applying the same mechanism to Judges, Samuel, Kings, Esther, and Ezra.
 EOF
