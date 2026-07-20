@@ -20,6 +20,10 @@ Examples:
   sefaria genesis
   sefaria exo --lang both
   sefaria 1sam -o samuel
+
+  # Version discovery
+  sefaria Joshua -L en
+  sefaria -L en
 """
 
 import re
@@ -264,6 +268,27 @@ def default_english_version(data):
     )
 
 
+def list_versions(ref, lang):
+    data = fetch_one(ref, lang)
+    versions = english_versions(data) if lang == "en" else available_versions(data, lang)
+
+    def sort_key(version):
+        return (
+            version.get("versionTitle") or "",
+            version.get("shortVersionTitle") or "",
+        )
+
+    for version in sorted(versions, key=sort_key):
+        title = version.get("versionTitle")
+        if not title:
+            continue
+        short = version.get("shortVersionTitle")
+        if short and short != title:
+            print(f"{title}\t{short}")
+        else:
+            print(title)
+
+
 def fetch(ref, lang, version=None):
     if version or lang == "he":
         return fetch_one(ref, lang, version)
@@ -431,14 +456,26 @@ def main():
         epilog=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    p.add_argument("ref", nargs="+")
+    p.add_argument("ref", nargs="*")
     p.add_argument("-o", "--output", type=Path)
     p.add_argument("-l", "--lang", default="en")
+    p.add_argument("-L", "--list", metavar="LANG", dest="list_lang")
     p.add_argument("-v", "--version")
     p.add_argument("-s", "--strip-niqqud", action="store_true")
     p.add_argument("--json", "--raw-json", action="store_true", dest="raw_json")
 
     args = p.parse_args()
+    if args.list_lang:
+        args.list_lang = LANG_ALIASES.get(args.list_lang.lower(), args.list_lang.lower())
+        if args.list_lang not in ("he", "en"):
+            p.error("--list must be one of: he, heb, hebrew, en, eng, english")
+        ref = build_ref(args.ref) if args.ref else "Joshua"
+        list_versions(ref, args.list_lang)
+        return 0
+
+    if not args.ref:
+        p.error("ref is required unless --list is used")
+
     args.lang = LANG_ALIASES.get(args.lang.lower(), args.lang.lower())
     if args.lang not in ("he", "en", "both"):
         p.error("--lang must be one of: he, heb, hebrew, en, eng, english, both")
