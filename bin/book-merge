@@ -38,6 +38,7 @@ BOOK_PARTS = {
 }
 
 OUTPUT_BOOK_DIRS = {
+    "10-esther": "12-dudetheyreontome/esther",
     "11-ezra": "11-ezra-nehemiah",
 }
 
@@ -343,6 +344,8 @@ def ensure_x_source(master):
 def include_block(root, books):
     lines = []
     for book, chapters in books.items():
+        if book == "10-esther":
+            continue
         lines.append("")
         lines.append(f"\\Book{{{book_title(book)}}}")
         current_part = None
@@ -354,6 +357,11 @@ def include_block(root, books):
             lines.append(f"\\include{{{output_book_dir(book)}/{chapter}}}")
     lines.append("")
     lines.append(r"\Book{Dudetheyreontome}")
+    if "10-esther" in books:
+        lines.append(r"\BookPart{Esther}")
+        for chapter in books["10-esther"]:
+            lines.append(f"\\include{{{output_book_dir('10-esther')}/{chapter}}}")
+        lines.append("")
     lines.append(r"%\include{12-dudetheyreontome/01}")
     lines.append("")
     lines.append(r"%\include{apocrypha}")

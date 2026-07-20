@@ -34,9 +34,9 @@ KEEP_HALFCOMMENT = {
     "08-samuel/2-01",
     "09-kings/1-01",
     "09-kings/2-01",
-    "10-esther/01",
     "11-ezra-nehemiah/01",
     "11-ezra-nehemiah/nehemiah-01",
+    "12-dudetheyreontome/esther/01",
     "12-dudetheyreontome/01",
     "apocrypha",
 }
