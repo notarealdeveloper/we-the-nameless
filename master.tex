@@ -74,6 +74,19 @@
 }
 
 \newcommand{\MobileModeTextSizes}{%
+    \DeclareConfiguredTextSize{\tiny}{8pt}{9.33pt}%
+    \DeclareConfiguredTextSize{\scriptsize}{10.67pt}{12.67pt}%
+    \DeclareConfiguredTextSize{\footnotesize}{12pt}{14.67pt}%
+    \DeclareConfiguredTextSize{\small}{13.33pt}{16pt}%
+    \DeclareConfiguredTextSize{\normalsize}{14.6pt}{18.13pt}%
+    \DeclareConfiguredTextSize{\large}{16pt}{18.67pt}%
+    \DeclareConfiguredTextSize{\Large}{19.2pt}{24pt}%
+    \DeclareConfiguredTextSize{\LARGE}{23.04pt}{29.33pt}%
+    \DeclareConfiguredTextSize{\huge}{27.65pt}{33.33pt}%
+    \DeclareConfiguredTextSize{\Huge}{33.17pt}{40pt}%
+}
+
+\newcommand{\AlphabetHistoryMobileTextSizes}{%
     \DeclareConfiguredTextSize{\tiny}{7.5pt}{8.75pt}%
     \DeclareConfiguredTextSize{\scriptsize}{10pt}{11.875pt}%
     \DeclareConfiguredTextSize{\footnotesize}{11.25pt}{13.75pt}%
@@ -1812,13 +1825,23 @@
     \end{center}
 }
 
-\newcommand{\SourceLegendPage}{%
-
+\NewDocumentCommand{\ManualFrontMatterPage}{ +m }{%
     \clearpage
     \thispagestyle{empty}
+    \ifConfigOutputModeMobile
+        \vspace*{\fill}%
+    \fi
+    #1%
+    \ifConfigOutputModeMobile
+        \vspace*{\fill}%
+    \fi
+    \clearpage
+}
 
+\newcommand{\SourceLegendPage}{%
+
+    \ManualFrontMatterPage{%
     \SourceLegendTitle
-
     \begingroup
     \footnotesize
     \let\nl\SourceFontLineBreak
@@ -1897,11 +1920,10 @@
 
     \endgroup
 
-    \clearpage
-    \thispagestyle{empty}
+    }%
 
+    \ManualFrontMatterPage{%
     \SourceLegendTitle
-
     \begingroup
     \footnotesize
     \let\nl\SourceFontLineBreak
@@ -1978,7 +2000,7 @@
     \footnotetext[\SourceLegendFootnoteE]{{\Yahwist S}he says thanks\ldots\ And welcome to We.}
     \endgroup
 
-    \clearpage
+    }%
     \PrimevalSourceFontsPage
     \PrimarySourceFontsPage
 }
@@ -2018,8 +2040,7 @@
 }
 
 \newcommand{\PrimevalSourceFontsPage}{%
-    \clearpage
-    \thispagestyle{empty}
+    \ManualFrontMatterPage{%
 
     %\vspace*{-4.5em}
 
@@ -2087,12 +2108,11 @@
 
     \endgroup
 
-    \clearpage
+    }%
 }
 
 \newcommand{\PrimarySourceFontsPage}{%
-    \clearpage
-    \thispagestyle{empty}
+    \ManualFrontMatterPage{%
 
     \FontPageHeading{The Primary Sources}
 
@@ -2167,7 +2187,7 @@
     }
     \endgroup
 
-    \clearpage
+    }%
 }
 
 \let\FontChoicePage\PrimevalSourceFontsPage
@@ -2281,8 +2301,17 @@
 
 \def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
 
+\newcommand{\AlphabetHistoryTextSizes}{%
+    \ifConfigOutputModeMobile
+        \AlphabetHistoryMobileTextSizes
+        \normalsize
+    \fi
+}
+
 \newcommand{\AlphabetHistoryPage}{%
     \clearpage
+    \begingroup
+    \AlphabetHistoryTextSizes
     \thispagestyle{empty}
     \begin{flushright}
     \FitAlphabetHistorySample{\egypt{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}}
@@ -2326,6 +2355,7 @@
     \AlphabetHistoryASCII{\HebrewDavidFont}{2.66}{\healphabet}\\
     %\AlphabetHistoryASCII{\HebrewEzraFont}{2.68}{\healphabet}\\
     \end{flushright}
+    \endgroup
     %\cleardoublepage
 }
 
