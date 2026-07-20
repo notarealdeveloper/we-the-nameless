@@ -104,6 +104,7 @@
 % Mobile keeps the same typographic ladder as 11pt book mode, scaled together.
 % This preserves source/font relationships while making phone reading practical.
 \MobileModeTextSizes
+\DeclareMathSizes{10.67}{10.67}{7}{5}
 \normalsize
 \fi
 
@@ -145,6 +146,7 @@
 \usepackage{setspace}
 \usepackage{fancyhdr}
 \usepackage{xparse}
+\usepackage{newunicodechar}
 \usepackage{ragged2e}
 \usepackage{luacolor}
 \usepackage{luabidi}
@@ -167,7 +169,15 @@
 
 \newcommand{\LocalFontPath}{./fonts/}
 
-\setmainfont{FreeSerif}
+\directlua{
+  luaotfload.add_fallback("nameless-text", {
+    "Noto Sans Mono CJK TC:mode=harf;script=hani",
+    "DejaVu Sans:mode=harf;script=cyrl"
+  })
+}
+\newcommand{\NamelessTextFallbackFeature}{RawFeature={fallback=nameless-text}}
+
+\setmainfont[\NamelessTextFallbackFeature]{FreeSerif}
 \newfontfamily\LawFont[Scale=0.82]{DejaVu Sans Mono}
 \newfontfamily\NamelessMonoFont[
     Renderer=HarfBuzz,
@@ -177,6 +187,10 @@
     Renderer=HarfBuzz,
     Scale=0.82
 ]{DejaVu Sans}
+\newfontfamily\CyrillicFont[
+    Renderer=HarfBuzz
+]{DejaVu Sans}
+\newunicodechar{н}{\ifmmode\hbox{\CyrillicFont н}\else{\CyrillicFont н}\fi}
 
 % The Ancients
 \newfontfamily\Cun[
@@ -436,7 +450,7 @@
 \def\TraditionalChineseFont{\TraditionalChineseFontA}
 
 % Reusable font catalog. Source profiles below bind these fonts to J/E/P/etc.
-\newfontfamily\EnglishFont{FreeSerif}
+\newfontfamily\EnglishFont[\NamelessTextFallbackFeature]{FreeSerif}
 \newfontfamily\EnglishProtoFont[
 	Path=\LocalFontPath,
 	Scale=1.22,
@@ -454,12 +468,15 @@
   {\PaleoHebrewPhoenician{}{#1}}
 }
 
-\NewDocumentCommand{\chinese}{ m }{{\leavevmode\TraditionalChineseFont { #1 }}}
-\NewDocumentCommand{\chineseA}{ m }{{\leavevmode\TraditionalChineseFontA { #1 }}}
-\NewDocumentCommand{\chineseB}{ m }{{\leavevmode\TraditionalChineseFontB { #1 }}}
-\NewDocumentCommand{\chineseC}{ m }{{\leavevmode\TraditionalChineseFontC { #1 }}}
-\NewDocumentCommand{\chineseD}{ m }{{\leavevmode\TraditionalChineseFontD { #1 }}}
-\NewDocumentCommand{\chineseE}{ m }{{\leavevmode\TraditionalChineseFontE { #1 }}}
+\NewDocumentCommand{\ChineseText}{ m m }{%
+  {\leavevmode#1 { #2 }}%
+}
+\NewDocumentCommand{\chinese}{ m }{\ChineseText{\TraditionalChineseFont}{#1}}
+\NewDocumentCommand{\chineseA}{ m }{\ChineseText{\TraditionalChineseFontA}{#1}}
+\NewDocumentCommand{\chineseB}{ m }{\ChineseText{\TraditionalChineseFontB}{#1}}
+\NewDocumentCommand{\chineseC}{ m }{\ChineseText{\TraditionalChineseFontC}{#1}}
+\NewDocumentCommand{\chineseD}{ m }{\ChineseText{\TraditionalChineseFontD}{#1}}
+\NewDocumentCommand{\chineseE}{ m }{\ChineseText{\TraditionalChineseFontE}{#1}}
 
 \NewDocumentCommand{\size}{ m m }{
   \smash{\fontsize{#1}{#1}\selectfont{#2}}
@@ -1060,7 +1077,7 @@
 \makeatletter
 \newcommand{\DeclareHebrewRenderer}[3]{%
   \expandafter\newcommand\csname #1\endcsname[2]{%
-    {\leavevmode\textdir TRT#2##1#3{##2}}%
+    {\leavevmode\textdir TRT\upshape#2##1\upshape#3{##2}}%
   }%
 }
 \makeatother
