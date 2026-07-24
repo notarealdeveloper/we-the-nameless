@@ -1,7 +1,7 @@
 MAIN  := master
 PDF   := $(MAIN).pdf
 BUILD := build
-CACHE := $(abspath $(BUILD)/texmf-var)
+CACHE := $(BUILD)/texmf-var
 
 LATEX      := lualatex
 LATEXFLAGS := -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
@@ -10,7 +10,7 @@ TEX_SOURCES := $(shell find . -path './$(BUILD)' -prune -o -name '*.tex' -print)
 
 export TEXMFVAR := $(CACHE)
 
-.PHONY: all pdf ci view open clean distclean debug progress build-prepare draft c x comment halfcomment uncomment again
+.PHONY: all pdf ci view open clean distclean debug progress build-prepare clean-stray-aux draft c x comment halfcomment uncomment again
 
 all: $(PDF) open
 
@@ -23,19 +23,35 @@ again:
 	$(MAKE) all
 
 build-prepare:
-	@mkdir -p $(BUILD) $(CACHE)
-	@sed -n 's|^[[:space:]]*\\include{\([^}]*\)}.*|$(BUILD)/\1|p' $(MAIN).tex | xargs -r dirname | sort -u | xargs -r mkdir -p
+	@mkdir -p "$(BUILD)" "$(CACHE)"
+	@sed -n 's|^[[:space:]]*\\include{\([^}]*\)}.*|\1|p' "$(MAIN).tex" | \
+		while IFS= read -r include; do \
+			dir=$$(dirname -- "$$include"); \
+			mkdir -p "$(BUILD)/$$dir"; \
+		done
 
 $(PDF): $(TEX_SOURCES) | build-prepare
-	$(LATEX) $(LATEXFLAGS) $(MAIN).tex
-	@if grep -q 'Rerun to get cross-references right' $(BUILD)/$(MAIN).log; then \
-		$(LATEX) $(LATEXFLAGS) $(MAIN).tex; \
+	$(LATEX) $(LATEXFLAGS) "$(MAIN).tex"
+	@if grep -q 'Rerun to get cross-references right' "$(BUILD)/$(MAIN).log"; then \
+		$(LATEX) $(LATEXFLAGS) "$(MAIN).tex"; \
 	fi
-	cp $(BUILD)/$(MAIN).pdf .
-	cp $(BUILD)/$(MAIN).log .
+	$(MAKE) clean-stray-aux
+	cp "$(BUILD)/$(MAIN).pdf" .
 
 draft: $(MAIN).tex | build-prepare
-	$(LATEX) $(LATEXFLAGS) -draftmode $(MAIN).tex
+	$(LATEX) $(LATEXFLAGS) -draftmode "$(MAIN).tex"
+	$(MAKE) clean-stray-aux
+
+clean-stray-aux:
+	@find . -path "./$(BUILD)" -prune -o -type f \( \
+		-name '*.aux' -o \
+		-name '*.log' -o \
+		-name '*.toc' -o \
+		-name '*.out' -o \
+		-name '*.fls' -o \
+		-name '*.fdb_latexmk' \
+	\) -exec rm -f {} +
+	@find The Nameless -depth -type d -empty -delete 2>/dev/null || true
 
 comment:
 	bin/comments --comment $(MAIN).tex
@@ -48,14 +64,14 @@ uncomment:
 
 view open: $(PDF)
 	@if command -v xdg-open >/dev/null 2>&1; then \
-		xdg-open $(PDF) >/dev/null 2>&1 & \
+		xdg-open "$(PDF)" >/dev/null 2>&1 & \
 	else \
 		echo "Built $(PDF)"; \
 	fi
 
-clean:
+clean: clean-stray-aux
 	@if [ -d $(BUILD) ]; then \
-		find $(BUILD) -type f \( \
+		find "$(BUILD)" -type f \( \
 			-name '*.aux' -o \
 			-name '*.log' -o \
 			-name '*.toc' -o \
@@ -64,11 +80,10 @@ clean:
 			-name '*.fdb_latexmk' \
 		\) -delete; \
 	fi
-	rm -f $(MAIN).aux $(MAIN).log $(MAIN).toc $(MAIN).out $(MAIN).pdf
 
 distclean:
-	rm -rf $(BUILD)
-	rm -f $(MAIN).aux $(MAIN).log $(MAIN).toc $(MAIN).out $(MAIN).pdf
+	rm -rf "$(BUILD)"
+	rm -f "$(MAIN).pdf"
 
 # for giving examples of the format to agents
 c:
