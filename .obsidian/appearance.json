@@ -1,0 +1,26 @@
+{
+  "cssTheme": "Everforest",
+  "accentColor": "",
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "ld",
+    "hide-tags-in-publish",
+    "front-matter",
+    "tags",
+    "howto",
+    "image",
+    "monospace",
+    "hide-properties",
+    "proto-sinaitic",
+    "proto",
+    "font-general",
+    "font-phoenician",
+    "code"
+  ],
+  "textFontFamily": "Noto Sans",
+  "interfaceFontFamily": "Noto Sans",
+  "monospaceFontFamily": "Noto Sans Mono",
+  "baseFontSize": 16,
+  "baseFontSizeAction": true,
+  "nativeMenus": false
+}

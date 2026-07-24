@@ -1,0 +1,244 @@
+{
+  "main": {
+    "id": "2e947a986b8a581f",
+    "type": "split",
+    "children": [
+      {
+        "id": "f025e51ff56e0b59",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fa4ec7dabc29b088",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "88fc12ac59f6e2c2",
+    "type": "split",
+    "children": [
+      {
+        "id": "c77c09f298e35260",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0dd040eadb92984d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "822a554f30d8458d",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "b2df8b1856a3981a",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "54c705b4384bd02e",
+    "type": "split",
+    "children": [
+      {
+        "id": "79169d5dce409ca4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b0163ffd5e3d29ce",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "bd6f0591a7b2cc93",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "822f7860b1dbce8d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "71298b1057759eaf",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d452637a713dbe90",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Welcome.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Welcome"
+            }
+          },
+          {
+            "id": "e9e1ae1cbb685faa",
+            "type": "leaf",
+            "state": {
+              "type": "footnotes",
+              "state": {
+                "file": "Welcome.md"
+              },
+              "icon": "lucide-file-signature",
+              "title": "Footnotes"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "audio-recorder:Start/stop recording": false,
+      "publish:Publish changes...": false,
+      "workspaces:Manage workspace layouts": false
+    }
+  },
+  "active": "0dd040eadb92984d",
+  "lastOpenFiles": [
+    "we-light-vertical-mobile.pdf",
+    "we-light-horizontal-book.pdf",
+    "we-dark-vertical-mobile.pdf",
+    "we-dark-horizontal-book.pdf",
+    "mistress.pdf",
+    "master.toc",
+    "master.tex",
+    "master.log",
+    "master.fls",
+    "master.aux",
+    "Makefile",
+    "fonts-master-catalog.png",
+    "AGENTS-TRANSLATION.md",
+    "AGENTS.md",
+    "qere-ketiv/qere-ketiv.md",
+    "qere-ketiv/qere-ketiv-reasons.md",
+    "qere-ketiv/qere-ketiv-hebrew.md",
+    "memories/p-becomes-insanely-large-while-trying-to-fix-source-legend.png",
+    "memories/my-kindle-bible-highlights-are-overflowing-the-count-limit.png",
+    "memories/my-kindle-bible-highlights-are-getting-censored-when-they-say-harem-virgin-or-jew.png",
+    "images/comics/the-twelve-tribes-of-israel-comic-1.png",
+    "images/comics/twelve-tribes-geography-2.png",
+    "images/comics/twelve-tribes-geography-1.png",
+    "images/comics/the-twelve-tribes-of-israel-comic-4.png",
+    "images/comics/the-twelve-tribes-of-israel-comic-3.png",
+    "images/comics/the-twelve-tribes-of-israel-comic-2.png",
+    "heb/05-deuteronomy/34.md",
+    "heb/05-deuteronomy/33.md",
+    "heb/05-deuteronomy/32.md",
+    "heb/05-deuteronomy/31.md",
+    "heb/05-deuteronomy/30.md",
+    "heb/05-deuteronomy/29.md",
+    "heb/05-deuteronomy/28.md",
+    "heb/05-deuteronomy/27.md",
+    "heb/05-deuteronomy/26.md",
+    "heb/05-deuteronomy/25.md",
+    "heb/05-deuteronomy/24.md",
+    "heb/05-deuteronomy/23.md",
+    "heb/05-deuteronomy/22.md",
+    "heb/05-deuteronomy/21.md",
+    "heb/05-deuteronomy/20.md",
+    "heb/05-deuteronomy/19.md",
+    "heb/05-deuteronomy/18.md",
+    "heb/05-deuteronomy/17.md",
+    "heb/05-deuteronomy/16.md",
+    "heb/05-deuteronomy/15.md"
+  ]
+}
