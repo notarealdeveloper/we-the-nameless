@@ -3,7 +3,6 @@
   "theme": "obsidian",
   "accentColor": "",
   "enabledCssSnippets": [
-    "ld",
     "code",
     "font-general",
     "font-mono",
@@ -13,6 +12,7 @@
     "hide-properties",
     "howto",
     "image",
+    "ld",
     "proto",
     "tags"
   ],
