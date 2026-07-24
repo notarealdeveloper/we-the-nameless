@@ -159,6 +159,7 @@
 \usepackage{wrapfig}
 \usepackage{array}
 \usepackage{luacode}
+\usepackage[hidelinks]{hyperref}
 
 % ------------------------------------------------------------
 % Languages and fonts
@@ -2414,8 +2415,64 @@
     \csname section\endcsname*{#1}%
 }
 
+\makeatletter
+\newcount\ChapterLinkIndex
+\newcommand{\DeclareChapterLinkRange}[2]{%
+    \expandafter\def\csname ChapterLinkRange@#1\endcsname{#2}%
+}
+\newcommand{\DeclareChapterLinkList}[2]{%
+    \expandafter\def\csname ChapterLinkList@#1\endcsname{#2}%
+}
+\newcommand{\ChapterLink}[1]{%
+    \hyperlink{chapter.\CurrentBook.#1}{#1}%
+}
+\newcommand{\ChapterLinkSeparator}{\quad}
+\newcommand{\ChapterLinkRange}[1]{%
+    \ChapterLinkIndex=1
+    \loop
+        \ChapterLink{\the\ChapterLinkIndex}%
+        \advance\ChapterLinkIndex by 1
+        \ifnum\ChapterLinkIndex<\numexpr#1+1\relax
+            \ChapterLinkSeparator
+    \repeat
+}
+\newcommand{\ChapterLinkArray}{%
+    \par\nobreak\smallskip
+    \begingroup
+    \centering
+    \footnotesize
+    \color{TextColor}%
+    \@ifundefined{ChapterLinkList@\CurrentBook}{%
+        \@ifundefined{ChapterLinkRange@\CurrentBook}{}{%
+            \ChapterLinkRange{\csname ChapterLinkRange@\CurrentBook\endcsname}%
+        }%
+    }{%
+        \csname ChapterLinkList@\CurrentBook\endcsname
+    }%
+    \par\nobreak\smallskip
+    \endgroup
+}
+\DeclareChapterLinkRange{Genesis}{50}
+\DeclareChapterLinkRange{Exodus}{40}
+\DeclareChapterLinkRange{Leviticus}{27}
+\DeclareChapterLinkRange{Numbers}{36}
+\DeclareChapterLinkRange{Deuteronomy}{34}
+\DeclareChapterLinkRange{Joshua}{24}
+\DeclareChapterLinkRange{Judges}{21}
+\DeclareChapterLinkRange{I Samuel}{31}
+\DeclareChapterLinkRange{II Samuel}{24}
+\DeclareChapterLinkRange{I Kings}{22}
+\DeclareChapterLinkRange{II Kings}{25}
+\DeclareChapterLinkRange{Ezra}{10}
+\DeclareChapterLinkRange{Nehemiah}{13}
+\DeclareChapterLinkRange{On the Lamb}{1}
+\DeclareChapterLinkRange{Esther}{10}
+\DeclareChapterLinkList{Red}{\ChapterLink{14}}
+\makeatother
+
 \newcommand{\Book}[1]{%
     \BookHeading{#1}%
+    \phantomsection
     \def\CurrentBook{#1}%
     \addcontentsline{toc}{chapter}{#1}%
 }
@@ -2429,7 +2486,9 @@
 \fi
 
 \newcommand{\Chapter}[1]{%
+    \hypertarget{chapter.\CurrentBook.#1}{}%
     \ChapterHeading{#1}%
+    \ChapterLinkArray
     \def\CurrentChapter{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
 }
