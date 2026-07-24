@@ -616,6 +616,7 @@
 
 \definecolor{DefColor}{RGB}{0,70,170}
 \definecolor{RedactedColor}{RGB}{0,70,170}
+\definecolor{MobileLinkColor}{HTML}{8ec7ff}
 \colorlet{HLAbgcolor}{Kcolor!13!white}
 \colorlet{HLBbgcolor}{Redcolor!14!white}
 \colorlet{HLCbgcolor}{Bluecolor!18!white}
@@ -2423,8 +2424,18 @@
 \newcommand{\DeclareChapterLinkList}[2]{%
     \expandafter\def\csname ChapterLinkList@#1\endcsname{#2}%
 }
+\newcommand{\DeclareBookChapterLinkList}[2]{%
+    \expandafter\def\csname BookChapterLinkList@#1\endcsname{#2}%
+}
+\newcommand{\ChapterLinkText}[1]{%
+    \ifConfigOutputModeMobile
+        {\color{MobileLinkColor}\underLine{#1}}%
+    \else
+        {\color{TextColor}#1}%
+    \fi
+}
 \newcommand{\ChapterLink}[1]{%
-    \hyperlink{chapter.\CurrentBook.#1}{#1}%
+    \hyperlink{chapter.\CurrentBook.#1}{\ChapterLinkText{#1}}%
 }
 \newcommand{\ChapterLinkSeparator}{\quad}
 \newcommand{\ChapterLinkRange}[1]{%
@@ -2441,7 +2452,6 @@
     \begingroup
     \centering
     \footnotesize
-    \color{TextColor}%
     \@ifundefined{ChapterLinkList@\CurrentBook}{%
         \@ifundefined{ChapterLinkRange@\CurrentBook}{}{%
             \ChapterLinkRange{\csname ChapterLinkRange@\CurrentBook\endcsname}%
@@ -2451,6 +2461,19 @@
     }%
     \par\nobreak\smallskip
     \endgroup
+}
+\newcommand{\ChapterLinksForBook}[1]{%
+    \begingroup
+    \def\CurrentBook{#1}%
+    \ChapterLinkArray
+    \endgroup
+}
+\newcommand{\BookChapterLinkArray}[1]{%
+    \@ifundefined{BookChapterLinkList@#1}{%
+        \ChapterLinksForBook{#1}%
+    }{%
+        \csname BookChapterLinkList@#1\endcsname
+    }%
 }
 \DeclareChapterLinkRange{Genesis}{50}
 \DeclareChapterLinkRange{Exodus}{40}
@@ -2468,6 +2491,19 @@
 \DeclareChapterLinkRange{On the Lamb}{1}
 \DeclareChapterLinkRange{Esther}{10}
 \DeclareChapterLinkList{Red}{\ChapterLink{14}}
+\DeclareBookChapterLinkList{Samuel}{%
+    \ChapterLinksForBook{I Samuel}%
+    \ChapterLinksForBook{II Samuel}%
+}
+\DeclareBookChapterLinkList{Kings}{%
+    \ChapterLinksForBook{I Kings}%
+    \ChapterLinksForBook{II Kings}%
+}
+\DeclareBookChapterLinkList{Dudetheyreontome}{%
+    \ChapterLinksForBook{On the Lamb}%
+    \ChapterLinksForBook{Esther}%
+    \ChapterLinksForBook{Red}%
+}
 \makeatother
 
 \newcommand{\Book}[1]{%
@@ -2475,6 +2511,7 @@
     \phantomsection
     \def\CurrentBook{#1}%
     \addcontentsline{toc}{chapter}{#1}%
+    \BookChapterLinkArray{#1}%
 }
 
 \newcommand{\BookPart}[1]{%
@@ -2488,7 +2525,6 @@
 \newcommand{\Chapter}[1]{%
     \hypertarget{chapter.\CurrentBook.#1}{}%
     \ChapterHeading{#1}%
-    \ChapterLinkArray
     \def\CurrentChapter{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
 }
