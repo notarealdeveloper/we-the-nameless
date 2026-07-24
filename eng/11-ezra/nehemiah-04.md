@@ -1,0 +1,160 @@
+------------------------------------------------------------------------
+
+## Nehemiah 4:1
+
+------------------------------------------------------------------------
+
+¹ When Sanballat and Tobiah, and the Arabs, the Ammonites, and the
+Ashdodites heard that healing had come to the walls of Jerusalem, that
+the breached parts had begun to be filled, it angered them very much,
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:2
+
+------------------------------------------------------------------------
+
+² and they all conspired together to come and fight against Jerusalem
+and to throw it into confusion.
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:3
+
+------------------------------------------------------------------------
+
+³ Because of them we prayed to our God, and set up a watch over them day
+and night.
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:4
+
+------------------------------------------------------------------------
+
+⁴ Judah was saying, “The strength of the basket-carrier has failed, And
+there is so much rubble; We are not able ourselves To rebuild the wall.”
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:5
+
+------------------------------------------------------------------------
+
+⁵ And our foes were saying, “Before they know or see it, we shall be in
+among them and kill them, and put a stop to the work.”
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:6
+
+------------------------------------------------------------------------
+
+⁶ When the Jews living near them would arrive, they would tell us time
+and again “…from all the places where…you shall come back to us…”
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:7
+
+------------------------------------------------------------------------
+
+⁷ I stationed, on the lower levels of the place, behind the walls, on
+the bare rock—I stationed the people by families with their swords,
+their lances, and their bows.
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:8
+
+------------------------------------------------------------------------
+
+⁸ Then I decided to exhort the nobles, the prefects, and the rest of the
+people, “Do not be afraid of them! Think of the great and awesome YHWH,
+and fight for your brothers, your sons and daughters, your wives and
+homes!”
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:9
+
+------------------------------------------------------------------------
+
+⁹ When our enemies learned that it had become known to us, since God had
+thus frustrated their plan, we could all return to the wall, each to his
+work.
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:10
+
+------------------------------------------------------------------------
+
+¹⁰ From that day on, half my servants did work and half held lances and
+shields, bows and armor. And the officers stood behind the whole house
+of Judah
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:11
+
+------------------------------------------------------------------------
+
+¹¹ who were rebuilding the wall. The basket-carriers were burdened,
+doing work with one hand while the other held a weapon.
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:12
+
+------------------------------------------------------------------------
+
+¹² As for the builders, each had his sword girded at his side as he was
+building. The trumpeter stood beside me.
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:13
+
+------------------------------------------------------------------------
+
+¹³ I said to the nobles, the prefects, and the rest of the people,
+“There is much work and it is spread out; we are scattered over the
+wall, far from one another.
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:14
+
+------------------------------------------------------------------------
+
+¹⁴ When you hear a trumpet call, gather yourselves to me at that place;
+our God will fight for us!”
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:15
+
+------------------------------------------------------------------------
+
+¹⁵ And so we worked on, while half were holding lances, from the break
+of day until the stars appeared.
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:16
+
+------------------------------------------------------------------------
+
+¹⁶ I further said to the people at that time, “Let every man with his
+servant lodge in Jerusalem, that we may use the night to stand guard and
+the day to work.”
+
+------------------------------------------------------------------------
+
+## Nehemiah 4:17
+
+------------------------------------------------------------------------
+
+¹⁷ Nor did I, my brothers, my servants, or the guards following me ever
+take off our clothes, [or] each his weapon, even at the water.
