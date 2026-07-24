@@ -608,6 +608,7 @@
 %\definecolor{OtherColor}{RGB}{0,120,0}
 
 \definecolor{Kcolor}{RGB}{0,0,0}
+\colorlet{Xcolor}{Kcolor!92!white}
 \definecolor{Redcolor}{RGB}{130,0,0}
 \definecolor{Bluecolor}{RGB}{0,70,170}
 \definecolor{Greencolor}{RGB}{0,120,0}
@@ -685,6 +686,7 @@
     \colorlet{Otherbgcolor}{OtherColor!18!bg}
 
     \colorlet{Kcolor}{fg}
+    \colorlet{Xcolor}{Kcolor!92!bg}
     \colorlet{Redcolor}{ObsRed!58!fg}
     \colorlet{Bluecolor}{ObsBlue!65!fg}
     \colorlet{Greencolor}{ObsGreen!62!fg}
@@ -1573,8 +1575,8 @@
 % Others
 
 \DeclareSourceProfile{X}
-    {\EnglishFont} {\color{TextColor}\mdseries}
-    {\HebrewDavid} {\HebrewDavidLarge\color{TextColor}\mdseries}
+    {\EnglishFont} {\color{Xcolor}\mdseries}
+    {\HebrewDavid} {\HebrewDavidLarge\color{Xcolor}\mdseries}
 
 \DeclareSourceProfile{RJE}
     {\EnglishFont} {\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\mdseries}
