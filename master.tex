@@ -12,8 +12,8 @@
 % choices: book, mobile
 \def\ConfigOutputMode{mobile}
 
-% choices: true, false
-\def\ConfigCommentary{true}
+% choices: all, none
+\def\ConfigCommentary{all}
 
 %%%%%%%%%%%%%%%%%%
 %%% master.tex %%%
@@ -28,16 +28,17 @@
 %   lualatex master.tex
 % ------------------------------------------------------------
 
-\def\ConfigTrue{true}
 \def\ConfigThemeDark{dark}
 \def\ConfigVerseLayoutHorizontal{horizontal}
 \def\ConfigVerseLayoutVertical{vertical}
 \def\ConfigOutputModeBook{book}
 \def\ConfigOutputModeMobile{mobile}
+\def\ConfigCommentaryAll{all}
+\def\ConfigCommentaryNone{none}
 \newif\ifConfigCommentaryOn
 \newif\ifConfigVerseLayoutVertical
 \newif\ifConfigOutputModeMobile
-\ifx\ConfigCommentary\ConfigTrue
+\ifx\ConfigCommentary\ConfigCommentaryAll
     \ConfigCommentaryOntrue
 \else
     \ConfigCommentaryOnfalse
