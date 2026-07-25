@@ -2512,8 +2512,24 @@
 }
 \makeatother
 
+\DeclareRobustCommand{\TableOfContentsLink}[1]{%
+    \hyperlink{tableofcontents}{#1}%
+}
+
+\DeclareRobustCommand{\BookTitleLink}[1]{%
+    \hyperlink{book.\CurrentTitleBook}{#1}%
+}
+
+\DeclareRobustCommand{\ChapterTitleText}[1]{%
+    \BookTitleLink{\CurrentBook\ #1}%
+}
+
+\DeclareRobustCommand{\ChapterHeaderText}[1]{%
+    \hyperlink{chapter.\CurrentBook.#1}{\CurrentBook\ #1}%
+}
+
 \newcommand{\Book}[1]{%
-    \BookHeading{#1}%
+    \BookHeading{\TableOfContentsLink{#1}}%
     \phantomsection
     \def\CurrentBook{#1}%
     \addcontentsline{toc}{chapter}{#1}%
@@ -2929,6 +2945,8 @@
 \AlphabetHistoryPage
 
 \clearpage
+\phantomsection
+\hypertarget{tableofcontents}{}%
 \tableofcontents
 
 \clearpage
