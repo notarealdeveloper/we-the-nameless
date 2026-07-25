@@ -41,7 +41,13 @@ Also, make the python ncurses interface detect when all 12 books are done compil
 
 Great! It seems to be working at first glance. Now just make sure the title page and front matter get built. Don't allocate those to any of the 12 processes unless you have to. I asked you for a version of this prompt before but you allocated the front matter to the Genesis process, and it made everything sequential until Genesis finished. Don't do that. Ncurses interface should say compiling front matter, then fork, then do the twelve. Actually I'm not married to that. Just make it robust and make the decisions you think are best, but make sure it's not sequential until Genesis finishes. Make a thin bar at the top that shows the progress prior to the beginning of the 12 books parallel compiling, if you need a sequential initial step. Optional, but if you need it, do it like that.
 
-### CURRENT PROMPT
+### PROMPT 4
 
 It's looking fantastic! Now, is there a way to make the 'make parallel' ncurses interface do two passes by default so we get correct page numbers in the TOC and elsewhere? Try to make that work, but don't build the book. It takes too long. I'll let you know if it works.
+
+### CURRENT PROMPT
+
+1. When you hit 'pass two' in the ncurses parallel interface, the counters in the top right of each box don't reset.
+2. More significantly, a full sequential make of the whole book only takes 1 minute and 22 seconds. EACH of your 12 workers takes about that same time to do one pass. That suggests the parallelism is subtly incorrect in a way that's totally useless. That said, the interface is AMAZING. Can you try to fix the logic to make it properly parallel while keeping the interface the current awesome version it is, plus the fix in item 1?
 EOF
+
