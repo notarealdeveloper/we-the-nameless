@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+We currently have a title page at the bottom of 12-dudetheyreontome/01-on-the-lamb/01.tex that looks like a big loud intense movie poster or movie title page.
+
+It basically says this:
+
+
+            WE
+
+       THE NAMELESS
+
+         part two
+
+         DIASPORA
+
+       according to
+
+            WE
+
+       the nameless
+      historians of
+
+           דוד
+
+    these are the words
+      of the book of
+
+           דוד
+
+     DUDETHEYREONTOME
+
+          הֵם עָלַי
+
+        part one
+
+      ON THE LAMB
+
+I want you to:
+
+1. Make the background of the page be the same as the standard background color (dark in dark mode, light in light mode)
+2. Add a bit of space between currently cramped elements, but keep it all on one page.
+3. Also the hebrew of "they're onto me" is reversed and shouldn't have niqqud, fix that. It's HM `LI not IL` MH. Solve that by wrapping all the heb in \\heb{}
+4. Don't get distracted looking elsewhere in the repo, just fix that.
+EOF
