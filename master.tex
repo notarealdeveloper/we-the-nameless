@@ -2427,6 +2427,7 @@
 
 \makeatletter
 \newcount\ChapterLinkIndex
+\newcount\CurrentVerseIndex
 \newcommand{\DeclareChapterLinkRange}[2]{%
     \expandafter\def\csname ChapterLinkRange@#1\endcsname{#2}%
 }
@@ -2436,6 +2437,26 @@
 \newcommand{\DeclareBookChapterLinkList}[2]{%
     \expandafter\def\csname BookChapterLinkList@#1\endcsname{#2}%
 }
+\newcommand{\DeclareBookPartList}[2]{%
+    \expandafter\def\csname BookPartList@#1\endcsname{#2}%
+}
+\newcommand{\RecordVerseLink}[4]{%
+    \@ifundefined{VerseLinkList@#1@#2}{%
+        \expandafter\gdef\csname VerseLinkList@#1@#2\endcsname{%
+            \VerseLinkTo{#1}{#2}{#3}{#4}%
+        }%
+    }{%
+        \expandafter\g@addto@macro\csname VerseLinkList@#1@#2\endcsname{%
+            \VerseLinkSeparator
+            \VerseLinkTo{#1}{#2}{#3}{#4}%
+        }%
+    }%
+}
+\newcommand{\WriteVerseLink}[1]{%
+    \protected@write\@auxout{}{%
+        \string\RecordVerseLink{\CurrentBook}{\CurrentChapter}{\the\CurrentVerseIndex}{\unexpanded{#1}}%
+    }%
+}
 \newcommand{\ChapterLinkText}[1]{%
     \ifConfigOutputModeMobile
         {\color{MobileLinkColor}\underLine{#1}}%
@@ -2443,10 +2464,17 @@
         {\color{TextColor}#1}%
     \fi
 }
+\newcommand{\NavigationLinkText}[1]{%
+    \ChapterLinkText{#1}%
+}
 \newcommand{\ChapterLink}[1]{%
     \hyperlink{chapter.\CurrentBook.#1}{\ChapterLinkText{#1}}%
 }
+\newcommand{\VerseLinkTo}[4]{%
+    \hyperlink{verse.#1.#2.#3}{\NavigationLinkText{#4}}%
+}
 \newcommand{\ChapterLinkSeparator}{\quad}
+\newcommand{\VerseLinkSeparator}{\quad}
 \newcommand{\ChapterLinkRange}[1]{%
     \ChapterLinkIndex=1
     \loop
@@ -2471,17 +2499,41 @@
     \par\nobreak\smallskip
     \endgroup
 }
+\newcommand{\VerseLinkArray}{%
+    \par\nobreak\smallskip
+    \begingroup
+    \centering
+    \footnotesize
+    \@ifundefined{VerseLinkList@\CurrentBook @\CurrentChapter}{}{%
+        \csname VerseLinkList@\CurrentBook @\CurrentChapter\endcsname
+    }%
+    \par\nobreak\smallskip
+    \endgroup
+}
 \newcommand{\ChapterLinksForBook}[1]{%
     \begingroup
     \def\CurrentBook{#1}%
     \ChapterLinkArray
     \endgroup
 }
+\newcommand{\BookPartChapterLinks}[1]{%
+    \par\nobreak\medskip
+    \begingroup
+    \centering
+    {\large\bfseries #1\par}%
+    \nobreak\smallskip
+    \ChapterLinksForBook{#1}%
+    \endgroup
+}
 \newcommand{\BookChapterLinkArray}[1]{%
-    \@ifundefined{BookChapterLinkList@#1}{%
-        \ChapterLinksForBook{#1}%
+    \@ifundefined{BookPartList@#1}{%
+        \@ifundefined{BookChapterLinkList@#1}{%
+            \ChapterLinksForBook{#1}%
+        }{%
+            \csname BookChapterLinkList@#1\endcsname
+        }%
     }{%
-        \csname BookChapterLinkList@#1\endcsname
+        \csname BookPartList@#1\endcsname
     }%
 }
 \DeclareChapterLinkRange{Genesis}{50}
@@ -2499,6 +2551,18 @@
 \DeclareChapterLinkRange{Nehemiah}{13}
 \DeclareChapterLinkRange{On the Lamb}{1}
 \DeclareChapterLinkRange{Esther}{10}
+\DeclareBookPartList{Samuel}{%
+    \BookPartChapterLinks{I Samuel}%
+    \BookPartChapterLinks{II Samuel}%
+}
+\DeclareBookPartList{Kings}{%
+    \BookPartChapterLinks{I Kings}%
+    \BookPartChapterLinks{II Kings}%
+}
+\DeclareBookPartList{Dudetheyreontome}{%
+    \BookPartChapterLinks{On the Lamb}%
+    \BookPartChapterLinks{Esther}%
+}
 \DeclareBookChapterLinkList{Samuel}{%
     \ChapterLinksForBook{I Samuel}%
     \ChapterLinksForBook{II Samuel}%
@@ -2513,10 +2577,24 @@
 }
 \makeatother
 
+\DeclareRobustCommand{\BookTitleLink}[1]{%
+    \hyperlink{book.\CurrentTitleBook}{#1}%
+}
+
+\DeclareRobustCommand{\ChapterTitleText}[1]{%
+    \BookTitleLink{\CurrentBook\ #1}%
+}
+
+\DeclareRobustCommand{\ChapterHeaderText}[1]{%
+    \hyperlink{chapter.\CurrentBook.#1}{\CurrentBook\ #1}%
+}
+
 \newcommand{\Book}[1]{%
     \BookHeading{#1}%
     \phantomsection
+    \hypertarget{book.#1}{}%
     \def\CurrentBook{#1}%
+    \def\CurrentTitleBook{#1}%
     \addcontentsline{toc}{chapter}{#1}%
     \BookChapterLinkArray{#1}%
 }
@@ -2531,9 +2609,11 @@
 
 \newcommand{\Chapter}[1]{%
     \hypertarget{chapter.\CurrentBook.#1}{}%
-    \ChapterHeading{#1}%
     \def\CurrentChapter{#1}%
-    \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
+    \CurrentVerseIndex=0
+    \ChapterHeading{\ChapterTitleText{#1}}%
+    \VerseLinkArray
+    \markboth{\ChapterHeaderText{#1}}{\ChapterHeaderText{#1}}%
 }
 
 % \Apocrypha defines an apocryphal Book
@@ -2663,6 +2743,9 @@
 
 \newcommand{\Verse}[4]{%
     \par
+    \advance\CurrentVerseIndex by 1
+    \hypertarget{verse.\CurrentBook.\CurrentChapter.\the\CurrentVerseIndex}{}%
+    \WriteVerseLink{#1}%
     \vspace{0.8em}%
     \Needspace{6\baselineskip}
     \VerseRule
