@@ -30,9 +30,15 @@ whi="${end}\e[1;39m"
 9. Don't change any existing files to do that, this is an experiment, so to start just create a par/ directory, copy the Makefile, master.tex, and 01-genesis through 12-* down into there along with fonts/, and modify those files, aggressibely as needed, to see if you can get a nice system that accomplishes all of the above in a nice non-fragile easily debuggable way.
 
 
-### CURRENT PROMPT
+### PROMPT 2
 
 You seem to have done that! Nice! Now, I want you to integrate the experiment you did in the par/ directory into the main repo root, deleting anything redundant, and fixing up any bits of the Makefile or build system so that 'make' (the sequential standard one that builds in build/) and 'make parallel' (the parallel ncurses one that builds in build-par, which should now build in build/parallel/) don't conflict with each other.
 
 Also, make the python ncurses interface detect when all 12 books are done compiling, give a done message and exit, then either in the python interface or the Makefile (your call) do a pdfunite if necessary and open the resulting pdf.
+
+
+### CURRENT PROMPT
+
+Great! It seems to be working at first glance. Now just make sure the title page and front matter get built. You can allocate those to the Genesis process if you want.
+
 EOF
