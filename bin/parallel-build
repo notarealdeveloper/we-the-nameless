@@ -18,6 +18,8 @@ MASTER = ROOT / "master.tex"
 BUILD = ROOT / "build" / "parallel"
 SOURCE_DIR = BUILD / "masters"
 MERGED_PDF = BUILD / "master.pdf"
+FRONT_SLUG = "front-matter"
+FRONT_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}.pdf"
 
 BOOK_RE = re.compile(r"^\\Book\{([^}]+)\}\s*$", re.MULTILINE)
 INCLUDE_RE = re.compile(r"\\include\{([^}]+)\}")
@@ -35,7 +37,7 @@ def slugify(text):
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
-def read_book_chunks():
+def read_document_parts():
     text = MASTER.read_text()
     doc_match = re.search(r"\\begin\{document\}", text)
     if not doc_match:
@@ -45,6 +47,8 @@ def read_book_chunks():
     books = list(BOOK_RE.finditer(text))
     if len(books) != 12:
         raise RuntimeError(f"expected 12 \\Book blocks, found {len(books)}")
+    front_body = text[doc_match.end() : books[0].start()]
+    front_body = front_body.split(r"\mainmatter", 1)[0].strip()
 
     chunks = []
     for index, match in enumerate(books):
@@ -62,7 +66,36 @@ def read_book_chunks():
                 "includes": includes,
             }
         )
-    return preamble, chunks
+    return preamble, front_body, chunks
+
+
+def write_front_master(preamble, front_body):
+    SOURCE_DIR.mkdir(parents=True, exist_ok=True)
+    target = SOURCE_DIR / f"{FRONT_SLUG}.tex"
+    target.write_text(
+        "\n".join(
+            [
+                preamble,
+                "",
+                front_body,
+                "",
+                r"\end{document}",
+                "",
+            ]
+        )
+    )
+    return target
+
+
+def write_front_toc(books, output_dir):
+    output_dir.mkdir(parents=True, exist_ok=True)
+    toc = output_dir / f"{FRONT_SLUG}.toc"
+    toc.write_text(
+        "".join(
+            rf"\contentsline {{chapter}}{{{book['title']}}}{{}}{{}}" + "\n"
+            for book in books
+        )
+    )
 
 
 def write_worker_master(preamble, book):
@@ -190,6 +223,35 @@ def worker_main(book, preamble, event_queue):
         raise SystemExit(99)
 
 
+def front_main(preamble, front_body, books, event_queue):
+    started = time.monotonic()
+    output_dir = BUILD / FRONT_SLUG
+    texmfvar = BUILD / "texmf-var" / FRONT_SLUG
+    front = {
+        "index": -1,
+        "title": "Front Matter",
+        "slug": FRONT_SLUG,
+        "includes": [],
+    }
+    try:
+        master_path = write_front_master(preamble, front_body)
+        write_front_toc(books, output_dir)
+        event_queue.put(("front-started", "compiling front matter"))
+        rc, saw_rerun, tail = stream_lualatex(front, master_path, output_dir, texmfvar, event_queue, 1)
+        if rc == 0 and saw_rerun:
+            rc, _, tail = stream_lualatex(front, master_path, output_dir, texmfvar, event_queue, 2)
+
+        elapsed = time.monotonic() - started
+        if rc == 0 and FRONT_PDF.exists():
+            event_queue.put(("front-done", elapsed, str(FRONT_PDF.relative_to(ROOT))))
+            raise SystemExit(0)
+        event_queue.put(("front-failed", rc, tail))
+        raise SystemExit(rc or 1)
+    except Exception as exc:
+        event_queue.put(("front-failed", 99, [repr(exc)]))
+        raise SystemExit(99)
+
+
 def launch_workers(books, preamble, event_queue):
     processes = []
     for book in books:
@@ -199,10 +261,27 @@ def launch_workers(books, preamble, event_queue):
     return processes
 
 
+def launch_front_worker(preamble, front_body, books, event_queue):
+    process = mp.Process(
+        target=front_main,
+        args=(preamble, front_body, books, event_queue),
+        name=FRONT_SLUG,
+    )
+    process.start()
+    return process
+
+
 class Dashboard:
     def __init__(self, stdscr, books):
         self.stdscr = stdscr
         self.books = books
+        self.front = {
+            "status": "waiting",
+            "elapsed": None,
+            "pdf": None,
+            "lines": [],
+            "failed": False,
+        }
         self.state = [
             {
                 "title": book["title"],
@@ -229,13 +308,27 @@ class Dashboard:
         self.red = curses.color_pair(4) | curses.A_BOLD
 
     def add_line(self, index, text):
+        if index < 0:
+            lines = self.front["lines"]
+            lines.append(text)
+            self.front["lines"] = lines[-2:]
+            return
         lines = self.state[index]["lines"]
         lines.append(text)
         self.state[index]["lines"] = lines[-8:]
 
     def handle(self, event):
         kind = event[0]
+        if kind.startswith("front-"):
+            self.handle_front(event)
+            return
         index = event[1]
+        if index < 0:
+            if kind == "started-pass":
+                self.front["status"] = f"pass {event[2]}"
+            elif kind == "output":
+                self.add_line(index, "pdf page stream closed")
+            return
         state = self.state[index]
         if kind == "started":
             state["status"] = "running"
@@ -257,20 +350,57 @@ class Dashboard:
             for line in event[3][-4:]:
                 self.add_line(index, line)
 
+    def handle_front(self, event):
+        kind = event[0]
+        if kind == "front-started":
+            self.front["status"] = event[1]
+        elif kind == "front-done":
+            self.front["status"] = "front matter done"
+            self.front["elapsed"] = event[1]
+            self.front["pdf"] = event[2]
+            self.add_line(-1, f"done in {event[1]:.1f}s")
+        elif kind == "front-failed":
+            self.front["status"] = f"front matter failed rc={event[1]}"
+            self.front["failed"] = True
+            for line in event[2][-2:]:
+                self.add_line(-1, line)
+
     def draw(self):
         self.stdscr.erase()
         height, width = self.stdscr.getmaxyx()
-        cell_h = max(6, height // 3)
+        top_h = 3 if height >= 12 else 0
+        if top_h:
+            self.draw_front_bar(0, 0, top_h, width)
+        grid_y = top_h
+        grid_h = max(0, height - grid_y)
+        cell_h = max(6, grid_h // 3) if grid_h else 0
         cell_w = max(24, width // 4)
         for i, state in enumerate(self.state):
             row = i // 4
             col = i % 4
-            y = row * cell_h
+            y = grid_y + row * cell_h
             x = col * cell_w
             h = cell_h if row < 2 else height - y
             w = cell_w if col < 3 else width - x
             self.draw_cell(y, x, h, w, state)
         self.stdscr.refresh()
+
+    def draw_front_bar(self, y, x, h, w):
+        win = self.stdscr.derwin(h, w, y, x)
+        win.erase()
+        try:
+            win.border()
+            title = " Front Matter "
+            status = self.front["status"]
+            line = " | ".join(self.front["lines"])
+            attr = self.red if self.front["failed"] else self.green
+            win.addstr(0, 2, title[: max(0, w - 4)], self.blue)
+            win.addstr(1, 2, status[: max(0, w - 4)], attr)
+            if line:
+                start = max(2, w - len(line) - 2)
+                win.addstr(1, start, line[: max(0, w - start - 1)], self.white)
+        except curses.error:
+            pass
 
     def draw_cell(self, y, x, h, w, state):
         if h < 4 or w < 10:
@@ -295,30 +425,34 @@ class Dashboard:
             pass
 
 
-def run_curses(books, preamble):
+def run_curses(books, preamble, front_body, include_front):
     event_queue = mp.Queue()
+    front_process = launch_front_worker(preamble, front_body, books, event_queue) if include_front else None
     processes = launch_workers(books, preamble, event_queue)
 
     def main(stdscr):
         dashboard = Dashboard(stdscr, books)
         completed = 0
+        expected = len(processes) + (1 if front_process else 0)
         failed = False
-        while completed < len(processes):
+        while completed < expected:
             try:
                 event = event_queue.get(timeout=0.1)
             except queue.Empty:
                 event = None
             if event is not None:
-                if event[0] in {"done", "failed"}:
+                if event[0] in {"done", "failed", "front-done", "front-failed"}:
                     completed += 1
-                if event[0] == "failed":
+                if event[0] in {"failed", "front-failed"}:
                     failed = True
                 dashboard.handle(event)
             dashboard.draw()
         for process in processes:
             process.join()
+        if front_process:
+            front_process.join()
         dashboard.draw()
-        status = "Build failed" if failed else "All books compiled"
+        status = "Build failed" if failed else "Front matter and all books compiled"
         height, width = stdscr.getmaxyx()
         try:
             stdscr.addstr(height - 1, 0, status[: max(0, width - 1)], dashboard.red if failed else dashboard.green)
@@ -331,27 +465,47 @@ def run_curses(books, preamble):
     try:
         failed = curses.wrapper(main)
     finally:
-        for process in processes:
+        all_processes = processes + ([front_process] if front_process else [])
+        for process in all_processes:
             if process.is_alive():
                 process.terminate()
-        for process in processes:
+        for process in all_processes:
             process.join()
 
-    failures = [process.exitcode for process in processes if process.exitcode not in (0, None)]
+    all_processes = processes + ([front_process] if front_process else [])
+    failures = [process.exitcode for process in all_processes if process.exitcode not in (0, None)]
     if failed:
         return 1
     return 1 if failures else 0
 
 
-def run_plain(books, preamble):
+def run_plain(books, preamble, front_body, include_front):
     event_queue = mp.Queue()
+    front_process = launch_front_worker(preamble, front_body, books, event_queue) if include_front else None
     processes = launch_workers(books, preamble, event_queue)
     completed = 0
+    expected = len(processes) + (1 if front_process else 0)
     failed = False
-    while completed < len(processes):
+    while completed < expected:
         event = event_queue.get()
         kind = event[0]
+        if kind == "front-started":
+            print(f"{GREEN}Front Matter{END} {WHITE}{event[1]}{END}", flush=True)
+            continue
+        if kind == "front-done":
+            completed += 1
+            print(f"{GREEN}Front Matter{END} {WHITE}done in {event[1]:.1f}s{END} {BLUE}{event[2]}{END}", flush=True)
+            continue
+        if kind == "front-failed":
+            completed += 1
+            failed = True
+            print(f"{GREEN}Front Matter{END} {WHITE}failed rc={event[1]}{END}", flush=True)
+            for line in event[2][-6:]:
+                print(f"  {line}", flush=True)
+            continue
         index = event[1]
+        if index < 0:
+            continue
         title = books[index]["title"]
         if kind == "chapter":
             print(f"{GREEN}{title}{END} {WHITE}pass {event[2]}{END} {BLUE}{event[3]} compiled{END}", flush=True)
@@ -366,9 +520,12 @@ def run_plain(books, preamble):
                 print(f"  {line}", flush=True)
     for process in processes:
         process.join()
+    if front_process:
+        front_process.join()
     if failed:
         return 1
-    return 1 if any(process.exitcode not in (0, None) for process in processes) else 0
+    all_processes = processes + ([front_process] if front_process else [])
+    return 1 if any(process.exitcode not in (0, None) for process in all_processes) else 0
 
 
 def clean():
@@ -376,8 +533,11 @@ def clean():
         shutil.rmtree(BUILD)
 
 
-def merge_pdfs(books):
-    pdfs = [BUILD / book["slug"] / f"{book['slug']}.pdf" for book in books]
+def merge_pdfs(books, include_front):
+    pdfs = []
+    if include_front:
+        pdfs.append(FRONT_PDF)
+    pdfs.extend(BUILD / book["slug"] / f"{book['slug']}.pdf" for book in books)
     missing = [pdf for pdf in pdfs if not pdf.exists()]
     if missing:
         print("Cannot merge; missing PDFs:", file=sys.stderr)
@@ -413,13 +573,20 @@ def main():
     parser.add_argument("--list-books", action="store_true", help="print the detected book chunks and exit")
     parser.add_argument("--clean", action="store_true", help="remove build/parallel before building")
     parser.add_argument("--only", metavar="TEXT", help="debug one matching book instead of all twelve")
+    parser.add_argument("--front-only", action="store_true", help="debug only the title page and front matter")
     args = parser.parse_args()
 
-    preamble, books = read_book_chunks()
+    preamble, front_body, books = read_document_parts()
     if args.list_books:
         for book in books:
             print(f"{book['index'] + 1:02d} {book['title']}: {len(book['includes'])} chapters")
         return 0
+    if args.front_only:
+        if args.clean:
+            clean()
+        BUILD.mkdir(parents=True, exist_ok=True)
+        event_queue = mp.Queue()
+        front_main(preamble, front_body, books, event_queue)
     if args.only:
         matches = [book for book in books if args.only.lower() in book["title"].lower() or args.only in book["slug"]]
         if len(matches) != 1:
@@ -428,20 +595,21 @@ def main():
         books = matches
     books = [{**book, "index": index} for index, book in enumerate(books)]
     full_build = not args.only and len(books) == 12
+    include_front = full_build
 
     if args.clean:
         clean()
     BUILD.mkdir(parents=True, exist_ok=True)
 
     if args.plain or not sys.stdout.isatty() or os.environ.get("TERM") in (None, "", "dumb"):
-        rc = run_plain(books, preamble)
+        rc = run_plain(books, preamble, front_body, include_front)
     else:
-        rc = run_curses(books, preamble)
+        rc = run_curses(books, preamble, front_body, include_front)
     if rc != 0:
         return rc
     if not full_build:
         return 0
-    rc = merge_pdfs(books)
+    rc = merge_pdfs(books, include_front)
     if rc == 0:
         print(f"{GREEN}Done{END} {WHITE}merged{END} {BLUE}{MERGED_PDF.relative_to(ROOT)}{END}", flush=True)
         open_pdf(MERGED_PDF)
