@@ -2577,12 +2577,16 @@
 }
 \makeatother
 
+\DeclareRobustCommand{\BookTitleLink}[1]{%
+    \hyperlink{book.\CurrentTitleBook}{#1}%
+}
+
 \DeclareRobustCommand{\ChapterTitleText}[1]{%
-    \CurrentBook\ #1%
+    \BookTitleLink{\CurrentBook\ #1}%
 }
 
 \DeclareRobustCommand{\ChapterHeaderText}[1]{%
-    \CurrentBook\ #1%
+    \hyperlink{chapter.\CurrentBook.#1}{\CurrentBook\ #1}%
 }
 
 \newcommand{\Book}[1]{%
@@ -3009,8 +3013,6 @@
 \AlphabetHistoryPage
 
 \clearpage
-\phantomsection
-\hypertarget{tableofcontents}{}%
 \tableofcontents
 
 \clearpage
