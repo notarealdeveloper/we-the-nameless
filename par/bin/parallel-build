@@ -1,0 +1,404 @@
+#!/usr/bin/env python3
+import argparse
+import curses
+import multiprocessing as mp
+import os
+from pathlib import Path
+import queue
+import re
+import shutil
+import subprocess
+import sys
+import threading
+import time
+
+
+ROOT = Path(__file__).resolve().parents[1]
+MASTER = ROOT / "master.tex"
+BUILD = ROOT / "build-par"
+SOURCE_DIR = BUILD / "masters"
+
+BOOK_RE = re.compile(r"^\\Book\{([^}]+)\}\s*$", re.MULTILINE)
+INCLUDE_RE = re.compile(r"\\include\{([^}]+)\}")
+CHAPTER_RE = re.compile(r"\((?:\./)?((?:\d\d-[^/]+/)[^()\s]+)\.tex")
+RERUN_TEXT = "Rerun to get cross-references right"
+
+
+GREEN = "\033[1;32m"
+BLUE = "\033[1;34m"
+WHITE = "\033[1;39m"
+END = "\033[00m"
+
+
+def slugify(text):
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def read_book_chunks():
+    text = MASTER.read_text()
+    doc_match = re.search(r"\\begin\{document\}", text)
+    if not doc_match:
+        raise RuntimeError("master.tex has no \\begin{document}")
+
+    preamble = text[: doc_match.end()]
+    books = list(BOOK_RE.finditer(text))
+    if len(books) != 12:
+        raise RuntimeError(f"expected 12 \\Book blocks, found {len(books)}")
+
+    chunks = []
+    for index, match in enumerate(books):
+        title = match.group(1)
+        start = match.start()
+        end = books[index + 1].start() if index + 1 < len(books) else text.index(r"\end{document}", start)
+        body = text[start:end].strip()
+        includes = INCLUDE_RE.findall(body)
+        chunks.append(
+            {
+                "index": index,
+                "title": title,
+                "slug": f"{index + 1:02d}-{slugify(title)}",
+                "body": body,
+                "includes": includes,
+            }
+        )
+    return preamble, chunks
+
+
+def write_worker_master(preamble, book):
+    SOURCE_DIR.mkdir(parents=True, exist_ok=True)
+    target = SOURCE_DIR / f"{book['slug']}.tex"
+    target.write_text(
+        "\n".join(
+            [
+                preamble,
+                "",
+                r"\mainmatter",
+                r"\hypersetup{pageanchor=true}",
+                r"\pagestyle{fancy}",
+                "",
+                book["body"],
+                "",
+                r"\end{document}",
+                "",
+            ]
+        )
+    )
+    return target
+
+
+def prepare_build_dirs(book, output_dir):
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for include in book["includes"]:
+        (output_dir / Path(include).parent).mkdir(parents=True, exist_ok=True)
+
+
+def chapter_label(path):
+    pieces = Path(path).parts
+    if len(pieces) < 2:
+        return path
+    chapter = Path(path).name
+    chapter = chapter.replace("-", " ")
+    return chapter
+
+
+def parse_progress(line):
+    matches = CHAPTER_RE.findall(line)
+    if not matches:
+        return []
+    return [chapter_label(match) for match in matches]
+
+
+def stream_lualatex(book, master_path, output_dir, texmfvar, event_queue, pass_number):
+    cmd = [
+        "lualatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        f"-output-directory={output_dir}",
+        str(master_path),
+    ]
+    env = os.environ.copy()
+    env["TEXMFVAR"] = str(texmfvar)
+
+    event_queue.put(("started-pass", book["index"], pass_number, " ".join(cmd)))
+    process = subprocess.Popen(
+        cmd,
+        cwd=ROOT,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1,
+        errors="replace",
+    )
+
+    lines = queue.Queue()
+
+    def producer():
+        assert process.stdout is not None
+        for line in process.stdout:
+            lines.put(line.rstrip("\n"))
+        lines.put(None)
+
+    thread = threading.Thread(target=producer, daemon=True)
+    thread.start()
+
+    log_tail = []
+    saw_rerun = False
+    while True:
+        line = lines.get()
+        if line is None:
+            break
+        log_tail.append(line)
+        log_tail = log_tail[-12:]
+        if RERUN_TEXT in line:
+            saw_rerun = True
+        for chapter in parse_progress(line):
+            event_queue.put(("chapter", book["index"], pass_number, chapter))
+        if line.startswith("Output written on "):
+            event_queue.put(("output", book["index"], pass_number, line))
+
+    return_code = process.wait()
+    thread.join(timeout=1)
+    return return_code, saw_rerun, log_tail
+
+
+def worker_main(book, preamble, event_queue):
+    started = time.monotonic()
+    output_dir = BUILD / book["slug"]
+    texmfvar = BUILD / "texmf-var" / book["slug"]
+    try:
+        master_path = write_worker_master(preamble, book)
+        prepare_build_dirs(book, output_dir)
+        event_queue.put(("started", book["index"], book["title"], len(book["includes"])))
+
+        rc, saw_rerun, tail = stream_lualatex(book, master_path, output_dir, texmfvar, event_queue, 1)
+        if rc == 0 and saw_rerun:
+            rc, _, tail = stream_lualatex(book, master_path, output_dir, texmfvar, event_queue, 2)
+
+        elapsed = time.monotonic() - started
+        pdf = output_dir / f"{master_path.stem}.pdf"
+        if rc == 0 and pdf.exists():
+            event_queue.put(("done", book["index"], elapsed, str(pdf.relative_to(ROOT))))
+            raise SystemExit(0)
+        else:
+            event_queue.put(("failed", book["index"], rc, tail))
+            raise SystemExit(rc or 1)
+    except Exception as exc:
+        event_queue.put(("failed", book["index"], 99, [repr(exc)]))
+        raise SystemExit(99)
+
+
+def launch_workers(books, preamble, event_queue):
+    processes = []
+    for book in books:
+        process = mp.Process(target=worker_main, args=(book, preamble, event_queue), name=book["slug"])
+        process.start()
+        processes.append(process)
+    return processes
+
+
+class Dashboard:
+    def __init__(self, stdscr, books):
+        self.stdscr = stdscr
+        self.books = books
+        self.state = [
+            {
+                "title": book["title"],
+                "total": len(book["includes"]),
+                "seen": 0,
+                "pass": 0,
+                "status": "waiting",
+                "lines": [],
+                "elapsed": None,
+                "pdf": None,
+            }
+            for book in books
+        ]
+        curses.curs_set(0)
+        curses.start_color()
+        curses.use_default_colors()
+        curses.init_pair(1, curses.COLOR_GREEN, -1)
+        curses.init_pair(2, curses.COLOR_WHITE, -1)
+        curses.init_pair(3, curses.COLOR_BLUE, -1)
+        curses.init_pair(4, curses.COLOR_RED, -1)
+        self.green = curses.color_pair(1) | curses.A_BOLD
+        self.white = curses.color_pair(2) | curses.A_BOLD
+        self.blue = curses.color_pair(3) | curses.A_BOLD
+        self.red = curses.color_pair(4) | curses.A_BOLD
+
+    def add_line(self, index, text):
+        lines = self.state[index]["lines"]
+        lines.append(text)
+        self.state[index]["lines"] = lines[-8:]
+
+    def handle(self, event):
+        kind = event[0]
+        index = event[1]
+        state = self.state[index]
+        if kind == "started":
+            state["status"] = "running"
+        elif kind == "started-pass":
+            state["pass"] = event[2]
+            state["status"] = f"pass {event[2]}"
+        elif kind == "chapter":
+            state["seen"] = min(state["seen"] + 1, state["total"])
+            self.add_line(index, f"{event[3]} compiled")
+        elif kind == "output":
+            self.add_line(index, "pdf page stream closed")
+        elif kind == "done":
+            state["status"] = "done"
+            state["elapsed"] = event[2]
+            state["pdf"] = event[3]
+            self.add_line(index, f"done in {event[2]:.1f}s")
+        elif kind == "failed":
+            state["status"] = f"failed rc={event[2]}"
+            for line in event[3][-4:]:
+                self.add_line(index, line)
+
+    def draw(self):
+        self.stdscr.erase()
+        height, width = self.stdscr.getmaxyx()
+        cell_h = max(6, height // 3)
+        cell_w = max(24, width // 4)
+        for i, state in enumerate(self.state):
+            row = i // 4
+            col = i % 4
+            y = row * cell_h
+            x = col * cell_w
+            h = cell_h if row < 2 else height - y
+            w = cell_w if col < 3 else width - x
+            self.draw_cell(y, x, h, w, state)
+        self.stdscr.refresh()
+
+    def draw_cell(self, y, x, h, w, state):
+        if h < 4 or w < 10:
+            return
+        win = self.stdscr.derwin(h, w, y, x)
+        win.erase()
+        try:
+            win.border()
+        except curses.error:
+            return
+        title = state["title"][: max(0, w - 4)]
+        status = state["status"][: max(0, w - 4)]
+        progress = f"{state['seen']}/{state['total']}"
+        try:
+            win.addstr(0, 2, f" {title} ", self.blue)
+            win.addstr(1, 2, status, self.green if state["status"] == "done" else self.white)
+            win.addstr(1, max(2, w - len(progress) - 2), progress, self.blue)
+            for offset, line in enumerate(state["lines"][-max(0, h - 4) :], start=3):
+                attr = self.green if "compiled" in line or line.startswith("done") else self.white
+                win.addstr(offset, 2, line[: max(0, w - 4)], attr)
+        except curses.error:
+            pass
+
+
+def run_curses(books, preamble):
+    event_queue = mp.Queue()
+    processes = launch_workers(books, preamble, event_queue)
+
+    def main(stdscr):
+        dashboard = Dashboard(stdscr, books)
+        completed = 0
+        failed = False
+        while completed < len(processes):
+            try:
+                event = event_queue.get(timeout=0.1)
+            except queue.Empty:
+                event = None
+            if event is not None:
+                if event[0] in {"done", "failed"}:
+                    completed += 1
+                if event[0] == "failed":
+                    failed = True
+                dashboard.handle(event)
+            dashboard.draw()
+        for process in processes:
+            process.join()
+        dashboard.draw()
+        stdscr.nodelay(False)
+        stdscr.getch()
+        return failed
+
+    try:
+        failed = curses.wrapper(main)
+    finally:
+        for process in processes:
+            if process.is_alive():
+                process.terminate()
+        for process in processes:
+            process.join()
+
+    failures = [process.exitcode for process in processes if process.exitcode not in (0, None)]
+    if failed:
+        return 1
+    return 1 if failures else 0
+
+
+def run_plain(books, preamble):
+    event_queue = mp.Queue()
+    processes = launch_workers(books, preamble, event_queue)
+    completed = 0
+    failed = False
+    while completed < len(processes):
+        event = event_queue.get()
+        kind = event[0]
+        index = event[1]
+        title = books[index]["title"]
+        if kind == "chapter":
+            print(f"{GREEN}{title}{END} {WHITE}pass {event[2]}{END} {BLUE}{event[3]} compiled{END}", flush=True)
+        elif kind == "done":
+            completed += 1
+            print(f"{GREEN}{title}{END} {WHITE}done in {event[2]:.1f}s{END} {BLUE}{event[3]}{END}", flush=True)
+        elif kind == "failed":
+            completed += 1
+            failed = True
+            print(f"{GREEN}{title}{END} {WHITE}failed rc={event[2]}{END}", flush=True)
+            for line in event[3][-6:]:
+                print(f"  {line}", flush=True)
+    for process in processes:
+        process.join()
+    if failed:
+        return 1
+    return 1 if any(process.exitcode not in (0, None) for process in processes) else 0
+
+
+def clean():
+    if BUILD.exists():
+        shutil.rmtree(BUILD)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Build all twelve We The Nameless books in parallel.")
+    parser.add_argument("--plain", action="store_true", help="use line-oriented ANSI output instead of curses")
+    parser.add_argument("--list-books", action="store_true", help="print the detected book chunks and exit")
+    parser.add_argument("--clean", action="store_true", help="remove par/build-par before building")
+    parser.add_argument("--only", metavar="TEXT", help="debug one matching book instead of all twelve")
+    args = parser.parse_args()
+
+    preamble, books = read_book_chunks()
+    if args.list_books:
+        for book in books:
+            print(f"{book['index'] + 1:02d} {book['title']}: {len(book['includes'])} chapters")
+        return 0
+    if args.only:
+        matches = [book for book in books if args.only.lower() in book["title"].lower() or args.only in book["slug"]]
+        if len(matches) != 1:
+            print(f"--only must match exactly one book; matched {len(matches)}", file=sys.stderr)
+            return 2
+        books = matches
+    books = [{**book, "index": index} for index, book in enumerate(books)]
+
+    if args.clean:
+        clean()
+    BUILD.mkdir(exist_ok=True)
+
+    if args.plain or not sys.stdout.isatty() or os.environ.get("TERM") in (None, "", "dumb"):
+        return run_plain(books, preamble)
+    return run_curses(books, preamble)
+
+
+if __name__ == "__main__":
+    mp.set_start_method("spawn")
+    raise SystemExit(main())
