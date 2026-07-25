@@ -49,5 +49,6 @@ It's looking fantastic! Now, is there a way to make the 'make parallel' ncurses 
 
 1. When you hit 'pass two' in the ncurses parallel interface, the counters in the top right of each box don't reset.
 2. More significantly, a full sequential make of the whole book only takes 1 minute and 22 seconds. EACH of your 12 workers takes about that same time to do one pass. That suggests the parallelism is subtly incorrect in a way that's totally useless. That said, the interface is AMAZING. Can you try to fix the logic to make it properly parallel while keeping the interface the current awesome version it is, plus the fix in item 1?
+3. Also if possible can we make the hyperlinks work in parallel mode. It's ok if it takes 2 passes to get that.
 EOF
 
