@@ -1275,6 +1275,8 @@
     {\leavevmode\Cun #1}%
 }
 
+\newcommand{\cun}[1]{\akk{#1}}
+
 \newcommand{\uga}[1]{{\UgariticFont #1}}
 
 \newcommand{\ara}[1]{%
@@ -1578,6 +1580,10 @@
     {\EnglishFont} {\color{Xcolor}\mdseries}
     {\HebrewDavid} {\HebrewDavidLarge\color{Xcolor}\mdseries}
 
+\DeclareSourceProfile{Aramaic}
+    {\EnglishFont} {\color{TextColor}\mdseries}
+    {\Aramaic} {\color{TextColor}\mdseries}
+
 \DeclareSourceProfile{RJE}
     {\EnglishFont} {\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\mdseries}
     {\PaleoASCIISiloam} {\addfontfeatures{Scale=1.30}\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\mdseries}
@@ -1611,7 +1617,7 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,E,P,PP,DtrA,DtrB,Dtn,Records,Other,X,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
+\DeclareSourceCommandList{J,E,P,PP,DtrA,DtrB,Dtn,Records,Other,X,Aramaic,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
 
 % P defaults to square Ezra. Use \UsePaleoP for occasional Hezekiah-era Paleo-P,
 % then \UseSquareP to switch P back.
