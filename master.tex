@@ -2432,9 +2432,6 @@
 \newcommand{\DeclareChapterLinkList}[2]{%
     \expandafter\def\csname ChapterLinkList@#1\endcsname{#2}%
 }
-\newcommand{\DeclareBookChapterLinkList}[2]{%
-    \expandafter\def\csname BookChapterLinkList@#1\endcsname{#2}%
-}
 \newcommand{\ChapterLinkText}[1]{%
     \ifConfigOutputModeMobile
         {\color{MobileLinkColor}\underLine{#1}}%
@@ -2476,11 +2473,34 @@
     \ChapterLinkArray
     \endgroup
 }
+\newcommand{\BookPartChapterLinksForBook}[1]{%
+    \par\nobreak\medskip
+    \begingroup
+    \centering
+    \large
+    \TableOfContentsLink{#1}\par\nobreak\smallskip
+    \def\CurrentBook{#1}%
+    \ChapterLinkArray
+    \endgroup
+}
 \newcommand{\BookChapterLinkArray}[1]{%
-    \@ifundefined{BookChapterLinkList@#1}{%
+    \@ifundefined{BookPartLinkList@#1}{%
         \ChapterLinksForBook{#1}%
     }{%
-        \csname BookChapterLinkList@#1\endcsname
+        \csname BookPartLinkList@#1\endcsname
+    }%
+}
+\newcommand{\DeclareBookPart}[2]{%
+    \@ifundefined{BookPartLinkList@#1}{%
+        \expandafter\gdef\csname BookPartLinkList@#1\endcsname{}%
+    }{}%
+    \expandafter\g@addto@macro\csname BookPartLinkList@#1\endcsname{%
+        \BookPartChapterLinksForBook{#2}%
+    }%
+}
+\newcommand{\RecordBookPart}[1]{%
+    \protected@write\@auxout{}{%
+        \string\DeclareBookPart{\CurrentTitleBook}{#1}%
     }%
 }
 \DeclareChapterLinkRange{Genesis}{50}
@@ -2498,18 +2518,6 @@
 \DeclareChapterLinkRange{Nehemiah}{13}
 \DeclareChapterLinkRange{On the Lamb}{1}
 \DeclareChapterLinkRange{Esther}{10}
-\DeclareBookChapterLinkList{Samuel}{%
-    \ChapterLinksForBook{I Samuel}%
-    \ChapterLinksForBook{II Samuel}%
-}
-\DeclareBookChapterLinkList{Kings}{%
-    \ChapterLinksForBook{I Kings}%
-    \ChapterLinksForBook{II Kings}%
-}
-\DeclareBookChapterLinkList{Dudetheyreontome}{%
-    \ChapterLinksForBook{On the Lamb}%
-    \ChapterLinksForBook{Esther}%
-}
 \makeatother
 
 \DeclareRobustCommand{\TableOfContentsLink}[1]{%
@@ -2529,7 +2537,9 @@
 }
 
 \newcommand{\Book}[1]{%
+    \def\CurrentTitleBook{#1}%
     \BookHeading{\TableOfContentsLink{#1}}%
+    \hypertarget{book.#1}{}%
     \phantomsection
     \def\CurrentBook{#1}%
     \addcontentsline{toc}{chapter}{#1}%
@@ -2537,6 +2547,7 @@
 }
 
 \newcommand{\BookPart}[1]{%
+    \RecordBookPart{#1}%
     \def\CurrentBook{#1}%
 }
 
@@ -2545,10 +2556,10 @@
 \fi
 
 \newcommand{\Chapter}[1]{%
-    \hypertarget{chapter.\CurrentBook.#1}{}%
-    \ChapterHeading{#1}%
     \def\CurrentChapter{#1}%
-    \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
+    \hypertarget{chapter.\CurrentBook.#1}{}%
+    \ChapterHeading{\ChapterTitleText{#1}}%
+    \markboth{\ChapterHeaderText{#1}}{\ChapterHeaderText{#1}}%
 }
 
 % \Apocrypha defines an apocryphal Book
@@ -2670,7 +2681,7 @@
     \vspace{0.8em}%
     \VerseRule
     \vspace{0.25em}%
-    {\centering \large \CurrentBook\ \CurrentChapter:#1\par}%
+    {\centering \large \hyperlink{chapter.\CurrentBook.\CurrentChapter}{\CurrentBook\ \CurrentChapter:#1}\par}%
     \vspace{0.8em}%
     \VerseRule
     \vspace{0.3em}%
@@ -2678,14 +2689,8 @@
 
 \newcommand{\Verse}[4]{%
     \par
-    \vspace{0.8em}%
     \Needspace{6\baselineskip}
-    \VerseRule
-    \vspace{0.25em}%
-    {\centering \large \CurrentBook\ \CurrentChapter:#1\par}%
-    \vspace{0.8em}%
-    \VerseRule
-    \vspace{0.3em}%
+    \VerseHeader{#1}%
     \begingroup
     \hbadness=10000
     \hfuzz=3em
