@@ -18,6 +18,7 @@ MASTER = ROOT / "master.tex"
 BUILD = ROOT / "build" / "parallel"
 SOURCE_DIR = BUILD / "masters"
 MERGED_PDF = BUILD / "master.pdf"
+SHARED_TEXMFVAR = BUILD / "texmf-var"
 FRONT_SLUG = "front-matter"
 FRONT_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}.pdf"
 DEFAULT_PASSES = 2
@@ -230,7 +231,7 @@ def wait_for_page_start(book, page_starts):
 def worker_main(book, preamble, passes, page_starts, event_queue):
     started = time.monotonic()
     output_dir = BUILD / book["slug"]
-    texmfvar = BUILD / "texmf-var" / book["slug"]
+    texmfvar = SHARED_TEXMFVAR
     try:
         master_path = write_worker_master(preamble, book)
         prepare_build_dirs(book, output_dir)
@@ -267,7 +268,7 @@ def worker_main(book, preamble, passes, page_starts, event_queue):
 def front_main(preamble, front_body, books, passes, page_starts, event_queue):
     started = time.monotonic()
     output_dir = BUILD / FRONT_SLUG
-    texmfvar = BUILD / "texmf-var" / FRONT_SLUG
+    texmfvar = SHARED_TEXMFVAR
     front = {
         "index": -1,
         "title": "Front Matter",
@@ -348,6 +349,22 @@ def publish_page_starts_if_ready(books, include_front, page_starts, pass_one_pdf
     page_starts["ready"] = True
 
 
+def warm_tex_cache():
+    SHARED_TEXMFVAR.mkdir(parents=True, exist_ok=True)
+    tool = shutil.which("luaotfload-tool")
+    if not tool:
+        return
+    env = os.environ.copy()
+    env["TEXMFVAR"] = str(SHARED_TEXMFVAR)
+    subprocess.run(
+        [tool, "--update"],
+        cwd=ROOT,
+        env=env,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+
 class Dashboard:
     def __init__(self, stdscr, books):
         self.stdscr = stdscr
@@ -410,6 +427,9 @@ class Dashboard:
         if kind == "started":
             state["status"] = "running"
         elif kind == "started-pass":
+            if event[2] != state["pass"]:
+                state["seen"] = 0
+                state["lines"] = []
             state["pass"] = event[2]
             state["status"] = f"pass {event[2]}"
         elif kind == "chapter":
@@ -741,6 +761,7 @@ def main():
     if args.clean:
         clean()
     BUILD.mkdir(parents=True, exist_ok=True)
+    warm_tex_cache()
 
     if args.plain or not sys.stdout.isatty() or os.environ.get("TERM") in (None, "", "dumb"):
         rc = run_plain(books, preamble, front_body, include_front, args.passes)
