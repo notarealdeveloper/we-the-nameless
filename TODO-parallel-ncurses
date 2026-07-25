@@ -39,6 +39,6 @@ Also, make the python ncurses interface detect when all 12 books are done compil
 
 ### PROMPT 3
 
-Great! It seems to be working at first glance. Now just make sure the title page and front matter get built. Don't allocate those to any of the 12 processes unless you have to. I asked you for a version of this prompt before but you allocated the front matter to the Genesis process, and it made everything sequential until Genesis finished. Don't do that. Ncurses interface should say compiling front matter, then fork, then do the twelve. Actually I'm not married to that. Just make it robust and make the decisions you think are best, but make sure it's not sequential until Genesis finishes.
+Great! It seems to be working at first glance. Now just make sure the title page and front matter get built. Don't allocate those to any of the 12 processes unless you have to. I asked you for a version of this prompt before but you allocated the front matter to the Genesis process, and it made everything sequential until Genesis finished. Don't do that. Ncurses interface should say compiling front matter, then fork, then do the twelve. Actually I'm not married to that. Just make it robust and make the decisions you think are best, but make sure it's not sequential until Genesis finishes. Make a thin bar at the top that shows the progress prior to the beginning of the 12 books parallel compiling, if you need a sequential initial step. Optional, but if you need it, do it like that.
 
 EOF
