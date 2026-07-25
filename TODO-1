@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-lord --verbose << "EOF"
-Fix the Makefile so that 'make progress' only opens master.tex, not the other files. Touch no other files.
-EOF
