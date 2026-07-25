@@ -10,7 +10,7 @@ TEX_SOURCES := $(shell find . -path './$(BUILD)' -prune -o -name '*.tex' -print)
 
 export TEXMFVAR := $(CACHE)
 
-.PHONY: all pdf ci view open clean distclean debug progress build-prepare clean-stray-aux draft c x comment halfcomment uncomment again
+.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare clean-stray-aux draft c x comment halfcomment uncomment again
 
 all: $(PDF) open
 
@@ -102,3 +102,6 @@ debug:
 
 progress:
 	xdg-open "$(MAIN).tex" >/dev/null 2>&1 &
+
+parallel:
+	$(MAKE) -C par parallel

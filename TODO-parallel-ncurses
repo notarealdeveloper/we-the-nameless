@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Make me a build system that works as follows.
+
+1. I want an ncurses inferface written in python and stored in bin/.
+2. I want it to be 4 blocks wide and 3 blocks high, dividing the terminal space roughly equally between the rows and columns.
+3. I want each block to show the build progress for one of each of the 12 books, when we're running a build.
+4. I want the interface to only appear when I type 'make parallel'. The current 'make' should be the same as now.
+5. I want 'make parallel' to run a specific python program, it's up to you if that's the same program as the ncurses interface, one program is fine.
+6. I want that python program to use multiprocessing to run 12 workers, each of which runs 1 copy of the lualatex build process: one process for each of the 12 books.
+7. I want that python program to use a producer consumer pattern within the workers so that each worker parses the stdout of its lualatex process and prints nice colored text, one line per book-chapter that compiles, in a nice gentle bold green, white, and blue color scheme that looks nice with a dark terminal background. You can use the \$gre, \$blu, and \$whi and \$end variables below for that:
+
+end="\e[00m"
+bla="${end}\e[1;30m"
+red="${end}\e[1;31m"
+gre="${end}\e[1;32m"
+yel="${end}\e[1;33m"
+blu="${end}\e[1;34m"
+pur="${end}\e[1;35m"
+cya="${end}\e[1;36m"
+gra="${end}\e[1;37m"
+whi="${end}\e[1;39m"
+
+8. I want the build process to saturate all 12 of my cores, so we get a proper quick build.
+9. Don't change any existing files to do that, this is an experiment, so to start just create a par/ directory, copy the Makefile, master.tex, and 01-genesis through 12-* down into there along with fonts/, and modify those files, aggressibely as needed, to see if you can get a nice system that accomplishes all of the above in a nice non-fragile easily debuggable way.
+EOF
