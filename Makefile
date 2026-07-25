@@ -104,4 +104,4 @@ progress:
 	xdg-open "$(MAIN).tex" >/dev/null 2>&1 &
 
 parallel:
-	$(MAKE) -C par parallel
+	bin/parallel-build
