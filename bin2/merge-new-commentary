@@ -13,5 +13,8 @@ Whenever you find a bit of commentary in com/ that isn't in eng/, I want you to:
 3. Be idempotent: If you find a verse already has the same commentary in the .tex file version of a verse that it has in com/, then do nothing for that verse.
 4. If you see 'A: ...' in the commentary, make that \aA{...} in the LaTeX, replacing the content virtually identically.
 5. But not exactly identically, b/c I want you to make any minor tweaks needed to make the markdown commentary into proper LaTeX.
+6. Finally, I may have OCD-ish-ly removed extraneous newline characters from the actual english text of the bible in the course of adding the commentary.
+   If you encounter any of those, don't let them influence what you put into the LaTeX files, since they're generally single \n and not double \n\n and so
+   won't affect the LuaLaTeX output. However, as a final measure, I'd like you to remove any such intra-verse newlines in the english text you find in eng/.
 
 EOF
