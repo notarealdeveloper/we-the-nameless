@@ -1,0 +1,308 @@
+#!/usr/bin/env python3
+import argparse
+import re
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SEP = "-" * 72
+
+
+def split_paragraphs(text):
+    return [p.strip() for p in re.split(r"\n\s*\n", text.strip()) if p.strip()]
+
+
+def normalize_space(text):
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def parse_markdown(path):
+    lines = path.read_text().splitlines()
+    sections = []
+    i = 0
+    while i < len(lines):
+        while i < len(lines) and lines[i] != SEP:
+            i += 1
+        if i >= len(lines):
+            break
+        header_i = i + 1
+        while header_i < len(lines) and not lines[header_i].strip():
+            header_i += 1
+        sep_i = header_i + 1
+        while sep_i < len(lines) and not lines[sep_i].strip():
+            sep_i += 1
+        if sep_i >= len(lines) or not lines[header_i].startswith("## ") or lines[sep_i] != SEP:
+            i += 1
+            continue
+        header = lines[header_i][3:].strip()
+        body_start = sep_i + 1
+        j = body_start
+        while j < len(lines):
+            if lines[j] == SEP:
+                next_header_i = j + 1
+                while next_header_i < len(lines) and not lines[next_header_i].strip():
+                    next_header_i += 1
+                next_sep_i = next_header_i + 1
+                while next_sep_i < len(lines) and not lines[next_sep_i].strip():
+                    next_sep_i += 1
+                if (
+                    next_sep_i < len(lines)
+                    and lines[next_header_i].startswith("## ")
+                    and lines[next_sep_i] == SEP
+                ):
+                    break
+            if lines[j] == SEP and j + 2 < len(lines) and lines[j + 1].startswith("## ") and lines[j + 2] == SEP:
+                break
+            j += 1
+        sections.append((header, "\n".join(lines[body_start:j]).strip()))
+        i = j
+    return sections
+
+
+def verse_number(header):
+    m = re.search(r":(\d+)\s*$", header)
+    if not m:
+        raise ValueError(f"cannot find verse number in header: {header!r}")
+    return str(int(m.group(1)))
+
+
+def markdown_commentary(path):
+    verses = {}
+    for header, body in parse_markdown(path):
+        paragraphs = split_paragraphs(body)
+        if len(paragraphs) > 1:
+            verses[verse_number(header)] = paragraphs[1:]
+        else:
+            verses[verse_number(header)] = []
+    return verses
+
+
+def normalize_eng(path):
+    changed = False
+    out = []
+    sections = parse_markdown(path)
+    if not sections:
+        return False
+
+    for idx, (header, body) in enumerate(sections):
+        paragraphs = split_paragraphs(body)
+        if paragraphs:
+            joined = normalize_space(paragraphs[0])
+            if joined != paragraphs[0]:
+                changed = True
+            paragraphs = [joined] + paragraphs[1:]
+
+        out.extend([SEP, "", f"## {header}", "", SEP, ""])
+        if paragraphs:
+            out.append("\n\n".join(paragraphs))
+            out.append("")
+        if idx != len(sections) - 1:
+            out.append("")
+
+    new_text = "\n".join(out)
+    if path.read_text() != new_text:
+        path.write_text(new_text)
+        changed = True
+    return changed
+
+
+def tex_escape(text):
+    text = text.strip()
+    quote_open = True
+    quoted = []
+    for idx, ch in enumerate(text):
+        if ch == '"':
+            if idx > 0 and text[idx - 1].isdigit():
+                quoted.append("''")
+            else:
+                quoted.append("``" if quote_open else "''")
+                quote_open = not quote_open
+        else:
+            quoted.append(ch)
+    text = "".join(quoted)
+    text = text.replace("\\", r"\textbackslash{}")
+    text = text.replace("&", r"\&")
+    text = text.replace("%", r"\%")
+    text = text.replace("$", r"\$")
+    text = text.replace("#", r"\#")
+    text = text.replace("_", r"\_")
+    text = text.replace("^", r"\^{}")
+    text = text.replace("~", r"\~{}")
+    text = text.replace("{", r"\{")
+    text = text.replace("}", r"\}")
+    return text
+
+
+def command_for(paragraph, english_group):
+    if paragraph.startswith("A:"):
+        return "aA", paragraph[2:].strip()
+    if r"\eX" in english_group:
+        return "aB", paragraph
+    return "aA", paragraph
+
+
+def skip_ws(text, i):
+    while i < len(text) and text[i].isspace():
+        i += 1
+    return i
+
+
+def parse_group(text, i):
+    i = skip_ws(text, i)
+    if i >= len(text) or text[i] != "{":
+        raise ValueError(f"expected brace at offset {i}")
+    depth = 0
+    escaped = False
+    for j in range(i, len(text)):
+        ch = text[j]
+        if escaped:
+            escaped = False
+            continue
+        if ch == "\\":
+            escaped = True
+            continue
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return {
+                    "open": i,
+                    "content_start": i + 1,
+                    "content_end": j,
+                    "close": j,
+                    "content": text[i + 1:j],
+                }, j + 1
+    raise ValueError(f"unclosed group at offset {i}")
+
+
+def parse_verses(text):
+    verses = []
+    i = 0
+    needle = r"\Verse"
+    while True:
+        start = text.find(needle, i)
+        if start == -1:
+            break
+        after = start + len(needle)
+        if after < len(text) and (text[after].isalpha() or text[after] == "@"):
+            i = after
+            continue
+        pos = after
+        groups = []
+        for _ in range(4):
+            group, pos = parse_group(text, pos)
+            groups.append(group)
+        label = groups[0]["content"].strip()
+        verses.append({"start": start, "end": pos, "label": label, "groups": groups})
+        i = pos
+    return verses
+
+
+def normalize_latex_comment(text):
+    text = re.sub(r"%.*", "", text)
+    text = re.sub(r"\\a[A-Za-z]+\s*\{", "", text)
+    text = text.replace("}", "")
+    text = text.replace("``", "''").replace("’", "'")
+    return normalize_space(text)
+
+
+def comment_block(command, paragraph):
+    escaped = tex_escape(paragraph)
+    lines = escaped.splitlines() or [""]
+    body = "\n".join(f"\t\t{line}" if line else "" for line in lines)
+    return f"\t\\{command}{{\n{body}\n\t}}"
+
+
+def import_comments(tex_path, comments_by_verse, dry_run=False):
+    text = tex_path.read_text()
+    verses = {v["label"]: v for v in parse_verses(text)}
+    replacements = []
+    added = 0
+
+    for verse, paragraphs in comments_by_verse.items():
+        if not paragraphs:
+            continue
+        if verse not in verses:
+            raise ValueError(f"{tex_path}: missing verse {verse}")
+        record = verses[verse]
+        commentary = record["groups"][3]
+        existing_norm = normalize_latex_comment(commentary["content"])
+        new_blocks = []
+        for paragraph in paragraphs:
+            command, content = command_for(paragraph, record["groups"][2]["content"])
+            block = comment_block(command, content)
+            if normalize_space(content).replace("’", "'") in existing_norm:
+                continue
+            if normalize_latex_comment(block) in existing_norm:
+                continue
+            new_blocks.append(block)
+        if not new_blocks:
+            continue
+
+        current = commentary["content"].rstrip()
+        if current.strip():
+            new_content = current + "\n\n" + "\n\n".join(new_blocks) + "\n"
+        else:
+            new_content = "\n" + "\n\n".join(new_blocks) + "\n"
+        replacements.append((commentary["content_start"], commentary["content_end"], new_content))
+        added += len(new_blocks)
+
+    if replacements and not dry_run:
+        for start, end, new_content in reversed(replacements):
+            text = text[:start] + new_content + text[end:]
+        tex_path.write_text(text)
+    return added
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args()
+
+    total_added = 0
+    changed_eng = 0
+    changed_tex = []
+
+    for com_path in sorted((ROOT / "com").glob("[0-9][0-9]-*/*.md")):
+        rel = com_path.relative_to(ROOT / "com")
+        eng_path = ROOT / "eng" / rel
+        tex_path = ROOT / rel.with_suffix(".tex")
+        if not eng_path.exists() or not tex_path.exists():
+            continue
+
+        eng_comments = markdown_commentary(eng_path)
+        com_comments = markdown_commentary(com_path)
+        comments_to_add = {}
+        for verse, paragraphs in com_comments.items():
+            existing = {normalize_space(p) for p in eng_comments.get(verse, [])}
+            delta = [p for p in paragraphs if normalize_space(p) not in existing]
+            if delta:
+                comments_to_add[verse] = delta
+
+        added = import_comments(tex_path, comments_to_add, dry_run=args.check)
+        if added:
+            changed_tex.append((tex_path.relative_to(ROOT), added))
+            total_added += added
+
+    if not args.check:
+        for eng_path in sorted((ROOT / "eng").glob("[0-9][0-9]-*/*.md")):
+            if normalize_eng(eng_path):
+                changed_eng += 1
+
+    if args.check:
+        if total_added:
+            for path, count in changed_tex:
+                print(f"{path}: would add {count} commentary block(s)")
+            return 1
+        print("0 commentary blocks would be added")
+        return 0
+
+    print(f"added {total_added} commentary block(s) to {len(changed_tex)} TeX file(s)")
+    print(f"normalized English verse text in {changed_eng} eng file(s)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
