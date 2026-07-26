@@ -2529,8 +2529,10 @@
 }
 
 \newcommand{\Book}[1]{%
+    \def\CurrentTitleBook{#1}%
     \BookHeading{\TableOfContentsLink{#1}}%
     \phantomsection
+    \hypertarget{book.#1}{}%
     \def\CurrentBook{#1}%
     \addcontentsline{toc}{chapter}{#1}%
     \BookChapterLinkArray{#1}%
@@ -2546,7 +2548,7 @@
 
 \newcommand{\Chapter}[1]{%
     \hypertarget{chapter.\CurrentBook.#1}{}%
-    \ChapterHeading{#1}%
+    \ChapterHeading{\ChapterTitleText{#1}}%
     \def\CurrentChapter{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
 }
@@ -2670,7 +2672,7 @@
     \vspace{0.8em}%
     \VerseRule
     \vspace{0.25em}%
-    {\centering \large \CurrentBook\ \CurrentChapter:#1\par}%
+    {\centering \large \hyperlink{chapter.\CurrentBook.\CurrentChapter}{\CurrentBook\ \CurrentChapter:#1}\par}%
     \vspace{0.8em}%
     \VerseRule
     \vspace{0.3em}%
@@ -2682,7 +2684,7 @@
     \Needspace{6\baselineskip}
     \VerseRule
     \vspace{0.25em}%
-    {\centering \large \CurrentBook\ \CurrentChapter:#1\par}%
+    {\centering \large \hyperlink{chapter.\CurrentBook.\CurrentChapter}{\CurrentBook\ \CurrentChapter:#1}\par}%
     \vspace{0.8em}%
     \VerseRule
     \vspace{0.3em}%
