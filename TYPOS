@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Typos.
+
+Change these in the .tex files in 08-samuel, 04-numbers, etc.
+
+1 Samuel 5:8 should say send not sent.
+
+1 Samuel 6:7 has an extra "are".
+
+1 Samuel 6:9 it an accident.
+
+1 Samuel 7:8 tighten it up.
+
+Numbers 14:39 has no English.
+EOF
