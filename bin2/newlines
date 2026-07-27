@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+1. Make sure every verse in eng/ ends with 4 newlines before the hrule, like this: 'blahblah\n\n\n\n---'.
+   I want that so I don't have to hit enter in order to type stuff below a verse while ensuring I have a blank line above and below what I type there.
+
+2. Also, I'd like you to remove any intra-verse newlines in the eng/ directory's english bible text, and in the com/ directory's english bible text.
+   Don't remove newlines from my commentary below the bible english in either directory, since those are intentional.
+
+So each verse currently is:   (a) superscript verse numbers, followed by a single verse, possibly with single newlines intra-verse.
+                              (b) commentary below that, with single or multiple '\n's in them.
+
+And after, each verse is now: (a) superscript verse numbers, followed by a single verse, with NO single newlines intra-verse.
+                              (b) commentary below that, with single or multiple '\n's in them, unchanged, same as they were above.
+                              (c) if a verse HAS NO COMMENTARY, then I want the 'blahblah\n\n\n\n---' format, as requested in (1)
+EOF
