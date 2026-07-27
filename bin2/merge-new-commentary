@@ -10,5 +10,6 @@ Whenever you find a bit of commentary in com/ that isn't in eng/, I want you to:
 2. Add the commentary for each such verse in com/ to the lualatex files there.
 3. Be idempotent: If you find a verse already has the same commentary in the .tex file that corresponds to a verse in some file in com/, then do nothing for that verse.
 4. Remember to change any markdown-isms you find in the com/ commentary into equivalent latex-isms when you move the commentary from com/ to eng/
-
+5. EDIT: DON'T DO DUMB SHIT! I want the book and its code to be simple. Don't add \par\smallskip for idiotic reasons to the tex.
+   I don't know where you're getting these ideas about what I want. I want a simple update of the commentary in the tex files, using the commentary in com/.
 EOF
