@@ -1,0 +1,31 @@
+# We The Nameless Agent Summary - 1/8
+
+We The Nameless is a translation, source-critical edition, commentary, typography system, software project, historical reconstruction, writing-systems study, and rereadable book. Every change should reveal layered biblical voices rather than flatten them. Preserve the interaction of sources, editors, Hebrew, English, commentary, linguistics, textual criticism, and typography. Density is good only when clarity survives, and visual choices must carry semantic meaning.
+
+Semantics outrank appearance. Commands should name meaning, not formatting. Keep meaning, presentation, generation, and data separate: semantic TeX says what something is; presentation owns fonts, color, spacing, geometry, hierarchy, and page behavior; Lua generates repetitive semantic structures; declarative data centralizes sources, colors, fonts, dimensions, labels, commentators, abbreviations, languages, and constants. Use existing semantic commands, data tables, and generators before adding parallel mechanisms.
+
+Prefer data, generation, and conceptual compression over repetition. Avoid magic constants, scattered literals, copy-paste, presentational markup, needless packages, hidden state, cleverness, feature creep, and weak abstractions. Preserve stable semantic interfaces while simplifying internals. Generalize only after repeated examples reveal the underlying pattern. Search for the project's own TeX primitives: the smallest concept set from which the system follows.
+
+The author thinks across biblical scholarship, Hebrew, Greek, linguistics, writing systems, typography, LuaLaTeX, TeX primitives, compiler design, software architecture, information theory, and textual criticism. Cross-disciplinary analogies are often real reasoning. Explain mechanisms by layer: why, where, how, who is responsible, and what primitive or abstraction implements it. Peel from LaTeX to TeX to primitives to engine behavior when useful.
+
+Do not invent facts. Distinguish evidence, inference, speculation, manuscript evidence, consensus, plausible reconstruction, speculative reconstruction, and authorial synthesis. Represent uncertainty and disagreement fairly. Avoid sensationalism and apologetics. Prefer primary evidence when practical, and let new evidence revise conclusions.
+
+Translation should teach Hebrew, not merely smooth English. Preserve repeated words, ambiguity, irony, puns, sound, roots, inclusios, chiasms, parallelism, line structure, Hebrew correspondence, visual grouping, recurring terminology, alliteration, and Hebrew initials where natural. English illuminates Hebrew. Avoid over-smoothing, faux archaism, bureaucracy, and slang.
+
+Hebrew is a central subject. Preserve roots, sounds, spellings, phrases, word order, rhythm, visual form, orthography, matres, consonantal patterns, prefixes, suffixes, and cognates. Help non-Hebrew readers notice structure. Writing history matters: defective/plene spelling, matres lectionis, Paleo-Hebrew, square script, niqqud, scribal conventions, Proto-Sinaitic, Phoenician, Aramaic, Greek, Latin, Unicode, and typography.
+
+Source criticism is architecture. Treat J, E, P, D, redactors, and editors as authors with distinct voices; do not homogenize them or reduce editors to corrupters. Typography should teach attribution through voice, vocabulary, rhythm, color, page design, and commentary. Reconstruction serves literary perception.
+
+Commentary should illuminate without dominating. Help readers notice what they would miss. Show observations and evidence before conclusions. Preserve distinct commentator voices. Use jargon only for precision. Footnotes must earn space with evidence, context, linguistic insight, textual comparison, literary observation, humor, or aesthetic value. Leave unresolved questions visible.
+
+Typography is commentary. Fonts, color, weight, whitespace, rhythm, alignment, hierarchy, margins, page structure, and line breaks communicate meaning. Color should encode source, speaker, or linguistic feature. Accidental inconsistency harms trust; intentional breaks may signify. Align Hebrew and English where possible. Treat the page as an interface and the book as a physical object.
+
+Treat TeX as programmable: Lua, LuaLaTeX packages, LaTeX kernel, plain TeX, primitives, LuaHBTeX. Before adding packages or redefining commands, locate implementation and ask whether TeX or Lua already solves it. Think in boxes, glue, penalties, leaders, dimensions, token lists, and horizontal/vertical boxes. Macros are vocabulary: semantic names, composable pieces, one responsibility, stable interfaces, hidden implementation details, and comments for subtle assumptions. Generated TeX should be deterministic and readable.
+
+Lua should parse, validate, transform, generate, and check consistency through declarative data where possible. Use it for repeated macro families, tables, indexes, transliteration helpers, glossaries, legends, color mappings, source metadata, and validation of references, duplicates, missing metadata, terminology drift, and impossible layouts.
+
+Refactoring is research. Prefer deleting mechanisms to adding layers. Ask whether data can describe something, another abstraction can absorb it, Lua can generate it, or an entire concept can disappear. Investigate apparent duplication before removing it. Treat the repo as mature software: PDF is artifact, source is product; favor readable, explicit, orthogonal APIs and conceptual names.
+
+As an AI collaborator, first understand why things exist. Assume strange choices may be intentional. Preserve prose rhythm, code architecture, typographic history, scholarly evidence, prior decisions, and stable vocabulary. Explain trade-offs, challenge assumptions with evidence, expect iteration, and leave the system simpler, clearer, more expressive, more beautiful, or more historically faithful.
+
+Recurring questions: Can this be simpler? What layer implements it? What primitive is it built from? What pattern unifies it? Can it be generated? What would an elegant system built from few orthogonal concepts do? Never build the book unless explicitly asked; if necessary, first add a non-`master.tex`-modifying `make comment`/`make halfcomment` equivalent target and document it.
