@@ -1,16 +1,71 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-1. Make sure every verse in eng/ ends with 4 newlines before the hrule, like this: 'blahblah\n\n\n\n---'.
-   I want that so I don't have to hit enter in order to type stuff below a verse while ensuring I have a blank line above and below what I type there.
 
-2. Also, I'd like you to remove any intra-verse newlines in the eng/ directory's english bible text, and in the com/ directory's english bible text.
-   Don't remove newlines from my commentary below the bible english in either directory, since those are intentional.
+# REQUIREMENTS
+
+1. Make sure every verse in eng/ ends with 4 newlines before the hrule, like this: 'blahblah\n\n\n\n---'.
+
+I want that so I don't have to hit enter in order to type stuff when I add commentary to those files.
+
+That is, I want, for example:
+
+------------------------------------------------------------------------
+
+## II Samuel 1:1
+
+------------------------------------------------------------------------
+
+¹ After the death of Saul—David had already returned from defeating the Amalekites—David stayed two days in Ziklag.
+
+
+
+------------------------------------------------------------------------
+
+## II Samuel 1:2
+
+------------------------------------------------------------------------
+
+² On the third day, a man came from Saul’s camp, with his clothes rent and earth on his head; and as he approached David, he flung himself to the ground and bowed low.
+
+
+
+------------------------------------------------------------------------
+
+And I want it that way so I don't have to obsessively hit enter in order to add comments, like this:
+
+
+------------------------------------------------------------------------
+
+## II Samuel 1:1
+
+------------------------------------------------------------------------
+
+¹ After the death of Saul—David had already returned from defeating the Amalekites—David stayed two days in Ziklag.
+
+Blah blah blah.
+
+------------------------------------------------------------------------
+
+## II Samuel 1:2
+
+------------------------------------------------------------------------
+
+² On the third day, a man came from Saul’s camp, with his clothes rent and earth on his head; and as he approached David, he flung himself to the ground and bowed low.
+
+Blah blah blah.
+
+------------------------------------------------------------------------
+
+So without hitting enter a bunch, I can type stuff, and then still have a blank line above and below what I type, which is nice, because without that, obsidian sometimes mistakes the following hrule for a markdown H1 or H2 heading and then the commentary or verse (or whatever is above it but not separated by 2 newlines) becomes blue.
+
+Also, I'd like you to remove any intra-verse newlines in the eng/ directory's english bible text.
+Don't remove newlines from any commentary or footnotes you find below the bible verse, since those are intentional.
 
 So each verse currently is:   (a) superscript verse numbers, followed by a single verse, possibly with single newlines intra-verse.
-                              (b) commentary below that, with single or multiple '\n's in them.
+                              (b) possibly (but not always) commentary below that, with single or multiple '\n's in them.
 
 And after, each verse is now: (a) superscript verse numbers, followed by a single verse, with NO single newlines intra-verse.
-                              (b) commentary below that, with single or multiple '\n's in them, unchanged, same as they were above.
+                              (b) possibly (but not always) commentary below that, with single or multiple '\n's in them, unchanged, same as they were above.
                               (c) if a verse HAS NO COMMENTARY, then I want the 'blahblah\n\n\n\n---' format, as requested in (1)
 EOF
