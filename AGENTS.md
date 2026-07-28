@@ -2056,3 +2056,5 @@ That understanding comes from repeatedly asking one deceptively simple question:
 If future contributors continue asking that question—with humility, curiosity, and craftsmanship—this project will continue to become not merely larger, but simpler.
 
 That is the direction in which it should grow.
+
+P.S. Unless I explicitly ask you, NEVER BUILD THE BOOK! You're really bad at building the book and you get stuck in loops doing it. If you want to build the book, add a make target that does the equivalent of 'make comment' or 'make halfcomment' before the build, but make it work without modifying master.tex. If you ever decide to do that, add a P.P.S to this file explaining to yourself how you can use that functionality in the future.
