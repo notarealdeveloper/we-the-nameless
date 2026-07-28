@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+In the repo root, you'll find a directory called prompts/ containing file called PROMPTS. That is, $REPO_ROOT/prompts/PROMPTS.
+
+That's is a file showing the commands I tend to run in this repo.
+
+Some may be from other repos, so use judgement and best guesses.
+
+The 'lord' command is a thin wrapper over 'codex exec', so that's the stuff I ask YOU to do.
+
+With that in mind:
+
+1. Clean up this repo to simplify the workflow and codebase.
+
+2. Keep the things that either I tend to use or which the common make targets use.
+
+3. Delete things that don't get used and aren't likely ever to be useful.
+
+4. Remove dead code from master.tex.
+
+5. Remove repetitive code from master.tex that has an alternate implementation which appears to be used more often in the [01][0-9]-*/*.tex files that make up the book.
+
+6. Remove old scripts that no longer appear to be used.
+
+7. Simplify implementations when you notice a chance to do so.
+
+8. Don't remove anything that is currently used.
+
+9. If it seems to you like something that's used could be replaced with a simpler or better implementation, or if it seems like some script or component is overcomplicating the repo's implementation, especially in master.tex but also elsewhere, then write a description of what you think should be done to SUGGESTIONS.md in the repo root. You can be VERY aggressive in those suggestions, since I'll be reading them before we decide to do anything.
+EOF
