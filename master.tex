@@ -506,60 +506,39 @@
 \section{nav: footnotes}
 \fi
 
-\ExplSyntaxOn
-\seq_new:N \g_recursive_footnote_queue_seq
-\bool_new:N \g_recursive_footnote_flushing_bool
-\bool_new:N \g_recursive_footnote_inside_text_bool
+\makeatletter
+\let\RecursiveFootnoteQueue\@empty
+\newif\ifRecursiveFootnoteFlushing
 
-\cs_new_protected:Npn \recursive_footnote_queue:nn #1#2
-{
-    \seq_gput_right:Nn \g_recursive_footnote_queue_seq
-    {
-        \recursive_footnote_text:nn {#1} {#2}
-    }
+\newcommand{\RecursiveFootnoteFlush}{%
+    \ifRecursiveFootnoteFlushing
+    \else
+        \RecursiveFootnoteFlushingtrue
+        \loop
+            \ifx\RecursiveFootnoteQueue\@empty
+            \else
+                \let\RecursiveFootnoteNext\RecursiveFootnoteQueue
+                \global\let\RecursiveFootnoteQueue\@empty
+                \RecursiveFootnoteNext
+        \repeat
+        \RecursiveFootnoteFlushingfalse
+    \fi
 }
 
-\cs_new_protected:Npn \recursive_footnote_text:nn #1#2
-{
-    \footnotetext[#1]{#2}
-}
-
-\cs_new_protected:Npn \RecursiveFootnoteFlush
-{
-    \bool_if:NF \g_recursive_footnote_flushing_bool
-    {
-        \bool_gset_true:N \g_recursive_footnote_flushing_bool
-        \prg_while_do:nn
-            { ! \seq_if_empty_p:N \g_recursive_footnote_queue_seq }
-        {
-            \seq_gpop_left:NN \g_recursive_footnote_queue_seq \l_tmpa_tl
-            \l_tmpa_tl
-        }
-        \bool_gset_false:N \g_recursive_footnote_flushing_bool
-    }
-}
-
-\let\RecursiveFootnoteOriginalFootnotetext\@footnotetext
-\long\def\@footnotetext#1
-{
-    \bool_gset_true:N \g_recursive_footnote_inside_text_bool
-    \RecursiveFootnoteOriginalFootnotetext{#1}
-    \bool_gset_false:N \g_recursive_footnote_inside_text_bool
-    \RecursiveFootnoteFlush
-}
-
-\NewDocumentCommand{\recursivefootnote}{ +m }
-{
+\NewDocumentCommand{\recursivefootnote}{ +m }{%
     \footnotemark
-    \exp_args:Nx \recursive_footnote_queue:nn
-        { \int_use:N \c@footnote }
-        {#1}
-    \bool_if:NF \g_recursive_footnote_inside_text_bool
-    {
-        \RecursiveFootnoteFlush
-    }
+    \begingroup
+        \count@=\value{footnote}%
+        \xdef\RecursiveFootnoteAppend{%
+            \noexpand\g@addto@macro\noexpand\RecursiveFootnoteQueue{%
+                \noexpand\footnotetext[\the\count@]{\unexpanded{#1}}%
+            }%
+        }%
+    \endgroup
+    \RecursiveFootnoteAppend
+    \aftergroup\RecursiveFootnoteFlush
 }
-\ExplSyntaxOff
+\makeatother
 
 \NewDocumentCommand{\hangingblock}{ O{1.5em} +m }{%
     \begingroup
