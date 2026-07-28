@@ -1,0 +1,230 @@
+lord -v fix the build
+
+lord -v "Make the translator's aside in Gen 1:21 into a \\hangingfootnote, and fix the \\hangingfootnote implementation to make sure it works as expected. It should indent like python, which is the inverse of usual prose indentation."
+
+lord -v "Make the translator's aside in 01-genesis/01.tex in Verse 21 into a \\hangingfootnote, and fix the \\hangingfootnote implementation to make sure it works as expected. It should indent like python, which is the inverse of usual prose indentation."
+
+lord --help
+
+lord -v "Read bin/lord, bin/pray, and etc/lord/AGENTS-* and turn the files you find there into a man page for the lord command. Then edit etc/bashrc so that MANPATH or whatever is set up properly and so that man lord is able to find that man page."
+
+lord @echo have mercy
+
+lord -h
+
+lord -v "Replace bin/mouse with a one liner that resembles the simpler versions at the bottom, then exit 0 and preserve the dead code below that since it has historical interest (first script I ever wrote, with many strata above). Keep the comment at the top."
+
+lord --verbose 'Fix the build. That is, make `make` work.'
+
+lord 'Run make and fix the make: *** [Makefile:31: home] Error'
+
+lord -v 'Run make and fix the make: *** [Makefile:31: home] Error'
+
+lord -v 'Run make and fix the make: *** [Makefile:31: home] Error'
+
+lord -v 'Run make and fix the build in this repo: *** [Makefile:31: home] Error'
+
+lord @repo -v 'Run make and fix the build in this repo: *** [Makefile:31: home] Error'
+
+lord --repo -v 'Run make and fix the build in this repo: *** [Makefile:31: home] Error'
+
+lord -v 'Run make and fix the build in this repo: *** [Makefile:31: home] Error'
+
+lord -v 'Run make and fix the build in this repo: *** [Makefile:31: home] Error'
+
+lord "How do you say All the rows of this df where one particular columns c is not NaN"
+
+lord "Add a @chat profile to bin/lord and to the man page in share, in which the agent is expected to answer a question, and give this profile permissions that won't fail if other instances are running or anything like that. Be sensible."
+
+lord "How can I get only the rows of a df where df[c] is not NaN."
+
+lord -v "How can I get only the rows of a df where df[c] is not NaN."
+
+lord -v "Summarize the unstaged changes without making any more changes, then add some lines to README.md explaining how to generate plots related to the issue of which matches are best for a given column"
+
+lord -v "Remove the highlights and the quirky translations from 01-genesis/03.tex verses 9 and 10. Remove the Redactor's addition of the words God (eng) and Elohim (heb) too, and unhighlight afraid in the heb and eng. Keep erom highlighted and keep it as erom. Then comment out the inessential by running 'make comment' and be done."
+
+lord -v "Remove the highlights and the quirky translations from 01-genesis/03.tex verses 9 and 10. Unhighlight afraid in the heb and eng. Change erom to unhighlighted, and make it be the word 'naked' on top of the word 'clever' superimposed on the same line unhighlighted. Then comment out the inessential by running 'make comment' and be done."
+
+lord -v "Remove the highlights and the quirky translations from 01-genesis/03.tex verses 9 and 10. Unhighlight afraid in the heb and eng. Remove the Redactor's term God and Elohim entirely from these two verses. Change erom to unhighlighted, and make it be the word 'naked' on top of the word 'clever' in english, and make it be erom on top of erom in hebrew, superimposed on the same line unhighlighted. Then comment out the inessential by running 'make comment' and be done."
+
+lord -v "In 01-genesis/03.tex verse 10, don't use \\Above, make the up and down bits be symmetric"
+
+lord -v "Look at erom.png in cwd. Then in 01-genesis/03.tex verse 10, use math mode if you need to, but make the up and down bits be symmetric like a fraction"
+
+lord -v "Remove the english all caps headings that were inserted by accident in late deuteronomy in 05-*/.tex"
+
+lord -v "Remove the english all caps headings that were inserted by accident throughout the torah in 0[12345]-*/.tex"
+
+lord -v "Remove the english all caps headings that were inserted by accident throughout the torah in 0[12345]-*/.tex. Whenever it seems to be a commentary by Friedman, comment it out with a % comment and format it the same as the other Friedman commentaries are in the latex style % comments and indented properly too."
+
+lord -v "Change the ordering of the egyptian hieroglyphs in ./babel, such that the order matches the sequence of hieroglyphs you find here: 𓃾𓉐𓌙𓆟𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢𓈖𓆓𓊽𓁹𓂋𓊋𓇑𓎗𓁶𓌔𓏴, then remove the spaces and write them in RTL order. Read no other files. Change no other files."
+
+lord -v "What font do we currently use for the blessing of jabob in master.tex?"
+
+lord -v "What font do we currently use for the blessing of jacob in master.tex? The info can be found by finding the sources key pages in master.tex and then walking back the tex definitions."
+
+lord -v "Generate me a pdf showing all the fonts in fonts-ascii in order."
+
+lord -v "Generate me a pdf showing all the fonts in fonts-ascii/ in order. Resume untracked work."
+
+lord -v "How can I un-fullscreen ghostty"
+
+lord -v "Turn words.md into a pdf using pandoc"
+
+lord -v "Add some text to etc/AGENTS-repo.md saying that tests should always be executable documentation, ideally one-liners or sequences thereof, and should never use fake data, but should use the data they're meant to operate on at runtime."
+
+lord -v "In bin/lord, run as 'codex exec resume --last ...' in repo mode and book mode."
+
+lord -v "I had said "In bin/lord, run as 'codex exec resume --last ...' in repo mode and book mode." but you crashed. Finish up."
+
+lord -v "Generate me a prompt to tell yourself how to add something to man_path in another repo, using the bashrc functions in this repo."
+
+lord -v "Reduce the unstaged work to a one-liner."
+
+lord -v "Add cmdline options to sort (-r/--reverse sorts in reverse) and to sum, they should work with no argument in the case where there's only one field not counting the girls which act as the index, and in the case of > 1 field it should sort by the first by default but accept a -b/--by argument to sort by that."
+
+lord -v "Make the man page's bugs section more curt, brief, J-like, and funny. It's currently trying too hard and kinda cringe. The repo is about sex. A lot of it. With girls who knew about each other and became friends through the experience. Act accordingly."
+
+lord -v "I recently asked you to: '''Make the man page's bugs section more curt, brief, J-like, and funny. It's currently trying too hard and kinda cringe. The repo is about sex. A lot of it. With girls who knew about each other and became friends through the experience. Act accordingly.''' You did a great job. Make it even more of what you just made it. Not in quantity, but in essence."
+
+lord -v "I recently asked you to: '''Make the man page's bugs section more curt, brief, J-like, and funny. It's currently trying too hard and kinda cringe. The repo is about sex. A lot of it. With girls who knew about each other and became friends through the experience. Act accordingly.''' You did a great job. Make it even more of what you just made it. Not in quantity, but in essence."
+
+lord -v "You crashed last time, make sure the bin/lord command is syntactically correct"
+
+lord explain how the non-missing bits in the plot legends are calculated and what they mean
+
+lord explain how the numbers called non-missing in the plot legends are calculated and what they mean
+
+lord make ctags work in etc/vimrc
+
+lord explain how to do jump to definition in vim given the ctags in etc/vimrc
+
+lord "Remove the network-facts plot, and merge the functionality in narrative, relationships, and activity. The activity plot is using the most correct data, and I'm not sure what the others are doing. You can keep them around if they're doing something different, but rename activity to timeline, and if you decide to keep either of the others, name them timeline-X for some X."
+
+lord "Add a config option to master.tex that changes the shape of the \\Verse boxes to make it better for mobile, by doing the following: Normally we have English on left, Hebrew on right, commentary below. In this new 'vertical' mode, I want English first, then Hebrew, then commentary. Do that now. Don't worry about rebuilding the entire book, just do 'make comment' first and get it working, I'll rebuild the full book once you get it working."
+
+lord "Deuteronomy 33 (in 05-deuteronomy/33.tex) has proto hebrew but later english, change the english source attribution to match the hebrew"
+
+lord "Rename the columns option in master.tex to horizontal"
+
+lord "Rename the columns option in master.tex to horizontal. Don't leave this directory."
+
+lord "Whenever you see me using double backslash for a newline in the hebrew or english bits of 01-genesis/[12345]*.tex, replace that with a simple macro like \\n or \\nl or something that won't conflict with builtin or packaged lualatex macros. Then in master.tex, define that macro to be something that suggests a newline but doesn't force it in horizontal mode, and suggests a newline MUCH more weakly in vertical mode. You'll find the definitions of horizontal and vertical mode in master.tex."
+
+lord fix the build
+
+lord fix the build
+
+lord fix the build
+
+lord "Can we make the \\nl command be usable without the ugly {} after it?"
+
+lord fix the build
+
+lord fix the build
+
+lord "Summarize the unpushed commits"
+
+lord 'The command `diff -u <(es as list) <(es hf list)` returns nothing. Those models dont use the same columns. Look through the repo to see if you can find any information attributing different sets of columns to the as and hf model, and use it to fix the commands above, making them accurate.'
+
+lord "Remove the redundant 'import es' things from the README examples"
+
+lord "For each of the examples in the README, make the shell examples be ~ $ cmd and then the output on the line below that, adding ... if the output is longer than 5 lines. For the python examples, prefix the example commands with >>> and then show the answers on the next lines, with ... if it's longer than 5 lines same as for the shell. The README examples should feel like an interactive shell session that should give the reader a helpful aha moment feeling about how the repo works and how they can use it."
+
+lord "UNDO the changes you made from the following prompt: 'For each of the examples in the README, make the shell examples be ~ $ cmd and then the output on the line below that, adding ... if the output is longer than 5 lines. For the python examples, prefix the example commands with >>> and then show the answers on the next lines, with ... if it's longer than 5 lines same as for the shell. The README examples should feel like an interactive shell session that should give the reader a helpful aha moment feeling about how the repo works and how they can use it.'"
+
+lord fix make check until it works
+
+lord look back through the git history and find the version of the paired and or unpaired data metrics that existed before now. I like the more thoughtful dkl etc based stuff, but were giving this to a guy with low attention and tolerance for imperfection, and now the highest score plots look dumb and have a score of 16. find the version where it was like 23.
+
+lord fix the tests
+
+lord "Put Bunny signature line in the middle, make quotes at top be textsl for the quote (no smallcaps) and add a newline after the quote so the author line is on its own line in non-textsl, add a bit more space between the paragraphs and definitions, simplify the code of the latex file and make it lualatex of a simple elegant form like example.tex (but vastly simpler of course), and then without changing the words you can optionally add any aesthetic touches you think might make the girls enjoy the overall design more."
+
+lord "Do whatever you think the best strategy is of getting the signature lines on the 8th page and not orphaned on the 9th"
+
+lord "I said before 'Do whatever you think the best strategy is of getting the signature lines on the 8th page and not orphaned on the 9th.' You were doing good but thinking too hard. Just tighten up the giant unused space in the quotes at the top and it should be good."
+
+lord "Add a Makefile inspired by Makefile-example in this directory but much simpler since this is a simpler project."
+
+lord "Slightly lighter red in rabbitic covenant tex file title"
+
+lord "Slightly lighter red in rabbitic covenant tex file title, also darker blue, and remove the hrule above the first quote, it's redundant with the one below the title"
+
+lord "The current eng/ directory contains a torah from friedman, in eng/1-torah-friedman-translation, and a generated 06-joshua through 11-ezra, in eng/2-deutero-history-to-exile-translation-generated-in-style-of-kvj. I really don't like the generated translation. It's far too KJV-ish, which is the worst a translation can be to me. I want you to (1) Fix bin/sefaria so that it can download english translations with '-l en' using the same interface as the current working '-l he'. The code is there but it doesn't work yet. Let's default to the JPS Tanakh, 1985 edition, which sefaria definitiely has. (2) Once you've got the english fetching support in place, use it to fetch the 'JPS, 1985' translation into eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985. (3) Copy eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985 to a new folder called eng/2-deutero-history-to-exile-translation-generated-in-style-of-friedman. Make no major changes to that folder yet, but in the 2-*-friedman directory, start by replacing all instances of 'the Lord' with YHWH, and replacing the word 'tumor(s)' in 1 Samuel 5-6 with 'hemorrhoid(s)'. Then stop your work, and I'll check it to make sure you've done as I asked, and we'll decide what to do next."
+
+lord "I just told you to do this <prev>The current eng/ directory contains a torah from friedman, in eng/1-torah-friedman-translation, and a generated 06-joshua through 11-ezra, in eng/2-deutero-history-to-exile-translation-generated-in-style-of-kvj. I really don't like the generated translation. It's far too KJV-ish, which is the worst a translation can be to me. I want you to (1) Fix bin/sefaria so that it can download english translations with '-l en' using the same interface as the current working '-l he'. The code is there but it doesn't work yet. Let's default to the JPS Tanakh, 1985 edition, which sefaria definitiely has. (2) Once you've got the english fetching support in place, use it to fetch the 'JPS, 1985' translation into eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985. (3) Copy eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985 to a new folder called eng/2-deutero-history-to-exile-translation-generated-in-style-of-friedman. Make no major changes to that folder yet, but in the 2-*-friedman directory, start by replacing all instances of 'the Lord' with YHWH, and replacing the word 'tumor(s)' in 1 Samuel 5-6 with 'hemorrhoid(s)'. Then stop your work, and I'll check it to make sure you've done as I asked, and we'll decide what to do next.</prev>. Now finish the prompt by creating the directory I asked you to, containing the new english translation"
+
+lord "I just told you to do this <prev>The current eng/ directory contains a torah from friedman, in eng/1-torah-friedman-translation, and a generated 06-joshua through 11-ezra, in eng/2-deutero-history-to-exile-translation-generated-in-style-of-kvj. I really don't like the generated translation. It's far too KJV-ish, which is the worst a translation can be to me. I want you to (1) Fix bin/sefaria so that it can download english translations with '-l en' using the same interface as the current working '-l he'. The code is there but it doesn't work yet. Let's default to the JPS Tanakh, 1985 edition, which sefaria definitiely has. (2) Once you've got the english fetching support in place, use it to fetch the 'JPS, 1985' translation into eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985. (3) Copy eng/2-deutero-history-to-exile-translation-generated-in-style-of-jps-1985 to a new folder called eng/2-deutero-history-to-exile-translation-generated-in-style-of-friedman. Make no major changes to that folder yet, but in the 2-*-friedman directory, start by replacing all instances of 'the Lord' with YHWH, and replacing the word 'tumor(s)' in 1 Samuel 5-6 with 'hemorrhoid(s)'. Then stop your work, and I'll check it to make sure you've done as I asked, and we'll decide what to do next.</prev>. You told me network is blocked here, so finish the prompt by creating a script called NEXT in the current directory that will download all the stuff I asked you to into the correct new directory, and then add an english prompt to the TODO file inside the heredoc, describing to yourself the next steps of the plan, which should include writing a script that will parse the current lualatex *.tex files in the top level numbered book directories, starting with 06-joshua, and replace the english of those files with the new english of the translation we just downloaded. After you've created the NEXT and TODO files and make them executable, you're done"
+
+lord "Rename 10-dudetheyreontome/esther to 10-esther in the top level, rename 10-dudetheyreontome/ezra to 11-ezra-nehemiah, and put the ezra and nehemiah chapters inside the 11-ezra-nehemiah directory. Then rename 10-dudetheyreontome to 12-dudetheyreontome. Then edit master.tex and any helper scripts in bin to assume the new layout. 12-dudetheyreontome shouldn't have any tex files in it yet, but assume it will eventually, and add a \\Book thingy to master.tex and a nominal 1st chapter commented out to master.tex as a preparation step for the future."
+
+lord "Make the font a bit bigger in mobile mode globally without changing the relative sizes of any of the fonts relative to each other. Also don't change the size of the fonts on the alphabet history page."
+
+lord "Make the font a bit bigger in mobile mode globally without changing the relative sizes of any of the fonts relative to each other. Also don't change the size of the fonts on the alphabet history page. Also for the source legend and primary source font pages at the front where we manually insert page breaks, center each of those pages' content vertically within the pages. It looks weird in mobile mode."
+
+lord "Make the font a bit bigger in mobile mode globally without changing the relative sizes of any of the fonts relative to each other. Don't change anything in book mode. Also don't change the size of the fonts on the alphabet history page even in mobile mode. Also for the source legend and primary source font pages at the front where we manually insert page breaks, center each of those pages' content vertically within the pages. It looks weird in mobile mode."
+
+lord "In master.tex, make the font a bit bigger in mobile mode globally without changing the relative sizes of any of the fonts relative to each other. Don't change anything in book mode. Also don't change the size of the fonts on the alphabet history page even in mobile mode. Also for the source legend and primary source font pages at the front where we manually insert page breaks, center each of those pages' content vertically within the pages. It looks weird in mobile mode. You shouldn't need to look at anything except master.tex"
+
+lord "Vertically center the alphabet history pages' content in both modes, within each of the two pages it spans."
+
+lord "Vertically center the alphabet history pages' content in both modes, mobile and book, within each of the two pages it spans."
+
+lord "In master.tex, vertically center the alphabet history pages' content in both modes, mobile and book, within each of the two pages it spans.That's the only file you need to look at."
+
+lord "I want you to make the paper size in mobile mode be the same RATIO of a typical phone these days, that's 6.44 in tall by 3.07 in wide. However, if you make the paper size be those dimensions, it's insane and broken given our font sizes. So don't do that. Rather, in mobile mode only, scale the length or width so that the ratio between the two is the same as 6.44 in tall by 3.07 in wide. Don't make either dimension smaller. Scale in whatever way gives that same ratio, while expanding some dimension and not contracting either. Also in mobile mode, left pages and right pages shouldn't have different sized margins, since it's not a physically bound book in mobile mode. Don't change paper size or anything else in book mode."
+
+lord "Try to diagnose the reason behind most of the bad boxes in the current full book build. I don't want you to fix ones in places that show evidence of me having done something fancy myself in the commentary blocks. But try to diagnose and fix all the ones that occur because of anything outside of my commentary boxes. Don't edit master.tex yet, just explain what to do, in a prompt, and put it in the TODO file's heredoc"
+
+lord "Try to diagnose the reason behind most of the bad boxes in the current full book build. I don't want you to fix ones in places that show evidence of me having done something fancy myself in the commentary blocks. But try to diagnose and fix all the ones that occur because of anything outside of my commentary boxes. The file build/master.log will let you get started, even though it's still building. Don't build, just do your best."
+
+lord "Replace the hard newlines between consecutive intra-source lines in the source font pages toward the front with some \\nl command or something that we have control over and which we can change the behavior of between different modes, then make those linebreak that get added via \\nl (or whatever command) be much less strong suggestions to break the line in mobile mode, while preserving their meaning in book mode. Also on the Primary Sources page where we describe P in a longwinded Sir Humphrey style verbose thing, allow that paragraph to break mid paragraph when a page break is needed. It currently forces itself all onto a single page in a rather ugly way, leaving the previous page with J and E almost totally blank."
+
+lord "Replace the hard newlines between consecutive intra-source lines in the source font pages toward the front with some \\nl command or something that we have control over and which we can change the behavior of between different modes, then make those linebreak that get added via \\nl (or whatever command) be much less strong suggestions to break the line in mobile mode, while preserving their meaning in book mode. I specifically want you to replace the newlines in the Mushite and Aaronid descriptions toward the beginning. Also the Orange and Highlight (redactor) descriptions, and in the J laws section after 'the' and before '10'. Also I want you to make the paper size in mobile mode be the size of a typical phone these days, let's shoot for 6.44 in tall and 3.07 in wide. Also in mobile mode, left pages and right pages shouldn't have different sized margins. Don't change paper size or anything else in book mode."
+
+lord "Replace the hard newlines between consecutive intra-source lines in the source font pages toward the front with some \\nl command or something that we have control over and which we can change the behavior of between different modes, then make those linebreak that get added via \\nl (or whatever command) be much less strong suggestions to break the line in mobile mode, while preserving their meaning in book mode. I specifically want you to replace the newlines in the Mushite and Aaronid descriptions toward the beginning. Also the Orange and Highlight (redactor) descriptions, and in the J laws section after 'the' and before '10'." # Also I want you to make the paper size in mobile mode be the size of a typical phone these days, let's shoot for 6.44 in tall and 3.07 in wide. Also in mobile mode, left pages and right pages shouldn't have different sized margins. Don't change paper size or anything else in book mode."
+
+lord "Look at build/master.log and try to fix all the warnings by editing master.tex. Try to do so in as systematic a way as possible, without globally silencing bad stuff that'll be visually horrible but no longer warn us, and also without doing some specific hack for each thing that shows up. Whatever you think is the most elegant minimalist way of fixing ALL of them, do that. The file master.tex is the only file you should need to edit, but read the build/master.log file to see the errors."
+
+lord "Try to fix the warnings in Genesis 23 WITHOUT doing ANY builds of the pdf, just guess and fix. I don't want to do any builds at the moment since I'm about to do the 2nd build to get a toc. It's ok to guess. Just look in 01-genesis/23.tex"
+
+lord "I recently said 'Move esther inside dudetheyreontome, after ezra-nehemiah, and fix any includes in master.tex and in bin/'. You did most of that, but I want 10-ezra-nehemiah, and 11-dudetheyreontome."
+
+lord "Split 11-ezra-nehemiah into 10-ezra and 11-nehemiah, and fix up master.tex and any scripts in bin that need to be fixed up. Also rename esther to 02-esther inside 12-dudetheyreontome, and add a 01-esther folder in there with some made up glue verses saying things like '\"Who is Nehemiah?\"' The light was ebbing and Ezra Dactor could not distinguish the man's face. The man had said it simply, without expression, But from the sunset far at the end of the street, yellow glints caught his eyes, and the eyes looked straight at Ezra Dactor, mocking and still - as if the question had been addressed to the causeless uneasiness within him. \"Why did you say that?\" asked Ezra, his voice tense. The man leaned against the side of the doorway; a wedge of broken brick behind him reflected the metal yellow of the sky. \"Why does it bother you?\" he asked. \"It doesn't,\" snapped Ezra. They both knew what the man meant. The story couldn't end there. Not with Nehemiah. Hell, even Ezra didn't know who Nehemiah was. Remember me, my god, for good? Not good. There were those of us back then who knew we couldn't go back. No foreign women? No deal. I like my girls like I like my bibles. Strange language. Deeply foreign, even to other native speakers of the same tongue. Always misunderstood, even in translation. Funny. Subtle. Small enough you can pick em up with one hand. And more about sex than anyone can tell at first glance. We couldn't go back. Not with Ezra in charge. Some of us were in Egypt, being Elephatine. Others stayed out East in Persia, seducing kings and killing rats. You can make noise now kids, you know who I mean. Either way, the story didn't end there with Nehemiah. The real story was just getting started. The story of exile. And here we were. Without a home or a country. Back out in the wilderness yet again. On our own. On the lamb. (Big massive page sized heading). WE. THE NAMELESS. PART TWO. THE DIASPORA. BOOK ONE. DUDETHEYREONTOME."
+
+lord "Put the stuff in ESDRAS.txt into 12-dudetheyreontome/03-red/01.tex, properly breaking it out by verses."
+
+lord fix the build and make make work
+
+lord 'Write to stdout the following: How can I do the equivalent of `cmd > file` in python, using low level syscalls.'
+
+lord 'Tell me the answer to the following: How can I do the equivalent of `cmd > file` in python, using low level syscalls.'
+
+lord "Lint my comments in 08-samuel/1-0[12].tex. Nothing fancy. Just indent the ones I didn't."
+
+lord "Run make"
+
+lord "Add hyperlinks to rhe table of contents that point to each book, and add an array of hyperlinks to the title page of each chapter like the Harper Collins Study Bible NRSV kindle edition does that link to the beginning of each chapter. Use the simplest method of implementing this."
+
+lord "Make the hyperlinks light blue and underlined in mobile mode but white as they are now no underline in book mode. Also move the array of links to the chapters onto the title page of each book. Dont run a full make. Just stop when you feel happy."
+
+lord "Make draft 4 by adding the uncommitted changes to draft 2 where appropriate, change no existing files"
+
+lord "I think the Makefile or build process is for some reason getting confused now that the dirname has spaces in it, and it's somehow making directories called The and Nameless with build files in them. Can you (1) make that not happen, and (2) make the repo root never end up with master.log and master.fls and master.aux and all that, instead always making sure it ends up in build/"
+
+lord "Add two newlines below every verse in the eng/ directory, so that I don't need to hit enter twice when adding commentary and ensuring there's a blank line above and below whatever I write between the verse and the hrule. We now have VERSE\n\n---. I want VERSE\n\n\n\n--- etc."
+
+lord "Read master.tex and decide on a color for \\eX and \\hX that isn't exactly identical to the \\aA commentary. In light mode it should be a dark grey that's almost black but visually distinct. In dark mode it should be a light grey that's almost white but visually distinct. Don't compile the book. Just modify the colors in master.tex as described above and exit quickly."
+
+lord "Read master.tex and decide on a color for \\eX and \\hX that isn't exactly identical to the \\aA commentary color. In light mode it should be a dark color that's almost black but visually distinct. In dark mode it should be a light color that's almost white but visually distinct. Don't compile the book. Just modify the colors in master.tex as described above and exit quickly. Also, I don't want you to just make up the new colors. I want you to make them by mixing the default \\aA text color with either a lighter or darker shade by using the exclamation point syntax, so the new colors are derived from the commentary color itself and will therefore change if it changes in the future."
+
+lord "In 08-samuel/*.tex, whenever you see a verse with commentary in it, then if it's using \\hJ and \\eJ to attribute the verse to the J source, use the \\aA{...} commentary voice, but if it's using \\hX and \\eX to attribute the verse to the 'unattributed' source (here Samuel A in scholarly terms) then use the \\aB{...} commentary voice. Do this quick, don't think too much, it's not complicated."
+
+lord "Make the Hebrew in 12-dudetheyreontome/01-on-the-lamb/01.tex use the Aramaic font defined in master.tex, by adding a new macro \\hAramaic and a new english macro \\eAramaic that defaults to the current default english font and color. Then use the info in ./ARAMAIC to update Ezra and the man's dialogue in that chapter so they're both speaking Aramaic in the \\hAramaic sections. Then make Ezra's dialogue be spoken in Aaronid Blue. Then lint the file and clean up the indentation. Keep my obscure writing systems as is. Add any suggestions you have for additional dialogue changes or additions in % commented out form in the commentary boxes."
+
+lord "Fix the spacing and font color so the title page at the bottom of 12-dudetheyreontome/01-on-the-lamb/01.tex looks like a big loud intense movie poster or the loud BUM BUM BUM things at the end of a movie preview. I want you to focus primarily on the spacing and the colors, but also feel free to change font sizes and merge consecutive lines of the smaller fonts in whatever way you think would look best."
+
+lord "Fix the spacing and font color so the title page at the bottom of 12-dudetheyreontome/01-on-the-lamb/01.tex looks like a big loud intense movie poster or the loud BUM BUM BUM things at the end of a movie preview. I want you to focus primarily on the spacing and the colors, but also feel free to change font sizes and merge consecutive lines of the smaller fonts in whatever way you think would look best. Also don't use paleo records font, just use Heb for the דוד bit, but maybe add some annotations or something so the audience gets the joke that we're pronouncing דוד as \\textsc{Duud}."
+
