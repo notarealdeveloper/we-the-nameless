@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import curses
+import json
 import multiprocessing as mp
 import os
 from pathlib import Path
@@ -9,6 +10,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 
@@ -18,9 +20,13 @@ MASTER = ROOT / "master.tex"
 BUILD = ROOT / "build" / "parallel"
 SOURCE_DIR = BUILD / "masters"
 MERGED_PDF = BUILD / "master.pdf"
-SHARED_TEXMFVAR = BUILD / "texmf-var"
+RAW_MERGED_PDF = BUILD / "master-raw.pdf"
+NORMALIZED_MERGED_PDF = BUILD / "master-normalized.pdf"
+TEXMFVAR_ROOT = BUILD / "texmf-var"
+TEXMFVAR_SEED = TEXMFVAR_ROOT / "_seed"
 FRONT_SLUG = "front-matter"
 FRONT_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}.pdf"
+FRONT_MERGE_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}-merge.pdf"
 DEFAULT_PASSES = 2
 
 BOOK_RE = re.compile(r"^\\Book\{([^}]+)\}\s*$", re.MULTILINE)
@@ -93,7 +99,7 @@ def write_front_toc(books, output_dir, page_starts=None):
     toc = output_dir / f"{FRONT_SLUG}.toc"
     toc.write_text(
         "".join(
-            rf"\contentsline {{chapter}}{{{book['title']}}}{{{page_starts.get(book['index'], '') if page_starts else ''}}}{{}}"
+            rf"\contentsline {{chapter}}{{{book['title']}}}{{{page_starts.get(book['index'], '') if page_starts else ''}}}{{book.{book['title']}}}"
             + "\n"
             for book in books
         )
@@ -228,10 +234,34 @@ def wait_for_page_start(book, page_starts):
     return page_starts[key]
 
 
+def texmfvar_for(slug):
+    return TEXMFVAR_ROOT / slug
+
+
+def prepare_texmfvar(slug):
+    target = texmfvar_for(slug)
+    if target.exists():
+        return target
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if TEXMFVAR_SEED.exists():
+        shutil.copytree(TEXMFVAR_SEED, target)
+    else:
+        target.mkdir(parents=True, exist_ok=True)
+    return target
+
+
+def prepare_worker_tex_caches(books, include_front):
+    slugs = [book["slug"] for book in books]
+    if include_front:
+        slugs.append(FRONT_SLUG)
+    for slug in slugs:
+        prepare_texmfvar(slug)
+
+
 def worker_main(book, preamble, passes, page_starts, event_queue):
     started = time.monotonic()
     output_dir = BUILD / book["slug"]
-    texmfvar = SHARED_TEXMFVAR
+    texmfvar = texmfvar_for(book["slug"])
     try:
         master_path = write_worker_master(preamble, book)
         prepare_build_dirs(book, output_dir)
@@ -268,7 +298,7 @@ def worker_main(book, preamble, passes, page_starts, event_queue):
 def front_main(preamble, front_body, books, passes, page_starts, event_queue):
     started = time.monotonic()
     output_dir = BUILD / FRONT_SLUG
-    texmfvar = SHARED_TEXMFVAR
+    texmfvar = texmfvar_for(FRONT_SLUG)
     front = {
         "index": -1,
         "title": "Front Matter",
@@ -350,12 +380,12 @@ def publish_page_starts_if_ready(books, include_front, page_starts, pass_one_pdf
 
 
 def warm_tex_cache():
-    SHARED_TEXMFVAR.mkdir(parents=True, exist_ok=True)
+    TEXMFVAR_SEED.mkdir(parents=True, exist_ok=True)
     tool = shutil.which("luaotfload-tool")
     if not tool:
         return
     env = os.environ.copy()
-    env["TEXMFVAR"] = str(SHARED_TEXMFVAR)
+    env["TEXMFVAR"] = str(TEXMFVAR_SEED)
     subprocess.run(
         [tool, "--update"],
         cwd=ROOT,
@@ -427,11 +457,15 @@ class Dashboard:
         if kind == "started":
             state["status"] = "running"
         elif kind == "started-pass":
-            if event[2] != state["pass"]:
+            if event[2] != state["pass"] or event[2] > 1:
                 state["seen"] = 0
                 state["lines"] = []
             state["pass"] = event[2]
             state["status"] = f"pass {event[2]}"
+        elif kind == "pass-done":
+            state["seen"] = 0
+            state["lines"] = []
+            state["status"] = f"pass {event[2]} done"
         elif kind == "chapter":
             state["seen"] = min(state["seen"] + 1, state["total"])
             self.add_line(index, f"{event[3]} compiled")
@@ -686,10 +720,219 @@ def clean():
         shutil.rmtree(BUILD)
 
 
+def strip_front_book_destinations(pdf):
+    qpdf = shutil.which("qpdf")
+    if not qpdf:
+        print("Warning: qpdf is not installed; front-matter TOC links may not survive pdfunite.", file=sys.stderr)
+        return pdf
+
+    try:
+        result = subprocess.run(
+            [qpdf, "--json", "--json-object=trailer/Root/Names/Dests", str(pdf)],
+            cwd=ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+        data = json.loads(result.stdout)
+        objects = data["qpdf"][1]
+    except Exception as exc:
+        print(f"Warning: could not inspect front-matter destinations: {exc}", file=sys.stderr)
+        return pdf
+
+    changed = False
+    for obj in objects.values():
+        value = obj.get("value")
+        if not isinstance(value, dict) or "/Names" not in value:
+            continue
+        names = value["/Names"]
+        if not isinstance(names, list):
+            continue
+        filtered = []
+        index = 0
+        while index + 1 < len(names):
+            name = names[index]
+            destination = names[index + 1]
+            if isinstance(name, str) and name.startswith("u:book."):
+                changed = True
+            else:
+                filtered.extend([name, destination])
+            index += 2
+        if len(filtered) != len(names):
+            value["/Names"] = filtered
+            keys = filtered[::2]
+            if keys:
+                value["/Limits"] = [keys[0], keys[-1]]
+            else:
+                value.pop("/Limits", None)
+
+    if not changed:
+        return pdf
+
+    FRONT_MERGE_PDF.unlink(missing_ok=True)
+    patch_path = None
+    try:
+        with tempfile.NamedTemporaryFile("w", suffix=".json", dir=BUILD, delete=False) as patch:
+            patch_path = Path(patch.name)
+            json.dump({"version": data["version"], "qpdf": data["qpdf"]}, patch)
+        subprocess.run(
+            [qpdf, str(pdf), f"--update-from-json={patch_path}", str(FRONT_MERGE_PDF)],
+            cwd=ROOT,
+            check=True,
+        )
+        return FRONT_MERGE_PDF
+    except Exception as exc:
+        print(f"Warning: could not strip front-matter book destinations: {exc}", file=sys.stderr)
+        return pdf
+    finally:
+        if patch_path:
+            patch_path.unlink(missing_ok=True)
+
+
+def run_qpdf(args, **kwargs):
+    result = subprocess.run(args, cwd=ROOT, **kwargs)
+    if result.returncode not in (0, 3):
+        raise subprocess.CalledProcessError(result.returncode, args)
+    return result
+
+
+def qpdf_json(pdf, *extra_args):
+    qpdf = shutil.which("qpdf")
+    if not qpdf:
+        raise RuntimeError("qpdf is not installed")
+    result = run_qpdf(
+        [qpdf, "--json", *extra_args, str(pdf)],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    return json.loads(result.stdout)
+
+
+def named_destination_allowed(name, source_index):
+    if source_index == 0:
+        return name == "tableofcontents"
+    return name.startswith("book.") or name.startswith("chapter.")
+
+
+def extract_destinations(pdf, source_index, page_offset):
+    data = qpdf_json(pdf)
+    objects = data["qpdf"][1]
+    page_indexes = {page["object"]: index for index, page in enumerate(data["pages"])}
+    destinations = {}
+
+    for obj in objects.values():
+        value = obj.get("value")
+        if not isinstance(value, dict):
+            continue
+        names = value.get("/Names")
+        if not isinstance(names, list):
+            continue
+        index = 0
+        while index + 1 < len(names):
+            raw_name = names[index]
+            raw_destination = names[index + 1]
+            index += 2
+            if not isinstance(raw_name, str) or not raw_name.startswith("u:"):
+                continue
+            name = raw_name[2:]
+            if not named_destination_allowed(name, source_index):
+                continue
+            destination = raw_destination
+            if isinstance(raw_destination, str):
+                destination_obj = objects.get(f"obj:{raw_destination}", {})
+                destination_value = destination_obj.get("value")
+                if isinstance(destination_value, dict):
+                    destination = destination_value.get("/D")
+            if not isinstance(destination, list) or not destination:
+                continue
+            source_page = destination[0]
+            if source_page not in page_indexes:
+                continue
+            destinations[name] = {
+                "source_page_index": page_indexes[source_page],
+                "page_offset": page_offset,
+                "tail": destination[1:],
+            }
+    return destinations, len(data["pages"])
+
+
+def rebuild_merged_destinations(source_pdfs, merged_pdf):
+    qpdf = shutil.which("qpdf")
+    if not qpdf:
+        print("Warning: qpdf is not installed; merged PDF hyperlinks may be incomplete.", file=sys.stderr)
+        return
+
+    all_destinations = {}
+    page_offset = 0
+    for source_index, pdf in enumerate(source_pdfs):
+        destinations, page_count = extract_destinations(pdf, source_index, page_offset)
+        all_destinations.update(destinations)
+        page_offset += page_count
+    if not all_destinations:
+        return
+
+    RAW_MERGED_PDF.unlink(missing_ok=True)
+    NORMALIZED_MERGED_PDF.unlink(missing_ok=True)
+    shutil.move(merged_pdf, RAW_MERGED_PDF)
+    run_qpdf([qpdf, str(RAW_MERGED_PDF), str(NORMALIZED_MERGED_PDF)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    merged_pages = [page["object"] for page in qpdf_json(NORMALIZED_MERGED_PDF, "--json-key=pages")["pages"]]
+    names = []
+    for name in sorted(all_destinations):
+        destination = all_destinations[name]
+        merged_page_index = destination["page_offset"] + destination["source_page_index"]
+        if merged_page_index >= len(merged_pages):
+            continue
+        names.extend(
+            [
+                f"u:{name}",
+                [merged_pages[merged_page_index], *destination["tail"]],
+            ]
+        )
+    if not names:
+        shutil.move(NORMALIZED_MERGED_PDF, merged_pdf)
+        return
+
+    dest_tree = qpdf_json(NORMALIZED_MERGED_PDF, "--json-object=trailer/Root/Names/Dests")
+    dest_objects = dest_tree["qpdf"][1]
+    target = None
+    for obj in dest_objects.values():
+        value = obj.get("value")
+        if not isinstance(value, dict):
+            continue
+        if isinstance(value.get("/Names"), list) or isinstance(value.get("/Kids"), list):
+            target = value
+            break
+    if target is None:
+        shutil.move(NORMALIZED_MERGED_PDF, merged_pdf)
+        print("Warning: merged PDF has no destination name tree to update.", file=sys.stderr)
+        return
+
+    target.pop("/Kids", None)
+    target["/Names"] = names
+    target["/Limits"] = [names[0], names[-2]]
+
+    patch_path = None
+    try:
+        with tempfile.NamedTemporaryFile("w", suffix=".json", dir=BUILD, delete=False) as patch:
+            patch_path = Path(patch.name)
+            json.dump({"version": dest_tree["version"], "qpdf": dest_tree["qpdf"]}, patch)
+        run_qpdf(
+            [qpdf, str(NORMALIZED_MERGED_PDF), f"--update-from-json={patch_path}", str(merged_pdf)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    finally:
+        if patch_path:
+            patch_path.unlink(missing_ok=True)
+
+
 def merge_pdfs(books, include_front):
     pdfs = []
     if include_front:
-        pdfs.append(FRONT_PDF)
+        pdfs.append(strip_front_book_destinations(FRONT_PDF))
     pdfs.extend(BUILD / book["slug"] / f"{book['slug']}.pdf" for book in books)
     missing = [pdf for pdf in pdfs if not pdf.exists()]
     if missing:
@@ -707,8 +950,14 @@ def merge_pdfs(books, include_front):
         print("Cannot merge; pdfunite is not installed.", file=sys.stderr)
         return 1
 
+    MERGED_PDF.unlink(missing_ok=True)
     cmd = [pdfunite, *map(str, pdfs), str(MERGED_PDF)]
     result = subprocess.run(cmd, cwd=ROOT)
+    if result.returncode == 0:
+        try:
+            rebuild_merged_destinations(pdfs, MERGED_PDF)
+        except Exception as exc:
+            print(f"Warning: could not rebuild merged PDF destinations: {exc}", file=sys.stderr)
     return result.returncode
 
 
@@ -746,6 +995,8 @@ def main():
         if args.clean:
             clean()
         BUILD.mkdir(parents=True, exist_ok=True)
+        warm_tex_cache()
+        prepare_worker_tex_caches([], True)
         event_queue = mp.Queue()
         front_main(preamble, front_body, books, args.passes, None, event_queue)
     if args.only:
@@ -762,6 +1013,7 @@ def main():
         clean()
     BUILD.mkdir(parents=True, exist_ok=True)
     warm_tex_cache()
+    prepare_worker_tex_caches(books, include_front)
 
     if args.plain or not sys.stdout.isatty() or os.environ.get("TERM") in (None, "", "dumb"):
         rc = run_plain(books, preamble, front_body, include_front, args.passes)
