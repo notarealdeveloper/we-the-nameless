@@ -506,6 +506,40 @@
 \section{nav: footnotes}
 \fi
 
+\makeatletter
+\let\RecursiveFootnoteQueue\@empty
+\newif\ifRecursiveFootnoteFlushing
+
+\newcommand{\RecursiveFootnoteFlush}{%
+    \ifRecursiveFootnoteFlushing
+    \else
+        \RecursiveFootnoteFlushingtrue
+        \loop
+            \ifx\RecursiveFootnoteQueue\@empty
+            \else
+                \let\RecursiveFootnoteNext\RecursiveFootnoteQueue
+                \global\let\RecursiveFootnoteQueue\@empty
+                \RecursiveFootnoteNext
+        \repeat
+        \RecursiveFootnoteFlushingfalse
+    \fi
+}
+
+\NewDocumentCommand{\recursivefootnote}{ +m }{%
+    \footnotemark
+    \begingroup
+        \count@=\value{footnote}%
+        \xdef\RecursiveFootnoteAppend{%
+            \noexpand\g@addto@macro\noexpand\RecursiveFootnoteQueue{%
+                \noexpand\footnotetext[\the\count@]{\unexpanded{#1}}%
+            }%
+        }%
+    \endgroup
+    \RecursiveFootnoteAppend
+    \aftergroup\RecursiveFootnoteFlush
+}
+\makeatother
+
 \NewDocumentCommand{\hangingblock}{ O{1.5em} +m }{%
     \begingroup
         \def\hangingblocksetup{%
