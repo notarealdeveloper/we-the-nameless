@@ -2477,6 +2477,11 @@
     \ChapterLinkArray
     \endgroup
 }
+\newcommand{\BookPartChapterLinks}[1]{%
+    \par\nobreak\smallskip
+    {\centering\footnotesize\textsc{#1}\par\nobreak\smallskip}%
+    \ChapterLinksForBook{#1}%
+}
 \newcommand{\BookChapterLinkArray}[1]{%
     \@ifundefined{BookChapterLinkList@#1}{%
         \ChapterLinksForBook{#1}%
@@ -2500,16 +2505,16 @@
 \DeclareChapterLinkRange{On the Lamb}{1}
 \DeclareChapterLinkRange{Esther}{10}
 \DeclareBookChapterLinkList{Samuel}{%
-    \ChapterLinksForBook{I Samuel}%
-    \ChapterLinksForBook{II Samuel}%
+    \BookPartChapterLinks{I Samuel}%
+    \BookPartChapterLinks{II Samuel}%
 }
 \DeclareBookChapterLinkList{Kings}{%
-    \ChapterLinksForBook{I Kings}%
-    \ChapterLinksForBook{II Kings}%
+    \BookPartChapterLinks{I Kings}%
+    \BookPartChapterLinks{II Kings}%
 }
 \DeclareBookChapterLinkList{Dudetheyreontome}{%
-    \ChapterLinksForBook{On the Lamb}%
-    \ChapterLinksForBook{Esther}%
+    \BookPartChapterLinks{On the Lamb}%
+    \BookPartChapterLinks{Esther}%
 }
 \makeatother
 
