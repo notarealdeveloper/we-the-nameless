@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import argparse
 import curses
-import hashlib
 import json
 import multiprocessing as mp
 import os
@@ -12,6 +11,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 
 
@@ -27,13 +27,12 @@ TEXMFVAR_SEED = TEXMFVAR_ROOT / "_seed"
 FRONT_SLUG = "front-matter"
 FRONT_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}.pdf"
 FRONT_MERGE_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}-merge.pdf"
-DEFAULT_PASSES = 1
-FINGERPRINT_VERSION = 3
+DEFAULT_PASSES = 2
 
 BOOK_RE = re.compile(r"^\\Book\{([^}]+)\}\s*$", re.MULTILINE)
-INCLUDE_LINE_RE = re.compile(r"^\s*\\include\{([^}]+)\}\s*$")
-BOOKPART_LINE_RE = re.compile(r"^\s*\\BookPart\{([^}]+)\}\s*$")
+INCLUDE_RE = re.compile(r"\\include\{([^}]+)\}")
 CHAPTER_RE = re.compile(r"\((?:\./)?((?:\d\d-[^/]+/)[^()\s]+)\.tex")
+
 
 GREEN = "\033[1;32m"
 BLUE = "\033[1;34m"
@@ -53,175 +52,121 @@ def read_document_parts():
 
     preamble = text[: doc_match.end()]
     books = list(BOOK_RE.finditer(text))
-    if not books:
-        raise RuntimeError("master.tex has no active \\Book blocks")
+    if len(books) != 12:
+        raise RuntimeError(f"expected 12 \\Book blocks, found {len(books)}")
     front_body = text[doc_match.end() : books[0].start()]
     front_body = front_body.split(r"\mainmatter", 1)[0].strip()
 
-    parsed = []
+    chunks = []
     for index, match in enumerate(books):
         title = match.group(1)
         start = match.start()
         end = books[index + 1].start() if index + 1 < len(books) else text.index(r"\end{document}", start)
         body = text[start:end].strip()
-        book = {
-            "index": index,
-            "title": title,
-            "slug": f"{index + 1:02d}-{slugify(title)}",
-            "chapters": [],
-        }
-        current_part = None
-        for line in body.splitlines():
-            part = BOOKPART_LINE_RE.match(line)
-            if part:
-                current_part = part.group(1)
-                continue
-            include = INCLUDE_LINE_RE.match(line)
-            if not include:
-                continue
-            include_path = include.group(1)
-            chapter = {
-                "book_index": index,
-                "book_title": title,
-                "book_slug": book["slug"],
-                "part": current_part,
-                "include": include_path,
-                "label": chapter_label(include_path),
-                "slug": f"{book['slug']}-{slugify(include_path)}",
+        includes = INCLUDE_RE.findall(body)
+        chunks.append(
+            {
+                "index": index,
+                "title": title,
+                "slug": f"{index + 1:02d}-{slugify(title)}",
+                "body": body,
+                "includes": includes,
             }
-            book["chapters"].append(chapter)
-        parsed.append(book)
-    return preamble, front_body, parsed
-
-
-def all_chapters(books):
-    return [chapter for book in books for chapter in book["chapters"]]
-
-
-def chapter_label(path):
-    name = Path(path).name
-    return name.replace("-", " ")
+        )
+    return preamble, front_body, chunks
 
 
 def write_front_master(preamble, front_body):
     SOURCE_DIR.mkdir(parents=True, exist_ok=True)
     target = SOURCE_DIR / f"{FRONT_SLUG}.tex"
-    target.write_text("\n".join([preamble, "", front_body, "", r"\end{document}", ""]))
-    return target
-
-
-def front_toc_text(books, page_starts=None):
-    return "".join(
-        rf"\contentsline {{chapter}}{{{book['title']}}}{{{page_starts.get(book['index'], '') if page_starts else ''}}}{{book.{book['title']}}}"
-        + "\n"
-        for book in books
+    target.write_text(
+        "\n".join(
+            [
+                preamble,
+                "",
+                front_body,
+                "",
+                r"\end{document}",
+                "",
+            ]
+        )
     )
+    return target
 
 
 def write_front_toc(books, output_dir, page_starts=None):
     output_dir.mkdir(parents=True, exist_ok=True)
-    (output_dir / f"{FRONT_SLUG}.toc").write_text(front_toc_text(books, page_starts))
-
-
-def chapter_master_text(preamble, chapter, start_page=None):
-    page_setup = [rf"\setcounter{{page}}{{{start_page}}}"] if start_page is not None else []
-    part_setup = [rf"\BookPart{{{chapter['part']}}}"] if chapter.get("part") else []
-    return "\n".join(
-        [
-            preamble,
-            "",
-            r"\mainmatter",
-            *page_setup,
-            r"\hypersetup{pageanchor=true}",
-            r"\pagestyle{fancy}",
-            "",
-            rf"\Book{{{chapter['book_title']}}}",
-            *part_setup,
-            rf"\include{{{chapter['include']}}}",
-            "",
-            r"\end{document}",
-            "",
-        ]
+    toc = output_dir / f"{FRONT_SLUG}.toc"
+    toc.write_text(
+        "".join(
+            rf"\contentsline {{chapter}}{{{book['title']}}}{{{page_starts.get(book['index'], '') if page_starts else ''}}}{{book.{book['title']}}}"
+            + "\n"
+            for book in books
+        )
     )
 
 
-def write_chapter_master(preamble, chapter, start_page=None):
+def write_worker_master(preamble, book, start_page=None):
     SOURCE_DIR.mkdir(parents=True, exist_ok=True)
-    target = SOURCE_DIR / f"{chapter['slug']}.tex"
-    target.write_text(chapter_master_text(preamble, chapter, start_page))
+    target = SOURCE_DIR / f"{book['slug']}.tex"
+    page_setup = []
+    if start_page is not None:
+        page_setup.append(rf"\setcounter{{page}}{{{start_page}}}")
+    target.write_text(
+        "\n".join(
+            [
+                preamble,
+                "",
+                r"\mainmatter",
+                *page_setup,
+                r"\hypersetup{pageanchor=true}",
+                r"\pagestyle{fancy}",
+                "",
+                book["body"],
+                "",
+                r"\end{document}",
+                "",
+            ]
+        )
+    )
     return target
 
 
-def prepare_build_dir(chapter, output_dir):
+def prepare_build_dirs(book, output_dir):
     output_dir.mkdir(parents=True, exist_ok=True)
-    (output_dir / Path(chapter["include"]).parent).mkdir(parents=True, exist_ok=True)
+    for include in book["includes"]:
+        (output_dir / Path(include).parent).mkdir(parents=True, exist_ok=True)
 
 
-def file_digest(path):
-    h = hashlib.sha256()
-    h.update(path.read_bytes())
-    return h.hexdigest()
-
-
-def fingerprint_for(payload):
-    h = hashlib.sha256()
-    h.update(json.dumps(payload, sort_keys=True).encode())
-    return h.hexdigest()
-
-
-def chapter_fingerprint(master_text, chapter, pass_number, start_page):
-    include_path = ROOT / f"{chapter['include']}.tex"
-    payload = {
-        "version": FINGERPRINT_VERSION,
-        "kind": "chapter",
-        "pass": pass_number,
-        "start_page": start_page,
-        "master": master_text,
-        "include": chapter["include"],
-        "include_digest": file_digest(include_path),
-    }
-    return fingerprint_for(payload)
-
-
-def front_fingerprint(preamble, front_body, books, pass_number, page_starts):
-    payload = {
-        "version": FINGERPRINT_VERSION,
-        "kind": "front",
-        "pass": pass_number,
-        "preamble": preamble,
-        "front_body": front_body,
-        "toc": front_toc_text(books, page_starts),
-    }
-    return fingerprint_for(payload)
-
-
-def cache_hit(output_dir, stem, fingerprint):
-    pdf = output_dir / f"{stem}.pdf"
-    stamp = output_dir / f"{stem}.sha256"
-    return pdf.exists() and stamp.exists() and stamp.read_text().strip() == fingerprint
-
-
-def cache_store(output_dir, stem, fingerprint):
-    (output_dir / f"{stem}.sha256").write_text(fingerprint + "\n")
+def chapter_label(path):
+    pieces = Path(path).parts
+    if len(pieces) < 2:
+        return path
+    chapter = Path(path).name
+    chapter = chapter.replace("-", " ")
+    return chapter
 
 
 def parse_progress(line):
-    return [chapter_label(match) for match in CHAPTER_RE.findall(line)]
+    matches = CHAPTER_RE.findall(line)
+    if not matches:
+        return []
+    return [chapter_label(match) for match in matches]
 
 
-def stream_lualatex(owner, master_path, output_dir, texmfvar, event_queue, pass_number):
+def stream_lualatex(book, master_path, output_dir, texmfvar, event_queue, pass_number):
     cmd = [
         "lualatex",
         "-interaction=nonstopmode",
         "-halt-on-error",
         "-file-line-error",
-        "-recorder",
         f"-output-directory={output_dir}",
         str(master_path),
     ]
     env = os.environ.copy()
     env["TEXMFVAR"] = str(texmfvar)
-    event_queue.put(("started-pass", owner, pass_number))
+
+    event_queue.put(("started-pass", book["index"], pass_number, " ".join(cmd)))
     process = subprocess.Popen(
         cmd,
         cwd=ROOT,
@@ -232,25 +177,69 @@ def stream_lualatex(owner, master_path, output_dir, texmfvar, event_queue, pass_
         bufsize=1,
         errors="replace",
     )
+
+    lines = queue.Queue()
+
+    def producer():
+        assert process.stdout is not None
+        for line in process.stdout:
+            lines.put(line.rstrip("\n"))
+        lines.put(None)
+
+    thread = threading.Thread(target=producer, daemon=True)
+    thread.start()
+
     log_tail = []
-    assert process.stdout is not None
-    for line in process.stdout:
-        line = line.rstrip("\n")
+    while True:
+        line = lines.get()
+        if line is None:
+            break
         log_tail.append(line)
         log_tail = log_tail[-12:]
         for chapter in parse_progress(line):
-            event_queue.put(("chapter", owner, pass_number, chapter))
+            event_queue.put(("chapter", book["index"], pass_number, chapter))
         if line.startswith("Output written on "):
-            event_queue.put(("output", owner, pass_number))
-    return process.wait(), log_tail
+            event_queue.put(("output", book["index"], pass_number, line))
+
+    return_code = process.wait()
+    thread.join(timeout=1)
+    return return_code, log_tail
 
 
-def texmfvar_for(worker_number):
-    return TEXMFVAR_ROOT / f"worker-{worker_number:02d}"
+def pdf_page_count(pdf):
+    pdfinfo = shutil.which("pdfinfo")
+    if not pdfinfo:
+        raise RuntimeError("pdfinfo is required for the coordinated second pass")
+    result = subprocess.run(
+        [pdfinfo, str(pdf)],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr.strip() or f"pdfinfo failed for {pdf}")
+    match = re.search(r"^Pages:\s+(\d+)\s*$", result.stdout, re.MULTILINE)
+    if not match:
+        raise RuntimeError(f"pdfinfo did not report a page count for {pdf}")
+    return int(match.group(1))
 
 
-def prepare_texmfvar(worker_number):
-    target = texmfvar_for(worker_number)
+def wait_for_page_start(book, page_starts):
+    key = str(book["index"])
+    while key not in page_starts:
+        if page_starts.get("failed"):
+            raise RuntimeError("coordinated second pass cancelled")
+        time.sleep(0.1)
+    return page_starts[key]
+
+
+def texmfvar_for(slug):
+    return TEXMFVAR_ROOT / slug
+
+
+def prepare_texmfvar(slug):
+    target = texmfvar_for(slug)
     if target.exists():
         return target
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -261,6 +250,135 @@ def prepare_texmfvar(worker_number):
     return target
 
 
+def prepare_worker_tex_caches(books, include_front):
+    slugs = [book["slug"] for book in books]
+    if include_front:
+        slugs.append(FRONT_SLUG)
+    for slug in slugs:
+        prepare_texmfvar(slug)
+
+
+def worker_main(book, preamble, passes, page_starts, event_queue):
+    started = time.monotonic()
+    output_dir = BUILD / book["slug"]
+    texmfvar = texmfvar_for(book["slug"])
+    try:
+        master_path = write_worker_master(preamble, book)
+        prepare_build_dirs(book, output_dir)
+        event_queue.put(("started", book["index"], book["title"], len(book["includes"])))
+
+        rc, tail = stream_lualatex(book, master_path, output_dir, texmfvar, event_queue, 1)
+        pdf = output_dir / f"{master_path.stem}.pdf"
+        if rc == 0 and passes > 1 and page_starts is not None:
+            event_queue.put(("pass-done", book["index"], 1, str(pdf.relative_to(ROOT))))
+            start_page = wait_for_page_start(book, page_starts)
+            master_path = write_worker_master(preamble, book, start_page=start_page)
+            for pass_number in range(2, passes + 1):
+                rc, tail = stream_lualatex(book, master_path, output_dir, texmfvar, event_queue, pass_number)
+                if rc != 0:
+                    break
+        elif rc == 0 and passes > 1:
+            for pass_number in range(2, passes + 1):
+                rc, tail = stream_lualatex(book, master_path, output_dir, texmfvar, event_queue, pass_number)
+                if rc != 0:
+                    break
+
+        elapsed = time.monotonic() - started
+        if rc == 0 and pdf.exists():
+            event_queue.put(("done", book["index"], elapsed, str(pdf.relative_to(ROOT))))
+            raise SystemExit(0)
+        else:
+            event_queue.put(("failed", book["index"], rc, tail))
+            raise SystemExit(rc or 1)
+    except Exception as exc:
+        event_queue.put(("failed", book["index"], 99, [repr(exc)]))
+        raise SystemExit(99)
+
+
+def front_main(preamble, front_body, books, passes, page_starts, event_queue):
+    started = time.monotonic()
+    output_dir = BUILD / FRONT_SLUG
+    texmfvar = texmfvar_for(FRONT_SLUG)
+    front = {
+        "index": -1,
+        "title": "Front Matter",
+        "slug": FRONT_SLUG,
+        "includes": [],
+    }
+    try:
+        master_path = write_front_master(preamble, front_body)
+        write_front_toc(books, output_dir)
+        event_queue.put(("front-started", "compiling front matter"))
+        rc, tail = stream_lualatex(front, master_path, output_dir, texmfvar, event_queue, 1)
+        if rc == 0 and passes > 1 and page_starts is not None:
+            event_queue.put(("front-pass-done", 1, str(FRONT_PDF.relative_to(ROOT))))
+            while not page_starts.get("front_toc_ready"):
+                if page_starts.get("failed"):
+                    raise RuntimeError("coordinated second pass cancelled")
+                time.sleep(0.1)
+            for pass_number in range(2, passes + 1):
+                rc, tail = stream_lualatex(front, master_path, output_dir, texmfvar, event_queue, pass_number)
+                if rc != 0:
+                    break
+        elif rc == 0 and passes > 1:
+            for pass_number in range(2, passes + 1):
+                rc, tail = stream_lualatex(front, master_path, output_dir, texmfvar, event_queue, pass_number)
+                if rc != 0:
+                    break
+
+        elapsed = time.monotonic() - started
+        if rc == 0 and FRONT_PDF.exists():
+            event_queue.put(("front-done", elapsed, str(FRONT_PDF.relative_to(ROOT))))
+            raise SystemExit(0)
+        event_queue.put(("front-failed", rc, tail))
+        raise SystemExit(rc or 1)
+    except Exception as exc:
+        event_queue.put(("front-failed", 99, [repr(exc)]))
+        raise SystemExit(99)
+
+
+def launch_workers(books, preamble, passes, page_starts, event_queue):
+    processes = []
+    for book in books:
+        process = mp.Process(target=worker_main, args=(book, preamble, passes, page_starts, event_queue), name=book["slug"])
+        process.start()
+        processes.append(process)
+    return processes
+
+
+def launch_front_worker(preamble, front_body, books, passes, page_starts, event_queue):
+    process = mp.Process(
+        target=front_main,
+        args=(preamble, front_body, books, passes, page_starts, event_queue),
+        name=FRONT_SLUG,
+    )
+    process.start()
+    return process
+
+
+def publish_page_starts_if_ready(books, include_front, page_starts, pass_one_pdfs, front_pass_done):
+    if page_starts is None or page_starts.get("ready"):
+        return
+    if len(pass_one_pdfs) != len(books):
+        return
+    if include_front and not front_pass_done:
+        return
+
+    starts = {}
+    next_page = 1
+    for book in books:
+        pdf = ROOT / pass_one_pdfs[book["index"]]
+        starts[book["index"]] = next_page
+        next_page += pdf_page_count(pdf)
+
+    if include_front:
+        write_front_toc(books, BUILD / FRONT_SLUG, starts)
+        page_starts["front_toc_ready"] = True
+    for index, page in starts.items():
+        page_starts[str(index)] = page
+    page_starts["ready"] = True
+
+
 def warm_tex_cache():
     TEXMFVAR_SEED.mkdir(parents=True, exist_ok=True)
     tool = shutil.which("luaotfload-tool")
@@ -268,136 +386,36 @@ def warm_tex_cache():
         return
     env = os.environ.copy()
     env["TEXMFVAR"] = str(TEXMFVAR_SEED)
-    subprocess.run([tool, "--update"], cwd=ROOT, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-
-def chapter_pdf(chapter):
-    return BUILD / chapter["slug"] / f"{chapter['slug']}.pdf"
-
-
-def run_chapter_job(job, texmfvar, event_queue):
-    _, chapter, preamble, pass_number, start_page = job
-    started = time.monotonic()
-    output_dir = BUILD / chapter["slug"]
-    stem = chapter["slug"]
-    owner = {
-        "kind": "chapter",
-        "book_index": chapter["book_index"],
-        "label": chapter["label"],
-        "slug": chapter["slug"],
-    }
-    master_text = chapter_master_text(preamble, chapter, start_page)
-    fingerprint = chapter_fingerprint(master_text, chapter, pass_number, start_page)
-    if cache_hit(output_dir, stem, fingerprint):
-        event_queue.put(("cached", owner, pass_number, str(chapter_pdf(chapter).relative_to(ROOT))))
-        return 0
-    master_path = write_chapter_master(preamble, chapter, start_page)
-    prepare_build_dir(chapter, output_dir)
-    rc, tail = stream_lualatex(owner, master_path, output_dir, texmfvar, event_queue, pass_number)
-    pdf = chapter_pdf(chapter)
-    if rc == 0 and pdf.exists():
-        cache_store(output_dir, stem, fingerprint)
-        event_queue.put(("done", owner, time.monotonic() - started, str(pdf.relative_to(ROOT))))
-        return 0
-    event_queue.put(("failed", owner, rc, tail))
-    return rc or 1
-
-
-def run_front_job(job, texmfvar, event_queue):
-    _, preamble, front_body, books, pass_number, page_starts = job
-    started = time.monotonic()
-    output_dir = BUILD / FRONT_SLUG
-    owner = {"kind": "front", "book_index": -1, "label": "front matter", "slug": FRONT_SLUG}
-    fingerprint = front_fingerprint(preamble, front_body, books, pass_number, page_starts)
-    if cache_hit(output_dir, FRONT_SLUG, fingerprint):
-        event_queue.put(("front-cached", pass_number, str(FRONT_PDF.relative_to(ROOT))))
-        return 0
-    master_path = write_front_master(preamble, front_body)
-    write_front_toc(books, output_dir, page_starts)
-    rc, tail = stream_lualatex(owner, master_path, output_dir, texmfvar, event_queue, pass_number)
-    if rc == 0 and FRONT_PDF.exists():
-        cache_store(output_dir, FRONT_SLUG, fingerprint)
-        event_queue.put(("front-done", pass_number, time.monotonic() - started, str(FRONT_PDF.relative_to(ROOT))))
-        return 0
-    event_queue.put(("front-failed", rc, tail))
-    return rc or 1
-
-
-def worker_main(worker_number, job_queue, event_queue):
-    texmfvar = prepare_texmfvar(worker_number)
-    failed = False
-    while True:
-        job = job_queue.get()
-        if job is None:
-            break
-        try:
-            if job[0] == "chapter":
-                rc = run_chapter_job(job, texmfvar, event_queue)
-            else:
-                rc = run_front_job(job, texmfvar, event_queue)
-            failed = failed or rc != 0
-        except Exception as exc:
-            failed = True
-            event_queue.put(("worker-failed", worker_number, repr(exc)))
-    raise SystemExit(1 if failed else 0)
-
-
-def launch_pool(job_count, event_queue, jobs):
-    workers = max(1, min(job_count, mp.cpu_count() or 1))
-    job_queue = mp.Queue()
-    processes = []
-    for worker_number in range(workers):
-        process = mp.Process(target=worker_main, args=(worker_number, job_queue, event_queue), name=f"parallel-worker-{worker_number}")
-        process.start()
-        processes.append(process)
-    for job in jobs:
-        job_queue.put(job)
-    for _ in processes:
-        job_queue.put(None)
-    return processes, job_queue
-
-
-def pdf_page_count(pdf):
-    pdfinfo = shutil.which("pdfinfo")
-    if not pdfinfo:
-        raise RuntimeError("pdfinfo is required for the coordinated second pass")
-    result = subprocess.run([pdfinfo, str(pdf)], cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    if result.returncode != 0:
-        raise RuntimeError(result.stderr.strip() or f"pdfinfo failed for {pdf}")
-    match = re.search(r"^Pages:\s+(\d+)\s*$", result.stdout, re.MULTILINE)
-    if not match:
-        raise RuntimeError(f"pdfinfo did not report a page count for {pdf}")
-    return int(match.group(1))
-
-
-def page_starts_for(books, include_front):
-    starts = {}
-    next_page = 1
-    if include_front:
-        next_page += pdf_page_count(FRONT_PDF)
-    for book in books:
-        book_start = next_page
-        for chapter in book["chapters"]:
-            starts[chapter["slug"]] = next_page
-            next_page += pdf_page_count(chapter_pdf(chapter))
-        starts[book["index"]] = book_start
-    return starts
+    subprocess.run(
+        [tool, "--update"],
+        cwd=ROOT,
+        env=env,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
 
 class Dashboard:
     def __init__(self, stdscr, books):
         self.stdscr = stdscr
         self.books = books
-        self.front = {"status": "waiting", "lines": [], "failed": False}
+        self.front = {
+            "status": "waiting",
+            "elapsed": None,
+            "pdf": None,
+            "lines": [],
+            "failed": False,
+        }
         self.state = [
             {
                 "title": book["title"],
-                "total": len(book["chapters"]),
+                "total": len(book["includes"]),
                 "seen": 0,
                 "pass": 0,
                 "status": "waiting",
                 "lines": [],
-                "failed": False,
+                "elapsed": None,
+                "pdf": None,
             }
             for book in books
         ]
@@ -414,53 +432,69 @@ class Dashboard:
         self.red = curses.color_pair(4) | curses.A_BOLD
 
     def add_line(self, index, text):
-        target = self.front if index < 0 else self.state[index]
-        target["lines"].append(text)
-        target["lines"] = target["lines"][-8:]
+        if index < 0:
+            lines = self.front["lines"]
+            lines.append(text)
+            self.front["lines"] = lines[-2:]
+            return
+        lines = self.state[index]["lines"]
+        lines.append(text)
+        self.state[index]["lines"] = lines[-8:]
 
     def handle(self, event):
         kind = event[0]
         if kind.startswith("front-"):
-            if kind == "front-cached":
-                self.front["status"] = f"pass {event[1]} cached"
-                self.add_line(-1, "cached")
-            elif kind == "front-done":
-                self.front["status"] = f"pass {event[1]} done"
-                self.add_line(-1, f"done in {event[2]:.1f}s")
-            elif kind == "front-failed":
-                self.front["status"] = f"failed rc={event[1]}"
-                self.front["failed"] = True
-                for line in event[2][-2:]:
-                    self.add_line(-1, line)
+            self.handle_front(event)
             return
-        if kind == "worker-failed":
-            self.add_line(-1, event[2])
-            self.front["failed"] = True
-            return
-        owner = event[1]
-        if owner["kind"] == "front":
+        index = event[1]
+        if index < 0:
             if kind == "started-pass":
                 self.front["status"] = f"pass {event[2]}"
+            elif kind == "output":
+                self.add_line(index, "pdf page stream closed")
             return
-        state = self.state[owner["book_index"]]
-        if kind == "started-pass":
+        state = self.state[index]
+        if kind == "started":
+            state["status"] = "running"
+        elif kind == "started-pass":
+            if event[2] != state["pass"] or event[2] > 1:
+                state["seen"] = 0
+                state["lines"] = []
             state["pass"] = event[2]
             state["status"] = f"pass {event[2]}"
+        elif kind == "pass-done":
+            state["seen"] = 0
+            state["lines"] = []
+            state["status"] = f"pass {event[2]} done"
         elif kind == "chapter":
-            self.add_line(owner["book_index"], f"{event[3]} compiling")
-        elif kind == "cached":
             state["seen"] = min(state["seen"] + 1, state["total"])
-            self.add_line(owner["book_index"], f"{owner['label']} cached")
+            self.add_line(index, f"{event[3]} compiled")
+        elif kind == "output":
+            self.add_line(index, "pdf page stream closed")
         elif kind == "done":
-            state["seen"] = min(state["seen"] + 1, state["total"])
-            self.add_line(owner["book_index"], f"{owner['label']} done in {event[2]:.1f}s")
+            state["status"] = "done"
+            state["elapsed"] = event[2]
+            state["pdf"] = event[3]
+            self.add_line(index, f"done in {event[2]:.1f}s")
         elif kind == "failed":
-            state["failed"] = True
             state["status"] = f"failed rc={event[2]}"
             for line in event[3][-4:]:
-                self.add_line(owner["book_index"], line)
-        if state["seen"] >= state["total"] and not state["failed"]:
-            state["status"] = "done"
+                self.add_line(index, line)
+
+    def handle_front(self, event):
+        kind = event[0]
+        if kind == "front-started":
+            self.front["status"] = event[1]
+        elif kind == "front-done":
+            self.front["status"] = "front matter done"
+            self.front["elapsed"] = event[1]
+            self.front["pdf"] = event[2]
+            self.add_line(-1, f"done in {event[1]:.1f}s")
+        elif kind == "front-failed":
+            self.front["status"] = f"front matter failed rc={event[1]}"
+            self.front["failed"] = True
+            for line in event[2][-2:]:
+                self.add_line(-1, line)
 
     def draw(self):
         self.stdscr.erase()
@@ -487,9 +521,12 @@ class Dashboard:
         win.erase()
         try:
             win.border()
+            title = " Front Matter "
+            status = self.front["status"]
             line = " | ".join(self.front["lines"])
-            win.addstr(0, 2, " Front Matter "[: max(0, w - 4)], self.blue)
-            win.addstr(1, 2, self.front["status"][: max(0, w - 4)], self.red if self.front["failed"] else self.green)
+            attr = self.red if self.front["failed"] else self.green
+            win.addstr(0, 2, title[: max(0, w - 4)], self.blue)
+            win.addstr(1, 2, status[: max(0, w - 4)], attr)
             if line:
                 start = max(2, w - len(line) - 2)
                 win.addstr(1, start, line[: max(0, w - start - 1)], self.white)
@@ -503,114 +540,254 @@ class Dashboard:
         win.erase()
         try:
             win.border()
-            progress = f"{state['seen']}/{state['total']}"
-            win.addstr(0, 2, f" {state['title'][: max(0, w - 4)]} ", self.blue)
-            win.addstr(1, 2, state["status"][: max(0, w - 4)], self.red if state["failed"] else self.white)
+        except curses.error:
+            return
+        title = state["title"][: max(0, w - 4)]
+        status = state["status"][: max(0, w - 4)]
+        progress = f"{state['seen']}/{state['total']}"
+        try:
+            win.addstr(0, 2, f" {title} ", self.blue)
+            win.addstr(1, 2, status, self.green if state["status"] == "done" else self.white)
             win.addstr(1, max(2, w - len(progress) - 2), progress, self.blue)
             for offset, line in enumerate(state["lines"][-max(0, h - 4) :], start=3):
-                attr = self.green if "done" in line or "cached" in line else self.white
+                attr = self.green if "compiled" in line or line.startswith("done") else self.white
                 win.addstr(offset, 2, line[: max(0, w - 4)], attr)
         except curses.error:
             pass
 
 
-def collect_events(event_queue, processes, expected, dashboard=None):
-    completed = 0
-    failed = False
-    while completed < expected:
-        try:
-            event = event_queue.get(timeout=0.1)
-        except queue.Empty:
-            event = None
-        if event is not None:
-            kind = event[0]
-            if kind in {"done", "cached", "failed"}:
-                completed += 1
-            elif kind in {"front-done", "front-cached", "front-failed"}:
-                completed += 1
-            if kind in {"failed", "front-failed", "worker-failed"}:
-                failed = True
-            if dashboard:
+def run_curses(books, preamble, front_body, include_front, passes):
+    event_queue = mp.Queue()
+    coordinated = passes > 1 and include_front and len(books) == 12
+    manager = mp.Manager() if coordinated else None
+    page_starts = manager.dict() if manager else None
+    front_process = launch_front_worker(preamble, front_body, books, passes, page_starts, event_queue) if include_front else None
+    processes = launch_workers(books, preamble, passes, page_starts, event_queue)
+
+    def main(stdscr):
+        dashboard = Dashboard(stdscr, books)
+        completed = 0
+        expected = len(processes) + (1 if front_process else 0)
+        failed = False
+        pass_one_pdfs = {}
+        front_pass_done = False
+        while completed < expected:
+            try:
+                event = event_queue.get(timeout=0.1)
+            except queue.Empty:
+                event = None
+            if event is not None:
+                if event[0] == "pass-done":
+                    pass_one_pdfs[event[1]] = event[3]
+                    try:
+                        publish_page_starts_if_ready(books, include_front, page_starts, pass_one_pdfs, front_pass_done)
+                    except Exception:
+                        if page_starts is not None:
+                            page_starts["failed"] = True
+                        failed = True
+                elif event[0] == "front-pass-done":
+                    front_pass_done = True
+                    try:
+                        publish_page_starts_if_ready(books, include_front, page_starts, pass_one_pdfs, front_pass_done)
+                    except Exception:
+                        if page_starts is not None:
+                            page_starts["failed"] = True
+                        failed = True
+                if event[0] in {"done", "failed", "front-done", "front-failed"}:
+                    completed += 1
+                if event[0] in {"failed", "front-failed"}:
+                    failed = True
+                    if page_starts is not None:
+                        page_starts["failed"] = True
                 dashboard.handle(event)
-            else:
-                print_event(event)
-        if dashboard:
             dashboard.draw()
-        alive = any(process.is_alive() for process in processes)
-        if not alive and completed < expected:
-            failed = True
-            break
-        if any(process.exitcode not in (0, None) for process in processes):
-            failed = True
-    for process in processes:
-        process.join()
-    return failed or any(process.exitcode not in (0, None) for process in processes)
+        for process in processes:
+            process.join()
+        if front_process:
+            front_process.join()
+        dashboard.draw()
+        status = "Build failed" if failed else "Front matter and all books compiled"
+        height, width = stdscr.getmaxyx()
+        try:
+            stdscr.addstr(height - 1, 0, status[: max(0, width - 1)], dashboard.red if failed else dashboard.green)
+            stdscr.refresh()
+        except curses.error:
+            pass
+        time.sleep(1.5)
+        return failed
+
+    try:
+        failed = curses.wrapper(main)
+    finally:
+        all_processes = processes + ([front_process] if front_process else [])
+        for process in all_processes:
+            if process.is_alive():
+                process.terminate()
+        for process in all_processes:
+            process.join()
+        if manager:
+            manager.shutdown()
+
+    all_processes = processes + ([front_process] if front_process else [])
+    failures = [process.exitcode for process in all_processes if process.exitcode not in (0, None)]
+    if failed:
+        return 1
+    return 1 if failures else 0
 
 
-def print_event(event):
-    kind = event[0]
-    if kind.startswith("front-"):
-        if kind == "front-cached":
-            print(f"{GREEN}Front Matter{END} {WHITE}pass {event[1]} cached{END}", flush=True)
-        elif kind == "front-done":
-            print(f"{GREEN}Front Matter{END} {WHITE}pass {event[1]} done in {event[2]:.1f}s{END}", flush=True)
-        elif kind == "front-failed":
+def run_plain(books, preamble, front_body, include_front, passes):
+    event_queue = mp.Queue()
+    coordinated = passes > 1 and include_front and len(books) == 12
+    manager = mp.Manager() if coordinated else None
+    page_starts = manager.dict() if manager else None
+    front_process = launch_front_worker(preamble, front_body, books, passes, page_starts, event_queue) if include_front else None
+    processes = launch_workers(books, preamble, passes, page_starts, event_queue)
+    completed = 0
+    expected = len(processes) + (1 if front_process else 0)
+    failed = False
+    pass_one_pdfs = {}
+    front_pass_done = False
+    while completed < expected:
+        event = event_queue.get()
+        kind = event[0]
+        if kind == "pass-done":
+            pass_one_pdfs[event[1]] = event[3]
+            try:
+                publish_page_starts_if_ready(books, include_front, page_starts, pass_one_pdfs, front_pass_done)
+            except Exception as exc:
+                if page_starts is not None:
+                    page_starts["failed"] = True
+                failed = True
+                print(f"{GREEN}Coordinator{END} {WHITE}{exc}{END}", flush=True)
+            continue
+        if kind == "front-pass-done":
+            front_pass_done = True
+            try:
+                publish_page_starts_if_ready(books, include_front, page_starts, pass_one_pdfs, front_pass_done)
+            except Exception as exc:
+                if page_starts is not None:
+                    page_starts["failed"] = True
+                failed = True
+                print(f"{GREEN}Coordinator{END} {WHITE}{exc}{END}", flush=True)
+            continue
+        if kind == "front-started":
+            print(f"{GREEN}Front Matter{END} {WHITE}{event[1]}{END}", flush=True)
+            continue
+        if kind == "front-done":
+            completed += 1
+            print(f"{GREEN}Front Matter{END} {WHITE}done in {event[1]:.1f}s{END} {BLUE}{event[2]}{END}", flush=True)
+            continue
+        if kind == "front-failed":
+            completed += 1
+            failed = True
+            if page_starts is not None:
+                page_starts["failed"] = True
             print(f"{GREEN}Front Matter{END} {WHITE}failed rc={event[1]}{END}", flush=True)
             for line in event[2][-6:]:
                 print(f"  {line}", flush=True)
-        return
-    if kind == "worker-failed":
-        print(f"{GREEN}Worker {event[1]}{END} {WHITE}{event[2]}{END}", flush=True)
-        return
-    owner = event[1]
-    if owner["kind"] == "front":
-        return
-    title = owner["slug"].rsplit("-", 1)[0]
-    if kind == "cached":
-        print(f"{GREEN}{title}{END} {WHITE}pass {event[2]} cached{END} {BLUE}{owner['label']}{END}", flush=True)
-    elif kind == "done":
-        print(f"{GREEN}{title}{END} {WHITE}done in {event[2]:.1f}s{END} {BLUE}{owner['label']}{END}", flush=True)
-    elif kind == "failed":
-        print(f"{GREEN}{title}{END} {WHITE}failed rc={event[2]}{END} {BLUE}{owner['label']}{END}", flush=True)
-        for line in event[3][-6:]:
-            print(f"  {line}", flush=True)
-
-
-def run_phase(books, jobs, use_curses):
-    event_queue = mp.Queue()
-    processes, job_queue = launch_pool(len(jobs), event_queue, jobs)
-    if use_curses:
-        def main(stdscr):
-            dashboard = Dashboard(stdscr, books)
-            failed = collect_events(event_queue, processes, len(jobs), dashboard)
-            dashboard.draw()
-            height, width = stdscr.getmaxyx()
-            try:
-                stdscr.addstr(height - 1, 0, ("Build failed" if failed else "Phase complete")[: max(0, width - 1)], dashboard.red if failed else dashboard.green)
-                stdscr.refresh()
-            except curses.error:
-                pass
-            time.sleep(0.8)
-            return failed
-        try:
-            failed = curses.wrapper(main)
-        finally:
-            for process in processes:
-                if process.is_alive():
-                    process.terminate()
-                process.join()
-            job_queue.close()
-            job_queue.join_thread()
-        return 1 if failed else 0
-    failed = collect_events(event_queue, processes, len(jobs))
-    job_queue.close()
-    job_queue.join_thread()
-    return 1 if failed else 0
+            continue
+        index = event[1]
+        if index < 0:
+            continue
+        title = books[index]["title"]
+        if kind == "chapter":
+            print(f"{GREEN}{title}{END} {WHITE}pass {event[2]}{END} {BLUE}{event[3]} compiled{END}", flush=True)
+        elif kind == "done":
+            completed += 1
+            print(f"{GREEN}{title}{END} {WHITE}done in {event[2]:.1f}s{END} {BLUE}{event[3]}{END}", flush=True)
+        elif kind == "failed":
+            completed += 1
+            failed = True
+            if page_starts is not None:
+                page_starts["failed"] = True
+            print(f"{GREEN}{title}{END} {WHITE}failed rc={event[2]}{END}", flush=True)
+            for line in event[3][-6:]:
+                print(f"  {line}", flush=True)
+    for process in processes:
+        process.join()
+    if front_process:
+        front_process.join()
+    if manager:
+        manager.shutdown()
+    if failed:
+        return 1
+    all_processes = processes + ([front_process] if front_process else [])
+    return 1 if any(process.exitcode not in (0, None) for process in all_processes) else 0
 
 
 def clean():
     if BUILD.exists():
         shutil.rmtree(BUILD)
+
+
+def strip_front_book_destinations(pdf):
+    qpdf = shutil.which("qpdf")
+    if not qpdf:
+        print("Warning: qpdf is not installed; front-matter TOC links may not survive pdfunite.", file=sys.stderr)
+        return pdf
+
+    try:
+        result = subprocess.run(
+            [qpdf, "--json", "--json-object=trailer/Root/Names/Dests", str(pdf)],
+            cwd=ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+        data = json.loads(result.stdout)
+        objects = data["qpdf"][1]
+    except Exception as exc:
+        print(f"Warning: could not inspect front-matter destinations: {exc}", file=sys.stderr)
+        return pdf
+
+    changed = False
+    for obj in objects.values():
+        value = obj.get("value")
+        if not isinstance(value, dict) or "/Names" not in value:
+            continue
+        names = value["/Names"]
+        if not isinstance(names, list):
+            continue
+        filtered = []
+        index = 0
+        while index + 1 < len(names):
+            name = names[index]
+            destination = names[index + 1]
+            if isinstance(name, str) and name.startswith("u:book."):
+                changed = True
+            else:
+                filtered.extend([name, destination])
+            index += 2
+        if len(filtered) != len(names):
+            value["/Names"] = filtered
+            keys = filtered[::2]
+            if keys:
+                value["/Limits"] = [keys[0], keys[-1]]
+            else:
+                value.pop("/Limits", None)
+
+    if not changed:
+        return pdf
+
+    FRONT_MERGE_PDF.unlink(missing_ok=True)
+    patch_path = None
+    try:
+        with tempfile.NamedTemporaryFile("w", suffix=".json", dir=BUILD, delete=False) as patch:
+            patch_path = Path(patch.name)
+            json.dump({"version": data["version"], "qpdf": data["qpdf"]}, patch)
+        subprocess.run(
+            [qpdf, str(pdf), f"--update-from-json={patch_path}", str(FRONT_MERGE_PDF)],
+            cwd=ROOT,
+            check=True,
+        )
+        return FRONT_MERGE_PDF
+    except Exception as exc:
+        print(f"Warning: could not strip front-matter book destinations: {exc}", file=sys.stderr)
+        return pdf
+    finally:
+        if patch_path:
+            patch_path.unlink(missing_ok=True)
 
 
 def run_qpdf(args, **kwargs):
@@ -624,7 +801,12 @@ def qpdf_json(pdf, *extra_args):
     qpdf = shutil.which("qpdf")
     if not qpdf:
         raise RuntimeError("qpdf is not installed")
-    result = run_qpdf([qpdf, "--json", *extra_args, str(pdf)], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    result = run_qpdf(
+        [qpdf, "--json", *extra_args, str(pdf)],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
     return json.loads(result.stdout)
 
 
@@ -639,6 +821,7 @@ def extract_destinations(pdf, source_index, page_offset):
     objects = data["qpdf"][1]
     page_indexes = {page["object"]: index for index, page in enumerate(data["pages"])}
     destinations = {}
+
     for obj in objects.values():
         value = obj.get("value")
         if not isinstance(value, dict):
@@ -667,7 +850,11 @@ def extract_destinations(pdf, source_index, page_offset):
             source_page = destination[0]
             if source_page not in page_indexes:
                 continue
-            destinations[name] = {"source_page_index": page_indexes[source_page], "page_offset": page_offset, "tail": destination[1:]}
+            destinations[name] = {
+                "source_page_index": page_indexes[source_page],
+                "page_offset": page_offset,
+                "tail": destination[1:],
+            }
     return destinations, len(data["pages"])
 
 
@@ -676,6 +863,7 @@ def rebuild_merged_destinations(source_pdfs, merged_pdf):
     if not qpdf:
         print("Warning: qpdf is not installed; merged PDF hyperlinks may be incomplete.", file=sys.stderr)
         return
+
     all_destinations = {}
     page_offset = 0
     for source_index, pdf in enumerate(source_pdfs):
@@ -689,28 +877,39 @@ def rebuild_merged_destinations(source_pdfs, merged_pdf):
     NORMALIZED_MERGED_PDF.unlink(missing_ok=True)
     shutil.move(merged_pdf, RAW_MERGED_PDF)
     run_qpdf([qpdf, str(RAW_MERGED_PDF), str(NORMALIZED_MERGED_PDF)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
     merged_pages = [page["object"] for page in qpdf_json(NORMALIZED_MERGED_PDF, "--json-key=pages")["pages"]]
     names = []
     for name in sorted(all_destinations):
         destination = all_destinations[name]
         merged_page_index = destination["page_offset"] + destination["source_page_index"]
-        if merged_page_index < len(merged_pages):
-            names.extend([f"u:{name}", [merged_pages[merged_page_index], *destination["tail"]]])
+        if merged_page_index >= len(merged_pages):
+            continue
+        names.extend(
+            [
+                f"u:{name}",
+                [merged_pages[merged_page_index], *destination["tail"]],
+            ]
+        )
     if not names:
         shutil.move(NORMALIZED_MERGED_PDF, merged_pdf)
         return
 
     dest_tree = qpdf_json(NORMALIZED_MERGED_PDF, "--json-object=trailer/Root/Names/Dests")
+    dest_objects = dest_tree["qpdf"][1]
     target = None
-    for obj in dest_tree["qpdf"][1].values():
+    for obj in dest_objects.values():
         value = obj.get("value")
-        if isinstance(value, dict) and (isinstance(value.get("/Names"), list) or isinstance(value.get("/Kids"), list)):
+        if not isinstance(value, dict):
+            continue
+        if isinstance(value.get("/Names"), list) or isinstance(value.get("/Kids"), list):
             target = value
             break
     if target is None:
         shutil.move(NORMALIZED_MERGED_PDF, merged_pdf)
         print("Warning: merged PDF has no destination name tree to update.", file=sys.stderr)
         return
+
     target.pop("/Kids", None)
     target["/Names"] = names
     target["/Limits"] = [names[0], names[-2]]
@@ -720,110 +919,45 @@ def rebuild_merged_destinations(source_pdfs, merged_pdf):
         with tempfile.NamedTemporaryFile("w", suffix=".json", dir=BUILD, delete=False) as patch:
             patch_path = Path(patch.name)
             json.dump({"version": dest_tree["version"], "qpdf": dest_tree["qpdf"]}, patch)
-        run_qpdf([qpdf, str(NORMALIZED_MERGED_PDF), f"--update-from-json={patch_path}", str(merged_pdf)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        run_qpdf(
+            [qpdf, str(NORMALIZED_MERGED_PDF), f"--update-from-json={patch_path}", str(merged_pdf)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
     finally:
         if patch_path:
             patch_path.unlink(missing_ok=True)
-
-
-def strip_front_book_destinations(pdf):
-    qpdf = shutil.which("qpdf")
-    if not qpdf:
-        print("Warning: qpdf is not installed; front-matter TOC links may not survive pdfunite.", file=sys.stderr)
-        return pdf
-    source_stat = pdf.stat()
-    strip_stamp = BUILD / FRONT_SLUG / f"{FRONT_SLUG}-merge.sha256"
-    strip_fingerprint = fingerprint_for(
-        {
-            "version": FINGERPRINT_VERSION,
-            "kind": "front-merge-strip",
-            "source": str(pdf.relative_to(ROOT)),
-            "size": source_stat.st_size,
-            "mtime": source_stat.st_mtime_ns,
-        }
-    )
-    if FRONT_MERGE_PDF.exists() and strip_stamp.exists() and strip_stamp.read_text().strip() == strip_fingerprint:
-        return FRONT_MERGE_PDF
-    try:
-        result = subprocess.run([qpdf, "--json", "--json-object=trailer/Root/Names/Dests", str(pdf)], cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-        data = json.loads(result.stdout)
-    except Exception as exc:
-        print(f"Warning: could not inspect front-matter destinations: {exc}", file=sys.stderr)
-        return pdf
-    changed = False
-    for obj in data["qpdf"][1].values():
-        value = obj.get("value")
-        if not isinstance(value, dict) or "/Names" not in value:
-            continue
-        names = value["/Names"]
-        if not isinstance(names, list):
-            continue
-        filtered = []
-        for index in range(0, len(names) - 1, 2):
-            if isinstance(names[index], str) and names[index].startswith("u:book."):
-                changed = True
-            else:
-                filtered.extend([names[index], names[index + 1]])
-        if len(filtered) != len(names):
-            value["/Names"] = filtered
-            if filtered:
-                value["/Limits"] = [filtered[0], filtered[-2]]
-            else:
-                value.pop("/Limits", None)
-    if not changed:
-        return pdf
-    FRONT_MERGE_PDF.unlink(missing_ok=True)
-    patch_path = None
-    try:
-        with tempfile.NamedTemporaryFile("w", suffix=".json", dir=BUILD, delete=False) as patch:
-            patch_path = Path(patch.name)
-            json.dump({"version": data["version"], "qpdf": data["qpdf"]}, patch)
-        subprocess.run([qpdf, str(pdf), f"--update-from-json={patch_path}", str(FRONT_MERGE_PDF)], cwd=ROOT, check=True)
-        strip_stamp.write_text(strip_fingerprint + "\n")
-        return FRONT_MERGE_PDF
-    except Exception as exc:
-        print(f"Warning: could not strip front-matter book destinations: {exc}", file=sys.stderr)
-        return pdf
-    finally:
-        if patch_path:
-            patch_path.unlink(missing_ok=True)
-
-
-def merge_fingerprint(source_pdfs):
-    payload = []
-    for pdf in source_pdfs:
-        stat = pdf.stat()
-        payload.append([str(pdf.relative_to(ROOT)), stat.st_size, stat.st_mtime_ns])
-    return fingerprint_for({"version": FINGERPRINT_VERSION, "kind": "merge", "sources": payload})
 
 
 def merge_pdfs(books, include_front):
-    source_pdfs = []
+    pdfs = []
     if include_front:
-        source_pdfs.append(strip_front_book_destinations(FRONT_PDF))
-    source_pdfs.extend(chapter_pdf(chapter) for chapter in all_chapters(books))
-    missing = [pdf for pdf in source_pdfs if not pdf.exists()]
+        pdfs.append(strip_front_book_destinations(FRONT_PDF))
+    pdfs.extend(BUILD / book["slug"] / f"{book['slug']}.pdf" for book in books)
+    missing = [pdf for pdf in pdfs if not pdf.exists()]
     if missing:
         print("Cannot merge; missing PDFs:", file=sys.stderr)
         for pdf in missing:
             print(f"  {pdf.relative_to(ROOT)}", file=sys.stderr)
         return 1
-    fingerprint = merge_fingerprint(source_pdfs)
-    stamp = BUILD / "master.sha256"
-    if MERGED_PDF.exists() and stamp.exists() and stamp.read_text().strip() == fingerprint:
-        return 2
+
+    if len(pdfs) == 1:
+        shutil.copyfile(pdfs[0], MERGED_PDF)
+        return 0
+
     pdfunite = shutil.which("pdfunite")
     if not pdfunite:
         print("Cannot merge; pdfunite is not installed.", file=sys.stderr)
         return 1
+
     MERGED_PDF.unlink(missing_ok=True)
-    result = subprocess.run([pdfunite, *map(str, source_pdfs), str(MERGED_PDF)], cwd=ROOT)
+    cmd = [pdfunite, *map(str, pdfs), str(MERGED_PDF)]
+    result = subprocess.run(cmd, cwd=ROOT)
     if result.returncode == 0:
         try:
-            rebuild_merged_destinations(source_pdfs, MERGED_PDF)
+            rebuild_merged_destinations(pdfs, MERGED_PDF)
         except Exception as exc:
             print(f"Warning: could not rebuild merged PDF destinations: {exc}", file=sys.stderr)
-        stamp.write_text(fingerprint + "\n")
     return result.returncode
 
 
@@ -835,24 +969,19 @@ def open_pdf(pdf):
         print(f"Built {pdf.relative_to(ROOT)}")
 
 
-def build_jobs(preamble, front_body, books, include_front, pass_number, page_starts=None):
-    jobs = []
-    if include_front:
-        jobs.append(("front", preamble, front_body, books, pass_number, page_starts))
-    for chapter in all_chapters(books):
-        start_page = page_starts.get(chapter["slug"]) if page_starts else None
-        jobs.append(("chapter", chapter, preamble, pass_number, start_page))
-    return jobs
-
-
 def main():
-    parser = argparse.ArgumentParser(description="Build active We The Nameless chapters as independent parallel PDFs.")
+    parser = argparse.ArgumentParser(description="Build all twelve We The Nameless books in parallel.")
     parser.add_argument("--plain", action="store_true", help="use line-oriented ANSI output instead of curses")
-    parser.add_argument("--list-books", action="store_true", help="print detected active book chunks and exit")
+    parser.add_argument("--list-books", action="store_true", help="print the detected book chunks and exit")
     parser.add_argument("--clean", action="store_true", help="remove build/parallel before building")
-    parser.add_argument("--only", metavar="TEXT", help="debug one matching book instead of all active books")
+    parser.add_argument("--only", metavar="TEXT", help="debug one matching book instead of all twelve")
     parser.add_argument("--front-only", action="store_true", help="debug only the title page and front matter")
-    parser.add_argument("--passes", type=int, default=DEFAULT_PASSES, help=f"run this many LuaLaTeX passes per chunk; default: {DEFAULT_PASSES}")
+    parser.add_argument(
+        "--passes",
+        type=int,
+        default=DEFAULT_PASSES,
+        help=f"run this many LuaLaTeX passes per chunk; default: {DEFAULT_PASSES}",
+    )
     args = parser.parse_args()
     if args.passes < 1:
         parser.error("--passes must be at least 1")
@@ -860,49 +989,44 @@ def main():
     preamble, front_body, books = read_document_parts()
     if args.list_books:
         for book in books:
-            print(f"{book['index'] + 1:02d} {book['title']}: {len(book['chapters'])} active chapters")
+            print(f"{book['index'] + 1:02d} {book['title']}: {len(book['includes'])} chapters")
         return 0
+    if args.front_only:
+        if args.clean:
+            clean()
+        BUILD.mkdir(parents=True, exist_ok=True)
+        warm_tex_cache()
+        prepare_worker_tex_caches([], True)
+        event_queue = mp.Queue()
+        front_main(preamble, front_body, books, args.passes, None, event_queue)
     if args.only:
         matches = [book for book in books if args.only.lower() in book["title"].lower() or args.only in book["slug"]]
         if len(matches) != 1:
             print(f"--only must match exactly one book; matched {len(matches)}", file=sys.stderr)
             return 2
         books = matches
-        books = [{**book, "index": 0, "chapters": [{**chapter, "book_index": 0} for chapter in book["chapters"]]}]
+    books = [{**book, "index": index} for index, book in enumerate(books)]
+    full_build = not args.only and len(books) == 12
+    include_front = full_build
 
-    full_build = not args.only and not args.front_only
-    include_front = full_build or args.front_only
     if args.clean:
         clean()
     BUILD.mkdir(parents=True, exist_ok=True)
     warm_tex_cache()
-    use_curses = not args.plain and sys.stdout.isatty() and os.environ.get("TERM") not in (None, "", "dumb")
+    prepare_worker_tex_caches(books, include_front)
 
-    if args.front_only:
-        rc = run_phase(books, [("front", preamble, front_body, books, 1, None)], use_curses)
-        return rc
-
-    rc = run_phase(books, build_jobs(preamble, front_body, books, include_front, 1), use_curses)
+    if args.plain or not sys.stdout.isatty() or os.environ.get("TERM") in (None, "", "dumb"):
+        rc = run_plain(books, preamble, front_body, include_front, args.passes)
+    else:
+        rc = run_curses(books, preamble, front_body, include_front, args.passes)
     if rc != 0:
         return rc
-    if args.passes > 1:
-        try:
-            starts = page_starts_for(books, include_front)
-        except Exception as exc:
-            print(f"Cannot coordinate second pass: {exc}", file=sys.stderr)
-            return 1
-        for pass_number in range(2, args.passes + 1):
-            rc = run_phase(books, build_jobs(preamble, front_body, books, include_front, pass_number, starts), use_curses)
-            if rc != 0:
-                return rc
     if not full_build:
         return 0
     rc = merge_pdfs(books, include_front)
-    if rc in (0, 2):
-        status = "merge cached" if rc == 2 else "merged"
-        print(f"{GREEN}Done{END} {WHITE}{status}{END} {BLUE}{MERGED_PDF.relative_to(ROOT)}{END}", flush=True)
+    if rc == 0:
+        print(f"{GREEN}Done{END} {WHITE}merged{END} {BLUE}{MERGED_PDF.relative_to(ROOT)}{END}", flush=True)
         open_pdf(MERGED_PDF)
-        return 0
     return rc
 
 

@@ -10,7 +10,7 @@ TEX_SOURCES := $(shell find . -path './$(BUILD)' -prune -o -name '*.tex' -print)
 
 export TEXMFVAR := $(CACHE)
 
-.PHONY: all pdf ci view open clean distclean debug progress parallel parallel2 build-prepare clean-stray-aux draft c x comment halfcomment uncomment uncomment-one uncomment-two again
+.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare clean-stray-aux draft c x comment halfcomment uncomment again
 
 all: $(PDF) open
 
@@ -62,12 +62,6 @@ halfcomment:
 uncomment:
 	bin/comments --uncomment $(MAIN).tex
 
-uncomment-one:
-	bin/comments --one $(MAIN).tex
-
-uncomment-two:
-	bin/comments --two $(MAIN).tex
-
 view open: $(PDF)
 	@if command -v xdg-open >/dev/null 2>&1; then \
 		xdg-open "$(PDF)" >/dev/null 2>&1 & \
@@ -111,6 +105,3 @@ progress:
 
 parallel:
 	bin/parallel-build
-
-parallel2:
-	bin/parallel-build --passes=2
