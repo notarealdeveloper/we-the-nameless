@@ -47,6 +47,14 @@ KEEP_COMMENT_BOOKS = {
 }
 
 
+def include_group(path):
+    parent, name = path.rsplit("/", 1)
+    m = re.match(r"^(\d+)-\d+$", name)
+    if m:
+        return f"{parent}/{m.group(1)}"
+    return parent
+
+
 def edit_line(line, keep, keep_books):
     m = BOOK_COMMAND.match(line.rstrip("\n"))
     if m:
@@ -72,6 +80,8 @@ def main():
     g.add_argument("-c", "--comment", action="store_true")
     g.add_argument("--halfcomment", action="store_true")
     g.add_argument("-u", "--uncomment", action="store_true")
+    g.add_argument("--one", action="store_true")
+    g.add_argument("--two", action="store_true")
     p.add_argument("files", nargs="+")
     args = p.parse_args()
     keep = None
@@ -81,6 +91,21 @@ def main():
         keep_books = KEEP_COMMENT_BOOKS
     elif args.halfcomment:
         keep = KEEP_HALFCOMMENT
+    elif args.one or args.two:
+        selected = {}
+        for name in args.files:
+            path = Path(name)
+            for line in path.read_text().splitlines():
+                match = INCLUDE.match(line)
+                if not match:
+                    continue
+                include = match.group(3)
+                selected.setdefault(include_group(include), []).append(include)
+        keep = set()
+        for includes in selected.values():
+            keep.add(includes[0])
+            if args.two:
+                keep.add(includes[-1])
 
     for name in args.files:
         path = Path(name)
