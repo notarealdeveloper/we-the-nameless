@@ -1730,21 +1730,28 @@
 \ExplSyntaxOff
 
 \NewDocumentCommand{\DefBlock}{ m m m +m }{%
-  \par%
+  \par
   \smallskip
   \begingroup
   \leftskip=\DefIndent
   \rightskip=0pt
   \parindent=0pt
+
   \EnglishFont
   \addfontfeatures{Ligatures=TeX}%
   \color{#1}%
+  \normalfont
+
   \noindent
-  \textbf{#2}%
-  \if\relax\detokenize{#3}\relax\else\space(#3)\fi
-  .%
-  %\par\nobreak
-  \newline\nobreak
+  {\bfseries #2}%
+  \if\relax\detokenize{#3}\relax
+  \else
+    \space{\mdseries(#3)}%
+  \fi
+  .\par\nobreak
+
+  \mdseries
+  \upshape
   #4%
   \par
   \endgroup
