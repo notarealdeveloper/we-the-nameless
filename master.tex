@@ -1736,12 +1736,13 @@
   \leftskip=\DefIndent
   \rightskip=0pt
   \parindent=0pt
-
+  \hangindent=0pt
+  \hangafter=1
+  \parshape=0
   \EnglishFont
   \addfontfeatures{Ligatures=TeX}%
   \color{#1}%
   \normalfont
-
   \noindent
   {\bfseries #2}%
   \if\relax\detokenize{#3}\relax
@@ -1749,7 +1750,6 @@
     \space{\mdseries(#3)}%
   \fi
   .\par\nobreak
-
   \mdseries
   \upshape
   #4%
