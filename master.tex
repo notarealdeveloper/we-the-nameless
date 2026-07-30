@@ -728,9 +728,9 @@
     \colorlet{Yellowcolor}{Ecolor}
     \colorlet{Graycolor}{ObsGray!70!fg}
     \colorlet{DefColor}{ObsBlue!65!fg}
-    \colorlet{HLAbgcolor}{Kcolor!10!bg}
-    \colorlet{HLBbgcolor}{Redcolor!16!bg}
-    \colorlet{HLCbgcolor}{Bluecolor!22!bg}
+    \colorlet{HLAbgcolor}{Kcolor!18!bg}
+    \colorlet{HLBbgcolor}{Redcolor!28!bg}
+    \colorlet{HLCbgcolor}{Bluecolor!34!bg}
     \pagecolor{bg}
     \AtBeginDocument{\color{TextColor}}
 \fi
@@ -1987,7 +1987,7 @@
 
     \LegendRow{{\Record Grey}}{%
         {\Record
-            Records. Begat lists, genealogies, and misc documents (Gen 5, Gen 14.)\par
+            Records. Begat lists, genealogies, and miscellaneous documents (Gen. 5, Gen. 14.)\par
         }
     }
 
@@ -2006,8 +2006,8 @@
         We the people. We write regular.\\
         We're not always bold. Bold is for the bold.\\
         We're not always italic. Italic is for the italians.\\
-        %We're not always highlighted. Highlighters are for the high with lighters.\\
-        We're not always mono. Mono is for---\\
+        We're not always highlighted. That's for the high \& lighted.\\
+        We're not always mono. Mono is for the m---\\
         W/e, you get it. We now yield to the others.
     }
 
@@ -2029,7 +2029,7 @@
             prose narratives and history. Examples of such songs, from the Levites in the South,
             and the Israelites in the North, appear to be the oldest strata of the text, and among the
             only sources that pre-date J.\\
-            (\Mushite{Exodus 15}, \cG{Judges 5}, \Mushite{Numbers 21, 23-24}, \cG{Genesis 49}, \DeuterA{Deut 33}.)
+            (\Mushite{Exod. 15}, \cG{Judg. 5}, \Mushite{Num. 21, 23-24}, \cG{Gen. 49}, \DeuterA{Deut. 33}.)
         }
     }
 
@@ -2066,8 +2066,7 @@
 
     \footnotetext[\SourceLegendFootnoteA]{Named J, or the Yahwist, because of some Germans.}
     \footnotetext[\SourceLegendFootnoteB]{Anywhere on earth, as far as we know.}
-    \footnotetext[\SourceLegendFootnoteC]{Human nature as in timeless themes like sex, death, family,
-    	deception, suffering, forgiveness, and humor.}
+    \footnotetext[\SourceLegendFootnoteC]{Human nature as in timeless themes like sex, death, family, and humor.}
     \footnotetext[\SourceLegendFootnoteD]{According to {\MushiteStyle these guys},
     	though {\AaronidStyle these guys} disagree.}
     \footnotetext[\SourceLegendFootnoteE]{{\Yahwist S}he says thanks\ldots\ And welcome to We.}
@@ -2630,8 +2629,10 @@
 \def\hebrewsize{\normalsize}
 
 \newcount\VerseLineBreakHorizontalPenalty
+\newcount\VerseLineBreakMobileHorizontalPenalty
 \newcount\VerseLineBreakVerticalPenalty
 \VerseLineBreakHorizontalPenalty=-700
+\VerseLineBreakMobileHorizontalPenalty=3000
 \VerseLineBreakVerticalPenalty=-50
 
 % TeX reads a control word through the next nonletter, so use this as
@@ -2642,7 +2643,11 @@
         \ifConfigVerseLayoutVertical
             \penalty\VerseLineBreakVerticalPenalty
         \else
-            \penalty\VerseLineBreakHorizontalPenalty
+            \ifConfigOutputModeMobile
+                \penalty\VerseLineBreakMobileHorizontalPenalty
+            \else
+                \penalty\VerseLineBreakHorizontalPenalty
+            \fi
         \fi
         \hskip 0.333em plus 0.167em minus 0.111em\relax
     \else
