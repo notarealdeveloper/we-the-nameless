@@ -529,7 +529,7 @@
 \NewDocumentCommand{\recursivefootnote}{ +m }{%
     \footnotemark
     \begingroup
-        \count@=\value{footnote}%
+        \count@=\csname c@\@mpfn\endcsname%
         \xdef\RecursiveFootnoteAppend{%
             \noexpand\g@addto@macro\noexpand\RecursiveFootnoteQueue{%
                 \noexpand\footnotetext[\the\count@]{\unexpanded{#1}}%
