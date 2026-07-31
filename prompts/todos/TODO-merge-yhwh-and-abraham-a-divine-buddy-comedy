@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Read ./YHWH-and-Abraham-a-divine-buddy-comedy.md and incorporate it into 01-genesis/apocrypha.tex by translating it into latex. Remove the 2 lines before (ahem), and call the chapter "Genesis 12 Apocryphon: A YHWH and Abraham"
+EOF
