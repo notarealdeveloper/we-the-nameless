@@ -646,6 +646,7 @@
 \definecolor{Kcolor}{RGB}{0,0,0}
 \colorlet{Xcolor}{Kcolor!92!white}
 \definecolor{Redcolor}{RGB}{130,0,0}
+\definecolor{ApocryphonYHWHDialogueColor}{RGB}{90,0,0}
 \definecolor{Bluecolor}{RGB}{0,70,170}
 \definecolor{Greencolor}{RGB}{0,120,0}
 \definecolor{Yellowcolor}{RGB}{185,145,0}
@@ -703,6 +704,7 @@
     \colorlet{Dtr2color}{Ecolor!38!ObsOrange!70!bg}
     \colorlet{Jeremiahcolor}{Ecolor!18!ObsOrange!52!bg}
     \colorlet{Ezekielcolor}{Pcolor!74!fg}
+    \definecolor{ApocryphonYHWHDialogueColor}{RGB}{150,22,22}
     \colorlet{Dtncolor}{Dtr1color}
     \definecolor{Dtr1bgcolor}{HTML}{5a4d30}
     \definecolor{Dtr2bgcolor}{HTML}{5f4534}
@@ -2614,17 +2616,18 @@
 \newcommand{\Apocrypha}[1]{%
     \clearpage
     \def\CurrentBook{#1 Apocrypha}%
+    \def\CurrentApocryphaHeader{#1 Apocryphon}%
     \def\CurrentTitleBook{\CurrentBook}%
     \phantomsection
     \hypertarget{book.\CurrentBook}{}%
     \addcontentsline{toc}{chapter}{\CurrentBook}%
-    \markboth{\CurrentBook}{\CurrentBook}%
+    \markboth{\CurrentApocryphaHeader}{\CurrentApocryphaHeader}%
     \begingroup
     \centering
     \vspace*{1.6em}%
     {\DeadSeaScrollsIsaiahFont\fontsize{24}{28}\selectfont\color{RuleColor}\paleolower\par}%
     \vspace{0.8em}%
-    {\EnglishProtoFont\fontsize{34}{38}\selectfont #1\par}%
+    {\textdir TLT\EnglishProtoFont\fontsize{34}{38}\selectfont #1\par}%
     \vspace{0.25em}%
     {\EnglishFont\Large\scshape Apocrypha\par}%
     \vspace{0.75em}%
@@ -2638,7 +2641,7 @@
 \newcommand{\Apocryphon}[1]{%
     \hypertarget{chapter.\CurrentBook.#1}{}%
     \def\CurrentChapter{#1}%
-    \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
+    \markboth{\CurrentApocryphaHeader}{\CurrentApocryphaHeader}%
     \Needspace{8\baselineskip}%
     \par
     \vspace{1.6em}%
@@ -2646,7 +2649,10 @@
     \centering
     \makebox[\linewidth]{\color{RuleColor}\rule{0.38\linewidth}{0.4pt}}%
     \vspace{0.55em}%
-    {\EnglishProtoFont\LARGE #1\par}%
+    \noindent\begin{minipage}{0.86\linewidth}
+        \centering
+        \textdir TLT\EnglishProtoFont\LARGE #1\par
+    \end{minipage}\par
     \vspace{0.35em}%
     {\DeadSeaScrollsIsaiahFont\large\color{RuleColor}\paleoijklower\par}%
     \vspace{0.55em}%
@@ -2655,6 +2661,9 @@
     \vspace{1.0em}%
     \endgroup
 }
+
+\newcommand{\ApocryphonMosesDialogue}[1]{{\MushiteStyle\mdseries #1}}
+\newcommand{\ApocryphonYHWHDialogue}[1]{{\color{ApocryphonYHWHDialogueColor}#1}}
 
 \newcommand{\ApocryphonVerse}[4]{%
     \par
@@ -2984,6 +2993,8 @@
 \makeatother
 
 \defineword{\God}{God}
+
+\def\cum{c\redacted{um}\eR{hildren}}
 
 % Rename God to dave dynamically throughout arbitrary
 % subsections of the document, redefining at any point.
