@@ -2504,6 +2504,7 @@
 
 \makeatletter
 \newcount\ChapterLinkIndex
+\newcount\ChapterLinkColumnIndex
 \newcommand{\DeclareChapterLinkRange}[2]{%
     \expandafter\def\csname ChapterLinkRange@#1\endcsname{#2}%
 }
@@ -2512,6 +2513,9 @@
 }
 \newcommand{\DeclareBookChapterLinkList}[2]{%
     \expandafter\def\csname BookChapterLinkList@#1\endcsname{#2}%
+}
+\newcommand{\DeclareBookExtraLinkList}[2]{%
+    \expandafter\def\csname BookExtraLinkList@#1\endcsname{#2}%
 }
 \newcommand{\ChapterLinkText}[1]{%
     \ifConfigOutputModeMobile
@@ -2523,21 +2527,31 @@
 \newcommand{\ChapterLink}[1]{%
     \hyperlink{chapter.\CurrentBook.#1}{\ChapterLinkText{#1}}%
 }
-\newcommand{\ChapterLinkSeparator}{\quad}
+\newcommand{\ChapterLinkCell}[1]{%
+    \hyperlink{chapter.\CurrentBook.#1}{\makebox[0.19\linewidth][c]{\ChapterLinkText{\strut #1}}}%
+}
 \newcommand{\ChapterLinkRange}[1]{%
     \ChapterLinkIndex=1
+    \ChapterLinkColumnIndex=1
     \loop
-        \ChapterLink{\the\ChapterLinkIndex}%
+        \ChapterLinkCell{\the\ChapterLinkIndex}%
+        \ifnum\ChapterLinkIndex<#1\relax
+            \ifnum\ChapterLinkColumnIndex=5
+                \par\nobreak\vspace{0.55em}%
+                \ChapterLinkColumnIndex=1
+            \else
+                \advance\ChapterLinkColumnIndex by 1
+            \fi
+        \fi
         \advance\ChapterLinkIndex by 1
         \ifnum\ChapterLinkIndex<\numexpr#1+1\relax
-            \ChapterLinkSeparator
     \repeat
 }
 \newcommand{\ChapterLinkArray}{%
-    \par\nobreak\smallskip
+    \par\nobreak\medskip
     \begingroup
     \centering
-    \footnotesize
+    \large
     \@ifundefined{ChapterLinkList@\CurrentBook}{%
         \@ifundefined{ChapterLinkRange@\CurrentBook}{}{%
             \ChapterLinkRange{\csname ChapterLinkRange@\CurrentBook\endcsname}%
@@ -2545,7 +2559,7 @@
     }{%
         \csname ChapterLinkList@\CurrentBook\endcsname
     }%
-    \par\nobreak\smallskip
+    \par\nobreak\medskip
     \endgroup
 }
 \newcommand{\ChapterLinksForBook}[1]{%
@@ -2555,8 +2569,8 @@
     \endgroup
 }
 \newcommand{\BookPartChapterLinks}[1]{%
-    \par\nobreak\smallskip
-    {\centering\footnotesize\textsc{#1}\par\nobreak\smallskip}%
+    \par\nobreak\medskip
+    {\centering\large\textsc{#1}\par\nobreak\smallskip}%
     \ChapterLinksForBook{#1}%
 }
 \newcommand{\BookChapterLinkArray}[1]{%
@@ -2564,6 +2578,28 @@
         \ChapterLinksForBook{#1}%
     }{%
         \csname BookChapterLinkList@#1\endcsname
+    }%
+    \BookExtraLinkArray{#1}%
+}
+\newcommand{\BookExtraLinkText}[1]{%
+    \ifConfigOutputModeMobile
+        {\color{MobileLinkColor}\underLine{#1}}%
+    \else
+        {\color{TextColor}#1}%
+    \fi
+}
+\newcommand{\BookLink}[2]{%
+    \hyperlink{book.#1}{\makebox[0.95\linewidth][c]{\BookExtraLinkText{\strut #2}}}%
+}
+\newcommand{\BookExtraLinkArray}[1]{%
+    \@ifundefined{BookExtraLinkList@#1}{}{%
+        \par\nobreak\medskip
+        \begingroup
+        \centering
+        \large
+        \csname BookExtraLinkList@#1\endcsname
+        \par\nobreak\medskip
+        \endgroup
     }%
 }
 \DeclareChapterLinkRange{Genesis}{50}
@@ -2581,6 +2617,9 @@
 \DeclareChapterLinkRange{Nehemiah}{13}
 \DeclareChapterLinkRange{On the Lamb}{1}
 \DeclareChapterLinkRange{Esther}{10}
+\DeclareBookExtraLinkList{Genesis}{%
+    \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%
+}
 \DeclareBookChapterLinkList{Samuel}{%
     \BookPartChapterLinks{I Samuel}%
     \BookPartChapterLinks{II Samuel}%
@@ -2644,7 +2683,6 @@
     \def\CurrentTitleBook{\CurrentBook}%
     \phantomsection
     \hypertarget{book.\CurrentBook}{}%
-    \addcontentsline{toc}{chapter}{\CurrentBook}%
     \markboth{\CurrentApocryphaHeader}{\CurrentApocryphaHeader}%
     \begingroup
     \centering
