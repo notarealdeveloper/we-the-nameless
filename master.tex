@@ -664,6 +664,7 @@
 \colorlet{RuleColor}{TextColor}
 \newcommand{\Eweight}{\bfseries}
 \newcommand{\Pweight}{\bfseries}
+\newcommand{\TitlePageLogoImage}{img/ld-book-light.png}
 
 \ifx\ConfigTheme\ConfigThemeDark
     % Everforest dark, tuned for PDF instead of copied from screen CSS.
@@ -736,6 +737,7 @@
     \colorlet{HLAbgcolor}{Kcolor!18!bg}
     \colorlet{HLBbgcolor}{Redcolor!28!bg}
     \colorlet{HLCbgcolor}{Bluecolor!34!bg}
+    \renewcommand{\TitlePageLogoImage}{img/ld-book-dark.png}
     \pagecolor{bg}
     \AtBeginDocument{\color{TextColor}}
 \fi
@@ -2311,6 +2313,8 @@
     \vspace*{0.2\textheight}
     {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
     \vspace*{\fill}
+    \includegraphics[width=0.45in]{\TitlePageLogoImage}\par
+    \vspace*{0.35in}
     \newpage
     }
     \restoregeometry
