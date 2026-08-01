@@ -1,11 +1,5 @@
+## YHWH and Abraham
 
-Please open your prayer books to today's lesson.
-
----
-
-(ahem)
-
----
 
 N-- no it doesn--- look at me Abraham. ABRAHAM. Look at me. It doe-- (burp) doesn't matter what El thinks Abraham, loo--- look at me, it's doesn't matter what he thinks, I'm Yahweh babe, I'm the o---(falls asleep for two seconds mid sentence)nly god im the only one ok, th-- the only one you need to worry about ok? it doesn't matter what El thinks, thi--- y'know what fuck it, I'm El. Tha--- That's right El Shaddai. That's my other name Abraham, that... that's me, that was always me. Wh-- what we talking about before...
 
