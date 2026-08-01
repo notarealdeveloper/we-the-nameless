@@ -2302,6 +2302,15 @@
 \section{nav: title}
 \fi
 
+\newcommand{\WeLDLogoAtPageBottom}{%
+    \vspace*{\fill}
+    {%
+    \centering
+    \includegraphics[width=1.00in]{\TitlePageLogoImage}\par
+    }%
+    \vspace*{1.2in}
+}
+
 \newcommand{\wetitlepage}{%
     \clearpage
     \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
@@ -2312,13 +2321,22 @@
     {\fontsize{100}{120}\fontfamily{lmr}\selectfont\textsc{We}\par}
     \vspace*{0.2\textheight}
     {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
-    \vspace*{\fill}
-    \includegraphics[width=1.00in]{\TitlePageLogoImage}\par
-    \vspace*{1.2in}
+    \WeLDLogoAtPageBottom
     \newpage
     }
     \restoregeometry
     \pagestyle{fancy}
+}
+
+\newcommand{\WeContentsPage}{%
+    \clearpage
+    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \phantomsection
+    \hypertarget{tableofcontents}{}%
+    \tableofcontents
+    \WeLDLogoAtPageBottom
+    \newpage
+    \restoregeometry
 }
 
 \newcommand{\BookCoverPage}[2]{%
@@ -3084,10 +3102,7 @@
 \clearpage
 \AlphabetHistoryPage
 
-\clearpage
-\phantomsection
-\hypertarget{tableofcontents}{}%
-\tableofcontents
+\WeContentsPage
 
 \clearpage
 \SourceLegendPage
