@@ -727,7 +727,7 @@ def build_title_logo_override(target):
     elif target.name == "R":
         body = r"{\fontsize{32}{38}\fontfamily{lmr}\selectfont\textsc{Torah}\par}"
     else:
-        body = rf"{{\fontsize{{42}}{{50}}\fontfamily{{lmr}}\selectfont{target.title_logo}\par}}"
+        body = rf"{{\fontsize{{42}}{{50}}\fontfamily{{lmr}}\selectfont {target.title_logo}\par}}"
     return "\n".join(
         [
             r"\renewcommand{\WeTitlePageBottomMark}{%",
