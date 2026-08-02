@@ -1,0 +1,271 @@
+
+{
+  "source": "Dtr",
+  "description": "Approximate source map of passages dominated by the characteristic prose of the Deuteronomistic editor. Confidence is heuristic rather than absolute.",
+  "books": {
+    "Deuteronomy": [
+      {
+        "range": "31:1-29",
+        "confidence": 3,
+        "type": "transition",
+        "notes": "Moses commissions Joshua."
+      },
+      {
+        "range": "32:44-52",
+        "confidence": 3,
+        "type": "transition",
+        "notes": "Editorial bridge."
+      },
+      {
+        "range": "34",
+        "confidence": 3,
+        "type": "epilogue",
+        "notes": "Death of Moses."
+      }
+    ],
+
+    "Joshua": [
+      {
+        "range": "1",
+        "confidence": 3,
+        "type": "introduction"
+      },
+      {
+        "range": "7:10-15",
+        "confidence": 2,
+        "type": "editorial"
+      },
+      {
+        "range": "8:30-35",
+        "confidence": 3,
+        "type": "law_ceremony"
+      },
+      {
+        "range": "11:16-23",
+        "confidence": 3,
+        "type": "summary"
+      },
+      {
+        "range": "12",
+        "confidence": 2,
+        "type": "summary"
+      },
+      {
+        "range": "13:1-7",
+        "confidence": 2,
+        "type": "transition"
+      },
+      {
+        "range": "21:43-45",
+        "confidence": 3,
+        "type": "summary"
+      },
+      {
+        "range": "22",
+        "confidence": 3,
+        "type": "editorial_narrative"
+      },
+      {
+        "range": "23",
+        "confidence": 3,
+        "type": "farewell_speech"
+      },
+      {
+        "range": "24:1-28",
+        "confidence": 3,
+        "type": "covenant_renewal"
+      },
+      {
+        "range": "24:29-33",
+        "confidence": 2,
+        "type": "epilogue"
+      }
+    ],
+
+    "Judges": [
+      {
+        "range": "1:1-2:5",
+        "confidence": 2,
+        "type": "introduction"
+      },
+      {
+        "range": "2:6-3:6",
+        "confidence": 3,
+        "type": "programmatic_theology"
+      },
+      {
+        "range": "judge_introductions_and_conclusions",
+        "confidence": 3,
+        "type": "editorial_formula",
+        "notes": "Repeated 'Israel did evil...' framework."
+      },
+      {
+        "range": "10:6-16",
+        "confidence": 3,
+        "type": "editorial_sermon"
+      },
+      {
+        "range": "17:6",
+        "confidence": 3,
+        "type": "editorial_refrain"
+      },
+      {
+        "range": "18:1",
+        "confidence": 3,
+        "type": "editorial_refrain"
+      },
+      {
+        "range": "19:1",
+        "confidence": 3,
+        "type": "editorial_refrain"
+      },
+      {
+        "range": "21:25",
+        "confidence": 3,
+        "type": "editorial_refrain"
+      }
+    ],
+
+    "1 Samuel": [
+      {
+        "range": "7:3-17",
+        "confidence": 2,
+        "type": "reform_narrative"
+      },
+      {
+        "range": "8",
+        "confidence": 3,
+        "type": "anti_monarchy_sermon"
+      },
+      {
+        "range": "10:17-27",
+        "confidence": 3,
+        "type": "assembly"
+      },
+      {
+        "range": "12",
+        "confidence": 3,
+        "type": "farewell_speech"
+      },
+      {
+        "range": "evaluation_notices",
+        "confidence": 2,
+        "type": "editorial_formula"
+      }
+    ],
+
+    "2 Samuel": [
+      {
+        "range": "7:1-17",
+        "confidence": 2,
+        "type": "oracle_redaction"
+      },
+      {
+        "range": "22",
+        "confidence": 1,
+        "type": "editorial_psalm"
+      },
+      {
+        "range": "23:1-7",
+        "confidence": 1,
+        "type": "editorial_poem"
+      }
+    ],
+
+    "1 Kings": [
+      {
+        "range": "2:1-12",
+        "confidence": 3,
+        "type": "farewell_speech"
+      },
+      {
+        "range": "3:1-15",
+        "confidence": 2,
+        "type": "editorial_frame"
+      },
+      {
+        "range": "6:11-13",
+        "confidence": 3,
+        "type": "editorial_oracle"
+      },
+      {
+        "range": "8",
+        "confidence": 3,
+        "type": "temple_theology"
+      },
+      {
+        "range": "9:1-9",
+        "confidence": 3,
+        "type": "covenant_warning"
+      },
+      {
+        "range": "11:1-13",
+        "confidence": 3,
+        "type": "apostasy_explanation"
+      },
+      {
+        "range": "11:29-39",
+        "confidence": 3,
+        "type": "prophetic_oracle"
+      },
+      {
+        "range": "12:26-33",
+        "confidence": 3,
+        "type": "jeroboam_program"
+      },
+      {
+        "range": "royal_evaluations",
+        "confidence": 3,
+        "type": "editorial_formula"
+      },
+      {
+        "range": "elijah_elisha_framework",
+        "confidence": 2,
+        "type": "editorial_framework"
+      }
+    ],
+
+    "2 Kings": [
+      {
+        "range": "royal_evaluations",
+        "confidence": 3,
+        "type": "editorial_formula"
+      },
+      {
+        "range": "17:7-23",
+        "confidence": 3,
+        "type": "major_editorial_sermon"
+      },
+      {
+        "range": "18:1-8",
+        "confidence": 3,
+        "type": "hezekiah_evaluation"
+      },
+      {
+        "range": "21:10-15",
+        "confidence": 3,
+        "type": "doom_oracle"
+      },
+      {
+        "range": "22-23",
+        "confidence": 3,
+        "type": "josiah_reform"
+      },
+      {
+        "range": "23:25-27",
+        "confidence": 3,
+        "type": "editorial_evaluation"
+      },
+      {
+        "range": "24",
+        "confidence": 3,
+        "type": "fall_of_judah"
+      },
+      {
+        "range": "25:27-30",
+        "confidence": 2,
+        "type": "epilogue"
+      }
+    ]
+  }
+}
