@@ -54,6 +54,20 @@ AARONID_FULL_BOOKS = {
     "11-nehemiah",
 }
 
+PRIMARY_HISTORY_BOOKS = {
+    "01-genesis",
+    "02-exodus",
+    "03-leviticus",
+    "04-numbers",
+    "05-deuteronomy",
+    "06-joshua",
+    "07-judges",
+    "08-samuel",
+    "09-kings",
+    "10-ezra",
+    "11-nehemiah",
+}
+
 SUBSET_EXCLUDED_INCLUDES = frozenset(
     {
         "01-genesis/apocrypha",
@@ -208,8 +222,10 @@ TARGETS = {
     ),
     "R": Target(
         "R",
-        "We the Nameless",
-        "The full book.",
+        "The Primary History",
+        "Genesis through Nehemiah.",
+        None,
+        frozenset(PRIMARY_HISTORY_BOOKS),
     ),
     "D": Target(
         "D",

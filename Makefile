@@ -35,7 +35,7 @@ help:
 		'  make j            Build j.pdf: Torah-only J text.' \
 		'  make p            Build p.pdf: Torah-only P text.' \
 		'  make r            Build r.pdf: full Torah with all sources.' \
-		'  make R            Build R.pdf: the full book.' \
+		'  make R            Build R.pdf: Genesis through Nehemiah.' \
 		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
 		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
 		'  make clean        Remove transient TeX aux files.' \
