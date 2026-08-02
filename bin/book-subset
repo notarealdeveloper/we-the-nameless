@@ -1,0 +1,463 @@
+#!/usr/bin/env python3
+import argparse
+import re
+import shutil
+import sys
+from dataclasses import dataclass
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+MASTER = ROOT / "master.tex"
+BUILD_ROOT = ROOT / "build" / "subsets"
+
+BEGIN_DOCUMENT = r"\begin{document}"
+END_DOCUMENT = r"\end{document}"
+
+BOOK_RE = re.compile(r"\\Book\{([^}]+)\}")
+
+TORAH_BOOKS = {
+    "01-genesis",
+    "02-exodus",
+    "03-leviticus",
+    "04-numbers",
+    "05-deuteronomy",
+}
+
+D_HISTORY_BOOKS = {
+    "05-deuteronomy",
+    "06-joshua",
+    "07-judges",
+    "08-samuel",
+    "09-kings",
+}
+
+SOURCE_COMMANDS = {
+    "J",
+    "JM",
+    "E",
+    "P",
+    "PP",
+    "R",
+    "RJE",
+    "DtrA",
+    "DtrB",
+    "DtrH",
+    "Dtn",
+    "X",
+    "Other",
+    "Records",
+    "BookOfRecords",
+    "Proto",
+    "ProtoF",
+    "PaleoM",
+}
+
+
+@dataclass(frozen=True)
+class Target:
+    name: str
+    title_logo: str
+    description: str
+    sources: frozenset[str] | None = None
+    books: frozenset[str] | None = None
+    court: bool = False
+
+
+TARGETS = {
+    "J": Target(
+        "J",
+        r"\textsc{J}",
+        "Yahwist text, including embedded records and poems used by J.",
+        frozenset({"J", "Records"}),
+    ),
+    "JE": Target(
+        "JE",
+        r"\textsc{JE}",
+        "Combined J/E text, including RJE redactor glue.",
+        frozenset({"J", "E", "RJE", "Records"}),
+    ),
+    "P": Target(
+        "P",
+        r"\textsc{P}",
+        "Priestly text only, outside and inside the Torah.",
+        frozenset({"P", "PP"}),
+    ),
+    "j": Target(
+        "j",
+        r"\textsc{J}",
+        "Torah-only Yahwist text, including embedded records and poems used by J.",
+        frozenset({"J", "Records"}),
+        frozenset(TORAH_BOOKS),
+    ),
+    "p": Target(
+        "p",
+        r"\textsc{P}",
+        "Torah-only Priestly text.",
+        frozenset({"P", "PP"}),
+        frozenset(TORAH_BOOKS),
+    ),
+    "torah": Target(
+        "torah",
+        r"\textsc{Torah}",
+        "Genesis through Deuteronomy as one volume.",
+        None,
+        frozenset(TORAH_BOOKS),
+    ),
+    "D": Target(
+        "D",
+        r"\textsc{D}",
+        "Deuteronomistic history, Deuteronomy through 2 Kings, with included source material.",
+        None,
+        frozenset(D_HISTORY_BOOKS),
+    ),
+    "court": Target(
+        "court",
+        "The Court History",
+        "Court history from 1 Samuel through 1 Kings 2.",
+        None,
+        None,
+        True,
+    ),
+}
+
+
+def fatal(message):
+    print(f"book-subset: {message}", file=sys.stderr)
+    raise SystemExit(1)
+
+
+def read_master():
+    text = MASTER.read_text()
+    begin = text.find(BEGIN_DOCUMENT)
+    end = text.rfind(END_DOCUMENT)
+    if begin < 0 or end < 0:
+        fatal("master.tex must contain \\begin{document} and \\end{document}")
+    begin += len(BEGIN_DOCUMENT)
+    return text[:begin], text[begin:end]
+
+
+def parse_master_books(body):
+    matches = list(BOOK_RE.finditer(body))
+    books = []
+    for index, match in enumerate(matches):
+        title = match.group(1)
+        start = match.start()
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(body)
+        block = body[start:end]
+        items = []
+        for item in re.finditer(r"\\BookPart\{([^}]+)\}|\\include\{([^}]+)\}", block):
+            if item.group(1) is not None:
+                items.append(("part", item.group(1)))
+            else:
+                items.append(("include", item.group(2)))
+        books.append({"title": title, "items": items})
+    return books
+
+
+def book_dir(include):
+    return include.split("/", 1)[0]
+
+
+def in_court_range(include):
+    if include.startswith("08-samuel/"):
+        return True
+    if include.startswith("09-kings/1-"):
+        try:
+            return int(include.rsplit("-", 1)[1]) <= 2
+        except ValueError:
+            return False
+    return False
+
+
+def skip_space(text, pos):
+    while pos < len(text) and text[pos].isspace():
+        pos += 1
+    return pos
+
+
+def parse_command(text, pos):
+    if pos >= len(text) or text[pos] != "\\":
+        return None
+    start = pos
+    pos += 1
+    if pos < len(text) and text[pos].isalpha():
+        while pos < len(text) and text[pos].isalpha():
+            pos += 1
+    elif pos < len(text):
+        pos += 1
+    return text[start + 1 : pos], start, pos
+
+
+def parse_group(text, pos):
+    pos = skip_space(text, pos)
+    if pos >= len(text) or text[pos] != "{":
+        return None
+    start = pos
+    depth = 0
+    pos += 1
+    while pos < len(text):
+        char = text[pos]
+        if char == "\\":
+            pos += 2
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            if depth == 0:
+                return text[start + 1 : pos], start, pos + 1
+            depth -= 1
+        pos += 1
+    fatal("unclosed braced group")
+
+
+def parse_n_groups(text, pos, count):
+    groups = []
+    end = pos
+    for _ in range(count):
+        parsed = parse_group(text, end)
+        if parsed is None:
+            return None
+        groups.append(parsed)
+        end = parsed[2]
+    return groups, end
+
+
+def source_name(command):
+    if not command or command[0] not in {"h", "e"}:
+        return None
+    name = command[1:]
+    if name == "JM":
+        return "J"
+    if name == "BookOfRecords":
+        return "Records"
+    if name in SOURCE_COMMANDS:
+        return name
+    return None
+
+
+def filter_source_group(text, allowed_sources):
+    kept = []
+    kept_count = 0
+    pos = 0
+    while pos < len(text):
+        if text[pos] != "\\":
+            pos += 1
+            continue
+
+        command = parse_command(text, pos)
+        if command is None:
+            pos += 1
+            continue
+
+        command_name, start, after_command = command
+        source = source_name(command_name)
+        if source is None:
+            pos = after_command
+            continue
+
+        arg_count = 2 if command_name in {"hDtr", "eDtr"} else 1
+        parsed = parse_n_groups(text, after_command, arg_count)
+        if parsed is None:
+            pos = after_command
+            continue
+
+        _groups, end = parsed
+        if source in allowed_sources:
+            kept.append(text[start:end])
+            kept_count += 1
+        pos = end
+
+    if not kept:
+        return "", 0
+    return "\n".join(kept), kept_count
+
+
+def transform_verse(text, pos, target):
+    command = parse_command(text, pos)
+    if command is None or command[0] != "Verse":
+        fatal("internal parser error: expected \\Verse")
+    groups = parse_n_groups(text, command[2], 4)
+    if groups is None:
+        fatal("malformed \\Verse command")
+    parsed_groups, end = groups
+    label, hebrew, english, commentary = [group[0] for group in parsed_groups]
+
+    if target.sources is None:
+        return text[pos:end], end, True
+
+    filtered_hebrew, hebrew_count = filter_source_group(hebrew, target.sources)
+    filtered_english, english_count = filter_source_group(english, target.sources)
+    if hebrew_count + english_count == 0:
+        return "", end, False
+
+    verse = (
+        rf"\Verse{{{label}}}" + "\n"
+        "{\n" + filtered_hebrew.strip() + "\n}\n"
+        "{\n" + filtered_english.strip() + "\n}\n"
+        "{\n" + commentary + "\n}\n"
+    )
+    return verse, end, True
+
+
+def transform_chapter(source_path, target):
+    text = source_path.read_text()
+    out = []
+    pos = 0
+    verse_count = 0
+    while pos < len(text):
+        next_verse = text.find(r"\Verse", pos)
+        if next_verse < 0:
+            out.append(text[pos:])
+            break
+        out.append(text[pos:next_verse])
+        verse, end, kept = transform_verse(text, next_verse, target)
+        if kept:
+            out.append(verse)
+            verse_count += 1
+        pos = end
+    if verse_count == 0:
+        return None, 0
+    return "".join(out).rstrip() + "\n", verse_count
+
+
+def build_title_logo_override(target):
+    if target.name == "court":
+        body = r"{\fontsize{24}{30}\fontfamily{lmr}\selectfont\textrm{The Court History}\par}"
+    elif target.name == "torah":
+        body = r"{\fontsize{32}{38}\fontfamily{lmr}\selectfont\textsc{Torah}\par}"
+    else:
+        body = rf"{{\fontsize{{42}}{{50}}\fontfamily{{lmr}}\selectfont{target.title_logo}\par}}"
+    return "\n".join(
+        [
+            r"\renewcommand{\WeLDLogoAtPageBottom}{%",
+            r"    \vspace*{\fill}%",
+            r"    \begingroup",
+            r"    \centering",
+            f"    {body}%",
+            r"    \endgroup",
+            r"    \vspace*{1.2in}%",
+            r"}",
+        ]
+    )
+
+
+def write_entrypoint(target, preamble, books):
+    entrypoint = BUILD_ROOT / f"{target.name}.tex"
+    lines = [
+        preamble,
+        "",
+        build_title_logo_override(target),
+        "",
+        r"\frontmatter",
+        r"\hypersetup{pageanchor=false}",
+        r"\pagenumbering{gobble}",
+        r"\pagestyle{empty}",
+        r"\wetitlepage",
+        r"\WeContentsPage",
+        r"\mainmatter",
+        r"\hypersetup{pageanchor=true}",
+        r"\pagestyle{fancy}",
+        "",
+    ]
+    for book in books:
+        lines.append(rf"\Book{{{book['title']}}}")
+        pending_part = None
+        for item_type, value in book["items"]:
+            if item_type == "part":
+                pending_part = value
+                continue
+            include_path = value
+            generated = book.get("generated", {}).get(include_path)
+            if generated is None:
+                continue
+            if pending_part is not None:
+                lines.append(rf"\BookPart{{{pending_part}}}")
+                pending_part = None
+            lines.append(rf"\input{{{generated}}}")
+        lines.append("")
+    lines.extend([r"\end{document}", ""])
+    entrypoint.parent.mkdir(parents=True, exist_ok=True)
+    entrypoint.write_text("\n".join(lines))
+    return entrypoint
+
+
+def copy_or_filter_chapter(include, target, target_dir):
+    source = ROOT / f"{include}.tex"
+    destination = target_dir / f"{include}.tex"
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    text, verse_count = transform_chapter(source, target)
+    if text is None:
+        if destination.exists():
+            destination.unlink()
+        return None, 0
+    destination.write_text(text)
+    return destination.relative_to(ROOT).with_suffix("").as_posix(), verse_count
+
+
+def selected_include(include, target):
+    if target.court:
+        return in_court_range(include)
+    if target.books is not None:
+        return book_dir(include) in target.books
+    return True
+
+
+def build_target(target_name):
+    target = TARGETS.get(target_name)
+    if target is None:
+        fatal(f"unknown target {target_name!r}")
+
+    preamble, body = read_master()
+    books = parse_master_books(body)
+    target_dir = BUILD_ROOT / target.name
+    if target_dir.exists():
+        shutil.rmtree(target_dir)
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    included_books = []
+    total_verses = 0
+    for book in books:
+        generated = {}
+        for item_type, value in book["items"]:
+            if item_type != "include" or not selected_include(value, target):
+                continue
+            generated_path, verse_count = copy_or_filter_chapter(value, target, target_dir)
+            if generated_path is not None:
+                generated[value] = generated_path
+                total_verses += verse_count
+        if generated:
+            included_book = dict(book)
+            included_book["generated"] = generated
+            included_books.append(included_book)
+
+    if not included_books:
+        fatal(f"{target.name} did not select any chapters")
+
+    entrypoint = write_entrypoint(target, preamble, included_books)
+    print(f"wrote {entrypoint.relative_to(ROOT)} ({len(included_books)} books, {total_verses} verses)")
+
+
+def print_list():
+    width = max(len(name) for name in TARGETS)
+    for name, target in TARGETS.items():
+        print(f"{name:<{width}}  {target.description}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Generate dynamic source/range subset TeX builds.")
+    parser.add_argument("target", nargs="?", choices=TARGETS.keys())
+    parser.add_argument("--list", action="store_true", help="list buildable subset targets")
+    args = parser.parse_args()
+
+    if args.list:
+        print_list()
+        return
+    if args.target is None:
+        parser.error("target is required unless --list is used")
+    build_target(args.target)
+
+
+if __name__ == "__main__":
+    main()

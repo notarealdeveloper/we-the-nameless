@@ -7,12 +7,38 @@ LATEX      := lualatex
 LATEXFLAGS := -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
 
 TEX_SOURCES := $(shell find . -path './$(BUILD)' -prune -o -name '*.tex' -print)
+SUBSET_TARGETS := J JE P j p torah D court
 
 export TEXMFVAR := $(CACHE)
 
-.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare clean-stray-aux draft c x comment halfcomment uncomment again
+.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS)
 
 all: $(PDF) open
+
+help:
+	@printf '%s\n' \
+		'Public targets:' \
+		'  make              Build master.pdf and open it.' \
+		'  make pdf          Build master.pdf without opening it.' \
+		'  make parallel     Build the book with the parallel chapter workflow.' \
+		'  make progress     Open master.tex.' \
+		'  make comment      Comment out everything except the progress subset.' \
+		'  make halfcomment  Comment out everything except the broader half-comment subset.' \
+		'  make uncomment    Uncomment book/include lines in master.tex.' \
+		'  make list         List dynamic subset builds.' \
+		'  make J            Build J.pdf: Yahwist text only, including records/poems used by J.' \
+		'  make JE           Build JE.pdf: J + E + RJE text.' \
+		'  make P            Build P.pdf: Priestly text only.' \
+		'  make j            Build j.pdf: Torah-only J text.' \
+		'  make p            Build p.pdf: Torah-only P text.' \
+		'  make torah        Build torah.pdf: Genesis through Deuteronomy.' \
+		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
+		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
+		'  make clean        Remove transient TeX aux files.' \
+		'  make distclean    Remove build outputs and master.pdf.'
+
+list:
+	bin/book-subset --list
 
 pdf: $(PDF)
 
@@ -105,3 +131,12 @@ progress:
 
 parallel:
 	bin/parallel-build
+
+$(SUBSET_TARGETS): | build-prepare
+	bin/book-subset $@
+	$(LATEX) $(LATEXFLAGS) "$(BUILD)/subsets/$@.tex"
+	@if grep -q 'Rerun to get cross-references right' "$(BUILD)/$@.log"; then \
+		$(LATEX) $(LATEXFLAGS) "$(BUILD)/subsets/$@.tex"; \
+	fi
+	$(MAKE) clean-stray-aux
+	cp "$(BUILD)/$@.pdf" "$@.pdf"
