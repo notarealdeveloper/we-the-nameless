@@ -646,7 +646,7 @@ def write_entrypoint(target, preamble, books, build_root):
             if pending_part is not None:
                 lines.append(rf"\BookPart{{{pending_part}}}")
                 pending_part = None
-            lines.append(rf"\input{{{generated}}}")
+            lines.append(rf"\include{{{generated}}}")
         lines.append("")
     lines.extend([r"\end{document}", ""])
     entrypoint.parent.mkdir(parents=True, exist_ok=True)
@@ -667,7 +667,7 @@ def copy_or_filter_chapter(include, target, target_dir):
     destination.write_text(text)
     tex_path = destination.with_suffix("")
     try:
-        tex_path = tex_path.relative_to(ROOT)
+        tex_path = tex_path.relative_to(target_dir.parent)
     except ValueError:
         pass
     return tex_path.as_posix(), verse_count, chapter
