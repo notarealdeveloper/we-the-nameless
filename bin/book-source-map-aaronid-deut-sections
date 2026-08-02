@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+cat << EOF
+{
+  "1 Kgs 6-7": "A",
+  "1 Kgs 8": "A",
+  "2 Kgs 11-12": "A",
+  "2 Kgs 16:10-16": "A",
+  "2 Kgs 22-23": "A",
+  "2 Kgs 25:18-21": "A"
+}
+EOF

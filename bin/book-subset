@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import argparse
+import json
 import re
 import shutil
+import subprocess
 import sys
 from dataclasses import dataclass
 from functools import lru_cache
@@ -12,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MASTER = ROOT / "master.tex"
 J_SOURCE_CHECK = ROOT / "bin2" / "check-j-source"
 DEFAULT_BUILD_ROOT = ROOT / "build" / "subsets"
+AARONID_DEUT_SOURCE_MAP = ROOT / "bin" / "book-source-map-aaronid-deut-sections"
 
 BEGIN_DOCUMENT = r"\begin{document}"
 END_DOCUMENT = r"\end{document}"
@@ -32,6 +35,23 @@ D_HISTORY_BOOKS = {
     "07-judges",
     "08-samuel",
     "09-kings",
+}
+
+MUSHITE_BOOKS = {
+    "01-genesis",
+    "02-exodus",
+    "03-leviticus",
+    "04-numbers",
+    "05-deuteronomy",
+    "06-joshua",
+    "07-judges",
+    "08-samuel",
+    "09-kings",
+}
+
+AARONID_FULL_BOOKS = {
+    "10-ezra",
+    "11-nehemiah",
 }
 
 SOURCE_COMMANDS = {
@@ -67,6 +87,22 @@ CHECK_J_BOOKS = {
     "1 Kings": "09-kings",
 }
 
+REF_BOOKS = {
+    "Gen": ("01-genesis", None),
+    "Exod": ("02-exodus", None),
+    "Lev": ("03-leviticus", None),
+    "Num": ("04-numbers", None),
+    "Deut": ("05-deuteronomy", None),
+    "Josh": ("06-joshua", None),
+    "Judg": ("07-judges", None),
+    "1 Sam": ("08-samuel", "1"),
+    "2 Sam": ("08-samuel", "2"),
+    "1 Kgs": ("09-kings", "1"),
+    "2 Kgs": ("09-kings", "2"),
+    "Ezra": ("10-ezra", None),
+    "Neh": ("11-nehemiah", None),
+}
+
 
 @dataclass(frozen=True)
 class Target:
@@ -78,6 +114,8 @@ class Target:
     court: bool = False
     source_exceptions: frozenset[tuple[str, str]] = frozenset()
     verse_exceptions: frozenset[str] = frozenset()
+    full_books: frozenset[str] = frozenset()
+    source_map_script: Path | None = None
     check_j_source: bool = False
 
 
@@ -121,6 +159,22 @@ TARGETS = {
         r"\textsc{P}",
         "Priestly text only, outside and inside the Torah.",
         frozenset({"P", "PP"}),
+    ),
+    "M": Target(
+        "M",
+        "Mushites",
+        "Mushite text: JE plus Deuteronomistic history through 2 Kings 2.",
+        frozenset({"J", "E", "RJE", "DtrA", "DtrB", "DtrH", "Dtn", "Other", "X"}),
+        frozenset(MUSHITE_BOOKS),
+        source_exceptions=J_ARCHAIC_EXCEPTIONS,
+    ),
+    "A": Target(
+        "A",
+        "Aaronids",
+        "Aaronid text: P plus selected Deuteronomistic sections and Ezra-Nehemiah.",
+        frozenset({"P", "PP"}),
+        full_books=frozenset(AARONID_FULL_BOOKS),
+        source_map_script=AARONID_DEUT_SOURCE_MAP,
     ),
     "j": Target(
         "j",
@@ -252,6 +306,111 @@ def source_verse_numbers(book, chapter):
     return frozenset(verses)
 
 
+def include_for_ref_book(book_prefix, chapter):
+    directory, part = REF_BOOKS[book_prefix]
+    if part is None:
+        return f"{directory}/{chapter:02d}"
+    return f"{directory}/{part}-{chapter:02d}"
+
+
+def ref_verse_number(value):
+    match = re.match(r"\d+", value.strip())
+    if match is None:
+        fatal(f"could not parse source-map verse reference {value!r}")
+    return int(match.group(0))
+
+
+@lru_cache(maxsize=None)
+def verse_numbers_for_include(include):
+    path = ROOT / f"{include}.tex"
+    if not path.exists():
+        fatal(f"source map names missing chapter {include}")
+    text = path.read_text()
+    verses = set()
+    pos = 0
+    while pos < len(text):
+        next_verse = text.find(r"\Verse", pos)
+        if next_verse < 0:
+            break
+        command = parse_command(text, next_verse)
+        if command is None or command[0] != "Verse":
+            pos = next_verse + 1
+            continue
+        groups = parse_n_groups(text, command[2], 4)
+        if groups is None:
+            pos = next_verse + 1
+            continue
+        parsed_groups, end = groups
+        verses.update(numeric_verse_labels(parsed_groups[0][0]))
+        pos = end
+    return frozenset(verses)
+
+
+def source_map_ref_refs(ref):
+    normalized = ref.replace("–", "-").replace("—", "-").strip()
+    book_prefix = None
+    rest = None
+    for candidate in sorted(REF_BOOKS, key=len, reverse=True):
+        prefix = f"{candidate} "
+        if normalized.startswith(prefix):
+            book_prefix = candidate
+            rest = normalized[len(prefix) :].strip()
+            break
+    if book_prefix is None or not rest:
+        fatal(f"could not parse source-map reference {ref!r}")
+
+    selected = set()
+    if ":" not in rest:
+        if "-" in rest:
+            start_chapter, end_chapter = rest.split("-", 1)
+            chapter_range = range(int(start_chapter), int(end_chapter) + 1)
+        else:
+            chapter_range = range(int(rest), int(rest) + 1)
+        for chapter in chapter_range:
+            include = include_for_ref_book(book_prefix, chapter)
+            for verse in verse_numbers_for_include(include):
+                selected.add(f"{include}:{verse}")
+        return selected
+
+    chapter_text, verse_text = rest.split(":", 1)
+    chapter = int(chapter_text)
+    if "-" in verse_text:
+        start_text, end_text = verse_text.split("-", 1)
+        start = ref_verse_number(start_text)
+        end = ref_verse_number(end_text)
+    else:
+        start = end = ref_verse_number(verse_text)
+    include = include_for_ref_book(book_prefix, chapter)
+    existing = verse_numbers_for_include(include)
+    for verse in range(start, end + 1):
+        if verse in existing:
+            selected.add(f"{include}:{verse}")
+    return selected
+
+
+@lru_cache(maxsize=None)
+def source_map_verse_refs(script):
+    script_path = Path(script)
+    if not script_path.exists():
+        fatal(f"missing {script_path.relative_to(ROOT)}")
+    try:
+        result = subprocess.run(
+            [str(script_path)],
+            check=True,
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+        )
+        source_map = json.loads(result.stdout)
+    except (OSError, subprocess.CalledProcessError, json.JSONDecodeError) as exc:
+        fatal(f"could not read {script_path.relative_to(ROOT)}: {exc}")
+
+    selected = set()
+    for ref in source_map:
+        selected.update(source_map_ref_refs(ref))
+    return frozenset(selected)
+
+
 @lru_cache(maxsize=1)
 def checked_j_source_refs():
     if not J_SOURCE_CHECK.exists():
@@ -346,6 +505,19 @@ def in_court_range(include):
     if include.startswith("08-samuel/"):
         return True
     if include.startswith("09-kings/1-"):
+        try:
+            return int(include.rsplit("-", 1)[1]) <= 2
+        except ValueError:
+            return False
+    return False
+
+
+def in_mushite_range(include):
+    if not include.startswith("09-kings/"):
+        return True
+    if include.startswith("09-kings/1-"):
+        return True
+    if include.startswith("09-kings/2-"):
         try:
             return int(include.rsplit("-", 1)[1]) <= 2
         except ValueError:
@@ -485,8 +657,17 @@ def transform_verse(text, pos, target, include, allowed_sources):
     label, hebrew, english, commentary = [group[0] for group in parsed_groups]
     label_number = numeric_verse_label(label)
     ref = f"{include}:{label_number}" if label_number is not None else None
+    is_full_book = book_dir(include) in target.full_books
+    is_source_map_ref = (
+        target.source_map_script is not None
+        and ref is not None
+        and ref in source_map_verse_refs(target.source_map_script)
+    )
     is_j_check_ref = target.check_j_source and ref in checked_j_source_refs()
     is_exception_ref = ref in target.verse_exceptions
+
+    if is_full_book or is_source_map_ref:
+        return text[pos:end], end, True
 
     if target.check_j_source and ref is not None and not is_j_check_ref and not is_exception_ref:
         return "", end, False
@@ -683,7 +864,13 @@ def selected_include(include, target):
     if target.court:
         return in_court_range(include)
     if target.books is not None:
-        return book_dir(include) in target.books
+        if book_dir(include) not in target.books:
+            return False
+        if target.name == "M":
+            return in_mushite_range(include)
+        return True
+    if book_dir(include) in target.full_books:
+        return True
     return True
 
 

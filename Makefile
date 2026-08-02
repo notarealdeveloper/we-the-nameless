@@ -7,7 +7,7 @@ LATEX      := lualatex
 LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
 
 TEX_SOURCES := $(shell find . -path './build' -prune -o -name '*.tex' -print)
-SUBSET_TARGETS := J E JE P j p R D court
+SUBSET_TARGETS := J E JE P M A j p R D court
 
 export TEXMFVAR = $(CACHE)
 
@@ -30,6 +30,8 @@ help:
 		'  make E            Build E.pdf: Elohist text only.' \
 		'  make JE           Build JE.pdf: J + E + RJE text.' \
 		'  make P            Build P.pdf: Priestly text only.' \
+		'  make M            Build M.pdf: Mushite text, JE plus Deuteronomistic history.' \
+		'  make A            Build A.pdf: Aaronid text, P plus selected Deuteronomistic sections and Ezra-Nehemiah.' \
 		'  make j            Build j.pdf: Torah-only J text.' \
 		'  make p            Build p.pdf: Torah-only P text.' \
 		'  make R            Build R.pdf: Genesis through Deuteronomy.' \
