@@ -131,12 +131,17 @@ class Target:
     description: str
     sources: frozenset[str] | None = None
     books: frozenset[str] | None = None
+    include_prefixes: frozenset[str] = frozenset()
     court: bool = False
     source_exceptions: frozenset[tuple[str, str]] = frozenset()
     verse_exceptions: frozenset[str] = frozenset()
     full_books: frozenset[str] = frozenset()
     source_map_script: Path | None = None
     check_j_source: bool = False
+    output_name: str | None = None
+    aliases: frozenset[str] = frozenset()
+    toc_chapters: bool = False
+    book_title_override: str | None = None
 
 
 J_ARCHAIC_EXCEPTIONS = frozenset(
@@ -240,9 +245,16 @@ TARGETS = {
         "Court history from 1 Samuel through 1 Kings 2.",
         None,
         None,
-        True,
+        court=True,
     ),
 }
+
+
+NUMBERED_BOOK_DIR_RE = re.compile(r"^(\d+)-(.+)$")
+
+
+def target_output_name(target):
+    return target.output_name or target.name
 
 
 def fatal(message):
@@ -522,6 +534,120 @@ def parse_master_books(body):
                 items.append(("include", item.group(2)))
         books.append({"title": title, "items": items})
     return books
+
+
+@lru_cache(maxsize=1)
+def master_books():
+    _preamble, body = read_master()
+    return tuple(parse_master_books(body))
+
+
+@lru_cache(maxsize=1)
+def root_numbered_book_dirs():
+    directories = []
+    for path in ROOT.iterdir():
+        if path.is_dir() and NUMBERED_BOOK_DIR_RE.fullmatch(path.name):
+            directories.append(path.name)
+    return tuple(sorted(directories))
+
+
+@lru_cache(maxsize=1)
+def book_titles_by_dir():
+    titles = {}
+    for book in master_books():
+        for item_type, value in book["items"]:
+            if item_type == "include":
+                titles.setdefault(book_dir(value), book["title"])
+    return titles
+
+
+def title_from_slug(slug):
+    return " ".join(part.capitalize() for part in slug.split("-"))
+
+
+def numbered_book_target(directory):
+    match = NUMBERED_BOOK_DIR_RE.fullmatch(directory)
+    if match is None:
+        fatal(f"internal error: not a numbered book directory: {directory}")
+    number, slug = match.groups()
+    title = book_titles_by_dir().get(directory, title_from_slug(slug))
+    aliases = frozenset({slug, f"{int(number)}-{slug}"})
+    return Target(
+        directory,
+        title,
+        f"{title} as one book volume.",
+        books=frozenset({directory}),
+        output_name=directory,
+        aliases=aliases,
+        toc_chapters=True,
+    )
+
+
+def individual_compound_book_targets():
+    return (
+        Target(
+            "1-samuel",
+            "I Samuel",
+            "I Samuel as one book volume.",
+            include_prefixes=frozenset({"08-samuel/1-"}),
+            output_name="1-samuel",
+            toc_chapters=True,
+            book_title_override="I Samuel",
+        ),
+        Target(
+            "2-samuel",
+            "II Samuel",
+            "II Samuel as one book volume.",
+            include_prefixes=frozenset({"08-samuel/2-"}),
+            output_name="2-samuel",
+            toc_chapters=True,
+            book_title_override="II Samuel",
+        ),
+        Target(
+            "1-kings",
+            "I Kings",
+            "I Kings as one book volume.",
+            include_prefixes=frozenset({"09-kings/1-"}),
+            output_name="1-kings",
+            toc_chapters=True,
+            book_title_override="I Kings",
+        ),
+        Target(
+            "2-kings",
+            "II Kings",
+            "II Kings as one book volume.",
+            include_prefixes=frozenset({"09-kings/2-"}),
+            output_name="2-kings",
+            toc_chapters=True,
+            book_title_override="II Kings",
+        ),
+    )
+
+
+@lru_cache(maxsize=1)
+def dynamic_book_targets():
+    targets = [numbered_book_target(directory) for directory in root_numbered_book_dirs()]
+    targets.extend(individual_compound_book_targets())
+    return tuple(targets)
+
+
+@lru_cache(maxsize=1)
+def target_aliases():
+    aliases = {name: target for name, target in TARGETS.items()}
+    for target in dynamic_book_targets():
+        names = {target.name, *target.aliases}
+        for name in names:
+            if name in aliases:
+                fatal(f"target alias {name!r} is ambiguous")
+            aliases[name] = target
+    return aliases
+
+
+def resolve_target(target_name):
+    target = target_aliases().get(target_name)
+    if target is None:
+        fatal(f"unknown target {target_name!r}")
+    return target
 
 
 def book_dir(include):
@@ -856,14 +982,41 @@ def build_navigation_overrides(books):
     return "\n".join(lines)
 
 
+def build_toc_overrides(target):
+    if not target.toc_chapters:
+        return ""
+    return "\n".join(
+        [
+            r"\renewcommand{\Book}[1]{%",
+            r"    \def\CurrentTitleBook{#1}%",
+            r"    \BookHeading{\TableOfContentsLink{#1}}%",
+            r"    \phantomsection",
+            r"    \hypertarget{book.#1}{}%",
+            r"    \def\CurrentBook{#1}%",
+            r"    \BookChapterLinkArray{#1}%",
+            r"}",
+            r"\renewcommand{\Chapter}[1]{%",
+            r"    \phantomsection",
+            r"    \hypertarget{chapter.\CurrentBook.#1}{}%",
+            r"    \ChapterHeading{\ChapterTitleText{#1}}%",
+            r"    \def\CurrentChapter{#1}%",
+            r"    \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%",
+            r"    \addcontentsline{toc}{chapter}{\CurrentBook\ #1}%",
+            r"}",
+        ]
+    )
+
+
 def write_entrypoint(target, preamble, books, build_root):
-    entrypoint = build_root / f"{target.name}.tex"
+    entrypoint = build_root / f"{target_output_name(target)}.tex"
     lines = [
         preamble,
         "",
         build_title_logo_override(target),
         "",
         build_navigation_overrides(books),
+        "",
+        build_toc_overrides(target),
         "",
         r"\frontmatter",
         r"\hypersetup{pageanchor=false}",
@@ -920,6 +1073,8 @@ def copy_or_filter_chapter(include, target, target_dir):
 def selected_include(include, target):
     if include in SUBSET_EXCLUDED_INCLUDES:
         return False
+    if target.include_prefixes:
+        return any(include.startswith(prefix) for prefix in target.include_prefixes)
     if target.court:
         return in_court_range(include)
     if target.books is not None:
@@ -934,9 +1089,7 @@ def selected_include(include, target):
 
 
 def build_target(target_name, build_root):
-    target = TARGETS.get(target_name)
-    if target is None:
-        fatal(f"unknown target {target_name!r}")
+    target = resolve_target(target_name)
 
     build_root = build_root.resolve()
     preamble, body = read_master()
@@ -947,7 +1100,7 @@ def build_target(target_name, build_root):
         shutil.rmtree(target_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
     for suffix in (".aux", ".log", ".out", ".toc", ".pdf"):
-        stale = build_root / f"{target.name}{suffix}"
+        stale = build_root / f"{target_output_name(target)}{suffix}"
         if stale.exists():
             stale.unlink()
 
@@ -966,6 +1119,11 @@ def build_target(target_name, build_root):
                 total_verses += verse_count
         if generated:
             included_book = dict(book)
+            if target.book_title_override is not None:
+                included_book["title"] = target.book_title_override
+                included_book["items"] = [
+                    item for item in included_book["items"] if item[0] != "part"
+                ]
             included_book["generated"] = generated
             included_book["chapters"] = chapters
             included_books.append(included_book)
@@ -982,14 +1140,21 @@ def build_target(target_name, build_root):
 
 
 def print_list():
-    width = max(len(name) for name in TARGETS)
-    for name, target in TARGETS.items():
-        print(f"{name:<{width}}  {target.description}")
+    targets = list(TARGETS.values()) + list(dynamic_book_targets())
+    width = max(len(target.name) for target in targets)
+    for target in targets:
+        aliases = sorted(target.aliases)
+        alias_text = f" (aliases: {', '.join(aliases)})" if aliases else ""
+        print(f"{target.name:<{width}}  {target.description}{alias_text}")
+
+
+def print_make_targets():
+    print(" ".join(sorted(target_aliases())))
 
 
 def main():
     parser = argparse.ArgumentParser(description="Generate dynamic source/range subset TeX builds.")
-    parser.add_argument("target", nargs="?", choices=TARGETS.keys())
+    parser.add_argument("target", nargs="?")
     parser.add_argument(
         "--build-dir",
         type=Path,
@@ -997,13 +1162,21 @@ def main():
         help="write generated TeX under this build directory",
     )
     parser.add_argument("--list", action="store_true", help="list buildable subset targets")
+    parser.add_argument("--make-targets", action="store_true", help="print all callable make targets")
+    parser.add_argument("--output-name", action="store_true", help="print the canonical output basename for a target")
     args = parser.parse_args()
 
     if args.list:
         print_list()
         return
+    if args.make_targets:
+        print_make_targets()
+        return
     if args.target is None:
-        parser.error("target is required unless --list is used")
+        parser.error("target is required unless --list or --make-targets is used")
+    if args.output_name:
+        print(target_output_name(resolve_target(args.target)))
+        return
     build_target(args.target, args.build_dir)
 
 

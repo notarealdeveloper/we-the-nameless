@@ -7,7 +7,7 @@ LATEX      := lualatex
 LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
 
 TEX_SOURCES := $(shell find . -path './build' -prune -o -name '*.tex' -print)
-SUBSET_TARGETS := J E JE P M A j p r R D court
+SUBSET_TARGETS := $(shell bin/book-subset --make-targets)
 
 export TEXMFVAR = $(CACHE)
 
@@ -38,6 +38,9 @@ help:
 		'  make R            Build R.pdf: Genesis through Nehemiah.' \
 		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
 		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
+		'  make genesis      Build 01-genesis.pdf; numbered book targets also accept 1-genesis and 01-genesis forms.' \
+		'  make samuel       Build 08-samuel.pdf; use 1-samuel or 2-samuel for the individual books.' \
+		'  make kings        Build 09-kings.pdf; use 1-kings or 2-kings for the individual books.' \
 		'  make clean        Remove transient TeX aux files.' \
 		'  make distclean    Remove build outputs and master.pdf.'
 
@@ -141,10 +144,13 @@ parallel:
 $(SUBSET_TARGETS): BUILD = build/$@
 $(SUBSET_TARGETS):
 	$(MAKE) BUILD="$(BUILD)" build-prepare
-	bin/book-subset --build-dir "$(BUILD)" $@
-	$(LATEX) $(LATEXFLAGS) "$(BUILD)/$@.tex"
-	@if grep -q 'Rerun to get' "$(BUILD)/$@.log"; then \
-		$(LATEX) $(LATEXFLAGS) "$(BUILD)/$@.tex"; \
+	@set -e; \
+	basename="$$(bin/book-subset --output-name "$@")"; \
+	bin/book-subset --build-dir "$(BUILD)" "$@"; \
+	$(LATEX) $(LATEXFLAGS) "$(BUILD)/$$basename.tex"; \
+	if grep -q 'Rerun to get' "$(BUILD)/$$basename.log"; then \
+		$(LATEX) $(LATEXFLAGS) "$(BUILD)/$$basename.tex"; \
 	fi
 	$(MAKE) clean-stray-aux
-	cp "$(BUILD)/$@.pdf" "$@.pdf"
+	@basename="$$(bin/book-subset --output-name "$@")"; \
+	cp "$(BUILD)/$$basename.pdf" "$$basename.pdf"
