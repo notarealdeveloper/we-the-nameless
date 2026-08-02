@@ -7,7 +7,7 @@ LATEX      := lualatex
 LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
 
 TEX_SOURCES := $(shell find . -path './build' -prune -o -name '*.tex' -print)
-SUBSET_TARGETS := J JE P j p torah D court
+SUBSET_TARGETS := J E JE P j p R D court
 
 export TEXMFVAR = $(CACHE)
 
@@ -27,11 +27,12 @@ help:
 		'  make uncomment    Uncomment book/include lines in master.tex.' \
 		'  make list         List dynamic subset builds.' \
 		'  make J            Build J.pdf: Yahwist text only, including records/poems used by J.' \
+		'  make E            Build E.pdf: Elohist text only.' \
 		'  make JE           Build JE.pdf: J + E + RJE text.' \
 		'  make P            Build P.pdf: Priestly text only.' \
 		'  make j            Build j.pdf: Torah-only J text.' \
 		'  make p            Build p.pdf: Torah-only P text.' \
-		'  make torah        Build torah.pdf: Genesis through Deuteronomy.' \
+		'  make R            Build R.pdf: Genesis through Deuteronomy.' \
 		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
 		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
 		'  make clean        Remove transient TeX aux files.' \

@@ -103,6 +103,12 @@ TARGETS = {
         verse_exceptions=J_ARCHAIC_VERSE_EXCEPTIONS,
         check_j_source=True,
     ),
+    "E": Target(
+        "E",
+        r"\textsc{E}",
+        "Elohist text only.",
+        frozenset({"E"}),
+    ),
     "JE": Target(
         "JE",
         r"\textsc{JE}",
@@ -133,8 +139,8 @@ TARGETS = {
         frozenset({"P", "PP"}),
         frozenset(TORAH_BOOKS),
     ),
-    "torah": Target(
-        "torah",
+    "R": Target(
+        "R",
         r"\textsc{Torah}",
         "Genesis through Deuteronomy as one volume.",
         None,
@@ -537,7 +543,7 @@ def transform_chapter(source_path, target, include):
 def build_title_logo_override(target):
     if target.name == "court":
         body = r"{\fontsize{24}{30}\fontfamily{lmr}\selectfont\textrm{The Court History}\par}"
-    elif target.name == "torah":
+    elif target.name == "R":
         body = r"{\fontsize{32}{38}\fontfamily{lmr}\selectfont\textsc{Torah}\par}"
     else:
         body = rf"{{\fontsize{{42}}{{50}}\fontfamily{{lmr}}\selectfont{target.title_logo}\par}}"
