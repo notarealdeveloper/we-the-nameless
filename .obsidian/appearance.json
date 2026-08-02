@@ -14,7 +14,8 @@
     "image",
     "ld",
     "proto",
-    "tags"
+    "tags",
+    "font-like-android"
   ],
   "textFontFamily": "Noto Sans",
   "interfaceFontFamily": "Noto Sans",
