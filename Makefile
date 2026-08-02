@@ -1,15 +1,15 @@
 MAIN  := master
 PDF   := $(MAIN).pdf
-BUILD := build
-CACHE := $(BUILD)/texmf-var
+BUILD := build/default
+CACHE = $(BUILD)/texmf-var
 
 LATEX      := lualatex
-LATEXFLAGS := -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
+LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
 
-TEX_SOURCES := $(shell find . -path './$(BUILD)' -prune -o -name '*.tex' -print)
+TEX_SOURCES := $(shell find . -path './build' -prune -o -name '*.tex' -print)
 SUBSET_TARGETS := J JE P j p torah D court
 
-export TEXMFVAR := $(CACHE)
+export TEXMFVAR = $(CACHE)
 
 .PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS)
 
@@ -56,7 +56,8 @@ build-prepare:
 			mkdir -p "$(BUILD)/$$dir"; \
 		done
 
-$(PDF): $(TEX_SOURCES) | build-prepare
+$(PDF): $(TEX_SOURCES)
+	$(MAKE) BUILD="$(BUILD)" build-prepare
 	$(LATEX) $(LATEXFLAGS) "$(MAIN).tex"
 	@if grep -q 'Rerun to get cross-references right' "$(BUILD)/$(MAIN).log"; then \
 		$(LATEX) $(LATEXFLAGS) "$(MAIN).tex"; \
@@ -64,12 +65,13 @@ $(PDF): $(TEX_SOURCES) | build-prepare
 	$(MAKE) clean-stray-aux
 	cp "$(BUILD)/$(MAIN).pdf" .
 
-draft: $(MAIN).tex | build-prepare
+draft: $(MAIN).tex
+	$(MAKE) BUILD="$(BUILD)" build-prepare
 	$(LATEX) $(LATEXFLAGS) -draftmode "$(MAIN).tex"
 	$(MAKE) clean-stray-aux
 
 clean-stray-aux:
-	@find . -path "./$(BUILD)" -prune -o -type f \( \
+	@find . -path "./build" -prune -o -type f \( \
 		-name '*.aux' -o \
 		-name '*.log' -o \
 		-name '*.toc' -o \
@@ -96,8 +98,8 @@ view open: $(PDF)
 	fi
 
 clean: clean-stray-aux
-	@if [ -d $(BUILD) ]; then \
-		find "$(BUILD)" -type f \( \
+	@if [ -d build ]; then \
+		find build -type f \( \
 			-name '*.aux' -o \
 			-name '*.log' -o \
 			-name '*.toc' -o \
@@ -108,7 +110,7 @@ clean: clean-stray-aux
 	fi
 
 distclean:
-	rm -rf "$(BUILD)"
+	rm -rf build
 	rm -f "$(MAIN).pdf"
 
 # for giving examples of the format to agents
@@ -132,11 +134,13 @@ progress:
 parallel:
 	bin/parallel-build
 
-$(SUBSET_TARGETS): | build-prepare
-	bin/book-subset $@
-	$(LATEX) $(LATEXFLAGS) "$(BUILD)/subsets/$@.tex"
+$(SUBSET_TARGETS): BUILD = build/$@
+$(SUBSET_TARGETS):
+	$(MAKE) BUILD="$(BUILD)" build-prepare
+	bin/book-subset --build-dir "$(BUILD)" $@
+	$(LATEX) $(LATEXFLAGS) "$(BUILD)/$@.tex"
 	@if grep -q 'Rerun to get cross-references right' "$(BUILD)/$@.log"; then \
-		$(LATEX) $(LATEXFLAGS) "$(BUILD)/subsets/$@.tex"; \
+		$(LATEX) $(LATEXFLAGS) "$(BUILD)/$@.tex"; \
 	fi
 	$(MAKE) clean-stray-aux
 	cp "$(BUILD)/$@.pdf" "$@.pdf"

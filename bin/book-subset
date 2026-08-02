@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MASTER = ROOT / "master.tex"
-BUILD_ROOT = ROOT / "build" / "subsets"
+DEFAULT_BUILD_ROOT = ROOT / "build" / "subsets"
 
 BEGIN_DOCUMENT = r"\begin{document}"
 END_DOCUMENT = r"\end{document}"
@@ -342,8 +342,8 @@ def build_title_logo_override(target):
     )
 
 
-def write_entrypoint(target, preamble, books):
-    entrypoint = BUILD_ROOT / f"{target.name}.tex"
+def write_entrypoint(target, preamble, books, build_root):
+    entrypoint = build_root / f"{target.name}.tex"
     lines = [
         preamble,
         "",
@@ -404,14 +404,15 @@ def selected_include(include, target):
     return True
 
 
-def build_target(target_name):
+def build_target(target_name, build_root):
     target = TARGETS.get(target_name)
     if target is None:
         fatal(f"unknown target {target_name!r}")
 
+    build_root = build_root.resolve()
     preamble, body = read_master()
     books = parse_master_books(body)
-    target_dir = BUILD_ROOT / target.name
+    target_dir = build_root / "chapters"
     if target_dir.exists():
         shutil.rmtree(target_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
@@ -435,7 +436,7 @@ def build_target(target_name):
     if not included_books:
         fatal(f"{target.name} did not select any chapters")
 
-    entrypoint = write_entrypoint(target, preamble, included_books)
+    entrypoint = write_entrypoint(target, preamble, included_books, build_root)
     print(f"wrote {entrypoint.relative_to(ROOT)} ({len(included_books)} books, {total_verses} verses)")
 
 
@@ -448,6 +449,12 @@ def print_list():
 def main():
     parser = argparse.ArgumentParser(description="Generate dynamic source/range subset TeX builds.")
     parser.add_argument("target", nargs="?", choices=TARGETS.keys())
+    parser.add_argument(
+        "--build-dir",
+        type=Path,
+        default=DEFAULT_BUILD_ROOT,
+        help="write generated TeX under this build directory",
+    )
     parser.add_argument("--list", action="store_true", help="list buildable subset targets")
     args = parser.parse_args()
 
@@ -456,7 +463,7 @@ def main():
         return
     if args.target is None:
         parser.error("target is required unless --list is used")
-    build_target(args.target)
+    build_target(args.target, args.build_dir)
 
 
 if __name__ == "__main__":
