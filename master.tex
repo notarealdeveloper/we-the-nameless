@@ -2508,6 +2508,7 @@
 \makeatletter
 \newcount\ChapterLinkIndex
 \newcount\ChapterLinkColumnIndex
+\newcount\ChapterLinkFillIndex
 \newcommand{\DeclareChapterLinkRange}[2]{%
     \expandafter\def\csname ChapterLinkRange@#1\endcsname{#2}%
 }
@@ -2533,6 +2534,20 @@
 \newcommand{\ChapterLinkCell}[1]{%
     \hyperlink{chapter.\CurrentBook.#1}{\makebox[0.19\linewidth][c]{\ChapterLinkText{\strut #1}}}%
 }
+\newcommand{\ChapterLinkEmptyCell}{%
+    \makebox[0.19\linewidth][c]{\strut}%
+}
+\newcommand{\ChapterLinkFillRow}{%
+    \ifnum\ChapterLinkColumnIndex=5
+    \else
+        \ChapterLinkFillIndex=\ChapterLinkColumnIndex
+        \loop
+            \advance\ChapterLinkFillIndex by 1
+            \ChapterLinkEmptyCell
+            \ifnum\ChapterLinkFillIndex<5
+        \repeat
+    \fi
+}
 \newcommand{\ChapterLinkRange}[1]{%
     \ChapterLinkIndex=1
     \ChapterLinkColumnIndex=1
@@ -2549,6 +2564,7 @@
         \advance\ChapterLinkIndex by 1
         \ifnum\ChapterLinkIndex<\numexpr#1+1\relax
     \repeat
+    \ChapterLinkFillRow
 }
 \newcommand{\ChapterLinkArray}{%
     \par\nobreak\medskip
