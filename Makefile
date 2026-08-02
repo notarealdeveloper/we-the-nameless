@@ -7,7 +7,7 @@ LATEX      := lualatex
 LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
 
 TEX_SOURCES := $(shell find . -path './build' -prune -o -name '*.tex' -print)
-SUBSET_TARGETS := J E JE P M A j p R D court
+SUBSET_TARGETS := J E JE P M A j p r R D court
 
 export TEXMFVAR = $(CACHE)
 
@@ -34,7 +34,8 @@ help:
 		'  make A            Build A.pdf: Aaronid text, P plus selected Deuteronomistic sections and Ezra-Nehemiah.' \
 		'  make j            Build j.pdf: Torah-only J text.' \
 		'  make p            Build p.pdf: Torah-only P text.' \
-		'  make R            Build R.pdf: Genesis through Deuteronomy.' \
+		'  make r            Build r.pdf: full Torah with all sources.' \
+		'  make R            Build R.pdf: the full book.' \
 		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
 		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
 		'  make clean        Remove transient TeX aux files.' \

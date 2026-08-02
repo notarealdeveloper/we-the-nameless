@@ -199,12 +199,17 @@ TARGETS = {
         frozenset({"P", "PP"}),
         frozenset(TORAH_BOOKS),
     ),
-    "R": Target(
-        "R",
+    "r": Target(
+        "r",
         r"\textsc{Torah}",
         "Genesis through Deuteronomy as one volume.",
         None,
         frozenset(TORAH_BOOKS),
+    ),
+    "R": Target(
+        "R",
+        "We the Nameless",
+        "The full book.",
     ),
     "D": Target(
         "D",
@@ -760,7 +765,7 @@ def transform_chapter(source_path, target, include):
 def build_title_logo_override(target):
     if target.name == "court":
         body = r"{\fontsize{24}{30}\fontfamily{lmr}\selectfont\textrm{The Court History}\par}"
-    elif target.name == "R":
+    elif target.name == "r":
         body = r"{\fontsize{32}{38}\fontfamily{lmr}\selectfont\textsc{Torah}\par}"
     else:
         body = rf"{{\fontsize{{42}}{{50}}\fontfamily{{lmr}}\selectfont {target.title_logo}\par}}"
