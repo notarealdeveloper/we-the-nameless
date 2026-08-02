@@ -2311,6 +2311,9 @@
     \vspace*{1.2in}
 }
 
+\newcommand{\WeTitlePageBottomMark}{\WeLDLogoAtPageBottom}
+\newcommand{\WeContentsPageBottomMark}{\WeLDLogoAtPageBottom}
+
 \newcommand{\wetitlepage}{%
     \clearpage
     \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
@@ -2321,7 +2324,7 @@
     {\fontsize{100}{120}\fontfamily{lmr}\selectfont\textsc{We}\par}
     \vspace*{0.2\textheight}
     {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
-    \WeLDLogoAtPageBottom
+    \WeTitlePageBottomMark
     \newpage
     }
     \restoregeometry
@@ -2334,7 +2337,7 @@
     \phantomsection
     \hypertarget{tableofcontents}{}%
     \tableofcontents
-    \WeLDLogoAtPageBottom
+    \WeContentsPageBottomMark
     \newpage
     \restoregeometry
 }

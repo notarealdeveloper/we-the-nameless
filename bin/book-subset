@@ -4,11 +4,13 @@ import re
 import shutil
 import sys
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 MASTER = ROOT / "master.tex"
+J_SOURCE_CHECK = ROOT / "bin2" / "check-j-source"
 DEFAULT_BUILD_ROOT = ROOT / "build" / "subsets"
 
 BEGIN_DOCUMENT = r"\begin{document}"
@@ -53,6 +55,18 @@ SOURCE_COMMANDS = {
     "PaleoM",
 }
 
+CHECK_J_BOOKS = {
+    "Genesis": "01-genesis",
+    "Exodus": "02-exodus",
+    "Numbers": "04-numbers",
+    "Deuteronomy": "05-deuteronomy",
+    "Joshua": "06-joshua",
+    "Judges": "07-judges",
+    "1 Samuel": "08-samuel",
+    "2 Samuel": "08-samuel",
+    "1 Kings": "09-kings",
+}
+
 
 @dataclass(frozen=True)
 class Target:
@@ -62,20 +76,39 @@ class Target:
     sources: frozenset[str] | None = None
     books: frozenset[str] | None = None
     court: bool = False
+    source_exceptions: frozenset[tuple[str, str]] = frozenset()
+    verse_exceptions: frozenset[str] = frozenset()
+    check_j_source: bool = False
+
+
+J_ARCHAIC_EXCEPTIONS = frozenset(
+    {
+        ("01-genesis/49", "Proto"),
+        ("02-exodus/15", "Proto"),
+    }
+)
+J_ARCHAIC_VERSE_EXCEPTIONS = frozenset(
+    f"02-exodus/15:{verse}" for verse in [*range(1, 19), 21]
+)
+J_CHECKLIST_EXCLUDED_REFS = frozenset({"01-genesis/05:28", "01-genesis/05:29"})
 
 
 TARGETS = {
     "J": Target(
         "J",
         r"\textsc{J}",
-        "Yahwist text, including embedded records and poems used by J.",
-        frozenset({"J", "Records"}),
+        "Yahwist text, including the Song of the Sea and Blessing of Jacob.",
+        frozenset({"J"}),
+        source_exceptions=J_ARCHAIC_EXCEPTIONS,
+        verse_exceptions=J_ARCHAIC_VERSE_EXCEPTIONS,
+        check_j_source=True,
     ),
     "JE": Target(
         "JE",
         r"\textsc{JE}",
         "Combined J/E text, including RJE redactor glue.",
-        frozenset({"J", "E", "RJE", "Records"}),
+        frozenset({"J", "E", "RJE"}),
+        source_exceptions=J_ARCHAIC_EXCEPTIONS,
     ),
     "P": Target(
         "P",
@@ -86,9 +119,12 @@ TARGETS = {
     "j": Target(
         "j",
         r"\textsc{J}",
-        "Torah-only Yahwist text, including embedded records and poems used by J.",
-        frozenset({"J", "Records"}),
+        "Torah-only Yahwist text, including the Song of the Sea and Blessing of Jacob.",
+        frozenset({"J"}),
         frozenset(TORAH_BOOKS),
+        source_exceptions=J_ARCHAIC_EXCEPTIONS,
+        verse_exceptions=J_ARCHAIC_VERSE_EXCEPTIONS,
+        check_j_source=True,
     ),
     "p": Target(
         "p",
@@ -125,6 +161,147 @@ TARGETS = {
 def fatal(message):
     print(f"book-subset: {message}", file=sys.stderr)
     raise SystemExit(1)
+
+
+def chapter_path_for_check_book(book, chapter):
+    directory = CHECK_J_BOOKS[book]
+    if book == "1 Samuel":
+        return ROOT / directory / f"1-{chapter:02d}.tex"
+    if book == "2 Samuel":
+        return ROOT / directory / f"2-{chapter:02d}.tex"
+    if book == "1 Kings":
+        return ROOT / directory / f"1-{chapter:02d}.tex"
+    return ROOT / directory / f"{chapter:02d}.tex"
+
+
+def include_for_check_ref(book, chapter):
+    directory = CHECK_J_BOOKS[book]
+    if book == "1 Samuel":
+        return f"{directory}/1-{chapter:02d}"
+    if book == "2 Samuel":
+        return f"{directory}/2-{chapter:02d}"
+    if book == "1 Kings":
+        return f"{directory}/1-{chapter:02d}"
+    return f"{directory}/{chapter:02d}"
+
+
+def max_verse_for_check_ref(book, chapter):
+    verses = source_verse_numbers(book, chapter)
+    if not verses:
+        path = chapter_path_for_check_book(book, chapter)
+        fatal(f"{path.relative_to(ROOT)} has no numbered \\Verse commands")
+    return max(verses)
+
+
+def check_ref_verse(value):
+    match = re.match(r"\d+", value.strip())
+    if match is None:
+        fatal(f"could not parse J-source verse reference {value!r}")
+    return int(match.group(0))
+
+
+def numeric_verse_label(value):
+    match = re.match(r"\d+", value.strip())
+    if match is None:
+        return None
+    return int(match.group(0))
+
+
+def numeric_verse_labels(value):
+    value = value.strip()
+    range_match = re.match(r"(\d+)\s*-\s*(\d+)", value)
+    if range_match is not None:
+        start = int(range_match.group(1))
+        end = int(range_match.group(2))
+        return frozenset(range(start, end + 1))
+    label = numeric_verse_label(value)
+    if label is None:
+        return frozenset()
+    return frozenset({label})
+
+
+@lru_cache(maxsize=None)
+def source_verse_numbers(book, chapter):
+    path = chapter_path_for_check_book(book, chapter)
+    if not path.exists():
+        fatal(f"{J_SOURCE_CHECK.relative_to(ROOT)} names missing chapter {book} {chapter}")
+    text = path.read_text()
+    verses = set()
+    pos = 0
+    while pos < len(text):
+        next_verse = text.find(r"\Verse", pos)
+        if next_verse < 0:
+            break
+        command = parse_command(text, next_verse)
+        if command is None or command[0] != "Verse":
+            pos = next_verse + 1
+            continue
+        groups = parse_n_groups(text, command[2], 4)
+        if groups is None:
+            pos = next_verse + 1
+            continue
+        parsed_groups, end = groups
+        verses.update(numeric_verse_labels(parsed_groups[0][0]))
+        pos = end
+    return frozenset(verses)
+
+
+@lru_cache(maxsize=1)
+def checked_j_source_refs():
+    if not J_SOURCE_CHECK.exists():
+        fatal(f"missing {J_SOURCE_CHECK.relative_to(ROOT)}")
+    text = J_SOURCE_CHECK.read_text()
+    marker = "Check to make sure all the following are attributed to J."
+    if marker not in text:
+        fatal(f"{J_SOURCE_CHECK.relative_to(ROOT)} does not contain the expected checklist marker")
+    body = text.split(marker, 1)[1].split("EOF", 1)[0]
+    body = body.replace("–", "-").replace("—", "-").replace("α", "")
+    body = body.replace("(", "").replace(")", "")
+
+    refs = set()
+    current_book = None
+    current_chapter = None
+    book_names = sorted(CHECK_J_BOOKS, key=len, reverse=True)
+    for raw_chunk in body.split(";"):
+        chunk = raw_chunk.strip().strip(".")
+        if not chunk:
+            continue
+        for book in book_names:
+            prefix = f"{book} "
+            if chunk.startswith(prefix):
+                current_book = book
+                current_chapter = None
+                chunk = chunk[len(prefix) :].strip()
+                break
+        if current_book is None:
+            fatal(f"could not identify book for J-source checklist chunk {chunk!r}")
+
+        if re.fullmatch(r"\d+", chunk):
+            current_chapter = int(chunk)
+            for verse in source_verse_numbers(current_book, current_chapter):
+                refs.add(f"{include_for_check_ref(current_book, current_chapter)}:{verse}")
+            continue
+
+        for raw_segment in chunk.split(","):
+            segment = raw_segment.strip()
+            if not segment:
+                continue
+            if ":" in segment:
+                chapter, segment = segment.split(":", 1)
+                current_chapter = int(chapter)
+            if current_chapter is None:
+                fatal(f"missing chapter for J-source checklist segment {segment!r}")
+            if "-" in segment:
+                start, end = segment.split("-", 1)
+                start_verse = check_ref_verse(start)
+                end_verse = check_ref_verse(end)
+            else:
+                start_verse = end_verse = check_ref_verse(segment)
+            source_verses = source_verse_numbers(current_book, current_chapter)
+            for verse in range(start_verse, end_verse + 1):
+                if verse in source_verses:
+                    refs.add(f"{include_for_check_ref(current_book, current_chapter)}:{verse}")
+    return frozenset(refs - J_CHECKLIST_EXCLUDED_REFS)
 
 
 def read_master():
@@ -236,6 +413,16 @@ def source_name(command):
     return None
 
 
+def sources_for_include(target, include):
+    if target.sources is None:
+        return None
+    allowed = set(target.sources)
+    for exception_include, exception_source in target.source_exceptions:
+        if include == exception_include:
+            allowed.add(exception_source)
+    return frozenset(allowed)
+
+
 def filter_source_group(text, allowed_sources):
     kept = []
     kept_count = 0
@@ -273,7 +460,15 @@ def filter_source_group(text, allowed_sources):
     return "\n".join(kept), kept_count
 
 
-def transform_verse(text, pos, target):
+def exception_sources_for_include(target, include):
+    return frozenset(
+        exception_source
+        for exception_include, exception_source in target.source_exceptions
+        if include == exception_include
+    )
+
+
+def transform_verse(text, pos, target, include, allowed_sources):
     command = parse_command(text, pos)
     if command is None or command[0] != "Verse":
         fatal("internal parser error: expected \\Verse")
@@ -282,13 +477,22 @@ def transform_verse(text, pos, target):
         fatal("malformed \\Verse command")
     parsed_groups, end = groups
     label, hebrew, english, commentary = [group[0] for group in parsed_groups]
+    label_number = numeric_verse_label(label)
+    ref = f"{include}:{label_number}" if label_number is not None else None
+    is_j_check_ref = target.check_j_source and ref in checked_j_source_refs()
+    is_exception_ref = ref in target.verse_exceptions
 
-    if target.sources is None:
+    if target.check_j_source and ref is not None and not is_j_check_ref and not is_exception_ref:
+        return "", end, False
+
+    if allowed_sources is None:
         return text[pos:end], end, True
 
-    filtered_hebrew, hebrew_count = filter_source_group(hebrew, target.sources)
-    filtered_english, english_count = filter_source_group(english, target.sources)
+    filtered_hebrew, hebrew_count = filter_source_group(hebrew, allowed_sources)
+    filtered_english, english_count = filter_source_group(english, allowed_sources)
     if hebrew_count + english_count == 0:
+        if is_j_check_ref:
+            return text[pos:end], end, True
         return "", end, False
 
     verse = (
@@ -300,8 +504,17 @@ def transform_verse(text, pos, target):
     return verse, end, True
 
 
-def transform_chapter(source_path, target):
+def chapter_title(text):
+    match = re.search(r"\\Chapter\{([^}]+)\}", text)
+    if match is None:
+        return None
+    return match.group(1)
+
+
+def transform_chapter(source_path, target, include):
     text = source_path.read_text()
+    chapter = chapter_title(text)
+    allowed_sources = sources_for_include(target, include)
     out = []
     pos = 0
     verse_count = 0
@@ -311,14 +524,14 @@ def transform_chapter(source_path, target):
             out.append(text[pos:])
             break
         out.append(text[pos:next_verse])
-        verse, end, kept = transform_verse(text, next_verse, target)
+        verse, end, kept = transform_verse(text, next_verse, target, include, allowed_sources)
         if kept:
             out.append(verse)
             verse_count += 1
         pos = end
     if verse_count == 0:
-        return None, 0
-    return "".join(out).rstrip() + "\n", verse_count
+        return None, 0, chapter
+    return "".join(out).rstrip() + "\n", verse_count, chapter
 
 
 def build_title_logo_override(target):
@@ -330,7 +543,7 @@ def build_title_logo_override(target):
         body = rf"{{\fontsize{{42}}{{50}}\fontfamily{{lmr}}\selectfont{target.title_logo}\par}}"
     return "\n".join(
         [
-            r"\renewcommand{\WeLDLogoAtPageBottom}{%",
+            r"\renewcommand{\WeTitlePageBottomMark}{%",
             r"    \vspace*{\fill}%",
             r"    \begingroup",
             r"    \centering",
@@ -342,12 +555,71 @@ def build_title_logo_override(target):
     )
 
 
+def chapter_link_list(chapters):
+    lines = []
+    for index, chapter in enumerate(chapters):
+        if index and index % 5 == 0:
+            lines.append(r"    \par\nobreak\vspace{0.55em}%")
+        lines.append(rf"    \ChapterLinkCell{{{chapter}}}%")
+    return "\n".join(lines)
+
+
+def build_navigation_overrides(books):
+    simple_books = {}
+    compound_books = {}
+    for book in books:
+        title = book["title"]
+        current_part = None
+        for item_type, value in book["items"]:
+            if item_type == "part":
+                current_part = value
+                continue
+            generated = book.get("generated", {}).get(value)
+            if generated is None:
+                continue
+            chapter = book.get("chapters", {}).get(value)
+            if chapter is None:
+                continue
+            if current_part is None:
+                simple_books.setdefault(title, []).append(chapter)
+            else:
+                compound_books.setdefault(title, {}).setdefault(current_part, []).append(chapter)
+
+    lines = [r"\makeatletter"]
+    for title, chapters in simple_books.items():
+        lines.append(rf"\DeclareChapterLinkList{{{title}}}{{%")
+        lines.append(chapter_link_list(chapters))
+        lines.append("}%")
+    for title, parts in compound_books.items():
+        lines.append(rf"\DeclareBookChapterLinkList{{{title}}}{{%")
+        for part, chapters in parts.items():
+            if not chapters:
+                continue
+            lines.append(rf"    \BookPartChapterLinks{{{part}}}%")
+        lines.append("}%")
+        for part, chapters in parts.items():
+            if not chapters:
+                continue
+            lines.append(rf"\DeclareChapterLinkList{{{part}}}{{%")
+            lines.append(chapter_link_list(chapters))
+            lines.append("}%")
+
+    # Remove default extra links, such as Genesis Apocrypha, unless the subset
+    # generator explicitly learns how to include those non-verse sections.
+    for book in books:
+        lines.append(rf"\DeclareBookExtraLinkList{{{book['title']}}}{{}}%")
+    lines.append(r"\makeatother")
+    return "\n".join(lines)
+
+
 def write_entrypoint(target, preamble, books, build_root):
     entrypoint = build_root / f"{target.name}.tex"
     lines = [
         preamble,
         "",
         build_title_logo_override(target),
+        "",
+        build_navigation_overrides(books),
         "",
         r"\frontmatter",
         r"\hypersetup{pageanchor=false}",
@@ -387,13 +659,18 @@ def copy_or_filter_chapter(include, target, target_dir):
     destination = target_dir / f"{include}.tex"
     destination.parent.mkdir(parents=True, exist_ok=True)
 
-    text, verse_count = transform_chapter(source, target)
+    text, verse_count, chapter = transform_chapter(source, target, include)
     if text is None:
         if destination.exists():
             destination.unlink()
-        return None, 0
+        return None, 0, chapter
     destination.write_text(text)
-    return destination.relative_to(ROOT).with_suffix("").as_posix(), verse_count
+    tex_path = destination.with_suffix("")
+    try:
+        tex_path = tex_path.relative_to(ROOT)
+    except ValueError:
+        pass
+    return tex_path.as_posix(), verse_count, chapter
 
 
 def selected_include(include, target):
@@ -416,28 +693,39 @@ def build_target(target_name, build_root):
     if target_dir.exists():
         shutil.rmtree(target_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
+    for suffix in (".aux", ".log", ".out", ".toc", ".pdf"):
+        stale = build_root / f"{target.name}{suffix}"
+        if stale.exists():
+            stale.unlink()
 
     included_books = []
     total_verses = 0
     for book in books:
         generated = {}
+        chapters = {}
         for item_type, value in book["items"]:
             if item_type != "include" or not selected_include(value, target):
                 continue
-            generated_path, verse_count = copy_or_filter_chapter(value, target, target_dir)
+            generated_path, verse_count, chapter = copy_or_filter_chapter(value, target, target_dir)
             if generated_path is not None:
                 generated[value] = generated_path
+                chapters[value] = chapter
                 total_verses += verse_count
         if generated:
             included_book = dict(book)
             included_book["generated"] = generated
+            included_book["chapters"] = chapters
             included_books.append(included_book)
 
     if not included_books:
         fatal(f"{target.name} did not select any chapters")
 
     entrypoint = write_entrypoint(target, preamble, included_books, build_root)
-    print(f"wrote {entrypoint.relative_to(ROOT)} ({len(included_books)} books, {total_verses} verses)")
+    try:
+        display_entrypoint = entrypoint.relative_to(ROOT)
+    except ValueError:
+        display_entrypoint = entrypoint
+    print(f"wrote {display_entrypoint} ({len(included_books)} books, {total_verses} verses)")
 
 
 def print_list():
