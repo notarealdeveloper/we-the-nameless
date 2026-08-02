@@ -54,6 +54,12 @@ AARONID_FULL_BOOKS = {
     "11-nehemiah",
 }
 
+SUBSET_EXCLUDED_INCLUDES = frozenset(
+    {
+        "01-genesis/apocrypha",
+    }
+)
+
 SOURCE_COMMANDS = {
     "J",
     "JM",
@@ -578,6 +584,36 @@ def parse_n_groups(text, pos, count):
     return groups, end
 
 
+def remove_declare_book_extra_link_list(text, book_title):
+    out = []
+    pos = 0
+    command_text = r"\DeclareBookExtraLinkList"
+    while pos < len(text):
+        start = text.find(command_text, pos)
+        if start < 0:
+            out.append(text[pos:])
+            break
+        parsed = parse_n_groups(text, start + len(command_text), 2)
+        if parsed is None:
+            out.append(text[pos : start + len(command_text)])
+            pos = start + len(command_text)
+            continue
+        groups, end = parsed
+        if groups[0][0] != book_title:
+            out.append(text[pos:end])
+            pos = end
+            continue
+        out.append(text[pos:start])
+        if end < len(text) and text[end] == "\n":
+            end += 1
+        pos = end
+    return "".join(out)
+
+
+def subset_preamble(preamble):
+    return remove_declare_book_extra_link_list(preamble, "Genesis")
+
+
 def source_name(command):
     if not command or command[0] not in {"h", "e"}:
         return None
@@ -861,6 +897,8 @@ def copy_or_filter_chapter(include, target, target_dir):
 
 
 def selected_include(include, target):
+    if include in SUBSET_EXCLUDED_INCLUDES:
+        return False
     if target.court:
         return in_court_range(include)
     if target.books is not None:
@@ -881,6 +919,7 @@ def build_target(target_name, build_root):
 
     build_root = build_root.resolve()
     preamble, body = read_master()
+    preamble = subset_preamble(preamble)
     books = parse_master_books(body)
     target_dir = build_root / "chapters"
     if target_dir.exists():
