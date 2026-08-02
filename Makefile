@@ -63,7 +63,7 @@ build-prepare:
 $(PDF): $(TEX_SOURCES)
 	$(MAKE) BUILD="$(BUILD)" build-prepare
 	$(LATEX) $(LATEXFLAGS) "$(MAIN).tex"
-	@if grep -q 'Rerun to get cross-references right' "$(BUILD)/$(MAIN).log"; then \
+	@if grep -q 'Rerun to get' "$(BUILD)/$(MAIN).log"; then \
 		$(LATEX) $(LATEXFLAGS) "$(MAIN).tex"; \
 	fi
 	$(MAKE) clean-stray-aux
@@ -143,7 +143,7 @@ $(SUBSET_TARGETS):
 	$(MAKE) BUILD="$(BUILD)" build-prepare
 	bin/book-subset --build-dir "$(BUILD)" $@
 	$(LATEX) $(LATEXFLAGS) "$(BUILD)/$@.tex"
-	@if grep -q 'Rerun to get cross-references right' "$(BUILD)/$@.log"; then \
+	@if grep -q 'Rerun to get' "$(BUILD)/$@.log"; then \
 		$(LATEX) $(LATEXFLAGS) "$(BUILD)/$@.tex"; \
 	fi
 	$(MAKE) clean-stray-aux
