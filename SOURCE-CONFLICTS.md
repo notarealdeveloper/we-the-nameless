@@ -1,0 +1,218 @@
+# Source Conflicts
+
+Generated while applying `bin/book-source-map-deuteronomistic-editor` to `05-deuteronomy` through `09-kings`.
+Existing named source attributions were left unchanged. Verses attributed to `X` or lacking source wrappers were treated as unattributed and changed to `DtrH`.
+
+- Verses now attributed to DtrH from this map: 485
+- Existing conflicts left unchanged: 197
+- Symbolic source-map ranges skipped: 5
+- Still unattributed after update: 0
+- Missing verses: 0
+
+## Existing Attribution Conflicts
+
+- Deut 31:1: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:2: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:3: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:4: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:5: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:6: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:7: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:8: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:9: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:10: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:11: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:12: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:13: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:14: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=E, English=E in 05-deuteronomy/31.tex.
+- Deut 31:15: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=E, English=E in 05-deuteronomy/31.tex.
+- Deut 31:16: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/31.tex.
+- Deut 31:17: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/31.tex.
+- Deut 31:18: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/31.tex.
+- Deut 31:19: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/31.tex.
+- Deut 31:20: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/31.tex.
+- Deut 31:21: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/31.tex.
+- Deut 31:22: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/31.tex.
+- Deut 31:23: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=E, English=E in 05-deuteronomy/31.tex.
+- Deut 31:24: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:25: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:26: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:27: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/31.tex.
+- Deut 31:28: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/31.tex.
+- Deut 31:29: source map says DtrH (transition; range(s) 31:1-29), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/31.tex.
+- Deut 32:44: source map says DtrH (transition; range(s) 32:44-52), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/32.tex.
+- Deut 32:45: source map says DtrH (transition; range(s) 32:44-52), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/32.tex.
+- Deut 32:46: source map says DtrH (transition; range(s) 32:44-52), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/32.tex.
+- Deut 32:47: source map says DtrH (transition; range(s) 32:44-52), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/32.tex.
+- Deut 32:48: source map says DtrH (transition; range(s) 32:44-52), but TeX is already attributed as Hebrew=R, English=R in 05-deuteronomy/32.tex.
+- Deut 32:49: source map says DtrH (transition; range(s) 32:44-52), but TeX is already attributed as Hebrew=R, English=R in 05-deuteronomy/32.tex.
+- Deut 32:50: source map says DtrH (transition; range(s) 32:44-52), but TeX is already attributed as Hebrew=R, English=R in 05-deuteronomy/32.tex.
+- Deut 32:51: source map says DtrH (transition; range(s) 32:44-52), but TeX is already attributed as Hebrew=R, English=R in 05-deuteronomy/32.tex.
+- Deut 32:52: source map says DtrH (transition; range(s) 32:44-52), but TeX is already attributed as Hebrew=R, English=R in 05-deuteronomy/32.tex.
+- Deut 34:1: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/34.tex.
+- Deut 34:2: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/34.tex.
+- Deut 34:3: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/34.tex.
+- Deut 34:4: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/34.tex.
+- Deut 34:5: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=J, English=J in 05-deuteronomy/34.tex.
+- Deut 34:6: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=J, English=J in 05-deuteronomy/34.tex.
+- Deut 34:7: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=J, English=J in 05-deuteronomy/34.tex.
+- Deut 34:8: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/34.tex.
+- Deut 34:9: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=DtrB, English=DtrB in 05-deuteronomy/34.tex.
+- Deut 34:10: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/34.tex.
+- Deut 34:11: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/34.tex.
+- Deut 34:12: source map says DtrH (epilogue; range(s) 34), but TeX is already attributed as Hebrew=DtrA, English=DtrA in 05-deuteronomy/34.tex.
+- Josh 1:1: source map says DtrH (introduction; range(s) 1), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/01.tex.
+- Josh 1:6: source map says DtrH (introduction; range(s) 1), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/01.tex.
+- Josh 1:9: source map says DtrH (introduction; range(s) 1), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/01.tex.
+- Josh 7:10: source map says DtrH (editorial; range(s) 7:10-15), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/07.tex.
+- Josh 7:11: source map says DtrH (editorial; range(s) 7:10-15), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/07.tex.
+- Josh 7:12: source map says DtrH (editorial; range(s) 7:10-15), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/07.tex.
+- Josh 7:13: source map says DtrH (editorial; range(s) 7:10-15), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/07.tex.
+- Josh 7:14: source map says DtrH (editorial; range(s) 7:10-15), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/07.tex.
+- Josh 7:15: source map says DtrH (editorial; range(s) 7:10-15), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/07.tex.
+- Josh 11:16: source map says DtrH (summary; range(s) 11:16-23), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/11.tex.
+- Josh 11:17: source map says DtrH (summary; range(s) 11:16-23), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/11.tex.
+- Josh 11:18: source map says DtrH (summary; range(s) 11:16-23), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/11.tex.
+- Josh 11:19: source map says DtrH (summary; range(s) 11:16-23), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/11.tex.
+- Josh 11:20: source map says DtrH (summary; range(s) 11:16-23), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/11.tex.
+- Josh 11:21: source map says DtrH (summary; range(s) 11:16-23), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/11.tex.
+- Josh 11:22: source map says DtrH (summary; range(s) 11:16-23), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/11.tex.
+- Josh 11:23: source map says DtrH (summary; range(s) 11:16-23), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/11.tex.
+- Josh 13:1: source map says DtrH (transition; range(s) 13:1-7), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/13.tex.
+- Josh 13:2: source map says DtrH (transition; range(s) 13:1-7), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/13.tex.
+- Josh 13:3: source map says DtrH (transition; range(s) 13:1-7), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/13.tex.
+- Josh 13:4: source map says DtrH (transition; range(s) 13:1-7), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/13.tex.
+- Josh 13:5: source map says DtrH (transition; range(s) 13:1-7), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/13.tex.
+- Josh 13:6: source map says DtrH (transition; range(s) 13:1-7), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/13.tex.
+- Josh 13:7: source map says DtrH (transition; range(s) 13:1-7), but TeX is already attributed as Hebrew=J, English=J in 06-joshua/13.tex.
+- Josh 21:43: source map says DtrH (summary; range(s) 21:43-45), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/21.tex.
+- Josh 21:44: source map says DtrH (summary; range(s) 21:43-45), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/21.tex.
+- Josh 21:45: source map says DtrH (summary; range(s) 21:43-45), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/21.tex.
+- Josh 22:1: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:2: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:3: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:4: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:5: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:6: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:7: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:8: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:9: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:10: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:11: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:12: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:13: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:14: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:15: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:16: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:17: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:18: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:19: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:20: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:21: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:22: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:23: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:24: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:25: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:26: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:27: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:28: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:29: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:30: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:31: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:32: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:33: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Josh 22:34: source map says DtrH (editorial_narrative; range(s) 22), but TeX is already attributed as Hebrew=P, English=P in 06-joshua/22.tex.
+- Judg 10:8: source map says DtrH (editorial_sermon; range(s) 10:6-16), but TeX is already attributed as Hebrew=J, English=J in 07-judges/10.tex.
+- Judg 10:9: source map says DtrH (editorial_sermon; range(s) 10:6-16), but TeX is already attributed as Hebrew=J, English=J in 07-judges/10.tex.
+- Judg 17:6: source map says DtrH (editorial_refrain; range(s) 17:6), but TeX is already attributed as Hebrew=J, English=J in 07-judges/17.tex.
+- Judg 18:1: source map says DtrH (editorial_refrain; range(s) 18:1), but TeX is already attributed as Hebrew=J, English=J in 07-judges/18.tex.
+- Judg 19:1: source map says DtrH (editorial_refrain; range(s) 19:1), but TeX is already attributed as Hebrew=J, English=J in 07-judges/19.tex.
+- Judg 21:25: source map says DtrH (editorial_refrain; range(s) 21:25), but TeX is already attributed as Hebrew=J, English=J in 07-judges/21.tex.
+- 1 Sam 7:5: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:6: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:7: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:8: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:9: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:10: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:11: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:12: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:13: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:14: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:15: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:16: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 7:17: source map says DtrH (reform_narrative; range(s) 7:3-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-07.tex.
+- 1 Sam 8:1: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:2: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:3: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:4: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:5: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:6: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:7: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:9: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:10: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:11: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:12: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:13: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:14: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:15: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:16: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:17: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:18: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:19: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:20: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:21: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 8:22: source map says DtrH (anti_monarchy_sermon; range(s) 8), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-08.tex.
+- 1 Sam 10:17: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:18: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:19: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:20: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:21: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:22: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:23: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:24: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:25: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:26: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 10:27: source map says DtrH (assembly; range(s) 10:17-27), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-10.tex.
+- 1 Sam 12:1: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:2: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:3: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:4: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:5: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:6: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:16: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:17: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:18: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:19: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:20: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:22: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 1 Sam 12:23: source map says DtrH (farewell_speech; range(s) 12), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/1-12.tex.
+- 2 Sam 7:1: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:2: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:3: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:4: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:5: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:6: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:7: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:8: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:9: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:10: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:11: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 2 Sam 7:12: source map says DtrH (oracle_redaction; range(s) 7:1-17), but TeX is already attributed as Hebrew=J, English=J in 08-samuel/2-07.tex.
+- 1 Kgs 2:1: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+- 1 Kgs 2:2: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+- 1 Kgs 2:5: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+- 1 Kgs 2:6: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+- 1 Kgs 2:7: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+- 1 Kgs 2:8: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+- 1 Kgs 2:9: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+- 1 Kgs 2:10: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+- 1 Kgs 2:11: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+- 1 Kgs 2:12: source map says DtrH (farewell_speech; range(s) 2:1-12), but TeX is already attributed as Hebrew=J, English=J in 09-kings/1-02.tex.
+
+## Symbolic Ranges Not Applied Automatically
+
+- Judges judge_introductions_and_conclusions: editorial_formula; no concrete verse list in the source map.
+- 1 Samuel evaluation_notices: editorial_formula; no concrete verse list in the source map.
+- 1 Kings royal_evaluations: editorial_formula; no concrete verse list in the source map.
+- 1 Kings elijah_elisha_framework: editorial_framework; no concrete verse list in the source map.
+- 2 Kings royal_evaluations: editorial_formula; no concrete verse list in the source map.
