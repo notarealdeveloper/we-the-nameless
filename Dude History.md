@@ -16,25 +16,25 @@
 
 ## Table of Contents
 
-- [The End of the Kingdom](#the-end-of-the-kingdom)
+- [[#The End of the Kingdom]]
 - [[#Exile and the Portable God]]
-- [The First Diaspora](#the-first-diaspora)
-- [The Second Temple and the Torah](#the-second-temple-and-the-torah)
-- [The Bible Goes Greek](#the-bible-goes-greek)
-- [Expanding Scripture](#expanding-scripture)
-- [Apocalypse and Revolution](#apocalypse-and-revolution)
-- [The Many Judaisms](#the-many-judaisms)
-- [The Jesus Movement](#the-jesus-movement)
-- [The Second Destruction](#the-second-destruction)
-- [Rabbinic Judaism and the Christian Bible](#rabbinic-judaism-and-the-christian-bible)
-- [Islam and the Biblical Tradition](#islam-and-the-biblical-tradition)
-- [The Masoretes](#the-masoretes)
-- [Printing the Bible](#printing-the-bible)
-- [Historical Criticism Begins](#historical-criticism-begins)
-- [The Documentary Revolution](#the-documentary-revolution)
-- [Archaeology Reopens the Ancient World](#archaeology-reopens-the-ancient-world)
-- [Modern Israel and Biblical Archaeology](#modern-israel-and-biblical-archaeology)
-- [The Bible in the Twenty-First Century](#the-bible-in-the-twenty-first-century)
+- [[#The First Diaspora]]
+- [[#The Second Temple and the Torah]]
+- [[#The Bible Goes Greek]]
+- [[#Expanding Scripture]]
+- [[#Apocalypse and Revolution]]
+- [[#The Many Judaisms]]
+- [[#The Jesus Movement]]
+- [[#The Second Destruction]]
+- [[#Rabbinic Judaism and the Christian Bible]]
+- [[#Islam and the Biblical Tradition]]
+- [[#The Masoretes]]
+- [[#Printing the Bible]]
+- [[#Historical Criticism Begins]]
+- [[#The Documentary Revolution]]
+- [[#Archaeology Reopens the Ancient World]]
+- [[#Modern Israel and Biblical Archaeology]]
+- [[#The Bible in the Twenty-First Century]]
 
 ---
 
