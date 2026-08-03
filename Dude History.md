@@ -1,121 +1,1093 @@
 
-# The Dudetheyreonamystic History
+## The Dudetheyreonamystic History
+
+*A Documentary History of the Bible After II Kings*
 
 > **Subject:** The life of the Bible after the end of II Kings.
 >
-> **Method:** Assemble short extracts from scriptures, apocrypha, pseudepigrapha,
-> archives, translations, commentaries, polemics, archaeological discoveries,
-> and modern scholarship—exactly as the Deuteronomistic Historian assembled
-> older sources into a new history.
+> **Method:** Assemble short extracts from scriptures, apocrypha,
+> pseudepigrapha, archives, translations, commentaries, polemics,
+> archaeology, and modern scholarship into a single continuous history.
 >
-> **Central plot:** The old national literature survives the destruction of its
-> kingdom; becomes Torah and Bible; divides into variant textual families and
-> rival canons; generates Judaism, Christianity, and Islam; is stabilized by
-> scribes; reopened by philology; divided into sources by criticism; and placed
-> back into its ancient material world by archaeology.
+> **Protagonist:** Not Israel. Not Judaism. Not Christianity.
+> The **Bible itself**.
 
-|              Date described | Place / stage                    | Best source or object                                                                 | Suggested cut                                                                              | What happens to the Bible                                                                                                                                                                | Approximate date written / made                                                 |
-| --------------------------: | -------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-|                 587/586 BCE | Jerusalem                        | **II Kings 25**                                                                       | 25:8–12, 18–21, 27–30                                                                      | The old history ends: temple burned, monarchy destroyed, people deported—but Jehoiachin survives in Babylon, leaving the story barely open.                                              | Sixth century BCE, with later editing                                           |
-|                 597–570 BCE | Babylonia                        | **Ezekiel**                                                                           | 1:1–3; 8:1–12; 11:14–21; 18:1–4; 37:1–14                                                   | Prophecy detaches YHWH from the land and temple. Israel’s god can travel, speak, judge, and restore in exile.                                                                            | Mostly sixth century BCE                                                        |
-|                  c. 594 BCE | Jerusalem → Babylon              | **Jeremiah’s letter to the exiles**                                                   | Jeremiah 29:1–14                                                                           | Exile becomes a durable way of life: build houses, plant gardens, marry, multiply, and seek the city’s welfare.                                                                          | Sixth century BCE, edited later                                                 |
-|                     586 BCE | Jerusalem                        | **Lamentations**                                                                      | 1:1–4; 2:10–15; 5:19–22                                                                    | National defeat becomes portable liturgy. The ruined city survives as a book that can be mourned anywhere.                                                                               | Sixth century BCE                                                               |
-|               After 586 BCE | Babylon                          | **Psalm 137**                                                                         | Entire psalm                                                                               | The first great diaspora poem: memory of Zion, refusal to assimilate completely, grief turning into revenge fantasy.                                                                     | Sixth–fifth century BCE                                                         |
-|                 586–539 BCE | Babylon                          | **Isaiah 40–55**                                                                      | 40:1–8; 44:24–45:7; 55:10–11                                                               | Israel’s literature reinterprets catastrophe: Cyrus becomes YHWH’s anointed, and the divine word—not the monarchy—becomes permanent.                                                     | Sixth century BCE                                                               |
-|   Sixth–fifth centuries BCE | Babylonia                        | **Al-Yahudu tablets**                                                                 | A few contracts naming Judean families, fields, debts, and inherited YHWH-names            | The exiles become farmers, tenants, merchants, and imperial subjects. Biblical exile meets ordinary paperwork.                                                                           | c. 572–477 BCE                                                                  |
-|                 539–515 BCE | Persia and Yehud                 | **Ezra 1–6**                                                                          | 1:1–8; 3:10–13; 4:7–16; 6:13–18                                                            | Imperial decrees, archives, and letters become part of sacred history. The rebuilt temple replaces the lost kingdom.                                                                     | Persian-period materials; edited fourth–third centuries BCE                     |
-|                 520–518 BCE | Jerusalem                        | **Haggai and Zechariah**                                                              | Haggai 1:2–11; Zechariah 4:6–10                                                            | Prophets turn rebuilding into revelation. The temple is restored, but the Davidic monarchy is not.                                                                                       | Late sixth century BCE                                                          |
-|           Fifth century BCE | Babylonia / Judah                | **Priestly Torah**                                                                    | Genesis 1:1–2:4a; Genesis 17; Exodus 25:1–9; Leviticus 16:29–34                            | Creation, covenant, purity, sacrifice, calendar, and portable sanctuary are organized into an immense priestly system.                                                                   | Commonly exilic or Persian period; precise model disputed                       |
-|              c. 460–400 BCE | Elephantine, Egypt               | **Elephantine archives**                                                              | One marriage contract; one property document; one letter mentioning YHW                    | An actual Judean diaspora has its own temple, priests, mixed households, Aramaic legal culture, and limited dependence on Jerusalem.                                                     | Fifth century BCE                                                               |
-|                 419/418 BCE | Elephantine                      | **Elephantine Passover Letter**                                                       | Surviving lines concerning unleavened bread, dates, and prohibited work                    | Festival law travels through imperial correspondence. Torah-like practice is negotiated before the Pentateuch is visibly fixed everywhere.                                               | 419/418 BCE                                                                     |
-|                 410–407 BCE | Elephantine                      | **Temple Petition**                                                                   | Description of the destruction of YHW’s temple and request to rebuild                      | Elephantine appeals to authorities in both Jerusalem and Samaria. There is not yet one uncontested center speaking for all Judeans.                                                      | 407 BCE                                                                         |
-|  Fifth–fourth centuries BCE | Persia / Jerusalem               | **Ezra 7–10; Nehemiah 8–10**                                                          | Ezra 7:6–10; Nehemiah 8:1–12; 9:1–3                                                        | A written Torah is publicly read, explained, and made the constitutional center of the restored community.                                                                               | Fifth-century memoir traditions; edited later                                   |
-|       Legendary restoration | Babylon / Jerusalem              | **2 Esdras 14 / 4 Ezra**                                                              | 14:19–48                                                                                   | Ezra dictates the destroyed scriptures anew: twenty-four public books and seventy secret books. A myth of total scriptural reconstruction.                                               | c. 90–100 CE, describing the age of Ezra                                        |
-|  Fourth–third centuries BCE | Judah                            | **Chronicles**                                                                        | 1 Chronicles 9:1–2; 2 Chronicles 36:22–23                                                  | Samuel–Kings is rewritten: David becomes temple founder, Levites dominate, northern material shrinks, and the ending points toward restoration.                                          | Fourth–third centuries BCE                                                      |
-|           Third century BCE | Alexandria                       | **Septuagint Pentateuch**                                                             | Genesis 1; Exodus 3; Deuteronomy 32 in Hebrew and Greek side by side                       | Torah enters Greek. Translation creates new meanings, new textual forms, and eventually a second major scriptural civilization.                                                          | Pentateuch translated mainly third century BCE                                  |
-|  Imagined third century BCE | Alexandria / Jerusalem           | **Letter of Aristeas**                                                                | §§9–11; 301–311 or another brief account of the translators                                | The Greek Torah receives a charter myth: royal library, seventy-two translators, miraculous agreement, and an authoritative translation.                                                 | Probably second century BCE                                                     |
-|  Third–second centuries BCE | Babylonia / Media                | **Tobit**                                                                             | 1:1–22; 4:5–19; 6:1–9; 14:3–7                                                              | Exile becomes family romance: burial, almsgiving, endogamy, angels, demons, medicine, travel, and hope for Jerusalem.                                                                    | c. 225–175 BCE                                                                  |
-|          Second century BCE | Persia                           | **Esther**                                                                            | Esther 3:8–15; 4:13–17; 9:20–28                                                            | A diaspora community survives through court access, counterviolence, memory, and a new festival—with God almost entirely offstage.                                                       | Probably fourth–third century BCE; dating disputed                              |
-|  Second–first centuries BCE | Persia                           | **Greek Additions to Esther**                                                         | Esther’s prayer and Mordecai’s dream                                                       | Greek editors add prayers, dreams, divine providence, and official decrees, making the strangely secular Hebrew story more conventionally biblical.                                      | Second–first centuries BCE                                                      |
-|          Second century BCE | Egypt                            | **Artapanus, Demetrius, Ezekiel the Tragedian**                                       | One surviving fragment from each                                                           | Greek-speaking Jews rewrite biblical history as chronology, philosophy, ethnography, and stage tragedy. Moses becomes a world-civilizing hero.                                           | Third–second centuries BCE                                                      |
-|              c. 200–175 BCE | Jerusalem / Alexandria           | **Ben Sira and the translator’s prologue**                                            | Sirach prologue; 24:1–23; 44:1–15                                                          | “Law, Prophets, and other ancestral books” are translated into Greek. The shape of a larger scriptural collection becomes visible.                                                       | Hebrew c. 200–175 BCE; Greek after 132 BCE                                      |
-|  Third–second centuries BCE | Judea                            | **1 Enoch: Book of the Watchers**                                                     | 1 Enoch 1:1–9; 6–10                                                                        | Genesis 6 explodes into an entire cosmic history. A few obscure biblical lines generate angels, giants, forbidden knowledge, and apocalypse.                                             | Third century BCE, with layers                                                  |
-|          Second century BCE | Judea                            | **Jubilees**                                                                          | 1:1–5; 6:17–38; 15:25–34                                                                   | Genesis and Exodus are rewritten as a revelation already dictated in heaven, with stricter calendar, purity, circumcision, and ethnic boundaries.                                        | c. 160–140 BCE                                                                  |
-|                 175–164 BCE | Judea                            | **Daniel 7–12**                                                                       | 7:1–14; 9:20–27; 12:1–4                                                                    | Current imperial persecution is coded as ancient prediction. Biblical history becomes apocalypse, angelic timetable, and resurrection hope.                                              | c. 167–164 BCE                                                                  |
-|                 167–160 BCE | Judea                            | **1 Maccabees**                                                                       | 1:10–15, 41–64; 2:15–28; 4:36–59                                                           | A new biblical-style history explains resistance, martyrdom, temple rededication, and the rise of the Hasmoneans—without becoming canonical in Judaism.                                  | c. 100 BCE, probably from Hebrew                                                |
-|                 180–161 BCE | Judea / Egypt                    | **2 Maccabees**                                                                       | 2:19–32; 6:18–31; 7:1–23; 15:37–39                                                         | History becomes epitome, martyr legend, bodily resurrection, heavenly intervention, and explicit reflection on the editor’s craft.                                                       | Late second century BCE                                                         |
-|  Second–first centuries BCE | Judea                            | **Genesis Apocryphon**                                                                | Columns II–V on Noah’s suspicious birth; XIX–XXII on Abraham                               | Biblical figures tell their own stories in first-person Aramaic. Scripture remains open to expansion, correction, and imaginative filling of gaps.                                       | c. first century BCE, using older traditions                                    |
-|  Second–first centuries BCE | Qumran                           | **Community Rule / Damascus Document**                                                | 1QS 1:1–15; CD 1:1–12                                                                      | A sect reads prophecy as its own history, builds a covenant community, and treats interpretation as continuing revelation.                                                               | Second–first centuries BCE                                                      |
-|           First century BCE | Qumran                           | **Habakkuk Pesher**                                                                   | 1QpHab VII–VIII                                                                            | “The prophet did not know what he meant.” Scripture’s true referent is the sect’s present, disclosed by the inspired interpreter.                                                        | First century BCE                                                               |
-|             c. 50 BCE–50 CE | Alexandria                       | **Wisdom of Solomon**                                                                 | 2:10–24; 7:22–30; 11:15–16                                                                 | Biblical wisdom fuses with Greek philosophy, immortality, cosmic order, and an allegorical retelling of Exodus.                                                                          | Late first century BCE–early first century CE                                   |
-|            c. 50 BCE–100 CE | Egypt or Syria                   | **Joseph and Aseneth**                                                                | Aseneth’s conversion and heavenly meal                                                     | Joseph’s unexplained Egyptian marriage becomes a large romance about conversion, identity, food, and entrance into Israel.                                                               | First century BCE or CE; disputed                                               |
-|                    38–41 CE | Alexandria / Rome                | **Philo, Against Flaccus and Embassy to Gaius**                                       | Short account of the Alexandrian pogrom; Caligula’s statue crisis                          | A Greek philosophical Bible meets imperial politics. Allegorical exegesis becomes a way of inhabiting both Moses and Greek culture.                                                      | c. 40–50 CE                                                                     |
-|                    c. 30 CE | Galilee and Judea                | **Mark**                                                                              | Mark 1:1–15; 8:27–33; 13:1–8; 15:33–39                                                     | Israel’s scriptures are recut around Jesus. A failed messianic execution becomes “good news,” and an old prophetic genre mutates into gospel.                                            | c. 65–75 CE                                                                     |
-|                 c. 30–60 CE | Eastern Mediterranean            | **Paul: minimal anthology**                                                           | Galatians 2:11–21; 3:6–14; 1 Corinthians 7:29–31; 8:4–6; 15:3–8; Romans 9:1–8; 11:25–32    | Scripture is reread around a crucified and risen messiah; gentiles enter Abraham’s family without becoming ordinary Judeans.                                                             | Authentic letters c. 49–62 CE                                                   |
-|                 c. 30–90 CE | Egypt or Syria                   | **Gospel of Thomas**                                                                  | Sayings 1–3, 13, 22, 77, 114                                                               | The gospel can exist without narrative, crucifixion story, or resurrection sequence: Jesus becomes a collection of secret sayings.                                                       | Core and final form disputed; commonly first–second century CE                  |
-|                    66–73 CE | Judea / Rome                     | **Josephus, Jewish War**                                                              | Preface; 6.249–270 on the temple’s burning                                                 | Biblical historiography becomes Greek-Roman eyewitness history. The second temple falls, forcing another enormous reinterpretation.                                                      | c. 75–79 CE                                                                     |
-| 70 CE interpreted afterward | Judea and diaspora               | **4 Ezra**                                                                            | 3:1–36; 7:75–101; 12:10–12                                                                 | The destruction of 70 is narrated through Ezra after 586. Theodicy and apocalypse fuse the two temple catastrophes.                                                                      | c. 90–100 CE                                                                    |
-| 70 CE interpreted afterward | Judea and diaspora               | **2 Baruch**                                                                          | 10:1–19; 31:1–5; 77:12–26                                                                  | Baruch mourns Zion and sends revelation to the exiles. The dead Jerusalem again survives by becoming a book.                                                                             | c. 90–120 CE                                                                    |
-|                    c. 95 CE | Roman Asia                       | **Revelation**                                                                        | 1:1–8; 5:1–10; 12:1–12; 13:1–10; 21:1–5                                                    | Daniel, Ezekiel, Isaiah, Exodus, and Zechariah are fed into a visionary machine aimed at Rome and a coming New Jerusalem.                                                                | c. 90–96 CE, though debated                                                     |
-|       Late first century CE | Mediterranean world              | **Luke–Acts**                                                                         | Luke 1:1–4; Acts 1:1–8; 15:1–29; 17:16–34; 28:23–31                                        | The Jesus story becomes world history: Jerusalem generates a Greek-speaking movement that ends preaching in Rome.                                                                        | c. 80–100 CE                                                                    |
-|                c. 50–130 CE | Judean Desert                    | **Dead Sea Scroll biblical manuscripts**                                              | Compare Deuteronomy 32:8; Jeremiah’s lengths; Psalm collections                            | There was no single perfectly uniform Hebrew Bible. Masoretic-like, Septuagint-like, Samaritan-like, and independent forms coexist.                                                      | Manuscripts mainly third century BCE–second century CE                          |
-|                  132–135 CE | Judean Desert                    | **Bar Kokhba letters and Babatha archive**                                            | One military order; one legal petition                                                     | Biblical Hebrew, Jewish Aramaic, Greek law, rebellion, property, and ordinary life appear together in real documents.                                                                    | 132–135 CE                                                                      |
-|                   c. 170 CE | Syria                            | **Tatian’s Diatessaron**                                                              | Opening harmony combining John 1 and the Synoptic birth narratives                         | Four competing gospels are cut into one continuous super-gospel—the Dudetheyreonamystic method applied to Jesus.                                                                         | c. 160–175 CE                                                                   |
-|                   c. 180 CE | Gaul / Rome                      | **Irenaeus, Against Heresies**                                                        | 3.11.8 on why there must be exactly four gospels                                           | The church begins fixing the number and identity of authoritative gospels while rejecting alternative Christian libraries.                                                               | c. 180 CE                                                                       |
-|                   c. 200 CE | Palestine                        | **Mishnah**                                                                           | Avot 1:1–2; Yadayim 3:5                                                                    | Oral Torah is written beside written Torah. Canon and interpretation become institutions, not merely books.                                                                              | c. 200 CE                                                                       |
-|  Second–fourth centuries CE | Jewish and Christian worlds      | **Targums**                                                                           | Targum Onkelos Genesis 4:8; selected expansion in Targum Jonathan                          | Translation into Aramaic becomes interpretation: ambiguities are solved, theology clarified, and narrative gaps quietly filled.                                                          | Traditions early; major forms late antique                                      |
-|   Third–fourth centuries CE | Caesarea                         | **Origen’s Hexapla**                                                                  | Surviving synopsis of Hebrew, transliteration, Aquila, Symmachus, Septuagint, Theodotion   | Textual criticism is born on a monumental scale: six versions aligned to expose disagreement and reconstruct the text.                                                                   | c. 240 CE                                                                       |
-|           Fourth century CE | Roman Empire                     | **Codex Vaticanus and Codex Sinaiticus**                                              | Compare their biblical tables of contents                                                  | The scroll-library becomes a giant bound codex. Christian Bibles contain differing arrangements and edges of canon.                                                                      | Fourth century CE                                                               |
-|                      367 CE | Alexandria                       | **Athanasius, Festal Letter 39**                                                      | Canon list                                                                                 | The first surviving list exactly matching the modern twenty-seven-book New Testament distinguishes canonical books from useful church reading.                                           | 367 CE                                                                          |
-|               c. 382–405 CE | Bethlehem                        | **Jerome, Vulgate and prologues**                                                     | Prologus Galeatus; prefaces to Samuel–Kings and Judith                                     | Jerome returns to Hebrew, distinguishes canonical from ecclesiastical books, and creates Latin Christianity’s dominant Bible.                                                            | Late fourth–early fifth century CE                                              |
-|                   c. 400 CE | North Africa                     | **Augustine, Confessions and City of God**                                            | Confessions 12 on Genesis; City of God 17–18                                               | The Bible becomes a universal philosophy of history and a text whose obscurities support multiple legitimate readings.                                                                   | c. 397–426 CE                                                                   |
-|                   c. 450 CE | Galilee                          | **Jerusalem Talmud**                                                                  | One brief sugya on textual interpretation                                                  | Scripture is absorbed into legal argument, remembered debate, storytelling, and institutional reasoning.                                                                                 | Fourth–fifth centuries CE                                                       |
-|               c. 500–650 CE | Babylonia                        | **Babylonian Talmud**                                                                 | Bava Batra 14b–15a on authorship and book order; Menachot 29b on Moses and Akiva           | Rabbis explicitly discuss who wrote biblical books and imagine Moses unable to understand later Torah interpretation.                                                                    | Fifth–seventh centuries CE                                                      |
-|               c. 610–632 CE | Arabia                           | **Qur’an**                                                                            | Surahs 2:40–79; 5:44–48; 12:1–7; 18:60–82                                                  | Biblical characters and traditions are proclaimed anew in Arabic. The Qur’an confirms earlier revelation while accusing communities of distortion or concealment.                        | c. 610–632 CE                                                                   |
-|  Seventh–tenth centuries CE | Tiberias, Babylon, Palestine     | **Masoretes**                                                                         | A page showing vowels, accents, qere/ketiv, marginal Masorah                               | Scribes freeze pronunciation, chanting, spelling traditions, and textual statistics around the inherited consonantal text.                                                               | Mainly seventh–tenth centuries CE                                               |
-|                   c. 930 CE | Tiberias                         | **Aleppo Codex**                                                                      | One complete annotated page                                                                | The Ben Asher Masoretic system reaches its most prestigious surviving form: consonants, vowels, accents, and scribal guardrails.                                                         | c. 920–930 CE                                                                   |
-|                1008/1009 CE | Cairo                            | **Leningrad Codex**                                                                   | Colophon and one representative page                                                       | The oldest complete surviving Hebrew Bible becomes the principal base manuscript of modern critical Hebrew editions.                                                                     | 1008/1009 CE                                                                    |
-|                  c. 1080 CE | Muslim Spain                     | **Ibn Ezra**                                                                          | Comments on Deuteronomy 1:1; 34:1–12; “the secret of the twelve”                           | A traditional commentator hints that several Torah verses—and perhaps a larger section—were written after Moses.                                                                         | Twelfth century CE                                                              |
-|                     1190 CE | Egypt                            | **Maimonides**                                                                        | Guide 2.25; Mishneh Torah, Foundations 8                                                   | Philosophical reason constrains interpretation, but Mosaic authorship and Torah’s unique authority remain doctrinal boundaries.                                                          | Late twelfth century CE                                                         |
-|                       1450s | Mainz                            | **Gutenberg Bible**                                                                   | Opening page and colophon                                                                  | Scripture becomes mechanically reproducible. Textual uniformity, mass ownership, vernacular translation, and scholarly comparison accelerate.                                            | c. 1454–1455                                                                    |
-|                   1516–1517 | Venice                           | **First Rabbinic Bible**                                                              | A page with Hebrew text, Targum, and commentaries                                          | The Jewish Bible appears as a printed conversation among text, Aramaic translation, Masorah, and medieval commentators.                                                                  | 1516–1517                                                                       |
-|                   1517–1534 | Germany                          | **Martin Luther**                                                                     | Preface to Romans; prefaces to Hebrews, James, Jude, Revelation; German Bible              | Translation remakes national language; canon develops an internal hierarchy; justification by faith becomes Luther’s interpretive key.                                                   | 1522–1534                                                                       |
-|                   1524–1525 | Europe                           | **Second Rabbinic Bible, edited by Jacob ben Hayyim**                                 | Masoretic apparatus page                                                                   | Printed editorial work standardizes the received Hebrew text for centuries and becomes the base of many later Christian editions.                                                        | 1524–1525                                                                       |
-|                        1546 | Trent                            | **Council of Trent canon decree**                                                     | Brief canon list and decree                                                                | In reaction to Protestant exclusions, the Catholic Church dogmatically fixes its larger Old Testament canon.                                                                             | 1546                                                                            |
-|                        1651 | England                          | **Thomas Hobbes, Leviathan**                                                          | Chapter 33                                                                                 | Hobbes asks from internal evidence when biblical books could actually have been written, reopening historical authorship in modern Europe.                                               | 1651                                                                            |
-|                        1670 | Netherlands                      | **Baruch Spinoza, Theological-Political Treatise**                                    | Chapters 7–10, especially discussion of Ezra                                               | Spinoza treats scripture like any ancient document: Moses did not write the whole Torah; Ezra or a later historian assembled Genesis–Kings.                                              | 1670                                                                            |
-|                        1678 | France                           | **Richard Simon, Critical History of the Old Testament**                              | Preface and opening chapters                                                               | Variants, scribes, public recorders, and editorial transmission become central evidence. Catholic textual criticism challenges both Protestant and traditional certainty.                | 1678                                                                            |
-|                c. 1660–1720 | England                          | **Isaac Newton’s biblical manuscripts**                                               | *Observations upon the Prophecies* selections; notes on textual corruption and the Trinity | One of the founders of modern physics treats prophecy, chronology, temple measurements, and textual corruption as an exact historical science.                                           | Mostly late seventeenth–early eighteenth century; published 1733                |
-|                        1753 | France                           | **Jean Astruc, Conjectures**                                                          | Opening division of Genesis into sources using divine names                                | Repeated stories and alternating divine names are separated into parallel documents. Source criticism receives its basic tool.                                                           | 1753                                                                            |
-|                 1780s–1820s | Germany                          | **Eichhorn and early higher criticism**                                               | Brief methodological preface                                                               | Astruc’s documents cease to be merely Moses’ source notes and become evidence for a long literary history of the Pentateuch.                                                             | Late eighteenth–early nineteenth centuries                                      |
-|                        1805 | Germany                          | **W. M. L. de Wette**                                                                 | Thesis connecting Deuteronomy with Josiah’s reform                                         | A biblical law book is dated by its fit with a narrated historical event. Deuteronomy becomes a late programmatic work, not Mosaic transcript.                                           | 1805                                                                            |
-|                        1835 | Germany                          | **David Friedrich Strauss, Life of Jesus**                                            | Introduction on myth                                                                       | Historical criticism crosses decisively into the Gospels. Supernatural narrative is analyzed as communal myth rather than eyewitness report.                                             | 1835                                                                            |
-|                   1859–1862 | England                          | **Darwin and Colenso**                                                                | Colenso’s arithmetic objections to the Pentateuch                                          | Numerical impossibilities, historical development, and evolutionary thought make static Mosaic authorship increasingly untenable.                                                        | 1862 onward                                                                     |
-|                        1868 | Dhiban, Moab                     | **Mesha Stele discovered**                                                            | Lines on Omri, Israel, Moab, and YHWH                                                      | For the first time, Iron Age neighbors speak in their own voice about the same kingdoms and god found in Kings.                                                                          | Inscribed ninth century BCE; discovered 1868                                    |
-|                   1866–1878 | Europe                           | **Graf, Kuenen, Wellhausen**                                                          | Wellhausen, *Prolegomena*, introduction and temple-history argument                        | J and E are early; D belongs near Josiah; P is exilic or postexilic. The Torah becomes the endpoint of Israel’s history rather than its beginning.                                       | Classical synthesis 1860s–1878                                                  |
-|                 1870s–1910s | Mesopotamia and Europe           | **Gilgamesh, Atrahasis, Enuma Elish recovered and published**                         | Flood-tablet parallels with Genesis 6–9                                                    | Genesis enters the literature of the ancient Near East. Creation and flood stories are no longer culturally isolated.                                                                    | Ancient texts second–first millennia BCE; deciphered chiefly nineteenth century |
-|                   1881–1894 | Britain                          | **Revised Version and critical Greek New Testament**                                  | Mark 16 and John 7:53–8:11 notes                                                           | Modern translations openly mark passages absent from the earliest manuscripts. The printed Bible begins displaying its own instability.                                                  | Late nineteenth century                                                         |
-|                   1887–1896 | Egypt                            | **Amarna letters discovered**                                                         | Letters from Canaanite rulers asking Pharaoh for help                                      | Late Bronze Age Canaan speaks directly, complicating biblical conquest stories and illuminating pre-Israelite political geography.                                                       | Fourteenth century BCE; discovered 1887 onward                                  |
-|                 1890s–1910s | Europe                           | **Hermann Gunkel and form criticism**                                                 | Introduction to *Genesis*                                                                  | Scholars move behind written sources toward oral genres: saga, legend, hymn, law, lament, and the social settings that produced them.                                                    | Major work 1901 onward                                                          |
-|                   1896–1902 | Europe / Palestine               | **Herzl and early political Zionism**                                                 | *The Jewish State* selections                                                              | The biblical land becomes a modern political destination. Return eventually makes large-scale Hebrew archaeology materially possible.                                                    | 1896                                                                            |
-|                        1920 | Tel Hai                          | **Joseph Trumpeldor tradition**                                                       | Brief account of Tel Hai; cautiously present the disputed final words                      | Modern settlement acquires biblical-style martyr legend. Keep this short: it matters mainly as part of the return to the archaeological landscape.                                       | Event 1920; legend developed afterward                                          |
-|                   1928–1934 | Syria                            | **Ugaritic tablets**                                                                  | Baal Cycle selections beside Psalms and Isaiah                                             | Canaanite poetic grammar, divine councils, storm-god imagery, and parallelism reveal the literary world from which biblical poetry emerged.                                              | Tablets c. thirteenth century BCE; discovered 1928                              |
-|                   1941–1943 | Europe / United States           | **Martin Noth, Deuteronomistic History**                                              | Opening methodological statement                                                           | Deuteronomy through Kings is recognized as a coherent edited history explaining national disaster through covenant violation.                                                            | 1943                                                                            |
-|                        1946 | Jerusalem                        | **King David Hotel bombing**                                                          | A very brief documentary account                                                           | A biblical royal name becomes attached to modern insurgency and empire. Include only as connective tissue, not as the book’s subject.                                                    | Event July 22, 1946                                                             |
-|                   1947–1956 | Qumran                           | **Discovery of the Dead Sea Scrolls**                                                 | Isaiah Scroll; Samuel fragments; Jeremiah variants; Deuteronomy 32:8                       | Manuscripts a thousand years older than the medieval codices reveal both remarkable continuity and genuine textual plurality.                                                            | Scrolls copied third century BCE–first century CE                               |
-|                   1947–1949 | Palestine / Israel               | **UN partition, declaration, war, displacement**                                      | Ben-Gurion’s declaration plus one Palestinian and one Jewish eyewitness excerpt            | A Jewish state returns Hebrew institutions to the land, while war creates another mass displacement. Keep this concise and multiperspectival.                                            | Events 1947–1949                                                                |
-|                 1948 onward | Israel                           | **David Ben-Gurion and the Bible**                                                    | Brief remarks from his biblical study circle or speeches                                   | The Bible is used as national archive, land deed, cultural epic, and stimulus for archaeology—sometimes collapsing ancient and modern Israel into one story.                             | Mid-twentieth century                                                           |
-|                   1948–1957 | United States                    | **W. F. Albright and biblical archaeology**                                           | One programmatic excerpt                                                                   | Archaeology is recruited to verify a broadly historical Bible, although later archaeology becomes less apologetic and more anthropological.                                              | Mid-twentieth century                                                           |
-|                 1950s–1970s | United States                    | **Frank Moore Cross**                                                                 | *Canaanite Myth and Hebrew Epic* selections                                                | Source criticism, epigraphy, textual criticism, and Canaanite literature are combined into a history of Israelite religion and biblical tradition.                                       | Major synthesis 1973                                                            |
-|                        1967 | Jerusalem and surrounding states | **Six-Day War**                                                                       | Brief neutral chronology; one passage on capture of East Jerusalem                         | Israeli control expands over many central biblical sites, transforming excavation, tourism, settlement, and the politics of biblical geography.                                          | June 1967                                                                       |
-|                        1973 | Israel and surrounding states    | **Yom Kippur War**                                                                    | Two or three sentences only                                                                | Biblical festival names continue framing modern events, but modern national history remains secondary to the history of the text.                                                        | October 1973                                                                    |
-|                 1970s–1990s | Europe and North America         | **Collapse of the old Wellhausen consensus**                                          | Rolf Rendtorff, John Van Seters, Hans Heinrich Schmid                                      | Many scholars reject four continuously traceable documents, favoring supplements, fragments, blocks, and increasingly late composition.                                                  | 1970s onward                                                                    |
-|                   1981–1987 | United States / Israel           | **Richard Elliott Friedman**                                                          | *Who Wrote the Bible?* source map and argument for D’s editor                              | Classical source criticism is restated as readable detective history, with authors, institutions, politics, and redactors restored to view.                                              | 1980s                                                                           |
-|                   1993–1994 | Tel Dan                          | **Tel Dan Stele discovered**                                                          | “House of David” lines                                                                     | An Aramaean royal inscription supplies the earliest generally accepted extrabiblical reference to a Davidic dynasty.                                                                     | Inscribed ninth century BCE; discovered 1993–1994                               |
-|                 1990s–2010s | Israel / Palestine               | **Minimalism, maximalism, and low chronology debates**                                | Finkelstein, Dever, Thompson, Lemche, Mazar—one paragraph each                             | Archaeology stops serving as a simple lie detector. Scholars debate state formation, David and Solomon, ethnic emergence, and the scale of early Israel.                                 | Late twentieth–early twenty-first centuries                                     |
-|               2000s–present | North America                    | **Neo-Documentary Hypothesis**                                                        | Baruch Schwartz, Joel Baden, Jeffrey Stackert                                              | A renewed source model identifies documents primarily through incompatible plots and legal systems, not merely vocabulary or divine names.                                               | Late twentieth–twenty-first centuries                                           |
-|               2000s–present | Europe                           | **Supplementary and redactional models**                                              | Konrad Schmid, Jan Christian Gertz, Thomas Römer, Reinhard Kratz                           | Much European scholarship treats the Pentateuch as successive expansions of major literary cores rather than four complete parallel documents.                                           | Contemporary scholarship                                                        |
-|               2000s–present | Global scholarship               | **Literary, feminist, postcolonial, archaeological, and social-scientific criticism** | One exemplary short piece from each method                                                 | The Bible is no longer reconstructed through source criticism alone. Gender, empire, class, trauma, reception, cognition, scribal culture, and material life enter the history.          | Contemporary scholarship                                                        |
-|               2010s–present | Digital world                    | **Digital manuscripts and computational textual criticism**                           | Leon Levy Scrolls Library; manuscript collation; multispectral images                      | Anyone can compare fragments and codices. Imaging reveals erased or illegible letters; databases make variants searchable at scale.                                                      | Twenty-first century                                                            |
-|                     Present | No single center                 | **Current Pentateuchal debate**                                                       | A deliberately unresolved final symposium                                                  | Broad agreement: the Torah is composite, internally stratified, and non-Mosaic in its final form. No agreement: exactly how many sources, when they lived, or how editors combined them. | Ongoing                                                                         |
-|                     Present | The reader’s desk                | **The Dudetheyreonamystic History itself**                                            | II Kings 25 → scribes → translators → sects → critics → excavators                         | The Bible finally becomes the subject of its own biblical history: a library whose contradictions are evidence of the people who preserved rather than erased them.                      | Now                                                                             |
+---
+
+## Table of Contents
+
+- [The End of the Kingdom](#the-end-of-the-kingdom)
+- [[#Exile and the Portable God]]
+- [The First Diaspora](#the-first-diaspora)
+- [The Second Temple and the Torah](#the-second-temple-and-the-torah)
+- [The Bible Goes Greek](#the-bible-goes-greek)
+- [Expanding Scripture](#expanding-scripture)
+- [Apocalypse and Revolution](#apocalypse-and-revolution)
+- [The Many Judaisms](#the-many-judaisms)
+- [The Jesus Movement](#the-jesus-movement)
+- [The Second Destruction](#the-second-destruction)
+- [Rabbinic Judaism and the Christian Bible](#rabbinic-judaism-and-the-christian-bible)
+- [Islam and the Biblical Tradition](#islam-and-the-biblical-tradition)
+- [The Masoretes](#the-masoretes)
+- [Printing the Bible](#printing-the-bible)
+- [Historical Criticism Begins](#historical-criticism-begins)
+- [The Documentary Revolution](#the-documentary-revolution)
+- [Archaeology Reopens the Ancient World](#archaeology-reopens-the-ancient-world)
+- [Modern Israel and Biblical Archaeology](#modern-israel-and-biblical-archaeology)
+- [The Bible in the Twenty-First Century](#the-bible-in-the-twenty-first-century)
+
+---
+
+## The End of the Kingdom
+
+### II Kings 25
+
+**Date described:** 587/586 BCE
+
+**Suggested excerpt**
+
+- II Kings 25:8–12
+- II Kings 25:18–21
+- II Kings 25:27–30
+
+**What happens**
+
+Jerusalem falls.
+
+The temple burns.
+
+The Davidic kingdom ends.
+
+The people are deported.
+
+Yet the final paragraph quietly leaves Jehoiachin alive in Babylon.
+
+The history does **not** really end.
+
+---
+
+## Exile and the Portable God
+
+### Ezekiel
+
+**Date described:** 597–570 BCE
+
+**Suggested excerpts**
+
+- Ezekiel 1
+- Ezekiel 8
+- Ezekiel 11
+- Ezekiel 18
+- Ezekiel 37
+
+**Contribution**
+
+God leaves Jerusalem.
+
+The divine throne becomes mobile.
+
+Holiness is no longer tied to a single building.
+
+The Bible begins learning how to survive without a kingdom.
+
+---
+
+### Jeremiah's Letter
+
+**Suggested excerpt**
+
+Jeremiah 29
+
+**Contribution**
+
+Exile becomes normal life.
+
+Build houses.
+
+Plant gardens.
+
+Raise children.
+
+Seek the welfare of Babylon.
+
+The diaspora is born.
+
+---
+
+### Lamentations
+
+Jerusalem itself becomes literature.
+
+The ruined city can now be carried anywhere.
+
+---
+
+### Psalm 137
+
+The emotional charter of the diaspora.
+
+Babylon.
+
+Memory.
+
+Refusal to forget Zion.
+
+---
+
+### Isaiah 40–55
+
+Comfort after catastrophe.
+
+Cyrus becomes God's anointed.
+
+History itself becomes revelation.
+
+---
+
+## The First Diaspora
+
+### Al-Yahudu Tablets
+
+Real Judean farmers.
+
+Real debts.
+
+Real taxes.
+
+Real Babylonian paperwork.
+
+Biblical exile becomes ordinary life.
+
+---
+
+### Elephantine Archives
+
+A Judean military colony in Egypt.
+
+Temple.
+
+Priests.
+
+Mixed marriages.
+
+Property sales.
+
+Contracts.
+
+Daily life.
+
+---
+
+### Elephantine Passover Letter
+
+Passover instructions transmitted by official correspondence.
+
+Torah practice spreads before textual uniformity.
+
+---
+
+### Elephantine Temple Petition
+
+The Egyptian Judeans ask Jerusalem for permission to rebuild their own temple.
+
+There is not yet a universally recognized religious center.
+
+---
+
+## The Second Temple and the Torah
+
+### Ezra 1–6
+
+Imperial decrees.
+
+Archives.
+
+Persian bureaucracy enters sacred history.
+
+The temple returns.
+
+The monarchy does not.
+
+---
+
+### Haggai and Zechariah
+
+The rebuilding of the temple becomes prophetic fulfillment.
+
+---
+
+### Priestly Torah
+
+Genesis 1.
+
+Genesis 17.
+
+Exodus 25.
+
+Leviticus 16.
+
+The priestly system organizes creation, covenant, ritual, sacrifice, and holiness into a single coherent structure.
+
+---
+
+### Ezra 7–10
+
+### Nehemiah 8–10
+
+The Torah is publicly read.
+
+Interpreted.
+
+Accepted as the constitution of the restored community.
+
+---
+
+### 4 Ezra (2 Esdras 14)
+
+Ezra miraculously rewrites the lost scriptures.
+
+Twenty-four books become public.
+
+Seventy remain secret.
+
+The Bible receives an origin story for itself.
+
+---
+
+### Chronicles
+
+Samuel and Kings are rewritten.
+
+David becomes more priestly.
+
+The Levites become central.
+
+History is edited to serve the restored temple.
+
+---
+
+## The Bible Goes Greek
+
+### Septuagint Pentateuch
+
+The Torah enters Greek.
+
+Translation becomes interpretation.
+
+A second biblical civilization begins.
+
+---
+
+### Letter of Aristeas
+
+The translation receives a legendary origin story.
+
+Seventy-two translators.
+
+Perfect agreement.
+
+Royal library.
+
+Divine approval.
+
+---
+
+## Expanding Scripture
+
+### Tobit
+
+The diaspora becomes family literature.
+
+Angels.
+
+Demons.
+
+Medicine.
+
+Travel.
+
+Burial.
+
+Faithfulness outside Israel.
+
+---
+
+### Esther
+
+A Jewish nation survives entirely outside the land.
+
+God is almost invisible.
+
+Politics replaces prophecy.
+
+---
+
+### Greek Esther
+
+Editors restore explicit religion.
+
+Prayers.
+
+Dreams.
+
+Providence.
+
+---
+
+### Artapanus
+
+### Demetrius
+
+### Ezekiel the Tragedian
+
+Greek-speaking Jews rewrite biblical history using Greek literary forms.
+
+History.
+
+Drama.
+
+Chronology.
+
+Philosophy.
+
+---
+
+### Ben Sira
+
+The translator's preface introduces
+
+> "The Law, the Prophets, and the other books."
+
+The Bible begins looking like a collection.
+
+---
+
+### 1 Enoch
+
+Genesis 6 grows into an entire cosmic mythology.
+
+---
+
+### Jubilees
+
+Genesis and Exodus are rewritten as heavenly revelation.
+
+---
+
+## Apocalypse and Revolution
+
+### Daniel 7–12
+
+Current events become coded prophecy.
+
+History becomes apocalypse.
+
+---
+
+### 1 Maccabees
+
+A new biblical history.
+
+Temple rededication.
+
+Jewish independence.
+
+National memory.
+
+---
+
+### 2 Maccabees
+
+History becomes theological reflection.
+
+Martyrdom.
+
+Resurrection.
+
+Editorial self-awareness.
+
+---
+
+### Genesis Apocryphon
+
+Biblical characters tell their own stories.
+
+Scripture expands around its gaps.
+
+---
+
+## The Many Judaisms
+
+### Community Rule
+
+### Damascus Document
+
+The Bible becomes the constitution of a sect.
+
+---
+
+### Habakkuk Pesher
+
+The prophet did not fully understand his own prophecy.
+
+Only the Interpreter of the sect does.
+
+Biblical interpretation becomes continuing revelation.
+
+---
+
+### Wisdom of Solomon
+
+Greek philosophy and biblical wisdom merge.
+
+---
+
+### Joseph and Aseneth
+
+An unexplained biblical marriage becomes a theological romance.
+
+---
+
+### Philo
+
+Greek philosophy.
+
+Allegorical interpretation.
+
+The Bible enters the intellectual world of Plato.
+
+---
+
+## The Jesus Movement
+
+### Mark
+
+Israel's scriptures become a story centered on Jesus.
+
+A new literary genre—the Gospel—is born.
+
+---
+
+### Paul
+
+Minimal anthology:
+
+- Galatians
+- Romans
+- 1 Corinthians
+
+The Bible is reread around a crucified Messiah.
+
+Gentiles become Abraham's family without becoming Jews.
+
+---
+
+### Gospel of Thomas
+
+The Gospel can exist without narrative.
+
+Without crucifixion.
+
+Without resurrection.
+
+Only sayings remain.
+
+---
+
+### Josephus
+
+Biblical history becomes Greco-Roman historiography.
+
+---
+
+### 4 Ezra
+
+The destruction of 70 CE is retold through Ezra after 586 BCE.
+
+History repeats.
+
+---
+
+### 2 Baruch
+
+Jerusalem dies again.
+
+The book survives.
+
+---
+
+### Revelation
+
+Daniel.
+
+Ezekiel.
+
+Isaiah.
+
+Exodus.
+
+Zechariah.
+
+Everything becomes one final apocalypse.
+
+---
+
+### Luke–Acts
+
+The movement travels from Jerusalem to Rome.
+
+The Bible becomes world history.
+
+---
+
+### Dead Sea Scrolls
+
+Ancient Judaism possessed multiple textual traditions.
+
+There was no single perfectly fixed Hebrew Bible.
+
+---
+
+### Bar Kokhba Letters
+
+Real military orders.
+
+Real legal documents.
+
+Biblical Hebrew and everyday life meet.
+
+---
+
+### Diatessaron
+
+Four Gospels become one.
+
+A harmony.
+
+Almost exactly the method used by the Deuteronomistic Historian.
+
+---
+
+### Irenaeus
+
+Exactly four Gospels.
+
+No more.
+
+No fewer.
+
+The New Testament begins stabilizing.
+
+---
+
+## The Second Destruction
+
+The Second Temple falls.
+
+The Bible once again becomes the homeland.
+
+Books replace buildings.
+
+Memory replaces monarchy.
+
+---
+
+## Rabbinic Judaism and the Christian Bible
+
+### Mishnah
+
+The Oral Torah is written.
+
+---
+
+### Targums
+
+Translation becomes commentary.
+
+---
+
+### Origen's Hexapla
+
+Six parallel biblical texts.
+
+Textual criticism begins.
+
+---
+
+### Codex Vaticanus
+
+### Codex Sinaiticus
+
+The scroll library becomes one giant book.
+
+---
+
+### Athanasius
+
+The modern New Testament canon appears.
+
+---
+
+### Jerome
+
+Hebrew returns to the center of biblical scholarship.
+
+---
+
+### Augustine
+
+Biblical history becomes universal history.
+
+---
+
+### Jerusalem Talmud
+
+Scripture becomes legal argument.
+
+---
+
+### Babylonian Talmud
+
+The rabbis openly discuss who wrote biblical books.
+
+The Bible becomes an object of historical reflection.
+
+---
+
+## Islam and the Biblical Tradition
+
+### Qur'an
+
+Biblical figures return in Arabic.
+
+The Qur'an presents itself as confirmation, correction, and continuation of earlier revelation.
+
+---
+
+## The Masoretes
+
+### Masoretic Tradition
+
+Vowels.
+
+Accents.
+
+Marginal notes.
+
+Statistical safeguards.
+
+The consonantal text is frozen.
+
+---
+
+### Aleppo Codex
+
+The finest Masoretic manuscript.
+
+---
+
+### Leningrad Codex
+
+Oldest complete Hebrew Bible.
+
+Foundation of most modern printed Hebrew editions.
+
+---
+
+## Printing the Bible
+
+### Gutenberg Bible
+
+Printing transforms scripture into mass literature.
+
+---
+
+### Rabbinic Bible
+
+Hebrew text.
+
+Masorah.
+
+Targum.
+
+Commentaries.
+
+Everything appears together.
+
+---
+
+### Martin Luther
+
+Translation reshapes Europe.
+
+Canon receives an internal hierarchy.
+
+The Bible becomes the language of ordinary people.
+
+---
+
+### Council of Trent
+
+The Catholic canon is formally fixed.
+
+---
+
+## Historical Criticism Begins
+
+### Ibn Ezra
+
+Hints that Moses did not write every verse.
+
+---
+
+### Maimonides
+
+Reason and revelation are reconciled without surrendering Mosaic authority.
+
+---
+
+### Hobbes
+
+Reads scripture historically.
+
+---
+
+### Spinoza
+
+Treats the Bible like any ancient book.
+
+Probably compiled by later editors.
+
+Possibly Ezra.
+
+Historical criticism truly begins.
+
+---
+
+### Richard Simon
+
+Scribes.
+
+Editors.
+
+Textual transmission.
+
+Variants.
+
+The Bible acquires a real editorial history.
+
+---
+
+### Isaac Newton
+
+Prophecy.
+
+Chronology.
+
+Temple measurements.
+
+Textual corruption.
+
+One of history's greatest physicists studies the Bible more intensely than physics.
+
+---
+
+## The Documentary Revolution
+
+### Astruc
+
+Separate Genesis by divine names.
+
+---
+
+### Eichhorn
+
+Documents become actual literary sources.
+
+---
+
+### de Wette
+
+Deuteronomy belongs to Josiah's reform.
+
+---
+
+### Strauss
+
+The Gospels become historical criticism.
+
+---
+
+### Colenso
+
+Arithmetic challenges Mosaic history.
+
+---
+
+### Graf
+
+### Kuenen
+
+### Wellhausen
+
+The Torah becomes the end of Israel's history rather than its beginning.
+
+J.
+
+E.
+
+D.
+
+P.
+
+The modern Documentary Hypothesis is born.
+
+---
+
+### Gunkel
+
+Go behind written sources.
+
+Recover oral tradition.
+
+---
+
+### Noth
+
+Discover the Deuteronomistic Historian.
+
+---
+
+### Frank Moore Cross
+
+Combine archaeology.
+
+Epigraphy.
+
+Source criticism.
+
+Ancient Near Eastern literature.
+
+---
+
+### Collapse of Classical Wellhausen
+
+Documents become supplements.
+
+Fragments.
+
+Editorial layers.
+
+---
+
+### Richard Elliott Friedman
+
+The Documentary Hypothesis becomes readable again.
+
+Authors become real people.
+
+---
+
+### Neo-Documentary School
+
+J.
+
+E.
+
+D.
+
+P.
+
+Still alive.
+
+Now defined primarily by incompatible narratives rather than vocabulary.
+
+---
+
+### Supplementary School
+
+The Pentateuch grows gradually through expansion.
+
+---
+
+## Archaeology Reopens the Ancient World
+
+### Mesha Stele
+
+Israel appears outside the Bible.
+
+---
+
+### Gilgamesh
+
+Flood traditions suddenly have cousins.
+
+---
+
+### Amarna Letters
+
+Late Bronze Canaan speaks.
+
+---
+
+### Ugarit
+
+Biblical poetry gains an ancient Canaanite context.
+
+---
+
+### Dead Sea Scrolls
+
+The oldest biblical manuscripts transform textual criticism forever.
+
+---
+
+### Tel Dan Stele
+
+The House of David appears outside scripture.
+
+---
+
+### Modern Archaeological Debate
+
+Minimalists.
+
+Maximalists.
+
+Low chronology.
+
+Historical reconstruction replaces apologetics.
+
+---
+
+## Modern Israel and Biblical Archaeology
+
+### Herzl
+
+Political Zionism.
+
+---
+
+### Trumpeldor
+
+Modern national martyr.
+
+---
+
+### King David Hotel
+
+The biblical past becomes modern political symbolism.
+
+---
+
+### 1948
+
+Israel returns.
+
+Hebrew returns.
+
+Large-scale archaeology becomes possible.
+
+---
+
+### Ben-Gurion
+
+The Bible becomes national literature.
+
+---
+
+### Albright
+
+Biblical archaeology becomes a discipline.
+
+---
+
+### 1967
+
+Many central biblical sites become accessible for excavation.
+
+---
+
+### 1973
+
+Modern history continues.
+
+The Bible remains the principal historical lens.
+
+---
+
+## The Bible in the Twenty-First Century
+
+### Contemporary Scholarship
+
+Literary criticism.
+
+Feminist criticism.
+
+Postcolonial criticism.
+
+Anthropology.
+
+Reception history.
+
+Digital philology.
+
+Computational linguistics.
+
+Ancient DNA.
+
+Archaeology.
+
+Everything contributes.
+
+---
+
+### Present Consensus
+
+Nearly everyone agrees:
+
+- the Bible is composite,
+- the Torah has multiple layers,
+- biblical books grew over centuries,
+- the text itself has a history.
+
+Almost nobody agrees on the exact details.
+
+---
+
+## Epilogue
+
+The Deuteronomistic Historian explained why Israel lost its kingdom.
+
+The Dudetheyreonamystic Historian explains how that history itself survived.
+
+Kingdoms died.
+
+Temples burned.
+
+Empires rose and fell.
+
+Languages changed.
+
+Religions split.
+
+Libraries expanded.
+
+Scrolls became codices.
+
+Codices became printed books.
+
+Printed books became searchable databases.
+
+The Bible outlived every civilization that tried to possess it.
+
+Its greatest miracle was not inspiration.
+
+It was survival.
+
+And its final story is the story of how humanity slowly learned to read it as what it always was:
+
+a library,
+written by many hands,
+arguing with itself,
+across a thousand years.
