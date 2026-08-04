@@ -10,11 +10,11 @@
 - Genesis 6 — Flood coming.
 - Genesis 7 — Flood starts.
 - Genesis 8 — Flood ends.
-- Genesis 9 — Rainbow covenant.
+- Genesis 9 — Rainbow; Noah drunk.
 - Genesis 10 — Table of Nations.
-- Genesis 11 — Babel; Shem's line.
+- Genesis 11 — Babel; Noah's line.
 - Genesis 12 — Abram called.
-- Genesis 13 — Abram; Lot split.
+- Genesis 13 — Abram, Lot split.
 - Genesis 14 — Lot rescued.
 - Genesis 15 — Covenant cut.
 - Genesis 16 — Hagar flees.
@@ -26,22 +26,22 @@
 - Genesis 22 — Isaac tested.
 - Genesis 23 — Sarah buried.
 - Genesis 24 — Rebekah found.
-- Genesis 25 — Esau; Jacob born.
+- Genesis 25 — Esau, Jacob born.
 - Genesis 26 — Isaac prospers.
 - Genesis 27 — Blessing stolen.
 - Genesis 28 — Ladder dream.
-- Genesis 29 — Leah; Rachel.
+- Genesis 29 — Leah, Rachel.
 - Genesis 30 — Jacob prospers.
 - Genesis 31 — Jacob leaves.
 - Genesis 32 — Jacob wrestles.
 - Genesis 33 — Esau returns.
-- Genesis 34 — Dinah avenged.
+- Genesis 34 — Dinah and Shechem.
 - Genesis 35 — Bethel; Rachel dies.
 - Genesis 36 — Esau's line.
 - Genesis 37 — Joseph sold.
 - Genesis 38 — Judah and Tamar.
 - Genesis 39 — Joseph jailed.
-- Genesis 40 — Prison dreams.
+- Genesis 40 — Joseph prison dreams.
 - Genesis 41 — Joseph promoted.
 - Genesis 42 — Brothers visit.
 - Genesis 43 — Benjamin goes.
@@ -61,7 +61,7 @@
 - Exodus 4 — Signs given.
 - Exodus 5 — Work worsens.
 - Exodus 6 — Name revealed.
-- Exodus 7 — Blood.
+- Exodus 7 — River to blood.
 - Exodus 8 — Frogs; gnats; flies.
 - Exodus 9 — Livestock; boils; hail.
 - Exodus 10 — Locusts; darkness.
@@ -69,15 +69,15 @@
 - Exodus 12 — Passover; Exodus.
 - Exodus 13 — Firstborn; sea.
 - Exodus 14 — Sea crossed.
-- Exodus 15 — Sea song.
-- Exodus 16 — Manna.
+- Exodus 15 — Song of the Sea.
+- Exodus 16 — Manna, quail.
 - Exodus 17 — Water; Amalek.
 - Exodus 18 — Jethro visits.
 - Exodus 19 — Sinai reached.
 - Exodus 20 — Ten Commandments.
 - Exodus 21 — Slave laws.
 - Exodus 22 — Property laws.
-- Exodus 23 — Justice; festivals.
+- Exodus 23 — Justice, festivals.
 - Exodus 24 — Covenant sealed.
 - Exodus 25 — Ark planned.
 - Exodus 26 — Tabernacle planned.
@@ -94,7 +94,7 @@
 - Exodus 37 — Ark; furniture made.
 - Exodus 38 — Altar; courtyard; inventory.
 - Exodus 39 — Priest clothes done.
-- Exodus 40 — Tabernacle done.
+- Exodus 40 — Tabernacle complete.
 
 ## Leviticus
 
@@ -174,7 +174,7 @@
 - Deuteronomy 5 — Ten Commandments.
 - Deuteronomy 6 — Shema.
 - Deuteronomy 7 — Nations banned.
-- Deuteronomy 8 — Remember the wilderness.
+- Deuteronomy 8 — Remember wilderness.
 - Deuteronomy 9 — Golden calf retold.
 - Deuteronomy 10 — New tablets.
 - Deuteronomy 11 — Blessing; curse.
@@ -191,7 +191,7 @@
 - Deuteronomy 22 — Mixed laws.
 - Deuteronomy 23 — Camp rules.
 - Deuteronomy 24 — Divorce; fairness.
-- Deuteronomy 25 — Justice; levirate marriage.
+- Deuteronomy 25 — Justice; Levirate marriage.
 - Deuteronomy 26 — Firstfruits; confession.
 - Deuteronomy 27 — Ebal curses.
 - Deuteronomy 28 — Blessings; curses.
@@ -199,7 +199,7 @@
 - Deuteronomy 30 — Life or death.
 - Deuteronomy 31 — Joshua succeeds.
 - Deuteronomy 32 — Song of Moses.
-- Deuteronomy 33 — Moses blesses tribes.
+- Deuteronomy 33 — Blessing of Moses.
 - Deuteronomy 34 — Moses dies.
 
 ## Joshua
@@ -233,9 +233,9 @@
 
 - Judges 1 — Land unfinished.
 - Judges 2 — Judges cycle.
-- Judges 3 — Ehud; Eglon.
-- Judges 4 — Deborah; Barak.
-- Judges 5 — Deborah's song.
+- Judges 3 — Ehud kills Eglon.
+- Judges 4 — Deborah and Barak.
+- Judges 5 — Song of Deborah.
 - Judges 6 — Gideon called.
 - Judges 7 — Midian defeated.
 - Judges 8 — Gideon ends.
@@ -245,7 +245,7 @@
 - Judges 12 — Shibboleth.
 - Judges 13 — Samson born.
 - Judges 14 — Samson's riddle.
-- Judges 15 — Jawbone.
+- Judges 15 — Samson Jawbone.
 - Judges 16 — Delilah; Samson dies.
 - Judges 17 — Micah's idol.
 - Judges 18 — Dan takes idol.
@@ -255,11 +255,11 @@
 
 ## 1 Samuel
 
-- 1 Samuel 1 — Hannah; Samuel.
+- 1 Samuel 1 — Hannah, Eli, Samuel.
 - 1 Samuel 2 — Hannah's song.
 - 1 Samuel 3 — Samuel called.
 - 1 Samuel 4 — Ark captured.
-- 1 Samuel 5 — Ark in Philistia.
+- 1 Samuel 5 — Dagon; Ark Hemorrhoids.
 - 1 Samuel 6 — Ark returned.
 - 1 Samuel 7 — Samuel leads.
 - 1 Samuel 8 — King requested.
