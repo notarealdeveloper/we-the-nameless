@@ -9,11 +9,11 @@
 \tocline{Genesis}{6}{Flood coming.}
 \tocline{Genesis}{7}{Flood starts.}
 \tocline{Genesis}{8}{Flood ends.}
-\tocline{Genesis}{9}{Rainbow covenant.}
+\tocline{Genesis}{9}{Rainbow; Noah drunk.}
 \tocline{Genesis}{10}{Table of Nations.}
-\tocline{Genesis}{11}{Babel; Shem's line.}
+\tocline{Genesis}{11}{Babel; Noah's line.}
 \tocline{Genesis}{12}{Abram called.}
-\tocline{Genesis}{13}{Abram; Lot split.}
+\tocline{Genesis}{13}{Abram, Lot split.}
 \tocline{Genesis}{14}{Lot rescued.}
 \tocline{Genesis}{15}{Covenant cut.}
 \tocline{Genesis}{16}{Hagar flees.}
@@ -25,22 +25,22 @@
 \tocline{Genesis}{22}{Isaac tested.}
 \tocline{Genesis}{23}{Sarah buried.}
 \tocline{Genesis}{24}{Rebekah found.}
-\tocline{Genesis}{25}{Esau; Jacob born.}
+\tocline{Genesis}{25}{Esau, Jacob born.}
 \tocline{Genesis}{26}{Isaac prospers.}
 \tocline{Genesis}{27}{Blessing stolen.}
 \tocline{Genesis}{28}{Ladder dream.}
-\tocline{Genesis}{29}{Leah; Rachel.}
+\tocline{Genesis}{29}{Leah, Rachel.}
 \tocline{Genesis}{30}{Jacob prospers.}
 \tocline{Genesis}{31}{Jacob leaves.}
 \tocline{Genesis}{32}{Jacob wrestles.}
 \tocline{Genesis}{33}{Esau returns.}
-\tocline{Genesis}{34}{Dinah avenged.}
+\tocline{Genesis}{34}{Dinah and Shechem.}
 \tocline{Genesis}{35}{Bethel; Rachel dies.}
 \tocline{Genesis}{36}{Esau's line.}
 \tocline{Genesis}{37}{Joseph sold.}
 \tocline{Genesis}{38}{Judah and Tamar.}
 \tocline{Genesis}{39}{Joseph jailed.}
-\tocline{Genesis}{40}{Prison dreams.}
+\tocline{Genesis}{40}{Joseph prison dreams.}
 \tocline{Genesis}{41}{Joseph promoted.}
 \tocline{Genesis}{42}{Brothers visit.}
 \tocline{Genesis}{43}{Benjamin goes.}
@@ -60,7 +60,7 @@
 \tocline{Exodus}{4}{Signs given.}
 \tocline{Exodus}{5}{Work worsens.}
 \tocline{Exodus}{6}{Name revealed.}
-\tocline{Exodus}{7}{Blood.}
+\tocline{Exodus}{7}{River to blood.}
 \tocline{Exodus}{8}{Frogs; gnats; flies.}
 \tocline{Exodus}{9}{Livestock; boils; hail.}
 \tocline{Exodus}{10}{Locusts; darkness.}
@@ -68,15 +68,15 @@
 \tocline{Exodus}{12}{Passover; Exodus.}
 \tocline{Exodus}{13}{Firstborn; sea.}
 \tocline{Exodus}{14}{Sea crossed.}
-\tocline{Exodus}{15}{Sea song.}
-\tocline{Exodus}{16}{Manna.}
+\tocline{Exodus}{15}{Song of the Sea.}
+\tocline{Exodus}{16}{Manna, quail.}
 \tocline{Exodus}{17}{Water; Amalek.}
 \tocline{Exodus}{18}{Jethro visits.}
 \tocline{Exodus}{19}{Sinai reached.}
 \tocline{Exodus}{20}{Ten Commandments.}
 \tocline{Exodus}{21}{Slave laws.}
 \tocline{Exodus}{22}{Property laws.}
-\tocline{Exodus}{23}{Justice; festivals.}
+\tocline{Exodus}{23}{Justice, festivals.}
 \tocline{Exodus}{24}{Covenant sealed.}
 \tocline{Exodus}{25}{Ark planned.}
 \tocline{Exodus}{26}{Tabernacle planned.}
@@ -93,7 +93,7 @@
 \tocline{Exodus}{37}{Ark; furniture made.}
 \tocline{Exodus}{38}{Altar; courtyard; inventory.}
 \tocline{Exodus}{39}{Priest clothes done.}
-\tocline{Exodus}{40}{Tabernacle done.}
+\tocline{Exodus}{40}{Tabernacle complete.}
 
 % Leviticus
 
@@ -173,7 +173,7 @@
 \tocline{Deuteronomy}{5}{Ten Commandments.}
 \tocline{Deuteronomy}{6}{Shema.}
 \tocline{Deuteronomy}{7}{Nations banned.}
-\tocline{Deuteronomy}{8}{Remember the wilderness.}
+\tocline{Deuteronomy}{8}{Remember wilderness.}
 \tocline{Deuteronomy}{9}{Golden calf retold.}
 \tocline{Deuteronomy}{10}{New tablets.}
 \tocline{Deuteronomy}{11}{Blessing; curse.}
@@ -190,7 +190,7 @@
 \tocline{Deuteronomy}{22}{Mixed laws.}
 \tocline{Deuteronomy}{23}{Camp rules.}
 \tocline{Deuteronomy}{24}{Divorce; fairness.}
-\tocline{Deuteronomy}{25}{Justice; levirate marriage.}
+\tocline{Deuteronomy}{25}{Justice; Levirate marriage.}
 \tocline{Deuteronomy}{26}{Firstfruits; confession.}
 \tocline{Deuteronomy}{27}{Ebal curses.}
 \tocline{Deuteronomy}{28}{Blessings; curses.}
@@ -198,7 +198,7 @@
 \tocline{Deuteronomy}{30}{Life or death.}
 \tocline{Deuteronomy}{31}{Joshua succeeds.}
 \tocline{Deuteronomy}{32}{Song of Moses.}
-\tocline{Deuteronomy}{33}{Moses blesses tribes.}
+\tocline{Deuteronomy}{33}{Blessing of Moses.}
 \tocline{Deuteronomy}{34}{Moses dies.}
 
 % Joshua
@@ -232,9 +232,9 @@
 
 \tocline{Judges}{1}{Land unfinished.}
 \tocline{Judges}{2}{Judges cycle.}
-\tocline{Judges}{3}{Ehud; Eglon.}
-\tocline{Judges}{4}{Deborah; Barak.}
-\tocline{Judges}{5}{Deborah's song.}
+\tocline{Judges}{3}{Ehud kills Eglon.}
+\tocline{Judges}{4}{Deborah and Barak.}
+\tocline{Judges}{5}{Song of Deborah.}
 \tocline{Judges}{6}{Gideon called.}
 \tocline{Judges}{7}{Midian defeated.}
 \tocline{Judges}{8}{Gideon ends.}
@@ -244,7 +244,7 @@
 \tocline{Judges}{12}{Shibboleth.}
 \tocline{Judges}{13}{Samson born.}
 \tocline{Judges}{14}{Samson's riddle.}
-\tocline{Judges}{15}{Jawbone.}
+\tocline{Judges}{15}{Samson Jawbone.}
 \tocline{Judges}{16}{Delilah; Samson dies.}
 \tocline{Judges}{17}{Micah's idol.}
 \tocline{Judges}{18}{Dan takes idol.}
@@ -254,11 +254,11 @@
 
 % 1 Samuel
 
-\tocline{1 Samuel}{1}{Hannah; Samuel.}
+\tocline{1 Samuel}{1}{Hannah, Eli, Samuel.}
 \tocline{1 Samuel}{2}{Hannah's song.}
 \tocline{1 Samuel}{3}{Samuel called.}
 \tocline{1 Samuel}{4}{Ark captured.}
-\tocline{1 Samuel}{5}{Ark in Philistia.}
+\tocline{1 Samuel}{5}{Dagon; Ark Hemorrhoids.}
 \tocline{1 Samuel}{6}{Ark returned.}
 \tocline{1 Samuel}{7}{Samuel leads.}
 \tocline{1 Samuel}{8}{King requested.}
@@ -281,10 +281,11 @@
 \tocline{1 Samuel}{25}{Abigail.}
 \tocline{1 Samuel}{26}{Saul spared again.}
 \tocline{1 Samuel}{27}{Philistia.}
-\tocline{1 Samuel}{28}{Medium of Endor.}
+\tocline{1 Samuel}{28}{Medium of En-dor.}
 \tocline{1 Samuel}{29}{David dismissed.}
 \tocline{1 Samuel}{30}{Ziklag recovered.}
 \tocline{1 Samuel}{31}{Saul dies.}
+
 % 2 Samuel
 
 \tocline{2 Samuel}{1}{Saul mourned.}

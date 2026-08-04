@@ -43,7 +43,11 @@ with
 
 in the book-specific ToC hyperlinks.
 
-I NOW ASK FOR THIS:
+THEN I ASKED FOR THIS:
 
 I made some very minor changes to TOC.md. Merge the updates into the tex TOC described above. Keep the '1. Creation' format etc, but update with my changes, e.g., see Genesis 9 summary for one example of several.
+
+I NOW ASK FOR THIS:
+
+Your implementation reads from TOC.md. Don't do that. Turn it into tex and merge it into master.tex so I can delete TOC.md afterwards.
 EOF

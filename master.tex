@@ -2642,7 +2642,11 @@
 \newcommand{\ChapterSummaryLinksForBook}[1]{%
     \begingroup
     \def\CurrentBook{#1}%
-    \directlua{PrintChapterSummaryLinksForBook("\luaescapestring{#1}")}%
+    \@ifundefined{BookChapterSummaryLinkList@#1}{%
+        \ChapterLinksForBook{#1}%
+    }{%
+        \csname BookChapterSummaryLinkList@#1\endcsname
+    }%
     \endgroup
 }
 \newcommand{\BookPartChapterSummaryLinks}[1]{%
@@ -2726,76 +2730,402 @@
     \BookPartChapterLinks{On the Lamb}%
     \BookPartChapterLinks{Esther}%
 }
-\begin{luacode*}
-    local toc_path = "TOC.md"
-    local resolved_path = kpse.find_file(toc_path) or toc_path
-    local toc = io.open(resolved_path, "r")
-    local dash = string.char(226, 128, 148)
-    local book_alias = {
-        ["1 Samuel"] = "I Samuel",
-        ["2 Samuel"] = "II Samuel",
-        ["1 Kings"] = "I Kings",
-        ["2 Kings"] = "II Kings",
-    }
-    local ordered_books = {}
-    local book_summaries = {}
-
-    local function current_book_name(name)
-        return book_alias[name] or name
-    end
-
-    local function tex_escape(value)
-        value = tostring(value)
-        value = value:gsub("([%%#$&_{}])", "\\%1")
-        value = value:gsub("%^", "\\textasciicircum{}")
-        value = value:gsub("~", "\\textasciitilde{}")
-        return value
-    end
-
-    if toc then
-        local current_book = nil
-        local current_display_book = nil
-        for line in toc:lines() do
-            local heading = line:match("^##%s+(.+)$")
-            if heading then
-                current_book = current_book_name(heading)
-                current_display_book = heading
-                if not book_summaries[current_book] then
-                    table.insert(ordered_books, current_book)
-                    book_summaries[current_book] = {}
-                end
-            else
-                local source_book, chapter, summary =
-                    line:match("^%- (.-) (%d+) " .. dash .. " (.-)%.?$")
-                if current_book and chapter and summary then
-                    table.insert(book_summaries[current_book], {
-                        chapter = chapter,
-                        display_book = source_book or current_display_book,
-                        summary = summary,
-                    })
-                end
-            end
-        end
-        toc:close()
-    else
-        texio.write_nl("term and log", "Warning: could not open " .. toc_path)
-    end
-
-    function PrintChapterSummaryLinksForBook(book)
-        local items = book_summaries[book]
-        if not items then
-            tex.sprint("\\ChapterLinksForBook{" .. tex_escape(book) .. "}")
-            return
-        end
-        for _, item in ipairs(items) do
-            tex.sprint(
-                "\\ChapterSummaryLink{" .. tex_escape(book) .. "}{" ..
-                item.chapter .. "}{" .. tex_escape(item.display_book) .. "}{" ..
-                tex_escape(item.summary) .. "}"
-            )
-        end
-    end
-\end{luacode*}
+% Chapter-summary data for fancy individual book title pages.
+\DeclareBookChapterSummaryLinkList{Genesis}{%
+    \ChapterSummaryLink{Genesis}{1}{Genesis}{Creation}%
+    \ChapterSummaryLink{Genesis}{2}{Genesis}{Adam and Eve}%
+    \ChapterSummaryLink{Genesis}{3}{Genesis}{Serpent; exile}%
+    \ChapterSummaryLink{Genesis}{4}{Genesis}{Cain and Abel}%
+    \ChapterSummaryLink{Genesis}{5}{Genesis}{Adam's line}%
+    \ChapterSummaryLink{Genesis}{6}{Genesis}{Flood coming}%
+    \ChapterSummaryLink{Genesis}{7}{Genesis}{Flood starts}%
+    \ChapterSummaryLink{Genesis}{8}{Genesis}{Flood ends}%
+    \ChapterSummaryLink{Genesis}{9}{Genesis}{Rainbow; Noah drunk}%
+    \ChapterSummaryLink{Genesis}{10}{Genesis}{Table of Nations}%
+    \ChapterSummaryLink{Genesis}{11}{Genesis}{Babel; Noah's line}%
+    \ChapterSummaryLink{Genesis}{12}{Genesis}{Abram called}%
+    \ChapterSummaryLink{Genesis}{13}{Genesis}{Abram, Lot split}%
+    \ChapterSummaryLink{Genesis}{14}{Genesis}{Lot rescued}%
+    \ChapterSummaryLink{Genesis}{15}{Genesis}{Covenant cut}%
+    \ChapterSummaryLink{Genesis}{16}{Genesis}{Hagar flees}%
+    \ChapterSummaryLink{Genesis}{17}{Genesis}{Circumcision}%
+    \ChapterSummaryLink{Genesis}{18}{Genesis}{Visitors; Sodom}%
+    \ChapterSummaryLink{Genesis}{19}{Genesis}{Sodom destroyed}%
+    \ChapterSummaryLink{Genesis}{20}{Genesis}{Abimelech fooled}%
+    \ChapterSummaryLink{Genesis}{21}{Genesis}{Isaac born}%
+    \ChapterSummaryLink{Genesis}{22}{Genesis}{Isaac tested}%
+    \ChapterSummaryLink{Genesis}{23}{Genesis}{Sarah buried}%
+    \ChapterSummaryLink{Genesis}{24}{Genesis}{Rebekah found}%
+    \ChapterSummaryLink{Genesis}{25}{Genesis}{Esau, Jacob born}%
+    \ChapterSummaryLink{Genesis}{26}{Genesis}{Isaac prospers}%
+    \ChapterSummaryLink{Genesis}{27}{Genesis}{Blessing stolen}%
+    \ChapterSummaryLink{Genesis}{28}{Genesis}{Ladder dream}%
+    \ChapterSummaryLink{Genesis}{29}{Genesis}{Leah, Rachel}%
+    \ChapterSummaryLink{Genesis}{30}{Genesis}{Jacob prospers}%
+    \ChapterSummaryLink{Genesis}{31}{Genesis}{Jacob leaves}%
+    \ChapterSummaryLink{Genesis}{32}{Genesis}{Jacob wrestles}%
+    \ChapterSummaryLink{Genesis}{33}{Genesis}{Esau returns}%
+    \ChapterSummaryLink{Genesis}{34}{Genesis}{Dinah and Shechem}%
+    \ChapterSummaryLink{Genesis}{35}{Genesis}{Bethel; Rachel dies}%
+    \ChapterSummaryLink{Genesis}{36}{Genesis}{Esau's line}%
+    \ChapterSummaryLink{Genesis}{37}{Genesis}{Joseph sold}%
+    \ChapterSummaryLink{Genesis}{38}{Genesis}{Judah and Tamar}%
+    \ChapterSummaryLink{Genesis}{39}{Genesis}{Joseph jailed}%
+    \ChapterSummaryLink{Genesis}{40}{Genesis}{Joseph prison dreams}%
+    \ChapterSummaryLink{Genesis}{41}{Genesis}{Joseph promoted}%
+    \ChapterSummaryLink{Genesis}{42}{Genesis}{Brothers visit}%
+    \ChapterSummaryLink{Genesis}{43}{Genesis}{Benjamin goes}%
+    \ChapterSummaryLink{Genesis}{44}{Genesis}{Silver cup}%
+    \ChapterSummaryLink{Genesis}{45}{Genesis}{Joseph revealed}%
+    \ChapterSummaryLink{Genesis}{46}{Genesis}{Jacob moves}%
+    \ChapterSummaryLink{Genesis}{47}{Genesis}{Egypt settled}%
+    \ChapterSummaryLink{Genesis}{48}{Genesis}{Ephraim favored}%
+    \ChapterSummaryLink{Genesis}{49}{Genesis}{Jacob blesses}%
+    \ChapterSummaryLink{Genesis}{50}{Genesis}{Jacob buried; Joseph dies}%
+}
+\DeclareBookChapterSummaryLinkList{Exodus}{%
+    \ChapterSummaryLink{Exodus}{1}{Exodus}{Israel enslaved}%
+    \ChapterSummaryLink{Exodus}{2}{Exodus}{Moses born}%
+    \ChapterSummaryLink{Exodus}{3}{Exodus}{Burning bush}%
+    \ChapterSummaryLink{Exodus}{4}{Exodus}{Signs given}%
+    \ChapterSummaryLink{Exodus}{5}{Exodus}{Work worsens}%
+    \ChapterSummaryLink{Exodus}{6}{Exodus}{Name revealed}%
+    \ChapterSummaryLink{Exodus}{7}{Exodus}{River to blood}%
+    \ChapterSummaryLink{Exodus}{8}{Exodus}{Frogs; gnats; flies}%
+    \ChapterSummaryLink{Exodus}{9}{Exodus}{Livestock; boils; hail}%
+    \ChapterSummaryLink{Exodus}{10}{Exodus}{Locusts; darkness}%
+    \ChapterSummaryLink{Exodus}{11}{Exodus}{Firstborn warned}%
+    \ChapterSummaryLink{Exodus}{12}{Exodus}{Passover; Exodus}%
+    \ChapterSummaryLink{Exodus}{13}{Exodus}{Firstborn; sea}%
+    \ChapterSummaryLink{Exodus}{14}{Exodus}{Sea crossed}%
+    \ChapterSummaryLink{Exodus}{15}{Exodus}{Song of the Sea}%
+    \ChapterSummaryLink{Exodus}{16}{Exodus}{Manna, quail}%
+    \ChapterSummaryLink{Exodus}{17}{Exodus}{Water; Amalek}%
+    \ChapterSummaryLink{Exodus}{18}{Exodus}{Jethro visits}%
+    \ChapterSummaryLink{Exodus}{19}{Exodus}{Sinai reached}%
+    \ChapterSummaryLink{Exodus}{20}{Exodus}{Ten Commandments}%
+    \ChapterSummaryLink{Exodus}{21}{Exodus}{Slave laws}%
+    \ChapterSummaryLink{Exodus}{22}{Exodus}{Property laws}%
+    \ChapterSummaryLink{Exodus}{23}{Exodus}{Justice, festivals}%
+    \ChapterSummaryLink{Exodus}{24}{Exodus}{Covenant sealed}%
+    \ChapterSummaryLink{Exodus}{25}{Exodus}{Ark planned}%
+    \ChapterSummaryLink{Exodus}{26}{Exodus}{Tabernacle planned}%
+    \ChapterSummaryLink{Exodus}{27}{Exodus}{Altar planned}%
+    \ChapterSummaryLink{Exodus}{28}{Exodus}{Priest clothes}%
+    \ChapterSummaryLink{Exodus}{29}{Exodus}{Priests installed}%
+    \ChapterSummaryLink{Exodus}{30}{Exodus}{Incense; census; oil}%
+    \ChapterSummaryLink{Exodus}{31}{Exodus}{Bezalel; Sabbath}%
+    \ChapterSummaryLink{Exodus}{32}{Exodus}{Golden calf}%
+    \ChapterSummaryLink{Exodus}{33}{Exodus}{Tent; God's back}%
+    \ChapterSummaryLink{Exodus}{34}{Exodus}{New tablets}%
+    \ChapterSummaryLink{Exodus}{35}{Exodus}{Work begins}%
+    \ChapterSummaryLink{Exodus}{36}{Exodus}{Tabernacle built}%
+    \ChapterSummaryLink{Exodus}{37}{Exodus}{Ark; furniture made}%
+    \ChapterSummaryLink{Exodus}{38}{Exodus}{Altar; courtyard; inventory}%
+    \ChapterSummaryLink{Exodus}{39}{Exodus}{Priest clothes done}%
+    \ChapterSummaryLink{Exodus}{40}{Exodus}{Tabernacle complete}%
+}
+\DeclareBookChapterSummaryLinkList{Leviticus}{%
+    \ChapterSummaryLink{Leviticus}{1}{Leviticus}{Burnt offerings}%
+    \ChapterSummaryLink{Leviticus}{2}{Leviticus}{Grain offerings}%
+    \ChapterSummaryLink{Leviticus}{3}{Leviticus}{Well-being offerings}%
+    \ChapterSummaryLink{Leviticus}{4}{Leviticus}{Sin offerings}%
+    \ChapterSummaryLink{Leviticus}{5}{Leviticus}{Guilt; confession}%
+    \ChapterSummaryLink{Leviticus}{6}{Leviticus}{Offering rules}%
+    \ChapterSummaryLink{Leviticus}{7}{Leviticus}{More offering rules}%
+    \ChapterSummaryLink{Leviticus}{8}{Leviticus}{Priests installed}%
+    \ChapterSummaryLink{Leviticus}{9}{Leviticus}{Priests begin}%
+    \ChapterSummaryLink{Leviticus}{10}{Leviticus}{Nadab; Abihu die}%
+    \ChapterSummaryLink{Leviticus}{11}{Leviticus}{Clean animals}%
+    \ChapterSummaryLink{Leviticus}{12}{Leviticus}{Childbirth purity}%
+    \ChapterSummaryLink{Leviticus}{13}{Leviticus}{Skin disease}%
+    \ChapterSummaryLink{Leviticus}{14}{Leviticus}{Cleansing disease}%
+    \ChapterSummaryLink{Leviticus}{15}{Leviticus}{Bodily discharges}%
+    \ChapterSummaryLink{Leviticus}{16}{Leviticus}{Day of Atonement}%
+    \ChapterSummaryLink{Leviticus}{17}{Leviticus}{Blood rules}%
+    \ChapterSummaryLink{Leviticus}{18}{Leviticus}{Sex laws}%
+    \ChapterSummaryLink{Leviticus}{19}{Leviticus}{Holiness laws}%
+    \ChapterSummaryLink{Leviticus}{20}{Leviticus}{Penalties}%
+    \ChapterSummaryLink{Leviticus}{21}{Leviticus}{Priest rules}%
+    \ChapterSummaryLink{Leviticus}{22}{Leviticus}{Sacred food}%
+    \ChapterSummaryLink{Leviticus}{23}{Leviticus}{Festivals}%
+    \ChapterSummaryLink{Leviticus}{24}{Leviticus}{Lamps; bread; blasphemer}%
+    \ChapterSummaryLink{Leviticus}{25}{Leviticus}{Sabbath year; Jubilee}%
+    \ChapterSummaryLink{Leviticus}{26}{Leviticus}{Blessings; curses}%
+    \ChapterSummaryLink{Leviticus}{27}{Leviticus}{Vows; valuations}%
+}
+\DeclareBookChapterSummaryLinkList{Numbers}{%
+    \ChapterSummaryLink{Numbers}{1}{Numbers}{Census}%
+    \ChapterSummaryLink{Numbers}{2}{Numbers}{Camp arranged}%
+    \ChapterSummaryLink{Numbers}{3}{Numbers}{Levites counted}%
+    \ChapterSummaryLink{Numbers}{4}{Numbers}{Levite jobs}%
+    \ChapterSummaryLink{Numbers}{5}{Numbers}{Camp purity}%
+    \ChapterSummaryLink{Numbers}{6}{Numbers}{Nazirites; blessing}%
+    \ChapterSummaryLink{Numbers}{7}{Numbers}{Tribal offerings}%
+    \ChapterSummaryLink{Numbers}{8}{Numbers}{Levites installed}%
+    \ChapterSummaryLink{Numbers}{9}{Numbers}{Passover; cloud}%
+    \ChapterSummaryLink{Numbers}{10}{Numbers}{Trumpets; departure}%
+    \ChapterSummaryLink{Numbers}{11}{Numbers}{Complaints; quail}%
+    \ChapterSummaryLink{Numbers}{12}{Numbers}{Miriam; Aaron challenge}%
+    \ChapterSummaryLink{Numbers}{13}{Numbers}{Spies sent}%
+    \ChapterSummaryLink{Numbers}{14}{Numbers}{People refuse}%
+    \ChapterSummaryLink{Numbers}{15}{Numbers}{Offerings; tassels}%
+    \ChapterSummaryLink{Numbers}{16}{Numbers}{Korah rebels}%
+    \ChapterSummaryLink{Numbers}{17}{Numbers}{Aaron's staff}%
+    \ChapterSummaryLink{Numbers}{18}{Numbers}{Priest duties}%
+    \ChapterSummaryLink{Numbers}{19}{Numbers}{Red cow}%
+    \ChapterSummaryLink{Numbers}{20}{Numbers}{Water; Aaron dies}%
+    \ChapterSummaryLink{Numbers}{21}{Numbers}{Bronze snake}%
+    \ChapterSummaryLink{Numbers}{22}{Numbers}{Balaam hired}%
+    \ChapterSummaryLink{Numbers}{23}{Numbers}{Balaam blesses}%
+    \ChapterSummaryLink{Numbers}{24}{Numbers}{Balaam blesses again}%
+    \ChapterSummaryLink{Numbers}{25}{Numbers}{Baal-peor; Phinehas}%
+    \ChapterSummaryLink{Numbers}{26}{Numbers}{Second census}%
+    \ChapterSummaryLink{Numbers}{27}{Numbers}{Zelophehad's daughters}%
+    \ChapterSummaryLink{Numbers}{28}{Numbers}{Daily offerings}%
+    \ChapterSummaryLink{Numbers}{29}{Numbers}{Festival offerings}%
+    \ChapterSummaryLink{Numbers}{30}{Numbers}{Vows}%
+    \ChapterSummaryLink{Numbers}{31}{Numbers}{Midian war}%
+    \ChapterSummaryLink{Numbers}{32}{Numbers}{Eastern tribes}%
+    \ChapterSummaryLink{Numbers}{33}{Numbers}{Journey listed}%
+    \ChapterSummaryLink{Numbers}{34}{Numbers}{Land borders}%
+    \ChapterSummaryLink{Numbers}{35}{Numbers}{Levite cities; refuge}%
+    \ChapterSummaryLink{Numbers}{36}{Numbers}{Heiress marriage rules}%
+}
+\DeclareBookChapterSummaryLinkList{Deuteronomy}{%
+    \ChapterSummaryLink{Deuteronomy}{1}{Deuteronomy}{Journey retold}%
+    \ChapterSummaryLink{Deuteronomy}{2}{Deuteronomy}{Wilderness wars}%
+    \ChapterSummaryLink{Deuteronomy}{3}{Deuteronomy}{Og defeated}%
+    \ChapterSummaryLink{Deuteronomy}{4}{Deuteronomy}{Obey; no idols}%
+    \ChapterSummaryLink{Deuteronomy}{5}{Deuteronomy}{Ten Commandments}%
+    \ChapterSummaryLink{Deuteronomy}{6}{Deuteronomy}{Shema}%
+    \ChapterSummaryLink{Deuteronomy}{7}{Deuteronomy}{Nations banned}%
+    \ChapterSummaryLink{Deuteronomy}{8}{Deuteronomy}{Remember wilderness}%
+    \ChapterSummaryLink{Deuteronomy}{9}{Deuteronomy}{Golden calf retold}%
+    \ChapterSummaryLink{Deuteronomy}{10}{Deuteronomy}{New tablets}%
+    \ChapterSummaryLink{Deuteronomy}{11}{Deuteronomy}{Blessing; curse}%
+    \ChapterSummaryLink{Deuteronomy}{12}{Deuteronomy}{One sanctuary}%
+    \ChapterSummaryLink{Deuteronomy}{13}{Deuteronomy}{False prophets}%
+    \ChapterSummaryLink{Deuteronomy}{14}{Deuteronomy}{Food; tithes}%
+    \ChapterSummaryLink{Deuteronomy}{15}{Deuteronomy}{Debt release}%
+    \ChapterSummaryLink{Deuteronomy}{16}{Deuteronomy}{Festivals; judges}%
+    \ChapterSummaryLink{Deuteronomy}{17}{Deuteronomy}{Courts; king}%
+    \ChapterSummaryLink{Deuteronomy}{18}{Deuteronomy}{Priests; prophets}%
+    \ChapterSummaryLink{Deuteronomy}{19}{Deuteronomy}{Refuge cities}%
+    \ChapterSummaryLink{Deuteronomy}{20}{Deuteronomy}{War rules}%
+    \ChapterSummaryLink{Deuteronomy}{21}{Deuteronomy}{Family; corpse laws}%
+    \ChapterSummaryLink{Deuteronomy}{22}{Deuteronomy}{Mixed laws}%
+    \ChapterSummaryLink{Deuteronomy}{23}{Deuteronomy}{Camp rules}%
+    \ChapterSummaryLink{Deuteronomy}{24}{Deuteronomy}{Divorce; fairness}%
+    \ChapterSummaryLink{Deuteronomy}{25}{Deuteronomy}{Justice; Levirate marriage}%
+    \ChapterSummaryLink{Deuteronomy}{26}{Deuteronomy}{Firstfruits; confession}%
+    \ChapterSummaryLink{Deuteronomy}{27}{Deuteronomy}{Ebal curses}%
+    \ChapterSummaryLink{Deuteronomy}{28}{Deuteronomy}{Blessings; curses}%
+    \ChapterSummaryLink{Deuteronomy}{29}{Deuteronomy}{Covenant renewed}%
+    \ChapterSummaryLink{Deuteronomy}{30}{Deuteronomy}{Life or death}%
+    \ChapterSummaryLink{Deuteronomy}{31}{Deuteronomy}{Joshua succeeds}%
+    \ChapterSummaryLink{Deuteronomy}{32}{Deuteronomy}{Song of Moses}%
+    \ChapterSummaryLink{Deuteronomy}{33}{Deuteronomy}{Blessing of Moses}%
+    \ChapterSummaryLink{Deuteronomy}{34}{Deuteronomy}{Moses dies}%
+}
+\DeclareBookChapterSummaryLinkList{Joshua}{%
+    \ChapterSummaryLink{Joshua}{1}{Joshua}{Joshua commissioned}%
+    \ChapterSummaryLink{Joshua}{2}{Joshua}{Rahab; spies}%
+    \ChapterSummaryLink{Joshua}{3}{Joshua}{Jordan crossed}%
+    \ChapterSummaryLink{Joshua}{4}{Joshua}{Memorial stones}%
+    \ChapterSummaryLink{Joshua}{5}{Joshua}{Circumcision; Passover}%
+    \ChapterSummaryLink{Joshua}{6}{Joshua}{Jericho falls}%
+    \ChapterSummaryLink{Joshua}{7}{Joshua}{Achan}%
+    \ChapterSummaryLink{Joshua}{8}{Joshua}{Ai taken}%
+    \ChapterSummaryLink{Joshua}{9}{Joshua}{Gibeonites}%
+    \ChapterSummaryLink{Joshua}{10}{Joshua}{Sun stands still}%
+    \ChapterSummaryLink{Joshua}{11}{Joshua}{North conquered}%
+    \ChapterSummaryLink{Joshua}{12}{Joshua}{Conquered kings}%
+    \ChapterSummaryLink{Joshua}{13}{Joshua}{Land remaining}%
+    \ChapterSummaryLink{Joshua}{14}{Joshua}{Caleb's land}%
+    \ChapterSummaryLink{Joshua}{15}{Joshua}{Judah's land}%
+    \ChapterSummaryLink{Joshua}{16}{Joshua}{Ephraim's land}%
+    \ChapterSummaryLink{Joshua}{17}{Joshua}{Manasseh's land}%
+    \ChapterSummaryLink{Joshua}{18}{Joshua}{Land divided}%
+    \ChapterSummaryLink{Joshua}{19}{Joshua}{More land divided}%
+    \ChapterSummaryLink{Joshua}{20}{Joshua}{Cities of refuge}%
+    \ChapterSummaryLink{Joshua}{21}{Joshua}{Levite cities}%
+    \ChapterSummaryLink{Joshua}{22}{Joshua}{Eastern altar}%
+    \ChapterSummaryLink{Joshua}{23}{Joshua}{Joshua's farewell}%
+    \ChapterSummaryLink{Joshua}{24}{Joshua}{Covenant renewed}%
+}
+\DeclareBookChapterSummaryLinkList{Judges}{%
+    \ChapterSummaryLink{Judges}{1}{Judges}{Land unfinished}%
+    \ChapterSummaryLink{Judges}{2}{Judges}{Judges cycle}%
+    \ChapterSummaryLink{Judges}{3}{Judges}{Ehud kills Eglon}%
+    \ChapterSummaryLink{Judges}{4}{Judges}{Deborah and Barak}%
+    \ChapterSummaryLink{Judges}{5}{Judges}{Song of Deborah}%
+    \ChapterSummaryLink{Judges}{6}{Judges}{Gideon called}%
+    \ChapterSummaryLink{Judges}{7}{Judges}{Midian defeated}%
+    \ChapterSummaryLink{Judges}{8}{Judges}{Gideon ends}%
+    \ChapterSummaryLink{Judges}{9}{Judges}{Abimelech}%
+    \ChapterSummaryLink{Judges}{10}{Judges}{Tola; Jair}%
+    \ChapterSummaryLink{Judges}{11}{Judges}{Jephthah's vow}%
+    \ChapterSummaryLink{Judges}{12}{Judges}{Shibboleth}%
+    \ChapterSummaryLink{Judges}{13}{Judges}{Samson born}%
+    \ChapterSummaryLink{Judges}{14}{Judges}{Samson's riddle}%
+    \ChapterSummaryLink{Judges}{15}{Judges}{Samson Jawbone}%
+    \ChapterSummaryLink{Judges}{16}{Judges}{Delilah; Samson dies}%
+    \ChapterSummaryLink{Judges}{17}{Judges}{Micah's idol}%
+    \ChapterSummaryLink{Judges}{18}{Judges}{Dan takes idol}%
+    \ChapterSummaryLink{Judges}{19}{Judges}{Levite's concubine}%
+    \ChapterSummaryLink{Judges}{20}{Judges}{Benjamin war}%
+    \ChapterSummaryLink{Judges}{21}{Judges}{Benjamin restored}%
+}
+\DeclareBookChapterSummaryLinkList{I Samuel}{%
+    \ChapterSummaryLink{I Samuel}{1}{I Samuel}{Hannah, Eli, Samuel}%
+    \ChapterSummaryLink{I Samuel}{2}{I Samuel}{Hannah's song}%
+    \ChapterSummaryLink{I Samuel}{3}{I Samuel}{Samuel called}%
+    \ChapterSummaryLink{I Samuel}{4}{I Samuel}{Ark captured}%
+    \ChapterSummaryLink{I Samuel}{5}{I Samuel}{Dagon; Ark Hemorrhoids}%
+    \ChapterSummaryLink{I Samuel}{6}{I Samuel}{Ark returned}%
+    \ChapterSummaryLink{I Samuel}{7}{I Samuel}{Samuel leads}%
+    \ChapterSummaryLink{I Samuel}{8}{I Samuel}{King requested}%
+    \ChapterSummaryLink{I Samuel}{9}{I Samuel}{Saul found}%
+    \ChapterSummaryLink{I Samuel}{10}{I Samuel}{Saul anointed}%
+    \ChapterSummaryLink{I Samuel}{11}{I Samuel}{Jabesh saved}%
+    \ChapterSummaryLink{I Samuel}{12}{I Samuel}{Samuel's farewell}%
+    \ChapterSummaryLink{I Samuel}{13}{I Samuel}{Saul disobeys}%
+    \ChapterSummaryLink{I Samuel}{14}{I Samuel}{Jonathan attacks}%
+    \ChapterSummaryLink{I Samuel}{15}{I Samuel}{Agag spared}%
+    \ChapterSummaryLink{I Samuel}{16}{I Samuel}{David anointed}%
+    \ChapterSummaryLink{I Samuel}{17}{I Samuel}{Goliath}%
+    \ChapterSummaryLink{I Samuel}{18}{I Samuel}{Saul jealous}%
+    \ChapterSummaryLink{I Samuel}{19}{I Samuel}{David escapes}%
+    \ChapterSummaryLink{I Samuel}{20}{I Samuel}{Jonathan warns}%
+    \ChapterSummaryLink{I Samuel}{21}{I Samuel}{Nob}%
+    \ChapterSummaryLink{I Samuel}{22}{I Samuel}{Nob destroyed}%
+    \ChapterSummaryLink{I Samuel}{23}{I Samuel}{Keilah; Ziph}%
+    \ChapterSummaryLink{I Samuel}{24}{I Samuel}{Saul spared}%
+    \ChapterSummaryLink{I Samuel}{25}{I Samuel}{Abigail}%
+    \ChapterSummaryLink{I Samuel}{26}{I Samuel}{Saul spared again}%
+    \ChapterSummaryLink{I Samuel}{27}{I Samuel}{Philistia}%
+    \ChapterSummaryLink{I Samuel}{28}{I Samuel}{Medium of En-dor}%
+    \ChapterSummaryLink{I Samuel}{29}{I Samuel}{David dismissed}%
+    \ChapterSummaryLink{I Samuel}{30}{I Samuel}{Ziklag recovered}%
+    \ChapterSummaryLink{I Samuel}{31}{I Samuel}{Saul dies}%
+}
+\DeclareBookChapterSummaryLinkList{II Samuel}{%
+    \ChapterSummaryLink{II Samuel}{1}{II Samuel}{Saul mourned}%
+    \ChapterSummaryLink{II Samuel}{2}{II Samuel}{David crowned}%
+    \ChapterSummaryLink{II Samuel}{3}{II Samuel}{Abner defects}%
+    \ChapterSummaryLink{II Samuel}{4}{II Samuel}{Ish-bosheth killed}%
+    \ChapterSummaryLink{II Samuel}{5}{II Samuel}{Jerusalem taken}%
+    \ChapterSummaryLink{II Samuel}{6}{II Samuel}{Ark brought}%
+    \ChapterSummaryLink{II Samuel}{7}{II Samuel}{Davidic covenant}%
+    \ChapterSummaryLink{II Samuel}{8}{II Samuel}{David conquers}%
+    \ChapterSummaryLink{II Samuel}{9}{II Samuel}{Mephibosheth}%
+    \ChapterSummaryLink{II Samuel}{10}{II Samuel}{Ammon war}%
+    \ChapterSummaryLink{II Samuel}{11}{II Samuel}{Bathsheba}%
+    \ChapterSummaryLink{II Samuel}{12}{II Samuel}{Nathan rebukes}%
+    \ChapterSummaryLink{II Samuel}{13}{II Samuel}{Amnon; Tamar}%
+    \ChapterSummaryLink{II Samuel}{14}{II Samuel}{Absalom returns}%
+    \ChapterSummaryLink{II Samuel}{15}{II Samuel}{Absalom rebels}%
+    \ChapterSummaryLink{II Samuel}{16}{II Samuel}{Shimei curses}%
+    \ChapterSummaryLink{II Samuel}{17}{II Samuel}{Hushai wins}%
+    \ChapterSummaryLink{II Samuel}{18}{II Samuel}{Absalom dies}%
+    \ChapterSummaryLink{II Samuel}{19}{II Samuel}{David returns}%
+    \ChapterSummaryLink{II Samuel}{20}{II Samuel}{Sheba rebels}%
+    \ChapterSummaryLink{II Samuel}{21}{II Samuel}{Famine; giants}%
+    \ChapterSummaryLink{II Samuel}{22}{II Samuel}{David's song}%
+    \ChapterSummaryLink{II Samuel}{23}{II Samuel}{Last words; mighty men}%
+    \ChapterSummaryLink{II Samuel}{24}{II Samuel}{Census; plague}%
+}
+\DeclareBookChapterSummaryLinkList{I Kings}{%
+    \ChapterSummaryLink{I Kings}{1}{I Kings}{Solomon crowned}%
+    \ChapterSummaryLink{I Kings}{2}{I Kings}{David dies}%
+    \ChapterSummaryLink{I Kings}{3}{I Kings}{Wisdom chosen}%
+    \ChapterSummaryLink{I Kings}{4}{I Kings}{Solomon's court}%
+    \ChapterSummaryLink{I Kings}{5}{I Kings}{Temple planned}%
+    \ChapterSummaryLink{I Kings}{6}{I Kings}{Temple built}%
+    \ChapterSummaryLink{I Kings}{7}{I Kings}{Palace; furnishings}%
+    \ChapterSummaryLink{I Kings}{8}{I Kings}{Temple dedicated}%
+    \ChapterSummaryLink{I Kings}{9}{I Kings}{YHWH appears}%
+    \ChapterSummaryLink{I Kings}{10}{I Kings}{Queen of Sheba}%
+    \ChapterSummaryLink{I Kings}{11}{I Kings}{Solomon strays}%
+    \ChapterSummaryLink{I Kings}{12}{I Kings}{Kingdom split}%
+    \ChapterSummaryLink{I Kings}{13}{I Kings}{Man of God}%
+    \ChapterSummaryLink{I Kings}{14}{I Kings}{Jeroboam judged}%
+    \ChapterSummaryLink{I Kings}{15}{I Kings}{Abijah; Asa}%
+    \ChapterSummaryLink{I Kings}{16}{I Kings}{Baasha; Omri; Ahab}%
+    \ChapterSummaryLink{I Kings}{17}{I Kings}{Elijah; widow}%
+    \ChapterSummaryLink{I Kings}{18}{I Kings}{Mount Carmel}%
+    \ChapterSummaryLink{I Kings}{19}{I Kings}{Horeb}%
+    \ChapterSummaryLink{I Kings}{20}{I Kings}{Ben-hadad}%
+    \ChapterSummaryLink{I Kings}{21}{I Kings}{Naboth's vineyard}%
+    \ChapterSummaryLink{I Kings}{22}{I Kings}{Ahab dies}%
+}
+\DeclareBookChapterSummaryLinkList{II Kings}{%
+    \ChapterSummaryLink{II Kings}{1}{II Kings}{Ahaziah dies}%
+    \ChapterSummaryLink{II Kings}{2}{II Kings}{Elijah taken}%
+    \ChapterSummaryLink{II Kings}{3}{II Kings}{Moab war}%
+    \ChapterSummaryLink{II Kings}{4}{II Kings}{Elisha's miracles}%
+    \ChapterSummaryLink{II Kings}{5}{II Kings}{Naaman healed}%
+    \ChapterSummaryLink{II Kings}{6}{II Kings}{Axe head; siege}%
+    \ChapterSummaryLink{II Kings}{7}{II Kings}{Siege ended}%
+    \ChapterSummaryLink{II Kings}{8}{II Kings}{Hazael rises}%
+    \ChapterSummaryLink{II Kings}{9}{II Kings}{Jehu; Jezebel}%
+    \ChapterSummaryLink{II Kings}{10}{II Kings}{Baal destroyed}%
+    \ChapterSummaryLink{II Kings}{11}{II Kings}{Joash crowned}%
+    \ChapterSummaryLink{II Kings}{12}{II Kings}{Temple repaired}%
+    \ChapterSummaryLink{II Kings}{13}{II Kings}{Elisha dies}%
+    \ChapterSummaryLink{II Kings}{14}{II Kings}{Amaziah; Jeroboam II}%
+    \ChapterSummaryLink{II Kings}{15}{II Kings}{Many kings}%
+    \ChapterSummaryLink{II Kings}{16}{II Kings}{Ahaz}%
+    \ChapterSummaryLink{II Kings}{17}{II Kings}{Samaria falls}%
+    \ChapterSummaryLink{II Kings}{18}{II Kings}{Hezekiah}%
+    \ChapterSummaryLink{II Kings}{19}{II Kings}{Assyria defeated}%
+    \ChapterSummaryLink{II Kings}{20}{II Kings}{Hezekiah healed}%
+    \ChapterSummaryLink{II Kings}{21}{II Kings}{Manasseh}%
+    \ChapterSummaryLink{II Kings}{22}{II Kings}{Law found}%
+    \ChapterSummaryLink{II Kings}{23}{II Kings}{Josiah reforms}%
+    \ChapterSummaryLink{II Kings}{24}{II Kings}{Babylon comes}%
+    \ChapterSummaryLink{II Kings}{25}{II Kings}{Jerusalem falls}%
+}
+\DeclareBookChapterSummaryLinkList{Ezra}{%
+    \ChapterSummaryLink{Ezra}{1}{Ezra}{Return begins}%
+    \ChapterSummaryLink{Ezra}{2}{Ezra}{Returnees listed}%
+    \ChapterSummaryLink{Ezra}{3}{Ezra}{Altar; Temple begun}%
+    \ChapterSummaryLink{Ezra}{4}{Ezra}{Work stopped}%
+    \ChapterSummaryLink{Ezra}{5}{Ezra}{Work resumes}%
+    \ChapterSummaryLink{Ezra}{6}{Ezra}{Temple finished}%
+    \ChapterSummaryLink{Ezra}{7}{Ezra}{Ezra arrives}%
+    \ChapterSummaryLink{Ezra}{8}{Ezra}{Journey made}%
+    \ChapterSummaryLink{Ezra}{9}{Ezra}{Intermarriage mourned}%
+    \ChapterSummaryLink{Ezra}{10}{Ezra}{Foreign wives}%
+}
+\DeclareBookChapterSummaryLinkList{Nehemiah}{%
+    \ChapterSummaryLink{Nehemiah}{1}{Nehemiah}{Nehemiah prays}%
+    \ChapterSummaryLink{Nehemiah}{2}{Nehemiah}{Walls planned}%
+    \ChapterSummaryLink{Nehemiah}{3}{Nehemiah}{Walls assigned}%
+    \ChapterSummaryLink{Nehemiah}{4}{Nehemiah}{Walls defended}%
+    \ChapterSummaryLink{Nehemiah}{5}{Nehemiah}{Debts forgiven}%
+    \ChapterSummaryLink{Nehemiah}{6}{Nehemiah}{Walls finished}%
+    \ChapterSummaryLink{Nehemiah}{7}{Nehemiah}{Returnees listed}%
+    \ChapterSummaryLink{Nehemiah}{8}{Nehemiah}{Law read}%
+    \ChapterSummaryLink{Nehemiah}{9}{Nehemiah}{National confession}%
+    \ChapterSummaryLink{Nehemiah}{10}{Nehemiah}{Covenant signed}%
+    \ChapterSummaryLink{Nehemiah}{11}{Nehemiah}{Jerusalem settled}%
+    \ChapterSummaryLink{Nehemiah}{12}{Nehemiah}{Walls dedicated}%
+    \ChapterSummaryLink{Nehemiah}{13}{Nehemiah}{Reforms restored}%
+}
+\DeclareBookChapterSummaryLinkList{Esther}{%
+    \ChapterSummaryLink{Esther}{1}{Esther}{Vashti deposed}%
+    \ChapterSummaryLink{Esther}{2}{Esther}{Esther crowned}%
+    \ChapterSummaryLink{Esther}{3}{Esther}{Haman plots}%
+    \ChapterSummaryLink{Esther}{4}{Esther}{Esther decides}%
+    \ChapterSummaryLink{Esther}{5}{Esther}{First banquet}%
+    \ChapterSummaryLink{Esther}{6}{Esther}{Mordecai honored}%
+    \ChapterSummaryLink{Esther}{7}{Esther}{Haman hanged}%
+    \ChapterSummaryLink{Esther}{8}{Esther}{New decree}%
+    \ChapterSummaryLink{Esther}{9}{Esther}{Purim}%
+    \ChapterSummaryLink{Esther}{10}{Esther}{Mordecai exalted}%
+}
 \DeclareBookChapterSummaryLinkList{Samuel}{%
     \BookPartChapterSummaryLinks{I Samuel}%
     \BookPartChapterSummaryLinks{II Samuel}%
