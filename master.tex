@@ -12,6 +12,9 @@
 % choices: book, mobile
 \def\ConfigOutputMode{mobile}
 
+% choices: plain, fancy
+\def\IndividualBookTitlePageStyle{plain}
+
 % choices: true, false
 \def\ConfigCommentary{true}
 
@@ -34,9 +37,11 @@
 \def\ConfigVerseLayoutVertical{vertical}
 \def\ConfigOutputModeBook{book}
 \def\ConfigOutputModeMobile{mobile}
+\def\IndividualBookTitlePageStyleFancy{fancy}
 \newif\ifConfigCommentaryOn
 \newif\ifConfigVerseLayoutVertical
 \newif\ifConfigOutputModeMobile
+\newif\ifIndividualBookTitlePageStyleFancy
 \ifx\ConfigCommentary\ConfigTrue
     \ConfigCommentaryOntrue
 \else
@@ -51,6 +56,11 @@
     \ConfigOutputModeMobiletrue
 \else
     \ConfigOutputModeMobilefalse
+\fi
+\ifx\IndividualBookTitlePageStyle\IndividualBookTitlePageStyleFancy
+    \IndividualBookTitlePageStyleFancytrue
+\else
+    \IndividualBookTitlePageStyleFancyfalse
 \fi
 
 \documentclass[11pt]{book}
@@ -794,7 +804,7 @@
 
 \newcommand{\QereKetivInline}[1]{{\leavevmode\textdir TRT#1}}
 
-\directlua{
+\begin{luacode*}
   paleotex = paleotex or {}
 
   local tab = string.char(9)
@@ -1066,7 +1076,7 @@
   function hebrew_to_aramaic(s)
     return paleotex.hebrew_to_aramaic(s)
   end
-}
+\end{luacode*}
 
 \newcommand{\HebrewNoNiqqud}[1]{%
   \directlua{tex.sprint(strip_hebrew_niqqud("\luaescapestring{\detokenize{#1}}"))}%
@@ -2518,6 +2528,12 @@
 \newcommand{\DeclareBookChapterLinkList}[2]{%
     \expandafter\def\csname BookChapterLinkList@#1\endcsname{#2}%
 }
+\newcommand{\DeclareChapterSummaryLinkList}[2]{%
+    \expandafter\def\csname ChapterSummaryLinkList@#1\endcsname{#2}%
+}
+\newcommand{\DeclareBookChapterSummaryLinkList}[2]{%
+    \expandafter\def\csname BookChapterSummaryLinkList@#1\endcsname{#2}%
+}
 \newcommand{\DeclareBookExtraLinkList}[2]{%
     \expandafter\def\csname BookExtraLinkList@#1\endcsname{#2}%
 }
@@ -2592,12 +2608,62 @@
     {\centering\large\textsc{#1}\par\nobreak\smallskip}%
     \ChapterLinksForBook{#1}%
 }
-\newcommand{\BookChapterLinkArray}[1]{%
+\newcommand{\PlainBookChapterLinkArray}[1]{%
     \@ifundefined{BookChapterLinkList@#1}{%
         \ChapterLinksForBook{#1}%
     }{%
         \csname BookChapterLinkList@#1\endcsname
     }%
+}
+\newcommand{\ChapterSummaryLinkText}[1]{%
+    \ifConfigOutputModeMobile
+        {\color{MobileLinkColor}\underLine{#1}}%
+    \else
+        {\color{TextColor}#1}%
+    \fi
+}
+\newcommand{\ChapterSummaryLink}[2]{%
+    \par\noindent
+    \hyperlink{chapter.\CurrentBook.#1}{\ChapterSummaryLinkText{\CurrentBook\ #1: #2}}%
+}
+\newcommand{\ChapterSummaryLinksForBook}[1]{%
+    \begingroup
+    \def\CurrentBook{#1}%
+    \@ifundefined{ChapterSummaryLinkList@#1}{%
+        \ChapterLinksForBook{#1}%
+    }{%
+        \csname ChapterSummaryLinkList@#1\endcsname
+    }%
+    \endgroup
+}
+\newcommand{\BookPartChapterSummaryLinks}[1]{%
+    \par\nobreak\medskip
+    {\centering\small\textsc{#1}\par\nobreak\smallskip}%
+    \ChapterSummaryLinksForBook{#1}%
+}
+\newcommand{\FancyBookChapterLinkArray}[1]{%
+    \par\nobreak\medskip
+    \begingroup
+    \RaggedRight
+    \scriptsize
+    \setlength{\parskip}{0.12em}%
+    \setlength{\columnsep}{1.2em}%
+    \begin{multicols}{2}
+    \@ifundefined{BookChapterSummaryLinkList@#1}{%
+        \ChapterSummaryLinksForBook{#1}%
+    }{%
+        \csname BookChapterSummaryLinkList@#1\endcsname
+    }%
+    \end{multicols}
+    \par\nobreak\medskip
+    \endgroup
+}
+\newcommand{\BookChapterLinkArray}[1]{%
+    \ifIndividualBookTitlePageStyleFancy
+        \FancyBookChapterLinkArray{#1}%
+    \else
+        \PlainBookChapterLinkArray{#1}%
+    \fi
     \BookExtraLinkArray{#1}%
 }
 \newcommand{\BookExtraLinkText}[1]{%
@@ -2650,6 +2716,83 @@
 \DeclareBookChapterLinkList{Dudetheyreontome}{%
     \BookPartChapterLinks{On the Lamb}%
     \BookPartChapterLinks{Esther}%
+}
+\begin{luacode*}
+    local toc_path = "TOC.md"
+    local resolved_path = kpse.find_file(toc_path) or toc_path
+    local toc = io.open(resolved_path, "r")
+    local dash = string.char(226, 128, 148)
+    local book_alias = {
+        ["1 Samuel"] = "I Samuel",
+        ["2 Samuel"] = "II Samuel",
+        ["1 Kings"] = "I Kings",
+        ["2 Kings"] = "II Kings",
+    }
+    local ordered_books = {}
+    local book_summaries = {}
+
+    local function current_book_name(name)
+        return book_alias[name] or name
+    end
+
+    local function tex_escape(value)
+        value = tostring(value)
+        value = value:gsub("([%%#$&_{}])", "\\%1")
+        value = value:gsub("%^", "\\textasciicircum{}")
+        value = value:gsub("~", "\\textasciitilde{}")
+        return value
+    end
+
+    if toc then
+        local current_book = nil
+        for line in toc:lines() do
+            local heading = line:match("^##%s+(.+)$")
+            if heading then
+                current_book = current_book_name(heading)
+                if not book_summaries[current_book] then
+                    table.insert(ordered_books, current_book)
+                    book_summaries[current_book] = {}
+                end
+            else
+                local source_book, chapter, summary =
+                    line:match("^%- (.-) (%d+) " .. dash .. " (.-)%.?$")
+                if current_book and chapter and summary then
+                    table.insert(book_summaries[current_book], {
+                        chapter = chapter,
+                        summary = summary,
+                    })
+                end
+            end
+        end
+        toc:close()
+    else
+        texio.write_nl("term and log", "Warning: could not open " .. toc_path)
+    end
+
+    for _, book in ipairs(ordered_books) do
+        tex.sprint("\\DeclareChapterSummaryLinkList{" .. tex_escape(book) .. "}{")
+        for _, item in ipairs(book_summaries[book]) do
+            tex.sprint(
+                "    \\ChapterSummaryLink{" .. item.chapter .. "}{" ..
+                tex_escape(item.summary) .. "}"
+            )
+        end
+        tex.sprint("}")
+    end
+\end{luacode*}
+\DeclareBookChapterSummaryLinkList{Samuel}{%
+    \BookPartChapterSummaryLinks{I Samuel}%
+    \BookPartChapterSummaryLinks{II Samuel}%
+}
+\DeclareBookChapterSummaryLinkList{Kings}{%
+    \BookPartChapterSummaryLinks{I Kings}%
+    \BookPartChapterSummaryLinks{II Kings}%
+}
+\DeclareBookChapterSummaryLinkList{Dudetheyreontome}{%
+    \BookPartChapterSummaryLinks{On the Lamb}%
+    \BookPartChapterSummaryLinks{Ezra}%
+    \BookPartChapterSummaryLinks{Nehemiah}%
+    \BookPartChapterSummaryLinks{Esther}%
 }
 \makeatother
 

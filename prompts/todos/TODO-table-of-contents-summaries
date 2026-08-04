@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Add a config option to master.tex called IndividualBookTitlePageStyle with values 'plain' and 'fancy'. The 'plain' option should give the current behavior, while 'fancy' should have the following:
+
+Fancy should arise from the following: 1. Add TOC.md's data to master.tex in a way that makes it easy for you to include that data in each individual book's title page, thus making each book's title page (e.g., Genesis, Exodus, etc) contain the summaries in TOC.md in place of the stuff where the numerical hyperlinks currently are. Make the 2-3 word descriptions from TOC.md along with Book: Chapter names (e.g., Genesis 1: Creation) into hyperlinks. That's \\IndividualBookTitlePageStyle when set to fancy. \\IndividualBookTitlePageStyle when set to plain should be the current behavior.
+EOF
