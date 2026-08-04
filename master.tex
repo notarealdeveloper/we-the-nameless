@@ -2635,18 +2635,14 @@
         {\color{TextColor}#1}%
     \fi
 }
-\newcommand{\ChapterSummaryLink}[2]{%
+\newcommand{\ChapterSummaryLink}[4]{%
     \par\noindent
-    \hyperlink{chapter.\CurrentBook.#1}{\ChapterSummaryLinkText{\CurrentBook\ #1: #2}}%
+    \hyperlink{chapter.#1.#2}{\ChapterSummaryLinkText{#3\ #2 --- #4}}%
 }
 \newcommand{\ChapterSummaryLinksForBook}[1]{%
     \begingroup
     \def\CurrentBook{#1}%
-    \@ifundefined{ChapterSummaryLinkList@#1}{%
-        \ChapterLinksForBook{#1}%
-    }{%
-        \csname ChapterSummaryLinkList@#1\endcsname
-    }%
+    \directlua{PrintChapterSummaryLinksForBook("\luaescapestring{#1}")}%
     \endgroup
 }
 \newcommand{\BookPartChapterSummaryLinks}[1]{%
@@ -2658,8 +2654,8 @@
     \par\nobreak\medskip
     \begingroup
     \RaggedRight
-    \scriptsize
-    \setlength{\parskip}{0.12em}%
+    \small
+    \setlength{\parskip}{0.18em}%
     \setlength{\columnsep}{1.2em}%
     \begin{multicols}{2}
     \@ifundefined{BookChapterSummaryLinkList@#1}{%
@@ -2676,8 +2672,8 @@
         \FancyBookChapterLinkArray{#1}%
     \else
         \PlainBookChapterLinkArray{#1}%
+        \BookExtraLinkArray{#1}%
     \fi
-    \BookExtraLinkArray{#1}%
 }
 \newcommand{\BookExtraLinkText}[1]{%
     \ifConfigOutputModeMobile
@@ -2758,10 +2754,12 @@
 
     if toc then
         local current_book = nil
+        local current_display_book = nil
         for line in toc:lines() do
             local heading = line:match("^##%s+(.+)$")
             if heading then
                 current_book = current_book_name(heading)
+                current_display_book = heading
                 if not book_summaries[current_book] then
                     table.insert(ordered_books, current_book)
                     book_summaries[current_book] = {}
@@ -2772,6 +2770,7 @@
                 if current_book and chapter and summary then
                     table.insert(book_summaries[current_book], {
                         chapter = chapter,
+                        display_book = source_book or current_display_book,
                         summary = summary,
                     })
                 end
@@ -2782,15 +2781,19 @@
         texio.write_nl("term and log", "Warning: could not open " .. toc_path)
     end
 
-    for _, book in ipairs(ordered_books) do
-        tex.sprint("\\DeclareChapterSummaryLinkList{" .. tex_escape(book) .. "}{")
-        for _, item in ipairs(book_summaries[book]) do
+    function PrintChapterSummaryLinksForBook(book)
+        local items = book_summaries[book]
+        if not items then
+            tex.sprint("\\ChapterLinksForBook{" .. tex_escape(book) .. "}")
+            return
+        end
+        for _, item in ipairs(items) do
             tex.sprint(
-                "    \\ChapterSummaryLink{" .. item.chapter .. "}{" ..
+                "\\ChapterSummaryLink{" .. tex_escape(book) .. "}{" ..
+                item.chapter .. "}{" .. tex_escape(item.display_book) .. "}{" ..
                 tex_escape(item.summary) .. "}"
             )
         end
-        tex.sprint("}")
     end
 \end{luacode*}
 \DeclareBookChapterSummaryLinkList{Samuel}{%
@@ -2802,7 +2805,6 @@
     \BookPartChapterSummaryLinks{II Kings}%
 }
 \DeclareBookChapterSummaryLinkList{Dudetheyreontome}{%
-    \BookPartChapterSummaryLinks{On the Lamb}%
     \BookPartChapterSummaryLinks{Ezra}%
     \BookPartChapterSummaryLinks{Nehemiah}%
     \BookPartChapterSummaryLinks{Esther}%
