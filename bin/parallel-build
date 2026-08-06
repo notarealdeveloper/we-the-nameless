@@ -52,8 +52,8 @@ def read_document_parts():
 
     preamble = text[: doc_match.end()]
     books = list(BOOK_RE.finditer(text))
-    if len(books) != 12:
-        raise RuntimeError(f"expected 12 \\Book blocks, found {len(books)}")
+    if not books:
+        raise RuntimeError("master.tex has no \\Book blocks")
     front_body = text[doc_match.end() : books[0].start()]
     front_body = front_body.split(r"\mainmatter", 1)[0].strip()
 
@@ -558,7 +558,7 @@ class Dashboard:
 
 def run_curses(books, preamble, front_body, include_front, passes):
     event_queue = mp.Queue()
-    coordinated = passes > 1 and include_front and len(books) == 12
+    coordinated = passes > 1 and include_front
     manager = mp.Manager() if coordinated else None
     page_starts = manager.dict() if manager else None
     front_process = launch_front_worker(preamble, front_body, books, passes, page_starts, event_queue) if include_front else None
@@ -637,7 +637,7 @@ def run_curses(books, preamble, front_body, include_front, passes):
 
 def run_plain(books, preamble, front_body, include_front, passes):
     event_queue = mp.Queue()
-    coordinated = passes > 1 and include_front and len(books) == 12
+    coordinated = passes > 1 and include_front
     manager = mp.Manager() if coordinated else None
     page_starts = manager.dict() if manager else None
     front_process = launch_front_worker(preamble, front_body, books, passes, page_starts, event_queue) if include_front else None
@@ -970,11 +970,11 @@ def open_pdf(pdf):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build all twelve We The Nameless books in parallel.")
+    parser = argparse.ArgumentParser(description="Build the We The Nameless books in parallel.")
     parser.add_argument("--plain", action="store_true", help="use line-oriented ANSI output instead of curses")
     parser.add_argument("--list-books", action="store_true", help="print the detected book chunks and exit")
     parser.add_argument("--clean", action="store_true", help="remove build/parallel before building")
-    parser.add_argument("--only", metavar="TEXT", help="debug one matching book instead of all twelve")
+    parser.add_argument("--only", metavar="TEXT", help="debug one matching book instead of all books")
     parser.add_argument("--front-only", action="store_true", help="debug only the title page and front matter")
     parser.add_argument(
         "--passes",
@@ -1006,7 +1006,7 @@ def main():
             return 2
         books = matches
     books = [{**book, "index": index} for index, book in enumerate(books)]
-    full_build = not args.only and len(books) == 12
+    full_build = not args.only
     include_front = full_build
 
     if args.clean:
