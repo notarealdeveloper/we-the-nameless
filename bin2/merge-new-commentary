@@ -20,18 +20,6 @@ Whenever you find a bit of commentary in com/ that isn't in eng/, I want you to:
    I want a simple update of the commentary *in the tex files* using the commentary in com/.
    You should only be touching these files this time around:
 
-    01-genesis/19.tex
-    01-genesis/20.tex
     01-genesis/21.tex
-    08-samuel/2-01.tex
-    08-samuel/2-02.tex
-    08-samuel/2-03.tex
-    08-samuel/2-04.tex
-    08-samuel/2-05.tex
-    08-samuel/2-06.tex
-    08-samuel/2-07.tex
-    08-samuel/2-08.tex
-    08-samuel/2-09.tex
-    08-samuel/2-10.tex
-    08-samuel/2-11.tex
+    01-genesis/22.tex
 EOF
