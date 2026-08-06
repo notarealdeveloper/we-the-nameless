@@ -14,5 +14,6 @@ main.pdf
 *.luc
 *.lua
 *.pdf
+*.egg-info
 .obsidian/workspace.json
 apocrypha/
