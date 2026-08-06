@@ -2670,8 +2670,6 @@
     \footnotesize
     \setlength{\parskip}{0.18em}%
     \setlength{\columnsep}{0.9em}%
-    \noindent\makebox[\linewidth][c]{%
-    %\begin{minipage}{\dimexpr\linewidth\relax}
     \begin{multicols}{2}
     \@ifundefined{BookChapterSummaryLinkList@#1}{%
         \ChapterSummaryLinksForBook{#1}%
@@ -2679,8 +2677,6 @@
         \csname BookChapterSummaryLinkList@#1\endcsname
     }%
     \end{multicols}
-    %\end{minipage}%
-    }%
     \par\nobreak\medskip
     \endgroup
 }
