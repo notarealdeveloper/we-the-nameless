@@ -1,0 +1,2 @@
+[console_scripts]
+bible = bible.__main__:main

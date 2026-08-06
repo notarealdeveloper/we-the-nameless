@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bible"
+version = "0.0.1"
+authors = [
+    { name = "Jason Wilkes", email = "letshaveanadventure@gmail.com" },
+]
+description = "Query and plot Bible book, chapter, and verse structure."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib",
+]
+
+[project.scripts]
+bible = "bible.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

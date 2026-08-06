@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: bible
+Version: 0.0.1
+Summary: Query and plot Bible book, chapter, and verse structure.
+Author-email: Jason Wilkes <letshaveanadventure@gmail.com>
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: matplotlib
+
+# bible
+
+Small Python package and CLI for querying and plotting Bible structure.
+
+The current data source is the chapter/verse table copied into the repository
+root as `./we-progress`. Text search is wired as an API surface, but verse text
+is intentionally not implemented until a Hebrew or English text source is added.
