@@ -7,13 +7,12 @@ import sys
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
-from . import plot
-from .canon import ORDER_KEYS, chapter_verses
+from .canon import ORDER_KEYS, order_books
 from .refs import BookRef, ChapterRef, VerseRef, parse_ref
 from .text import LANGUAGES, require_verse_texts
 
 
-TOP_LEVEL_COMMANDS = {"help", "list", "plot", "grep", "-h", "--help"}
+TOP_LEVEL_COMMANDS = {"help", "cat", "plot", "grep", "-h", "--help"}
 
 
 def add_order(parser: argparse.ArgumentParser) -> None:
@@ -66,16 +65,16 @@ def make_parser() -> argparse.ArgumentParser:
 
     subparsers.add_parser("help", help="Show this help message.")
 
-    list_parser = subparsers.add_parser("list", help="List chapter or verse structure.")
-    add_order(list_parser)
-    list_parser.add_argument(
+    cat_parser = subparsers.add_parser("cat", help="Print verse text.")
+    add_order(cat_parser)
+    cat_parser.add_argument(
         "-l",
         "--language",
         choices=LANGUAGES,
         default="eng",
         help="Verse text source to print for chapter or verse refs.",
     )
-    list_parser.add_argument("ref", nargs="+", help="Book or book-chapter reference.")
+    cat_parser.add_argument("ref", nargs="+", help="Book, chapter, or verse reference.")
 
     grep = subparsers.add_parser("grep", help="Search loaded verse text with a regex.")
     add_order(grep)
@@ -87,7 +86,7 @@ def make_parser() -> argparse.ArgumentParser:
         help="Verse text source to search.",
     )
     grep.add_argument("regex")
-    grep.add_argument("ref", nargs="+", help="Book, chapter, or verse scope.")
+    grep.add_argument("ref", nargs="*", help="Optional book, chapter, or verse scope.")
 
     plot_parser = subparsers.add_parser("plot", help="Run structure plots.")
     add_order(plot_parser)
@@ -135,39 +134,63 @@ def make_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def run_list(args: argparse.Namespace) -> None:
-    ref = parse_ref(args.ref, order=args.order)
-    counts = chapter_verses()
-
-    if isinstance(ref, BookRef):
-        if ref.book not in counts:
-            raise NotImplementedError(
-                f"TODO: provide chapter and verse counts for {ref.book}."
-            )
-        print(len(counts[ref.book]))
-    elif isinstance(ref, ChapterRef):
-        for verse_ref, text in require_verse_texts(ref, language=args.language):
-            print(_format_verse_line(verse_ref, text))
-    elif isinstance(ref, VerseRef):
-        for verse_ref, text in require_verse_texts(ref, language=args.language):
-            print(_format_verse_line(verse_ref, text))
-    else:
-        print(ref)
+def run_cat(args: argparse.Namespace) -> None:
+    language, refs = _language_and_refs(args.language, args.ref, order=args.order)
+    for ref in refs:
+        for verse_ref, text in require_verse_texts(ref, language=language):
+            print(_format_cat_line(verse_ref, text))
 
 
-def run_grep(args: argparse.Namespace) -> None:
+def run_grep(args: argparse.Namespace) -> bool:
     regex = re.compile(args.regex)
-    ref = parse_ref(args.ref, order=args.order)
-    for verse_ref, text in require_verse_texts(ref, language=args.language):
-        if regex.search(text):
-            print(_format_verse_line(verse_ref, text))
+    language, refs = _language_and_refs(args.language, args.ref or ["all"], order=args.order)
+    matched = False
+    for ref in refs:
+        for verse_ref, text in require_verse_texts(ref, language=language):
+            if regex.search(text):
+                matched = True
+                print(_format_grep_line(verse_ref, text))
+    return matched
 
 
-def _format_verse_line(verse_ref: VerseRef, text: str) -> str:
+def _language_and_refs(
+    language: str,
+    ref_parts: list[str] | tuple[str, ...],
+    *,
+    order: str,
+) -> tuple[str, tuple[BookRef | ChapterRef | VerseRef, ...]]:
+    ref_parts = list(ref_parts)
+    if not ref_parts:
+        raise ValueError("Bible reference is required.")
+
+    first, sep, rest = ref_parts[0].partition("/")
+    if sep:
+        if first not in LANGUAGES:
+            raise ValueError(
+                f"Unknown language prefix {first!r}. Expected one of: "
+                f"{', '.join(LANGUAGES)}"
+            )
+        if not rest:
+            raise ValueError("Bible reference is required after language prefix.")
+        language = first
+        ref_parts[0] = rest
+
+    if len(ref_parts) == 1 and ref_parts[0] == "all":
+        return language, tuple(BookRef(book) for book in order_books(order))
+    return language, (parse_ref(ref_parts, order=order),)
+
+
+def _format_cat_line(verse_ref: VerseRef, text: str) -> str:
+    return f"{verse_ref} :: {' '.join(text.split())}"
+
+
+def _format_grep_line(verse_ref: VerseRef, text: str) -> str:
     return f"{verse_ref}: {' '.join(text.split())}"
 
 
 def run_plot(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None:
+    from . import plot
+
     if args.output:
         import matplotlib
 
@@ -215,12 +238,14 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command in (None, "help"):
             parser.print_help()
-        elif args.command == "list":
-            run_list(args)
+        elif args.command == "cat":
+            run_cat(args)
         elif args.command == "grep":
-            run_grep(args)
+            return 0 if run_grep(args) else 1
         elif args.command == "plot":
             run_plot(args, parser)
+    except BrokenPipeError:
+        return 1
     except re.error as e:
         parser.error(f"Invalid regular expression: {e}")
     except (ValueError, NotImplementedError) as e:
