@@ -65,10 +65,9 @@ ALIASES = {
     "prov": "Proverbs",
     "eccl": "Ecclesiastes",
     "qoh": "Ecclesiastes",
-    "song": "Song of Solomon",
-    "songs": "Song of Solomon",
-    "sos": "Song of Solomon",
-    "cant": "Song of Solomon",
+    "song": "Song of Songs",
+    "songs": "Song of Songs",
+    "sos": "Song of Songs",
     "isa": "Isaiah",
     "jer": "Jeremiah",
     "lam": "Lamentations",
@@ -82,32 +81,6 @@ ALIASES = {
     "hag": "Haggai",
     "zech": "Zechariah",
     "mal": "Malachi",
-    "mt": "Matthew",
-    "matt": "Matthew",
-    "mk": "Mark",
-    "lk": "Luke",
-    "jn": "John",
-    "rom": "Romans",
-    "1cor": "1 Corinthians",
-    "2cor": "2 Corinthians",
-    "gal": "Galatians",
-    "eph": "Ephesians",
-    "phil": "Philippians",
-    "col": "Colossians",
-    "1thess": "1 Thessalonians",
-    "2thess": "2 Thessalonians",
-    "1tim": "1 Timothy",
-    "2tim": "2 Timothy",
-    "phlm": "Philemon",
-    "heb": "Hebrews",
-    "jas": "James",
-    "1pet": "1 Peter",
-    "2pet": "2 Peter",
-    "1jn": "1 John",
-    "2jn": "2 John",
-    "3jn": "3 John",
-    "rev": "Revelation",
-    "apoc": "Revelation",
 }
 
 ROMAN_PREFIXES = {
@@ -123,7 +96,7 @@ def norm(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", text)
 
 
-def resolve_book(text: str, *, order: str = "chr") -> str:
+def resolve_book(text: str, *, order: str = "all") -> str:
     key = norm(text)
     books = ORDER_BOOKS[order]
 
@@ -145,7 +118,7 @@ def resolve_book(text: str, *, order: str = "chr") -> str:
     raise ValueError(f"Unknown book in order {order!r}: {text!r}")
 
 
-def parse_ref(parts: str | list[str] | tuple[str, ...], *, order: str = "chr") -> BookRef | ChapterRef | VerseRef:
+def parse_ref(parts: str | list[str] | tuple[str, ...], *, order: str = "all") -> BookRef | ChapterRef | VerseRef:
     if isinstance(parts, str):
         text = parts
     else:

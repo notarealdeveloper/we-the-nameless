@@ -6,7 +6,27 @@ from .canon import chapter_verses, order_books
 from .refs import ChapterRef, parse_ref
 
 
-def chapters(book: str, *, order: str = "chr", show: bool = True):
+def books(*, order: str = "all", show: bool = True):
+    import matplotlib.pyplot as plt
+
+    counts = chapter_verses()
+    books = order_books(order)
+
+    values = [len(counts[name]) for name in books]
+
+    fig, ax = plt.subplots(figsize=(max(8, len(books) * 0.42), 5))
+    ax.bar(books, values)
+    ax.set_ylabel("Chapters")
+    ax.set_title("Chapters by book")
+    ax.tick_params(axis="x", labelrotation=90)
+    fig.tight_layout()
+
+    if show:
+        plt.show()
+    return fig, ax
+
+
+def chapters(book: str, *, order: str = "all", show: bool = True):
     import matplotlib.pyplot as plt
 
     counts = chapter_verses()
@@ -14,6 +34,8 @@ def chapters(book: str, *, order: str = "chr", show: bool = True):
     start = parse_ref(book, order=order)
     if not hasattr(start, "book"):
         raise ValueError("chapters plot expects a book reference.")
+    if start.book not in books:
+        raise ValueError(f"{start.book} is not available in order {order!r}.")
 
     selected = books[books.index(start.book):]
     values = [len(counts[name]) for name in selected]
@@ -30,7 +52,7 @@ def chapters(book: str, *, order: str = "chr", show: bool = True):
     return fig, ax
 
 
-def verses(ref: str, *, order: str = "chr", show: bool = True):
+def verses(ref: str, *, order: str = "all", show: bool = True):
     import matplotlib.pyplot as plt
 
     parsed = parse_ref(ref, order=order)

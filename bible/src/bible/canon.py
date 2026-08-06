@@ -5,79 +5,7 @@ from functools import cache
 from pathlib import Path
 
 
-CHRISTIAN_OLD_TESTAMENT = (
-    "Genesis",
-    "Exodus",
-    "Leviticus",
-    "Numbers",
-    "Deuteronomy",
-    "Joshua",
-    "Judges",
-    "Ruth",
-    "1 Samuel",
-    "2 Samuel",
-    "1 Kings",
-    "2 Kings",
-    "1 Chronicles",
-    "2 Chronicles",
-    "Ezra",
-    "Nehemiah",
-    "Esther",
-    "Job",
-    "Psalms",
-    "Proverbs",
-    "Ecclesiastes",
-    "Song of Solomon",
-    "Isaiah",
-    "Jeremiah",
-    "Lamentations",
-    "Ezekiel",
-    "Daniel",
-    "Hosea",
-    "Joel",
-    "Amos",
-    "Obadiah",
-    "Jonah",
-    "Micah",
-    "Nahum",
-    "Habakkuk",
-    "Zephaniah",
-    "Haggai",
-    "Zechariah",
-    "Malachi",
-)
-
-NEW_TESTAMENT = (
-    "Matthew",
-    "Mark",
-    "Luke",
-    "John",
-    "Acts",
-    "Romans",
-    "1 Corinthians",
-    "2 Corinthians",
-    "Galatians",
-    "Ephesians",
-    "Philippians",
-    "Colossians",
-    "1 Thessalonians",
-    "2 Thessalonians",
-    "1 Timothy",
-    "2 Timothy",
-    "Titus",
-    "Philemon",
-    "Hebrews",
-    "James",
-    "1 Peter",
-    "2 Peter",
-    "1 John",
-    "2 John",
-    "3 John",
-    "Jude",
-    "Revelation",
-)
-
-JEWISH_ORDER = (
+TANAKH_ORDER = (
     "Genesis",
     "Exodus",
     "Leviticus",
@@ -107,7 +35,7 @@ JEWISH_ORDER = (
     "Psalms",
     "Proverbs",
     "Job",
-    "Song of Solomon",
+    "Song of Songs",
     "Ruth",
     "Lamentations",
     "Ecclesiastes",
@@ -119,7 +47,7 @@ JEWISH_ORDER = (
     "2 Chronicles",
 )
 
-TORAH = CHRISTIAN_OLD_TESTAMENT[:5]
+TORAH = TANAKH_ORDER[:5]
 DEUTERONOMISTIC_HISTORY = (
     "Deuteronomy",
     "Joshua",
@@ -131,6 +59,12 @@ DEUTERONOMISTIC_HISTORY = (
 )
 PRIMARY_HISTORY = TORAH + DEUTERONOMISTIC_HISTORY[1:]
 PROPHETS = (
+    "Joshua",
+    "Judges",
+    "1 Samuel",
+    "2 Samuel",
+    "1 Kings",
+    "2 Kings",
     "Isaiah",
     "Jeremiah",
     "Ezekiel",
@@ -147,62 +81,16 @@ PROPHETS = (
     "Zechariah",
     "Malachi",
 )
-KETUVIM = JEWISH_ORDER[26:]
-GOSPELS = NEW_TESTAMENT[:4]
-PAULINE_EPISTLES = (
-    "Romans",
-    "1 Corinthians",
-    "2 Corinthians",
-    "Galatians",
-    "Ephesians",
-    "Philippians",
-    "Colossians",
-    "1 Thessalonians",
-    "2 Thessalonians",
-    "1 Timothy",
-    "2 Timothy",
-    "Titus",
-    "Philemon",
-)
-
-APOCRYPHA_AND_PSEUDEPIGRAPHA = (
-    "Tobit",
-    "Judith",
-    "Greek Esther",
-    "Wisdom of Solomon",
-    "Sirach",
-    "Baruch",
-    "Letter of Jeremiah",
-    "Prayer of Azariah",
-    "Susanna",
-    "Bel and the Dragon",
-    "1 Maccabees",
-    "2 Maccabees",
-    "1 Esdras",
-    "2 Esdras",
-    "Prayer of Manasseh",
-    "Psalm 151",
-    "3 Maccabees",
-    "4 Maccabees",
-    "1 Enoch",
-    "Jubilees",
-    "Testaments of the Twelve Patriarchs",
-)
+KETUVIM = TANAKH_ORDER[26:]
 
 ORDER_BOOKS = {
-    "old": CHRISTIAN_OLD_TESTAMENT,
-    "new": NEW_TESTAMENT,
-    "chr": CHRISTIAN_OLD_TESTAMENT + NEW_TESTAMENT,
-    "jew": JEWISH_ORDER,
+    "all": TANAKH_ORDER,
+    "jew": TANAKH_ORDER,
     "tor": TORAH,
     "deu": DEUTERONOMISTIC_HISTORY,
     "pri": PRIMARY_HISTORY,
     "pro": PROPHETS,
     "ktv": KETUVIM,
-    "gos": GOSPELS,
-    "epi": PAULINE_EPISTLES,
-    "apo": APOCRYPHA_AND_PSEUDEPIGRAPHA,
-    "all": CHRISTIAN_OLD_TESTAMENT + APOCRYPHA_AND_PSEUDEPIGRAPHA + NEW_TESTAMENT,
 }
 
 ORDER_KEYS = tuple(ORDER_BOOKS)
@@ -270,7 +158,7 @@ def available_books() -> tuple[str, ...]:
     return tuple(book for book in ORDER_BOOKS["all"] if book in counts)
 
 
-def missing_books(order: str = "chr") -> tuple[str, ...]:
+def missing_books(order: str = "all") -> tuple[str, ...]:
     counts = chapter_verses()
     return tuple(
         book for book in order_books(order, require_counts=False) if book not in counts
@@ -326,7 +214,7 @@ def _has_contiguous_chapters(book: str, chapters: dict[int, int]) -> bool:
     return True
 
 
-def order_books(order: str = "chr", *, require_counts: bool = True) -> tuple[str, ...]:
+def order_books(order: str = "all", *, require_counts: bool = True) -> tuple[str, ...]:
     try:
         books = ORDER_BOOKS[order]
     except KeyError as e:
@@ -336,11 +224,11 @@ def order_books(order: str = "chr", *, require_counts: bool = True) -> tuple[str
 
     if require_counts:
         counts = chapter_verses()
-        missing = [book for book in books if book not in counts]
-        if missing:
+        books = tuple(book for book in books if book in counts)
+        if not books:
             raise NotImplementedError(
-                "TODO: provide chapter and verse counts for these books before "
-                f"using order {order!r}: {', '.join(missing)}."
+                "TODO: provide chapter and verse counts from eng/ or heb/ for "
+                f"at least one book in order {order!r}."
             )
 
     return books

@@ -9,7 +9,7 @@ os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
 from . import plot
 from .canon import ORDER_KEYS, chapter_verses
-from .refs import BookRef, ChapterRef, parse_ref
+from .refs import BookRef, ChapterRef, VerseRef, parse_ref
 from .text import LANGUAGES, require_verse_texts
 
 
@@ -21,8 +21,8 @@ def add_order(parser: argparse.ArgumentParser) -> None:
         "-o",
         "--order",
         choices=ORDER_KEYS,
-        default="chr",
-        help="Bible order/subset to use.",
+        default="all",
+        help="Book order/subset to use.",
     )
 
 
@@ -34,6 +34,13 @@ def make_parser() -> argparse.ArgumentParser:
 
     list_parser = subparsers.add_parser("list", help="List chapter or verse structure.")
     add_order(list_parser)
+    list_parser.add_argument(
+        "-l",
+        "--language",
+        choices=LANGUAGES,
+        default="eng",
+        help="Verse text source to print for chapter or verse refs.",
+    )
     list_parser.add_argument("ref", nargs="+", help="Book or book-chapter reference.")
 
     grep = subparsers.add_parser("grep", help="Search loaded verse text with a regex.")
@@ -49,7 +56,13 @@ def make_parser() -> argparse.ArgumentParser:
     grep.add_argument("ref", nargs="+", help="Book, chapter, or verse scope.")
 
     plot_parser = subparsers.add_parser("plot", help="Run structure plots.")
+    add_order(plot_parser)
+    plot_parser.add_argument("--output", help="Write the plot to this path instead of showing it.")
     plot_subparsers = plot_parser.add_subparsers(dest="plot_command")
+
+    books = plot_subparsers.add_parser("books", help="Plot chapter counts for loaded books.")
+    add_order(books)
+    books.add_argument("--output", help="Write the plot to this path instead of showing it.")
 
     chapters = plot_subparsers.add_parser("chapters", help="Plot chapter counts by book.")
     add_order(chapters)
@@ -75,8 +88,11 @@ def run_list(args: argparse.Namespace) -> None:
             )
         print(len(counts[ref.book]))
     elif isinstance(ref, ChapterRef):
-        for verse in range(1, counts[ref.book][ref.chapter - 1] + 1):
-            print(verse)
+        for verse_ref, text in require_verse_texts(ref, language=args.language):
+            print(_format_verse_line(verse_ref, text))
+    elif isinstance(ref, VerseRef):
+        for verse_ref, text in require_verse_texts(ref, language=args.language):
+            print(_format_verse_line(verse_ref, text))
     else:
         print(ref)
 
@@ -86,19 +102,22 @@ def run_grep(args: argparse.Namespace) -> None:
     ref = parse_ref(args.ref, order=args.order)
     for verse_ref, text in require_verse_texts(ref, language=args.language):
         if regex.search(text):
-            print(f"{verse_ref}: {' '.join(text.split())}")
+            print(_format_verse_line(verse_ref, text))
+
+
+def _format_verse_line(verse_ref: VerseRef, text: str) -> str:
+    return f"{verse_ref}: {' '.join(text.split())}"
 
 
 def run_plot(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None:
-    if args.plot_command is None:
-        parser.error("plot command is required: chapters or verses")
-
     if args.output:
         import matplotlib
 
         matplotlib.use("Agg", force=True)
 
-    if args.plot_command == "chapters":
+    if args.plot_command in (None, "books"):
+        fig, _ax = plot.books(order=args.order, show=not args.output)
+    elif args.plot_command == "chapters":
         fig, _ax = plot.chapters(" ".join(args.book), order=args.order, show=not args.output)
     elif args.plot_command == "verses":
         fig, _ax = plot.verses(" ".join(args.ref), order=args.order, show=not args.output)

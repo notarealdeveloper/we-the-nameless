@@ -8,7 +8,7 @@ version = "0.0.1"
 authors = [
     { name = "Jason Wilkes", email = "letshaveanadventure@gmail.com" },
 ]
-description = "Query and plot Bible book, chapter, and verse structure."
+description = "Query and plot Jewish Bible book, chapter, and verse structure."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

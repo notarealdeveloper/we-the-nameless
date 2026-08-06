@@ -1,6 +1,4 @@
-import pytest
-
-from bible.canon import available_books, chapter_verses, order_books
+from bible.canon import ORDER_KEYS, available_books, chapter_verses, order_books
 from bible.refs import BookRef, ChapterRef, parse_ref, resolve_book
 from bible.text import get_verse_text
 
@@ -20,9 +18,8 @@ def test_parse_book_ref():
     assert parse_ref(["gen"]) == BookRef("Genesis")
 
 
-def test_apocrypha_order_key_exists_but_needs_counts():
-    with pytest.raises(NotImplementedError, match="TODO: provide chapter and verse counts"):
-        order_books("apo")
+def test_order_keys_are_tanakh_only():
+    assert ORDER_KEYS == ("all", "jew", "tor", "deu", "pri", "pro", "ktv")
 
 
 def test_chapter_counts_are_loaded_from_local_text_data():
@@ -42,6 +39,25 @@ def test_deuteronomistic_history_excludes_ruth():
         "2 Samuel",
         "1 Kings",
         "2 Kings",
+    )
+
+
+def test_all_order_uses_jewish_order_for_available_books():
+    assert order_books("all") == (
+        "Genesis",
+        "Exodus",
+        "Leviticus",
+        "Numbers",
+        "Deuteronomy",
+        "Joshua",
+        "Judges",
+        "1 Samuel",
+        "2 Samuel",
+        "1 Kings",
+        "2 Kings",
+        "Esther",
+        "Ezra",
+        "Nehemiah",
     )
 
 
