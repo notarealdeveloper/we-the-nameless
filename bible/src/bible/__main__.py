@@ -10,7 +10,7 @@ os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 from . import plot
 from .canon import ORDER_KEYS, chapter_verses
 from .refs import BookRef, ChapterRef, parse_ref
-from .text import require_verse_texts
+from .text import LANGUAGES, require_verse_texts
 
 
 TOP_LEVEL_COMMANDS = {"help", "list", "plot", "grep"}
@@ -38,6 +38,13 @@ def make_parser() -> argparse.ArgumentParser:
 
     grep = subparsers.add_parser("grep", help="Search loaded verse text with a regex.")
     add_order(grep)
+    grep.add_argument(
+        "-l",
+        "--language",
+        choices=LANGUAGES,
+        default="eng",
+        help="Verse text source to search.",
+    )
     grep.add_argument("regex")
     grep.add_argument("ref", nargs="+", help="Book, chapter, or verse scope.")
 
@@ -77,9 +84,9 @@ def run_list(args: argparse.Namespace) -> None:
 def run_grep(args: argparse.Namespace) -> None:
     regex = re.compile(args.regex)
     ref = parse_ref(args.ref, order=args.order)
-    for verse_ref, text in require_verse_texts(ref):
+    for verse_ref, text in require_verse_texts(ref, language=args.language):
         if regex.search(text):
-            print(f"{verse_ref}: {text}")
+            print(f"{verse_ref}: {' '.join(text.split())}")
 
 
 def run_plot(args: argparse.Namespace, parser: argparse.ArgumentParser) -> None:
@@ -123,8 +130,12 @@ def main(argv: list[str] | None = None) -> int:
             run_grep(args)
         elif args.command == "plot":
             run_plot(args, parser)
+    except re.error as e:
+        parser.error(f"Invalid regular expression: {e}")
     except (ValueError, NotImplementedError) as e:
         parser.error(str(e))
+    except Exception as e:
+        parser.error(f"{type(e).__name__}: {e}")
 
     return 0
 
