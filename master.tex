@@ -185,6 +185,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[normalem]{ulem}
 \usepackage{accents}
+\usepackage{amsmath}
 
 % \emp{...} should be \textsl{...}
 \let\emph\textsl
@@ -3615,7 +3616,9 @@
 \fi
 
 % underdot
-\newcommand{\udot}[1]{\underaccent{\dot}{#1}}
+\newcommand{\udot}[1]{%
+  \ensuremath{\underaccent{\dot}{\text{#1}}}%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
