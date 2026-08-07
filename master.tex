@@ -184,6 +184,9 @@
 \usepackage{luacode}
 \usepackage[hidelinks]{hyperref}
 \usepackage[normalem]{ulem}
+\usepackage{accents}
+
+% \emp{...} should be \textsl{...}
 \let\emph\textsl
 
 % ------------------------------------------------------------
@@ -3607,6 +3610,12 @@
 % \defineword{\God}{\cR{dave}}[\cR{Dave}]
 % \redefineword{\God}{\cB{bob}}[\cB{Bob}]
 
+\iffalse
+\section{nav: letters}
+\fi
+
+% underdot
+\newcommand{\udot}[1]{\underaccent{\dot}{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
