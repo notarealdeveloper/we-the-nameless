@@ -2,6 +2,7 @@
 import argparse
 import json
 import re
+import signal
 import sys
 from pathlib import Path
 
@@ -89,7 +90,7 @@ def normalize_segments(segments, strip):
     normalized = []
     for segment in segments:
         text = compact_segment_text(segment["text"], strip)
-        if not text:
+        if not text or not text.replace("\\", "").strip():
             continue
         source = segment["source"]
         if normalized and normalized[-1]["source"] == source:
@@ -226,7 +227,7 @@ def parse_tex_source_file(path, strip=False):
 
 def parse_source_map(path, strip=False):
     books = {}
-    for tex_file in find_files(path, ".tex"):
+    for tex_file in source_tex_files(path):
         chapter = parse_tex_source_file(tex_file, strip=strip)
         book_id = book_id_for(tex_file)
         books.setdefault(
@@ -244,6 +245,19 @@ def parse_source_map(path, strip=False):
         ),
         "books": [books[k] for k in sorted(books)],
     }
+
+
+def source_tex_files(path):
+    path = Path(path)
+    if path.is_file():
+        return find_files(path, ".tex")
+    if path.resolve() == PROJECT_ROOT.resolve():
+        files = []
+        for child in sorted(path.iterdir(), key=lambda p: p.name):
+            if child.is_dir() and re.fullmatch(r"\d\d-.+", child.name):
+                files.extend(find_files(child, ".tex"))
+        return files
+    return find_files(path, ".tex")
 
 
 def main():
@@ -273,4 +287,5 @@ SOURCE_NAMES = read_source_names(PROJECT_ROOT)
 
 
 if __name__ == "__main__":
+    signal.signal(signal.SIGPIPE, signal.SIG_DFL)
     main()
