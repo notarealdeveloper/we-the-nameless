@@ -162,13 +162,6 @@ def add_translation_segments(source_map, translation_index):
     return mapped
 
 
-def default_translation_key(path):
-    name = path.resolve().name
-    if not re.fullmatch(r"[A-Za-z0-9_.-]+", name):
-        raise SystemExit(f"cannot derive a safe translation key from {path}")
-    return name.replace("-", "_").replace(".", "_")
-
-
 def main():
     parser = argparse.ArgumentParser(
         description=(

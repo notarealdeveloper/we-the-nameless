@@ -168,10 +168,17 @@ def build_source_lookup(data):
                 verse_key = str(verse["number"])
                 text = render_segments(verse)
                 if text is None:
-                    missing.append(f"{book['name']} {ch_key}:{verse_key}")
+                    already_mapped = any(
+                        verse_key in lookup.get(book_key, {}).get(ch_key, {})
+                        for book_key in book_keys(book, chapter)
+                    )
+                    if not already_mapped:
+                        missing.append(f"{book['name']} {ch_key}:{verse_key}")
                     continue
                 for book_key in book_keys(book, chapter):
-                    lookup.setdefault(book_key, {}).setdefault(ch_key, {})[verse_key] = text
+                    verses = lookup.setdefault(book_key, {}).setdefault(ch_key, {})
+                    if verse_key not in verses:
+                        verses[verse_key] = text
     return lookup, missing
 
 
