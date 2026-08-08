@@ -1,0 +1,1214 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+# Task: Reimplement `master.tex` as a dramatically simpler LuaLaTeX architecture in a new file `mistress.tex`
+
+## 0. Primary task
+
+Inspect the repository root and read `master.tex` in its entirety, including the files it includes or depends on where necessary to understand its behavior.
+
+Then create a new file in the repository root:
+
+```text
+mistress.tex
+```
+
+The goal is to **reimplement everything currently implemented by `master.tex` with essentially exactly the same semantics, visual behavior, configuration choices, and book infrastructure, while radically simplifying and reorganizing the implementation.**
+
+Minor semantic or rendering differences are acceptable where they are genuinely unavoidable or where preserving an accidental implementation detail would require substantial additional complexity. Do **not**, however, casually change things merely because another design seems nicer. Assume that unusual typography, spacing, source colors, fonts, dimensions, ordering, page behavior, and similar choices may represent considerable deliberate work.
+
+The guiding principle is:
+
+> Preserve the design. Replace the machinery.
+
+I want to delete as much tangled, repetitive, stateful, conditional-heavy LaTeX as possible without throwing away the infrastructure and design decisions that have accumulated in `master.tex`.
+
+This is LuaLaTeX, so take advantage of that fact aggressively.
+
+In particular, move the **majority of configuration, mappings, records, lookup tables, categories, source/author metadata, and other naturally structured data into Lua tables**. Provide clean LaTeX-facing macros that get and/or set values in those Lua data structures where appropriate.
+
+The resulting `mistress.tex` should ideally feel much more like a declarative description of the book than a TeX program laboriously simulating data structures.
+
+Do not merely transliterate existing TeX complexity into Lua complexity. Identify the conceptual model underlying the existing implementation, represent that model cleanly, and make the LaTeX layer small and expressive.
+
+Before changing anything, understand the existing architecture well enough to distinguish:
+
+1. **deliberate design/configuration choices that must be preserved,**
+2. **reusable layout and rendering infrastructure,**
+3. **book content/data,**
+4. **implementation accidents and historical cruft that can be removed.**
+
+Compile/test throughout the migration. `mistress.tex` should ultimately build the same book, not merely look architecturally plausible.
+
+---
+
+# Required high-level organization of `mistress.tex`
+
+One major goal of this rewrite is that the file itself should tell a coherent story.
+
+Reorder the navigation sections so they proceed in a principled hierarchy.
+
+The first major half of the file should define **everything reusable about what the book is and how it is rendered, but none of the actual book content**.
+
+Then the second major half should supply **the content** to that infrastructure.
+
+The order should be approximately the following.
+
+---
+
+# PART I — INFRASTRUCTURE, CONFIGURATION, AND LAYOUT
+
+## 1. Global configuration
+
+Begin with the genuinely global configuration of the project.
+
+This should contain things such as:
+
+* global modes;
+* dark/light mode;
+* switches;
+* dimensions;
+* global typography settings;
+* build configuration;
+* other top-level constants and settings.
+
+Where configuration is naturally data rather than TeX behavior, strongly prefer a Lua configuration table.
+
+For example, conceptually:
+
+```lua
+config = {
+    dark_mode = false,
+    ...
+}
+```
+
+rather than a collection of unrelated TeX definitions and conditionals.
+
+Expose elegant LaTeX accessors/setters where the TeX side actually needs them.
+
+---
+
+## 2. Packages and fundamental LaTeX setup
+
+Next load packages and establish the fundamental document environment.
+
+Keep this section boring and obvious.
+
+Package loading should not be intermingled with book content or author definitions unless technically unavoidable.
+
+---
+
+## 3. Fonts and writing systems
+
+Next define the fonts.
+
+Organize them primarily by writing system/script rather than by whatever historical order they accumulated in.
+
+For example, as applicable:
+
+* Latin/English;
+* Hebrew;
+* Paleo-Hebrew;
+* Greek;
+* Arabic;
+* Syriac;
+* Akkadian/cuneiform;
+* Chinese;
+* Korean;
+* other scripts currently supported.
+
+Preserve the existing font choices where they appear deliberate.
+
+The purpose here is that someone reading the file can understand the available writing systems and font infrastructure before encountering the author/source system that uses those fonts.
+
+Font implementation details belong here even if individual letters or glyph handling would otherwise seem like a lower-level concern.
+
+---
+
+## 4. Types/categories of authors
+
+After the font system, define the conceptual categories of authors/sources.
+
+For example:
+
+* Aaronid;
+* Mushite;
+* and whatever other categories actually exist in `master.tex`.
+
+These should preferably be represented as structured Lua data rather than as scattered TeX macros.
+
+The important thing is to model explicitly whatever taxonomy `master.tex` currently implies.
+
+---
+
+## 5. Individual authors and source profiles
+
+Next define the individual authors/sources.
+
+This should establish:
+
+* each author's identity;
+* which category/categories that author belongs to;
+* the Hebrew font used for that author/source;
+* the English font used for that author/source;
+* source colors;
+* other rendering attributes;
+* any source-specific behavior that genuinely belongs to the author's profile.
+
+In other words, this section defines the **source profiles**.
+
+Conceptually I want to be able to imagine data like:
+
+```lua
+authors = {
+    J = {
+        category = "...",
+        hebrew_font = "...",
+        english_font = "...",
+        color = "...",
+        ...
+    },
+
+    P = {
+        ...
+    }
+}
+```
+
+The exact representation is your decision. Improve on this if the actual semantics call for something better.
+
+The point is that an author should be a coherent record, not a cloud of separately named macros whose relationships exist only implicitly.
+
+LaTeX-facing commands such as the existing source macros can then render themselves by consulting this metadata.
+
+---
+
+# The structural hierarchy of a book
+
+After source profiles, proceed from the **largest structural unit to the smallest structural unit**.
+
+This ordering is important.
+
+The rest of the reusable infrastructure should read almost like zooming into the physical book:
+
+```text
+whole publication
+    ↓
+title page
+    ↓
+front matter
+    ↓
+book
+    ↓
+chapter
+    ↓
+page
+    ↓
+verse
+    ↓
+blocks within verse
+    ↓
+words
+```
+
+---
+
+## 6. Publication title-page layout and macros
+
+Define the layout and reusable macros for the title page of the entire publication.
+
+This section should contain **layout, not title-page content**.
+
+The actual title, subtitle, credits, etc. belong much later in the content half of the file.
+
+Think of this section as defining a title-page template/API.
+
+---
+
+## 7. Front-matter layout and macros
+
+Next define the reusable front-matter machinery.
+
+In particular, define the layout/macros for the publication-level table of contents.
+
+The main table of contents has one line per biblical book.
+
+Again:
+
+**layout and API here; actual entries later.**
+
+---
+
+## 8. Book-level layout
+
+Now define what a biblical **book** is visually and structurally.
+
+This is the level of Genesis, Exodus, etc.
+
+Include the reusable machinery for:
+
+* starting a book;
+* book title pages;
+* book title-page formatting;
+* book-specific tables of contents;
+* book-specific ToC line formatting;
+* any other book-level state or layout.
+
+Do not put Genesis's actual chapter-summary lines here.
+
+Define the machinery that Genesis and the other books will later use.
+
+---
+
+## 9. Chapter-level layout
+
+Next zoom down to chapters.
+
+Put chapter-level formatting here, including:
+
+* chapter beginnings;
+* chapter title pages where applicable;
+* chapter headings;
+* chapter-level navigation;
+* chapter summary/title machinery;
+* chapter-specific page behavior;
+* other chapter-level layout/state.
+
+Again, distinguish carefully between the reusable definition of a chapter and the content of a particular chapter.
+
+---
+
+## 10. Page-level layout
+
+Next define page-level behavior.
+
+This is where things such as the following should naturally live:
+
+* source headers;
+* running headers;
+* page-related macros;
+* page-specific source indicators;
+* page geometry behavior that isn't genuinely global;
+* page-level navigation/state;
+* relevant header/footer machinery.
+
+Source-header definitions especially belong here rather than being scattered among author definitions or verse definitions.
+
+The author profile should say **what an author/source is**.
+
+This section should say **how source information manifests at page level**.
+
+---
+
+## 11. Verse-level layout
+
+Next comes the verse.
+
+This is where the incredibly important:
+
+```latex
+\Verse
+```
+
+macro should be defined.
+
+Treat `\Verse` as one of the central APIs of the entire book.
+
+Its implementation should become as small, comprehensible, and declarative as reasonably possible.
+
+Any verse-level state, layout, spacing, source interaction, numbering, etc. should be organized here.
+
+If `\Verse` is currently complicated because it is doing data management that Lua can do better, move that data management out.
+
+---
+
+## 12. Blocks within a verse
+
+Now zoom inside the verse.
+
+Define the three major conceptual blocks:
+
+1. Hebrew;
+2. English;
+3. commentary.
+
+Organize the source-specific Hebrew and English rendering macros around the author/source-profile data defined earlier rather than duplicating author-specific configuration everywhere.
+
+Ideally, author-specific macros become thin interfaces over a generic source-rendering system.
+
+Preserve the existing convenient public macros where chapter files depend on them. The rewrite should not force gratuitous changes throughout all chapter content files merely to satisfy an architectural preference.
+
+---
+
+## 13. Commentary authors
+
+After defining the commentary block itself, define the commentary-author macros such as:
+
+```latex
+\aA{...}
+\aB{...}
+\aC{...}
+```
+
+Preserve their present semantics.
+
+In particular:
+
+* `\aA{}` uses the default text color, which should switch appropriately between the black-ish light-mode color and white-ish dark-mode color;
+* `\aB{}` is red;
+* `\aC{}` is blue.
+
+If there are additional commentary authors/styles, model them systematically.
+
+Again, this is a natural candidate for a Lua-backed profile table with thin LaTeX wrappers.
+
+---
+
+## 14. Word-level configuration and macros
+
+Finally we reach the level of individual words.
+
+Put configurable lexical macros here.
+
+This includes things such as:
+
+```latex
+\God
+```
+
+and similar macros where the spelling, typography, wording, or presentation of a particular recurring word is intentionally configurable.
+
+Also put the redaction jokes and related word-level machinery here, including things like:
+
+```latex
+\cum
+\pussy
+```
+
+and whatever other such macros exist.
+
+For example, if one currently expands through machinery resembling:
+
+```latex
+\c\redacted{um}\eR{hildren}
+```
+
+preserve the resulting behavior while simplifying the implementation where possible.
+
+Do not sanitize, editorialize, rename, or remove these merely because they are unusual. They are part of the existing book design.
+
+At this point we are at the smallest meaningful reusable semantic unit.
+
+I do not believe there is significant reusable infrastructure below the word level except font/glyph machinery, which belongs much earlier under fonts.
+
+---
+
+# END OF PART I
+
+At this point `mistress.tex` should have defined:
+
+> **ALL REUSABLE MACROS, DATA STRUCTURES, CONFIGURATION, LAYOUT, AND FORMATTING, BUT NONE OF THE ACTUAL CONTENT OF THE BOOK.**
+
+This separation should be visible and conceptually clean.
+
+Then begin the content half.
+
+---
+
+# PART II — BOOK CONTENT
+
+Now run through the publication again, this time supplying data/content to the infrastructure defined above.
+
+---
+
+## 15. Book binding / publication metadata
+
+Begin with what can conceptually be thought of as the **book binding**.
+
+This section contains the actual content of the publication title page:
+
+* title;
+* subtitle;
+* credits;
+* compiler/assembler information;
+* whatever other content currently appears there.
+
+Feed this content into the title-page macros defined far above.
+
+Do not redefine title-page layout here.
+
+---
+
+## 16. Main table-of-contents content
+
+Next provide the actual content of the publication-level table of contents.
+
+This should ideally look highly declarative: essentially one book after another being supplied to simple ToC macros/data structures.
+
+The formatting machinery was already defined.
+
+This is just the data.
+
+---
+
+## 17. Alphabet-history content
+
+Next provide the content of the alphabet-history pages.
+
+Try to simplify the current implementation substantially if possible.
+
+**However, do not casually alter the spacing.**
+
+The spacing on these pages is very finely tuned.
+
+Preserve the visual result unless changing something is unavoidable.
+
+This is a good example of the larger principle:
+
+> Simplify the implementation without "simplifying away" painstaking visual decisions.
+
+---
+
+## 18. Source-key content
+
+Next provide the source-key pages' actual content using the reusable source-key/layout machinery defined earlier.
+
+Again, separate data from rendering.
+
+If the source key is currently repetitive, strongly consider representing the entries as Lua records and iterating/rendering them through one generic mechanism.
+
+---
+
+# The biblical books
+
+Now we reach the book proper.
+
+---
+
+## 19. Book-specific table-of-contents content
+
+Collect the **content** of the book-specific tables of contents together in one coherent section.
+
+For example, Genesis's ToC should essentially be a sequence of chapter-summary records fed into simple macros or stored as structured data.
+
+Then Exodus.
+
+Then Leviticus.
+
+And so forth.
+
+Conceptually:
+
+```text
+Genesis chapter summaries
+Exodus chapter summaries
+Leviticus chapter summaries
+...
+```
+
+These should be clustered together rather than scattered through unrelated implementation sections.
+
+If appropriate, Lua structures may make this especially clean:
+
+```lua
+book_tocs = {
+    Genesis = {
+        { chapter = 1, summary = "..." },
+        { chapter = 2, summary = "..." },
+        ...
+    },
+
+    Exodus = {
+        ...
+    }
+}
+```
+
+Do not mechanically use this exact representation if another representation fits the existing system better.
+
+The objective is that chapter-summary data should look like **data**.
+
+---
+
+## 20. Actual book/chapter assembly
+
+Finally, preserve the long ordered sequence that actually constructs the biblical corpus.
+
+This is where I expect to see the equivalents of the existing:
+
+```latex
+\Book{...}
+```
+
+and the includes/inputs for each chapter of each book.
+
+This should be the final large structural section because it is the point where all previously defined infrastructure and content are assembled into the actual book.
+
+Keep the biblical ordering obvious.
+
+Ideally, by this point the reader of `mistress.tex` can understand the assembly almost without knowing TeX.
+
+---
+
+# 1. Implementation advice: exploit LuaLaTeX rather than fighting TeX
+
+The architectural motivation for this rewrite is that LuaLaTeX gives us several ways to escape the increasingly tangled TeX-programming style in `master.tex`.
+
+There are essentially three levels available.
+
+---
+
+## Level 1: use `expl3` when the state genuinely belongs in TeX
+
+Modern LaTeX's `expl3` layer provides considerably saner TeX-side programming facilities than primitive TeX conditionals.
+
+It has:
+
+* sequences;
+* property maps;
+* token lists;
+* booleans;
+* integers;
+* floating-point support;
+* structured conditionals;
+* useful string/token operations.
+
+For example, instead of constructing lookup behavior out of `\ifx`, one can use a property map:
+
+```latex
+\ExplSyntaxOn
+
+\prop_new:N \g_book_prop
+
+\prop_gput:Nnn \g_book_prop { Genesis } { J }
+\prop_gput:Nnn \g_book_prop { Exodus  } { P }
+\prop_gput:Nnn \g_book_prop { Samuel }  { J }
+
+\prop_get:NnN \g_book_prop { Genesis } \l_tmpa_tl
+
+\tl_if_eq:NnTF \l_tmpa_tl { J }
+  { This~is~J. }
+  { This~is~not~J. }
+
+\ExplSyntaxOff
+```
+
+Booleans can similarly be expressed sanely:
+
+```latex
+\bool_new:N \l_show_notes_bool
+\bool_set_true:N \l_show_notes_bool
+
+\bool_if:NTF \l_show_notes_bool
+  { Show the notes }
+  { Hide the notes }
+```
+
+So where a piece of state genuinely belongs to TeX, prefer `expl3` abstractions to primitive TeX programming.
+
+However, **do not respond to this task merely by rewriting all primitive TeX in `expl3`.**
+
+That would improve syntax while retaining the deeper architectural problem.
+
+For substantial structured metadata, Lua is preferable.
+
+---
+
+# Level 2: use Lua tables as actual data structures
+
+LuaLaTeX embeds a real general-purpose programming language.
+
+Use actual Lua tables for structured data.
+
+For example:
+
+```latex
+\directlua{
+  books = {
+    Genesis = {
+      source = "J",
+      color = "red",
+      chapters = 50
+    },
+
+    Exodus = {
+      source = "mixed",
+      color = "blue",
+      chapters = 40
+    }
+  }
+}
+```
+
+Then expose small accessors to TeX where needed:
+
+```latex
+\newcommand{\BookSource}[1]{%
+  \directlua{tex.sprint(books["#1"].source)}%
+}
+```
+
+so that:
+
+```latex
+\BookSource{Genesis}
+```
+
+can simply yield:
+
+```text
+J
+```
+
+The actual project can and should use much richer structures where appropriate.
+
+For example, conceptually:
+
+```lua
+verses = {
+    ["Gen 1:1"] = {
+        source = "P",
+        hebrew = "...",
+        english = "...",
+        notes = {"creation", "syntax"},
+        special = true
+    },
+
+    ["Gen 14:13"] = {
+        source = "Other",
+        special = true,
+        style = "stele"
+    }
+}
+```
+
+Likewise, author profiles, font mappings, source categories, colors, book metadata, ToC data, and similar structures are natural Lua-table candidates.
+
+The main principle is:
+
+> If the TeX currently contains a pile of macros whose real purpose is to simulate a dictionary, record, list, set, enum, or nested configuration object, replace that pile with an actual Lua data structure.
+
+---
+
+# Level 3: don't make TeX perform complicated conditionals at all
+
+This is often the strongest option.
+
+Instead of writing increasingly elaborate TeX such as:
+
+```latex
+\ifx...
+   ...
+\else
+   ...
+\fi
+```
+
+write the decision logic in Lua and have Lua emit the appropriate TeX or expose a simple result.
+
+For example:
+
+```latex
+\newcommand{\RenderSource}[1]{%
+  \directlua{
+    local source = "#1"
+
+    if source == "J" then
+        tex.sprint("\\eJ")
+    elseif source == "P" then
+        tex.sprint("\\eP")
+    elseif source == "D" then
+        tex.sprint("\\eD")
+    else
+        tex.sprint("\\eOther")
+    end
+  }%
+}
+```
+
+Then something conceptually like:
+
+```
+```
+
+
+latex id="x88yj5"
+\RenderSource{J}{Some text}
+
+````
+
+can dispatch to the existing source rendering.
+
+Lua gives ordinary programming constructs:
+
+```lua id="q0d83c"
+if x == "foo" then
+    ...
+elseif x == "bar" then
+    ...
+else
+    ...
+end
+````
+
+as well as:
+
+```lua id="ajgfmu"
+if x and y then
+```
+
+```lua id="r7f03n"
+if x or y then
+```
+
+```lua id="ykqsr8"
+if not x then
+```
+
+```lua id="h0b8s6"
+if table[key] ~= nil then
+```
+
+```lua id="51sdz9"
+if #items > 0 then
+```
+
+Use those instead of forcing TeX to be a general-purpose application language.
+
+---
+
+# Preferred division of responsibility
+
+Aim for a hybrid architecture roughly like this:
+
+```text id="5d6td3"
+TeX / LaTeX
+    ↓
+page layout
+fonts
+paragraphs
+boxes
+footnotes
+cross-references
+actual typesetting
+
+expl3
+    ↓
+small pieces of TeX-local state
+simple booleans
+macro arguments
+temporary lists/properties
+TeX-facing glue where useful
+
+Lua
+    ↓
+real data structures
+configuration records
+book/chapter/verse metadata
+author/source profiles
+lookup tables
+complicated conditions
+loops
+string processing
+generating repetitive TeX
+```
+
+This is not an absolute rule. Use judgment.
+
+But if you encounter something like:
+
+```latex id="jvr4i2"
+\ifx\CurrentSource\J
+  \ifnum\CurrentChapter>12
+    \ifx\SpecialMode\True
+       ...
+    \else
+       ...
+    \fi
+  \fi
+\fi
+```
+
+that is a strong signal that the decision belongs in Lua:
+
+```lua id="dxls6i"
+if verse.source == "J"
+   and verse.chapter > 12
+   and verse.special then
+
+    ...
+end
+```
+
+Lua provides:
+
+* tables;
+* functions;
+* modules;
+* local variables;
+* loops;
+* ordinary boolean logic;
+* string processing;
+* pattern matching;
+* file I/O;
+* sensible numeric operations;
+* actual structured programming.
+
+Use it.
+
+---
+
+# Important architectural preference: Lua as model/controller, LaTeX as rendering engine
+
+The project is programmatic enough that the cleanest mental model is probably:
+
+> **Lua is the model/controller. LaTeX is the rendering engine.**
+
+Do not take this so far that every trivial TeX operation requires a Lua round trip.
+
+But use it to guide the architecture.
+
+Lua should know things such as:
+
+* what sources exist;
+* how sources are categorized;
+* what properties an author has;
+* which font profile belongs to whom;
+* what books exist;
+* what chapter-summary records exist;
+* which modes are active;
+* mappings and lookup tables;
+* configuration data;
+* relationships among entities.
+
+LaTeX should know how to turn those decisions into beautiful pages.
+
+The ideal public TeX API should therefore be small.
+
+Chapter files should still be pleasant to write.
+
+For example, existing expressive calls such as:
+
+```latex id="y0wwyp"
+\Verse{13}
+```
+
+and source-specific content macros should remain concise. Do not "simplify" `mistress.tex` at the cost of making every chapter file verbose or ugly.
+
+Instead, make those commands thin interfaces over a much cleaner implementation.
+
+---
+
+# Preserve compatibility where it buys substantial simplicity elsewhere
+
+Do not assume every existing macro name is sacred, but recognize that the chapter files constitute a large existing corpus.
+
+If preserving a public macro such as:
+
+```latex id="hy02pg"
+\Verse
+```
+
+```latex id="lnc5ao"
+\hJ
+```
+
+```latex id="73u6la"
+\eJ
+```
+
+```latex id="3bzyo1"
+\aA
+```
+
+allows all existing content files to continue working, preserve it.
+
+The objective is not to produce a theoretically pure API.
+
+The objective is to produce the **simplest maintainable implementation of the existing book**.
+
+A five-line compatibility wrapper is preferable to mechanically editing hundreds of content files for no semantic gain.
+
+---
+
+# Avoid repeated `\directlua` spaghetti
+
+Using Lua does not automatically make the design good.
+
+Do not replace TeX spaghetti with hundreds of tiny inline `\directlua{...}` fragments.
+
+Prefer a coherent Lua layer.
+
+If appropriate, define one or a few substantial Lua tables/modules/functions and expose a small number of generic bridges to TeX.
+
+For example, prefer conceptually:
+
+```lua id="9cfnoc"
+Book.author("J")
+Book.get("J", "english_font")
+Book.render_source("J", ...)
+```
+
+over independently embedding arbitrary Lua snippets everywhere.
+
+If putting substantial Lua code in a separate `.lua` file makes `mistress.tex` dramatically cleaner, that is acceptable and probably desirable. `mistress.tex` can load it. The primary deliverable remains `mistress.tex`, but supporting Lua files are welcome if they produce a genuinely cleaner architecture.
+
+Choose names appropriate to the actual project rather than blindly copying these examples.
+
+---
+
+# Be careful at the TeX/Lua boundary
+
+Remember that TeX tokenization, expansion, catcodes, escaping, braces, Unicode, and Lua strings can interact in unpleasant ways.
+
+Do not naïvely interpolate arbitrary Hebrew, commentary, or other content into Lua source strings.
+
+Prefer robust interfaces.
+
+Structured metadata is an excellent thing to keep in Lua.
+
+Large arbitrary TeX content may often be better left as TeX arguments/tokens unless there is a compelling reason to move it.
+
+The goal is not "put everything in Lua."
+
+The goal is:
+
+> Put **data and program logic** where Lua handles them naturally, and leave **typesetting content and rendering** where TeX handles them naturally.
+
+---
+
+# Preserve the painstaking typography
+
+Treat existing values as intentional unless evidence strongly suggests otherwise.
+
+This applies especially to:
+
+* spacing;
+* margins;
+* vertical skips;
+* horizontal alignment;
+* title placement;
+* alphabet-history layouts;
+* source colors;
+* dark-mode colors;
+* font selection;
+* font scaling;
+* Hebrew positioning;
+* source headers;
+* verse spacing;
+* commentary spacing;
+* page breaks;
+* chapter title pages;
+* book title pages;
+* ToC spacing;
+* footnote behavior;
+* glyph handling;
+* RTL behavior.
+
+Do not "clean up" magic numbers merely because they are magic numbers.
+
+You may move them into well-named configuration records, which is encouraged.
+
+For example, replacing:
+
+```latex id="7nqdgo"
+\vspace{0.73em}
+```
+
+with a named configuration value may be excellent.
+
+Changing `0.73em` to `0.75em` because it looks cleaner in the source is not.
+
+---
+
+# Preserve dark-mode semantics
+
+The project has meaningful light/dark behavior.
+
+Preserve it.
+
+In particular, things defined as the default foreground/text color should continue to adapt appropriately between the black-ish light-mode foreground and white-ish dark-mode foreground.
+
+Do not accidentally hard-code black merely because the existing macro resolves to black in the build configuration you happen to test first.
+
+Test both modes if the existing infrastructure supports both.
+
+---
+
+# Preserve source semantics
+
+Source identity is central to the book.
+
+Do not flatten distinctions among authors/sources merely to simplify the implementation.
+
+If `master.tex` distinguishes J, E, P, D, redactors, Aaronid/Mushite categories, special/other material, commentary authors, etc., understand those distinctions and encode them cleanly.
+
+Simplification should make the conceptual model **more explicit**, not less.
+
+---
+
+# Delete historical cruft aggressively, but only after understanding it
+
+Look for:
+
+* duplicate definitions;
+* obsolete macros;
+* commented-out implementations that no longer matter;
+* aliases that are no longer used;
+* repeated source-specific implementations differing only by data;
+* repeated conditionals;
+* duplicated colors/fonts;
+* manual lookup tables;
+* unnecessary global state;
+* TeX constructs simulating records;
+* TeX constructs simulating lists;
+* TeX constructs simulating dictionaries;
+* repeated formatting sequences;
+* unnecessary indirection;
+* dead compatibility hacks.
+
+Remove or consolidate them where safe.
+
+A major success metric is simply that **there should be much less code**.
+
+But raw line count is secondary to conceptual simplicity.
+
+Do not turn 2,000 readable lines into 500 incomprehensible lines.
+
+---
+
+# Prefer data-driven generic renderers
+
+Whenever several macros differ only by configuration, ask whether they should instead share one implementation.
+
+For example, if:
+
+```latex id="33k7re"
+\hJ
+\hE
+\hP
+\hD
+```
+
+all fundamentally mean:
+
+> render a Hebrew block using source X's Hebrew profile
+
+then consider one generic implementation plus thin compatibility wrappers.
+
+Likewise for English source blocks, commentary authors, source-key entries, book ToC entries, etc.
+
+The pattern should generally be:
+
+```text id="hnz5f9"
+data record
+    +
+generic renderer
+    +
+tiny convenient public macro
+```
+
+rather than:
+
+```text id="gbmps6"
+large bespoke macro
+large bespoke macro
+large bespoke macro
+large bespoke macro
+```
+
+---
+
+# Comments and navigation headings should explain architecture, not history
+
+Reorganize section comments/navigation headings so that someone opening `mistress.tex` for the first time can understand it top-to-bottom.
+
+Do not preserve a confusing ordering merely because that is where code happened to accumulate in `master.tex`.
+
+The new file should feel designed.
+
+Use clear major headings corresponding roughly to the hierarchy described above.
+
+---
+
+# Testing methodology
+
+Do not perform this as a blind rewrite.
+
+Work incrementally.
+
+At minimum:
+
+1. Establish how `master.tex` currently compiles.
+2. Compile it successfully before relying on it as the reference.
+3. Create `mistress.tex`.
+4. Migrate infrastructure in coherent pieces.
+5. Compile repeatedly.
+6. Compare warnings/errors.
+7. Compare page count.
+8. Compare major page breaks.
+9. Compare title pages.
+10. Compare ToCs.
+11. Compare representative Hebrew/English/commentary verses.
+12. Compare source headers.
+13. Compare light/dark behavior where applicable.
+14. Compare alphabet-history pages particularly carefully.
+15. Continue until `mistress.tex` can serve as a practical replacement for `master.tex`.
+
+If practical, render PDFs from both and use automated PDF/page comparison techniques to identify unexpected visual drift.
+
+Do not chase pixel-level differences caused solely by harmless engine nondeterminism, but investigate meaningful differences.
+
+---
+
+# Do not modify `master.tex` destructively
+
+Treat `master.tex` as the reference implementation.
+
+The new architecture goes into:
+
+```text id="1c1ijc"
+mistress.tex
+```
+
+and any supporting files needed by `mistress.tex`.
+
+Do not turn `master.tex` itself into the new implementation unless later explicitly asked.
+
+This lets the old and new implementations be compiled side-by-side during the migration.
+
+---
+
+# Final quality bar
+
+The final result should satisfy all of these simultaneously:
+
+1. **It builds the same book.**
+2. **It preserves deliberate visual and semantic choices.**
+3. **Existing chapter/content files require little or no gratuitous rewriting.**
+4. **The architecture is substantially easier to understand.**
+5. **Most structured configuration is represented as actual structured data.**
+6. **Complicated conditionals live in Lua rather than primitive TeX wherever appropriate.**
+7. **Small TeX-local state uses sensible LaTeX/`expl3` facilities rather than primitive hacks where appropriate.**
+8. **Repeated source/author formatting is data-driven.**
+9. **Infrastructure is cleanly separated from content.**
+10. **The navigation order follows the conceptual hierarchy of the physical book.**
+11. **The file proceeds from publication → book → chapter → page → verse → block → word.**
+12. **The content half then traverses the publication again, supplying actual data to those abstractions.**
+13. **The resulting implementation is dramatically shorter and less tangled where possible.**
+14. **The public authoring interface remains concise and pleasant.**
+15. **No painstaking typography is casually discarded in the name of refactoring.**
+
+The desired feeling when reading the finished `mistress.tex` is:
+
+> "Oh. This is what this book actually *is*."
+
+rather than:
+
+> "This is the archaeological record of every TeX problem encountered while building it."
+
+Use `master.tex` as evidence of the intended design, not as a template for the new implementation.
+
+Do all that now, and don't stop until you're satisfied with the result.
+EOF
