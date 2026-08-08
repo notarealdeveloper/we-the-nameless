@@ -23,8 +23,8 @@ Whenever you find a bit of commentary in com/ that isn't in eng/, I want you to:
 
 7. You should only be touching files in this directory this time around:
 
-    01-genesis/22.tex
-    01-genesis/25.tex
+    01-genesis/26.tex
+    01-genesis/27.tex
 
 8. There are LOTS of tables giving etymologies of names in the com/ directory's versions of these files. Don't forget to make those into Latex tables. Don't just leave the markdown syntax as is when you move it to the .tex files.
 
