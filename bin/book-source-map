@@ -203,16 +203,16 @@ def parse_tex_source_file(path, strip=False):
         verses.append(
             {
                 "number": number,
-                "text": compact_text(english, strip),
+                "english": compact_text(english, strip),
                 "hebrew": compact_text(hebrew, strip),
                 "sources": verse_sources(hebrew_segments, english_segments),
                 "source_segments": {
                     "hebrew": hebrew_segments,
-                    "text": english_segments,
+                    "english": english_segments,
                 },
                 "source_consistency": {
                     "hebrew_sources": hebrew_sources,
-                    "text_sources": english_sources,
+                    "english_sources": english_sources,
                     "matches": hebrew_sources == english_sources,
                 },
             }

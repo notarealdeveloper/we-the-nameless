@@ -3369,7 +3369,7 @@
     }%
 }
 \newcommand{\ExternalVerseEnglish}[1]{%
-    \directlua{tex.sprint(-2, book_translation_lookup("\luaescapestring{\CurrentBook}", "\luaescapestring{\CurrentChapter}", "\luaescapestring{\detokenize{#1}}"))}%
+    \directlua{tex.sprint(book_translation_lookup("\luaescapestring{\CurrentBook}", "\luaescapestring{\CurrentChapter}", "\luaescapestring{\detokenize{#1}}"))}%
 }
 
 \newcount\VerseLineBreakHorizontalPenalty

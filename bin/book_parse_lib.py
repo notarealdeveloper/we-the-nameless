@@ -98,7 +98,7 @@ def parse_markdown_file(path, strip=False):
         verses.append(
             {
                 "number": int(match.group(3)),
-                "text": apply_strip(verse_text, strip),
+                "translation": apply_strip(verse_text, strip),
                 "notes": notes,
             }
         )
@@ -223,7 +223,7 @@ def parse_tex_file(path, strip=False):
         verses.append(
             {
                 "number": number,
-                "text": compact_text(english, strip),
+                "english": compact_text(english, strip),
                 "hebrew": compact_text(hebrew, strip),
                 "commentary": compact_text(commentary, strip),
             }

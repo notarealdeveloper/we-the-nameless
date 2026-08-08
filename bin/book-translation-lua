@@ -31,6 +31,27 @@ def lua_quote(value):
     return json.dumps(value, ensure_ascii=False)
 
 
+def tex_escape(value):
+    replacements = {
+        "\\": r"\textbackslash{}",
+        "{": r"\{",
+        "}": r"\}",
+        "#": r"\#",
+        "$": r"\$",
+        "%": r"\%",
+        "&": r"\&",
+        "_": r"\_",
+        "~": r"\textasciitilde{}",
+        "^": r"\textasciicircum{}",
+    }
+    return "".join(replacements.get(char, char) for char in value)
+
+
+def normalize_source_text(text):
+    text = text.strip()
+    return re.sub(r"\s+", " ", text)
+
+
 def clean_verse_text(text, verse_number):
     text = text.strip()
     text = re.sub(r"\s+", " ", text)
@@ -69,6 +90,51 @@ def parse_translation(repo_root, translation):
     return json.loads(result.stdout)
 
 
+def parse_source_translation(repo_root, translation):
+    path = repo_root / "translations" / translation / "sources.json"
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def source_macro(source):
+    if not source:
+        return None
+    if not re.fullmatch(r"[A-Za-z][A-Za-z0-9]*", source):
+        raise SystemExit(f"unsafe source name in sources.json: {source!r}")
+    return "e" + source
+
+
+def render_segments(verse):
+    segments = verse.get("source_segments", {}).get("translation", [])
+    parts = []
+    missing_segment_text = False
+    for segment in segments:
+        text = segment.get("text")
+        if text is None:
+            missing_segment_text = True
+            continue
+        text = normalize_source_text(text)
+        if not text:
+            continue
+        macro = source_macro(segment.get("source"))
+        escaped = tex_escape(text)
+        if macro is None:
+            parts.append(escaped)
+        else:
+            parts.append(rf"\{macro}{{{escaped}}}")
+    if parts and not missing_segment_text:
+        return " ".join(parts)
+    text = verse.get("translation")
+    if text:
+        sources = [s for s in verse.get("sources", []) if s]
+        text = tex_escape(normalize_source_text(text))
+        if len(sources) == 1:
+            return rf"\{source_macro(sources[0])}{{{text}}}"
+        return text
+    return None
+
+
 def build_lookup(data):
     lookup = {}
     duplicates = []
@@ -77,7 +143,10 @@ def build_lookup(data):
             ch_key = chapter_key(chapter)
             for verse in chapter["verses"]:
                 verse_key = str(verse["number"])
-                text = clean_verse_text(verse["text"], verse["number"])
+                text = clean_verse_text(
+                    verse.get("translation", verse.get("text", "")),
+                    verse["number"],
+                )
                 for book_key in book_keys(book, chapter):
                     verses = lookup.setdefault(book_key, {}).setdefault(ch_key, {})
                     old = verses.get(verse_key)
@@ -87,6 +156,23 @@ def build_lookup(data):
                         continue
                     verses[verse_key] = text
     return lookup, duplicates
+
+
+def build_source_lookup(data):
+    lookup = {}
+    missing = []
+    for book in data["books"]:
+        for chapter in book["chapters"]:
+            ch_key = chapter_key(chapter)
+            for verse in chapter["verses"]:
+                verse_key = str(verse["number"])
+                text = render_segments(verse)
+                if text is None:
+                    missing.append(f"{book['name']} {ch_key}:{verse_key}")
+                    continue
+                for book_key in book_keys(book, chapter):
+                    lookup.setdefault(book_key, {}).setdefault(ch_key, {})[verse_key] = text
+    return lookup, missing
 
 
 def sort_key(value):
@@ -170,10 +256,22 @@ def main():
     parser.add_argument("output", help="Lua file to write")
     args = parser.parse_args()
     repo_root = Path(__file__).resolve().parents[1]
-    lookup, duplicates = build_lookup(parse_translation(repo_root, args.translation))
-    if duplicates:
-        sample = "\n".join(duplicates[:20])
-        print(f"warning: ignored duplicate translation verses, keeping first text:\n{sample}", file=sys.stderr, flush=True)
+    source_data = parse_source_translation(repo_root, args.translation)
+    if source_data is None:
+        lookup, duplicates = build_lookup(parse_translation(repo_root, args.translation))
+        if duplicates:
+            sample = "\n".join(duplicates[:20])
+            print(f"warning: ignored duplicate translation verses, keeping first text:\n{sample}", file=sys.stderr, flush=True)
+    else:
+        lookup, missing = build_source_lookup(source_data)
+        if missing:
+            sample = "\n".join(missing[:20])
+            print(
+                f"warning: sources.json has no mapped translation for {len(missing)} verses; "
+                f"inline English will be used there:\n{sample}",
+                file=sys.stderr,
+                flush=True,
+            )
     write_lua(Path(args.output), args.translation, lookup)
 
 

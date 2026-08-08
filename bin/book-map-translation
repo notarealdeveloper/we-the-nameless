@@ -86,7 +86,9 @@ def unique_sources(segments):
 
 
 def source_sequence(verse):
-    segments = verse.get("source_segments", {}).get("text", [])
+    segments = verse.get("source_segments", {}).get("english", [])
+    if not segments:
+        segments = verse.get("source_segments", {}).get("text", [])
     sources = unique_sources(segments)
     if sources:
         return [
@@ -111,10 +113,13 @@ def strip_leading_verse_number(text, verse_number):
 def translation_text(translation_verse, verse_number):
     if translation_verse is None:
         return None
-    return strip_leading_verse_number(translation_verse.get("text"), verse_number)
+    return strip_leading_verse_number(
+        translation_verse.get("translation", translation_verse.get("text")),
+        verse_number,
+    )
 
 
-def add_translation_segments(source_map, translation_index, translation_key):
+def add_translation_segments(source_map, translation_index):
     stats = {
         "auto_mapped": 0,
         "pending": 0,
@@ -125,10 +130,9 @@ def add_translation_segments(source_map, translation_index, translation_key):
     mapped["format"] = "book-translation-source-map.v1"
     mapped["description"] = (
         "Source attribution map generated from book-source-map and book-parse. "
-        f"source_segments.{translation_key} is auto-filled for single-source verses "
+        "source_segments.translation is auto-filled for single-source verses "
         "and left as ordered null text fields for multi-source verses."
     )
-    mapped["translation_key"] = translation_key
     mapped["translation_status"] = stats
 
     for book in mapped.get("books", []):
@@ -137,21 +141,23 @@ def add_translation_segments(source_map, translation_index, translation_key):
                 stats["total"] += 1
                 text = translation_index.text_for(book, chapter, verse["number"])
                 segments = verse.setdefault("source_segments", {})
-                sources = verse.get("sources") or unique_sources(segments.get("text", []))
+                sources = verse.get("sources") or unique_sources(segments.get("english", []))
+                if not sources:
+                    sources = unique_sources(segments.get("text", []))
 
                 if text is None:
                     stats["missing"] += 1
-                    segments[translation_key] = []
-                    verse[translation_key + "_mapping"] = "missing"
+                    segments["translation"] = []
+                    verse["translation_mapping"] = "missing"
                 elif len(sources) == 1:
                     stats["auto_mapped"] += 1
-                    segments[translation_key] = [{"source": sources[0], "text": text}]
-                    verse[translation_key + "_mapping"] = "auto"
+                    segments["translation"] = [{"source": sources[0], "text": text}]
+                    verse["translation_mapping"] = "auto"
                 else:
                     stats["pending"] += 1
-                    segments[translation_key] = source_sequence(verse)
-                    verse[translation_key + "_mapping"] = "pending"
-                    verse[translation_key + "_text"] = text
+                    segments["translation"] = source_sequence(verse)
+                    verse["translation_mapping"] = "pending"
+                    verse["translation"] = text
 
     return mapped
 
@@ -171,11 +177,7 @@ def main():
         )
     )
     parser.add_argument("translation_dir", help="translation subdirectory, e.g. ./translations/kjv/")
-    parser.add_argument(
-        "-k",
-        "--key",
-        help="source_segments key to use for this translation (default: directory name)",
-    )
+    parser.add_argument("-k", "--key", help=argparse.SUPPRESS)
     parser.add_argument(
         "-o",
         "--output",
@@ -186,12 +188,11 @@ def main():
     translation_dir = Path(args.translation_dir)
     if not translation_dir.is_dir():
         parser.error(f"{translation_dir} is not a directory")
-    translation_key = args.key or default_translation_key(translation_dir)
     output = Path(args.output) if args.output else translation_dir / "sources.json"
 
     source_map = run_json([str(PROJECT_ROOT / "bin" / "book-source-map"), "--strip", "."])
     translation = run_json([str(PROJECT_ROOT / "bin" / "book-parse"), "--strip", str(translation_dir)])
-    data = add_translation_segments(source_map, TranslationIndex(translation), translation_key)
+    data = add_translation_segments(source_map, TranslationIndex(translation))
 
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
