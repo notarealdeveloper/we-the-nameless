@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
+What follows is a long prompt that you recently finished, but now with some more concrete implementation suggestions.
+
+You new mistress.tex currently (1) doesn't build when I run 'make MAIN=mistress BUILD=build2/default', and (2) is only like half a kB smaller than master.tex.
+
+Read this again and see if you can actually improve mistress.tex in a serious significant way. Like make it build, and make it half the size of master.tex if possible, but focus on correctness and elegance and maintainability over size.
+
+---
+
+Go.
+
+---
+
 # Task: Reimplement `master.tex` as a dramatically simpler LuaLaTeX architecture in a new file `mistress.tex`
 
 ## 0. Primary task
