@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$#" -ne 1 ]; then
+  echo "usage: bin2/book-map-translation2 ./translations/kjv/" >&2
+  exit 2
+fi
+
+translation_dir="${1%/}"
+sources_json="$translation_dir/sources.json"
+
+if [ ! -f "$sources_json" ]; then
+  echo "$sources_json not found; run bin/book-map-translation $translation_dir first" >&2
+  exit 1
+fi
+
+lord --verbose << EOF
+You are in the We The Nameless repository.
+
+Task: finish the second pass source attribution for this non-default English translation:
+
+  $translation_dir
+
+The first-pass artifact already exists here:
+
+  $sources_json
+
+Use these commands as the ground truth interfaces:
+
+  bin/book-source-map --strip .
+  bin/book-parse --strip "$translation_dir"
+
+Read $sources_json. It has the same book/chapter/verse shape as book-source-map, plus a translation-specific key under each verse's source_segments object. Single-source verses have already been mapped. Multi-source verses are marked pending and contain ordered segment objects like:
+
+  {"source": "J", "text": null}
+
+For every pending verse only, fill in the null text fields for the translation-specific source_segments key by splitting that translation's English at the same source breakpoints represented by the Hebrew and reference English source_segments. Preserve source order and source names exactly. Do not change Hebrew, reference English, source names, book/chapter/verse identity, auto-mapped verses, or the translation text except by copying substrings into the pending segment text fields.
+
+When you need context, compare:
+
+  1. source_segments.hebrew
+  2. source_segments.text
+  3. the pending translation text field on the same verse
+  4. nearby verses in $translation_dir
+
+Keep the artifact valid JSON. Make the smallest direct edit to $sources_json. After editing, run a JSON parse check and report how many pending verses remain.
+EOF

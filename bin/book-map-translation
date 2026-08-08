@@ -1,0 +1,208 @@
+#!/usr/bin/env python3
+import argparse
+import json
+import re
+import signal
+import subprocess
+import sys
+from copy import deepcopy
+from pathlib import Path
+
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def run_json(command):
+    try:
+        result = subprocess.run(
+            command,
+            cwd=PROJECT_ROOT,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        sys.stderr.write(exc.stderr)
+        raise SystemExit(exc.returncode) from exc
+    return json.loads(result.stdout)
+
+
+def verse_key(book, chapter, verse):
+    return (book["id"], chapter["id"], verse["number"])
+
+
+def iter_verses(data):
+    for book in data.get("books", []):
+        for chapter in book.get("chapters", []):
+            for verse in chapter.get("verses", []):
+                yield verse_key(book, chapter, verse), verse
+
+
+class TranslationIndex:
+    def __init__(self, data):
+        self.by_key = {}
+        self.by_chapter = {}
+        for key, verse in iter_verses(data):
+            self.by_key[key] = verse
+            self.by_chapter.setdefault(key[:2], {})[key[2]] = verse
+
+    def text_for(self, book, chapter, verse_number):
+        verse = self.by_key.get((book["id"], chapter["id"], verse_number))
+        if verse is not None:
+            return translation_text(verse, verse_number)
+
+        ranged = self.range_text(book["id"], chapter["id"], verse_number)
+        if ranged is not None:
+            return ranged
+        return None
+
+    def range_text(self, book_id, chapter_id, verse_number):
+        if not isinstance(verse_number, str):
+            return None
+        match = re.fullmatch(r"\s*(\d+)\s*[-–]\s*(\d+)\s*", verse_number)
+        if not match:
+            return None
+        start, end = (int(match.group(1)), int(match.group(2)))
+        if end < start:
+            return None
+        chapter = self.by_chapter.get((book_id, chapter_id), {})
+        parts = []
+        for number in range(start, end + 1):
+            verse = chapter.get(number)
+            if verse is None:
+                return None
+            parts.append(translation_text(verse, number))
+        return "\n".join(part for part in parts if part)
+
+
+def unique_sources(segments):
+    sources = []
+    for segment in segments:
+        source = segment.get("source")
+        if source is not None and source not in sources:
+            sources.append(source)
+    return sources
+
+
+def source_sequence(verse):
+    segments = verse.get("source_segments", {}).get("text", [])
+    sources = unique_sources(segments)
+    if sources:
+        return [
+            {"source": segment["source"], "text": None}
+            for segment in segments
+            if segment.get("source") is not None
+        ]
+    return [
+        {"source": segment["source"], "text": None}
+        for segment in verse.get("source_segments", {}).get("hebrew", [])
+        if segment.get("source") is not None
+    ]
+
+
+def strip_leading_verse_number(text, verse_number):
+    if not isinstance(text, str):
+        return text
+    number = re.escape(str(verse_number))
+    return re.sub(rf"^\s*{number}\s+", "", text, count=1)
+
+
+def translation_text(translation_verse, verse_number):
+    if translation_verse is None:
+        return None
+    return strip_leading_verse_number(translation_verse.get("text"), verse_number)
+
+
+def add_translation_segments(source_map, translation_index, translation_key):
+    stats = {
+        "auto_mapped": 0,
+        "pending": 0,
+        "missing": 0,
+        "total": 0,
+    }
+    mapped = deepcopy(source_map)
+    mapped["format"] = "book-translation-source-map.v1"
+    mapped["description"] = (
+        "Source attribution map generated from book-source-map and book-parse. "
+        f"source_segments.{translation_key} is auto-filled for single-source verses "
+        "and left as ordered null text fields for multi-source verses."
+    )
+    mapped["translation_key"] = translation_key
+    mapped["translation_status"] = stats
+
+    for book in mapped.get("books", []):
+        for chapter in book.get("chapters", []):
+            for verse in chapter.get("verses", []):
+                stats["total"] += 1
+                text = translation_index.text_for(book, chapter, verse["number"])
+                segments = verse.setdefault("source_segments", {})
+                sources = verse.get("sources") or unique_sources(segments.get("text", []))
+
+                if text is None:
+                    stats["missing"] += 1
+                    segments[translation_key] = []
+                    verse[translation_key + "_mapping"] = "missing"
+                elif len(sources) == 1:
+                    stats["auto_mapped"] += 1
+                    segments[translation_key] = [{"source": sources[0], "text": text}]
+                    verse[translation_key + "_mapping"] = "auto"
+                else:
+                    stats["pending"] += 1
+                    segments[translation_key] = source_sequence(verse)
+                    verse[translation_key + "_mapping"] = "pending"
+                    verse[translation_key + "_text"] = text
+
+    return mapped
+
+
+def default_translation_key(path):
+    name = path.resolve().name
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", name):
+        raise SystemExit(f"cannot derive a safe translation key from {path}")
+    return name.replace("-", "_").replace(".", "_")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description=(
+            "Build a static source-attribution artifact for a non-default "
+            "English translation directory."
+        )
+    )
+    parser.add_argument("translation_dir", help="translation subdirectory, e.g. ./translations/kjv/")
+    parser.add_argument(
+        "-k",
+        "--key",
+        help="source_segments key to use for this translation (default: directory name)",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="artifact path (default: sources.json inside the translation directory)",
+    )
+    args = parser.parse_args()
+
+    translation_dir = Path(args.translation_dir)
+    if not translation_dir.is_dir():
+        parser.error(f"{translation_dir} is not a directory")
+    translation_key = args.key or default_translation_key(translation_dir)
+    output = Path(args.output) if args.output else translation_dir / "sources.json"
+
+    source_map = run_json([str(PROJECT_ROOT / "bin" / "book-source-map"), "--strip", "."])
+    translation = run_json([str(PROJECT_ROOT / "bin" / "book-parse"), "--strip", str(translation_dir)])
+    data = add_translation_segments(source_map, TranslationIndex(translation), translation_key)
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    stats = data["translation_status"]
+    sys.stderr.write(
+        f"wrote {output}: {stats['auto_mapped']} auto, "
+        f"{stats['pending']} pending, {stats['missing']} missing\n"
+    )
+
+
+if __name__ == "__main__":
+    signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+    main()
