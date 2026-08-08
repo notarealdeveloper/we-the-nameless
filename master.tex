@@ -188,6 +188,55 @@
 \usepackage[normalem]{ulem}
 \let\emph\textsl
 
+\makeatletter
+\newcommand{\DeclareBookImageDir}[2]{%
+    \expandafter\def\csname BookImageDir@#1\endcsname{#2}%
+}
+\newcommand{\SetCurrentBookImageDir}[1]{%
+    \@ifundefined{BookImageDir@#1}{%
+        \def\CurrentBookImageDir{#1}%
+    }{%
+        \edef\CurrentBookImageDir{\csname BookImageDir@#1\endcsname}%
+    }%
+}
+\makeatother
+
+\DeclareBookImageDir{Genesis}{01-genesis}
+\DeclareBookImageDir{Exodus}{02-exodus}
+\DeclareBookImageDir{Leviticus}{03-leviticus}
+\DeclareBookImageDir{Numbers}{04-numbers}
+\DeclareBookImageDir{Deuteronomy}{05-deuteronomy}
+\DeclareBookImageDir{Joshua}{06-joshua}
+\DeclareBookImageDir{Judges}{07-judges}
+\DeclareBookImageDir{Samuel}{08-samuel}
+\DeclareBookImageDir{Kings}{09-kings}
+\DeclareBookImageDir{Dudetheyreontome}{10-dudetheyreontome}
+
+\newcommand{\ImageNotFound}[1]{%
+    \PackageError{WeTheNameless}{Image not found: #1}{%
+        Looked under \CurrentBookImageDir/include for #1-\ConfigTheme and #1, with jpg/png extensions.%
+    }%
+}
+\newcommand{\image}[2][width=0.9\linewidth]{%
+    \IfFileExists{\CurrentBookImageDir/include/#2-\ConfigTheme.jpg}{%
+        \includegraphics[#1]{\CurrentBookImageDir/include/#2-\ConfigTheme.jpg}%
+    }{%
+        \IfFileExists{\CurrentBookImageDir/include/#2-\ConfigTheme.png}{%
+            \includegraphics[#1]{\CurrentBookImageDir/include/#2-\ConfigTheme.png}%
+        }{%
+            \IfFileExists{\CurrentBookImageDir/include/#2.jpg}{%
+                \includegraphics[#1]{\CurrentBookImageDir/include/#2.jpg}%
+            }{%
+                \IfFileExists{\CurrentBookImageDir/include/#2.png}{%
+                    \includegraphics[#1]{\CurrentBookImageDir/include/#2.png}%
+                }{%
+                    \ImageNotFound{#2}%
+                }%
+            }%
+        }%
+    }%
+}
+
 % ------------------------------------------------------------
 % Languages and fonts
 % ------------------------------------------------------------
@@ -3178,12 +3227,14 @@
     \phantomsection
     \hypertarget{book.#1}{}%
     \def\CurrentBook{#1}%
+    \SetCurrentBookImageDir{#1}%
     \addcontentsline{toc}{chapter}{#1}%
     \BookChapterLinkArray{#1}%
 }
 
 \newcommand{\BookPart}[1]{%
     \def\CurrentBook{#1}%
+    \SetCurrentBookImageDir{#1}%
 }
 
 \iffalse
