@@ -1,8 +1,8 @@
 MAIN  := master
 PDF   := $(MAIN).pdf
-BUILD := build/default
-CACHE = $(BUILD)/texmf-var
 TRANSLATION ?= default
+BUILD := build/$(TRANSLATION)
+CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
 LATEX_INPUT = \def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(MAIN).tex}
 
