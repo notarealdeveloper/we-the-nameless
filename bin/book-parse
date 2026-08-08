@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+import argparse
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from book_parse_lib import dump_json, find_files, parse_markdown, parse_tex
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Parse markdown or TeX book data into book/chapter/verse JSON.")
+    parser.add_argument("-s", "--strip", action="store_true", help="strip leading and trailing whitespace from text fields")
+    parser.add_argument("path", help="file or directory to parse")
+    args = parser.parse_args()
+    path = Path(args.path)
+    try:
+        if path.is_file():
+            if path.suffix == ".md":
+                data = parse_markdown(path, strip=args.strip)
+            elif path.suffix == ".tex":
+                data = parse_tex(path, strip=args.strip)
+            else:
+                parser.error(f"{path} is neither markdown nor TeX")
+        else:
+            md_files = find_files(path, ".md")
+            tex_files = find_files(path, ".tex")
+            if md_files and tex_files:
+                parser.error(f"{path} contains both markdown and TeX files; use book-parse-markdown or book-parse-tex")
+            if md_files:
+                data = parse_markdown(path, strip=args.strip)
+            elif tex_files:
+                data = parse_tex(path, strip=args.strip)
+            else:
+                parser.error(f"{path} contains no markdown or TeX files")
+        dump_json(data)
+    except ValueError as exc:
+        parser.error(str(exc))
+
+
+if __name__ == "__main__":
+    main()
