@@ -1,2 +1,0 @@
-
-1 Samuel 17:49. Insert blue Lord discussion of slings in the ancient near East.
