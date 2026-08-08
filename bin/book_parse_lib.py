@@ -28,8 +28,8 @@ def chapter_sort_key(path):
     stem = path.stem
     if "-" in stem and stem.split("-", 1)[0].isdigit():
         left, right = stem.split("-", 1)
-        return (int(left), int(right) if right.isdigit() else right)
-    return (0, int(stem) if stem.isdigit() else stem)
+        return (int(left), 0, int(right)) if right.isdigit() else (int(left), 1, right)
+    return (0, 0, int(stem)) if stem.isdigit() else (0, 1, stem)
 
 
 def find_files(path, suffix):
@@ -200,11 +200,15 @@ def parse_tex_file(path, strip=False):
     raw = Path(path).read_text(encoding="utf-8")
     text = strip_tex_comments(raw)
     chapter_matches = list(iter_tex_commands(text, "Chapter"))
-    if not chapter_matches:
-        raise ValueError(f"no TeX chapter found in {path}")
-    chapter_value, chapter_end = read_braced(text, chapter_matches[0][1])
+    verse_command = "Verse"
+    if chapter_matches:
+        chapter_value, chapter_end = read_braced(text, chapter_matches[0][1])
+    else:
+        chapter_value = Path(path).stem
+        chapter_end = 0
+        verse_command = "ApocryphonVerse"
     verses = []
-    for _, after in iter_tex_commands(text[chapter_end:], "Verse"):
+    for _, after in iter_tex_commands(text[chapter_end:], verse_command):
         offset_after = chapter_end + after
         number_value, pos = read_braced(text, offset_after)
         groups = []
@@ -224,8 +228,6 @@ def parse_tex_file(path, strip=False):
                 "commentary": compact_text(commentary, strip),
             }
         )
-    if not verses:
-        raise ValueError(f"no TeX verses found in {path}")
     chapter_id = chapter_id_for(Path(path))
     chapter_number = chapter_number_for(chapter_id)
     if isinstance(chapter_number, str):
