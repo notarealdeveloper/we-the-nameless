@@ -1,0 +1,276 @@
+#!/usr/bin/env python3
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from book_parse_lib import (  # noqa: E402
+    book_id_for,
+    book_name_for,
+    chapter_id_for,
+    chapter_number_for,
+    chapter_part_for,
+    chapter_sort_key,
+    compact_text,
+    find_files,
+    iter_tex_commands,
+    read_braced,
+    strip_tex_comments,
+)
+
+
+SOURCE_ALIASES = {
+    "BookOfRecords": "Records",
+}
+
+NUMBERED_SOURCE_ALIASES = {
+    "Dtr": {
+        "1": "DtrA",
+        "2": "DtrB",
+    },
+}
+
+
+def read_source_names(project_root):
+    master = project_root / "master.tex"
+    text = master.read_text(encoding="utf-8")
+    sources = set()
+    for match in re.finditer(r"\\DeclareSourceProfile\{([^}]*)\}", text):
+        source = match.group(1).strip()
+        if source:
+            sources.add(source)
+    for match in re.finditer(r"\\DeclareSourceCommandList\{([^}]*)\}", text):
+        for name in match.group(1).split(","):
+            name = name.strip()
+            if name:
+                sources.add(name)
+    sources.update(SOURCE_ALIASES)
+    sources.update(NUMBERED_SOURCE_ALIASES)
+    return sources
+
+
+def read_command_name(text, pos):
+    if pos >= len(text) or text[pos] != "\\":
+        return None, pos
+    pos += 1
+    start = pos
+    while pos < len(text) and text[pos].isalpha():
+        pos += 1
+    if pos == start:
+        return text[start:pos + 1], pos + 1
+    return text[start:pos], pos
+
+
+def source_for_command(command, text, pos):
+    if len(command) < 2 or command[0] not in "eh":
+        return None, pos, None
+    raw_source = command[1:]
+    if raw_source in NUMBERED_SOURCE_ALIASES:
+        number, pos = read_braced(text, pos)
+        source = NUMBERED_SOURCE_ALIASES[raw_source].get(compact_text(number, strip=True))
+        if source is None:
+            return None, pos, None
+        body, pos = read_braced(text, pos)
+        return source, pos, body
+    if raw_source in SOURCE_NAMES:
+        source = SOURCE_ALIASES.get(raw_source, raw_source)
+        body, pos = read_braced(text, pos)
+        return source, pos, body
+    return None, pos, None
+
+
+def compact_segment_text(text, strip):
+    return compact_text(text, strip=strip)
+
+
+def normalize_segments(segments, strip):
+    normalized = []
+    for segment in segments:
+        text = compact_segment_text(segment["text"], strip)
+        if not text:
+            continue
+        source = segment["source"]
+        if normalized and normalized[-1]["source"] == source:
+            joiner = "\n" if "\n" in normalized[-1]["text"] or "\n" in text else " "
+            normalized[-1]["text"] = compact_segment_text(
+                normalized[-1]["text"] + joiner + text,
+                strip=True,
+            )
+        else:
+            normalized.append({"source": source, "text": text})
+    return normalized
+
+
+def source_segments(text, strip=False):
+    segments = []
+    plain = []
+    pos = 0
+    while pos < len(text):
+        if text[pos] != "\\":
+            plain.append(text[pos])
+            pos += 1
+            continue
+
+        command_start = pos
+        command, after = read_command_name(text, pos)
+        if command is None:
+            plain.append(text[pos])
+            pos += 1
+            continue
+        try:
+            source, end, body = source_for_command(command, text, after)
+        except ValueError:
+            plain.append(text[command_start:after])
+            pos = after
+            continue
+        if source is None:
+            plain.append(text[command_start:after])
+            pos = after
+            continue
+
+        if plain:
+            segments.append({"source": None, "text": "".join(plain)})
+            plain = []
+        nested = source_segments(body, strip=strip)
+        if nested:
+            for segment in nested:
+                segments.append(
+                    {
+                        "source": source if segment["source"] is None else segment["source"],
+                        "text": segment["text"],
+                    }
+                )
+        else:
+            segments.append({"source": source, "text": body})
+        pos = end
+
+    if plain:
+        segments.append({"source": None, "text": "".join(plain)})
+    return normalize_segments(segments, strip)
+
+
+def unique_sources(segments):
+    sources = []
+    for segment in segments:
+        source = segment["source"]
+        if source is not None and source not in sources:
+            sources.append(source)
+    return sources
+
+
+def verse_sources(hebrew_segments, english_segments):
+    sources = []
+    for source in unique_sources(hebrew_segments) + unique_sources(english_segments):
+        if source not in sources:
+            sources.append(source)
+    return sources
+
+
+def parse_tex_source_file(path, strip=False):
+    raw = Path(path).read_text(encoding="utf-8")
+    text = strip_tex_comments(raw)
+    chapter_matches = list(iter_tex_commands(text, "Chapter"))
+    if chapter_matches:
+        chapter_value, chapter_end = read_braced(text, chapter_matches[0][1])
+        chapter_number = chapter_number_for(chapter_id_for(Path(path)))
+        if isinstance(chapter_number, str):
+            stripped_chapter = compact_text(chapter_value, strip=True)
+            chapter_number = int(stripped_chapter) if stripped_chapter.isdigit() else stripped_chapter
+    else:
+        chapter_end = 0
+        chapter_number = chapter_number_for(chapter_id_for(Path(path)))
+
+    verses = []
+    for _, after in iter_tex_commands(text[chapter_end:], "Verse"):
+        offset_after = chapter_end + after
+        number_value, pos = read_braced(text, offset_after)
+        groups = []
+        for _ in range(3):
+            group, pos = read_braced(text, pos)
+            groups.append(group)
+        try:
+            number = int(number_value.strip())
+        except ValueError:
+            number = compact_text(number_value, strip=True)
+        hebrew, english, _commentary = groups
+        hebrew_segments = source_segments(hebrew, strip=strip)
+        english_segments = source_segments(english, strip=strip)
+        hebrew_sources = unique_sources(hebrew_segments)
+        english_sources = unique_sources(english_segments)
+        verses.append(
+            {
+                "number": number,
+                "text": compact_text(english, strip),
+                "hebrew": compact_text(hebrew, strip),
+                "sources": verse_sources(hebrew_segments, english_segments),
+                "source_segments": {
+                    "hebrew": hebrew_segments,
+                    "text": english_segments,
+                },
+                "source_consistency": {
+                    "hebrew_sources": hebrew_sources,
+                    "text_sources": english_sources,
+                    "matches": hebrew_sources == english_sources,
+                },
+            }
+        )
+    return {
+        "id": chapter_id_for(Path(path)),
+        "number": chapter_number,
+        "part": chapter_part_for(chapter_id_for(Path(path))),
+        "verses": verses,
+    }
+
+
+def parse_source_map(path, strip=False):
+    books = {}
+    for tex_file in find_files(path, ".tex"):
+        chapter = parse_tex_source_file(tex_file, strip=strip)
+        book_id = book_id_for(tex_file)
+        books.setdefault(
+            book_id,
+            {"id": book_id, "name": book_name_for(book_id), "chapters": []},
+        )["chapters"].append(chapter)
+    for book in books.values():
+        book["chapters"].sort(key=lambda ch: chapter_sort_key(Path(ch["id"])))
+    return {
+        "format": "book-source-map.v1",
+        "description": (
+            "Source attribution map generated from current TeX verse source macros. "
+            "The shape follows book-parse's books/chapters/verses tree and adds "
+            "ordered source_segments for Hebrew and reference English."
+        ),
+        "books": [books[k] for k in sorted(books)],
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Generate a master source attribution map from TeX source macros."
+    )
+    parser.add_argument(
+        "-s",
+        "--strip",
+        action="store_true",
+        help="strip leading and trailing whitespace from text fields",
+    )
+    parser.add_argument(
+        "path",
+        nargs="?",
+        default=".",
+        help="TeX file or directory to parse (default: current directory)",
+    )
+    args = parser.parse_args()
+    data = parse_source_map(Path(args.path), strip=args.strip)
+    json.dump(data, sys.stdout, ensure_ascii=False, indent=2)
+    sys.stdout.write("\n")
+
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+SOURCE_NAMES = read_source_names(PROJECT_ROOT)
+
+
+if __name__ == "__main__":
+    main()

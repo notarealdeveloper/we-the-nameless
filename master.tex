@@ -28,6 +28,12 @@
 % choices: true, false
 \def\ConfigCommentary{true}
 
+% choices: default, kjv, nrsv, etc. from translations/
+\ifdefined\ConfigEnglishTranslation
+\else
+\def\ConfigEnglishTranslation{default}
+\fi
+
 % choices: plain, fancy
 \def\IndividualBookTitlePageStyle{fancy}
 
@@ -50,11 +56,13 @@
 \def\ConfigVerseLayoutVertical{vertical}
 \def\ConfigOutputModeBook{book}
 \def\ConfigOutputModeMobile{mobile}
+\def\ConfigEnglishTranslationDefault{default}
 \def\IndividualBookTitlePageStyleFancy{fancy}
 
 \newif\ifConfigCommentaryOn
 \newif\ifConfigVerseLayoutVertical
 \newif\ifConfigOutputModeMobile
+\newif\ifConfigEnglishTranslationDefault
 \newif\ifIndividualBookTitlePageStyleFancy
 
 \ifx\ConfigCommentary\ConfigTrue
@@ -71,6 +79,11 @@
     \ConfigOutputModeMobiletrue
 \else
     \ConfigOutputModeMobilefalse
+\fi
+\ifx\ConfigEnglishTranslation\ConfigEnglishTranslationDefault
+    \ConfigEnglishTranslationDefaulttrue
+\else
+    \ConfigEnglishTranslationDefaultfalse
 \fi
 \ifx\IndividualBookTitlePageStyle\IndividualBookTitlePageStyleFancy
     \IndividualBookTitlePageStyleFancytrue
@@ -3334,6 +3347,31 @@
 \def\englishsize{\normalsize}
 \def\hebrewsize{\normalsize}
 
+\ifConfigEnglishTranslationDefault
+\else
+\directlua{
+    local translation_file = "\luaescapestring{\ConfigEnglishTranslationLuaFile}"
+    if translation_file == "" then
+        error("ConfigEnglishTranslationLuaFile is required when ConfigEnglishTranslation is not default")
+    end
+    dofile(translation_file)
+}
+\fi
+
+\newif\ifExternalVerseEnglishAvailable
+\newcommand{\SetExternalVerseEnglishAvailable}[1]{%
+    \directlua{%
+        if book_translation_can_lookup("\luaescapestring{\CurrentBook}", "\luaescapestring{\CurrentChapter}", "\luaescapestring{\detokenize{#1}}") then
+            tex.sprint("\\ExternalVerseEnglishAvailabletrue")
+        else
+            tex.sprint("\\ExternalVerseEnglishAvailablefalse")
+        end
+    }%
+}
+\newcommand{\ExternalVerseEnglish}[1]{%
+    \directlua{tex.sprint(-2, book_translation_lookup("\luaescapestring{\CurrentBook}", "\luaescapestring{\CurrentChapter}", "\luaescapestring{\detokenize{#1}}"))}%
+}
+
 \newcount\VerseLineBreakHorizontalPenalty
 \newcount\VerseLineBreakMobileHorizontalPenalty
 \newcount\VerseLineBreakVerticalPenalty
@@ -3453,7 +3491,16 @@
     \begingroup
     \hbadness=10000
     \hfuzz=3em
-    \VerseBody{#3}{#2}%
+    \ifConfigEnglishTranslationDefault
+        \VerseBody{#3}{#2}%
+    \else
+        \SetExternalVerseEnglishAvailable{#1}%
+        \ifExternalVerseEnglishAvailable
+            \VerseBody{\ExternalVerseEnglish{#1}}{#2}%
+        \else
+            \VerseBody{#3}{#2}%
+        \fi
+    \fi
     \endgroup
     \vspace{0.8em}%
     \ifConfigCommentaryOn

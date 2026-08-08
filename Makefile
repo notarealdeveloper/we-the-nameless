@@ -2,6 +2,9 @@ MAIN  := master
 PDF   := $(MAIN).pdf
 BUILD := build/default
 CACHE = $(BUILD)/texmf-var
+TRANSLATION ?= default
+TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
+LATEX_INPUT = \def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(MAIN).tex}
 
 LATEX      := lualatex
 LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
@@ -11,7 +14,7 @@ SUBSET_TARGETS := $(shell bin/book-subset --make-targets)
 
 export TEXMFVAR = $(CACHE)
 
-.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS)
+.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS)
 
 all: $(PDF) open
 
@@ -20,6 +23,7 @@ help:
 		'Public targets:' \
 		'  make              Build master.pdf and open it.' \
 		'  make pdf          Build master.pdf without opening it.' \
+		'  make TRANSLATION=kjv pdf  Build with translations/kjv instead of inline English.' \
 		'  make parallel     Build the book with the parallel chapter workflow.' \
 		'  make progress     Open master.tex.' \
 		'  make comment      Comment out everything except the progress subset.' \
@@ -63,18 +67,23 @@ build-prepare:
 			mkdir -p "$(BUILD)/$$dir"; \
 		done
 
+build-translation: build-prepare
+	@if [ "$(TRANSLATION)" != "default" ]; then \
+		bin/book-translation-lua "$(TRANSLATION)" "$(TRANSLATION_LUA)"; \
+	fi
+
 $(PDF): $(TEX_SOURCES)
-	$(MAKE) BUILD="$(BUILD)" build-prepare
-	$(LATEX) $(LATEXFLAGS) "$(MAIN).tex"
+	$(MAKE) BUILD="$(BUILD)" TRANSLATION="$(TRANSLATION)" build-translation
+	$(LATEX) $(LATEXFLAGS) "$(LATEX_INPUT)"
 	@if grep -q 'Rerun to get' "$(BUILD)/$(MAIN).log"; then \
-		$(LATEX) $(LATEXFLAGS) "$(MAIN).tex"; \
+		$(LATEX) $(LATEXFLAGS) "$(LATEX_INPUT)"; \
 	fi
 	$(MAKE) clean-stray-aux
 	cp "$(BUILD)/$(MAIN).pdf" .
 
 draft: $(MAIN).tex
-	$(MAKE) BUILD="$(BUILD)" build-prepare
-	$(LATEX) $(LATEXFLAGS) -draftmode "$(MAIN).tex"
+	$(MAKE) BUILD="$(BUILD)" TRANSLATION="$(TRANSLATION)" build-translation
+	$(LATEX) $(LATEXFLAGS) -draftmode "$(LATEX_INPUT)"
 	$(MAKE) clean-stray-aux
 
 clean-stray-aux:
@@ -143,13 +152,13 @@ parallel:
 
 $(SUBSET_TARGETS): BUILD = build/$@
 $(SUBSET_TARGETS):
-	$(MAKE) BUILD="$(BUILD)" build-prepare
+	$(MAKE) BUILD="$(BUILD)" TRANSLATION="$(TRANSLATION)" build-translation
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$@")"; \
 	bin/book-subset --build-dir "$(BUILD)" "$@"; \
-	$(LATEX) $(LATEXFLAGS) "$(BUILD)/$$basename.tex"; \
+	$(LATEX) $(LATEXFLAGS) "\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(BUILD)/$$basename.tex}"; \
 	if grep -q 'Rerun to get' "$(BUILD)/$$basename.log"; then \
-		$(LATEX) $(LATEXFLAGS) "$(BUILD)/$$basename.tex"; \
+		$(LATEX) $(LATEXFLAGS) "\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(BUILD)/$$basename.tex}"; \
 	fi
 	$(MAKE) clean-stray-aux
 	@basename="$$(bin/book-subset --output-name "$@")"; \

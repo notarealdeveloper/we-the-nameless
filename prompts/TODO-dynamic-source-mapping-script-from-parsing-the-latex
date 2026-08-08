@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Read bin/book-source-map, bin/book-source-map-aaronid-deut-sections, and bin/book-source-map-deuteronomistic-editor, and compare the information you find there to the attributions in [0-9]-*/*.tex. Generate one master source attribution script, in the optimal format for the current project. I want this to eventually be the master source attribution source of truth that is used to give source highlightings to NEW english translations when we decide to support a new one by adding it to translations/. Toward that end, run bin/book-parse on some tex dirs like 01-genesis/ and on some markdown dirs like ./translations/default/ and examine the structure of the json output you get from that script. I want the structure of your master source map that you generate by looking at the latest tex files in [0-9]-*/*.tex to be shaped similarly or identically to that data structure, so that we can eventually (as easily as possible) ADD the source information to the output of book-parse. This will be a bit tricky, because we'll eventually need to represent each verse as a list of strings e.g., ["Stuff about the tabernacle and Elohim", "Stuff about sex and YHWH"] for the verse's content, which will have a list ["P", "J"] for its source attribution, intended to be zipped together to give a sub-verse level source attribution. Source attribution will be easy for the verses with a single author, but we'll need to think ahead in order to eventually represent the sub-verse information about sources. For now, just generate me the master source map, and decide in whatever way you think is best how to mark the place within the english or Hebrew at which the sources switch. Maybe something like this is best: Look at what I put in the file ./MAYBE-THIS-IS-BEST. It's how Genesis 2:4 is represented in the tex, in 01-genesis/04.tex. That by itself has enough information to make it not SUPER hard to decide where the KJV of the same verse should be split. So maybe the output of bin/book-source-map should be (a) shaped almost identically to the output of book-parse on various tex and md files and dirs, but (b) also should contain ALL OF THE FOLLOWING: (i) the hebrew as it appears in the tex files (minus backslashes on the \\eP and all that) (ii) the english as it appears in the tex files, (iii) but with the source attributions in both heb and eng parts preserved. i.e., maybe the source map info should be "Genesis" -> 2 -> 4 -> and then at that level of the map you get essentially the same data as here:
+
+\Verse{4}
+{
+	\hR{אֵלֶּה תוֹלְדוֹת הַשָּׁמַיִם וְהָאָרֶץ בְּ הִבָּרְאָם}
+	\hJ{בְּיוֹם עֲשׂוֹת יְהֹוָה}
+	\hR{אֱלֹהִים}
+	\hJ{אֶרֶץ וְשָׁמָיִם}
+}
+{
+	\eR{These are the records of the skies and the earth when they were created}
+	\eJ{in the day that YHWH}
+	\eR{{\God}}
+	\eJ{made earth and skies}
+}
+
+
+
+i.e., you get the source attribution of both the HEBREW and the REFERENCE ENGLISH translation, and in a form that's more conducive to eventually merging with the book-parse output of some other translation, like kjv. Then, source mapping a new english translation would just be the relatively simple problem of copying source attributions from the reference english + hebrew data given by book-source-map, into the json data provided by running book-parse on the new english translation. So in summary: Plan ahead for that. Make the current tex files the source of truth. Instead of storing just data from one pass, maybe accomplish all this by making the script book-source-map dynamically generate the source map from reading the current versions of the tex files in [0-9]-*/*.tex. I like that approach a lot better. Then if I change something, it's automatically everywhere. Do that, and don't stop until you're satisfied with the result.
+EOF

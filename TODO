@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+We now have multiple machine readable english translations inside the translations/ directory.
+
+Suppose in the tex files in [0-9]-*/*.tex, I want a PARTICULAR English translation inside each verse block, to look at while I'm writing commentary inside the tex files, because otherwise it would be impossible for me to look at the screen and read it in english and do commentary.
+
+But suppose I want a system in which that REFERENCE english version is not necessarily the translation that ends up in the final pdf.
+
+That is, we need a config option saying which english translation to use at build time,
+and we need to generalize \\Verse in master.tex, ideally with some intelligent Lua that
+can do filesystem IO operations and exec some scripts along the way.
+
+I wanted to do all this without changing the English sentences in the existing .tex files.
+
+Some tips on how to proceed:
+
+The script bin/book-parse should be able to accept as input any .tex file in [0-9]-*/*.tex,
+or any .md file in (for example) translations/, or any subdir of translations/ like e.g.
+./translations/default or ./translations/kjv/08-samuel/
+
+That script, when run in this way, should give json output in a standardized form.
+
+That json output should be parseable in Lua at build time.
+
+If you can think of a better way to get the build working, then don't worry about
+following my suggested implementation path to the letter.
+
+All I want is to be able to set the translation to 'default' or 'kjv' or 'nrsv'
+and have that version's english end up in the final pdf, without having to
+change the .tex files in [0-9]-*/*.tex. Final note: If that config option is
+set to default, then use the INLINE english in the .tex files, don't reparse
+the english in ./translations/default, since those should be almost identical
+up to a few meaningless newlines and minor changes. In 'default' translation,
+use the current build and don't involve any parsing Lua or python scripts.
+
+Do that now, and don't stop until you're satisfied with the solution.
+EOF
