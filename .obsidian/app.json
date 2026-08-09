@@ -1,5 +1,6 @@
 {
   "spellcheck": false,
   "autoPairBrackets": false,
-  "showUnsupportedFiles": true
+  "showUnsupportedFiles": true,
+  "alwaysUpdateLinks": true
 }
