@@ -833,6 +833,12 @@
     \AtBeginDocument{\color{TextColor}}
 \fi
 
+\colorlet{JPcolor}{Jcolor}
+\colorlet{JEcolor}{Jcolor!50!Ecolor}
+\colorlet{EPcolor}{Ecolor}
+\colorlet{JPPcolor}{JPcolor}
+\colorlet{EPPcolor}{EPcolor}
+
 \arrayrulecolor{RuleColor}
 \newcommand{\TocFont}{\EnglishFont\color{TextColor}}
 \renewcommand{\cfttoctitlefont}{\TocFont\Huge\bfseries}
@@ -1672,6 +1678,18 @@
 	{\EnglishFont}				{\SourceBackground{Jbgcolor}\Yahwist\mdseries}
 	{\PaleoHebrewPhoenician}	{\SourceBackground{Jbgcolor}\Yahwist\mdseries}
 
+\DeclareSourceProfile{JP}
+	{\EnglishFont}				{\color{JPcolor}\PriestStyle}
+	{\HebrewEzra}				{\color{JPcolor}\addfontfeatures{Scale=1.40}\mdseries}
+
+\DeclareSourceProfile{JPP}
+	{\EnglishFont}				{\color{JPPcolor}\PriestStyle}
+	{\HebrewEzraRaw}			{\color{JPPcolor}\addfontfeatures{Scale=1.40}\mdseries}
+
+\DeclareSourceProfile{JE}
+	{\EnglishFont}				{\color{JEcolor}\mdseries}
+	{\PaleoHebrewPhoenician}	{\color{JEcolor}\mdseries}
+
 % Mushites
 
 \DeclareSourceProfile{E}
@@ -1701,6 +1719,14 @@
 	{\EnglishFont}				{\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
 	{\HebrewEzraRaw}			{\SourceBackground{Pbgcolor}\AaronidStyle\addfontfeatures{Scale=1.40}\mdseries}
 	% Don't change this font scale!
+
+\DeclareSourceProfile{EP}
+	{\EnglishFont}				{\color{EPcolor}\PriestStyle}
+	{\HebrewEzra}				{\color{EPcolor}\addfontfeatures{Scale=1.40}\mdseries}
+
+\DeclareSourceProfile{EPP}
+	{\EnglishFont}				{\color{EPPcolor}\PriestStyle}
+	{\HebrewEzraRaw}			{\color{EPPcolor}\addfontfeatures{Scale=1.40}\mdseries}
 
 \DeclareSourceProfile{PP}
 	{\EnglishFont}				{\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
@@ -1759,7 +1785,7 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,E,P,PP,DtrA,DtrB,DtrH,Dtn,Records,Other,X,Aramaic,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
+\DeclareSourceCommandList{J,JP,JPP,JE,E,EP,EPP,P,PP,DtrA,DtrB,DtrH,Dtn,Records,Other,X,Aramaic,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
 
 % P defaults to square Ezra. Use \UsePaleoP for occasional Hezekiah-era Paleo-P,
 % then \UseSquareP to switch P back.
