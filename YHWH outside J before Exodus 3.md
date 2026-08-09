@@ -1,7 +1,7 @@
 
 ## The ~~Five~~ Six Examples
 
-NOTE: Friedman says there are only 3 examples of YHWH outside J before Exodus 3, but in his own source map there are 5. Wait no six. They are as follows.
+NOTE: Friedman says there are only 3 examples of YHWH outside J before Exodus 3, but in his own source map there are 5. Wait no six. Wait no five. Ah. They are as follows.
 
 ---
 
