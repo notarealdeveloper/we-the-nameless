@@ -539,6 +539,13 @@
 
 \def\TraditionalChineseFont{\TraditionalChineseFontA}
 
+\newfontfamily\KoreanFont[
+    Path=\LocalFontPath,
+    Script=Hangul,
+    Renderer=HarfBuzz,
+    Scale=1.00
+]{cjk-noto-serif-tc.otf}
+
 % Reusable font catalog. Source profiles below bind these fonts to J/E/P/etc.
 \newfontfamily\EnglishFont[\NamelessTextFallbackFeature]{FreeSerif}
 \newfontfamily\EnglishProtoFont[
@@ -567,6 +574,7 @@
 \NewDocumentCommand{\chineseC}{ m }{\ChineseText{\TraditionalChineseFontC}{#1}}
 \NewDocumentCommand{\chineseD}{ m }{\ChineseText{\TraditionalChineseFontD}{#1}}
 \NewDocumentCommand{\chineseE}{ m }{\ChineseText{\TraditionalChineseFontE}{#1}}
+\NewDocumentCommand{\korean}{ m }{{\leavevmode\KoreanFont #1}}
 
 \NewDocumentCommand{\size}{ m m }{
   \smash{\fontsize{#1}{#1}\selectfont{#2}}
