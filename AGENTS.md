@@ -9,3 +9,5 @@ Continue doing that until you're confident you understand my preferences well en
 Only do this when you find the given prompt ambiguous, or when you're not sure how to approach a given implementation (e.g., in terms of completeness vs simplicity.)
 
 Against that background, complete the tasks you've been asked to complete.
+
+Also never build the book unless I ask you to. Never. Not even with 'make draft'
