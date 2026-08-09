@@ -718,6 +718,8 @@
 
 \colorlet{Rcolor}{Pcolor}
 \colorlet{Rbgcolor}{Rcolor!12!white}
+\definecolor{RedSourcecolor}{RGB}{170,0,0}
+\colorlet{RedSourcebgcolor}{RedSourcecolor!12!white}
 
 \definecolor{RJEcolor}{RGB}{0,100,0}
 \definecolor{RJEbgcolor}{RGB}{225,245,225}
@@ -804,6 +806,8 @@
 
     \colorlet{Rcolor}{Pcolor}
     \colorlet{Rbgcolor}{Rcolor!14!bg}
+    \colorlet{RedSourcecolor}{ObsRed!78!bg}
+    \colorlet{RedSourcebgcolor}{RedSourcecolor!14!bg}
     \colorlet{RJEcolor}{ObsGreen!82!fg}
     \definecolor{RJEbgcolor}{HTML}{344837}
 
@@ -1707,6 +1711,11 @@
 	{\HebrewEzraRaw}			{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Scale=1.40}\mdseries}
 	% Don't change this font scale!
 
+\DeclareSourceProfile{Red}
+	{\EnglishFont}				{\SourceBackground{RedSourcebgcolor}\color{RedSourcecolor}\Redactor\mdseries}
+	{\HebrewEzraRaw}			{\SourceBackground{RedSourcebgcolor}\color{RedSourcecolor}\Redactor\addfontfeatures{Scale=1.40}\mdseries}
+	% Don't change this font scale!
+
 % Others
 
 \DeclareSourceProfile{X}
@@ -1765,11 +1774,14 @@
 \newcommand{\DtrBLabel}{\eDtrB{Dtr2}}
 \newcommand{\DtnLabel}{\eDtn{Dtn}}
 \newcommand{\eR}[1]{{\estyleR #1}}
+\newcommand{\eRed}[1]{{\estyleRed #1}}
 \newcommand{\eRJE}[1]{{\estyleRJE #1}}
 \newcommand{\hDtr}[2]{\ifcase#1\or\hDtrA{#2}\or\hDtrB{#2}\fi}
 \newcommand{\hR}[1]{\hRRenderer{\hstyleR}{#1}}
+\newcommand{\hRed}[1]{\hRedRenderer{\hstyleRed}{#1}}
 \newcommand{\hRJE}[1]{\hRJERenderer{\hstyleRJE}{#1}}
 \newcommand{\sR}[1]{{\estyleR #1}}
+\newcommand{\sRed}[1]{{\estyleRed #1}}
 \newcommand{\sRJE}[1]{{\estyleRJE #1}}
 \newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
 \newcommand{\hBookOfRecords}[1]{\hRecordsRenderer{\hstyleRecords}{#1}}
