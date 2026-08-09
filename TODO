@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Any time you see the commentary in the tex files in [0-9]-*/*.tex using
+
+"These kinds of quotes"
+
+instead of
+
+``These kinds of quotes''
+
+change the former to the latter.
+EOF
