@@ -12,25 +12,22 @@ Whenever you find a bit of commentary in com/ that isn't in eng/, I want you to:
 
 3. Be idempotent: If you find a verse already has the same commentary in the .tex file that corresponds to a verse in some file in com/, then do nothing for that verse.
 
-4. Remember to change any markdown-isms you find in the com/ commentary into equivalent latex-isms when you move the commentary from com/ to the .tex files. ESPECIALLY: When you see a table in the markdown, use \\Table{...} as defined in master.tex to make it into a table, and search through 01-genesis/*.tex and 08-samuel/*.tex for other examples of how to make a table fit on the page. 01-genesis/20.tex has one, for example.
+4. Remember to change any markdown-isms you find in the com/ commentary into equivalent latex-isms when you move the commentary from com/ to the .tex files. ESPECIALLY: If you see a table in the markdown, use \Table{...} as defined in master.tex to make it into a table, and search through 01-genesis/*.tex and 08-samuel/*.tex for other examples of how to make a table fit on the page. 01-genesis/20.tex has one, for example.
 
 5. EDIT: DON'T DO DUMB SHIT! I want the book and its code to be simple.
    Don't add \par\smallskip for idiotic reasons to the tex.
    I don't know where you're getting these ideas about what I want.
    I want a simple update of the commentary *in the tex files* using the commentary in com/.
 
-6. When you find an image included in the markdown, look in the include/ subdirectory of 01-genesis to find the jpg to include in the latex files.
+6. You should only be touching files in this directory this time around:
 
-7. You should only be touching files in this directory this time around:
-
-    01-genesis/26.tex
     01-genesis/27.tex
+    01-genesis/28.tex
+    01-genesis/29.tex
 
-8. There are LOTS of tables giving etymologies of names in the com/ directory's versions of these files. Don't forget to make those into Latex tables. Don't just leave the markdown syntax as is when you move it to the .tex files.
+7. Whenever you find a Friedman footnote in the com/ directory, move it to the tex files, but leave it commented out.
 
-9. Whenever you find a Friedman footnote in the com/ directory, move it to the tex files, but leave it commented out.
-
-10. Whenever I've already put latex-isms in the .md files, don't escape them even more when you add them to the tex. The latex-isms in the .md (when you see them) are the latex I want in the .tex files. I wrote the .md stuff on my phone where I don't have a latex compiler, so those latex-isms (e.g., \\footnote{...}) are my attempt to signal what the .tex should be when you move it.
+8. Whenever I've already put latex-isms in the .md files, don't escape them even more when you add them to the tex. The latex-isms in the .md (when you see them) are the latex I want in the .tex files. I wrote the .md stuff on my phone where I don't have a latex compiler, so those latex-isms (e.g., \footnote{...}) are my attempt to signal what the .tex should be when you move it.
 
 Do all that now.
 
