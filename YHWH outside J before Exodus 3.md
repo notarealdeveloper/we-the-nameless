@@ -1,7 +1,7 @@
 
-## The Five Examples
+## The ~~Five~~ Six Examples
 
-NOTE: Friedman says there are only 3 examples of YHWH outside J before Exodus 3, but in his own source map there are 5. They are as follows.
+NOTE: Friedman says there are only 3 examples of YHWH outside J before Exodus 3, but in his own source map there are 5. Wait no six. They are as follows.
 
 ---
 
@@ -13,6 +13,9 @@ Genesis 20:18. E in Friedman. “because YHWH had completely closed every womb�
 
 ![[yhwh-outside-j-before-genesis-three-2.jpg]]
 
+Gen 21:2. J/P in Friedman. "And YHWH had taken account of Sarah as He had said, and YHWH did to Sarah as He had spoken. And Sarah became pregnant and gave birth to a son for Abraham in his old age at the appointed time that God had spoken. And Abraham called the name of his son who was born to him, to whom Sarah had given birth for him: Isaac. And Abraham circumcised Isaac, his son, at eight days old, as God had commanded him. And Abraham was a hundred years old when Isaac, his son, was born to him."
+
+![[yhwh-outside-j-before-genesis-three-6.png]]
 
 Gen 21:33. E in Friedman. Abraham “called there on the name of YHWH, El Olam.”
 
