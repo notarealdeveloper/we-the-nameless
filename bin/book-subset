@@ -715,6 +715,13 @@ def parse_group(text, pos):
         if char == "\\":
             pos += 2
             continue
+        if char == "%":
+            newline = text.find("\n", pos)
+            if newline < 0:
+                pos = len(text)
+            else:
+                pos = newline + 1
+            continue
         if char == "{":
             depth += 1
         elif char == "}":
