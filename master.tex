@@ -728,6 +728,8 @@
 \colorlet{Rbgcolor}{Rcolor!12!white}
 \definecolor{RedSourcecolor}{RGB}{170,0,0}
 \colorlet{RedSourcebgcolor}{RedSourcecolor!12!white}
+\colorlet{Reblacktorcolor}{black}
+\colorlet{Reblacktorbgcolor}{black!12!white}
 
 \definecolor{RJEcolor}{RGB}{0,100,0}
 \definecolor{RJEbgcolor}{RGB}{225,245,225}
@@ -816,6 +818,8 @@
     \colorlet{Rbgcolor}{Rcolor!14!bg}
     \colorlet{RedSourcecolor}{ObsRed!78!bg}
     \colorlet{RedSourcebgcolor}{RedSourcecolor!14!bg}
+    \colorlet{Reblacktorcolor}{white}
+    \colorlet{Reblacktorbgcolor}{white!14!bg}
     \colorlet{RJEcolor}{ObsGreen!82!fg}
     \definecolor{RJEbgcolor}{HTML}{344837}
 
@@ -1228,7 +1232,11 @@
 \makeatletter
 \newcommand{\DeclareHebrewRenderer}[3]{%
   \expandafter\newcommand\csname #1\endcsname[2]{%
-    {\leavevmode\textdir TRT\upshape#2##1\upshape#3{##2}}%
+    {%
+      \leavevmode\textdir TRT\upshape
+      \let\SourceProfileTextWrapper\SourceProfilePlainText
+      #2##1\upshape\SourceProfileTextWrapper{#3{##2}}%
+    }%
   }%
 }
 \makeatother
@@ -1445,9 +1453,10 @@
 % Source traits. These compose in source profiles and can be used inline.
 \newcommand{\SourceBgColor}{Rbgcolor}
 \newcommand{\SourceBackground}[1]{\def\SourceBgColor{#1}}
-\makeatletter
-\newcommand{\Redactor}{\@highLight[\SourceBgColor]}
-\makeatother
+\newcommand{\SourceProfilePlainText}[1]{#1}
+\let\SourceProfileTextWrapper\SourceProfilePlainText
+\newcommand{\SourceProfileHighlightedText}[1]{\highLight[\SourceBgColor]{#1}}
+\DeclareRobustCommand{\Redactor}{\let\SourceProfileTextWrapper\SourceProfileHighlightedText}
 \newcommand{\PriestStyle}{\bfseries}
 \newcommand{\LeviteStyle}{\color{Levitecolor}}
 \newcommand{\Native}{\mdseries}
@@ -1750,6 +1759,11 @@
 	{\HebrewEzraRaw}			{\SourceBackground{RedSourcebgcolor}\color{RedSourcecolor}\Redactor\addfontfeatures{Scale=1.40}\mdseries}
 	% Don't change this font scale!
 
+\DeclareSourceProfile{Reblacktor}
+	{\EnglishFont}				{\SourceBackground{Reblacktorbgcolor}\color{Reblacktorcolor}\Redactor\mdseries}
+	{\HebrewEzraRaw}			{\SourceBackground{Reblacktorbgcolor}\color{Reblacktorcolor}\Redactor\addfontfeatures{Scale=1.40}\mdseries}
+	% Don't change this font scale!
+
 % Others
 
 \DeclareSourceProfile{X}
@@ -1782,11 +1796,25 @@
 \newcommand{\ShowHebrewAlphabet}[1]{#1{}{\HebrewAlphabet}\\}
 
 % Public source commands. Each one applies its source profile as a bundle.
+\NewDocumentCommand{\ApplyEnglishSourceProfile}{ m +m }{%
+  {%
+    \let\SourceProfileTextWrapper\SourceProfilePlainText
+    #1%
+    \let\SourceProfileOriginalFootnote\footnote%
+    \RenewDocumentCommand{\footnote}{ o +m }{%
+      \IfValueTF{##1}%
+        {\SourceProfileOriginalFootnote[##1]{{\let\SourceProfileTextWrapper\SourceProfilePlainText #1\SourceProfileTextWrapper{##2}}}}%
+        {\SourceProfileOriginalFootnote{{\let\SourceProfileTextWrapper\SourceProfilePlainText #1\SourceProfileTextWrapper{##2}}}}%
+    }%
+    \SourceProfileTextWrapper{#2}%
+  }%
+}
+
 \makeatletter
 \newcommand{\DeclareSourceCommands}[1]{%
-  \expandafter\newcommand\csname e#1\endcsname[1]{{\csname estyle#1\endcsname ##1}}%
+  \expandafter\newcommand\csname e#1\endcsname[1]{\ApplyEnglishSourceProfile{\csname estyle#1\endcsname}{##1}}%
   \expandafter\newcommand\csname h#1\endcsname[1]{\csname h#1Renderer\endcsname{\csname hstyle#1\endcsname}{##1}}%
-  \expandafter\newcommand\csname s#1\endcsname[1]{{\csname estyle#1\endcsname ##1}}%
+  \expandafter\newcommand\csname s#1\endcsname[1]{\ApplyEnglishSourceProfile{\csname estyle#1\endcsname}{##1}}%
 }
 \newcommand{\DeclareSourceCommandList}[1]{%
   \@for\SourceName:=#1\do{\expandafter\DeclareSourceCommands\expandafter{\SourceName}}%
@@ -1808,14 +1836,17 @@
 \newcommand{\DtrBLabel}{\eDtrB{Dtr2}}
 \newcommand{\DtnLabel}{\eDtn{Dtn}}
 \newcommand{\eR}[1]{{\estyleR #1}}
-\newcommand{\eRed}[1]{{\estyleRed #1}}
+\newcommand{\eRed}[1]{\ApplyEnglishSourceProfile{\estyleRed}{#1}}
+\newcommand{\eReblacktor}[1]{\ApplyEnglishSourceProfile{\estyleReblacktor}{#1}}
 \newcommand{\eRJE}[1]{{\estyleRJE #1}}
 \newcommand{\hDtr}[2]{\ifcase#1\or\hDtrA{#2}\or\hDtrB{#2}\fi}
 \newcommand{\hR}[1]{\hRRenderer{\hstyleR}{#1}}
 \newcommand{\hRed}[1]{\hRedRenderer{\hstyleRed}{#1}}
+\newcommand{\hReblacktor}[1]{\hReblacktorRenderer{\hstyleReblacktor}{#1}}
 \newcommand{\hRJE}[1]{\hRJERenderer{\hstyleRJE}{#1}}
 \newcommand{\sR}[1]{{\estyleR #1}}
-\newcommand{\sRed}[1]{{\estyleRed #1}}
+\newcommand{\sRed}[1]{\ApplyEnglishSourceProfile{\estyleRed}{#1}}
+\newcommand{\sReblacktor}[1]{\ApplyEnglishSourceProfile{\estyleReblacktor}{#1}}
 \newcommand{\sRJE}[1]{{\estyleRJE #1}}
 \newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
 \newcommand{\hBookOfRecords}[1]{\hRecordsRenderer{\hstyleRecords}{#1}}
