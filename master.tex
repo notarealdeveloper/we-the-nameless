@@ -1455,9 +1455,7 @@
 \newcommand{\SourceBackground}[1]{\def\SourceBgColor{#1}}
 \newcommand{\SourceProfilePlainText}[1]{#1}
 \let\SourceProfileTextWrapper\SourceProfilePlainText
-\makeatletter
-\newcommand{\SourceProfileHighlightedText}[1]{{\@highLight[\SourceBgColor]#1}}
-\makeatother
+\newcommand{\SourceProfileHighlightedText}[1]{\highLight[\SourceBgColor]{#1}}
 \DeclareRobustCommand{\Redactor}{\let\SourceProfileTextWrapper\SourceProfileHighlightedText}
 \newcommand{\PriestStyle}{\bfseries}
 \newcommand{\LeviteStyle}{\color{Levitecolor}}
@@ -1500,7 +1498,6 @@
 \ExplSyntaxOn
 \NewDocumentCommand{\SourceDecorate}{ O{} +m }{%
     \group_begin:
-    \let\SourceProfileTextWrapper\SourceProfilePlainText
     \clist_map_inline:nn {#1} {
         \str_case:nn {##1} {
             {plain}{\mdseries}
@@ -1533,7 +1530,7 @@
             {nobg}{}
         }
     }
-    \SourceProfileTextWrapper{#2}%
+    #2%
     \group_end:
 }
 \ExplSyntaxOff
@@ -1838,19 +1835,19 @@
 \newcommand{\DtrALabel}{\eDtrA{Dtr1}}
 \newcommand{\DtrBLabel}{\eDtrB{Dtr2}}
 \newcommand{\DtnLabel}{\eDtn{Dtn}}
-\newcommand{\eR}[1]{\ApplyEnglishSourceProfile{\estyleR}{#1}}
+\newcommand{\eR}[1]{{\estyleR #1}}
 \newcommand{\eRed}[1]{\ApplyEnglishSourceProfile{\estyleRed}{#1}}
 \newcommand{\eReblacktor}[1]{\ApplyEnglishSourceProfile{\estyleReblacktor}{#1}}
-\newcommand{\eRJE}[1]{\ApplyEnglishSourceProfile{\estyleRJE}{#1}}
+\newcommand{\eRJE}[1]{{\estyleRJE #1}}
 \newcommand{\hDtr}[2]{\ifcase#1\or\hDtrA{#2}\or\hDtrB{#2}\fi}
 \newcommand{\hR}[1]{\hRRenderer{\hstyleR}{#1}}
 \newcommand{\hRed}[1]{\hRedRenderer{\hstyleRed}{#1}}
 \newcommand{\hReblacktor}[1]{\hReblacktorRenderer{\hstyleReblacktor}{#1}}
 \newcommand{\hRJE}[1]{\hRJERenderer{\hstyleRJE}{#1}}
-\newcommand{\sR}[1]{\ApplyEnglishSourceProfile{\estyleR}{#1}}
+\newcommand{\sR}[1]{{\estyleR #1}}
 \newcommand{\sRed}[1]{\ApplyEnglishSourceProfile{\estyleRed}{#1}}
 \newcommand{\sReblacktor}[1]{\ApplyEnglishSourceProfile{\estyleReblacktor}{#1}}
-\newcommand{\sRJE}[1]{\ApplyEnglishSourceProfile{\estyleRJE}{#1}}
+\newcommand{\sRJE}[1]{{\estyleRJE #1}}
 \newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
 \newcommand{\hBookOfRecords}[1]{\hRecordsRenderer{\hstyleRecords}{#1}}
 \newcommand{\sBookOfRecords}[1]{{\estyleRecords #1}}
@@ -2917,8 +2914,8 @@
     \ChapterSummaryLink{Genesis}{26}{Genesis}{Isaac entrapment remix}%
     \ChapterSummaryLink{Genesis}{27}{Genesis}{J's the Goat}%
     \ChapterSummaryLink{Genesis}{28}{Genesis}{Jacob's ladder}%
-    \ChapterSummaryLink{Genesis}{29}{Genesis}{Accidental sister-wives; White lies.}%
-    \ChapterSummaryLink{Genesis}{30}{Genesis}{Sibling rivalry breeding competition.}%
+    \ChapterSummaryLink{Genesis}{29}{Genesis}{Accidental sister-wives; White lies}%
+    \ChapterSummaryLink{Genesis}{30}{Genesis}{Sibling rivalry breeding competition}%
     \ChapterSummaryLink{Genesis}{31}{Genesis}{Outwitting Laban}%
     \ChapterSummaryLink{Genesis}{32}{Genesis}{Night wrestling}%
     \ChapterSummaryLink{Genesis}{33}{Genesis}{Esau returns}%
