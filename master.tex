@@ -1796,15 +1796,15 @@
 \newcommand{\ShowHebrewAlphabet}[1]{#1{}{\HebrewAlphabet}\\}
 
 % Public source commands. Each one applies its source profile as a bundle.
+\let\SourceProfileBaseFootnote\footnote
 \NewDocumentCommand{\ApplyEnglishSourceProfile}{ m +m }{%
   {%
     \let\SourceProfileTextWrapper\SourceProfilePlainText
     #1%
-    \let\SourceProfileOriginalFootnote\footnote%
     \RenewDocumentCommand{\footnote}{ o +m }{%
       \IfValueTF{##1}%
-        {\SourceProfileOriginalFootnote[##1]{{\let\SourceProfileTextWrapper\SourceProfilePlainText #1\SourceProfileTextWrapper{##2}}}}%
-        {\SourceProfileOriginalFootnote{{\let\SourceProfileTextWrapper\SourceProfilePlainText #1\SourceProfileTextWrapper{##2}}}}%
+        {\SourceProfileBaseFootnote[##1]{{\let\SourceProfileTextWrapper\SourceProfilePlainText #1\SourceProfileTextWrapper{##2}}}}%
+        {\SourceProfileBaseFootnote{{\let\SourceProfileTextWrapper\SourceProfilePlainText #1\SourceProfileTextWrapper{##2}}}}%
     }%
     \SourceProfileTextWrapper{#2}%
   }%
