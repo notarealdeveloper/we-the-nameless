@@ -21,9 +21,9 @@ Whenever you find a bit of commentary in com/ that isn't in eng/, I want you to:
 
 6. You should only be touching files in this directory this time around:
 
-    01-genesis/27.tex
-    01-genesis/28.tex
-    01-genesis/29.tex
+    01-genesis/[23]*.tex
+
+    03-leviticus/0[12].tex
 
 7. Whenever you find a Friedman footnote in the com/ directory, move it to the tex files, but leave it commented out.
 
