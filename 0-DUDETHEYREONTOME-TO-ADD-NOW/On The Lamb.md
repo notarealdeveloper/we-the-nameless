@@ -1,4 +1,6 @@
 
+> Jew wandering?\footnote{Lit. You want drink?}
+
 ## F || Word
 ### Or: IVWllrד 
 ### Or: IVllrד
