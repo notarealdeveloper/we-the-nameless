@@ -1,5 +1,7 @@
 
-> Jew wandering?\footnote{Lit. You want drink?}
+> Adm: Seir? Seir? Jew wandering?\footnote{Lit. /ʝu̞‿wan̪ˈdɾiŋ/}
+> Son: No I'm not wandering, I'm just looking for a drink.
+> Adm (to other man): Edom.\footnote{Lit. /i ˈðom/}
 
 ## F || Word
 ### Or: IVWllrד 
