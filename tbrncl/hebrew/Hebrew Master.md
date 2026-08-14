@@ -31,18 +31,18 @@ w + prefix-form = story-present chain
 
 # COMPLETED FORMS
 
-| English | Hebrew | Logical Derivation |
-|---|---|---|
-| I XXXed | חחחתי | XXX → XXXti |
-| You-m XXXed | חחחת | XXX → XXXt |
-| You-f XXXed | חחחת | XXX → XXXt |
-| He XXXed | חחח | XXX |
-| She XXXed | חחחה | XXX → XXXh |
-| We XXXed | חחחנו | XXX → XXXnw |
-| You-all-m XXXed | חחחתם | XXX → XXXtm |
-| You-all-f XXXed | חחחתן | XXX → XXXtn |
-| They-m XXXed | חחחו | XXX → XXXw |
-| They-f XXXed | חחחו | XXX → XXXw |
+| English         | Hebrew | Logical Derivation |
+| --------------- | ------ | ------------------ |
+| I XXXed         | חחחתי  | XXX → XXXti        |
+| You-m XXXed     | חחחת   | XXX → XXXt         |
+| You-f XXXed     | חחחת   | XXX → XXXt         |
+| He XXXed        | חחח    | XXX                |
+| She XXXed       | חחחה   | XXX → XXXh         |
+| We XXXed        | חחחנו  | XXX → XXXnw        |
+| You-all-m XXXed | חחחתם  | XXX → XXXtm        |
+| You-all-f XXXed | חחחתן  | XXX → XXXtn        |
+| They-m XXXed    | חחחו   | XXX → XXXw         |
+| They-f XXXed    | חחחו   | XXX → XXXw         |
 
 ---
 

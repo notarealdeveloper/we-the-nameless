@@ -1182,18 +1182,18 @@ Regular form:
 
 # 73. “And he goes down” — וירד
 
-| Heb | Eng |
-|---|---|
+| Heb                     | Eng                                 |
+| ----------------------- | ----------------------------------- |
 | וירד יהוה לראות את העיר | And YHWH goes down to see the city. |
 
 [Genesis 11:5](https://biblehub.com/text/genesis/11-5.htm)
 
-| Logical | Hebrew | Rule |
-|---|---|---|
-| YRD | ירד | root “go down” |
-| yYRD | יירד | add he prefix y |
-| yRD | ירד | weak-initial-Y rule: root-initial Y merges with prefix y |
-| wyRD | וירד | add story-and prefix w |
+| Logical | Hebrew | Rule                                                     |
+| ------- | ------ | -------------------------------------------------------- |
+| YRD     | ירד    | root “go down”                                           |
+| yYRD    | יירד   | add he prefix y                                          |
+| yRD     | ירד    | weak-initial-Y rule: root-initial Y merges with prefix y |
+| wyRD    | וירד   | add story-and prefix w                                   |
 
 ---
 
