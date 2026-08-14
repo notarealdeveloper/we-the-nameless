@@ -4,17 +4,24 @@ NAME ?= eden
 PDF = $(NAME).pdf
 export TEXMFVAR := $(CURDIR)/.texmf-var
 
-.PHONY: all default make pdf long short clean
+.PHONY: all default make pdf long short open-pdf clean
 
-all default make: eden.pdf
+all default make: pdf
 
-pdf: $(PDF)
+pdf: open-pdf
 
 long:
 	$(MAKE) NAME=eden-long pdf
 
 short:
 	$(MAKE) NAME=eden-short pdf
+
+open-pdf: $(PDF)
+	@if command -v xdg-open >/dev/null 2>&1; then \
+		xdg-open "$(PDF)" >/dev/null 2>&1 & \
+	else \
+		echo "Built $(PDF)"; \
+	fi
 
 $(PDF): welibc.tex $(NAME).tex
 	$(TEX) $(TEXFLAGS) "$(NAME).tex"
