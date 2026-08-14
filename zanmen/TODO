@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+
+- Make all Hebrew in the paper in master.tex be toggle-able between regular hebrew and paleo-hebrew, with standard \hebrew{אדמה} throughout the paper (never any unwrapped hebrew letters) and a \renewcommand or something at the top that will optionally (if uncommented) define \hebrew{...} to be \paleo{...} or \heb{...}. Assume I have the fonts locally to make this work.
+
+EOF
