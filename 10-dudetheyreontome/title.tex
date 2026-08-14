@@ -6,15 +6,20 @@
 \definecolor{DudePosterAsh}{HTML}{B8AEA0}
 \definecolor{DudePosterSmoke}{HTML}{6F6256}
 \thispagestyle{empty}
-\newlength{\DudePosterWideWidth}
+\makeatletter
+\@ifundefined{DudePosterWideWidth}{\newlength{\DudePosterWideWidth}}{}
+\makeatother
 \setlength{\DudePosterWideWidth}{0.88\textwidth}
-\newcommand{\DudePosterWide}[5]{%
+\providecommand{\DudePosterWide}[5]{}
+\renewcommand{\DudePosterWide}[5]{%
     {\color{#1}\resizebox{#4}{!}{\fontsize{#2}{#3}\selectfont\bfseries #5}\par}%
 }
-\newcommand{\DudePosterCredit}[2]{%
+\providecommand{\DudePosterCredit}[2]{}
+\renewcommand{\DudePosterCredit}[2]{%
     {\fontsize{#1}{#1}\selectfont\bfseries\color{DudePosterAsh}#2\par}%
 }
-\newcommand{\DudePosterRule}{%
+\providecommand{\DudePosterRule}{}
+\renewcommand{\DudePosterRule}{%
     \vspace{0.32em}%
     {\color{DudePosterRed}\rule{0.70\textwidth}{1.2pt}\par}%
     \vspace{0.18em}%
