@@ -1,5 +1,25 @@
 \input{welibc}
 
+% This paper uses \hebrew{...} for every Hebrew word.
+% Default: regular square Hebrew.
+\newcommand{\hebrew}[1]{\heb{#1}}
+% To print every Hebrew word in Paleo-Hebrew instead, uncomment this line:
+% \renewcommand{\hebrew}[1]{\paleo{#1}}
+
+% Grid-lined tables sized for prose-heavy English columns.
+\newcommand{\GridTable}[2]{%
+  \par\smallskip
+  \begin{center}
+  \renewcommand{\arraystretch}{1.22}%
+  \setlength{\tabcolsep}{5pt}%
+  \begin{tabular}{#1}
+  \hline
+  #2
+  \end{tabular}
+  \end{center}
+  \smallskip
+}
+
 \begin{document}
 
 \pagenumbering{arabic}
@@ -10,289 +30,318 @@
 \def\CurrentChapter{The Four Streams}%
 \SetCurrentBookImageDir{We Academy}%
 
-% eden-compressed.tex
-% The Four Streams
-% Intended as an include fragment under master.tex.
-% LuaLaTeX; relies on the Hebrew/font/source primitives defined in welibc.tex.
-
 \Apocryphon{The Four Streams}
 
 \begin{center}
 {\large The Nameless\par}
 \vspace{0.35em}
-{\small Genesis 2:11--14, resegmentation, and the possibility of a deliberately multiplexed text\par}
+{\small Genesis 2:11--14, word boundaries, and the possibility of a deliberately multiplexed text\par}
 \end{center}
 
 \section*{Abstract}
 
-Genesis 2:10--14 describes one river leaving Eden and dividing into four heads: Pishon, Gihon, Tigris, and Euphrates. The received reading is coherent and almost certainly primary. This paper asks a different question: whether part of the same consonantal sequence was also composed to support secondary word division.
+Genesis 2 says that one river flows out of Eden and then divides into four. The normal reading of the passage works perfectly well, and this paper does not try to replace it. The question is stranger and narrower: did the author also arrange some of the same consonants so that a reader could move the word boundaries and see a second pattern underneath the first?
 
-Three hypotheses are tested. \textbf{A} begins a secondary stream at the \heb{שם} near the end of 2:11. \textbf{B} begins at the \heb{שם} in 2:12. \textbf{C} treats both as active, making the two locative instances of \heb{שם} latent name-like restart markers between the explicit first and second river headers. Together with the received text, these are the four streams of the title.
+By \emph{resegmentation} I simply mean ``putting the spaces somewhere else.'' No letters are added, removed, or rearranged. We test three candidate readings. Stream A starts at the late occurrence of \hebrew{שם} (\textit{sham} or \textit{shem}, ``there'' or ``name'') in Genesis 2:11. Stream B starts at the next \hebrew{שם} in 2:12. Stream C treats both as meaningful restart points. Together with the ordinary reading, these are the four ``streams'' of the title.
 
-The strongest evidence is not a hidden sentence. It is a constrained, zero-edit resegmentation: the consonants stay in order, none are added or removed, and shifted boundaries repeatedly produce legitimate Hebrew or Northwest Semitic packets. The most striking core is the surface \heb{טוב שם הבדלח ואבן}, which admits \heb{טוב שמה בדל חוא בן}; a shorter restart yields \heb{שם הבדל חוא בן}. Here \heb{שמה} is richly ambiguous, \heb{בדל} is an attested noun ``severed piece,'' \heb{הבדל} is an attested Hiphil form of \heb{בדל}, and \heb{בן} is ordinary ``son, offspring.'' The comparative interest of \heb{חוא} is primarily Phoenician \textit{ḥwʾ}, ``live,'' not a proposed spelling of Eve.
+The best evidence is not a secret sentence. It is a mechanical fact: several shifted boundaries produce real Hebrew words, and one particularly tight stretch yields ordinary words for ``there/name,'' ``separation,'' and ``son/offspring'' with no change to the consonants. The most interesting foreign-language comparison is Phoenician, a close ancient cousin of Hebrew, where a packet matching \hebrew{חוא} can be associated with ``live.'' That comparison is supporting evidence only; it is not a claim that Genesis secretly spells Eve another way.
 
-The case is cumulative. Genesis 2:10 has already said that the river ``divides'' (\heb{יפרד}); \heb{שם} repeatedly means both ``name'' and ``there''; the fourth river alone lacks a \heb{שם} header; and A reproduces the main lexical anchors of the Pishon description in altered order. Nearby wordplay and orthographic variation make such attention to letters plausible, but do not prove it. The result is therefore graded: B is the strongest local resegmentation, A the strongest long carry-chain, and C the most explanatory literary model. Whether the combined pattern exceeds chance is a computational question that remains open.
+The case is cumulative. Genesis 2:10 has just told us that the river \emph{divides}. The packet \hebrew{שם} can mean either ``there'' or ``name.'' The first three rivers are introduced with a name-marker, while the fourth is not. One longer resegmentation also reproduces several of the Pishon paragraph's main lexical anchors in a new order. None of this proves design. It does, however, give us a concrete pattern that can eventually be tested against the rest of the Bible and against control texts.
 
-\section*{1.\quad The four streams}
+\section*{1. What the ordinary text says}
 
-The relevant surface text is ordinary Hebrew. Pishon surrounds Havilah, where gold is found; the gold is good; \heb{בדלח} and \heb{שהם} are also there. Their exact material referents are uncertain, but the syntax is not.\cite{BDB,Westermann1984}
+Start with the boring but essential point: the ordinary reading is good Hebrew. Pishon circles Havilah, a land with gold; the gold is good; two other valuable materials are there; then the text names Gihon, Tigris, and Euphrates. The exact modern identity of ``bdellium'' and the ``shoham stone'' is uncertain, but the grammar is not.\cite{BDB,Westermann1984}
 
-\Table{p{0.25\linewidth}p{0.65\linewidth}}{%
-\textbf{Hebrew} & \textbf{English} \\ \hline
-\heb{ומשם יפרד} & and from there it divides \\
-\heb{והיה לארבעה ראשים} & and it became four heads \\
-\heb{שם האחד פישון} & the name of the first is Pishon \\
-\heb{אשר שם הזהב} & where the gold is \\
-\heb{וזהב הארץ ההוא טוב} & and the gold of that land is good \\
-\heb{שם הבדלח ואבן השהם} & there are bdellium and the shoham stone \\
-\heb{ושם הנהר השני גיחון} & and the name of the second river is Gihon \\
-\heb{ושם הנהר השלישי חדקל} & and the name of the third river is Tigris \\
-\heb{והנהר הרביעי הוא פרת} & and the fourth river is Euphrates
+Instead of asking a non-Hebrew reader to stare at full clauses, the table below breaks the river-opening into one word at a time.
+
+\GridTable{|p{0.13\linewidth}|p{0.20\linewidth}|p{0.53\linewidth}|}{%
+\textbf{Hebrew} & \textbf{Transliteration} & \textbf{Plain-English job in the sentence} \\ \hline
+\hebrew{ומשם} & \textit{u-misham} & and from there \\ \hline
+\hebrew{יפרד} & \textit{yippared} & it divides / branches apart \\ \hline
+\hebrew{והיה} & \textit{ve-hayah} & and it became \\ \hline
+\hebrew{לארבעה} & \textit{le-arba'ah} & into four \\ \hline
+\hebrew{ראשים} & \textit{roshim} & heads / headwaters \\ \hline
+\hebrew{שם} & \textit{shem} & name \\ \hline
+\hebrew{האחד} & \textit{ha-echad} & the first / the one \\ \hline
+\hebrew{פישון} & \textit{Pishon} & Pishon \\ \hline
 }
 
-Nothing here requires emendation. The proposal concerns \emph{resegmentation} or \emph{rebracketing}: a secondary parsing superimposed on a secure primary one.
+A few words later the same consonants \hebrew{שם} appear again, but now the ordinary reading is \textit{sham}, ``there.'' That double use is the hinge of this paper.
 
-\begin{description}
-\item[\textbf{A.}] Restart at the late 2:11 \heb{שם}, in \heb{אשר שם הזהב}.
-\item[\textbf{B.}] Restart at the 2:12 \heb{שם}, in \heb{טוב שם הבדלח}.
-\item[\textbf{C.}] Treat both restarts as active.
-\end{description}
+\GridTable{|p{0.13\linewidth}|p{0.20\linewidth}|p{0.53\linewidth}|}{%
+\textbf{Hebrew} & \textbf{Transliteration} & \textbf{Ordinary meaning here} \\ \hline
+\hebrew{אשר} & \textit{asher} & where / in which \\ \hline
+\hebrew{שם} & \textit{sham} & there \\ \hline
+\hebrew{הזהב} & \textit{ha-zahav} & the gold \\ \hline
+\hebrew{וזהב} & \textit{ve-zahav} & and gold \\ \hline
+\hebrew{הארץ} & \textit{ha-aretz} & the land \\ \hline
+\hebrew{ההוא} & \textit{ha-hu} & that \\ \hline
+\hebrew{טוב} & \textit{tov} & good \\ \hline
+\hebrew{שם} & \textit{sham} & there \\ \hline
+\hebrew{הבדלח} & \textit{ha-bedolach} & the bdellium \\ \hline
+\hebrew{ואבן} & \textit{ve-even} & and a stone \\ \hline
+\hebrew{השהם} & \textit{ha-shoham} & the shoham stone \\ \hline
+}
 
-I use \emph{multiplexing} as a computer-science analogy for this arrangement. The claim is not that the text encodes a second continuous plaintext. It is that one ordered consonantal stream may support more than one meaningful tokenization.
+Nothing here needs correction. Our question is whether the same run of consonants can support a second set of word boundaries \emph{in addition} to these normal ones.
 
-\section*{2.\quad Controls}
+\section*{2. The rules: how to keep ourselves from cheating}
 
-Resegmentation is easy to overfit in unpointed Hebrew. Short roots, one-letter prefixes, productive suffixes, and homography create many accidental words. The useful question is therefore not whether another word can be found, but how constrained the alternate reading is.
+Unpointed Hebrew is dangerously friendly to wordplay. It has short roots, one-letter prefixes, common suffixes, and many strings that can be read more than one way. If we are allowed to move spaces, swap letters, import any language we want, and ignore bad grammar, we can ``discover'' almost anything.
 
-The analysis uses six rules:
+So the game needs rules. In this paper:
 
 \begin{enumerate}
-\item consonants remain in transmitted order;
-\item none are inserted, deleted, or rearranged;
-\item final letter forms are normalized only graphically, not phonologically;
-\item no Paleo-Hebrew look-alike substitutions are used in the primary argument;
-\item Biblical Hebrew forms outrank comparative Semitic rescue forms;
-\item lexical validity, syntax, local relevance, and analyst freedom are scored separately.
+\item The consonants stay in the transmitted order.
+\item No consonant is inserted, deleted, or rearranged.
+\item Final letter shapes are treated as graphic variants only. A final \textit{mem}, for example, is still the consonant \textit{m}.
+\item Paleo-Hebrew look-alike substitutions do not count as evidence.
+\item A normal Biblical Hebrew word is better evidence than a rescue from another Semitic language.
+\item ``Is this a real word?'' and ``Does this make a good sentence?'' are separate questions.
 \end{enumerate}
 
-``Zero-edit'' below means exactly this: after ignoring spaces, vocalization, cantillation, and the positional shapes of final letters, the consonantal sequence is unchanged.
+I will call a resegmentation \emph{zero-edit} when it obeys the first three rules: erase the spaces and vowel marks, then compare the consonants. They are identical.
 
-Nor should the proposal be defended by claiming that early Hebrew lacked word division. Northwest Semitic inscriptions attest deliberate separation of words; universal early \textit{scriptio continua} is not a safe assumption.\cite{Millard1970,Tov2012} If the effect is ancient, it crosses a primary boundary deliberately. It is literary resegmentation, not recovery of a forgotten spacing.
+One historical caution matters here. We should not defend the proposal by saying that ancient Hebrew had no word spacing, so later scribes simply guessed wrong. Ancient Northwest Semitic inscriptions---that is, inscriptions in Hebrew's close regional language family---do show deliberate word separation.\cite{Millard1970,Tov2012} If the pattern discussed here is ancient, then the primary word boundaries were probably meant to be crossed deliberately. This would be literary wordplay, not restoration of forgotten spaces.
 
-\section*{3.\quad The surface architecture}
+\section*{3. Why \textit{sham/shem} is worth watching}
 
-The river list establishes \heb{שם} as a naming marker, then omits it only before the fourth river.
+The river list uses \hebrew{שם} (\textit{shem}, ``name'') to introduce the first three rivers, but not the fourth.
 
-\Table{lll}{%
-\textbf{River} & \textbf{Header} & \textbf{Name} \\ \hline
-First & \heb{שם האחד} & Pishon \\
-Second & \heb{ושם הנהר השני} & Gihon \\
-Third & \heb{ושם הנהר השלישי} & Tigris \\
-Fourth & \heb{והנהר הרביעי} & Euphrates
+\GridTable{|p{0.14\linewidth}|p{0.16\linewidth}|p{0.16\linewidth}|p{0.40\linewidth}|}{%
+\textbf{River} & \textbf{Hebrew} & \textbf{Transliteration} & \textbf{Function} \\ \hline
+First & \hebrew{שם} & \textit{shem} & explicit name-marker \\ \hline
+Second & \hebrew{ושם} & \textit{u-shem} & and the name \\ \hline
+Third & \hebrew{ושם} & \textit{u-shem} & and the name \\ \hline
+Fourth & \hebrew{והנהר} & \textit{ve-ha-nahar} & and the river; no matching name-marker \\ \hline
 }
 
-The omission is harmless as ordinary prose. Under C, however, it becomes relevant because two additional \heb{שם} tokens have already appeared inside the expanded Pishon description.
+That omission is perfectly legal Hebrew prose. By itself, it proves nothing. It matters only because two extra instances of the same consonants appear inside the unusually long description of Pishon, where the normal meaning is \textit{sham}, ``there.''
 
-The Pishon and Gihon clauses also preserve a small orthographic asymmetry:
+There is another small oddity nearby. The Pishon and Gihon descriptions use the same participle, ``the one surrounding,'' but spell it differently. Hebrew often writes the same word with or without a vowel-letter. Scholars call this \emph{plene} versus \emph{defective} spelling: roughly, ``spelled with the helpful vowel-letter'' versus ``spelled without it.''
 
-\Table{p{0.30\linewidth}p{0.60\linewidth}}{%
-\textbf{Hebrew} & \textbf{English} \\ \hline
-\heb{הוא הסבב את כל ארץ החוילה} & it is the one surrounding all the land of Havilah \\
-\heb{הוא הסובב את כל ארץ כוש} & it is the one surrounding all the land of Cush
+\GridTable{|p{0.18\linewidth}|p{0.20\linewidth}|p{0.48\linewidth}|}{%
+\textbf{Hebrew} & \textbf{Transliteration} & \textbf{Comment} \\ \hline
+\hebrew{הסבב} & \textit{ha-sovev} & Pishon clause: defective spelling, without the extra \textit{waw} \\ \hline
+\hebrew{הסובב} & \textit{ha-sovev} & Gihon clause: plene spelling, with the extra \textit{waw} \\ \hline
 }
 
-The same participial function is defective in 2:11 and plene in 2:13. Plene/defective spelling varies throughout the Bible, and how much of the Masoretic distribution reaches back to first composition remains disputed.\cite{Elitzur2023,Hornkohl2024} The pair is therefore not proof that an author placed every mater deliberately. It is simply a local fact: two nearly parallel clauses use different consonantal spellings for the same grammatical role. Any reading sensitive to matres should notice it.
+The two forms do the same grammatical job. Spelling variation is common in the Bible, and the history of individual vowel-letters is complicated by transmission.\cite{Elitzur2023,Hornkohl2024} So this is not proof of microscopic authorial control. It is simply a local warning that, in this paragraph, nearly parallel wording need not have identical consonants.
 
-\section*{4.\quad Stream A}
+\section*{4. Stream A: the long carry-chain}
 
-A begins with the late 2:11 \heb{שם}. Its main interest is mechanical.
+Stream A begins at the late \hebrew{שם} (\textit{sham}, ``there'') in Genesis 2:11. Its main attraction is not elegance. It is mechanics.
 
-\Table{p{0.43\linewidth}p{0.47\linewidth}}{%
-\textbf{Surface} & \textbf{A} \\ \hline
-\heb{שם הזהב} & \heb{שם הזה} + \heb{ב} \\
-\heb{ב + וזהב} & \heb{בוזה} + \heb{ב} \\
-\heb{ב + הארץ} & \heb{בה} + \heb{ארץ} \\
-\heb{ארץ + ההוא} & \heb{ארצה + הוא} \\
-\heb{שם + הבדלח} & \heb{שמה + בדל + ח} \\
-\heb{ח + ואבן} & \heb{חוא + בן}
+Imagine taking a zipper and moving each tooth one notch. A consonant that used to belong to the end of one word is carried forward into the next. That happens repeatedly here. I will call this a \emph{carry-chain}.
+
+Here is the proposed A sequence, one candidate word per row.
+
+\GridTable{|p{0.13\linewidth}|p{0.20\linewidth}|p{0.20\linewidth}|p{0.39\linewidth}|}{%
+\textbf{Hebrew} & \textbf{Transliteration} & \textbf{What kind of form?} & \textbf{Defensible meaning} \\ \hline
+\hebrew{שם} & \textit{shem/sham} & noun / adverb & name / there \\ \hline
+\hebrew{הזה} & \textit{ha-zeh} & demonstrative & this / this one \\ \hline
+\hebrew{בוזה} & \textit{bozeh} & participle & despising / treating as contemptible \\ \hline
+\hebrew{בה} & \textit{bah} & preposition + suffix & in her / in it / by her / with her \\ \hline
+\hebrew{ארצה} & \textit{artzah} & directional noun; also consonantally a verb-form & toward the land; in another parsing, ``I will favor'' \\ \hline
+\hebrew{הוא} & \textit{hu} & pronoun & he / it \\ \hline
+\hebrew{טוב} & \textit{tov} & adjective & good / favorable \\ \hline
+\hebrew{שמה} & \textit{shamah / shemah} & ambiguous form & there; her name; she placed; desolation \\ \hline
+\hebrew{בדל} & \textit{bedel} & noun / verbal root & a severed piece; separate / distinguish \\ \hline
+\hebrew{חוא} & \textit{ch-w-aleph} & comparative Semitic packet & compare Phoenician life-language; not secure Biblical Hebrew vocabulary \\ \hline
+\hebrew{בן} & \textit{ben} & noun & son / offspring \\ \hline
+\hebrew{השה} & \textit{ha-seh} & noun & the sheep/goat; a flock animal \\ \hline
 }
 
-This is a \emph{carry-chain}: a consonant released by one displaced boundary becomes material for the next token. That dependency is what distinguishes A from a bag of unrelated substrings.
+Most of those are real forms. But this is exactly where we need to separate \emph{lexical validity} from \emph{sentence quality}. A string can be made entirely from legal English words and still be bad English. The same applies here.
 
-The full candidate sequence is:
+The weakest stretch is \hebrew{בוזה} (\textit{bozeh}, ``despising'') followed by \hebrew{בה} (\textit{bah}, ``in/by/with her''). Both are individually respectable. Together they are not a natural Biblical Hebrew way to say ``despises her.'' The verb normally handles its object differently.\cite{BDB} Stream A therefore should \emph{not} be sold as a smooth hidden sentence.
 
-\Table{p{0.16\linewidth}p{0.25\linewidth}p{0.49\linewidth}}{%
-\textbf{Token} & \textbf{Type} & \textbf{Defensible value} \\ \hline
-\heb{שם} & noun / adverb & name / there \\
-\heb{הזה} & demonstrative & this, this one \\
-\heb{בוזה} & participle & despising, treating as contemptible \\
-\heb{בה} & prep. + suffix & in/on/by/with her or it \\
-\heb{ארצה} & directional noun / verb & toward land; consonantally also I will favor \\
-\heb{הוא} & pronoun & he, it \\
-\heb{טוב} & adjective & good, favorable \\
-\heb{שמה} & adverb / noun / verb & there; her name; she placed; desolation \\
-\heb{בדל} & noun / root & severed piece; separate/distinguish \\
-\heb{חוא} & comparative packet & Phoenician life-associated form \\
-\heb{בן} & noun & son, offspring \\
-\heb{השה} & noun & the flock animal
+Its opening is still interesting because the ordinary text has just used \hebrew{שם} as \textit{shem}, ``name,'' in the Pishon header. A few words later the same consonants are read normally as \textit{sham}, ``there.'' A secondary reader can hear the naming sense again without changing a letter.
+
+The strongest stretch of A comes near the end. There the shifted boundaries yield four especially suggestive packets:
+
+\GridTable{|p{0.13\linewidth}|p{0.20\linewidth}|p{0.18\linewidth}|p{0.41\linewidth}|}{%
+\textbf{Hebrew} & \textbf{Transliteration} & \textbf{Strength} & \textbf{Why it matters} \\ \hline
+\hebrew{טוב} & \textit{tov} & very strong & ordinary Biblical Hebrew: good / favorable \\ \hline
+\hebrew{שמה} & \textit{shamah / shemah} & strong but ambiguous & can point toward there, name, placement, or desolation depending on vocalization and grammar \\ \hline
+\hebrew{בדל} & \textit{bedel} & very strong & attested Biblical Hebrew noun, ``severed piece,'' from the separation root \\ \hline
+\hebrew{חוא} & \textit{ch-w-aleph} & weak-to-moderate & interesting mainly because Phoenician has a closely matching life-associated form \\ \hline
+\hebrew{בן} & \textit{ben} & very strong & ordinary ``son / offspring'' \\ \hline
 }
 
-The weakness is syntax. \heb{בוזה} and \heb{בה} are individually good forms, but \heb{בוזה בה} is not a natural Biblical Hebrew way to say ``despises her''; \heb{בזה} normally takes a direct object or other constructions.\cite{BDB} A should therefore not be presented as a fluent hidden sentence.
+The comparative item \hebrew{חוא} deserves strict limits. Biblical Hebrew writes Eve as \hebrew{חוה} (\textit{Chavvah}). We are not proposing that \hebrew{חוא} is a secret spelling of Eve. The real comparison is to Phoenician, a closely related Canaanite language, where BDB notes a form written \textit{ḥwʾ} in the semantic neighborhood of ``live.''\cite{BDB} Near Genesis 2--3, where life is a major theme, that is worth noticing. It is not strong enough to carry the argument.
 
-Its opening is still structurally interesting. The catalogue has just introduced Pishon with \heb{שם האחד}; a few words later the same consonants recur in \heb{אשר שם הזהב}. On the surface the second \heb{שם} means ``there.'' At a secondary level it can still be heard as ``name,'' giving low-commitment openings such as \heb{שם הזה}, ``the name of this [one] \ldots,'' or retaining \heb{שם הזהב} as a name/gold packet. Neither is a complete clause; both fit the naming register already established.
+A has one more structural feature. The ordinary Pishon description repeats a small set of anchors: ``name/there,'' ``land,'' ``he/it,'' and again ``there.'' The A chain recycles those same kinds of packets but moves the middle pieces around. That is not a second sentence with the same syntax. It is more like hearing the same four notes in a different order.
 
-The strongest part of A begins later:
+\section*{5. Stream B: the short, clean case}
 
-\Table{p{0.43\linewidth}p{0.47\linewidth}}{%
-\textbf{Surface} & \textbf{Alternative} \\ \hline
-\heb{טוב} & \heb{טוב} \\
-\heb{שם} & \heb{שמה} \\
-\heb{הבדלח} & \heb{בדל} + \heb{ח} \\
-\heb{ואבן} & \heb{חוא} + \heb{בן}
+Stream B begins one \hebrew{שם} later, in Genesis 2:12. Because it starts later, it needs fewer decisions and avoids A's awkward opening.
+
+There are two especially clean ways to cut the consonants.
+
+\paragraph{B1.} Keep the article-like \textit{h} with the separation word.
+
+\GridTable{|p{0.13\linewidth}|p{0.20\linewidth}|p{0.18\linewidth}|p{0.41\linewidth}|}{%
+\textbf{Hebrew} & \textbf{Transliteration} & \textbf{Status} & \textbf{Best-supported value} \\ \hline
+\hebrew{שם} & \textit{shem/sham} & very strong & name / there \\ \hline
+\hebrew{הבדל} & \textit{hibbadel / habdel} & strong & an attested Hiphil form from ``separate / distinguish'' \\ \hline
+\hebrew{חוא} & \textit{ch-w-aleph} & weak-to-moderate & comparative life-associated packet \\ \hline
+\hebrew{בן} & \textit{ben} & very strong & son / offspring \\ \hline
 }
 
-Several useful facts align here. The article \heb{ה} moves left and produces \heb{שמה}; the remainder \heb{בדל} is an attested Biblical Hebrew noun, ``severed piece,'' in Amos 3:12; the released \heb{ח} combines with \heb{וא} to give \heb{חוא}; and the residue is ordinary \heb{בן}, ``son, offspring.''\cite{BDB}
+The exact consonantal form \hebrew{הבדל} is attested in the Bible as a Hiphil form of the root \hebrew{בדל} (\textit{b-d-l}, ``separate/distinguish'').\cite{BDB,JouonMuraoka2006} ``Hiphil'' is the Hebrew verb pattern that often expresses causing something to happen; the technical label matters less here than the simple fact that this exact consonant sequence is a real Biblical Hebrew form.
 
-The comparative packet \heb{חוא} should carry limited weight. Biblical Hebrew writes Eve \heb{חוה}. The relevant old comparison is Phoenician \textit{ḥwʾ}, ``live,'' which BDB places beside the Hebrew life complex.\cite{BDB} This makes the packet interesting near Genesis 3's life language without requiring an alternative spelling of Eve.
+\paragraph{B2.} Move that \textit{h} left instead.
 
-A also reproduces the main lexical anchors of the Pishon description in altered order:
-
-\Table{p{0.30\linewidth}p{0.60\linewidth}}{%
-\textbf{Surface frame} & \heb{שם} $\rightarrow$ \heb{הוא} $\rightarrow$ \heb{ארץ} $\rightarrow$ \heb{שם} \\
-\textbf{A frame} & \heb{שם} $\rightarrow$ \heb{ארצה} $\rightarrow$ \heb{הוא} $\rightarrow$ \heb{שמה}
+\GridTable{|p{0.13\linewidth}|p{0.20\linewidth}|p{0.18\linewidth}|p{0.41\linewidth}|}{%
+\textbf{Hebrew} & \textbf{Transliteration} & \textbf{Status} & \textbf{Best-supported value} \\ \hline
+\hebrew{שמה} & \textit{shamah / shemah} & strong but ambiguous & there; her name; she placed; desolation \\ \hline
+\hebrew{בדל} & \textit{bedel} & very strong & severed piece; root ``separate/distinguish'' \\ \hline
+\hebrew{חוא} & \textit{ch-w-aleph} & weak-to-moderate & comparative life-associated packet \\ \hline
+\hebrew{בן} & \textit{ben} & very strong & son / offspring \\ \hline
 }
 
-The resemblance is structural, not syntactic identity. The outer \heb{שם}/\heb{שמה} frame remains while the two central anchors reverse.
-
-\section*{5.\quad Stream B}
-
-B starts later and therefore asks less of the text. Two exact segmentations are available.
-
-\Table{p{0.18\linewidth}p{0.30\linewidth}p{0.42\linewidth}}{%
-\textbf{Stream} & \textbf{Segmentation} & \textbf{Best-supported values} \\ \hline
-B1 & \heb{שם הבדל חוא בן} & name/there; separation-form; life-associated packet; son \\
-B2 & \heb{שמה בדל חוא בן} & there/name/placed; severed piece; life-associated packet; son
-}
-
-B1 retains the \heb{ה} with \heb{בדל}. The exact form \heb{הבדל} is attested as a Hiphil infinitive absolute of \heb{בדל}; Isaiah 56:3 uses it in the semantic field of separation.\cite{BDB,JouonMuraoka2006} B2 shifts the \heb{ה} left, producing the richly ambiguous \heb{שמה} and the exact noun \heb{בדל}, ``severed piece.''
-
-Neither should be forced into a polished proposition. Their strongest shared kernel is simply:
+Again, do not force either version into a polished translation. The point is smaller. Both cuts produce the same conceptual collision:
 
 \begin{center}
-\heb{שם}/\heb{שמה} \quad + \quad separation.
+\textit{name/there} $+$ \textit{separation}
 \end{center}
 
-That matters because 2:10 has just introduced the whole passage with:
+And that collision happens immediately after Genesis 2:10 has told us what the river does.
 
-\Table{p{0.25\linewidth}p{0.65\linewidth}}{%
-\textbf{Hebrew} & \textbf{English} \\ \hline
-\heb{ומשם} & and from there \\
-\heb{יפרד} & it divides \\
-\heb{והיה לארבעה ראשים} & and it became four heads
+\GridTable{|p{0.13\linewidth}|p{0.20\linewidth}|p{0.53\linewidth}|}{%
+\textbf{Hebrew} & \textbf{Transliteration} & \textbf{Meaning} \\ \hline
+\hebrew{ומשם} & \textit{u-misham} & and from there \\ \hline
+\hebrew{יפרד} & \textit{yippared} & it divides / separates \\ \hline
+\hebrew{והיה} & \textit{ve-hayah} & and it became \\ \hline
+\hebrew{לארבעה} & \textit{le-arba'ah} & into four \\ \hline
+\hebrew{ראשים} & \textit{roshim} & heads / headwaters \\ \hline
 }
 
-The roots \heb{פרד} and \heb{בדל} are different, but the semantic field is the same and the correspondence is immediate. B is therefore the strongest local hypothesis: it begins at a salient \heb{שם}, requires few boundary decisions, avoids A's weak opening syntax, and lands directly on the idea that defines the paragraph.
+The roots behind \hebrew{יפרד} (\textit{yippared}, ``it divides'') and \hebrew{בדל} (\textit{b-d-l}, ``separate/distinguish'') are different roots. We are not claiming a hidden etymology. They simply occupy the same semantic neighborhood. That is why B is the strongest local case: a salient ``name/there'' packet, very few boundary choices, and an immediate landing on the idea of separation that defines the whole paragraph.
 
-\section*{6.\quad Stream C}
+\section*{6. Stream C: two restart markers}
 
-C treats A and B as two restarts generated by the same local mechanism.
+Stream C is not another hidden sentence. It is a literary model for why A and B might both exist.
 
-\Table{p{0.13\linewidth}p{0.36\linewidth}p{0.40\linewidth}}{%
-\textbf{Position} & \textbf{Surface function} & \textbf{Secondary possibility} \\ \hline
-1 & \heb{שם האחד פישון} & explicit first name header \\
-A & \heb{אשר שם הזהב} & latent \heb{שם הזה\ldots} / name-gold restart \\
-B & \heb{טוב שם הבדלח} & latent \heb{שם הבדל\ldots} or \heb{שמה בדל\ldots} \\
-2 & \heb{ושם הנהר השני גיחון} & explicit second name header \\
-3 & \heb{ושם הנהר השלישי חדקל} & explicit third name header \\
-4 & \heb{והנהר הרביעי הוא פרת} & fourth river; no \heb{שם}
+The normal river list uses \hebrew{שם} as \textit{shem}, ``name.'' Inside the Pishon description, the same consonants occur twice as \textit{sham}, ``there.'' C asks whether those locative uses were chosen partly because they can still look like little name-markers to a reader watching the consonants.
+
+The sequence is easiest to see without long Hebrew quotations:
+
+\GridTable{|p{0.12\linewidth}|p{0.16\linewidth}|p{0.18\linewidth}|p{0.44\linewidth}|}{%
+\textbf{Position} & \textbf{Hebrew} & \textbf{Transliteration} & \textbf{Possible role} \\ \hline
+First header & \hebrew{שם} & \textit{shem} & explicit ``name'' marker for Pishon \\ \hline
+A restart & \hebrew{שם} & \textit{sham/shem} & ordinary ``there,'' but consonantally available as ``name'' \\ \hline
+B restart & \hebrew{שם} & \textit{sham/shem} & ordinary ``there,'' again available as a restart marker \\ \hline
+Second header & \hebrew{ושם} & \textit{u-shem} & explicit ``and the name'' for Gihon \\ \hline
+Third header & \hebrew{ושם} & \textit{u-shem} & explicit ``and the name'' for Tigris \\ \hline
+Fourth header & \hebrew{והנהר} & \textit{ve-ha-nahar} & ``and the river''; the matching name-marker is absent \\ \hline
 }
 
-The surface text already alternates two values of the same packet: \heb{שם} means ``name'' in the river headers and ``there'' inside the Pishon excursus. C proposes that the alternation is functional. The locative uses can also act as latent restart markers.
+In computer language, the same short token is \emph{overloaded}: it does more than one job depending on how the stream is read. No ancient computer science is being claimed here; it is just a useful modern analogy.
 
-This does not produce six rivers. It produces a denser header structure inside the description of the first. The fourth river's missing \heb{שם} then becomes conditionally relevant: not evidence by itself, but exactly the sort of asymmetry one might expect if the passage has already spent the delimiter twice inside the Pishon section.
+C has the broadest explanatory power, which is also why it is the easiest to overfit. Once we start saying that every repetition is a delimiter and every omission is significant, we can tell ourselves any story we want. C earns its keep only if A and B remain independently interesting under strict controls.
 
-In computational language, C treats \heb{שם} as an \emph{overloaded delimiter}: name marker in one parse, locative in another, possible restart marker in a third. C has the greatest explanatory reach, and therefore also the greatest danger of post-selection.
+\section*{7. Does Genesis 2--3 teach us to read this way?}
 
-\section*{7.\quad Establishing the protocol}
+A hidden-pattern proposal is much more believable if the surrounding text openly plays similar games. Genesis 2--3 does.
 
-The wider case is that Genesis 2--3 may teach the reader, very early, which kinds of textual relation are worth noticing. ``Protocol'' is deliberately imported terminology: not a claim about ancient cryptography, but a model of how a text can establish decoding conventions before reusing them.
+\paragraph{Small consonantal families.}
+Early in the chapter we get a cluster built from very similar consonants:
 
-Several local features fit that model.
-
-\paragraph{Nested consonantal forms.}
-The opening contains the family \heb{אד}, \heb{אדם}, \heb{אדמה}. They do not occur as a simple chronological derivation---\heb{אדם} and \heb{אדמה} precede \heb{אד}---but they form an obvious nested string family, and the narrative explicitly exploits \heb{אדם}/\heb{אדמה}.
-
-\paragraph{Overt paronomasia.}
-The story openly plays with \heb{איש}/\heb{אשה}, then moves from \heb{ערומים}, ``naked,'' in 2:25 to \heb{ערום}, ``crafty,'' in 3:1; Genesis 3:20 associates \heb{חוה} with life.\cite{WaltkeOConnor1990,Westermann1984} This does not prove hidden word division. It establishes that lexical resemblance is already part of the composition's visible technique.
-
-\paragraph{Name, place, placement.}
-The river catalogue sits between the placement of the human in the garden and the naming of the animals. The consonants \heb{שם} participate in the nearby semantic fields of ``name,'' ``there,'' and the placement root. \heb{שמה} expands the ambiguity further. A high-ambiguity packet is repeatedly placed at high-salience positions.
-
-\paragraph{Matres.}
-The local \heb{הסבב}/\heb{הסובב} pair shows that near-equivalent forms need not be spelled identically in the received consonantal text. Because transmission complicates authorship of individual matres, this is supporting context, not primary evidence.
-
-\paragraph{Gihon.}
-Locally, \heb{גיחון} resembles the snake's \heb{גחון}, ``belly,'' in Genesis 3:14. Remotely, Gihon is the site of Solomon's anointing in 1 Kings 1. Under Friedman's reconstruction of an extended early prose work running into the court history, these belong near opposite ends of one large composition.\cite{Friedman1998} That reconstruction is debated, but if granted provisionally, Gihon becomes a plausible local/remote lexical bridge.
-
-The clearest remote echo is the death warning:
-
-\Table{p{0.27\linewidth}p{0.29\linewidth}p{0.34\linewidth}}{%
-\textbf{Text} & \textbf{Hebrew} & \textbf{Structure} \\ \hline
-Genesis 2:17 & \heb{ביום אכלך ממנו מות תמות} & on the day you do X $\rightarrow$ dying you shall die \\
-1 Kings 2:37 & \heb{ביום צאתך \ldots ידע תדע כי מות תמות} & on the day you do X $\rightarrow$ knowing you shall know $\rightarrow$ dying you shall die
+\GridTable{|p{0.13\linewidth}|p{0.20\linewidth}|p{0.53\linewidth}|}{%
+\textbf{Hebrew} & \textbf{Transliteration} & \textbf{Meaning / relation} \\ \hline
+\hebrew{אד} & \textit{ed} & mist / flow, depending on interpretation \\ \hline
+\hebrew{אדם} & \textit{adam} & human / Adam \\ \hline
+\hebrew{אדמה} & \textit{adamah} & ground / soil \\ \hline
 }
 
-Friedman draws attention to this recurrence and to the surrounding knowledge, good/bad, and death language in the Shimei episode.\cite{Friedman1998} It does not prove A--C. It shows what long-range reuse of an early lexical configuration could look like.
+These are not presented as a neat historical derivation from shortest to longest. The point is visual and literary: the text puts an obvious consonantal family in front of us, and the human/ground relationship is itself part of the story.
 
-Taken together, these features suggest a simple protocol: attend to small consonantal changes, repeated packets, shifted senses, spelling variation, and echoes that may be local or remote. Under that model the river section is a natural training ground. The story says one river becomes four; the text may be showing that one consonantal stream can also branch.
+\paragraph{Open wordplay.}
+The narrative also advertises puns rather than hiding all of them. It connects man and woman with the similar forms \hebrew{איש} (\textit{ish}, ``man'') and \hebrew{אשה} (\textit{ishah}, ``woman''). It ends chapter 2 with \hebrew{ערומים} (\textit{arummim}, ``naked'') and begins chapter 3 by calling the snake \hebrew{ערום} (\textit{arum}, ``crafty''). Genesis 3:20 then associates the name \hebrew{חוה} (\textit{Chavvah}, Eve) with life.\cite{WaltkeOConnor1990,Westermann1984}
 
-\section*{8.\quad Evidence, chance, and many weak signals}
+The scholarly word for this kind of sound-play is \emph{paronomasia}. We do not need the word. The point is simply that the author already likes meaningful resemblance between words.
 
-The four streams can be ranked without pretending they are equally strong.
+\paragraph{Name, there, and placement.}
+The river catalogue appears between two scenes obsessed with placement and naming: the human is placed in the garden, and soon afterward the animals are brought to the human to be named. In the middle of this, \hebrew{שם} can mean either \textit{shem}, ``name,'' or \textit{sham}, ``there.'' The expanded form \hebrew{שמה} adds still more possible readings. If you were designing a passage in which one consonantal packet had to do several jobs, this would be an unusually convenient packet.
 
-\Table{p{0.12\linewidth}p{0.21\linewidth}p{0.20\linewidth}p{0.20\linewidth}p{0.17\linewidth}}{%
-\textbf{Stream} & \textbf{Mechanical constraint} & \textbf{Lexical quality} & \textbf{Syntax} & \textbf{Best case} \\ \hline
-Surface & excellent & excellent & excellent & primary reading \\
-A & long zero-edit carry-chain & mostly strong & uneven & strongest mechanism \\
-B & short, few choices & very strong core & compressed & strongest local case \\
-C & inherits A+B & inherits A+B & need not form one sentence & strongest literary model
+\paragraph{A local Gihon echo.}
+The river name \hebrew{גיחון} (\textit{Gichon}) is very close in consonants to \hebrew{גחון} (\textit{gachon}, ``belly''), the word used for the snake's belly in Genesis 3:14. That may be coincidence. It may also be exactly the kind of near-echo this author likes.
+
+There is a more speculative long-range connection. Gihon is also the place where Solomon is anointed in 1 Kings 1. Richard Elliott Friedman has argued that an early prose work may stretch from Genesis far into the court history.\cite{Friedman1998} That larger source reconstruction is debated. But if we provisionally grant it, Gihon sits near both an opening and a closing region of one enormous literary composition.
+
+The stronger long-range echo is a death warning. Genesis tells the human that on the day he eats, he will surely die. In 1 Kings 2, Solomon gives Shimei a strikingly similar ``on the day you do X ... you will surely die'' warning. Rather than print two long Hebrew clauses, here are the key words that build the parallel.
+
+\GridTable{|p{0.12\linewidth}|p{0.13\linewidth}|p{0.20\linewidth}|p{0.43\linewidth}|}{%
+\textbf{Text} & \textbf{Hebrew} & \textbf{Transliteration} & \textbf{Role in the formula} \\ \hline
+Genesis 2:17 & \hebrew{ביום} & \textit{be-yom} & on the day \\ \hline
+Genesis 2:17 & \hebrew{אכלך} & \textit{akholkha} & your eating / when you eat \\ \hline
+Genesis 2:17 & \hebrew{מות} & \textit{mot} & dying / surely \\ \hline
+Genesis 2:17 & \hebrew{תמות} & \textit{tamut} & you will die \\ \hline
+1 Kings 2:37 & \hebrew{ביום} & \textit{be-yom} & on the day \\ \hline
+1 Kings 2:37 & \hebrew{צאתך} & \textit{tzetkha} & your going out / when you go out \\ \hline
+1 Kings 2:37 & \hebrew{ידע} & \textit{yadoa} & knowing / surely know \\ \hline
+1 Kings 2:37 & \hebrew{תדע} & \textit{teda} & you will know \\ \hline
+1 Kings 2:37 & \hebrew{מות} & \textit{mot} & dying / surely \\ \hline
+1 Kings 2:37 & \hebrew{תמות} & \textit{tamut} & you will die \\ \hline
 }
 
-No single observation settles intentionality. The case is a bundle of weak and medium signals: repeated \heb{שם}, attested \heb{בדל}/\heb{הבדל}, the carry-chain, the division vocabulary of 2:10, the river-header asymmetry, \heb{הסבב}/\heb{הסובב}, Gihon, and the Genesis--Kings death formula. Their force lies in partial alignment.
+Friedman emphasizes this recurrence and the surrounding knowledge, good/bad, and death language in the Shimei story.\cite{Friedman1998} It does not prove Streams A--C. It gives us a concrete example of what deliberate long-range reuse could look like if the larger literary reconstruction is right.
 
-A physics analogy is constructive interference: many small contributions can reinforce one another without any one path being decisive.\cite{FeynmanHibbs1965} A closer modern analogy is a high-dimensional embedding, where a large dot product can arise from many weakly aligned dimensions rather than one explicit rule. The problem for literary analysis is to determine whether the alignment is in the text or in the reader.
+So the proposed ``protocol'' is modest. By \emph{protocol} I mean a repeated set of reading cues: notice tiny consonantal changes; notice a packet that changes meaning; notice spelling choices; notice when a local word returns far away. Genesis 2--3 already trains the reader to pay attention at roughly this scale.
 
-That problem cannot be solved merely by invoking a favorite formalism. Neyman--Pearson testing requires specified sampling distributions.\cite{NeymanPearson1933} Bayesian inference, including Jaynes's extended-logic interpretation, requires meaningful likelihoods.\cite{Jaynes2003} Minimum Description Length is attractive because C gains value if one compact ``protocol'' compresses many observations, but MDL still requires a defensible description language.\cite{Rissanen1978} In each case the hard part comes first: translating a qualitative literary claim into a model.
+\section*{8. What is actually strong here?}
 
-That is the \textbf{compilation problem}. ``Same root'' is easy to formalize. ``Same syntactic construction'' is usually manageable. ``This passage appears to teach the reader how later correspondences should be noticed'' is not. Formalizing only what is easy to count risks measuring the residue and discarding the phenomenon.
+It helps to rank the claims instead of putting everything in one mystical pile.
 
-A useful test of A--C should therefore freeze the rules before searching and compare Genesis 2 against several baselines: real sliding windows from the Hebrew Bible, shuffled controls, $n$-gram surrogates, and morphologically plausible synthetic text. Candidate segmentations should be scored separately for consonantal coverage, boundary coherence, lexical prior, morphosyntax, semantic locality, structural recurrence, and analyst intervention. Work on biblical parallel detection and source partition already shows that philological judgments can be subjected to computational comparison.\cite{NaaijerRoorda2016,YoffeEtAl2023}
+\GridTable{|p{0.12\linewidth}|p{0.15\linewidth}|p{0.16\linewidth}|p{0.16\linewidth}|p{0.31\linewidth}|}{%
+\textbf{Stream} & \textbf{Mechanical constraint} & \textbf{Word quality} & \textbf{Sentence quality} & \textbf{Best argument for it} \\ \hline
+Surface & excellent & excellent & excellent & the ordinary, primary reading \\ \hline
+A & excellent over a long span & mostly strong & uneven & a long zero-edit carry-chain rather than isolated lucky words \\ \hline
+B & excellent and short & very strong at the core & compressed, not a polished sentence & ``name/there + separation'' appears with very few choices \\ \hline
+C & inherits A and B & inherits A and B & does not require one hidden sentence & one simple model explains two internal restart points and the missing fourth name-marker \\ \hline
+}
 
-The Transformer changed what can be attempted here.\cite{VaswaniEtAl2017} The point is not to ask a language model whether a pun was intended. That answer is not evidence. The change is representational: semantic similarity, long-range dependency, alternative tokenization, and style-preserving negative controls can now be modeled without reducing everything to a handful of hand-written features.
+This is a ``many weak signals'' argument. No single item settles intention. The repeated \hebrew{שם} packet, the real separation forms, the carry-chain, the division language of 2:10, the name-header asymmetry, the spelling variation, the Gihon echoes, and the Genesis--Kings death formula all point in roughly compatible directions. The question is whether they line up more than chance would normally allow.
 
-A serious future system could combine a character-level segmentation lattice, diachronically controlled morphology, syntax scores, contextual embeddings, explicit penalties for cross-language rescue, and held-out passages. It should not output ``J intended C: 97.3\%.'' It should answer narrower questions: How rare is a chain like this? Does it remain exceptional after linguistic controls? Does a score trained on independent Hebrew wordplay rank this passage highly without being tuned to it?
+Feynman's physics offers a useful picture: many small contributions can reinforce one another even when no single contribution dominates.\cite{FeynmanHibbs1965} A modern machine-learning analogy is an embedding, a long vector of numbers used to represent meaning or context. Two texts can be strongly similar because lots of small dimensions lean the same way, even when no one feature screams ``match.''
 
-Those are empirical questions. They are now much less inaccessible than they were before 2017.
+But analogies are not tests. Statistics only helps after we say what counts as a hit and what the comparison set is.
 
-\section*{9.\quad Conclusion}
+A \emph{null model} is simply a model of what we would expect by accident. Neyman--Pearson hypothesis testing needs explicit probability distributions.\cite{NeymanPearson1933} Bayesian inference needs plausible likelihoods: how likely is this evidence if design is real, and how likely if it is not?\cite{Jaynes2003} Minimum Description Length, or MDL, asks whether one compact rule describes the data better than a pile of special exceptions.\cite{Rissanen1978} Each formalism is useful. None saves us from the hard first job of turning ``this feels designed'' into reproducible measurements.
 
-The surface reading of Genesis 2:11--14 is secure. The question is whether it is the only reading engineered into the consonants.
+That translation from literary judgment to computable features is the real compilation problem. ``Same root'' is easy to count. ``Same grammatical construction'' is usually manageable. ``This passage seems to teach the reader what kinds of later echoes to notice'' is much harder. If we measure only what is easy, we may end up precisely measuring the uninteresting leftovers.
 
-The evidence is strongest in three places. First, A gives a real zero-edit carry-chain across several displaced boundaries. Second, B produces an unusually compact \heb{שם}/\heb{שמה} + separation sequence immediately after the river has been said to divide. Third, C explains why the expanded Pishon description contains two extra \heb{שם} packets between explicit river-name headers and why the fourth river can arrive without one.
+A serious test should therefore freeze the rules \emph{before} searching. Then it should compare Genesis 2 with several controls: ordinary windows from elsewhere in the Hebrew Bible, shuffled consonants, synthetic text that preserves Hebrew letter frequencies and common letter sequences, and morphologically plausible fake Hebrew. Existing work on biblical parallel detection and source partition shows that philological judgments can be made at least partly computational.\cite{NaaijerRoorda2016,YoffeEtAl2023}
 
-The case should not be inflated. A is not good continuous Hebrew. \heb{חוא} is supporting comparative evidence, not a key. The missing \heb{שם} before Euphrates is suggestive only under a larger model. Orthographic variation may reflect transmission as well as composition. And the total pattern has not yet been tested against a proper null corpus.
+The Transformer architecture made a richer version of this practical.\cite{VaswaniEtAl2017} The useful change is not that we can ask an AI, ``Did the author intend the pun?'' A language model's yes/no opinion is not evidence. The change is that we can now model several things at once: alternate tokenization, local grammar, semantic similarity, long-distance recurrence, and negative controls that still look stylistically Hebrew.
 
-Nor should the case be diluted. The resegmentation is exact, locally concentrated, mechanically linked, and semantically entangled with the immediate passage. It deserves a stronger explanation than ``Hebrew has short words.'' The right next step is not to add looser substitutions until a secret sentence appears. It is to freeze the present zero-edit phenomenon and measure how exceptional it is.
+A future system could combine character-level segmentation, historically appropriate morphology, syntax scores, contextual embeddings, explicit penalties when we have to rescue a reading from another language, and held-out passages that were never used to tune the method. It should not print ``The author intended Stream C: 97.3 percent.'' It should answer narrower questions: How rare is a carry-chain like this? Does this passage stay unusual after linguistic controls? Can a method trained on independent examples of Hebrew wordplay find this passage without being told where to look?
 
-If that kind of work succeeds, the implications extend beyond this passage. The Hebrew Bible has been read as scripture, law, history, liturgy, source-critical composite, and literary anthology. It may also contain works engineered at a density that our traditional categories do not describe well: narrative, sound, spelling, word boundary, local structure, and long-range recurrence acting at once.
+Those are real empirical questions. They are much easier to attack now than they were a decade ago.
 
-That possibility should be tested against other ancient corpora, not protected from comparison. If the Bible proves unusually dense under fair tests, then a modern tradition centered on it may eventually look unlike any existing sect. Such a tradition would need the old attentiveness to every letter without the old requirement to know in advance why every letter matters. It would keep the text central while making interpretation revisable; it would treat philology, archaeology, source criticism, statistics, and machine learning as ordinary tools of reading; and it would regard uncertainty not as disloyalty but as metadata.
+\section*{9. Conclusion}
 
-Its basic discipline would be simple: distinguish the text from the model, the primary reading from the secondary possibility, evidence from dogma, and reproducible pattern from private revelation.
+The ordinary reading of Genesis 2:11--14 is secure. The question is whether it is the only reading deliberately engineered into the consonants.
 
-The first river divides into four.
+Three things make the alternative worth testing. Stream A gives us a genuine zero-edit carry-chain across several shifted boundaries. Stream B gives us a much tighter local pattern in which a \hebrew{שם} (\textit{sham/shem}, ``there/name'') packet runs directly into real separation-language just after the river has been said to divide. Stream C gives a simple literary explanation for why two extra \hebrew{שם} packets sit inside the Pishon description between explicit river-name headers, while the fourth river arrives without the matching marker.
 
-The first task is to learn how many streams we are actually reading.
+The case should not be inflated. A is not smooth continuous Hebrew. \hebrew{חוא} is comparative supporting evidence, not a magic key. The missing fourth \hebrew{שם} matters only inside a larger model. Spelling variation can come from transmission as well as composition. Most importantly, we have not yet measured how often comparable patterns arise by chance.
+
+But the case should not be waved away either. The resegmentation is exact. It is locally concentrated. Several boundary shifts depend mechanically on one another. And the resulting words keep falling into the semantic territory of the passage itself. ``Hebrew has lots of short words'' is not yet an adequate explanation; it is a hypothesis that can be tested.
+
+That is the next step. Do not make the pattern looser until a secret message appears. Freeze the present rules. Search the rest of the corpus. Build controls. Count analyst choices. See whether Genesis 2 is genuinely exceptional.
+
+If that works, the result would be interesting well beyond four verses. We already know how to read the Hebrew Bible as law, story, poetry, ritual, edited archive, source-critical composite, and literary art. We may also need a category for writing engineered at several levels at once: narrative meaning, sound, spelling, word boundary, local structure, and long-distance recurrence all pulling on the same letters.
+
+Newton spent enormous energy looking for deep structure in biblical text. He had the obsession but not our tools. We have searchable corpora, formal grammars, statistics, embeddings, and models that can generate controls at scale. The advantage of the modern approach is not that AI lets us believe wilder things. It is that AI lets us make wild-looking ideas survive contact with measurement.
+
+The discipline is simple: keep the transmitted text separate from our model of it; keep the ordinary reading separate from the secondary possibility; keep evidence separate from confidence; and keep a pattern only if someone else can reproduce it.
+
+The river divides into four.
+
+Now we can ask, without pretending we already know the answer, how many streams the letters themselves support.
 
 \begin{thebibliography}{99}
 
@@ -390,6 +439,5 @@ The Case of the Priestly Source in the Books of Genesis and Exodus.''
 \newblock arXiv:2305.02170.
 
 \end{thebibliography}
-
 
 \end{document}
