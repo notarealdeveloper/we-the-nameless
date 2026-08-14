@@ -1,8 +1,10 @@
 TEX = lualatex
-TEXFLAGS = -interaction=nonstopmode -halt-on-error
 NAME ?= master
+BUILDDIR = build
+TEXFLAGS = -interaction=nonstopmode -halt-on-error -output-directory="$(BUILDDIR)"
 PDF = $(NAME).pdf
-export TEXMFVAR := $(CURDIR)/.texmf-var
+BUILDPDF = $(BUILDDIR)/$(PDF)
+export TEXMFVAR := $(CURDIR)/$(BUILDDIR)/texmf-var
 
 .PHONY: all default make pdf long short open-pdf clean
 
@@ -23,10 +25,16 @@ open-pdf: $(PDF)
 		echo "Built $(PDF)"; \
 	fi
 
-$(PDF): welibc.tex $(NAME).tex
+$(PDF): $(BUILDPDF)
+	cp "$(BUILDPDF)" "$(PDF)"
+
+$(BUILDPDF): welibc.tex $(NAME).tex | $(BUILDDIR)
 	$(TEX) $(TEXFLAGS) "$(NAME).tex"
 	$(TEX) $(TEXFLAGS) "$(NAME).tex"
 
+$(BUILDDIR):
+	mkdir -p "$(BUILDDIR)"
+
 clean:
-	rm -rf .texmf-var
+	rm -rf "$(BUILDDIR)"
 	rm -f eden*.aux eden*.log eden*.out eden*.pdf eden*.toc
