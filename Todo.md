@@ -1,3 +1,22 @@
+Genesis 31:33. Make it LAMBS.
+
+Genesis 31:36. Make it JTW.
+
+Genesis 31:42. Make eng say Fear of Isaac.
+
+Genesis 31:43. Add goatkids?
+
+Genesis 31:49. E line with YHWH. Check source maps, and attribute properly.
+
+Genesis 31:52. Make it sound more childish.
+
+Genesis 31:53. Change Fear to Nightmare.
+
+Genesis 36:2. Make this begat list \aB{...}.
+
+
+
+---
 
 II Samuel 8. Format this like Genesis 14, but keep it green. This is a summary chapter, like a royal inscription. See Halpern DSD pg 134-135. II Samuel 8 summarizes events that are related in detail 2 chapters later, in the run up to the Bathsheba story. It thus functions as a display inscription.
 
