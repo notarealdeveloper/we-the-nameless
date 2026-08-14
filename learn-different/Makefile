@@ -1,6 +1,6 @@
 TEX = lualatex
 TEXFLAGS = -interaction=nonstopmode -halt-on-error
-NAME ?= eden
+NAME ?= master
 PDF = $(NAME).pdf
 export TEXMFVAR := $(CURDIR)/.texmf-var
 
