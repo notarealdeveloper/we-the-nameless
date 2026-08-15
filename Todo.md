@@ -1,8 +1,3 @@
-Genesis 31:33. Make it LAMBS.
-
-Genesis 31:36. Make it JTW.
-
-Genesis 31:42. Make eng say Fear of Isaac.
 
 Genesis 31:43. Add goatkids?
 
