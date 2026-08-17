@@ -1,6 +1,4 @@
 
-Genesis 31:43. Add goatkids?
-
 Genesis 31:49. E line with YHWH. Check source maps, and attribute properly.
 
 Genesis 31:52. Make it sound more childish.
