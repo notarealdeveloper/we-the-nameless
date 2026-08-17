@@ -1,122 +1,25 @@
-Yes. Once you collect the occurrences instead of starting from the English gloss “thigh,” ירך looks like a much broader old Semitic spatial/anatomical word: hip/haunch → groin/loins → reproductive source → flank/side → rear/base/extremity. And that matters a lot for Genesis 24 and 32.
-One methodological correction to my previous answer first: Phoenician KAI 4 does contain the consonants yrk, but there it belongs to the verb “prolong” in the formula “may [the god] prolong his days,” so it is not evidence for the anatomical noun. � Likewise, Akkadian does not simply have a noun yarku “thigh”; the likely comparative item is warkatu/urkatu, “rear, backside, buttocks,” while ordinary Akkadian “loins/hips” can use other vocabulary such as qablu. �
-Academia +1
-PAS Journals
-1. Biblical Hebrew: every occurrence
-The Masoretic text has 34 occurrences in 32 verses. � They divide remarkably cleanly into semantic groups.
-Biblexika +1
-Passage
-Expression / situation
-What ירך means there
-Gen 24:2
-Abraham: hand תחת ירכי
-thigh / loins / groin
-Gen 24:9
-servant puts hand תחת ירך אברהם
-thigh / loins / groin
-Gen 32:26 ×2
-opponent touches כף ירכו; Jacob's כף ירך undergoes תקע
-hip/haunch/upper-thigh region
-Gen 32:32
-Jacob limps על ירכו
-hip/upper leg
-Gen 32:33 ×2
-tendon upon כף הירך; Jacob struck there
-hip/haunch region
-Gen 46:26
-יצאי ירכו
-“those coming out of his loins”: descendants
-Gen 47:29
-Jacob asks Joseph for hand תחת ירכי
-thigh / loins / groin
-Exod 1:5
-יצאי ירך יעקב
-Jacob's offspring, literally from his loins
-Exod 25:31
-menorah ירכה
-base/shaft
-Exod 28:42
-underwear from waist ועד ירכים
-upper thighs/groin
-Exod 32:27
-sword על ירכו
-thigh/hip where sword hangs
-Exod 37:17
-menorah ירכה
-base/shaft
-Exod 40:22
-ירך המשכן north
-side/flank of tabernacle
-Exod 40:24
-ירך המשכן south
-side/flank
-Lev 1:11
-ירך המזבח north
-side/flank of altar
-Num 3:29
-ירך המשכן south
-side/flank
-Num 3:35
-ירך המשכן north
-side/flank
-Num 5:21
-woman's ירכך נפלת
-reproductive/groin region; exact pathology disputed
-Num 5:22
-לנפל ירך beside swollen abdomen
-reproductive/groin region
-Num 5:27
-ונפלה ירכה
-reproductive/groin region
-Num 8:4
-menorah ירכה
-base
-Judg 3:16
-Ehud's sword on right ירך
-thigh/hip
-Judg 3:21
-sword drawn from right ירך
-thigh/hip
-Judg 8:30
-sons יצאי ירכו
-biological offspring / loins
-Judg 15:8
-Samson strikes שוק על ירך
-hip/thigh in an idiom of slaughter
-2 Kgs 16:14
-side of altar
-flank/side
-Ps 45:4 [Eng. 45:3]
-sword upon ירך
-thigh/hip
-Song 3:8
-sword upon ירכו
-thigh/hip
-Song 7:2 [Eng. 7:1]
-חמוקי ירכיך
-curves/roundings of thighs/hips
-Jer 31:19
-Ephraim strikes/slaps על ירך
-thigh, gesture of distress
-Ezek 21:17 [Eng. 21:12]
-strike אל ירך
-thigh, gesture of anguish
-Ezek 24:4
-choice pieces, ירך וכתף
-animal thigh/haunch
-The standard concordance likewise classifies the Hebrew range as thigh; loins as the seat of procreation; side/flank of an object; base. �
-Bible Hub +1
-There is therefore no question that Biblical Hebrew itself uses the same noun for both anatomical and spatial concepts:
-human ירך = thigh/hip/haunch/loins
-building ירך = flank/side
-lampstand ירך = base
-person's ירך as source = reproductive loins
-That isn't an etymological reconstruction. Those meanings are directly attested.
-2. The reproductive meaning is especially strong
-Three passages actually use the ירך as the place descendants come out of:
-English label: Gen 46:26 — יצאי ירכו
-“those who came out of his ירך”
-English label: Exod 1:5 — יצאי ירך יעקב
-“those who came out of Jacob's ירך”
-English label: Judg 8:30 — יצאי ירכו
-“those who came out of his ירך.”
+The usual gloss ``thigh'' understates \heb{ירך}'s range. Across its 34 MT
+occurrences (32 verses), it means thigh/hip/haunch (Gen 32:26--33; Judg
+3:16,21; Ps 45:4), groin/loins (Gen 24:2,9; 47:29; Exod 28:42),
+reproductive source---descendants literally ``come out of'' one's
+\heb{ירך} (Gen 46:26; Exod 1:5; Judg 8:30)---and, spatially, the
+side/flank of the tabernacle or altar (Exod 40:22,24; Lev 1:11; Num
+3:29,35) and base/shaft of the menorah (Exod 25:31; 37:17; Num 8:4).
+Num 5:21--27 likewise uses it for the woman's reproductive/groin region
+(the exact pathology is disputed); Song 7:2 for the curves of the
+thighs/hips; Jer 31:19 and Ezek 21:17 for striking the thigh in distress;
+Ezek 24:4 for an animal haunch; and Judg 15:8 in the idiom
+\heb{שוק על ירך}. Thus the range---thigh/hip/haunch $\rightarrow$
+groin/loins/reproductive source, and side/flank $\rightarrow$ base---is
+directly attested in Biblical Hebrew, not merely reconstructed from
+cognates. Comparative caution: Phoenician KAI 4's \textit{yrk} is the
+verb ``prolong,'' not this noun; Akkadian likewise has no simple
+\textit{yarku} ``thigh,'' though \textit{warkatu/urkatu} means
+rear/backside/buttocks (while words such as \textit{qablu} can denote
+loins/hips). Consequently Gen 24:2,9 and 47:29's ``under my
+\heb{ירך}'' can carry much stronger groin/loins/reproductive force than
+``under my thigh,'' while Gen 32:26--33's \heb{כף ירך} is the
+hip/haunch-joint region expressed with the same word elsewhere used for
+the reproductive loins. The lexical connection between the oath scenes
+and Jacob's injury is therefore considerably more suggestive than the
+English gloss ``thigh'' makes apparent.
