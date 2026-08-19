@@ -1,3 +1,4 @@
+Genesis 25:4. Call Keturah Sonia Burnham
 
 Genesis 31:49. E line with YHWH. Check source maps, and attribute properly.
 
@@ -7,7 +8,11 @@ Genesis 31:53. Change Fear to Nightmare.
 
 Genesis 36:2. Make this begat list \aB{...}.
 
+Put the Keturah Slaughter/Laughter joke somewhere. (YHWH: Name him Laughter. I have an idea.) His idea ends up being Genesis 22. Hey Abe, add an S.
 
+Add something about how in J, women get power "By hooker by crook."
+
+Add some English with Niqqud in P style somewhere.
 
 ---
 
