@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+font_src="$script_dir/fonts/noto-sans-imperial-aramaic-regular.ttf"
+font_dest_dir="${XDG_DATA_HOME:-$HOME/.local/share}/fonts/noto"
+
+mkdir -p "$font_dest_dir"
+cp -f "$font_src" "$font_dest_dir/"
+fc-cache -f "$font_dest_dir"
