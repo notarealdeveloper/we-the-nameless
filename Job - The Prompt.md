@@ -1,129 +1,345 @@
-## The Book of Job
 
-This project's goal is to reverse engineer Job from first principles.
+# AGENTS.md
 
-To start, let's tackle the hardest verses in Job.
+## Job First-Principles Decipherment Prompt
 
-We want to take the verses in the the book that are most known to be impossibly obscure or difficult overall in terms of difficult vocabulary and grammar, and since Job is the hardest book in the bible translation wise, we're looking for the hardest verses in the bible overall.
+Your task is to **reverse engineer the requested chapter of Job from first principles**.
 
-For this exercise, let's concentrate on Job 36:16–21.
+Treat Job not merely as difficult Biblical Hebrew, but as a deliberately multilingual, archaizing, script-sensitive ANE poetic text whose transmitted Masoretic form may preserve the underlying poem only imperfectly.
 
-Then let's run the following algorithm on those verses:
+The goal is to recover the **simplest, strongest, most obviously parallel poetic reading** that can plausibly underlie the surviving consonantal evidence.
 
-1. Delete all vowels word spacings. Reduce the Hebrew text to a defective string with no spaces. Turn ש and ס to s, turn ח and ה to h, etc.
+Assume as a working axiom:
 
-2. Imagine we dug that sentence up in the ground and we don't recognize what language it's from or where the word boundaries are. Treat it like an unknown ANE semitic language, like we had to do when we deciphered Ugaritic.
+> **Every poetic verse in Job originally has strong, intelligible parallelism. If the current translation does not exhibit convincing parallelism, the decoding is not finished.**
 
-3. Use the parallelism in the verse structure of ANE poetry as an error correcting code. When that's not enough information, use the surrounding context of nearby sentences and the overall chapter theme and speaker personality to reverse engineer the most plausible reading.
+Assume further that the author may intentionally exploit obscure cognates, foreign Semitic vocabulary, mixed-language morphology, unusual spelling, ambiguous word boundaries, and visually confusable graphemes as part of the literary genre.
 
-4. In order to determine the most plausible reading, don't worry about the finer points of grammar. Radicalize everything: that is, reduce everything to more or less kangxi radicals in your mind, and use the consonantal text plus our knowledge of Akkadian, Ugaritic, Aramaic, Phoenician, and other ANE languages to find the most likely terms that correspond to the consonantal text.
+Do not stop when a reading is merely grammatical or possible. **Iterate until the verse clicks.**
 
-5. Don't place a high prior on Aramaic or any other ANE language. Let's tackle this problem bottom up, from the data of Job and the data of ANE languages, and then top down, from knowledge of human nature and the content and topics that make most sense in each slot.
+The desired reaction to a successful reconstruction is:
 
-6. NOTE: When I say "lossy", I don't mean *delete* hebrew letters. I mean treat their presence as fuzzy and not fundamental, especially matres and letters that may have been added later to update the spelling. Imagine there's a text underneath with good parallelism and straightforward meaning, but it's been garbled via an unknown number of translations, corruptions, or even deliberate foreign language play by the author.
+> **Of course those two cola belong together.**
 
-7. FINALLY: Don't forget, it's important to consider similar looking graphemes whenever a reading doesn't make sense. Could a resh be confused with a dalet? Could a Hebrew letter be confused with one that looks similar but ONLY IN ARAMAIC? Make a map of the possible letter swaps beforehand, and think carefully about the possible letter swaps and ANE language swaps that have the possibility of making a confusing sentence collapse into something simple where the poetic parallels match perfectly.
+---
 
-Then turn each verse into a table containing columns:
+## Core Decipherment Model
 
-7. Heb original.
+### 1. Begin from the full Masoretic text
 
-8. Lossy semitic ascii transliteration without vowels.
+For every verse, reproduce the **entire Masoretic Hebrew exactly and completely**.
 
-9. Likely cognate word in some other ANE language. In this column write, e.g., NTN (Uga) or SMS (Akk). That is, word it likely corresponds to, and the language or languages in parentheses after that. If there are multiple good match words from the same or different languages with the same or different meanings, include as many as you feel are useful.
+**Never omit, skip, silently discard, or fail to account for any Masoretic Hebrew letters in the verse tables.**
 
-10. Literal English translation, given the cumulative evidence.
+The Masoretic Hebrew must always remain visible as the transmitted evidence.
 
-11. More fluid / interpretive English translation, adding what you think are likely implicit particles left out in the original for interpretive clarity.
+However:
 
-Let's do that, starting with the hardest verses mentioned above, and see how much better we can do than the standard masoretic understanding, and the standard modern scholarly understanding.
+> Treat the Masoretic consonants as **weak, noisy, and sometimes untrustworthy evidence**, not as inviolable ground truth.
 
-Go!
+The vowels, accents, punctuation, traditional word boundaries, grammatical parsing, and lexical assignments have an even lower prior.
 
-## Prompt Addendum: Grapheme-Confusion and Iterative Parallelism Recovery
+A reconstruction may conclude that a surviving letter represents:
 
-When a verse does not produce clear, obvious poetic parallelism under the inherited Masoretic vocalization, word division, or lexical assignments, **do not immediately conclude that the poetry is irregular or that the verse is simply corrupt**. Treat insufficient parallelism as evidence that one or more consonants, word boundaries, language assignments, or lexical identifications may have been transmitted incorrectly.
-
-The working assumption should be that an earlier form of the verse may have contained **simple, strong ANE poetic parallelism**, and that the present consonantal text may preserve that structure imperfectly through ordinary scribal, script-transition, dialectal, or multilingual corruption.
-
-### Grapheme-confusion search space
-
-Whenever a reading remains semantically awkward or fails to generate convincing parallelism, explicitly test whether one or more consonants could reflect confusion between historically similar graphemes.
-
-Give especially high priority to the following possibilities.
-
-#### Paleo-Hebrew / early alphabetic confusions
-
-- **Paleo-Hebrew Resh ↔ Paleo-Hebrew Dalet**
+- a mater lectionis,
     
-    - Treat this as a **very high-priority** confusion.
-        
-    - Their forms can be extremely similar, so a root containing `R` should routinely be tested with `D`, and vice versa.
-        
-- **Paleo-Hebrew Resh ↔ Paleo-Hebrew Beth**
+- secondary spelling normalization,
     
-    - Treat this as a **secondary but real** possibility.
-        
-    - Some stages/forms can approach one another enough that `R ↔ B` should be tested when the resulting root produces a much stronger lexical and poetic fit.
-        
-
-#### Aramaic-script confusions
-
-- **Paleo-Hebrew Waw ↔ Aramaic Resh ↔ Aramaic Dalet**
+- dialect adaptation,
     
-    - This is especially important if the text passed through an Aramaic or mixed-script stage.
-        
-    - Test `W ↔ R`, `W ↔ D`, and `R ↔ D` where they materially improve the reading.
-        
-- **Aramaic Resh ↔ Aramaic Dalet**
+- scribal corruption,
     
-    - Treat as a **very high-priority** confusion.
-        
-    - This should be one of the first substitutions tested whenever an `R`-root or `D`-root produces poor sense.
-        
-- **Aramaic Kaph ↔ Aramaic Beth**
+- graphical confusion,
     
-    - Treat `K ↔ B` as a high-value candidate when the current root is obscure and the alternative creates an ordinary Semitic lexeme or strong parallel.
-        
-- **Aramaic Ayin ↔ Aramaic Yodh**
+- partial translation,
     
-    - Test `ʿ ↔ Y` where appropriate.
-        
-    - This can radically alter both root identification and morphology, so it is especially important in rare Joban words.
-        
+- foreign-language morphology,
+    
+- or deliberate orthographic play.
+    
 
-More generally, do **not** restrict possible corruption to similarities visible in modern square Hebrew. Ask:
+But the report must always show **what Masoretic material is being explained**.
 
-> Could these letters have been confused in **any plausible script stage through which the text may have passed**?
+---
 
-That includes Paleo-Hebrew, Phoenician-like scripts, Imperial Aramaic, Jewish Aramaic, and transitional hands.
+## 2. Strip the verse down
 
-### Language-corruption search space
+For each verse provide:
 
-At the same time, do not assume that every surviving consonantal sequence was originally Hebrew.
+**Masoretic:** the full vocalized Masoretic text.
 
-For each difficult unit, test whether it becomes straightforward if understood as a root or grammatical element from:
+**Raw:** all consonants concatenated without vowels, cantillation, punctuation, maqqef-based assumptions, or spaces.
+
+**Lossy:** a deliberately simplified Semitic ASCII search representation.
+
+Use approximately:
+
+|Hebrew class|Lossy symbol|
+|---|---|
+|‎ש / ס|`s`|
+|‎ח / ה|`h`|
+|‎ע|`3`|
+|‎א|`'`|
+|‎צ|`S`|
+|‎ט|`T`|
+|‎ק|`q`|
+
+Do **not** delete letters in the lossy form.
+
+“Lossy” means their evidentiary value is weakened, especially:
+
+- matres lectionis,
+    
+- weak consonants,
+    
+- spelling updates,
+    
+- dialect-specific consonants,
+    
+- letters plausibly affected by graphical confusion.
+    
+
+Imagine that the surviving stream is an imperfect witness to an earlier poetic text.
+
+---
+
+## 3. Treat the stream as an unknown ANE Semitic inscription
+
+Temporarily forget that the text is supposed to be Hebrew.
+
+Approach it as though it had just been excavated and its language, segmentation, and dialect were unknown.
+
+Do not privilege Biblical Hebrew in advance.
+
+Search comparatively across:
 
 - Ugaritic
     
 - Aramaic
     
+- Imperial Aramaic
+    
 - Syriac
     
 - Phoenician
     
+- Canaanite
+    
 - Akkadian
     
-- Old South Arabian where relevant
+- Arabic as comparative evidence
     
-- Arabic as a conservative comparative witness
+- Old South Arabian where useful
     
-- other Northwest Semitic dialects
+- other relevant Northwest Semitic dialects
     
 
-Do not place a prior on any one language.
+Reduce words mentally to root-like consonantal structures.
 
-A word should be allowed to have undergone:
+Prioritize **ordinary attested meanings in another Semitic language** over rare or strained Hebrew meanings invented only to rescue the traditional parsing.
+
+Allow hybrids such as:
+
+- an Aramaic lexical stem with Hebrew morphology,
+    
+- a Ugaritic-like root with a Hebrew prefix or suffix,
+    
+- an Akkadian semantic value under a Northwest Semitic consonantal form,
+    
+- an Aramaic particle embedded in otherwise Hebrew syntax,
+    
+- a foreign lexeme subsequently normalized toward Hebrew spelling.
+    
+
+Do not require the verse to belong consistently to one language.
+
+---
+
+## Parallelism Is the Main Error-Correcting Code
+
+Treat strong poetic parallelism as the highest-level decoding constraint.
+
+For every verse, explicitly identify what the two or more cola **ought to be doing with each other**.
+
+Test structures such as:
+
+- synonym // synonym
+    
+- antonym // antonym
+    
+- action // corresponding action
+    
+- cause // effect
+    
+- action // consequence
+    
+- object // corresponding object
+    
+- body part // corresponding action
+    
+- agent // action
+    
+- image // matching image
+    
+- concrete object // concrete object
+    
+- A:B :: C:D
+    
+- repeated lexical field
+    
+- escalation
+    
+- reversal
+    
+- chiastic inversion
+    
+- premise // conclusion
+    
+- question // matching question
+    
+
+If the resulting relationship is weak, awkward, or merely thematic, **continue decoding**.
+
+Do not explain away missing parallelism as “irregular poetry” until all reasonable low-cost alternatives have been exhausted.
+
+---
+
+## Iterative Reconstruction Algorithm
+
+For **every verse**, run this loop.
+
+### Pass 1: Conventional consonants, new vocalization
+
+Keep the consonants.
+
+Discard the Masoretic vowels.
+
+Test alternative vocalizations and ordinary polysemy.
+
+Ask whether one familiar consonantal root has simply been assigned the wrong Hebrew meaning.
+
+---
+
+### Pass 2: New word boundaries
+
+Discard inherited segmentation.
+
+Test:
+
+- one MT word → two earlier words,
+    
+- two MT words → one earlier word,
+    
+- prefix reassigned to previous or following word,
+    
+- suffix reassigned,
+    
+- a consonant moved across the traditional boundary,
+    
+- particles hidden inside a larger MT word,
+    
+- defective spelling that disguises a common root.
+    
+
+Resegmentation is extremely cheap and should be tried aggressively.
+
+---
+
+### Pass 3: Comparative Semitic lexical assignment
+
+For each difficult consonantal cluster, search for the most natural cognates across ANE Semitic languages.
+
+In the comparative table use concise labels such as:
+
+- `DYN (Arm/Uga) “legal case”`
+    
+- `SPQ (Arm/Heb) “strike, clap”`
+    
+- `NḤT (Arm/Syr) “descend”`
+    
+- `ŠD (NW Sem.) “breast”`
+    
+- `KPR (Akk/NW Sem.) “cover/ransom”`
+    
+
+If multiple candidates are genuinely useful, include them.
+
+Do not artificially choose Hebrew when another Semitic language yields a simpler and more parallel line.
+
+---
+
+## Grapheme Confusion Is a Core Reconstruction Tool
+
+If the verse still does not exhibit strong parallelism, explicitly test paleographic corruption.
+
+Do **not** limit the search to similarities in modern square Hebrew.
+
+Ask:
+
+> Could this consonant derive from a visually similar letter in Paleo-Hebrew, Phoenician-like writing, Imperial Aramaic, Jewish Aramaic, transitional Aramaic, or the later square script?
+
+Especially test:
+
+### Very high-priority confusions
+
+- **Paleo-Hebrew Resh ↔ Paleo-Hebrew Dalet**
+    
+- **Aramaic Resh ↔ Aramaic Dalet**
+    
+- **Paleo-Hebrew Waw ↔ Aramaic Resh**
+    
+- **Paleo-Hebrew Waw ↔ Aramaic Dalet**
+    
+
+Operationally:
+
+- `R ↔ D`
+    
+- `W ↔ R`
+    
+- `W ↔ D`
+    
+
+These should be tested early whenever they turn an obscure root into a common Semitic word that improves the parallelism.
+
+### High-value additional confusions
+
+- **Aramaic Kaph ↔ Aramaic Beth**
+    
+    - test `K ↔ B`
+        
+- **Aramaic Ayin ↔ Aramaic Yodh**
+    
+    - test `ʿ ↔ Y`
+        
+
+### Secondary but plausible
+
+- **Paleo-Hebrew Resh ↔ Paleo-Hebrew Beth**
+    
+    - test `R ↔ B`
+        
+
+Also consider other historically plausible similarities when the script evidence warrants them.
+
+A proposed graphical corruption becomes especially attractive when **one letter swap causes several neighboring words to collapse into a coherent semantic field**.
+
+For example, a reconstruction producing something like:
+
+> strike // hand  
+> eye // see  
+> heat // fire  
+> hunger // food
+
+is much stronger than an emendation that merely creates one possible dictionary word.
+
+---
+
+## Language-Stage Corruption
+
+If necessary, allow the text to have passed through more than one linguistic or scribal stage.
+
+Possible mechanisms include:
 
 - lexical borrowing,
     
@@ -137,187 +353,492 @@ A word should be allowed to have undergone:
     
 - phonological adaptation,
     
-- replacement of one Semitic cognate by another,
+- Hebrew grammatical affixes attached to a foreign Semitic stem,
     
-- redivision after a language change,
+- replacement of one Semitic cognate with another,
     
-- or scribal normalization into more familiar Hebrew-looking morphology.
+- word redivision after a language change,
     
-
-Matres lectionis and weak consonants should remain relatively cheap evidence. Strong root consonants should carry more weight, but even they may be altered when a known paleographic confusion provides a plausible mechanism.
-
-### Iterative reconstruction procedure
-
-For every colon or verse whose current translation lacks strong parallelism, run the following loop.
-
-1. **Start conservatively.**
+- spelling normalization,
     
-    - Remove vowels, accents, punctuation, and inherited word boundaries.
-        
-    - Keep all consonants provisionally.
-        
-    - Test ordinary Hebrew and straightforward comparative Semitic cognates.
-        
-2. **Measure the parallelism.**  
-    Ask whether the cola exhibit an obvious relationship such as:
+- corruption during script transition,
     
-    - synonym // synonym,
-        
-    - antonym // antonym,
-        
-    - cause // effect,
-        
-    - action // consequence,
-        
-    - body part // corresponding action,
-        
-    - agent // action,
-        
-    - concrete image // matching concrete image,
-        
-    - A:B :: C:D proportional structure,
-        
-    - repetition with semantic escalation,
-        
-    - chiastic inversion,
-        
-    - or a repeated lexical field.
-        
-3. **If the parallelism is weak, resegment first.**
-    
-    - Move word boundaries.
-        
-    - Reassign prefixes and suffixes.
-        
-    - Test whether a consonant currently attached to one word belongs to its neighbor.
-        
-    - Test whether one apparent word is really two, or two apparent words are one.
-        
-4. **If that is insufficient, re-vocalize and change lexical assignment.**
-    
-    - Search cognate roots across ANE Semitic languages.
-        
-    - Prefer ordinary, well-attested meanings over rare meanings invented to rescue the MT.
-        
-    - Let the parallel colon constrain which meaning of a polysemous root is likely.
-        
-5. **If parallelism is still weak, test grapheme corruption.**  
-    Begin with the highest-value confusions:
-    
-    - `R ↔ D`
-        
-    - `W ↔ R`
-        
-    - `W ↔ D`
-        
-    - `K ↔ B`
-        
-    - `ʿ ↔ Y`
-        
-    - secondarily `R ↔ B`
-        
-    
-    Test both Hebrew-script and Aramaic-script histories rather than only modern square-letter resemblance.
-    
-6. **If necessary, test language-stage corruption.**  
-    Ask whether the verse becomes simple if:
-    
-    - one word is Aramaic while the next is Hebrew,
-        
-    - an Ugaritic-like root has been Hebraized,
-        
-    - an Akkadian semantic value survives under Northwest Semitic consonants,
-        
-    - or the text has been translated or normalized more than once.
-        
-7. **Re-evaluate the whole couplet after every change.**  
-    Never judge an emendation only because it creates a possible word.  
-    It must improve:
-    
-    - lexical naturalness,
-        
-    - poetic parallelism,
-        
-    - local context,
-        
-    - speaker logic,
-        
-    - and ideally the larger passage structure.
-        
-8. **Iterate.**  
-    Continue generating and testing alternatives until one of two things happens:
-    
-    - a reading emerges with **clear, obvious, economical parallelism**, or
-        
-    - all reasonable low-cost possibilities have been exhausted.
-        
-
-### Optimization target
-
-The goal is **not** to maximize emendation.
-
-The goal is to find the **minimal set of assumptions** that turns the verse into clear poetry.
-
-Prefer, in order:
-
-1. no consonantal change;
-    
-2. re-vocalization only;
-    
-3. resegmentation only;
-    
-4. ordinary cross-Semitic lexical reassignment;
-    
-5. one plausible grapheme confusion;
-    
-6. one plausible language-stage corruption;
-    
-7. only then multiple interacting corruptions.
+- deliberate multilingual wordplay by the author.
     
 
-For each candidate reconstruction, keep a running “cost”:
+Do not assume such mechanisms gratuitously.
 
-|Change|Relative cost|
-|---|--:|
+But do not reject them merely because the resulting form is “not normal Hebrew.”
+
+In Job, **“not normal Hebrew” is part of the evidence**.
+
+---
+
+## Reconstruction Cost Function
+
+The objective is:
+
+> **Maximum obvious parallelism for minimum reconstruction cost.**
+
+Prefer, roughly in this order:
+
+|Reconstruction move|Cost|
+|---|---|
 |Different vocalization|very low|
 |Different word boundary|very low|
-|Different sense of an attested cognate|low|
-|Aramaic/Ugaritic/Phoenician cognate instead of Hebrew sense|low|
-|Weak-letter/mater reinterpretation|low|
+|Different ordinary sense of same root|very low|
+|Common cognate sense from another Semitic language|low|
+|Aramaic/Ugaritic/etc. stem with Hebrew morphology|low|
+|Mater or weak-letter reinterpretation|low|
 |One strongly motivated grapheme confusion|medium|
 |One plausible language-stage corruption|medium|
-|Two independent letter changes|high|
-|Unattested root or ad hoc grammar|very high|
+|One graphically weaker consonantal change|medium-high|
+|Two independent strong-consonant changes|high|
+|Multiple unrelated emendations|very high|
+|Unattested root invented for the verse|extremely high|
 
-The preferred reconstruction is the one that gives the **largest increase in obvious poetic structure for the smallest corruption cost**.
+Do not mechanically prefer zero emendation if the resulting poetry is bad.
 
-### Stopping rule
+A single well-motivated graphical substitution that yields **perfect parallelism** may be far preferable to a zero-change interpretation requiring several bizarre lexical senses and syntactic evasions.
 
-Do **not** stop merely because a translation is grammatically possible.
+---
 
-Stop when you have found the lowest-cost reconstruction for which the parallelism becomes sufficiently strong that an ANE poet's intended relationship between the cola feels **obvious rather than merely defensible**.
+## Stopping Rule
 
-In other words:
+For every difficult verse, generate alternatives and iterate.
 
-> **Iterate until the verse “clicks.”**
+Do **not** stop because:
 
-The ideal result should make us say:
-
-> Of course these two lines belong together.
-
-When several reconstructions click equally well, retain all of them and rank them by:
-
-1. number and severity of grapheme changes,
+- a lexicon permits the MT sense,
     
-2. quality of comparative lexical attestation,
+- a modern translation has produced grammatical English,
     
-3. strength of parallelism,
+- an emendation has precedent,
     
-4. fit with nearby verses,
-    
-5. fit with the speaker's argument,
-    
-6. and whether the same proposed corruption mechanism recurs elsewhere in Job.
+- or one possible interpretation can be defended.
     
 
-A particularly valuable result is one where **a single paleographic or language-corruption assumption simultaneously makes several adjacent obscure words become ordinary words in one coherent semantic field**. That kind of multi-word collapse-to-simplicity should receive much more weight than an emendation that repairs only one isolated word.
+Stop only when you have identified the **lowest-cost reconstruction that produces very strong, immediately recognizable poetic parallelism**.
+
+If no reconstruction reaches that level, say so explicitly and retain the best candidates.
+
+If several candidates work, rank them.
+
+A particularly strong reconstruction should satisfy several constraints simultaneously:
+
+1. common or well-attested lexical senses,
+    
+2. economical segmentation,
+    
+3. plausible morphology,
+    
+4. obvious parallelism,
+    
+5. strong relation to neighboring verses,
+    
+6. strong relation to the speaker's argument,
+    
+7. plausible paleographic mechanism where needed,
+    
+8. minimal number of independent assumptions.
+    
+
+---
+
+## Top-Down Context Comes After Bottom-Up Reconstruction
+
+Only after the lexical and paleographic pass should you use:
+
+- the immediately surrounding verses,
+    
+- the paragraph or speech,
+    
+- the chapter structure,
+    
+- the speaker's personality,
+    
+- recurring themes in Job,
+    
+- human motivations,
+    
+- legal, social, bodily, natural, or theological imagery.
+    
+
+Use these as **constraints**, not excuses.
+
+The context should help choose between viable bottom-up readings.
+
+Do not use context to manufacture a lexical meaning unsupported by the consonants or comparative Semitic evidence.
+
+---
+
+## Required Output Format
+
+Match the structure and style of the supplied **Job: First-Principles Reconstruction** report.
+
+Use only headings at `##`, `###`, `####`, or deeper levels. Never use a single `#` heading.
+
+### Opening sections
+
+Produce:
+
+## Job [passage]: First-Principles Reconstruction
+
+### Purpose
+
+State that the passage is being treated as a decipherment problem and that the controlling question is which reconstruction best explains consonantal evidence, parallelism, context, and comparative Semitic data.
+
+### Why Job [passage]
+
+Briefly explain why this passage is difficult and why it is a useful test case.
+
+If appropriate, include a small ranking table placing it among other notoriously difficult Job passages.
+
+### Method
+
+Summarize the reconstruction algorithm.
+
+### Lossy transliteration conventions
+
+Provide the convention table.
+
+### Paleographic confusion map
+
+Provide a compact table of the most relevant graphical confusions and their priority.
+
+### Evaluation scale
+
+Explain that contextual-fit scores evaluate poetic/discourse coherence, not historical probability.
+
+### Working passage structure
+
+Give a short table showing the likely discourse function of each verse or subsection.
+
+---
+
+# Verse-by-Verse Analysis
+
+For **every verse**, use exactly this structure.
+
+### Job X:Y
+
+**Masoretic:** [FULL Masoretic verse]
+
+**Raw:** [FULL consonantal stream without spaces]
+
+**Lossy:** `[FULL lossy stream]`
+
+The **Masoretic, Raw, and Lossy lines must each represent the entire verse. Never omit any part of the transmitted Hebrew.**
+
+#### Standard MT-Oriented Partitioning
+
+Create a table:
+
+|Hebrew unit|Lossy|Standard construal|Standard English|
+|---|---|---|---|
+
+Every portion of the Masoretic verse must appear somewhere in this table.
+
+Do **not** omit particles simply because they are boring.
+
+Do not omit a difficult word because the reconstruction later changes its boundary.
+
+The point of this table is to make the inherited parse completely auditable.
+
+---
+
+#### Bottom-Up Comparative Partitioning
+
+Create a table:
+
+|Hebrew / candidate|Lossy|Comparative evidence|Best English|
+|---|---|---|---|
+
+Again:
+
+> **Every Masoretic consonant must be visibly accounted for.**
+
+If the preferred reading changes a boundary, show it explicitly:
+
+LTR example: `MT unit → proposed segmentation`
+
+If a consonant is graphically emended, show it explicitly:
+
+`R → D, Paleo-Hebrew confusion`
+
+If a word is interpreted through another language, name the language:
+
+`DYN (Arm/Uga)`
+
+If Hebrew morphology appears attached to a foreign stem, say so.
+
+If one Masoretic letter is treated as secondary spelling or a mater, state that explicitly rather than silently ignoring it.
+
+---
+
+#### Standard English Translation
+
+Give a fresh, fairly literal English rendering of the normal MT-oriented interpretation.
+
+Do not quote a copyrighted translation at length.
+
+---
+
+#### Our English Translation
+
+Give the best reconstructed translation.
+
+It should be readable but still close enough to the proposed lexical reconstruction to show the recovered parallelism.
+
+---
+
+#### Recovered Parallelism
+
+For difficult or substantially reconstructed verses, add a compact table such as:
+
+|Colon A|Colon B|
+|---|---|
+|blow|hand|
+|wrath|El|
+|strike|bend|
+
+or:
+
+|A|B|C|D|
+|---|---|---|---|
+|drought|steals|snow-water|—|
+|Sheol|steals|sinners|—|
+
+Explain in one or two sentences why this structure is compelling.
+
+For verses where the MT is already obviously parallel, this section may simply state that no additional reconstruction is required.
+
+---
+
+#### Reconstruction Cost
+
+Give a compact list or table showing what the reading required, for example:
+
+|Move|Cost|
+|---|---|
+|Re-vocalize DYN as “legal case”|low|
+|Re-segment BLYLW → BLY LW|very low|
+|R → D by Paleo/Aramaic confusion|medium|
+
+Do not hide the cost of the reconstruction.
+
+---
+
+#### Contextual Fit
+
+Use:
+
+|Metric|Rating|Reason|
+|---|---|---|
+|Standard contextual fit|X/10|...|
+|Our contextual fit|X/10|...|
+|Improvement|+X.X|...|
+
+The score should emphasize **parallelism plus discourse coherence**.
+
+A standard reading that is grammatically possible but poetically incoherent should score poorly.
+
+---
+
+**Philological confidence:** very high / high / medium-high / medium / low-to-medium / low.
+
+Keep confidence separate from contextual-fit score.
+
+A reconstruction can have:
+
+- very high contextual payoff,
+    
+- but only medium philological confidence.
+    
+
+Say so.
+
+---
+
+#### Analysis
+
+Explain:
+
+- which consonantal cluster was decisive,
+    
+- which alternative segmentations were tested,
+    
+- which comparative roots matter,
+    
+- whether a grapheme swap was necessary,
+    
+- why the resulting parallelism is stronger,
+    
+- how the verse fits its neighbors.
+    
+
+Do not over-explain routine words.
+
+Concentrate analysis on the **key that unlocks the verse**.
+
+---
+
+## Passage-Level or Chapter-Level Synthesis
+
+Use whichever label fits the scope.
+
+### Recovered Argument
+
+Rewrite the whole reconstructed passage continuously in fluid English.
+
+The aim is to show whether the formerly obscure verses now form a coherent discourse.
+
+### Principal Departures from the Standard Reading
+
+Use:
+
+|Verse|Standard construal|Bottom-up proposal|Payoff|Confidence|
+|---|---|---|---|---|
+
+Include only meaningful departures.
+
+### Overall Contextual-Fit Result
+
+Calculate:
+
+- mean standard contextual fit,
+    
+- mean bottom-up contextual fit,
+    
+- mean improvement.
+    
+
+Treat this as bookkeeping rather than proof.
+
+### Confidence Summary
+
+Group conclusions by confidence level.
+
+### Recovered Poetic Architecture
+
+Where useful, show larger structures such as:
+
+- A / B / C / C′ / B′ / A′
+    
+- lexical chains,
+    
+- repeated roots,
+    
+- recurring images,
+    
+- question-response sequences,
+    
+- spatial oppositions,
+    
+- legal terminology,
+    
+- body imagery,
+    
+- death/light/darkness structures.
+    
+
+### Corruption-Mechanism Summary
+
+For passages requiring reconstruction, summarize which mechanisms actually did useful work:
+
+- re-vocalization,
+    
+- resegmentation,
+    
+- Aramaism,
+    
+- Ugaritic cognate,
+    
+- Akkadian semantic cognate,
+    
+- Hebrew morphology on foreign stem,
+    
+- `R ↔ D`,
+    
+- `W ↔ R/D`,
+    
+- `K ↔ B`,
+    
+- `ʿ ↔ Y`,
+    
+- `R ↔ B`,
+    
+- weak-letter reinterpretation,
+    
+- other script-specific confusion.
+    
+
+Note if the same corruption mechanism explains multiple verses. Repeated success by one mechanism should raise its prior elsewhere in Job.
+
+### Future Expansion Template
+
+Recommend further work such as:
+
+1. full dictionary citations,
+    
+2. Septuagint,
+    
+3. Peshitta,
+    
+4. Targum,
+    
+5. Vulgate,
+    
+6. DSS evidence where extant,
+    
+7. paleographic exemplars,
+    
+8. alternative defective spellings,
+    
+9. exhaustive segmentation search,
+    
+10. scored reconstruction alternatives.
+    
+
+### Textual and Comparative Sources Already Used
+
+List major primary texts, dictionaries, comparative resources, and textual witnesses actually used.
+
+---
+
+## Critical Rules
+
+1. **Never omit any Masoretic Hebrew from the verse-level evidence tables.**
+    
+2. **Never treat Masoretic word boundaries as sacred.**
+    
+3. **Never treat Masoretic vowels as primary evidence.**
+    
+4. **Never assume an obscure word must be Hebrew.**
+    
+5. **Allow Aramaisms and other ANE Semitic roots with Hebrew grammatical attachments.**
+    
+6. **Actively test defective spellings.**
+    
+7. **Actively test new word boundaries.**
+    
+8. **Actively test paleographic confusions in Paleo-Hebrew, Aramaic, transitional Aramaic, and square Hebrew.**
+    
+9. **Assume strong poetic parallelism exists and use it as the main error-correcting code.**
+    
+10. **Prefer one elegant corruption that repairs an entire couplet over several strained dictionary meanings that preserve MT unchanged.**
+    
+11. **Do not maximize novelty; minimize total reconstruction cost.**
+    
+12. **Do not stop until the verse has been iterated toward the strongest obvious parallelism available.**
+    
+13. **Treat “this is strange Hebrew” as a reason to investigate, not as an explanation.**
+    
+14. **Assume the author may be doing this deliberately as part of Job's poetic technique.**
+    
+15. **For each verse, look for the simple hidden key that makes the verse collapse into intelligible poetry.**
+    
+
+The governing heuristic is:
+
+> **The transmitted text is evidence. Parallelism is the checksum. Comparative Semitic is the dictionary. Paleography is the error model. Find the cheapest reconstruction that makes the poetry click.**

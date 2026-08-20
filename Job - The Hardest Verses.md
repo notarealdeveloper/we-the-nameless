@@ -1,465 +1,1229 @@
-# Job as a decipherment problem: a first-principles attack on its hardest Hebrew
+## Job’s Hardest Verses: First-Principles Reconstruction
 
-## What the experiment is actually testing
+### Purpose
 
-There is a serious philological idea inside the proposed method. In fact, one striking part of it has a direct scholarly precedent: Driver and Grayʾs *International Critical Commentary* explicitly distinguished the ordinary unvocalized Hebrew from a further-reduced representation consisting of the traditional consonants **without regard to the present word divisions and with vowel-consonants removed**. In other words, a century ago they were already doing a controlled version of the proposed “dig up the consonants and resegment them” experiment. citeturn21view0
+This document reformats the hardest-verse research into the same systematic structure used for the Job 24 reconstruction. It treats difficult Job verses as decipherment problems rather than assuming that Masoretic vocalization, inherited word boundaries, or standard modern syntax must always be correct.
 
-Job is an unusually appropriate book on which to do this. Edward Greenstein observes that its poetic language has a greater density of strange and foreign-looking words and a greater diversity of forms than any other biblical book; he argues, however, that much of the foreignness is deliberate poetic technique rather than evidence that Job is simply a bad translation from Aramaic, Arabic, Edomite, or some lost source language. The poem even juxtaposes conspicuously Aramaic-looking forms with ordinary Hebrew equivalents, suggesting conscious linguistic play. citeturn19search0turn19search11turn19search23 Marvin Pope likewise treats the Masoretic Hebrew as the primary witness while acknowledging that many passages are corrupt or obscure and sometimes require emendation; he also warns that the ancient Greek Job is sufficiently free and paraphrastic that it cannot simply be reverse-engineered mechanically into an earlier Hebrew text. citeturn4view0
+The controlling question is: **what reading of the consonantal data best explains local parallelism, surrounding discourse, speaker-character, and comparative Semitic evidence at the lowest textual cost?**
 
-So I would modify the proposed algorithm in exactly one important way: **make it radically permissive during candidate generation, but brutally conservative during candidate selection.** James Barrʾs classic critique of comparative Semitic philology is highly relevant here: once one permits an unusual Hebrew form to acquire whatever meaning a remotely similar Arabic, Akkadian, Ugaritic, or Aramaic word happens to have, it becomes dangerously easy to manufacture new vocabulary rather than recover it. Barrʾs expanded *Comparative Philology and the Text of the Old Testament* includes essays specifically on Job and on the limitations of etymology as a lexicographical tool. citeturn19search3turn19search13
+The detailed source report analyzes the top twenty candidates. The remaining eighty are retained below as the working corpus ranking rather than expanded beyond the evidence supplied in the source.
 
-That gives us the following hierarchy:
+### Method
 
-**Best reading:** same consonants, different pointing or syntactic analysis.
+1. Start with the Masoretic consonants but temporarily discard vowels, accents, punctuation, and inherited word spacing.
+2. Produce a defective raw stream and a lossy Semitic ASCII representation.
+3. Treat the stream as an unknown Northwest/ANE Semitic text; do not privilege Hebrew, Aramaic, Akkadian, Ugaritic, Phoenician, or Arabic in advance.
+4. Test roots, segmentations, semantic fields, and only then plausible paleographic confusions.
+5. Use poetic parallelism as an error-correcting constraint, then local context, speaker identity, and book-level discourse.
+6. Prefer same-consonant reanalysis over resegmentation; resegmentation over comparative lexical rescue; and those over consonantal emendation.
+7. Preserve ambiguity when the consonants do not resolve it.
+8. Charge every letter substitution or addition a real evidentiary cost.
 
-**Next best:** same consonants, different word division or recognition of a foreign/archaic lexical item.
+### Lossy Transliteration Conventions
 
-**Next:** an independently plausible Semitic cognate with regular meaning and excellent poetic/contextual fit.
+| Hebrew class | Lossy symbol | Reason |
+| --- | --- | --- |
+| ‎ש / ס | s | Collapse sibilants for the first-pass search layer. |
+| ‎ח / ה | h | Collapse laryngeal/fricative distinctions in the deliberately lossy layer. |
+| ‎ע | 3 | Keep the pharyngeal slot visible. |
+| ‎א | ' | Keep the glottal slot visible. |
+| ‎צ | S | Retain emphatic/sibilant information useful for cognates. |
+| ‎ט | T | Retain emphatic stop information. |
+| ‎ק | q | Retain the uvular/emphatic contrast. |
 
-**Next:** a small orthographic disturbance involving matres or a well-attested scribal confusion.
+The lossy layer is a search representation, not a historical phonological reconstruction.
 
-**Last resort:** multiple consonantal alterations, language-hopping, or conjectural restoration.
-
-Parallelism then really does function as something like an error-correcting code—but not a perfect one. It constrains the *semantic class* of the missing or obscure item much better than it identifies an exact lexeme.
-
-One further caveat is important. There is no scholarly publication that ranks “the 100 objectively hardest verses in the Bible.” The ranking below is therefore a **working candidate ranking**, not a claimed consensus. It weights explicit judgments such as “hard,” “uncertain,” “very difficult,” “corrupt,” and “obscure” in major commentaries; rare vocabulary; disagreement among ancient versions; conjectural emendation; unstable word division; and breakdown of local parallelism. That makes a Job-only top 100 defensible as an experimental corpus, especially given Jobʾs exceptional lexical density, but not mathematically provable as the Bible-wide top 100. citeturn19search11turn4view0
-
-## The lossy alphabet, edit hierarchy, and error-correction rules
-
-For the experiment I use the Westminster Leningrad Codex text as represented by the Open Scriptures Hebrew Bible. OSHB explicitly identifies its Hebrew base as the WLC and uses Masoretic versification. citeturn25view0 Pointing, accents, spaces, maqaf, and punctuation disappear in the lossy string.
-
-The ASCII mapping is:
-
-ʿא=ʾ  ב=b  ג=g  ד=d  ה/ח=h  ו=w  ז=z  ט=T  י=y  כ=k  ל=l  מ=m  נ=n  ס/ש=s  ע=\ʿ  פ=p  צ=S  ק=q  ר=r  ת=tʿ
-
-Final forms are normalized to their medial equivalents. Thus ʿשׁʿ, ʿשׂʿ, and ʿסʿ all become ʿsʿ; ʿהʿ and ʿחʿ both become ʿhʿ. I **retain** aleph and ayin as ʿʾʿ and ʿʿ ʿ ʿʿ and retain emphatics as ʿT/S/qʿ, because collapsing those as well destroys too much comparative information.
-
-Crucially, ʿש/ס → sʿ and ʿה/ח → hʿ are **search normalizations**, not assertions that these letters were graphically interchangeable. Paleography and phonology are separate layers.
-
-The grapheme-confusion map I would use is:
+### Grapheme and Edit Hierarchy
 
 | Edit class | Candidate operation | Prior |
-|---|---|---:|
+| --- | --- | --- |
 | Pointing | Change vowels, stem identification, construct/absolute analysis | Very high |
 | Segmentation | Move a word boundary in the continuous consonants | Very high |
-| Matres | Treat ʿו/י/ה/אʿ as orthographically secondary where linguistically plausible | High–medium |
-| Graphic | ʿד ↔ רʿ | High when the relevant script supports it |
-| Graphic | ʿו ↔ יʿ | High in many Jewish/Aramaic book hands |
-| Graphic | other look-alikes | Hand- and period-specific only |
-| Phonological search | ʿש/סʿ, ʿה/חʿ, related sibilant/guttural classes | Candidate generation only |
-| Addition/omission | one short mater or suffixal letter | Medium–low |
-| Multiple edits | several substitutions plus resegmentation | Very low |
-
-Confusion of dalet and resh is a standard textual-critical phenomenon and is possible in more than one historical Hebrew script tradition; waw and yod are also especially prone to visual confusion. But one should not make a universal “Hebrew letters that look alike” chart and apply it backward indiscriminately: Israelites first wrote in Old/Paleo-Hebrew, while Aramaic-derived script became increasingly dominant in the Second Temple period, and the shape relations among letters therefore changed over time. citeturn20search5turn20search7turn20search13
-
-That point matters for the proposal to consider a confusion that exists “only in Aramaic.” **Yes—but only if we can plausibly place the corruption after transmission into an Aramaic-derived book hand.** A pair that resembles one another in medieval square Hebrew but not in Paleo-Hebrew should receive a lower prior for an early corruption. Conversely, later corruption may quite legitimately reflect the Aramaic-derived script.
-
-My selection function is therefore conceptually:
-
-> **reading quality ≈ consonantal fit + poetic parallelism + local discourse fit + speaker fit + regular comparative-Semitic support + versional support − textual edit cost − semantic special pleading**
-
-No numerical scores are pretending to be probabilities here. The purpose is to prevent exactly the failure mode a maximally “lossy” procedure would otherwise create: with enough interchangeable letters, languages, roots, and implicit particles, *every* string eventually says whatever the interpreter wants.
-
-Ancient versions are used as independent witnesses, not dictators. Pope specifically regards the Syriac as potentially useful where Hebrew is obscure, while stressing that the Greek can paraphrase rather freely. citeturn4view0
-
-## The working top hundred
-
-The top tier is not arbitrary. Pope explicitly calls Job 24:18–20 and 24:22–25 corrupt and obscure; translation literature notes that the end of Job 24 has generated unusually conjectural renderings and speaker-reassignment proposals. Driver and Gray call 6:14 “hard and uncertain,” 36:19 “very difficult,” 36:33 “again a very difficult verse,” describe Job 38ʾs astronomical terminology as highly uncertain, and say MT Job 41:1–3—English 41:9–11—has generated many conjectures. Translation commentary on Job 39:13 goes so far as to say that practically nothing in its first colon is entirely secure. citeturn4view0turn21view1turn21view3turn22view0turn22view1turn22view3turn23search29
-
-The tags are **L** = lexical identification, **G** = grammar/segmentation, **T** = textual disturbance/emendation, **V** = versional divergence, **P** = parallelism/discourse, and **I** = identification of an animal, astronomical object, natural phenomenon, or technical referent. Ranks after roughly the first twenty should be regarded as tiers rather than falsely precise measurements.
-
-| Rank | MT verse | Tags | Main reason it makes the corpus |
-|---:|---|---|---|
-| 1 | 24:18 | T/G/P/V | abrupt retribution language; syntax and discourse |
-| 2 | 24:19 | T/G/P/V | elliptical parallelism; relation to v.18 |
-| 3 | 24:20 | T/G/P/V | shifting imagery and awkward subject |
-| 4 | 24:22 | T/G/P/V | implicit divine subject; unstable syntax |
-| 5 | 24:23 | T/G/P/V | pronoun/reference ambiguity |
-| 6 | 24:24 | T/L/G/P | several compressed/rare verbal expressions |
-| 7 | 24:25 | T/G/P | conclusion depends on reconstruction of section |
-| 8 | 36:33 | L/G/P/V | thunder/friend/cattle/rising-storm puzzle |
-| 9 | 38:36 | L/I/P/V | ʿטחותʿ and ʿשכויʿ; radically different semantic worlds |
-| 10 | 39:13 | L/I/G/V | bird identification and syntax profoundly disputed |
-| 11 | 41:1 MT / Eng 41:9 | G/P/V | abrupt Leviathan-to-God transition begins |
-| 12 | 41:2 MT / Eng 41:10 | G/P/V | creature/divine referent transition |
-| 13 | 41:3 MT / Eng 41:11 | G/P/V | apparently intrusive divine ownership claim |
-| 14 | 41:4 MT / Eng 41:12 | L/G/P | ketiv/qere plus obscure anatomical wording |
-| 15 | 6:14 | G/P/V | relation of the two cola is unusually difficult |
-| 16 | 36:19 | L/G/P | ʿשועךʿ, ʿיערךʿ, and ʿבצרʿ permit competing analyses |
-| 17 | 11:12 | L/G/P/V | apparently nonsensical human/wild-ass proverb |
-| 18 | 10:22 | L/P/V | darkness, “orders,” and paradoxical shining |
-| 19 | 16:20 | L/G/V | mediator/mockery ambiguity |
-| 20 | 30:11 | L/G/P | cord/bowstring and abrupt subject switch |
-| 21 | 6:10 | L/V | exceptionally rare verb in “exult/recoil” clause |
-| 22 | 6:7 | L/G/V | difficult food/sickness metaphor |
-| 23 | 6:16 | L | unusual torrent terminology |
-| 24 | 6:17 | L/G | rare verb describing vanishing wadis |
-| 25 | 9:24 | G/P/V | broken sequence and “if not he, who?” |
-| 26 | 9:35 | G/V | cryptic final clause |
-| 27 | 9:23 | L/P | rare noun in “scourge” saying |
-| 28 | 9:12 | L | rare/unattested verbal usage |
-| 29 | 10:8 | G/V | syntactically difficult divine-making/destroying line |
-| 30 | 10:15 | G/V | compressed conditional lament |
-| 31 | 10:17 | L/G/V | “witnesses/hostilities/changes and host” |
-| 32 | 10:20 | G/T | awkward transmitted sequence |
-| 33 | 17:6 | L/V | ʿתפתʿ and uncertain social image |
-| 34 | 17:7 | L/V | rare “forms/members/thoughts” expression |
-| 35 | 17:16 | L/G | descent to Sheol/dust syntactic compression |
-| 36 | 29:18 | L/I/V | sand versus phoenix tradition |
-| 37 | 30:18 | T/G/V | garment/neck imagery with textual instability |
-| 38 | 30:22 | L/G | unusual dissolution/resource terminology |
-| 39 | 36:16 | G/P | dense Elihu syntax and metaphor |
-| 40 | 36:18 | G/P | wrath/ransom/enticement ambiguities |
-| 41 | 37:4 | G/V | problematic verbal object after divine thunder |
-| 42 | 38:10 | G/V | “break/prescribe a boundary” difficulty |
-| 43 | 38:31 | L/I/V | Pleiades binding/cluster terminology |
-| 44 | 38:32 | L/I | Mazzaroth and astronomical identities |
-| 45 | 38:33 | G/I | “ordinances” and dominion of heavens |
-| 46 | 39:19 | L/I | ʿרעמהʿ: mane, trembling, thunder? |
-| 47 | 39:21 | L/G | valley/strength and pawing imagery |
-| 48 | 39:23 | L | unusual quiver-rattling verb |
-| 49 | 39:24 | L/G | “swallows the earth” and trumpet syntax |
-| 50 | 39:25 | L/G | battle scent, captainsʾ thunder, shout |
-| 51 | 40:17 | L/I | Behemothʾs tail/cedar and sinews |
-| 52 | 40:19 | L/G | “first of Godʾs ways” and weapon clause |
-| 53 | 40:24 | G/I/V | capture by eyes/nose/snares |
-| 54 | 40:25 MT / Eng 41:1 | L/I | Leviathan fishing terminology |
-| 55 | 40:26 MT / Eng 41:2 | L/I | rope/reed/hook terminology |
-| 56 | 40:30 MT / Eng 41:6 | L/G | traders/partners bargaining over monster |
-| 57 | 40:31 MT / Eng 41:7 | L/G | harpoons and fishing spears |
-| 58 | 40:32 MT / Eng 41:8 | G | compressed warning about battle |
-| 59 | 41:5 MT / Eng 41:13 | L/I | garment/double bridle anatomy |
-| 60 | 41:7 MT / Eng 41:15 | L/G/I | channels/shields/scales |
-| 61 | 41:17 MT / Eng 41:25 | L/G | mighty/gods terrified; unusual reflexive |
-| 62 | 41:18 MT / Eng 41:26 | L/G | weapons vocabulary and syntax |
-| 63 | 41:22 MT / Eng 41:30 | L/I | potsherds/threshing-sledge underside |
-| 64 | 41:24 MT / Eng 41:32 | L/G/I | sea becoming “gray-haired” |
-| 65 | 41:26 MT / Eng 41:34 | L/I | “sons of pride” identification |
-| 66 | 3:8 | L/I | Leviathan-rousing professional cursers |
-| 67 | 4:18 | L/V | obscure term in accusation against angels |
-| 68 | 5:5 | L/G | thorn/hungry/snare wording |
-| 69 | 5:7 | L/I | “sons of Resheph” / sparks / supernatural imagery |
-| 70 | 6:3 | L | difficult verb describing Jobʾs speech |
-| 71 | 6:4 | L/G | divine terrors “arraying” themselves |
-| 72 | 6:6 | L/I/V | uncertain tasteless food |
-| 73 | 6:13 | G/T | interrogative/textual instability |
-| 74 | 6:18 | L/G | caravans/torrents “twisting” into waste |
-| 75 | 6:21 | L/V | rare terror term |
-| 76 | 6:25 | L/G | difficult “forcible/pleasant words” expression |
-| 77 | 7:5 | L/I | skin/scab/dust pathology |
-| 78 | 7:15 | L/G | strangling/death clause |
-| 79 | 8:19 | G/T/V | difficult plant-path line |
-| 80 | 9:5 | L/G | mountains removed “without knowing” |
-| 81 | 9:8 | L/I | treading sea waves/back |
-| 82 | 9:9 | L/I | constellation names |
-| 83 | 9:13 | L/I | helpers of Rahab |
-| 84 | 9:22 | G/V | “it is all one” and versional issue |
-| 85 | 9:26 | L/I | reed/papyrus boats or swift craft |
-| 86 | 12:5 | G/P | obscure proverb about contempt and stumbling |
-| 87 | 13:15 | G/V | famous ʿלו/לאʿ interpretive problem |
-| 88 | 15:29 | L/V | rare possession/produce terminology |
-| 89 | 19:17 | L/G | breath/wife and “sons of my body” |
-| 90 | 19:25 | G/L/V | redeemer/witness/afterward syntax |
-| 91 | 19:26 | G/L/V | skin destruction and seeing God |
-| 92 | 19:27 | G/L/V | pronouns and “kidneys consumed” |
-| 93 | 20:23 | G/T | difficult sequence around filling the belly |
-| 94 | 20:26 | L/I | hidden darkness/fire imagery |
-| 95 | 24:1 | G/T | times “hidden/stored” from Shaddai |
-| 96 | 26:5 | L/I | Rephaim writhing beneath waters |
-| 97 | 26:13 | L/I | fleeing/crooked serpent constellation/myth |
-| 98 | 28:4 | G/L | mining shaft/forgotten foot imagery |
-| 99 | 33:9 | L/V | unusual ʿחףʿ “clean/pure” |
-| 100 | 38:24 | L/G/I | division of light/east wind |
+| Matres | Treat ‎ו / י / ה / א as potentially secondary where justified | High–medium |
+| Graphic | ‎ד ↔ ר | High when the relevant script supports it |
+| Graphic | ‎ו ↔ י | High in many Jewish/Aramaic book hands |
+| Graphic | Other look-alikes | Script- and period-specific only |
+| Phonological search | ‎ש / ס, ‎ה / ח, related sibilant/guttural classes | Candidate generation only |
+| Addition/omission | One short mater or suffixal letter | Medium–low |
+| Multiple edits | Several substitutions plus resegmentation | Very low |
+
+### Evaluation Scale
+
+Each detailed verse receives two **contextual-fit** ratings from 0–10. These measure how naturally the English reading fits the surrounding argument and parallel structure; they are not direct probabilities that the reconstruction is historically correct. **Improvement = our contextual fit − standard contextual fit.**
+
+The “standard” English is a fresh literal paraphrase of the conventional MT-oriented construal, not a quotation from a specific modern copyrighted translation.
+
+### Working Top 100 Candidate Corpus
+
+The ranking is a working research corpus, not a claim that scholarship has produced an objective top-100 list. The tags are **L** = lexical identification, **G** = grammar/segmentation, **T** = textual disturbance/emendation, **V** = versional divergence, **P** = parallelism/discourse, and **I** = identification of an animal, astronomical object, natural phenomenon, or technical referent.
+
+| Rank | MT verse             | Tags    | Main reason it makes the corpus                        |
+| ---: | -------------------- | ------- | ------------------------------------------------------ |
+|    1 | 24:18                | T/G/P/V | abrupt retribution language; syntax and discourse      |
+|    2 | 24:19                | T/G/P/V | elliptical parallelism; relation to v.18               |
+|    3 | 24:20                | T/G/P/V | shifting imagery and awkward subject                   |
+|    4 | 24:22                | T/G/P/V | implicit divine subject; unstable syntax               |
+|    5 | 24:23                | T/G/P/V | pronoun/reference ambiguity                            |
+|    6 | 24:24                | T/L/G/P | several compressed/rare verbal expressions             |
+|    7 | 24:25                | T/G/P   | conclusion depends on reconstruction of section        |
+|    8 | 36:33                | L/G/P/V | thunder/friend/cattle/rising-storm puzzle              |
+|    9 | 38:36                | L/I/P/V | ʿטחותʿ and ʿשכויʿ; radically different semantic worlds |
+|   10 | 39:13                | L/I/G/V | bird identification and syntax profoundly disputed     |
+|   11 | 41:1 MT / Eng 41:9   | G/P/V   | abrupt Leviathan-to-God transition begins              |
+|   12 | 41:2 MT / Eng 41:10  | G/P/V   | creature/divine referent transition                    |
+|   13 | 41:3 MT / Eng 41:11  | G/P/V   | apparently intrusive divine ownership claim            |
+|   14 | 41:4 MT / Eng 41:12  | L/G/P   | ketiv/qere plus obscure anatomical wording             |
+|   15 | 6:14                 | G/P/V   | relation of the two cola is unusually difficult        |
+|   16 | 36:19                | L/G/P   | ʿשועךʿ, ʿיערךʿ, and ʿבצרʿ permit competing analyses    |
+|   17 | 11:12                | L/G/P/V | apparently nonsensical human/wild-ass proverb          |
+|   18 | 10:22                | L/P/V   | darkness, “orders,” and paradoxical shining            |
+|   19 | 16:20                | L/G/V   | mediator/mockery ambiguity                             |
+|   20 | 30:11                | L/G/P   | cord/bowstring and abrupt subject switch               |
+|   21 | 6:10                 | L/V     | exceptionally rare verb in “exult/recoil” clause       |
+|   22 | 6:7                  | L/G/V   | difficult food/sickness metaphor                       |
+|   23 | 6:16                 | L       | unusual torrent terminology                            |
+|   24 | 6:17                 | L/G     | rare verb describing vanishing wadis                   |
+|   25 | 9:24                 | G/P/V   | broken sequence and “if not he, who?”                  |
+|   26 | 9:35                 | G/V     | cryptic final clause                                   |
+|   27 | 9:23                 | L/P     | rare noun in “scourge” saying                          |
+|   28 | 9:12                 | L       | rare/unattested verbal usage                           |
+|   29 | 10:8                 | G/V     | syntactically difficult divine-making/destroying line  |
+|   30 | 10:15                | G/V     | compressed conditional lament                          |
+|   31 | 10:17                | L/G/V   | “witnesses/hostilities/changes and host”               |
+|   32 | 10:20                | G/T     | awkward transmitted sequence                           |
+|   33 | 17:6                 | L/V     | ʿתפתʿ and uncertain social image                       |
+|   34 | 17:7                 | L/V     | rare “forms/members/thoughts” expression               |
+|   35 | 17:16                | L/G     | descent to Sheol/dust syntactic compression            |
+|   36 | 29:18                | L/I/V   | sand versus phoenix tradition                          |
+|   37 | 30:18                | T/G/V   | garment/neck imagery with textual instability          |
+|   38 | 30:22                | L/G     | unusual dissolution/resource terminology               |
+|   39 | 36:16                | G/P     | dense Elihu syntax and metaphor                        |
+|   40 | 36:18                | G/P     | wrath/ransom/enticement ambiguities                    |
+|   41 | 37:4                 | G/V     | problematic verbal object after divine thunder         |
+|   42 | 38:10                | G/V     | “break/prescribe a boundary” difficulty                |
+|   43 | 38:31                | L/I/V   | Pleiades binding/cluster terminology                   |
+|   44 | 38:32                | L/I     | Mazzaroth and astronomical identities                  |
+|   45 | 38:33                | G/I     | “ordinances” and dominion of heavens                   |
+|   46 | 39:19                | L/I     | ʿרעמהʿ: mane, trembling, thunder?                      |
+|   47 | 39:21                | L/G     | valley/strength and pawing imagery                     |
+|   48 | 39:23                | L       | unusual quiver-rattling verb                           |
+|   49 | 39:24                | L/G     | “swallows the earth” and trumpet syntax                |
+|   50 | 39:25                | L/G     | battle scent, captainsʾ thunder, shout                 |
+|   51 | 40:17                | L/I     | Behemothʾs tail/cedar and sinews                       |
+|   52 | 40:19                | L/G     | “first of Godʾs ways” and weapon clause                |
+|   53 | 40:24                | G/I/V   | capture by eyes/nose/snares                            |
+|   54 | 40:25 MT / Eng 41:1  | L/I     | Leviathan fishing terminology                          |
+|   55 | 40:26 MT / Eng 41:2  | L/I     | rope/reed/hook terminology                             |
+|   56 | 40:30 MT / Eng 41:6  | L/G     | traders/partners bargaining over monster               |
+|   57 | 40:31 MT / Eng 41:7  | L/G     | harpoons and fishing spears                            |
+|   58 | 40:32 MT / Eng 41:8  | G       | compressed warning about battle                        |
+|   59 | 41:5 MT / Eng 41:13  | L/I     | garment/double bridle anatomy                          |
+|   60 | 41:7 MT / Eng 41:15  | L/G/I   | channels/shields/scales                                |
+|   61 | 41:17 MT / Eng 41:25 | L/G     | mighty/gods terrified; unusual reflexive               |
+|   62 | 41:18 MT / Eng 41:26 | L/G     | weapons vocabulary and syntax                          |
+|   63 | 41:22 MT / Eng 41:30 | L/I     | potsherds/threshing-sledge underside                   |
+|   64 | 41:24 MT / Eng 41:32 | L/G/I   | sea becoming “gray-haired”                             |
+|   65 | 41:26 MT / Eng 41:34 | L/I     | “sons of pride” identification                         |
+|   66 | 3:8                  | L/I     | Leviathan-rousing professional cursers                 |
+|   67 | 4:18                 | L/V     | obscure term in accusation against angels              |
+|   68 | 5:5                  | L/G     | thorn/hungry/snare wording                             |
+|   69 | 5:7                  | L/I     | “sons of Resheph” / sparks / supernatural imagery      |
+|   70 | 6:3                  | L       | difficult verb describing Jobʾs speech                 |
+|   71 | 6:4                  | L/G     | divine terrors “arraying” themselves                   |
+|   72 | 6:6                  | L/I/V   | uncertain tasteless food                               |
+|   73 | 6:13                 | G/T     | interrogative/textual instability                      |
+|   74 | 6:18                 | L/G     | caravans/torrents “twisting” into waste                |
+|   75 | 6:21                 | L/V     | rare terror term                                       |
+|   76 | 6:25                 | L/G     | difficult “forcible/pleasant words” expression         |
+|   77 | 7:5                  | L/I     | skin/scab/dust pathology                               |
+|   78 | 7:15                 | L/G     | strangling/death clause                                |
+|   79 | 8:19                 | G/T/V   | difficult plant-path line                              |
+|   80 | 9:5                  | L/G     | mountains removed “without knowing”                    |
+|   81 | 9:8                  | L/I     | treading sea waves/back                                |
+|   82 | 9:9                  | L/I     | constellation names                                    |
+|   83 | 9:13                 | L/I     | helpers of Rahab                                       |
+|   84 | 9:22                 | G/V     | “it is all one” and versional issue                    |
+|   85 | 9:26                 | L/I     | reed/papyrus boats or swift craft                      |
+|   86 | 12:5                 | G/P     | obscure proverb about contempt and stumbling           |
+|   87 | 13:15                | G/V     | famous ʿלו/לאʿ interpretive problem                    |
+|   88 | 15:29                | L/V     | rare possession/produce terminology                    |
+|   89 | 19:17                | L/G     | breath/wife and “sons of my body”                      |
+|   90 | 19:25                | G/L/V   | redeemer/witness/afterward syntax                      |
+|   91 | 19:26                | G/L/V   | skin destruction and seeing God                        |
+|   92 | 19:27                | G/L/V   | pronouns and “kidneys consumed”                        |
+|   93 | 20:23                | G/T     | difficult sequence around filling the belly            |
+|   94 | 20:26                | L/I     | hidden darkness/fire imagery                           |
+|   95 | 24:1                 | G/T     | times “hidden/stored” from Shaddai                     |
+|   96 | 26:5                 | L/I     | Rephaim writhing beneath waters                        |
+|   97 | 26:13                | L/I     | fleeing/crooked serpent constellation/myth             |
+|   98 | 28:4                 | G/L     | mining shaft/forgotten foot imagery                    |
+|   99 | 33:9                 | L/V     | unusual ʿחףʿ “clean/pure”                              |
+|  100 | 38:24                | L/G/I   | division of light/east wind                            |
 
-NETʾs textual notes independently flag a striking number of these same places: Job 6 contains several unusual or unique items and repeatedly difficult cola; Job 9:24 and 9:35 are particularly syntactically troublesome; Job 10:22 contains a unique ʿסדרʿ-form; and Job 17 contains rare vocabulary whose ancient renderings diverge. citeturn10view0turn9search4turn11view2turn1search10
+## Verse-by-Verse Analysis
+### Job 24:18
 
-The ranking also tells us something important before doing any reconstruction: the hardest passages are not uniformly “corrupt Hebrew.” There are at least four different pathologies hiding under the single label *obscure*: lost lexical knowledge, hypercompressed poetry, deliberate foreignizing diction, and actual textual disturbance.
+**Masoretic:** ‎קַל־הוּא עַל־פְּנֵי־מַיִם תְּקֻלַּל חֶלְקָתָם בָּאָרֶץ לֹא־יִפְנֶה דֶּרֶךְ כְּרָמִים
 
-## The forensic reconstruction of the hardest twenty
+**Raw:** ‎קלהואעלפנימיםתקללחלקתםבארץלאיפנהדרךכרמים
 
-All Hebrew below follows the WLC/OSHB consonantal text; the displayed Hebrew is vocalized for readability, while the ASCII column ignores the Masoretic vowels and divisions. citeturn25view0 ʿUgaʿ = Ugaritic, ʿAkkʿ = Akkadian, ʿArmʿ = Aramaic, ʿSyrʿ = Syriac, ʿPhoʿ = Phoenician, and ʿArbʿ = Arabic. Arabic is not being treated as an ANE witness; where it appears, it is a later comparative-Semitic control used because the older commentaries themselves sometimes make the comparison. A question mark means “search candidate,” not “secure etymology.”
+**Lossy:** `qlhw'3lpnymymtqllhlqtmb'rSl'ypnhdrkkrmym`
 
-**The Job 24 disaster zone**
+#### Standard MT-Oriented Partitioning
 
-Pope singles out 24:18–20 and 22–25 as corrupt and obscure. The deeper problem is obvious from discourse: Job 24 begins by protesting that divine judicial “times” are not visible and then catalogs predators, exploiters, murderers, adulterers, and impoverished victims. Suddenly vv.18–20 sound as though the wicked are promptly cursed and carried to Sheol—the very conventional retribution thesis Job has spent the speech disputing. This has led translators and commentators to insert something like “you say” or otherwise detach/reassign the lines. citeturn4view0turn23search12turn23search28
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎קַל | ql | Standard lexical/syntactic construal: light/swift | light/swift |
+| ‎פְּנֵי | pny | Standard lexical/syntactic construal: surface | surface |
+| ‎מַיִם | mym | Standard lexical/syntactic construal: water | water |
+| ‎תְּקֻלַּל | tqll | Standard lexical/syntactic construal: is cursed | is cursed |
+| ‎חֶלְקָתָם | hlqtm | Standard lexical/syntactic construal: estate/share | estate/share |
+| ‎יִפְנֶה | ypnh | Standard lexical/syntactic construal: return | return |
+| ‎כְּרָמִים | krmym | Standard lexical/syntactic construal: vineyards | vineyards |
 
-That is exactly where the userʾs “speaker personality + parallelism” test pays off. Before altering a consonant, try repairing the **discourse frame**.
+#### Bottom-Up Comparative Partitioning
 
-| Ref.      | Hebrew original                                                                      | Lossy Semitic ASCII                         | Comparative radical candidates                                              | Literal English from the consonants                                                                                                  | Fluid / interpretive reconstruction                                                                                                     |
-| --------- | ------------------------------------------------------------------------------------ | ------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| **24:18** | קַל־הוּא עַל־פְּנֵי־מַיִם תְּקֻלַּל חֶלְקָתָם בָּאָרֶץ לֹא־יִפְנֶה דֶּרֶךְ כְּרָמִים | ʿqlhwʾ\ʿlpnymymtqllhlqtmbʾrSlʾypnhdrkkrmymʿ | ʿQLLʿ (Akk?/NWS: light, slight); ʿHLQʿ (Uga?/NWS: divide, share)            | “Light/swift is he upon the face of the waters; cursed is their portion in the land; he does not turn toward the road of vineyards.” | **[You claim:] “He is swept off like something light on water; his estate is cursed; he never returns to the vineyards.”**              |
-| **24:19** | צִיָּה גַם־חֹם יִגְזְלוּ מֵימֵי־שֶׁלֶג שְׁאוֹל חָטָאוּ                               | ʿSyhgmhmygzlwmymyslgsʾwlhTʾwʿ               | ʿHMMʿ (Uga?/NWS: heat); ʿSLGʿ (Akk?/Arm: snow)                              | “Drought, also heat, steal snow-waters; Sheol—those who sinned.”                                                                     | **“As drought and heat steal the snowmelt, [you say] Sheol steals away the sinner.”**                                                   |
-| **24:20** | יִשְׁכָּחֵהוּ רֶחֶם מְתָקוֹ רִמָּה לֹא־יִזָּכֵר וַתִּשָּׁבֵר כָּעֵץ עַוְלָה          | ʿyskhhwrhmmtqwrmhlʾyzkrwtsbrk\ʿS\ʿwlhʿ      | ʿRHMʿ (Uga?: womb/compassion); ʿRMMʿ (Akk?: worm/maggot)                    | “A womb forgets him; a worm finds him sweet; he is no longer remembered; injustice is broken like a tree.”                           | **“The womb forgets him, the worm feasts on him, his memory disappears, and—so the old doctrine says—the evildoer snaps like a tree.”** |
-| **24:22** | וּמָשַׁךְ אַבִּירִים בְּכֹחוֹ יָקוּם וְלֹא־יַאֲמִין בַּחַיִּין                       | ʿwmskʾbyrymbkhwyqwmwlʾyʾmynbhyynʿ           | ʿMSKʿ (Arm/NWS: draw, extend); ʿHYYʿ (Uga/Arm: life)                        | “But he draws/prolongs mighty ones by his power; one rises and does not trust in life.”                                              | **“But [in reality] God keeps the powerful going by his power: a man gets back on his feet even when his life seemed lost.”**           |
-| **24:23** | יִתֶּן־לוֹ לָבֶטַח וְיִשָּׁעֵן וְעֵינֵיהוּ עַל־דַּרְכֵיהֶם                           | ʿytnlwlbThwys\ʿnw\ʿynyhw\ʿldrkyhmʿ          | ʿBTHʿ (Arm/NWS: security/trust); ʿSʿNʿ (Arm?: lean/support)                 | “He gives him [something] for security, and he leans; and his eyes are on their ways.”                                               | **“God gives him security to lean on—and keeps his eyes upon their paths.”**                                                            |
-| **24:24** | רוֹמּוּ מְּעַט וְאֵינֶנּוּ וְהֻמְּכוּ יִקָּפְצוּן וּכְרֹאשׁ שִׁבֹּלֶת יִמָּלוּ       | ʿrwmwm\ʿTwʾynnwwhmkwyqpSwnwkrʾssbltymlwʿ    | ʿRWMʿ (Uga/Arm: rise); ʿQPSʿ (Arm?: close/gather); ʿMLLʿ (NWS: cut/wither?) | “They are raised a little, and he/it is gone; they are brought low, gathered up; like the head of an ear of grain they are cut off.” | **“They rise for a little while and then are gone; they sink and are gathered like everyone else, cut down like the tops of grain.”**   |
-| **24:25** | וְאִם־לֹא אֵפוֹ מִי יַכְזִיבֵנִי וְיָשֵׂם לְאַל מִלָּתִי                             | ʿwʾmlʾʾpwmyykzybnywysmlʾlmltyʿ              | ʿKZBʿ (Uga/Arm: lie/fail); ʿMLL/MILLAʿ (Arm: word/speech)                   | “And if not, then who will make me a liar and reduce my word to nothing?”                                                            | **“And if that is not how things are, who can prove me false and reduce my argument to nothing?”**                                      |
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎קַל | ql | QLL (NWS): light, slight | light/swift |
+| ‎פְּנֵי | pny | PN (Uga); pānu (Akk) | surface |
+| ‎מַיִם | mym | MYM (Uga); mû (Akk) | water |
+| ‎תְּקֻלַּל | tqll | QLL (NWS): curse / light | is cursed |
+| ‎חֶלְקָתָם | hlqtm | ḤLQ (Uga/NWS): share, allotment | estate/share |
+| ‎יִפְנֶה | ypnh | PNY (NWS): turn | return |
+| ‎כְּרָמִים | krmym | KRM (Uga/Phn): vineyard | vineyards |
 
-The important reconstruction is not a spectacular dalet-to-resh emendation. It is the insertion of a **speech/discourse operator that poetry can leave implicit**:
+#### Standard English Translation
 
-> **[You say:]** wicked men are swept away, cursed, forgotten, swallowed by Sheol.  
-> **[But look:]** God actually sustains powerful men, gives them security, and watches their paths. Eventually they die—but so does everybody.  
-> **Prove me wrong.**
+> He is light/swift on the surface of the waters; their portion is cursed in the land; he does not turn toward the vineyard road.
 
-Verse 21, which Pope notably does **not** include among the specifically corrupt lines, supplies the wicked target between those portions: the man mistreats the barren woman and does no good to the widow. On this reading v.22ʾs implicit subject naturally becomes God. The result fits Jobʾs personality and argument extraordinarily well without changing a single consonant.
+#### Our English Translation
 
-I would assign this reconstruction **medium-high confidence**. An optative reading—“May the wicked be swept away; may Sheol take him”—is the best alternative and likewise repairs the discourse with almost no textual cost. But the implicit-quotation solution explains the unambiguously indicative feel of v.18 more naturally and has precedent in modern translation practice. citeturn23search12turn23search28
+> [You say:] “He is swept off like something light on water; his estate is cursed; he never returns to the vineyards.”
 
-**Storm, weather, and animals**
+#### Contextual Fit
 
-| Ref. | Hebrew original | Lossy Semitic ASCII | Comparative radical candidates | Literal English from the consonants | Fluid / interpretive reconstruction |
-|---|---|---|---|---|---|
-| **36:33** | יַגִּיד עָלָיו רֵעוֹ מִקְנֶה אַף עַל־עוֹלֶה | ʿygyd\ʿlywr\ʿwmqnhʾp\ʿl\ʿwlhʿ | ʿQNYʿ (Uga: acquire/possess); ʿʿLYʿ (Uga/NWS: rise); ʿRʿʿ = crash/shout candidate | “His crashing/shout tells concerning him; livestock too, concerning what rises.” | **“His thunder announces his approach; even the livestock sense the storm rising.”** |
-| **38:36** | מִי־שָׁת בַּטֻּחוֹת חָכְמָה אוֹ מִי־נָתַן לַשֶּׂכְוִי בִינָה | ʿmystbThwthkmhʾwmyntnlskwybynhʿ | ʿSKY/SKWʿ (Arm: look/watch); ʿTWHʿ (NWS: coat/cover); possible non-Semitic animal/weather term | “Who put wisdom in the *ṭuḥôt*, or who gave understanding to the *śekwî*?” | **Probable weather reading: “Who gave the weather-sign creature its wisdom, or gave the watcher-bird understanding?”** More concretely: **“Who gave the ibis its weather-wisdom, or the rooster its understanding?”** |
-| **39:13** | כְּנַף־רְנָנִים נֶעֱלָסָה אִם־אֶבְרָה חֲסִידָה וְנֹצָה | ʿknprnnymn\ʿlshʾmʾbrhhsydhwnShʿ | ʿKNPʿ (Uga/NWS: wing); ʿRNNʿ (Uga?/NWS: cry/rejoice); ʿʾBRʿ (Uga?/NWS: pinion/wing) | “The wing of the crying/rejoicing ones exults; is it the pinion of a stork, and plumage?” | **“The noisy desert bird beats its wings joyfully—but are those a storkʾs pinions and plumage?”** Species deliberately left open. |
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 4.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 8.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +4.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
 
-Job 36:33 is a beautiful test case because radical emendation turns out to be unnecessary. Driver and Gray call it “again a very difficult verse,” noting the awkwardness of both “noise” and the cattle, while modern translations vary substantially. But the immediate context is lightning and then thunder; Job 37:2 immediately tells the listener to attend to Godʾs roaring voice. Once the line is read as primitive storm observation—**thunder announces the storm, and cattle react before it arrives**—both cola lock together. citeturn22view0turn23search13turn23search5
+**Philological confidence:** medium-high.
 
-That is exactly the sort of result the proposed algorithm should reward: **zero consonantal edits, strong parallelism, perfect local context, ordinary human observation**. My confidence in “His thunder announces his approach; even the cattle sense the rising storm” is high.
+#### Analysis
 
-Job 38:36 is much tougher. Driver and Gray report that the old “inward parts / mind” interpretation derives ʿטחותʿ from something covered or coated and the second noun from an Aramaic watch/look root; they also note attempts to make the first colon refer to clouds or other natural phenomena, and say the parallel term is, if anything, still more uncertain. citeturn22view2 Some translation traditions instead identify an ibis and a rooster, with the birds functioning as natural weather/time forecasters; translation commentary notes support for “rooster” in ancient interpretive tradition and observes the relevance of Egyptian lore about such animals. citeturn23search24turn18search0
+The principal problem is discourse rather than raw lexicon. In Job’s anti-retribution speech, this suddenly sounds like orthodox retribution. The reconstruction treats vv.18–20 as an implicit quotation or conventional doctrine: “[You say:] …” This repairs the argumentative frame without changing a consonant.
 
-Here the “parallelism as error correction” argument is powerful. The sequence is:
 
-**v.34** clouds and water  
-**v.35** lightning  
-**v.36** ??? wisdom / ??? understanding  
-**v.37** counting clouds / heavenly waterskins  
-**v.38** rain changing the ground
+### Job 24:19
 
-That context puts a substantial prior on a **meteorological** interpretation rather than an abrupt excursus on the human psyche. I therefore prefer a weather-sign reading. But the exact zoological identifications are not recoverable from the consonants with high confidence. The honest reconstruction is therefore:
+**Masoretic:** ‎צִיָּה גַם־חֹם יִגְזְלוּ מֵימֵי־שֶׁלֶג שְׁאוֹל חָטָאוּ
 
-> **“Who endowed the weather-signs with wisdom, or gave the watcher understanding?”**
+**Raw:** ‎ציהגםחםיגזלומימישלגשאולחטאו
 
-“Ibis / rooster” is a plausible concretization, not something the algorithm can prove. This is one place where the information-theoretic analogy reaches its limit: parallelism reconstructs the *semantic field* better than the nouns themselves.
+**Lossy:** `Syhgmhmygzlwmymyslgs'wlhT'w`
 
-Job 39:13 produces an even more interesting result. Modern readers routinely encounter “ostrich,” but the underlying ʿרנניםʿ is not simply the normal Hebrew word for ostrich. Translation commentary stresses the exceptional uncertainty of the line. Arthur Walker-Jones has argued at length that the traditional ostrich identification is wrong and proposes a sandgrouse-type bird, noting that several features of vv.13–18 can fit sandgrouse behavior. citeturn23search29turn18search9turn23search7
+#### Standard MT-Oriented Partitioning
 
-The lossy procedure says: **stop trying to identify the species too early.**
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎צִיָּה | Syh | Standard lexical/syntactic construal: drought | drought |
+| ‎חֹם | hm | Standard lexical/syntactic construal: heat | heat |
+| ‎יִגְזְלוּ | ygzlw | Standard lexical/syntactic construal: steal | steal |
+| ‎מֵימֵי־שֶׁלֶג | mymyslg | Standard lexical/syntactic construal: snow-water | snow-water |
+| ‎שְׁאוֹל | s'wl | Standard lexical/syntactic construal: Sheol | Sheol |
+| ‎חָטָאוּ | hT'w | Standard lexical/syntactic construal: sinners | sinners |
 
-ʿKNP RNNYM NʿLSHʿ gives us something like:
+#### Bottom-Up Comparative Partitioning
 
-> **wing + noisy/crying/rejoicing creatures + exult/flap**
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎צִיָּה | Syh | ṢY/ṢḤY: dry | drought |
+| ‎חֹם | hm | ḤMM (Arm); emēmu (Akk) | heat |
+| ‎יִגְזְלוּ | ygzlw | GZL (Arm/NWS): seize, steal | steal |
+| ‎מֵימֵי־שֶׁלֶג | mymyslg | ŠLG (Akk/Arm): snow | snow-water |
+| ‎שְׁאוֹל | s'wl | ŠʾL (NWS): underworld | Sheol |
+| ‎חָטָאוּ | hT'w | ḤṬʾ (NWS); ḫaṭû (Akk) | sinners |
 
-and the second colon contrasts its wing with the ʿʾBRH ... WNṢHʿ, pinion and plumage, of the ʿHSYDHʿ, the stork.
+#### Standard English Translation
 
-So a pre-dictionary translation is:
+> Drought and heat consume snow-water; so Sheol consumes those who have sinned.
 
-> **“The wing of the crying bird beats joyfully—but is it a storkʾs pinion and plumage?”**
+#### Our English Translation
 
-That is, in my judgment, better philology than putting **ostrich** into the lexical layer. The larger passage can then decide whether the animal is ostrich, sandgrouse, or another desert bird. The consonants do not.
+> As drought and heat steal the snowmelt, [you say] Sheol steals away the sinner.
 
-**The notorious Leviathan transition**
+#### Contextual Fit
 
-The Hebrew and common English verse numbering diverge here: MT 41:1 corresponds to English 41:9. Driver and Gray explicitly label MT 41:1–3 as English 41:9–11 and note that the passage has generated numerous conjectures. citeturn22view3 The WLC/Mechon-Mamre text confirms the sequence. citeturn24view9
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 8.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +1.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
 
-| Ref. | Hebrew original | Lossy Semitic ASCII | Comparative radical candidates | Literal English from the consonants | Fluid / interpretive reconstruction |
-|---|---|---|---|---|---|
-| **41:1 MT / Eng 41:9** | הֵן־תֹּחַלְתּוֹ נִכְזָבָה הֲגַם אֶל־מַרְאָיו יֻטָּל | ʿhnthltwnkzbhhgmʾlmrʾywyTlʿ | ʿKZBʿ (Uga?/Arm: fail/lie) | “Look, his hope is disappointed; even at his appearances/sight is [one] cast down?” | **“Look—any hope of taking him is delusion; at the mere sight of him a man collapses.”** |
-| **41:2 MT / Eng 41:10** | לֹא־אַכְזָר כִּי יְעוּרֶנּוּ וּמִי הוּא לְפָנַי יִתְיַצָּב | ʿlʾʾkzrkyy\ʿwrnwwmyhwʾlpnyytySbʿ | ʿYṢBʿ (Uga?/NWS: stand); ʿʿWRʿ (Arm?/NWS: rouse) | “No fierce one [exists] who would rouse him; and who is he who can stand before me?” | **“No one is fierce enough to rouse Leviathan—so who, then, can stand against me?”** |
-| **41:3 MT / Eng 41:11** | מִי הִקְדִּימַנִי וַאֲשַׁלֵּם תַּחַת כָּל־הַשָּׁמַיִם לִי־הוּא | ʿmyhqdymnywʾslmthtklhsmymlyhwʾʿ | ʿQDMʿ (Uga/Akk: front, precede); ʿŠLMʿ (Uga/Akk: completeness/payment semantic family) | “Who has preceded me, that I should repay? Under all the heavens it is mine.” | **“Who has ever put me in his debt, so that I owe him repayment? Everything under heaven is mine.”** |
-| **41:4 MT / Eng 41:12** | כתיב: לֹא־אַחֲרִישׁ בַּדָּיו וּדְבַר־גְּבוּרוֹת וְחִין עֶרְכּוֹ; קרי begins לוֹ | ʿlʾʾhrysbdywwdbrgbwrwtwhyn\ʿrkwʿ | ʿGBRʿ (Uga/NWS: strength); ʿʿRKʿ (Arm/Uga?: arrange/set); ʿBDʿ (NWS: member/branch?) | Ketiv: “I will not be silent about his parts, the matter of mighty deeds, and the grace of his arrangement.” | **“I will not pass over his limbs, his tremendous strength, or the elegance of his construction.”** |
+**Philological confidence:** high.
 
-The Masoretic tradition itself preserves difficulty in 41:4: OSHB marks ʿלאʿ as the ketiv and ʿלוʿ as the qere. fileciteturn0file1 Mechon-Mamre likewise displays the two traditions. citeturn24view9 For the excavation experiment, the **ketiv consonants deserve first place** because that is the written layer we are pretending to discover.
+#### Analysis
 
-There is an extraordinarily tempting emendation in 41:2: change ʿלפניʿ, “before me,” to ʿלפניוʿ, “before him.” That would produce perfect creature-to-creature parallelism:
+The first colon supplies the predicate for the second: drought and heat “steal” snow-water; by ellipsis Sheol “steals” sinners. Parallelism supplies the missing operator. The added “[you say]” continues the discourse-frame proposal from v.18.
 
-> Who dares rouse **him**?  
-> Who can stand before **him**?
 
-It requires merely adding a final waw, exactly the sort of weak mater/suffix letter the proposed procedure tells us not to fetishize.
+### Job 24:20
 
-And I would nevertheless **reject it**.
+**Masoretic:** ‎יִשְׁכָּחֵהוּ רֶחֶם מְתָקוֹ רִמָּה לֹא־יִזָּכֵר וַתִּשָּׁבֵר כָּעֵץ עַוְלָה
 
-Why? Because the transmitted reading makes excellent rhetorical sense. God deliberately reasons from Leviathan to himself:
+**Raw:** ‎ישכחהורחםמתקורמהלאיזכרותשברכעץעולה
 
-> You cannot provoke **that creature**.  
-> Therefore who can stand before **me**, its maker?
+**Lossy:** `yskhhwrhmmtqwrmhl'yzkrwtsbrk3S3wlh`
 
-The next verse then generalizes the claim: nobody has put God in debt because everything under heaven belongs to him. What initially looks like a corrupt pronoun becomes a carefully constructed rhetorical turn. The surrounding speaker identity is the error-correcting information.
+#### Standard MT-Oriented Partitioning
 
-That is a major methodological result: **parallelism alone would make us emend the text incorrectly; discourse structure rescues the MT.**
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎יִשְׁכָּחֵהוּ | yskhhw | Standard lexical/syntactic construal: forgets him | forgets him |
+| ‎רֶחֶם | rhm | Standard lexical/syntactic construal: womb | womb |
+| ‎מְתָקוֹ | mtqw | Standard lexical/syntactic construal: finds sweet | finds sweet |
+| ‎רִמָּה | rmh | Standard lexical/syntactic construal: worm | worm |
+| ‎יִזָּכֵר | yzkr | Standard lexical/syntactic construal: remembered | remembered |
+| ‎תִּשָּׁבֵר | tsbr | Standard lexical/syntactic construal: breaks | breaks |
+| ‎עַוְלָה | 3wlh | Standard lexical/syntactic construal: evildoing | evildoing |
 
-Pope entertained much more radical reconstructions in this region, including mythological possibilities, while Driver and Gray survey numerous conjectures. citeturn22view3turn4view3 On the present bottom-up method, however, MT 41:1–4 mostly survives. Verse 4 has unusual vocabulary and a ketiv/qere complication, but once ʿבדיוʿ is allowed its anatomical “members/limbs” sense and ʿערכוʿ is understood as arrangement/build, the progression into the detailed anatomy of Leviathan in vv.5ff is exactly right.
+#### Bottom-Up Comparative Partitioning
 
-**Six dialogue lines where syntax matters more than corruption**
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎יִשְׁכָּחֵהוּ | yskhhw | ŠKḤ: forget | forgets him |
+| ‎רֶחֶם | rhm | RḤM (Uga/Arm): womb | womb |
+| ‎מְתָקוֹ | mtqw | MTQ (Uga/Arm); matāqu (Akk): sweet | finds sweet |
+| ‎רִמָּה | rmh | rimmatu (Akk): maggot/worm | worm |
+| ‎יִזָּכֵר | yzkr | ZKR/DKR (Akk/Uga/Arm) | remembered |
+| ‎תִּשָּׁבֵר | tsbr | ŠBR; šebēru (Akk): break | breaks |
+| ‎עַוְלָה | 3wlh | ʿWL: injustice/wickedness | evildoing |
 
-| Ref. | Hebrew original | Lossy Semitic ASCII | Comparative radical candidates | Literal English from the consonants | Fluid / interpretive reconstruction |
-|---|---|---|---|---|---|
-| **6:14** | לַמָּס מֵרֵעֵהוּ חָסֶד וְיִרְאַת שַׁדַּי יַעֲזוֹב | ʿlmsmr\ʿhwhsdwyrʾtsdyy\ʿzwbʿ | ʿMSSʿ (comparative match uncertain); ʿHSDʿ (NWS loyalty/faithfulness semantic field) | “For the melting/despairing one—from his friend—loyalty; and the fear of Shaddai he abandons.” | **“A man whose courage is melting deserves loyalty from his friend—even when his fear of Shaddai is giving way.”** |
-| **36:19** | הֲיַעֲרֹךְ שׁוּעֲךָ לֹא בְצָר וְכֹל מַאֲמַצֵּי־כֹחַ | ʿhy\ʿrksw\ʿklʾbSrwklmʾmSykhʿ | ʿʿRKʿ (NWS/Arm: arrange, assess); ʿWSʿʿ (Arb, comparative: breadth/ample means) | “Will your *šûaʿ* be equal/arrayed—not in distress—and all exertions of strength?” | **Best tentative sense: “Can your wealth/resources keep you out of straits—or all your strongest exertions?”** |
-| **11:12** | וְאִישׁ נָבוּב יִלָּבֵב וְעַיִר פֶּרֶא אָדָם יִוָּלֵד | ʿwʾysnbwbylbbw\ʿyrprʾʾdmywldʿ | ʿLBBʿ (Uga ʿlbʿ; Akk ʿlibbuʿ: heart/mind); ʿNBBʿ (Arm?/Syr?: hollow) | “A hollow man gets a heart, and a wild-ass colt is born a human.” | **“An empty-headed man will acquire sense when a wild donkey is born human.”** In other words: never. |
-| **10:22** | אֶרֶץ עֵיפָתָה כְּמוֹ אֹפֶל צַלְמָוֶת וְלֹא סְדָרִים וַתֹּפַע כְּמוֹ־אֹפֶל | ʿʾrS\ʿypthkmwʾplSlmwtwlʾsdrymwtp\ʿkmwʾplʿ | ʿSDRʿ (Arm: arrange/order); ʿSDRʿ (Arb, Driverʾs semantic comparison); ʿYPʿʿ (NWS: shine/appear) | “A land of gloom like darkness, death-shadow and no orders; and it shines like darkness.” | **“A land black as night—death-shadow without order, where even the gleam is darkness.”** |
-| **16:20** | מְלִיצַי רֵעָי אֶל־אֱלוֹהַּ דָּלְפָה עֵינִי | ʿmlySyr\ʿyʾlʾlwhdlph\ʿynyʿ | ʿLṢ/MLṢʿ (Arm/Syr? mocking/interpreting semantic possibilities); ʿDLPʿ (Arm/Syr?: drip) | “My mockers/interpreters—my friends; toward God my eye drips.” | **“My own friends have become my mockers; my eyes pour themselves out to God.”** |
-| **30:11** | כִּי־יִתְרִי פִתַּח וַיְעַנֵּנִי וְרֶסֶן מִפָּנַי שִׁלֵּחוּ | ʿkyytrypthwy\ʿnnywrsnmpnyslhwʿ | ʿWTRʿ (Arb, comparative: bowstring); ʿRSNʿ (NWS/Arm?: bridle/restraint) | “For my cord he loosened and humbled me; and restraint before me they cast away.” | **“He has unstrung me and humbled me; therefore they cast off every restraint in my presence.”** |
+#### Standard English Translation
 
-Driver and Gray call 6:14 “hard and uncertain” and survey radically different grammatical solutions. citeturn21view1 But the surrounding argument gives a remarkably strong semantic constraint: Jobʾs point in chapter 6 is that his companions have failed him like seasonal streams. The natural first colon is therefore **a claim about what a collapsing sufferer is owed by a friend**. The apparent theological shock of the second colon—“he abandons fear of Shaddai”—is precisely what makes the line powerful.
+> The womb forgets him; the worm finds him sweet; he is no longer remembered; wickedness is broken like a tree.
 
-I therefore think the missing English connective is concessive:
+#### Our English Translation
 
-> **Even if** his fear of Shaddai is collapsing.
+> The womb forgets him, the worm feasts on him, his memory disappears, and—so the old doctrine says—the evildoer snaps like a tree.
 
-No Hebrew consonant needs changing. The poet has omitted the logical connective because the semantic relation is recoverable. The common tendency to “repair” Job into saying that anyone who withholds friendship has abandoned fear of God is morally attractive, but it costs more textually. The speakerʾs emotional argument strongly favors:
+#### Contextual Fit
 
-> **A despairing man is owed ḥesed by his friend even at the edge of apostasy.**
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 7.0/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 8.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +1.5 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
 
-That is, in my judgment, one of the experimentʾs strongest gains.
+**Philological confidence:** medium-high.
 
-Job 36:19 genuinely resists us. Driver and Gray themselves label it “very difficult” and discuss whether ʿשועʿ means riches/resources or a cry for help, explicitly comparing an Arabic breadth/ample-means root in defense of the wealth interpretation. citeturn21view3 Here the algorithm does **not** produce a miraculous solution. Parallelism wants two ineffective forms of human power:
+#### Analysis
 
-> your ʿשועʿ  
-> all exertions of strength
+Womb → worm → forgotten → broken tree is coherent decay imagery. The interpretive issue is whether the final clause announces special retribution or continues the quoted doctrine. Read inside the implicit-quotation frame, the verse no longer overturns Job’s argument.
 
-That makes **wealth/resources** slightly better than “cry,” because resources and muscular effort form a clean pair. Hence:
 
-> **“Can your resources keep you out of straits—or all your strongest exertions?”**
+### Job 24:22
 
-But this remains low-to-medium confidence. This is exactly the place to resist the temptation to announce a new Akkadian cognate and pretend the problem has vanished.
+**Masoretic:** ‎וּמָשַׁךְ אַבִּירִים בְּכֹחוֹ יָקוּם וְלֹא־יַאֲמִין בַּחַיִּין
 
-Job 11:12, by contrast, collapses almost completely once parallelism is treated pragmatically instead of grammatically. Driver and Gray speak of the competing interpretations of this notoriously difficult verse. citeturn15view2 The raw semantics are:
+**Raw:** ‎ומשךאביריםבכחויקוםולאיאמיןבחיין
 
-> hollow man → gets a heart  
-> wild-ass foal → is born a human
+**Lossy:** `wmsk'byrymbkhwyqwmwl'y'mynbhyyn`
 
-That is not defective prose. It is an **impossibility proverb**:
+#### Standard MT-Oriented Partitioning
 
-> **An empty-headed man will become wise when a wild donkey gives birth to a human.**
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎וּמָשַׁךְ | wmsk | Standard lexical/syntactic construal: draws/prolongs | draws/prolongs |
+| ‎אַבִּירִים | 'byrym | Standard lexical/syntactic construal: powerful men | powerful men |
+| ‎בְּכֹחוֹ | bkhw | Standard lexical/syntactic construal: by his power | by his power |
+| ‎יָקוּם | yqwm | Standard lexical/syntactic construal: rises | rises |
+| ‎יַאֲמִין | y'myn | Standard lexical/syntactic construal: trusts | trusts |
+| ‎בַּחַיִּין | bhyyn | Standard lexical/syntactic construal: life | life |
 
-The second colon is the error-correcting key to the first. ʿילבבʿ need not be made exotic; “acquire a heart/mind” is the result that the impossible second event tells us will never happen. This is probably Zophar at his most sarcastic.
+#### Bottom-Up Comparative Partitioning
 
-Job 10:22 is similarly better if we resist fixing it. NETʾs notes call attention to the exceptional ʿסדרʿ vocabulary and report comparative attempts to explain it. citeturn2search33 But the ending ʿותפע כמו אפלʿ—roughly, “it shines/gleams like darkness”—may be intentionally paradoxical. Job is describing a land beyond ordinary perceptual distinctions. The best reconstruction is therefore not to normalize the paradox away:
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎וּמָשַׁךְ | wmsk | MŠK (Arm/NWS): draw, extend | draws/prolongs |
+| ‎אַבִּירִים | 'byrym | ʾBR (NWS): strong, mighty | powerful men |
+| ‎בְּכֹחוֹ | bkhw | KḤ: strength | by his power |
+| ‎יָקוּם | yqwm | QWM (Uga/Arm/Akk): rise | rises |
+| ‎יַאֲמִין | y'myn | ʾMN (NWS): be firm, trust | trusts |
+| ‎בַּחַיִּין | bhyyn | ḤYY (Uga/Arm): life | life |
 
-> **“death-shadow without order, where even the light is dark.”**
+#### Standard English Translation
 
-That sounds odd because Job intends the underworld to sound odd.
+> But he draws/drags mighty men by his strength; one rises and does not trust in life.
 
-Job 16:20 works the same way. Instead of hunting for another noun behind ʿמליציʿ, read the apposition rhetorically:
+#### Our English Translation
 
-> **“My mockers—my friends.”**
+> But [in reality] God keeps the powerful going by his power: a man gets back on his feet even when his life seemed lost.
 
-The phrase is bitter precisely because ʿרעיʿ, “my friends,” identifies the mockers. Then the second colon—Jobʾs eye dripping toward God—fits perfectly. Pope regards the surrounding transmitted text as damaged enough that no single emendation has commanded assent, which is reason to prefer a zero-edit reading wherever one is semantically adequate. citeturn4view2
+#### Contextual Fit
 
-Job 30:11 is especially revealing. Driver and Gray compare Arabic *watar*, “bowstring,” in explaining the cord imagery, and commentators recognize the abrupt movement from a singular agent to plural tormentors. citeturn15view2turn4view0 But Jobʾs situation supplies the missing causal relation:
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 5.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 8.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +3.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
 
-> **God** unstrung/humbled me → **therefore the mob** threw off restraint.
+**Philological confidence:** medium.
 
-Hence:
+#### Analysis
 
-> **“He has unstrung me and humbled me; therefore they cast off every restraint before me.”**
+The report’s synthesis takes v.22 as the turn from quoted retribution to observed reality and supplies God as the implicit subject. This is a discourse-level repair, not a consonantal one. An alternative is to keep the human oppressor as subject; the summary itself notes the subject remains difficult.
 
-Again, no consonant swap is required. The “corruption” is largely the difference between explicit English syntax and brutally compressed Hebrew poetry.
 
-## Where the method beats, matches, or loses to conventional readings
+### Job 24:23
 
-The first major conclusion is somewhat paradoxical: **the proposed radical method works best when it teaches us not to emend radically.**
+**Masoretic:** ‎יִתֶּן־לוֹ לָבֶטַח וְיִשָּׁעֵן וְעֵינֵיהוּ עַל־דַּרְכֵיהֶם
 
-Driver and Grayʾs own textual apparatus effectively validates the first step—strip vocalization, distrust inherited division when necessary, compare the naked consonants—but the strongest solutions above usually arise *before* the d/r swaps and speculative foreign lexemes come into play. citeturn21view0
+**Raw:** ‎יתןלולבטחוישעןועיניהועלדרכיהם
 
-The results fall into four classes.
+**Lossy:** `ytnlwlbThwys3nw3ynyhw3ldrkyhm`
 
-| Passage | What looked broken | What actually repairs it | Verdict |
-|---|---|---|---|
-| Job 24:18–25 | apparently pro-retribution material in Jobʾs anti-retribution speech | implicit quotation/ironic conventional doctrine; then contrast with reality | **Discourse repair is much better than wholesale consonantal reconstruction** |
-| Job 36:33 | thunder + cattle + “rising” looks incoherent | storm behavior and immediate weather context | **MT essentially wins** |
-| Job 38:36 | two nouns whose referents are deeply uncertain | parallelism recovers “paired possessors of weather intelligence,” but not exact identities | **Method narrows semantic field but cannot uniquely decode nouns** |
-| Job 39:13 | “ostrich” and syntax seem unstable | translate the lexical layer species-neutrally as a noisy/rejoicing desert bird | **Improvement over premature zoological identification** |
-| Job 41:1–4 MT | abrupt switch from Leviathan to God | deliberate *a fortiori* rhetoric: if you cannot face the creature, who can face its maker? | **MT beats tempting emendation** |
-| Job 6:14 | grammatical relation between friendship and abandoning fear | implicit concessive: friendship is owed *even if* faith is failing | **Strong contextual improvement** |
-| Job 36:19 | almost every key item has alternatives | parallelism favors resources + strength, but does not eliminate ambiguity | **Unresolved; do not overclaim** |
-| Job 11:12 | apparently absurd sentence | impossible-condition sarcasm | **Very strong recovery from parallelism** |
-| Job 10:22 | “light like darkness” appears contradictory | contradiction is deliberate underworld imagery | **MT essentially wins** |
-| Job 16:20 | “interpreters/mockers—friends” | appositional insult | **Pointing/semantic repair, no consonantal repair** |
-| Job 30:11 | singular “he” suddenly becomes plural “they” | causal shift: God disables Job, mob exploits him | **Pragmatic repair** |
+#### Standard MT-Oriented Partitioning
 
-The second result is that **speaker personality is unusually powerful in Job**. Greensteinʾs analysis of Jobʾs learned, foreignizing poetic language supports exactly this sort of reading: strange diction is often artistic rather than accidental. citeturn19search0turn19search11 Job, Zophar, Elihu, and the divine speaker are not interchangeable producers of generic Hebrew aphorisms.
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎יִתֶּן | ytn | Standard lexical/syntactic construal: gives | gives |
+| ‎לָבֶטַח | lbTh | Standard lexical/syntactic construal: security | security |
+| ‎וְיִשָּׁעֵן | wys3n | Standard lexical/syntactic construal: leans | leans |
+| ‎עֵינֵיהוּ | 3ynyhw | Standard lexical/syntactic construal: his eyes | his eyes |
+| ‎דַּרְכֵיהֶם | drkyhm | Standard lexical/syntactic construal: their paths | their paths |
 
-That gives us very strong constraints:
+#### Bottom-Up Comparative Partitioning
 
-Job regularly turns conventional wisdom against itself. Therefore an apparently orthodox retribution formula inside Jobʾs protest deserves testing as quotation, sarcasm, or wish before being assigned to a misplaced source.
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎יִתֶּן | ytn | YTN (Uga/Phn); nadānu (Akk) | gives |
+| ‎לָבֶטַח | lbTh | BṬḤ (NWS): security/trust | security |
+| ‎וְיִשָּׁעֵן | wys3n | ŠʿN: lean/support | leans |
+| ‎עֵינֵיהוּ | 3ynyhw | ʿYN (Uga/Phn); īnu (Akk) | his eyes |
+| ‎דַּרְכֵיהֶם | drkyhm | DRK (Uga/Phn): way | their paths |
 
-Zophar is capable of sharp derision. Therefore Job 11:12ʾs human/wild-ass absurdity is more likely an insulting impossibility proverb than textual wreckage.
+#### Standard English Translation
 
-Elihuʾs final speech is dominated by the storm into which Godʾs appearance emerges. Therefore Job 36:33ʾs thunder, livestock, and “rising” naturally belong to storm phenomenology.
+> He gives him security and he leans on it; his eyes are on their ways.
 
-Godʾs speeches use chains of rhetorical questions and arguments from inaccessible creatures to inaccessible divine governance. Therefore the “before **me**” of MT 41:2 need not be changed to “before **him**.”
+#### Our English Translation
 
-The third result concerns cognates. Comparative Semitic is most persuasive when **several constraints converge independently**. Job 30:11 is a good example: a cognate meaning “bowstring” helps because a cord fits the Hebrew consonants, the local metaphor of disabling Job, and the following social humiliation. Job 38:36 is the opposite: a remotely comparable root can generate “mind,” “watcher,” “rooster,” cloud phenomena, and more. Once the cognates point in several directions, the comparative evidence stops being decisive. Driver and Grayʾs history of proposed interpretations there illustrates the problem vividly. citeturn22view2
+> God gives him security to lean on—and keeps his eyes upon their paths.
 
-The fourth result concerns paleographic emendation. The experiment should retain d/r, w/y, matres, and script-specific confusions as a **second-stage rescue mechanism**, but none of the very hardest twenty above actually demands a d/r swap for its best reading. That is significant. The freedom to make those swaps is useful for generating hypotheses, yet a candidate requiring one should lose to a zero-edit reading with equally good semantics. Documented scribal confusions are real, but their existence is not evidence that a particular confusing verse contains one. citeturn20search5turn20search7
+#### Contextual Fit
 
-Job 41:2 is the perfect negative control. Adding a single waw to make ʿלפניʿ → ʿלפניוʿ creates prettier local parallelism. A naive “parallelism = error-correction code” algorithm would therefore make the edit. But the larger rhetorical context says not to. **Error correction must operate hierarchically: colon → verse → paragraph → speaker → book.**
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 6.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 8.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +2.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
 
-That suggests a more rigorous version of the proposed algorithm:
+**Philological confidence:** medium.
 
-> **First strip the Masoretic interpretation, not the consonants.**  
-> Recover the consonants, possible divisions, and radical families.  
-> Let parallelism propose a semantic slot.  
-> Let immediate context constrain that slot.  
-> Let speaker identity and argument constrain it again.  
-> Only then consult comparative Semitic.  
-> Use ancient witnesses as independent checks.  
-> Only after those fail should paleographic substitution become active.  
-> A reconstructed reading must explain why the transmitted reading arose.
+#### Analysis
 
-That last condition is essential. A good conjecture is not merely a better sentence. It should offer some account of how *this* Hebrew string could have resulted from *that* earlier reading.
+The consonants leave the subject and pronoun references underdetermined. The report reads the implicit subject as God, which yields the disturbing point that the wicked enjoy security under divine observation. The gain is chapter-level coherence, but the subject assignment should remain marked as interpretive.
 
-## Bottom-line reconstruction
 
-The first-principles exercise produces a more interesting result than “Job is secretly garbled Akkadian/Aramaic.”
+### Job 24:24
 
-There really is reason to loosen the Masoretic vowels and divisions aggressively. Driver and Gray themselves formalized almost exactly that operation, and Jobʾs extraordinary foreignizing vocabulary makes cross-Semitic comparison indispensable. citeturn21view0turn19search11 There is also real textual damage in the book: Pope is explicit that some passages remain corrupt or obscure, with Job 24:18–20, 22–25 among the most conspicuous. citeturn4view0
+**Masoretic:** ‎רוֹמּוּ מְּעַט וְאֵינֶנּוּ וְהֻמְּכוּ יִקָּפְצוּן וּכְרֹאשׁ שִׁבֹּלֶת יִמָּלוּ
 
-But after running the proposed approach from the bottom up, the most productive principle is:
+**Raw:** ‎רומומעטואיננווהמכויקפצוןוכראששבלתימלו
+
+**Lossy:** `rwmwm3Tw'ynnwwhmkwyqpSwnwkr'ssbltymlw`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎רוֹמּוּ | rwmw | Standard lexical/syntactic construal: rise | rise |
+| ‎מְּעַט | m3T | Standard lexical/syntactic construal: briefly | briefly |
+| ‎וְאֵינֶנּוּ | w'ynnw | Standard lexical/syntactic construal: gone | gone |
+| ‎וְהֻמְּכוּ | whmkw | Standard lexical/syntactic construal: sink | sink |
+| ‎יִקָּפְצוּן | yqpSwn | Standard lexical/syntactic construal: gather | gather |
+| ‎שִׁבֹּלֶת | sblt | Standard lexical/syntactic construal: grain | grain |
+| ‎יִמָּלוּ | ymlw | Standard lexical/syntactic construal: cut off | cut off |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎רוֹמּוּ | rwmw | RWM (Uga/Arm): rise | rise |
+| ‎מְּעַט | m3T | MʿṬ: little | briefly |
+| ‎וְאֵינֶנּוּ | w'ynnw | ʾYN: nonexistence | gone |
+| ‎וְהֻמְּכוּ | whmkw | MKK: sink/be low | sink |
+| ‎יִקָּפְצוּן | yqpSwn | QPṢ (Arm/NWS): close/gather | gather |
+| ‎שִׁבֹּלֶת | sblt | šibiltu/šubultu (Akk): ear of grain | grain |
+| ‎יִמָּלוּ | ymlw | MLL (Arm/NWS): cut/wither | cut off |
+
+#### Standard English Translation
+
+> They are raised briefly and then are gone; they are brought low, gathered up; like the head of an ear of grain they are cut off.
+
+#### Our English Translation
+
+> They rise for a little while and then are gone; they sink and are gathered like everyone else, cut down like the tops of grain.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 8.0/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +1.5 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** medium-high.
+
+#### Analysis
+
+The report treats ordinary mortality as the key: they rise, disappear, and are cut down like grain. This supports Job’s larger complaint if death is universal rather than a distinctive judicial intervention against the wicked.
+
+
+### Job 24:25
+
+**Masoretic:** ‎וְאִם־לֹא אֵפוֹ מִי יַכְזִיבֵנִי וְיָשֵׂם לְאַל מִלָּתִי
+
+**Raw:** ‎ואםלאאפומייכזיבניוישםלאלמלתי
+
+**Lossy:** `w'ml''pwmyykzybnywysml'lmlty`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎אֵפוֹ | 'pw | Standard lexical/syntactic construal: then | then |
+| ‎יַכְזִיבֵנִי | ykzybny | Standard lexical/syntactic construal: prove false | prove false |
+| ‎וְיָשֵׂם | wysm | Standard lexical/syntactic construal: make | make |
+| ‎לְאַל | l'l | Standard lexical/syntactic construal: nothing | nothing |
+| ‎מִלָּתִי | mlty | Standard lexical/syntactic construal: argument | argument |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎אֵפוֹ | 'pw | particle: then/indeed | then |
+| ‎יַכְזִיבֵנִי | ykzybny | KZB/KDB (Uga/Arm): lie, fail | prove false |
+| ‎וְיָשֵׂם | wysm | ŠYM (Uga/Arm): put | make |
+| ‎לְאַל | l'l | ʾL: nothing | nothing |
+| ‎מִלָּתִי | mlty | MLL; millā (Arm): word | argument |
+
+#### Standard English Translation
+
+> And if not, then who will make me a liar and reduce my word to nothing?
+
+#### Our English Translation
+
+> And if that is not how things are, who can prove me false and reduce my argument to nothing?
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 10.0/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 10.0/10 | The standard and reconstructed readings fit the context equally well. |
+| Improvement | +0.0 | The standard and reconstructed readings fit the context equally well. |
+
+**Philological confidence:** very high.
+
+#### Analysis
+
+The closing challenge is straightforward: falsify the description if it is wrong. It strongly supports reading the preceding material as Job’s coherent argument rather than as an accidental insertion of the friends’ theology.
+
+
+### Job 36:33
+
+**Masoretic:** ‎יַגִּיד עָלָיו רֵעוֹ מִקְנֶה אַף עַל־עוֹלֶה
+
+**Raw:** ‎יגידעליורעומקנהאףעלעולה
+
+**Lossy:** `ygyd3lywr3wmqnh'p3l3wlh`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎יַגִּיד | ygyd | Standard lexical/syntactic construal: announces | announces |
+| ‎רֵעוֹ | r3w | Standard lexical/syntactic construal: thunder/noise | thunder/noise |
+| ‎מִקְנֶה | mqnh | Standard lexical/syntactic construal: livestock | livestock |
+| ‎עוֹלֶה | 3wlh | Standard lexical/syntactic construal: rising | rising |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎יַגִּיד | ygyd | NGD (NWS): tell/announce | announces |
+| ‎רֵעוֹ | r3w | Rʿ/RʿM? crash, roar comparandum | thunder/noise |
+| ‎מִקְנֶה | mqnh | QNY (Uga): acquire/possess; miqneh = livestock | livestock |
+| ‎עוֹלֶה | 3wlh | ʿLY (Uga/NWS): rise | rising |
+
+#### Standard English Translation
+
+> His noise tells concerning him; cattle too, concerning what rises.
+
+#### Our English Translation
+
+> His thunder announces his approach; even the livestock sense the storm rising.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 4.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +5.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** high.
+
+#### Analysis
+
+The immediate context is lightning and thunder, and 37:2 continues with God’s roaring voice. Reading the difficult line as primitive storm observation lets both cola lock together: thunder announces the storm; cattle react to its approach. No consonantal emendation is needed.
+
+
+### Job 38:36
+
+**Masoretic:** ‎מִי־שָׁת בַּטֻּחוֹת חָכְמָה אוֹ מִי־נָתַן לַשֶּׂכְוִי בִינָה
+
+**Raw:** ‎מישתבטחותחכמהאומינתןלשכויבינה
+
+**Lossy:** `mystbThwthkmh'wmyntnlskwybynh`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎בַּטֻּחוֹת | bThwt | Standard lexical/syntactic construal: weather-sign creature? | weather-sign creature? |
+| ‎חָכְמָה | hkmh | Standard lexical/syntactic construal: wisdom | wisdom |
+| ‎לַשֶּׂכְוִי | lskwy | Standard lexical/syntactic construal: watcher-bird? | watcher-bird? |
+| ‎בִינָה | bynh | Standard lexical/syntactic construal: understanding | understanding |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎בַּטֻּחוֹת | bThwt | TWH (NWS): cover/coat; uncertain noun | weather-sign creature? |
+| ‎חָכְמָה | hkmh | ḤKM (NWS): wisdom | wisdom |
+| ‎לַשֶּׂכְוִי | lskwy | SKY/SKW (Arm): look/watch; uncertain noun | watcher-bird? |
+| ‎בִינָה | bynh | BYN (NWS): understand | understanding |
+
+#### Standard English Translation
+
+> Who put wisdom in the inward parts, or gave understanding to the mind?
+
+#### Our English Translation
+
+> Who endowed the weather-sign creature with wisdom, or gave the watcher understanding?
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 5.0/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 8.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +3.5 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** low-to-medium.
+
+#### Analysis
+
+The nouns טחות and שכוי are deeply uncertain. The surrounding sequence is clouds → lightning → v.36 → clouds/rain, which strongly favors a meteorological semantic field over an abrupt excursus on the human psyche. “Ibis / rooster” is a plausible concretization, not a secure lexical recovery.
+
+
+### Job 39:13
+
+**Masoretic:** ‎כְּנַף־רְנָנִים נֶעֱלָסָה אִם־אֶבְרָה חֲסִידָה וְנֹצָה
+
+**Raw:** ‎כנףרנניםנעלסהאםאברהחסידהונצה
+
+**Lossy:** `knprnnymn3lsh'm'brhhsydhwnSh`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎כְּנַף | knp | Standard lexical/syntactic construal: wing | wing |
+| ‎רְנָנִים | rnnym | Standard lexical/syntactic construal: crying/noisy creatures | crying/noisy creatures |
+| ‎נֶעֱלָסָה | n3lsh | Standard lexical/syntactic construal: beats/exults | beats/exults |
+| ‎אֶבְרָה | 'brh | Standard lexical/syntactic construal: pinion | pinion |
+| ‎חֲסִידָה | hsydh | Standard lexical/syntactic construal: stork | stork |
+| ‎נֹצָה | nSh | Standard lexical/syntactic construal: plumage | plumage |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎כְּנַף | knp | KNP (Uga/NWS): wing | wing |
+| ‎רְנָנִים | rnnym | RNN (NWS): cry/rejoice | crying/noisy creatures |
+| ‎נֶעֱלָסָה | n3lsh | ʿLS? exult/rejoice; difficult | beats/exults |
+| ‎אֶבְרָה | 'brh | ʾBR (Uga?/NWS): pinion/wing | pinion |
+| ‎חֲסִידָה | hsydh | ḤSYD: stork | stork |
+| ‎נֹצָה | nSh | NṢH: feather/plumage | plumage |
+
+#### Standard English Translation
+
+> The wing of the ostrich rejoices, but are her pinions and feathers like the stork’s?
+
+#### Our English Translation
+
+> The noisy desert bird beats its wings joyfully—but are those a stork’s pinions and plumage?
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 6.0/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.0/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +3.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** medium-high.
+
+#### Analysis
+
+The source report argues that רננים should not be lexicalized too early as “ostrich.” The consonants securely give wing + crying/rejoicing creature + wing action, with a contrast against the stork’s pinion/plumage. Species identification should remain a second-stage zoological inference.
+
+
+### Job 41:1 MT / Eng 41:9
+
+**Masoretic:** ‎הֵן־תֹּחַלְתּוֹ נִכְזָבָה הֲגַם אֶל־מַרְאָיו יֻטָּל
+
+**Raw:** ‎הןתחלתונכזבההגםאלמראיויטל
+
+**Lossy:** `hnthltwnkzbhhgm'lmr'ywyTl`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎תֹּחַלְתּוֹ | thltw | Standard lexical/syntactic construal: hope | hope |
+| ‎נִכְזָבָה | nkzbh | Standard lexical/syntactic construal: is delusion | is delusion |
+| ‎מַרְאָיו | mr'yw | Standard lexical/syntactic construal: appearance | appearance |
+| ‎יֻטָּל | yTl | Standard lexical/syntactic construal: collapses | collapses |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎תֹּחַלְתּוֹ | thltw | YḤL: hope/wait | hope |
+| ‎נִכְזָבָה | nkzbh | KZB (Uga/Arm): fail/lie | is delusion |
+| ‎מַרְאָיו | mr'yw | RʾY: sight/appearance | appearance |
+| ‎יֻטָּל | yTl | NṬL/ṬWL semantic field: cast down | collapses |
+
+#### Standard English Translation
+
+> Look, his hope is disappointed; even at his appearance one is cast down.
+
+#### Our English Translation
+
+> Look—any hope of taking him is delusion; at the mere sight of him a man collapses.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 8.0/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +1.5 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** high.
+
+#### Analysis
+
+The clause becomes natural once “hope” is interpreted concretely as hope of capturing Leviathan. No consonantal change is required.
+
+
+### Job 41:2 MT / Eng 41:10
+
+**Masoretic:** ‎לֹא־אַכְזָר כִּי יְעוּרֶנּוּ וּמִי הוּא לְפָנַי יִתְיַצָּב
+
+**Raw:** ‎לאאכזרכייעורנוומיהואלפנייתיצב
+
+**Lossy:** `l''kzrkyy3wrnwwmyhw'lpnyytySb`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎אַכְזָר | 'kzr | Standard lexical/syntactic construal: fierce | fierce |
+| ‎יְעוּרֶנּוּ | y3wrnw | Standard lexical/syntactic construal: rouse him | rouse him |
+| ‎לְפָנַי | lpny | Standard lexical/syntactic construal: before me | before me |
+| ‎יִתְיַצָּב | ytySb | Standard lexical/syntactic construal: stand | stand |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎אַכְזָר | 'kzr | ʾKZR: fierce/cruel | fierce |
+| ‎יְעוּרֶנּוּ | y3wrnw | ʿWR (NWS): rouse | rouse him |
+| ‎לְפָנַי | lpny | PN (Uga/Akk): face/before | before me |
+| ‎יִתְיַצָּב | ytySb | YṢB (NWS): stand | stand |
+
+#### Standard English Translation
+
+> No fierce one would rouse him; and who is he who can stand before me?
+
+#### Our English Translation
+
+> No one is fierce enough to rouse Leviathan—so who, then, can stand against me?
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 7.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 10.0/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +2.5 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** very high.
+
+#### Analysis
+
+A tempting emendation changes לפני “before me” to לפניו “before him,” producing prettier local parallelism. The report rejects it because the transmitted text creates a deliberate a-fortiori turn: if no one can face the creature, who can face its maker? This is a useful negative control against over-emending for local parallelism.
+
+
+### Job 41:3 MT / Eng 41:11
+
+**Masoretic:** ‎מִי הִקְדִּימַנִי וַאֲשַׁלֵּם תַּחַת כָּל־הַשָּׁמַיִם לִי־הוּא
+
+**Raw:** ‎מיהקדימניואשלםתחתכלהשמיםליהוא
+
+**Lossy:** `myhqdymnyw'slmthtklhsmymlyhw'`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎הִקְדִּימַנִי | hqdymny | Standard lexical/syntactic construal: put me in debt / precede me | put me in debt / precede me |
+| ‎וַאֲשַׁלֵּם | w'slm | Standard lexical/syntactic construal: repay | repay |
+| ‎תַּחַת | tht | Standard lexical/syntactic construal: under | under |
+| ‎הַשָּׁמַיִם | hsmym | Standard lexical/syntactic construal: heavens | heavens |
+| ‎לִי־הוּא | lyhw' | Standard lexical/syntactic construal: it is mine | it is mine |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎הִקְדִּימַנִי | hqdymny | QDM (Uga/Akk): precede, be before | put me in debt / precede me |
+| ‎וַאֲשַׁלֵּם | w'slm | ŠLM (Uga/Akk/NWS): complete/pay | repay |
+| ‎תַּחַת | tht | TḤT: under | under |
+| ‎הַשָּׁמַיִם | hsmym | ŠMYM (Uga/NWS): heavens | heavens |
+| ‎לִי־הוּא | lyhw' | L + pronoun: mine | it is mine |
+
+#### Standard English Translation
+
+> Who has preceded me, that I should repay? Under all the heavens it is mine.
+
+#### Our English Translation
+
+> Who has ever put me in his debt, so that I owe him repayment? Everything under heaven is mine.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 8.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +1.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** high.
+
+#### Analysis
+
+QDM + ŠLM yields a natural debt/repayment idiom in context. The verse generalizes the a-fortiori claim of v.2: nobody has a prior claim on God because everything under heaven belongs to him.
+
+
+### Job 41:4 MT / Eng 41:12
+
+**Masoretic:** ‎לֹא־אַחֲרִישׁ בַּדָּיו וּדְבַר־גְּבוּרוֹת וְחִין עֶרְכּוֹ
+
+**Raw:** ‎לאאחרישבדיוודברגבורותוחיןערכו
+
+**Lossy:** `l''hrysbdywwdbrgbwrwtwhyn3rkw`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎אַחֲרִישׁ | 'hrys | Standard lexical/syntactic construal: be silent | be silent |
+| ‎בַּדָּיו | bdyw | Standard lexical/syntactic construal: limbs | limbs |
+| ‎גְּבוּרוֹת | gbwrwt | Standard lexical/syntactic construal: strength | strength |
+| ‎חִין | hyn | Standard lexical/syntactic construal: elegance | elegance |
+| ‎עֶרְכּוֹ | 3rkw | Standard lexical/syntactic construal: construction | construction |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎אַחֲרִישׁ | 'hrys | ḤRŠ: be silent | be silent |
+| ‎בַּדָּיו | bdyw | BD (NWS): member/branch? | limbs |
+| ‎גְּבוּרוֹת | gbwrwt | GBR (Uga/NWS): strength | strength |
+| ‎חִין | hyn | ḤNN/ḤYN semantic field: grace | elegance |
+| ‎עֶרְכּוֹ | 3rkw | ʿRK (Arm/Uga?): arrange/set | construction |
+
+#### Standard English Translation
+
+> I will not be silent about his parts, the matter of mighty deeds, and the grace of his arrangement.
+
+#### Our English Translation
+
+> I will not pass over his limbs, his tremendous strength, or the elegance of his construction.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 7.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.0/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +1.5 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** medium-high.
+
+#### Analysis
+
+The verse has a ketiv/qere complication at לא/לו in the textual tradition. Treating בדיו anatomically as “limbs/members” and ערכו as arrangement/build fits the detailed anatomical catalogue that follows.
+
+
+### Job 6:14
+
+**Masoretic:** ‎לַמָּס מֵרֵעֵהוּ חָסֶד וְיִרְאַת שַׁדַּי יַעֲזוֹב
+
+**Raw:** ‎למסמרעהוחסדויראתשדייעזוב
+
+**Lossy:** `lmsmr3hwhsdwyr'tsdyy3zwb`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎לַמָּס | lms | Standard lexical/syntactic construal: melting/despairing | melting/despairing |
+| ‎מֵרֵעֵהוּ | mr3hw | Standard lexical/syntactic construal: from his friend | from his friend |
+| ‎חָסֶד | hsd | Standard lexical/syntactic construal: loyalty | loyalty |
+| ‎יִרְאַת | yr't | Standard lexical/syntactic construal: fear | fear |
+| ‎שַׁדַּי | sdy | Standard lexical/syntactic construal: Shaddai | Shaddai |
+| ‎יַעֲזוֹב | y3zwb | Standard lexical/syntactic construal: gives way / abandons | gives way / abandons |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎לַמָּס | lms | MSS: melt/dissolve; comparative match uncertain | melting/despairing |
+| ‎מֵרֵעֵהוּ | mr3hw | Rʿ: friend/companion | from his friend |
+| ‎חָסֶד | hsd | ḤSD (NWS): loyalty/faithfulness | loyalty |
+| ‎יִרְאַת | yr't | YRʾ: fear | fear |
+| ‎שַׁדַּי | sdy | ŠDY: divine title | Shaddai |
+| ‎יַעֲזוֹב | y3zwb | ʿZB: leave/abandon | gives way / abandons |
+
+#### Standard English Translation
+
+> For the despairing one, loyalty from his friend; and the fear of Shaddai he abandons.
+
+#### Our English Translation
+
+> A man whose courage is melting deserves loyalty from his friend—even when his fear of Shaddai is giving way.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 4.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +5.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** medium-high.
+
+#### Analysis
+
+The report supplies an implicit concessive relation: friendship is owed even if the sufferer’s fear of Shaddai is collapsing. That fits Job 6’s accusation that the friends have failed him like seasonal streams, and it requires no consonantal change.
+
+
+### Job 36:19
+
+**Masoretic:** ‎הֲיַעֲרֹךְ שׁוּעֲךָ לֹא בְצָר וְכֹל מַאֲמַצֵּי־כֹחַ
+
+**Raw:** ‎היערךשועךלאבצרוכלמאמציכח
+
+**Lossy:** `hy3rksw3kl'bSrwklm'mSykh`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎הֲיַעֲרֹךְ | hy3rk | Standard lexical/syntactic construal: avail / be set | avail / be set |
+| ‎שׁוּעֲךָ | sw3k | Standard lexical/syntactic construal: resources / cry | resources / cry |
+| ‎בְצָר | bSr | Standard lexical/syntactic construal: distress | distress |
+| ‎מַאֲמַצֵּי | m'mSy | Standard lexical/syntactic construal: exertions | exertions |
+| ‎כֹחַ | kh | Standard lexical/syntactic construal: strength | strength |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎הֲיַעֲרֹךְ | hy3rk | ʿRK (NWS/Arm): arrange, assess | avail / be set |
+| ‎שׁוּעֲךָ | sw3k | WSʿ (Arab comparandum): breadth/ample means; or cry | resources / cry |
+| ‎בְצָר | bSr | ṢRR/ BṢR semantic field: straits/distress | distress |
+| ‎מַאֲמַצֵּי | m'mSy | ʾMṢ: be strong | exertions |
+| ‎כֹחַ | kh | KḤ: strength | strength |
+
+#### Standard English Translation
+
+> Will your cry/resources be set in distress, and all exertions of strength?
+
+#### Our English Translation
+
+> Can your wealth/resources keep you out of straits—or all your strongest exertions?
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 4.0/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 7.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +3.5 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** low-to-medium.
+
+#### Analysis
+
+This remains genuinely resistant. Parallelism asks for two ineffective forms of human power: שועך and “all exertions of strength.” That makes “wealth/resources” somewhat better than “cry,” but the lexical issue is not solved decisively.
+
+
+### Job 11:12
+
+**Masoretic:** ‎וְאִישׁ נָבוּב יִלָּבֵב וְעַיִר פֶּרֶא אָדָם יִוָּלֵד
+
+**Raw:** ‎ואישנבובילבבועירפראאדםיולד
+
+**Lossy:** `w'ysnbwbylbbw3yrpr''dmywld`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎אִישׁ | 'ys | Standard lexical/syntactic construal: man | man |
+| ‎נָבוּב | nbwb | Standard lexical/syntactic construal: empty-headed | empty-headed |
+| ‎יִלָּבֵב | ylbb | Standard lexical/syntactic construal: acquires sense | acquires sense |
+| ‎עַיִר | 3yr | Standard lexical/syntactic construal: colt | colt |
+| ‎פֶּרֶא | pr' | Standard lexical/syntactic construal: wild donkey | wild donkey |
+| ‎אָדָם | 'dm | Standard lexical/syntactic construal: human | human |
+| ‎יִוָּלֵד | ywld | Standard lexical/syntactic construal: is born | is born |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎אִישׁ | 'ys | ʾYŠ: man | man |
+| ‎נָבוּב | nbwb | NBB (Arm?/Syr?): hollow | empty-headed |
+| ‎יִלָּבֵב | ylbb | LBB (Uga); libbu (Akk): heart/mind | acquires sense |
+| ‎עַיִר | 3yr | ʿYR: young ass | colt |
+| ‎פֶּרֶא | pr' | PRʾ (NWS): wild ass/onager | wild donkey |
+| ‎אָדָם | 'dm | ʾDM: human | human |
+| ‎יִוָּלֵד | ywld | YLD (Uga); walādu (Akk) | is born |
+
+#### Standard English Translation
+
+> A hollow man gets a heart, and a wild-ass colt is born a human.
+
+#### Our English Translation
+
+> An empty-headed man will acquire sense when a wild donkey is born human.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 3.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 10.0/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +6.5 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** high.
+
+#### Analysis
+
+The second colon decodes the first as an impossibility proverb. “A wild donkey is born human” is the absurd condition under which an empty-headed person acquires a mind. The verse is sarcastic, not necessarily corrupt.
+
+
+### Job 10:22
+
+**Masoretic:** ‎אֶרֶץ עֵיפָתָה כְּמוֹ אֹפֶל צַלְמָוֶת וְלֹא סְדָרִים וַתֹּפַע כְּמוֹ־אֹפֶל
+
+**Raw:** ‎ארץעיפתהכמואפלצלמותולאסדריםותפעכמואפל
+
+**Lossy:** `'rS3ypthkmw'plSlmwtwl'sdrymwtp3kmw'pl`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎אֶרֶץ | 'rS | Standard lexical/syntactic construal: land | land |
+| ‎עֵיפָתָה | 3ypth | Standard lexical/syntactic construal: gloom | gloom |
+| ‎אֹפֶל | 'pl | Standard lexical/syntactic construal: darkness | darkness |
+| ‎צַלְמָוֶת | Slmwt | Standard lexical/syntactic construal: death-shadow | death-shadow |
+| ‎סְדָרִים | sdrym | Standard lexical/syntactic construal: order | order |
+| ‎וַתֹּפַע | wtp3 | Standard lexical/syntactic construal: gleam | gleam |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎אֶרֶץ | 'rS | ʾRṢ (Uga/Phn); erṣetu (Akk) | land |
+| ‎עֵיפָתָה | 3ypth | ʿYP/ʿWP? gloom; difficult | gloom |
+| ‎אֹפֶל | 'pl | ʾPL: darkness | darkness |
+| ‎צַלְמָוֶת | Slmwt | ṢLM + MWT comparanda: deep darkness/death-shadow | death-shadow |
+| ‎סְדָרִים | sdrym | SDR (Arm/Arab): arrange/order | order |
+| ‎וַתֹּפַע | wtp3 | YPʿ (NWS): shine/appear | gleam |
+
+#### Standard English Translation
+
+> A land of gloom like darkness, death-shadow and no orders; and it shines like darkness.
+
+#### Our English Translation
+
+> A land black as night—death-shadow without order, where even the gleam is darkness.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 6.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +3.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** high.
+
+#### Analysis
+
+The unusual סדר-form is difficult, but the ending “it shines like darkness” may be intentionally paradoxical underworld imagery rather than corruption. The best reconstruction preserves the contradiction: even the place’s light is dark.
+
+
+### Job 16:20
+
+**Masoretic:** ‎מְלִיצַי רֵעָי אֶל־אֱלוֹהַּ דָּלְפָה עֵינִי
+
+**Raw:** ‎מליצירעיאלאלוהדלפהעיני
+
+**Lossy:** `mlySyr3y'l'lwhdlph3yny`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎מְלִיצַי | mlySy | Standard lexical/syntactic construal: mockers/interpreters | mockers/interpreters |
+| ‎רֵעָי | r3y | Standard lexical/syntactic construal: my friends | my friends |
+| ‎אֱלוֹהַּ | 'lwh | Standard lexical/syntactic construal: God | God |
+| ‎דָּלְפָה | dlph | Standard lexical/syntactic construal: drips/pours | drips/pours |
+| ‎עֵינִי | 3yny | Standard lexical/syntactic construal: my eye | my eye |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎מְלִיצַי | mlySy | LṢ/MLṢ (Arm/Syr?): mocking/interpreting semantic possibilities | mockers/interpreters |
+| ‎רֵעָי | r3y | Rʿ: friend | my friends |
+| ‎אֱלוֹהַּ | 'lwh | ʾL (Uga/Phn): god | God |
+| ‎דָּלְפָה | dlph | DLP (Arm/Syr?): drip | drips/pours |
+| ‎עֵינִי | 3yny | ʿYN (Uga/Akk): eye | my eye |
+
+#### Standard English Translation
+
+> My interpreters/mediators are my friends; toward God my eye drips.
+
+#### Our English Translation
+
+> My own friends have become my mockers; my eyes pour themselves out to God.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 4.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.0/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +4.5 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** medium-high.
+
+#### Analysis
+
+Rather than forcing מליצי into “mediators,” the report reads the first two nouns as a bitter apposition: “my mockers—my friends.” The second colon then naturally describes Job’s tears directed toward God.
+
+
+### Job 30:11
+
+**Masoretic:** ‎כִּי־יִתְרִי פִתַּח וַיְעַנֵּנִי וְרֶסֶן מִפָּנַי שִׁלֵּחוּ
+
+**Raw:** ‎כייתריפתחויענניורסןמפנישלחו
+
+**Lossy:** `kyytrypthwy3nnywrsnmpnyslhw`
+
+#### Standard MT-Oriented Partitioning
+
+| Hebrew unit | Lossy | Standard construal | Standard English |
+| --- | --- | --- | --- |
+| ‎יִתְרִי | ytry | Standard lexical/syntactic construal: my cord/bowstring | my cord/bowstring |
+| ‎פִתַּח | pth | Standard lexical/syntactic construal: loosened | loosened |
+| ‎וַיְעַנֵּנִי | wy3nny | Standard lexical/syntactic construal: humbled me | humbled me |
+| ‎רֶסֶן | rsn | Standard lexical/syntactic construal: restraint | restraint |
+| ‎שִׁלֵּחוּ | slhw | Standard lexical/syntactic construal: cast off | cast off |
+
+#### Bottom-Up Comparative Partitioning
+
+| Hebrew / candidate | Lossy | Comparative evidence | Best English |
+| --- | --- | --- | --- |
+| ‎יִתְרִי | ytry | WTR / Arab watar: bowstring | my cord/bowstring |
+| ‎פִתַּח | pth | PTḤ: open/loosen | loosened |
+| ‎וַיְעַנֵּנִי | wy3nny | ʿNH: afflict/humble | humbled me |
+| ‎רֶסֶן | rsn | RSN (NWS/Arm): bridle/restraint | restraint |
+| ‎שִׁלֵּחוּ | slhw | ŠLḤ: send/cast off | cast off |
+
+#### Standard English Translation
+
+> For my cord he loosened and humbled me; and restraint before me they cast away.
+
+#### Our English Translation
+
+> He has unstrung me and humbled me; therefore they cast off every restraint in my presence.
+
+#### Contextual Fit
+
+| Metric | Rating | Reason |
+| --- | --- | --- |
+| Standard contextual fit | 5.5/10 | The conventional reading is the comparison baseline for this difficult line. |
+| Our contextual fit | 9.5/10 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+| Improvement | +4.0 | The reconstruction better matches the local parallelism, discourse, or speaker argument. |
+
+**Philological confidence:** high.
+
+#### Analysis
+
+The singular “he” and plural “they” become coherent if the first clause refers to God disabling Job and the second to the mob exploiting his humiliation. Comparative Arabic watar “bowstring” supports the “unstrung” metaphor. The missing English relation is causal: therefore.
+
+
+## Synthesis
+
+### Strongest Recoveries
+
+| Passage | Main repair | Result |
+| --- | --- | --- |
+| Job 24:18–25 | Repair the discourse frame before repairing consonants | The apparent pro-retribution block can function as quoted doctrine contrasted with observed reality. |
+| Job 36:33 | Read inside the storm sequence | Thunder announces the approach; livestock react to the rising storm. |
+| Job 38:36 | Let context recover semantic field without pretending to recover exact nouns | Weather-sign intelligence is more likely than an isolated psychology statement, but exact animal identification remains uncertain. |
+| Job 39:13 | Delay species identification | The lexical layer yields a noisy/rejoicing desert bird, not securely “ostrich.” |
+| Job 41:1–4 MT | Preserve the rhetorical shift from creature to creator | The tempting לפני → לפניו emendation is rejected because discourse makes the MT stronger. |
+| Job 6:14 | Supply an implicit concessive relation | Loyalty is owed even when the sufferer’s fear of Shaddai is giving way. |
+| Job 11:12 | Read the second colon as an impossibility key | “A hollow man gets sense when a wild donkey is born human.” |
+| Job 10:22 | Preserve paradoxical underworld imagery | Even the gleam is darkness. |
+| Job 16:20 | Read apposition rhetorically | “My mockers—my friends.” |
+| Job 30:11 | Supply the causal discourse relation | God unstrings Job; therefore the mob casts off restraint. |
+
+### Overall Methodological Result
+
+The most productive principle from the source report is:
 
 > **Treat the consonants as firmer than the grammar, the grammar as firmer than the vowels, and discourse as firmer than the dictionary gloss.**
 
-For the present top twenty, my provisional reconstructed readings are therefore:
+The radical method works best when candidate generation is permissive but candidate selection is conservative. Parallelism is an error-correcting constraint, but it must operate hierarchically: colon → verse → paragraph → speaker → book. A prettier local parallel is not automatically a better reconstruction.
 
-| Verse | Best present reconstruction |
-|---|---|
-| **24:18** | **[You say:] “He is swept away like something light on water; his estate is cursed; he never returns to the vineyards.”** |
-| **24:19** | **“As drought and heat steal snowmelt, [you say] Sheol steals the sinner.”** |
-| **24:20** | **“The womb forgets him, the worm feeds on him, his memory vanishes, and the evildoer is broken like a tree.”** |
-| **24:22** | **“But in reality God sustains the powerful by his power; a man rises again even when life seemed insecure.”** |
-| **24:23** | **“God gives him security to lean on and keeps his eyes on his paths.”** |
-| **24:24** | **“They rise for a little while, then are gone; they sink with everyone else and are cut like the heads of grain.”** |
-| **24:25** | **“If that isnʾt so, who can prove me false and reduce my argument to nothing?”** |
-| **36:33** | **“His thunder announces his approach; even the livestock sense the storm rising.”** |
-| **38:36** | **“Who endowed the weather-sign creature with wisdom, or gave the watcher understanding?”** Possibly ibis/rooster; exact nouns remain uncertain. |
-| **39:13** | **“The noisy desert bird beats its wings joyfully—but are those a storkʾs pinions and plumage?”** Do not insert “ostrich” into the lexical layer. |
-| **41:1 MT** | **“Any hope of taking him is delusion; at the mere sight of him a man collapses.”** |
-| **41:2 MT** | **“No one is fierce enough to rouse him—so who can stand against me?”** Keep ʿלפניʿ, not conjectural ʿלפניוʿ. |
-| **41:3 MT** | **“Who has ever put me in his debt, so that I should repay him? Everything under heaven is mine.”** |
-| **41:4 MT** | **“I will not pass over his limbs, his tremendous strength, or the elegance of his construction.”** Ketiv/qere remains noteworthy. |
-| **6:14** | **“A man whose courage is melting deserves loyalty from his friend—even when his fear of Shaddai is giving way.”** |
-| **36:19** | **“Can your resources keep you out of straits—or all your strongest exertions?”** Low-to-medium confidence. |
-| **11:12** | **“An empty-headed man will acquire sense when a wild donkey is born human.”** |
-| **10:22** | **“A land black as night—death-shadow without order, where even the gleam is darkness.”** |
-| **16:20** | **“My own friends are my mockers; my eyes pour themselves out to God.”** |
-| **30:11** | **“He has unstrung me and humbled me; therefore they cast off every restraint in my presence.”** |
+### Future Expansion Template
 
-The most consequential tentative new synthesis is **Job 24**. Instead of assuming that vv.18–25 are simply a hopeless jumble, the chapter can be read as an argument with an implicit change of discourse level:
-
-> The friendsʾ doctrine says the criminal is swiftly cursed, forgotten, and swallowed by Sheol.  
-> Job points to experience: **God gives powerful criminals security.**  
-> They eventually disappear, yes—but merely as everyone disappears.  
-> That is not the special moral judgment the friends promised.  
-> **“Prove me wrong.”**
-
-That makes Job 24 considerably more coherent without changing its consonantal text.
-
-The second strongest gain is **Job 6:14**. Parallelism plus Jobʾs personality strongly favors a radical ethical assertion rather than an orthodox correction of Job:
-
-> **The point of loyal friendship is precisely that it remains when the suffererʾs faith is disintegrating.**
-
-The third is **Job 11:12**, where the supposedly bizarre grammar becomes transparent once the second colon is allowed to decode the first:
-
-> **A hollow man will acquire a mind when a wild donkey is born human.**
-
-The fourth is methodological: **the hardest text does not necessarily require the most radical reconstruction.** Job 36:33, 10:22, 30:11, and most of MT 41:1–4 become substantially clearer once their semantic and discourse structure is recovered, while their consonants remain almost completely untouched. That outcome is consistent with Greensteinʾs larger account of Job as a poet deliberately exploiting foreignness, rare vocabulary, ambiguity, and linguistic innovation rather than merely transmitting a defective translation. citeturn19search0turn19search11
-
-So the working first principle for the rest of the hundred is not “assume MT is right,” but neither is it “assume something underneath MT is garbled.” It is:
-
-> **Assume there was once a maximally intelligible poem. Strip away later interpretive commitments, use parallelism and discourse to reconstruct its semantic architecture, let the Semitic languages compete for the lexical slots, and charge every consonantal alteration a real evidentiary cost.**
-
-That preserves the genuinely powerful part of the “unknown Semitic inscription” thought experiment while preventing its enormous freedom from manufacturing the answer in advance.
+For each of the remaining eighty ranked verses, future work should add: (1) Masoretic, raw, and lossy forms; (2) standard and bottom-up partitioning tables; (3) ancient-version evidence; (4) comparative Semitic lexical candidates; (5) plausible script-specific grapheme confusions; (6) standard and reconstructed translations; (7) contextual-fit and improvement scores; and (8) a confidence-rated analysis explaining both the gain and the textual cost.
