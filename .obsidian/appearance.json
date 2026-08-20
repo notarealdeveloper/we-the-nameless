@@ -20,7 +20,7 @@
   "textFontFamily": "Noto Sans",
   "interfaceFontFamily": "Noto Sans",
   "monospaceFontFamily": "Noto Sans Mono",
-  "baseFontSize": 16,
+  "baseFontSize": 18,
   "baseFontSizeAction": true,
   "nativeMenus": false
 }
