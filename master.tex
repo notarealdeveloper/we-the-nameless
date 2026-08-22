@@ -492,6 +492,14 @@
     Scale=1.15
 ]{arabic-amiri-regular.ttf}
 
+% Telugu
+\newfontfamily\TeluguFont[
+    Path=\LocalFontPath,
+    Script=Telugu,
+    Renderer=HarfBuzz,
+    Scale=1.00
+]{noto-sans-telugu.ttf}
+
 % Chinese
 \newfontfamily\TraditionalChineseFontA[
     Path=\LocalFontPath,
@@ -1415,6 +1423,10 @@
 
 \newcommand{\arb}[1]{%
     {\leavevmode\textdir TRT\ArabicFont #1}%
+}
+
+\newcommand{\telugu}[1]{%
+    {\leavevmode\TeluguFont #1}%
 }
 
 \newcommand{\akk}[1]{%
