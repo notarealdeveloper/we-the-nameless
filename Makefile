@@ -75,9 +75,6 @@ build-translation: build-prepare
 $(PDF): $(TEX_SOURCES)
 	$(MAKE) BUILD="$(BUILD)" TRANSLATION="$(TRANSLATION)" build-translation
 	$(LATEX) $(LATEXFLAGS) "$(LATEX_INPUT)"
-	@if grep -q 'Rerun to get' "$(BUILD)/$(MAIN).log"; then \
-		$(LATEX) $(LATEXFLAGS) "$(LATEX_INPUT)"; \
-	fi
 	$(MAKE) clean-stray-aux
 	cp "$(BUILD)/$(MAIN).pdf" .
 
