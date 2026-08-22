@@ -4,7 +4,6 @@
   "accentColor": "",
   "enabledCssSnippets": [
     "code",
-    "font-general",
     "font-mono",
     "font-phoenician",
     "font-serif",
@@ -15,7 +14,7 @@
     "ld",
     "proto",
     "tags",
-    "font-like-android"
+    "font-general"
   ],
   "textFontFamily": "Noto Sans",
   "interfaceFontFamily": "Noto Sans",
