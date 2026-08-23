@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Run a command like 'grep -r '\\Table[{]' -C100 0*'
+
+(or equivalently, just look at the output of that command in ./TABLES)
+
+and then try to refactor the definition of \Table{...} in master.tex
+so that:
+
+1. Most of the repeated boilerplate that shows up every time you USE that command
+   is included instead in the definition itself.
+
+2. But whenever any of the tables NEED to be different, the \Table{...} definition
+   should allow adding those differences as needed, either by passing in values for
+   certain optional parameters, or by wrapping the \Table{...} invocation in some
+   other stuff to change its behavior.
+
+3. Try to reproduce the current behavior of all the existing \Table{...} invocations,
+   if it is possible to do so without adding excessive cruft to the \Table{...} definition.
+   The goal is to simplify the invocations of \Table{...} throughout the codebase,
+   so if there's a BIT of semantic change, it's worth it if we can get a significant
+   simplification of the implementation.
+EOF

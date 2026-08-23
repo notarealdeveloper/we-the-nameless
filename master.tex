@@ -1932,15 +1932,26 @@
   \smallskip
 }
 
-\newcommand{\Table}[2]{%
+% Most tables use the same compact presentation.  A nonempty optional argument
+% replaces that setup, so an unusual table can preserve its surrounding setup
+% with \Table[\relax]{...}{...} or provide different local settings directly.
+\newcommand{\Table}[3][]{%
   \par
   \vspace{1em}
-  \begin{center}
-    \color{DefColor}%
-    \begin{tabular}{#1}
-      #2
-    \end{tabular}
-  \end{center}
+  \begingroup
+    \if\relax\detokenize{#1}\relax
+      \scriptsize
+      \setlength{\tabcolsep}{0.35em}%
+    \else
+      #1%
+    \fi
+    \begin{center}
+      \color{DefColor}%
+      \begin{tabular}{#2}
+        #3
+      \end{tabular}
+    \end{center}
+  \endgroup
   \vspace{1em}
 }
 
