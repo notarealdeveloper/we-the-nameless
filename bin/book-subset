@@ -582,7 +582,9 @@ def numbered_book_target(directory):
         aliases=aliases,
         toc_chapters=True,
         passthrough_includes=(
-            frozenset({"10-dudetheyreontome/title"})
+            frozenset({"01-genesis/apocrypha"})
+            if directory == "01-genesis"
+            else frozenset({"10-dudetheyreontome/title"})
             if directory == "10-dudetheyreontome"
             else frozenset()
         ),
@@ -947,7 +949,7 @@ def chapter_link_list(chapters):
     return "\n".join(lines)
 
 
-def build_navigation_overrides(books):
+def build_navigation_overrides(target, books):
     simple_books = {}
     compound_books = {}
     for book in books:
@@ -990,7 +992,15 @@ def build_navigation_overrides(books):
     # Remove default extra links, such as Genesis Apocrypha, unless the subset
     # generator explicitly learns how to include those non-verse sections.
     for book in books:
-        lines.append(rf"\DeclareBookExtraLinkList{{{book['title']}}}{{}}%")
+        if (
+            book["title"] == "Genesis"
+            and "01-genesis/apocrypha" in target.passthrough_includes
+        ):
+            lines.append(r"\DeclareBookExtraLinkList{Genesis}{%")
+            lines.append(r"    \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%")
+            lines.append("}%")
+        else:
+            lines.append(rf"\DeclareBookExtraLinkList{{{book['title']}}}{{}}%")
     lines.append(r"\makeatother")
     return "\n".join(lines)
 
@@ -1028,9 +1038,15 @@ def write_entrypoint(target, preamble, books, build_root):
         "",
         build_title_logo_override(target),
         "",
-        build_navigation_overrides(books),
+        build_navigation_overrides(target, books),
         "",
         build_toc_overrides(target),
+        "",
+        (
+            r"\GenesisApocryphaTocEntrytrue"
+            if "01-genesis/apocrypha" in target.passthrough_includes
+            else ""
+        ),
         "",
         r"\frontmatter",
         r"\hypersetup{pageanchor=false}",
@@ -1098,10 +1114,10 @@ def copy_or_filter_chapter(include, target, target_dir):
 
 
 def selected_include(include, target):
-    if include in SUBSET_EXCLUDED_INCLUDES:
-        return False
     if include in target.passthrough_includes:
         return True
+    if include in SUBSET_EXCLUDED_INCLUDES:
+        return False
     if target.include_prefixes:
         return any(include.startswith(prefix) for prefix in target.include_prefixes)
     if target.court:

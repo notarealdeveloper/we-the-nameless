@@ -3353,6 +3353,9 @@
 }
 
 % \Apocrypha defines an apocryphal book section.
+% Standalone book builds may opt into a TOC entry; the full book leaves it out.
+\newif\ifGenesisApocryphaTocEntry
+\GenesisApocryphaTocEntryfalse
 \newcommand{\Apocrypha}[1]{%
     \clearpage
     \def\CurrentBook{#1 Apocrypha}%
@@ -3360,6 +3363,9 @@
     \def\CurrentTitleBook{\CurrentBook}%
     \phantomsection
     \hypertarget{book.\CurrentBook}{}%
+    \ifGenesisApocryphaTocEntry
+        \addcontentsline{toc}{chapter}{\CurrentBook}%
+    \fi
     \markboth{\CurrentApocryphaHeader}{\CurrentApocryphaHeader}%
     \begingroup
     \centering
