@@ -21,7 +21,7 @@ Whenever you find a bit of commentary in com/ that isn't in eng/, I want you to:
 5. EDIT: DON'T DO DUMB SHIT! I want the book and its code to be simple.
    Don't add \par\smallskip for idiotic reasons to the tex. I want a simple update of the commentary *in the tex files* using the commentary in com/.
 
-6. You should only be touching files of this form this time around:
+6. You should only be editing the following this time around:
 
     01-genesis/36.tex
 
