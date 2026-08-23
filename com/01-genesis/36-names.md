@@ -18,13 +18,13 @@
 
 ² Esau had taken his wives from the daughters of Canaan: Adah, daughter of Elon, the Hittite, and Aholibamah, daughter of Anah, daughter of Zibeon, the Hivite,
 
-| Name | Hebrew | Likely meaning / etymology |
-|---|---|---|
-| Adah | עָדָה (*ʿĀdâ*) | Probably “ornament/adornment”; from עדה, associated with adorning oneself. |
-| Elon | אֵילוֹן (*ʾÊlôn*) | “Oak” or “terebinth”; related to אֵלוֹן. |
+| Name       | Hebrew                      | Likely meaning / etymology                                                                      |
+| ---------- | --------------------------- | ----------------------------------------------------------------------------------------------- |
+| Adah       | עָדָה (*ʿĀdâ*)              | Probably “ornament/adornment”; from עדה, associated with adorning oneself.                      |
+| Elon       | אֵילוֹן (*ʾÊlôn*)           | “Oak” or “terebinth”; related to אֵלוֹן.                                                        |
 | Aholibamah | אָהֳלִיבָמָה (*ʾOholîbāmâ*) | Probably “my tent is a high place” / “tent of the high place”; etymology is somewhat uncertain. |
-| Anah | עֲנָה (*ʿĂnâ*) | Uncertain; probably related to the root ענה, perhaps “answer/respond.” |
-| Zibeon | צִבְעוֹן (*Ṣibʿôn*) | Probably “dyed/colored one” or “hyena”; etymology is uncertain. |
+| Anah       | עֲנָה (*ʿĂnâ*)              | Uncertain; probably related to the root ענה, perhaps “answer/respond.”                          |
+| Zibeon     | צִבְעוֹן (*Ṣibʿôn*)         | Probably “dyed/colored one” or “hyena”; etymology is uncertain.                                 |
 
 
 36:2–3. Adah, daughter of Elon … Aholibamah, daughter of Anah …
