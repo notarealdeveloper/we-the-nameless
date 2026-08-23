@@ -34,4 +34,10 @@ Counts include only the third braced argument (the English text) of each `\Verse
 
 Counts include only the fourth and final braced argument of each `\Verse` in `[01][0-9]-*/*.tex`. TeX commands and commented-out source are excluded; prose inside commentary commands, quotations, and footnotes is included.
 
+---
+
 BMC was ~144,000 words.
+
+As of 2026-08-23:
+- Genesis commentary adds about 175 pages.
+- Samuel commentary adds about 100 pages.
