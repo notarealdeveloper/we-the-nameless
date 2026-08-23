@@ -1197,6 +1197,15 @@ def print_make_targets():
     print(" ".join(sorted(target_aliases())))
 
 
+def print_make_book_targets():
+    names = set()
+    for target in dynamic_book_targets():
+        if target.books and not target.books.intersection(book_titles_by_dir()):
+            continue
+        names.update({target.name, *target.aliases})
+    print(" ".join(sorted(names)))
+
+
 def main():
     parser = argparse.ArgumentParser(description="Generate dynamic source/range subset TeX builds.")
     parser.add_argument("target", nargs="?")
@@ -1208,6 +1217,11 @@ def main():
     )
     parser.add_argument("--list", action="store_true", help="list buildable subset targets")
     parser.add_argument("--make-targets", action="store_true", help="print all callable make targets")
+    parser.add_argument(
+        "--make-book-targets",
+        action="store_true",
+        help="print callable whole-book make targets and aliases",
+    )
     parser.add_argument("--output-name", action="store_true", help="print the canonical output basename for a target")
     args = parser.parse_args()
 
@@ -1217,8 +1231,13 @@ def main():
     if args.make_targets:
         print_make_targets()
         return
+    if args.make_book_targets:
+        print_make_book_targets()
+        return
     if args.target is None:
-        parser.error("target is required unless --list or --make-targets is used")
+        parser.error(
+            "target is required unless --list, --make-targets, or --make-book-targets is used"
+        )
     if args.output_name:
         print(target_output_name(resolve_target(args.target)))
         return

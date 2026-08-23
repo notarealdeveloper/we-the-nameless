@@ -47,6 +47,84 @@ KEEP_COMMENT_BOOKS = {
 }
 
 
+NUMBERED_BOOK_DIR_RE = re.compile(r"^(\d+)-(.+)$")
+COMPOUND_BOOKS = {
+    "1-samuel": ("08-samuel/1-", "Samuel", "I Samuel"),
+    "2-samuel": ("08-samuel/2-", "Samuel", "II Samuel"),
+    "1-kings": ("09-kings/1-", "Kings", "I Kings"),
+    "2-kings": ("09-kings/2-", "Kings", "II Kings"),
+}
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def book_selectors(root, requested):
+    aliases = {}
+    for path in root.iterdir():
+        match = NUMBERED_BOOK_DIR_RE.fullmatch(path.name)
+        if not path.is_dir() or match is None:
+            continue
+        number, slug = match.groups()
+        for name in {path.name, slug, f"{int(number)}-{slug}"}:
+            aliases[name] = path.name
+
+    if requested in COMPOUND_BOOKS:
+        prefix, book, part = COMPOUND_BOOKS[requested]
+        return (prefix,), book, part
+
+    directory = aliases.get(requested)
+    if directory is None:
+        choices = sorted({*aliases, *COMPOUND_BOOKS})
+        raise ValueError(
+            f"unknown book {requested!r}; expected one of: {', '.join(choices)}"
+        )
+    return (f"{directory}/",), None, None
+
+
+def set_commented(line, commented):
+    newline = "\n" if line.endswith("\n") else ""
+    body = line.removesuffix("\n")
+    match = re.match(r"^(\s*)%?\s*(\\(?:include|Book|BookPart)\{[^}]+\})\s*$", body)
+    if match is None:
+        return line
+    indent, command = match.groups()
+    marker = "%" if commented else ""
+    return f"{indent}{marker}{command}{newline}"
+
+
+def edit_book(lines, prefixes, selected_book, selected_part, commented):
+    selected_books = set()
+    current_book = None
+    for line in lines:
+        book_match = BOOK_COMMAND.match(line.rstrip("\n"))
+        include_match = INCLUDE.match(line.rstrip("\n"))
+        if book_match and book_match.group(3) == "Book":
+            current_book = book_match.group(4)
+        elif include_match and any(
+            include_match.group(3).startswith(prefix) for prefix in prefixes
+        ):
+            selected_books.add(current_book)
+
+    output = []
+    current_book = None
+    for line in lines:
+        book_match = BOOK_COMMAND.match(line.rstrip("\n"))
+        include_match = INCLUDE.match(line.rstrip("\n"))
+        selected = False
+        if book_match:
+            _indent, _command, kind, name = book_match.groups()
+            if kind == "Book":
+                current_book = name
+                selected = selected_part is None and name in selected_books
+            elif selected_part is None:
+                selected = current_book in selected_books
+            elif selected_part is not None:
+                selected = current_book == selected_book and name == selected_part
+        elif include_match:
+            selected = any(include_match.group(3).startswith(prefix) for prefix in prefixes)
+        output.append(set_commented(line, commented) if selected else line)
+    return "".join(output)
+
+
 def edit_line(line, keep, keep_books):
     m = BOOK_COMMAND.match(line.rstrip("\n"))
     if m:
@@ -72,6 +150,8 @@ def main():
     g.add_argument("-c", "--comment", action="store_true")
     g.add_argument("--halfcomment", action="store_true")
     g.add_argument("-u", "--uncomment", action="store_true")
+    g.add_argument("--comment-book", metavar="BOOK")
+    g.add_argument("--uncomment-book", metavar="BOOK")
     p.add_argument("files", nargs="+")
     args = p.parse_args()
     keep = None
@@ -85,7 +165,19 @@ def main():
     for name in args.files:
         path = Path(name)
         old = path.read_text()
-        new = "".join(edit_line(line, keep, keep_books) for line in old.splitlines(True))
+        if args.comment_book or args.uncomment_book:
+            requested = args.comment_book or args.uncomment_book
+            try:
+                selectors = book_selectors(ROOT, requested)
+            except ValueError as exc:
+                p.error(str(exc))
+            new = edit_book(
+                old.splitlines(True),
+                *selectors,
+                commented=bool(args.comment_book),
+            )
+        else:
+            new = "".join(edit_line(line, keep, keep_books) for line in old.splitlines(True))
         if new != old:
             path.write_text(new)
 

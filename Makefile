@@ -11,10 +11,13 @@ LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-di
 
 TEX_SOURCES := $(shell find . -path './build' -prune -o -name '*.tex' -print)
 SUBSET_TARGETS := $(shell bin/book-subset --make-targets)
+BOOK_TARGETS := $(shell bin/book-subset --make-book-targets)
+COMMENT_BOOK_TARGETS := $(addprefix comment-,$(BOOK_TARGETS))
+UNCOMMENT_BOOK_TARGETS := $(addprefix uncomment-,$(BOOK_TARGETS))
 
 export TEXMFVAR = $(CACHE)
 
-.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS)
+.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 all: $(PDF) open
 
@@ -29,6 +32,8 @@ help:
 		'  make comment      Comment out everything except the progress subset.' \
 		'  make halfcomment  Comment out everything except the broader half-comment subset.' \
 		'  make uncomment    Uncomment book/include lines in master.tex.' \
+		'  make comment-genesis  Comment only Genesis; book aliases work for every book.' \
+		'  make uncomment-genesis  Uncomment only Genesis; leave every other book unchanged.' \
 		'  make list         List dynamic subset builds.' \
 		'  make J            Build J.pdf: Yahwist text only, including records/poems used by J.' \
 		'  make E            Build E.pdf: Elohist text only.' \
@@ -102,6 +107,12 @@ halfcomment:
 
 uncomment:
 	bin/comments --uncomment $(MAIN).tex
+
+$(COMMENT_BOOK_TARGETS):
+	bin/comments --comment-book "$(@:comment-%=%)" $(MAIN).tex
+
+$(UNCOMMENT_BOOK_TARGETS):
+	bin/comments --uncomment-book "$(@:uncomment-%=%)" $(MAIN).tex
 
 view open: $(PDF)
 	@if command -v xdg-open >/dev/null 2>&1; then \
