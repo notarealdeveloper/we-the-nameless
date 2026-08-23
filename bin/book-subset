@@ -1006,6 +1006,7 @@ def build_toc_overrides(target):
             r"    \phantomsection",
             r"    \hypertarget{book.#1}{}%",
             r"    \def\CurrentBook{#1}%",
+            r"    \SetCurrentBookImageDir{#1}%",
             r"    \BookChapterLinkArray{#1}%",
             r"}",
             r"\renewcommand{\Chapter}[1]{%",
