@@ -22,6 +22,10 @@ In the YHWH and Abe Genesis Apocryphon, right after "Yahweh: You're sure of this
 
 Exodus 28. When P's getting really excited about his clothes, add some English with Niqqud in P style.
 
+## Numbers
+
+Num 21: Check manually. It's insane.
+
 ## Samuel
 
 II Samuel 8. Format this like Genesis 14, but keep it green. This is a summary chapter, like a royal inscription. See Halpern DSD pg 134-135. II Samuel 8 summarizes events that are related in detail 2 chapters later, in the run up to the Bathsheba story. It thus functions as a display inscription.
