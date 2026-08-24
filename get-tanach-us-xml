@@ -12,9 +12,9 @@ declare -A BOOK_NUM=(
     [Josh]=06
     [Judg]=07
     [1Sam]=08
-    [2Sam]=09
-    [1Kgs]=10
-    [2Kgs]=11
+    [2Sam]=08
+    [1Kgs]=09
+    [2Kgs]=09
 )
 
 declare -A BOOK_NAME=(
@@ -25,26 +25,68 @@ declare -A BOOK_NAME=(
     [Deut]=deuteronomy
     [Josh]=joshua
     [Judg]=judges
-    [1Sam]=1-samuel
-    [2Sam]=2-samuel
-    [1Kgs]=1-kings
-    [2Kgs]=2-kings
+    [1Sam]=samuel
+    [2Sam]=samuel
+    [1Kgs]=kings
+    [2Kgs]=kings
 )
 
 while IFS= read -r url; do
     [[ -z "$url" ]] && continue
 
+    # Strip CR if the URL file has Windows line endings.
+    url="${url%$'\r'}"
+
     ref="${url#*\?}"
     start="${ref%%:*}"
 
-    book="${start%%[0-9]*}"
-    chapter="${start#"$book"}"
+    if [[ "$start" =~ ^([12]?[A-Za-z]+)([0-9]+)$ ]]; then
+        book="${BASH_REMATCH[1]}"
+        chapter="${BASH_REMATCH[2]}"
+    else
+        echo "Couldn't parse reference: $start" >&2
+        exit 1
+    fi
+
+    if [[ -z "${BOOK_NUM[$book]+x}" ]]; then
+        echo "Unknown book abbreviation: $book" >&2
+        exit 1
+    fi
 
     dir="src/${BOOK_NUM[$book]}-${BOOK_NAME[$book]}"
-    file=$(printf '%02d.xml' "$chapter")
+
+    case "$book" in
+        1Sam|1Kgs)
+            file=$(printf '1-%02d.xml' "$chapter")
+            ;;
+        2Sam|2Kgs)
+            file=$(printf '2-%02d.xml' "$chapter")
+            ;;
+        *)
+            file=$(printf '%02d.xml' "$chapter")
+            ;;
+    esac
 
     mkdir -p "$dir"
 
-    echo "$url -> $dir/$file"
-    wget -q --show-progress -O "$dir/$file" "$url"
+    target="$dir/$file"
+
+    if [[ -f "$target" ]]; then
+        echo "skip: $target"
+        continue
+    fi
+
+    echo "$url -> $target"
+
+    tmp="${target}.tmp"
+
+    rm -f "$tmp"
+
+    if wget -q --show-progress -O "$tmp" "$url"; then
+        mv "$tmp" "$target"
+    else
+        rm -f "$tmp"
+        echo "Download failed: $url" >&2
+        exit 1
+    fi
 done < "$URLS"

@@ -1,20 +1,36 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Use the data from https://tanach.us/Tanach.html to properly attribute sources to the verses in [01][0-9]-*/*.tex.
+Use the data in src/ (fetched from https://tanach.us/Tanach.html) to properly attribute sources to the verses in [01][0-9]-*/*.tex.
 
 Read master.tex and [01][0-9]-*/*.tex to see how we're currently assigning sources.
 
-Then use the data for each verse, e.g., the XML that's available in the URLs with format https://tanach.us/Server.xml?Gen2:4-2:5
-to assign sources correctly, especially focusing on getting the split location right in verses that are attributed to multiple
-sources with a break in the middle.
+Then use the data for each verse, i.e., the XML that's available in the src/ directory
+to assign sources correctly, especially focusing on getting the split location right
+in verses that are attributed to multiple sources with a break in the middle.
 
-Refer to MULTI-SOURCE-VERSES for a non-exhaustive list of what those verses are, but trust tanach.us over that file.
+Refer to MULTI-SOURCE-VERSES for a non-exhaustive list of what those verses are, but trust the tanach.us data in src/ over that file.
 
 However, if you see any verses in which I've clearly done something manual to modify the Hebrew, leave that alone and don't remove it.
 
 I just want the SPLIT LOCATIONS and SOURCE ATTRIBUTIONS to be updated via both \h?{...} and \e?{...}, I don't want you to edit or remove
 any intra-verse word highlighting I might have done.
 
-Do that now.
+Do that now, and keep working until you're confident that you've represented the source highlighting in src/ in the .tex files.
+
+Also, prefer
+
+    \eJ{...}
+    \eP{...}
+    \eJ{...}
+
+style over
+
+    \eJ{...
+        \eP{...}
+        ...
+    }
+
+don't nest the source assignments. Leave my highlightings and manual changes alone if possible. If you're not sure what to do for any verses,
+write an explanation into ./SOURCE-REPORT.md
 EOF
