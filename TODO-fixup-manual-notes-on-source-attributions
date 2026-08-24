@@ -4,7 +4,9 @@ lord --verbose << "EOF"
 
 Make these changes in the [01][0-9]-*/*.tex files whenever you can, and add each request in a tex comment in the commentary block below what you changed.
 
-When you can't make a given change, write the exact notes in this file that you couldn't carry out into a new file TODO-2, also a bash script in a lord --verbose HERE document like this.
+When you can't make a given change, write the exact notes in this file that you couldn't carry out into the new file I just created for you called TODO-incomplete-manual-fixup. Put the incomplete TODOs from this prompt into the lord --verbose HERE document in a way you'd find understandable later.
+
+Here's the stuff I want you to attempt to fix now, by editing the [01][0-9]-*/*.tex files in this repo. Read master.tex if you need background on my tex macro names and their implementations.
 
 --- 
 

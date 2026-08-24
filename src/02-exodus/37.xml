@@ -1,0 +1,147 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>UXLC</title>
+  <script src="../Javascript/UtilityLib.js" ></script>
+  <script src="../Javascript/XMLLib.js"></script>
+  <script src="../Javascript/LCFacsimile.js" ></script>
+  <script src="../Javascript/Parser.js" ></script>
+  <script src="../Javascript/Tanach_Book.js"></script>
+</head>
+<body style="background-image:url('../Images/Background')" onload="Javascript:init()">
+    <table align="center" width="100%">
+        <tr>
+            <td align="left" valign="top" width="10%">
+                <table align="left" cellpadding="4" valign="top">
+                    <tr>
+                        <td align="left" valign="top"><button onclick="Javascript:setBookMark()" style="border: 1px solid black;font-weight:bold;color:blue;font-size:8pt" title="Press to make this page bookmark-able. Then use the browser's built-in bookmark facility to bookmark the page.">
+                  Bookmark
+                </button></td>
+                    </tr>
+                </table>
+                </td><td align="center" valign="top" width="80%">
+                <table align="center">
+                    <tr>
+                        <td align="center"><span ID="Title" onclick="Javascript:showBookTEIHeader()"
+                            title="Click to see this document's TEI header."  
+                            style="font-family:Times New Roman;font-size:12pt;font-weight:bold;color:blue"></span>
+                       </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <table>
+                                <tr>
+                                    <td><a href="Pages/CitationSyntax.html" style="font-size:12pt;font-weight:normal" title="Click to see how to enter a citation">
+                                       Citation:</a>&nbsp;
+            </td><td>
+                                        <form action="JavaScript:getCitation()" name="excerptinput" style="margin:auto">
+                                                                &nbsp;&nbsp;
+                    <input maxlength="48" name="textfield" size="30" style="background-color:#fcfcf8;                                border-radius:7px;                                    padding:10px 10px 10px 10px;border:3px double black;                                        font-weight:bold;font-family:Times New Roman;                                        font-size:14pt;" title="Enter the Tanach citation here, i.e. Deut 26:5." type="TEXT">
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center"><b><span id="excerpterror" style="color:red">&nbsp;</span></b></td>
+                    </tr>
+                </table>
+            </td><td align="left" valign="top" width="10%">
+                <table align="right" ID="PDTable">
+                    <tr>
+                        <td align="right" colspan="2">
+          &nbsp;
+        </td>
+                    </tr>
+                    <tr title="Change text Layout.">
+                        <td align="left"><span style="font-weight:bold;font-size:10pt">Layout:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td align="right"><select id="LayoutPD" onchange="JavaScript:changeLayout()" style="background-color:#fcfcf8;font-weight:bold;border:1px solid black;font-size:6pt"><option selected="true" value="Full">Full</option><option value="Note-free">Note-free</option><option value="Text-only">Text-only</option><option value="Qere-only">Qere-only</option><option value="Toggle">Toggle view</option></select></td>
+                    </tr>
+                    <tr title="Change text Content.">
+                        <td align="left"><span style="font-weight:bold;font-size:10pt">Content: </span></td><td align="right"><select id="ContentPD" onchange="JavaScript:changeContent()" style="background-color:#fcfcf8;font-weight:bold;border:1px solid black;font-size:6pt;"><option selected="true" value="Accents">Accents</option><option value="Vowels">Vowels</option><option value="Consonants">Consonants</option></select></td>
+                    </tr>
+                    <tr title="Change font family.">
+                        <td align="left"><span style="font-weight:bold;font-size:10pt">Font family:&nbsp;</span></td><td align="right"><select id="FontFamilyPD" onchange="JavaScript:changeFontFamily()" style="background-color:#fcfcf8;font-weight:bold;border:1px solid black;font-size:6pt"><option id="CurrentFontFamily" value="show" selected="true">Taamey D Web</option><option value="change">Change font</option><option value="test">Test font</option></select></td>
+                    </tr>
+                    <tr title="Change font size.">
+                        <td align="left"><span style="font-weight:bold;font-size:10pt">Font size: </span></td>
+                        <td align="right"><select id="FontSizePD" onchange="JavaScript:changeFontSize()" style="background-color:#fcfcf8;font-weight:bold;border:1px solid black;font-size:6pt"><option value="12">12pt</option><option value="14">14pt</option><option value="16">16pt</option><option value="18">18pt</option><option selected="true" value="20">20pt</option><option value="22">22pt</option><option value="24">24pt</option><option value="28">28pt</option><option value="32">32pt</option><option value="40">40pt</option><option value="48">48pt</option><option value="56">56pt</option><option value="64">64pt</option><option value="68">68pt</option><option value="72">72pt</option></select></td>
+                    </tr>
+                    <tr title="Change Documentary Hypothesis display." ID="DHTR">
+                        <td align="left"><span style="font-weight:bold;font-size:10pt">DH: </span></td>
+                        <td align="right" ><select id="DHPD"  onchange="JavaScript:changeDH()" style="background-color:#fcfcf8;font-weight:bold;border:1px solid black;font-size:6pt;"><option value="Off">Off</option><option value="Titles">Titles</option><option value="All">All</option></select></td>
+                    </tr>   
+                </table>
+            </td>
+        </tr>
+    </table>
+    <span id="Text">
+&nbsp;
+</span>
+
+    <p></p>
+    <table width="100%" cellpadding="10pt">
+        <tr>
+            <td align="left" width="45%">
+                <table align="left" border="0pt" cellpadding="5pt" style="border-color:blue; border-collapse:collapse">
+                    <tr>
+                        <td>
+                            <center>
+<!--  
+      
+  Labels (and border) removed 19 Jul 2026.
+                      
+                                <span style="color:black;font-size:10pt;font-style:italic">Choose 
+                                    a Link and press "Go" to view external sites 
+                                    <br>
+                                    <b>specific to this text.</b></span>
+                                <p></p>
+-->
+                                <table align="left">
+                                    <tr>
+                                        <td><span style="font-size:16pt;font-weight:bold;vertical-align:middle">Links:</span>
+                                        <select id="LinksPD" title="Available links by name." 
+                                            onchange="JavaScript:setLink()" 
+                                                style="background-color:#fcfcf8;border:1px solid black;font-weight:bold;color:black;font-size:10pt;vertical-align:middle;font-family:Times New Roman;">
+                                            <option value="1" selected="false">Sefaria: Color image of Leningrad Codex</option>
+                                            <option value="2" selected="false">Sefaria: Miqra according to the Masorah</option>
+                                            <option value="3" selected="false">Sefaria: English JPS Tanakh 1985</option>
+                                            <option value="4" selected="false">BibleGateway: New Revised Standard</option>
+                                            <option value="5" selected="false">BibleGateway: King James</option>
+                                            <option value="6" selected="false">OSHB Verse: Cantillation diagram</option>
+                                            <option value="7" selected="false">Wikipedia</option>
+                                        </select>
+                                        </td>
+                                        <td align="center">
+                                            <button title="Press to go to selected link." 
+                                                style="background-color:#fcfcf8;border:1px solid black;font-weight:bold;color:blue;font-size:10pt;width:36pt; vertical-align:middle" 
+                                                onclick="Javascript:goToLink()">Go</button>
+                                        </td>
+       								</tr>
+    							</table>
+
+                            </center>
+                        </td>
+                    </tr>
+                </table>
+            </td><td align="center"><button onclick="JavaScript:goHome()" style="padding: 5px 5px 5px 5px;border:5px double black;background-color:#fcfce0;vertical-align:middle;color:black;font-size:10pt;font-weight:bold;width:60pt;border-radius:4pt" title="Return to Home page.">Home</button></td><td width="25%">
+                <table align="center">
+                    <tr>
+                        <td align="left"><button onclick="Javascript:getXMLText()" style="background-color:#fcfcf8;border: 1px solid black;font-weight:bold;color:black;font-size:6pt;width:40pt" title="Show text as an XML document in new window.">XML</button></td><td align="right"><button onclick="Javascript:getTextText()" style="background-color:#fcfcf8;border: 1px solid black;font-weight:bold;color:black;font-size:6pt;width:40pt" title="Show text as an text document in new window.">Text</button></td><td align="left"><button onclick="Javascript:getHTMLText()" style="background-color:#fcfcf8;border: 1px solid black;font-weight:bold;color:black;font-size:6pt;width:40pt" title="Show text as an HTML document in new window.">HTML</button></td><td align="right"><button onclick="Javascript:getODTText()" style="background-color:#fcfcf8;border: 1px solid black;font-weight:bold;color:black;font-size:6pt;width:40pt" title="Download text as an ODT document: Server.odt .">ODT</button></td>
+                    </tr>
+                </table>
+            </td><td align="left" width="5%">
+                <table width="5%" border="0pt" align="right">
+                    <tr>
+                        <td><b><a title="Build number.">27.6</a></b></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <hr>
+</body>
+</html>

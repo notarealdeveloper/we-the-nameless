@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+import urllib.request
+from pathlib import Path
+
+
+BOOKS = {
+    "Gen": {
+        "dir": "01-genesis",
+        "part": None,
+        "verses": [31,25,24,26,32,22,24,22,29,32,32,20,18,24,21,16,27,33,38,18,34,24,20,67,34,35,46,22,35,43,55,32,20,31,29,43,36,30,23,23,57,38,34,34,28,34,31,22,33,26],
+    },
+    "Ex": {
+        "dir": "02-exodus",
+        "part": None,
+        "verses": [22,25,22,31,23,30,25,32,35,29,10,51,22,31,27,36,16,27,25,26,36,31,33,18,40,37,21,43,46,38,18,35,23,35,35,38,29,31,43,38],
+    },
+    "Lev": {
+        "dir": "03-leviticus",
+        "part": None,
+        "verses": [17,16,17,35,19,30,38,36,24,20,47,8,59,57,33,34,16,30,37,27,24,33,44,23,55,46,34],
+    },
+    "Num": {
+        "dir": "04-numbers",
+        "part": None,
+        "verses": [54,34,51,49,31,27,89,26,23,36,35,16,33,45,41,50,13,32,22,29,35,41,30,25,18,65,23,31,40,16,54,42,56,29,34,13],
+    },
+    "Deut": {
+        "dir": "05-deuteronomy",
+        "part": None,
+        "verses": [46,37,29,49,33,25,26,20,29,22,32,32,18,29,23,22,20,22,21,20,23,30,25,22,19,19,26,68,29,20,30,52,29,12],
+    },
+    "Josh": {
+        "dir": "06-joshua",
+        "part": None,
+        "verses": [18,24,17,24,15,27,26,35,27,43,23,24,33,15,63,10,18,28,51,9,45,34,16,33],
+    },
+    "Judg": {
+        "dir": "07-judges",
+        "part": None,
+        "verses": [36,23,31,24,31,40,25,35,57,18,40,15,25,20,20,31,13,31,30,48,25],
+    },
+    "1Sam": {
+        "dir": "08-samuel",
+        "part": 1,
+        "verses": [28,36,21,22,12,21,17,22,27,27,15,25,23,52,35,23,58,30,24,42,15,23,29,22,44,25,12,25,11,31,13],
+    },
+    "2Sam": {
+        "dir": "08-samuel",
+        "part": 2,
+        "verses": [27,32,39,12,25,23,29,18,13,19,27,31,39,33,37,23,29,33,43,26,22,51,39,25],
+    },
+    "1Kings": {
+        "dir": "09-kings",
+        "part": 1,
+        "verses": [53,46,28,34,18,38,51,66,28,29,43,33,34,31,34,34,24,46,21,43,29,53],
+    },
+    "2Kings": {
+        "dir": "09-kings",
+        "part": 2,
+        "verses": [18,25,27,44,27,33,20,29,37,36,21,21,25,29,38,20,41,37,37,21,26,20,37,20,30],
+    },
+}
+
+BASE_URL = "https://tanach.us/HTML/Tanach_Book.html?"
+
+
+def iter_chapters():
+    for book, info in BOOKS.items():
+        for chapter, last_verse in enumerate(info["verses"], start=1):
+            ref = f"{book}{chapter}:1-{chapter}:{last_verse}"
+            url = BASE_URL + ref
+
+            if info["part"] is None:
+                filename = f"{chapter:02d}.xml"
+            else:
+                filename = f"{info['part']}-{chapter:02d}.xml"
+
+            yield book, chapter, url, info["dir"], filename
+
+
+def selected_chapters(book_filters):
+    if not book_filters:
+        yield from iter_chapters()
+        return
+
+    wanted = set(book_filters)
+    unknown = wanted - set(BOOKS)
+    if unknown:
+        raise SystemExit(
+            "Unknown book(s): " + ", ".join(sorted(unknown))
+            + "\nValid names: " + ", ".join(BOOKS)
+        )
+
+    for row in iter_chapters():
+        if row[0] in wanted:
+            yield row
+
+
+def download_one(url, target, dry_run=False):
+    if target.exists():
+        print(f"skip: {target}")
+        return "skipped"
+
+    print(f"{url} -> {target}")
+
+    if dry_run:
+        return "dry-run"
+
+    target.parent.mkdir(parents=True, exist_ok=True)
+    tmp = target.with_name(target.name + ".tmp")
+
+    try:
+        tmp.unlink(missing_ok=True)
+
+        request = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Mozilla/5.0"},
+        )
+
+        with urllib.request.urlopen(request) as response, tmp.open("wb") as out:
+            while chunk := response.read(1024 * 64):
+                out.write(chunk)
+
+        # Atomic promotion: an incomplete download never becomes the real XML.
+        tmp.replace(target)
+        return "downloaded"
+
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
+
+
+def cmd_download(args):
+    root = Path(args.root)
+
+    downloaded = 0
+    skipped = 0
+
+    for _book, _chapter, url, dirname, filename in selected_chapters(args.book):
+        target = root / dirname / filename
+
+        try:
+            result = download_one(url, target, dry_run=args.dry_run)
+        except Exception as exc:
+            print(f"error: {url}: {exc}", file=sys.stderr)
+            return 1
+
+        if result == "downloaded":
+            downloaded += 1
+        elif result == "skipped":
+            skipped += 1
+
+    if not args.dry_run:
+        print(f"\ndone: {downloaded} downloaded, {skipped} already existed")
+
+    return 0
+
+
+def cmd_urls(args):
+    lines = [
+        url
+        for _book, _chapter, url, _dirname, _filename
+        in selected_chapters(args.book)
+    ]
+    text = "\n".join(lines) + "\n"
+
+    if args.output:
+        output = Path(args.output)
+        output.write_text(text, encoding="utf-8")
+        print(f"Wrote {len(lines)} URLs to {output.resolve()}")
+    else:
+        sys.stdout.write(text)
+
+    return 0
+
+
+def build_parser():
+    parser = argparse.ArgumentParser(
+        description=(
+            "Generate Tanach.us Primary History URLs and idempotently download "
+            "chapter files into the project's src hierarchy."
+        )
+    )
+
+    subparsers = parser.add_subparsers(dest="command")
+
+    download = subparsers.add_parser(
+        "download",
+        help="Download missing chapter files (default command).",
+    )
+    download.add_argument(
+        "-r", "--root",
+        default="src",
+        help="Output hierarchy root (default: src).",
+    )
+    download.add_argument(
+        "-b", "--book",
+        action="append",
+        help=(
+            "Download only this Tanach.us book key; repeat as needed "
+            "(e.g. -b Gen -b 1Sam)."
+        ),
+    )
+    download.add_argument(
+        "-n", "--dry-run",
+        action="store_true",
+        help="Show what would be downloaded without writing anything.",
+    )
+    download.set_defaults(func=cmd_download)
+
+    urls = subparsers.add_parser(
+        "urls",
+        help="Print the generated URL list instead of downloading.",
+    )
+    urls.add_argument(
+        "-o", "--output",
+        help="Write URLs to this file instead of stdout.",
+    )
+    urls.add_argument(
+        "-b", "--book",
+        action="append",
+        help=(
+            "Generate URLs only for this Tanach.us book key; repeat as needed "
+            "(e.g. -b Ex -b 1Kings)."
+        ),
+    )
+    urls.set_defaults(func=cmd_urls)
+
+    return parser
+
+
+def main():
+    parser = build_parser()
+
+    # Preserve the convenient old behavior: no subcommand means download.
+    argv = sys.argv[1:]
+    if not argv or argv[0].startswith("-"):
+        argv = ["download", *argv]
+
+    args = parser.parse_args(argv)
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
