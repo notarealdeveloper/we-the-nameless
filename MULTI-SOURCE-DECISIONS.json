@@ -29,10 +29,10 @@
           "before": "in"
         }
       ],
-      "confidence": "HIGH",
-      "evidence": "source-colored reference screenshot supplied in task prompt",
-      "status": "proposed-high",
-      "confirmed_by_user": false
+      "confidence": "manual",
+      "evidence": "user-reviewed token boundary",
+      "status": "confirmed",
+      "confirmed_by_user": true
     },
     "Gen 6:9": {
       "sources": [
@@ -57,10 +57,10 @@
           "before": "Noah"
         }
       ],
-      "confidence": "HIGH",
-      "evidence": "source-colored reference screenshot supplied in task prompt",
-      "status": "proposed-high",
-      "confirmed_by_user": false
+      "confidence": "manual",
+      "evidence": "user-reviewed token boundary",
+      "status": "confirmed",
+      "confirmed_by_user": true
     },
     "Gen 7:16": {
       "sources": [
@@ -85,10 +85,10 @@
           "before": "And"
         }
       ],
-      "confidence": "HIGH",
-      "evidence": "source-colored reference screenshot supplied in task prompt",
-      "status": "proposed-high",
-      "confirmed_by_user": false
+      "confidence": "manual",
+      "evidence": "user-reviewed token boundary",
+      "status": "confirmed",
+      "confirmed_by_user": true
     },
     "Gen 8:2": {
       "sources": [
@@ -113,10 +113,10 @@
           "before": "and"
         }
       ],
-      "confidence": "HIGH",
-      "evidence": "source-colored reference screenshot supplied in task prompt",
-      "status": "proposed-high",
-      "confirmed_by_user": false
+      "confidence": "manual",
+      "evidence": "user-reviewed token boundary",
+      "status": "confirmed",
+      "confirmed_by_user": true
     },
     "Gen 8:3": {
       "sources": [
@@ -141,10 +141,10 @@
           "before": "and"
         }
       ],
-      "confidence": "HIGH",
-      "evidence": "source-colored reference screenshot supplied in task prompt",
-      "status": "proposed-high",
-      "confirmed_by_user": false
+      "confidence": "manual",
+      "evidence": "user-reviewed token boundary",
+      "status": "confirmed",
+      "confirmed_by_user": true
     },
     "Gen 8:13": {
       "sources": [
@@ -169,10 +169,10 @@
           "before": "And"
         }
       ],
-      "confidence": "HIGH",
-      "evidence": "source-colored reference screenshot supplied in task prompt",
-      "status": "proposed-high",
-      "confirmed_by_user": false
+      "confidence": "manual",
+      "evidence": "user-reviewed token boundary",
+      "status": "confirmed",
+      "confirmed_by_user": true
     },
     "Gen 10:1": {
       "sources": [
@@ -197,10 +197,10 @@
           "before": "And"
         }
       ],
-      "confidence": "HIGH",
-      "evidence": "source-colored reference screenshot supplied in task prompt",
-      "status": "proposed-high",
-      "confirmed_by_user": false
+      "confidence": "manual",
+      "evidence": "user-reviewed token boundary",
+      "status": "confirmed",
+      "confirmed_by_user": true
     },
     "Gen 11:10–26": {
       "sources": [

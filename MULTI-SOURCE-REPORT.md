@@ -6,13 +6,13 @@ Reference system: Richard Elliott Friedman, *The Bible with Sources Revealed*. C
 
 | Reference | Required | Current H | Current E | Review |
 |---|---|---|---|---|
-| Gen 2:4 | R → J | R → J → R → J | R → J → R → J | proposed-high |
-| Gen 6:9 | R → P | R | R | proposed-high |
-| Gen 7:16 | P → J | P | P | proposed-high |
-| Gen 8:2 | P → J | P | P | proposed-high |
-| Gen 8:3 | J → P | J | J | proposed-high |
-| Gen 8:13 | P → J | P | P | proposed-high |
-| Gen 10:1 | R → P | R | R | proposed-high |
+| Gen 2:4 | R → J | R → J → R → J | R → J → R → J | confirmed |
+| Gen 6:9 | R → P | R | R | confirmed |
+| Gen 7:16 | P → J | P | P | confirmed |
+| Gen 8:2 | P → J | P | P | confirmed |
+| Gen 8:3 | J → P | J | J | confirmed |
+| Gen 8:13 | P → J | P | P | confirmed |
+| Gen 10:1 | R → P | R | R | confirmed |
 | Gen 11:10–26 | R → Other | — | — | range-requires-interpretation |
 | Gen 11:31 | P → R | P | P | unreviewed |
 | Gen 11:32 | R → Other → R | R | R | unreviewed |
