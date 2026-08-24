@@ -40,7 +40,7 @@ while IFS= read -r url; do
     book="${start%%[0-9]*}"
     chapter="${start#"$book"}"
 
-    dir="${BOOK_NUM[$book]}-${BOOK_NAME[$book]}"
+    dir="src/${BOOK_NUM[$book]}-${BOOK_NAME[$book]}"
     file=$(printf '%02d.xml' "$chapter")
 
     mkdir -p "$dir"
