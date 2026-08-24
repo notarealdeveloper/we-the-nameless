@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+
+Make these changes in the [01][0-9]-*/*.tex files whenever you can, and add each request in a tex comment in the commentary block below what you changed.
+
+When you can't make a given change, write the exact notes in this file that you couldn't carry out into a new file TODO-2, also a bash script in a lord --verbose HERE document like this.
+
+--- 
+
+Num 33: Verses 1-49 inclusive should be attributed to \eOther{...} and \hOther{...} except for: Verse 1, the part after "by the hand of Moses and Aaron" is R. All of verse 2 is R. Verses 50 to 56 are P.
+
+---
+
+Num 22: Check manually and add footnotes as needed.
+
+---
+
+Num 22:2: Add footnote: \fC{REF: The Balaam episode is perhaps the hardest section in the Torah in which to delineate sources. Most scholars regard this three-chapter story as a composite: first, because they think of the accounts of repeated sets of ambassadors to Balaam as a doublet; and, second, because they think there is a contradiction in the story when God tells Balaam to go with the Moabites but then is angry at him for going. I am not at all certain that these things are evidence of two sources. The several embassies to Balaam, each composed of more distinguished ambassadors, may well be the original progression of the story. And the confusion over God’s sending Balaam and then being angry at him is surprising but still understandable as a single author’s development, and it is not easily resolved by separating this section into two sources in any case. Evidence of language is a stronger marker of sources than these considerations. The vast majority of the terms and phrases here that are identifiable with a particular source are typical of E, while only three are typical of J. And there is a particular cluster of terms and phrases here that are also found in Exodus 10 (E). And the deity is referred to as God (Elohim) in narration here seven times. I therefore have marked the story as wholly E, except that I have marked those three J passages so that one can observe them and make of it what one will. The first verse of the story (“And Balak, son of Zippor, saw everything that Israel had done to the Amorite”) refers to the defeat of the Amorites, which had occurred only in J, not in E. This verse, therefore, either comes from J or else was added by RJE as a means of connecting the J story of the defeat of the Amorites and the E story of the defeat of the Moabites.}
+
+---
+
+Num 21: Check manually. Agents don't touch it.
+
+---
+
+Num 20:3.
+\fC{REF: This is a doublet of the E story of the water from the crag at Meribah (Exodus 17). This version of the story shows signs of P. It uses the terms “expire,” “congregation,” and “community,” and refers to the Tent of Meeting. It deals with the question of who is holy, specifically in terms of a challenge to Aaron’s exclusive right to the priesthood by his cousin Korah. Also, it continues from the preceding P story (see the next note).}
+
+---
+
+Num 16:35.
+\fC{REF: The original text probably read “And fire went out” (wattēṣē’ ’ēš) in the perfect tense, and the Redactor changed it to the past perfect tense, “And fire had gone out” (wĕ’ēš yāṣĕ’āh). This was necessary because in the combined text Korah and his company were now being pictured as going down in the earthquake with Dathan and Abiram, but they were also pictured as being burned in the fire, and so R had to clarify that they had already been burned in the fire and now were swallowed along with the live rebels in the earthquake as well.}
+
+---
+
+Num 16:24. Attribute "Dathan and Abiram" to R in the eng and heb.
+
+---
+
+Num 16:1.
+TODO: Assign the word 'took' in eng and heb to P.
+
+---
+
+Num 16:2.
+Add footnote.
+\fC{
+REF: The two occurrences of the extraneous word “and” in this verse are partly a product of the Redactor’s arrangement of the combined text and partly a product of the English translation, in which a different word order from the Hebrew is necessary. Separated, the P text would read: “And Korah son of Izhar son of Kohath son of Levi took two hundred fifty people . . . ,” and the J text would read: “And Dathan and Abiram, sons of Eliab, and On, son of Peleth, sons of Reuben, got up in front of Moses.”
+}
+
+---
+
+Num 13:17. This is R but switches to J after the word Canaan.
+
+Gen 48:7. Assign to a new source PR. Make it bold blue with a redactor background and P hebrew with niqqud + a blue redactor background.
+
+\fC{REF: Verse 7 fits uncomfortably in its context, connecting neither to the preceding nor to the following verses. And it merges elements of two sources: It refers to Paddan Aram, which is characteristic of P, but it says “there was still a span of land to come to Ephrath,” and it refers to Rachel’s being buried on the Ephrath road, which comes from E (Gen 35:16–20). It therefore appears to be an addition that the Redactor made to the text. Perhaps its function was to separate the two conflicting passages about Ephraim and Manasseh that precede and follow it. See the next note. Alternatively, this verse might after all be P, because it fits with the next P passage (49:29–33). As a unit these two passages could be saying: “As for me: Rachel died and was buried on the road, but when I die I want to be buried back in my ancestral tomb with the other patriarchs and matriarchs.” It is therefore uncertain whether v. 7 is P or R.}
+
+---
+
+Gen 48:8.
+
+\fC{REF: In v. 5 Jacob promotes Ephraim and Manasseh to full status, equal to his own sons. But now in v. 8 he looks at them and asks, “Who are these?”! The former verse is P, and the contradiction developed when this verse was placed in the middle of the E passage about Ephraim and Manasseh.}
+
+---
+
+Gen 47:5-12. Assign to JP.
+
+\fC{REF: This section, 47:5–12, comes in the middle of a J text. But Jacob says here that he is 130 years old and that Abraham and Isaac lived longer, while in J YHWH has decreed that no human will live more than 120 years. It is in P that ages are given and that Abraham and Isaac live longer. Moreover, this section has other characteristics of P: The phrases “the days of the years” and “the years of your life” occur only in P. The terms “residences” and “possession” occur only in P. The phrase “as he commanded” occurs fifty-three other times in Genesis–Numbers, and fifty-two are in P. And it is in P that the people live in Rameses. Nonetheless, we should recognize that it is possible that the Redactor combined some material from J or E with P to form this section. The reference to Goshen (v. 6) may be in conflict with the reference to Rameses, and P never mentions Goshen elsewhere. The words “Let them live in Goshen” may have originally read “they lived in Goshen,” which would look the same in the consonantal text. And Goshen is what the brothers requested in the J text (v. 4). Further, this matter is complicated by the fact that the Septuagint text is different, which may be related to the recurrence of the words “let them live in the land of Goshen” in vv. 4 and 6.}
+
+---
+
+Gen 47:13. Assign to JE.
+
+---
+
+Gen 43:23. And he brought Simeon out to them is E.
+
+---
+
+Gen 31:49. Check the random YHWH attributed to E. Did we note it?
+
+The proposed diff we accepted was this:
+
+@@ -1188,10 +1188,10 @@
+ 
+ \Verse{49}
+ {
+-	\hE{וְהַמִּצְפָּה אֲשֶׁר אָמַר יִצֶף יְהֹוָה בֵּינִי וּבֵינֶךָ כִּי נִסָּתֵר אִישׁ מֵרֵעֵהוּ׃}
++	\hJ{וְהַמִּצְפָּה אֲשֶׁר אָמַר יִצֶף יְהֹוָה בֵּינִי וּבֵינֶךָ כִּי נִסָּתֵר אִישׁ מֵרֵעֵהוּ׃}
+ }
+ {
+-	\eE{
++	\eJ{
+ 		(And Mizpah, because he said, “May YHWH observe between
+ 		me and you when one is hidden from the other.”)
+ 	}
+
+---
+
+Add this to 01-genesis/30.tex in verse 24 after "add", and assign 'saying' to RJE.
+
+Gen 30:23-24
+
+\fC{J and E give different etymologies for Joseph: E derives the name from \textit{’sp}, “taken away,” while J connects it with the similar \textit{ysp}, “add.” RJE joined the two by inserting “saying” between them.}
+
+
+EOF
