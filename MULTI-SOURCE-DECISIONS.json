@@ -1,0 +1,468 @@
+{
+  "schema_version": 1,
+  "reference_system": {
+    "primary": "Richard Elliott Friedman, The Bible with Sources Revealed (2003)",
+    "hebrew_machine_readable": "https://tanach.us/DH/DHSpecification.Genesis.xml",
+    "note": "Tanach.us states that its intra-verse DH markings resolve WWB ambiguities using BSR."
+  },
+  "verses": {
+    "Gen 2:4": {
+      "sources": [
+        "R",
+        "J"
+      ],
+      "hebrew_boundaries": [
+        6
+      ],
+      "english_boundaries": [
+        14
+      ],
+      "hebrew_anchors": [
+        {
+          "after": "הִבָּרְאָם",
+          "before": "בְּיוֹם"
+        }
+      ],
+      "english_anchors": [
+        {
+          "after": "created",
+          "before": "in"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "source-colored reference screenshot supplied in task prompt",
+      "status": "proposed-high",
+      "confirmed_by_user": false
+    },
+    "Gen 6:9": {
+      "sources": [
+        "R",
+        "P"
+      ],
+      "hebrew_boundaries": [
+        3
+      ],
+      "english_boundaries": [
+        6
+      ],
+      "hebrew_anchors": [
+        {
+          "after": "נֹחַ",
+          "before": "נֹחַ"
+        }
+      ],
+      "english_anchors": [
+        {
+          "after": "Noah:",
+          "before": "Noah"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "source-colored reference screenshot supplied in task prompt",
+      "status": "proposed-high",
+      "confirmed_by_user": false
+    },
+    "Gen 7:16": {
+      "sources": [
+        "P",
+        "J"
+      ],
+      "hebrew_boundaries": [
+        10
+      ],
+      "english_boundaries": [
+        18
+      ],
+      "hebrew_anchors": [
+        {
+          "after": "אֱלֹהִים",
+          "before": "וַיִּסְגֹּר"
+        }
+      ],
+      "english_anchors": [
+        {
+          "after": "him.",
+          "before": "And"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "source-colored reference screenshot supplied in task prompt",
+      "status": "proposed-high",
+      "confirmed_by_user": false
+    },
+    "Gen 8:2": {
+      "sources": [
+        "P",
+        "J"
+      ],
+      "hebrew_boundaries": [
+        5
+      ],
+      "english_boundaries": [
+        14
+      ],
+      "hebrew_anchors": [
+        {
+          "after": "הַשָּׁמָיִם",
+          "before": "וַיִּכָּלֵא"
+        }
+      ],
+      "english_anchors": [
+        {
+          "after": "shut,",
+          "before": "and"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "source-colored reference screenshot supplied in task prompt",
+      "status": "proposed-high",
+      "confirmed_by_user": false
+    },
+    "Gen 8:3": {
+      "sources": [
+        "J",
+        "P"
+      ],
+      "hebrew_boundaries": [
+        6
+      ],
+      "english_boundaries": [
+        12
+      ],
+      "hebrew_anchors": [
+        {
+          "after": "וָשׁוֹב",
+          "before": "וַיַּחְסְרוּ"
+        }
+      ],
+      "english_anchors": [
+        {
+          "after": "continually,",
+          "before": "and"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "source-colored reference screenshot supplied in task prompt",
+      "status": "proposed-high",
+      "confirmed_by_user": false
+    },
+    "Gen 8:13": {
+      "sources": [
+        "P",
+        "J"
+      ],
+      "hebrew_boundaries": [
+        12
+      ],
+      "english_boundaries": [
+        27
+      ],
+      "hebrew_anchors": [
+        {
+          "after": "הָאָרֶץ",
+          "before": "וַיָּסַר"
+        }
+      ],
+      "english_anchors": [
+        {
+          "after": "earth.",
+          "before": "And"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "source-colored reference screenshot supplied in task prompt",
+      "status": "proposed-high",
+      "confirmed_by_user": false
+    },
+    "Gen 10:1": {
+      "sources": [
+        "R",
+        "P"
+      ],
+      "hebrew_boundaries": [
+        7
+      ],
+      "english_boundaries": [
+        12
+      ],
+      "hebrew_anchors": [
+        {
+          "after": "וָיָפֶת",
+          "before": "וַיִּוָּלְדוּ"
+        }
+      ],
+      "english_anchors": [
+        {
+          "after": "Yaphet:",
+          "before": "And"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "source-colored reference screenshot supplied in task prompt",
+      "status": "proposed-high",
+      "confirmed_by_user": false
+    },
+    "Gen 11:10–26": {
+      "sources": [
+        "R",
+        "Other"
+      ],
+      "status": "range-requires-interpretation"
+    },
+    "Gen 11:31": {
+      "sources": [
+        "P",
+        "R"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 11:32": {
+      "sources": [
+        "R",
+        "Other",
+        "R"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 12:4": {
+      "sources": [
+        "J",
+        "P",
+        "R"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 12:5": {
+      "sources": [
+        "P",
+        "R"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 13:11": {
+      "sources": [
+        "J",
+        "P"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 13:12": {
+      "sources": [
+        "P",
+        "J"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 15:7": {
+      "sources": [
+        "J",
+        "R"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 15:17": {
+      "sources": [
+        "R",
+        "J"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 20:1": {
+      "sources": [
+        "RJE",
+        "E"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 21:1": {
+      "sources": [
+        "J",
+        "P"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 21:2": {
+      "sources": [
+        "J",
+        "P"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 25:11": {
+      "sources": [
+        "P",
+        "J"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 28:11": {
+      "sources": [
+        "J",
+        "E"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 30:1": {
+      "sources": [
+        "J",
+        "E"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 30:24": {
+      "sources": [
+        "E",
+        "RJE",
+        "J"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 32:14": {
+      "sources": [
+        "RJE",
+        "E"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 33:18": {
+      "sources": [
+        "E",
+        "R"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 35:9": {
+      "sources": [
+        "P",
+        "R"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 35:16": {
+      "sources": [
+        "R",
+        "E"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 35:22": {
+      "sources": [
+        "J",
+        "P"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 36:1": {
+      "sources": [
+        "R",
+        "P"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 37:2": {
+      "sources": [
+        "R",
+        "J"
+      ],
+      "hebrew_boundaries": [
+        3
+      ],
+      "english_boundaries": [
+        6
+      ],
+      "hebrew_anchors": [
+        {
+          "after": "יַעֲקֹב",
+          "before": "יוֹסֵף"
+        }
+      ],
+      "english_anchors": [
+        {
+          "after": "Jacob:",
+          "before": "Joseph,"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "source-colored reference screenshot supplied in task prompt",
+      "status": "proposed-high",
+      "confirmed_by_user": false
+    },
+    "Gen 37:3": {
+      "sources": [
+        "E",
+        "J"
+      ],
+      "hebrew_boundaries": [
+        11
+      ],
+      "english_boundaries": [
+        21
+      ],
+      "hebrew_anchors": [
+        {
+          "after": "לוֹ",
+          "before": "וְעָשָׂה"
+        }
+      ],
+      "english_anchors": [
+        {
+          "after": "him.",
+          "before": "And"
+        }
+      ],
+      "confidence": "HIGH",
+      "evidence": "source-colored reference screenshot supplied in task prompt",
+      "status": "proposed-high",
+      "confirmed_by_user": false
+    },
+    "Gen 37:25": {
+      "sources": [
+        "E",
+        "J"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 37:28": {
+      "sources": [
+        "E",
+        "J"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 41:46": {
+      "sources": [
+        "P",
+        "R"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 43:23": {
+      "sources": [
+        "J",
+        "E"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 46:5": {
+      "sources": [
+        "E",
+        "J"
+      ],
+      "status": "unreviewed"
+    },
+    "Gen 47:27": {
+      "sources": [
+        "J",
+        "P"
+      ],
+      "status": "unreviewed"
+    },
+    "Exod 2:23": {
+      "sources": [
+        "J",
+        "P"
+      ],
+      "status": "unreviewed"
+    }
+  }
+}
