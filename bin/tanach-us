@@ -64,7 +64,7 @@ BOOKS = {
     },
 }
 
-BASE_URL = "https://tanach.us/HTML/Tanach_Book.html?"
+BASE_URL = "https://tanach.us/Server.xml?"
 
 
 def iter_chapters():
