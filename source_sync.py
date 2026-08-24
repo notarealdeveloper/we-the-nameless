@@ -49,7 +49,7 @@ def verse_blocks(text: str):
     for match in re.finditer(r"\\Verse\{(\d+)\}", text):
         blocks = []
         cursor = match.end()
-        for _ in range(3):
+        for _ in range(2):
             while cursor < len(text) and text[cursor].isspace():
                 cursor += 1
             if cursor >= len(text) or text[cursor] != "{":
@@ -103,9 +103,22 @@ def xml_sources(path: pathlib.Path):
     return verses, None
 
 
+def xml_split_words(path: pathlib.Path, number: int):
+    root = ET.parse(path).getroot()
+    result = []
+    for verse in root.iter("v"):
+        if int(verse.get("n")) != number:
+            continue
+        words = ["".join(word.itertext()) for word in verse.findall("w")]
+        present = [(index + 1, word) for index, word in enumerate(words) if word != "."]
+        result.append((SOURCE_MAP.get(verse.get("s"), verse.get("s")), present))
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--write", action="store_true")
+    parser.add_argument("--split-context", action="store_true")
     args = parser.parse_args()
     invalid = []
     splits = []
@@ -126,7 +139,11 @@ def main() -> int:
         text = tex_path.read_text()
         replacements = []
         found = set()
-        for number, blocks in verse_blocks(text):
+        try:
+            parsed_verses = list(verse_blocks(text))
+        except ValueError as error:
+            raise ValueError(f"{tex_path.relative_to(ROOT)}: {error}") from error
+        for number, blocks in parsed_verses:
             found.add(number)
             expected = sources.get(number)
             if not expected:
@@ -164,6 +181,17 @@ def main() -> int:
         print(f"MISSING {item}")
     for path, number, expected, actual in splits:
         print(f"SPLIT {path}:{number} XML={','.join(expected)} TEX-H={','.join(actual[0])} TEX-E={','.join(actual[1])}")
+        if args.split_context:
+            xml_path = ROOT / "src" / pathlib.Path(path).with_suffix(".xml")
+            for source, words in xml_split_words(xml_path, number):
+                rendered = " ".join(f"{index}:{word}" for index, word in words)
+                print(f"  {source} {rendered}")
+            tex_path = ROOT / path
+            text = tex_path.read_text()
+            for found_number, blocks in verse_blocks(text):
+                if found_number == number:
+                    for label, (start, end) in zip(("H", "E"), blocks[:2]):
+                        print(f"  TEX-{label} {text[start + 1:end].strip()}")
     if not args.write:
         for path, number, language, expected, actual in mismatches:
             print(f"DIFF {path}:{number} {language} XML={expected} TEX={','.join(actual)}")
