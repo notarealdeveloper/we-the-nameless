@@ -5,7 +5,7 @@ URLS="${1:-primary_history_tanach_urls.txt}"
 
 declare -A BOOK_NUM=(
     [Gen]=01
-    [Exod]=02
+    [Ex]=02
     [Lev]=03
     [Num]=04
     [Deut]=05
@@ -13,13 +13,13 @@ declare -A BOOK_NUM=(
     [Judg]=07
     [1Sam]=08
     [2Sam]=08
-    [1Kgs]=09
-    [2Kgs]=09
+    [1Kings]=09
+    [2Kings]=09
 )
 
 declare -A BOOK_NAME=(
     [Gen]=genesis
-    [Exod]=exodus
+    [Ex]=exodus
     [Lev]=leviticus
     [Num]=numbers
     [Deut]=deuteronomy
@@ -27,8 +27,8 @@ declare -A BOOK_NAME=(
     [Judg]=judges
     [1Sam]=samuel
     [2Sam]=samuel
-    [1Kgs]=kings
-    [2Kgs]=kings
+    [1Kings]=kings
+    [2Kings]=kings
 )
 
 while IFS= read -r url; do
@@ -56,10 +56,10 @@ while IFS= read -r url; do
     dir="src/${BOOK_NUM[$book]}-${BOOK_NAME[$book]}"
 
     case "$book" in
-        1Sam|1Kgs)
+        1Sam|1Kings)
             file=$(printf '1-%02d.xml' "$chapter")
             ;;
-        2Sam|2Kgs)
+        2Sam|2Kings)
             file=$(printf '2-%02d.xml' "$chapter")
             ;;
         *)
@@ -79,7 +79,6 @@ while IFS= read -r url; do
     echo "$url -> $target"
 
     tmp="${target}.tmp"
-
     rm -f "$tmp"
 
     if wget -q --show-progress -O "$tmp" "$url"; then
