@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?><Tanach>
+<teiHeader>
+<fileDesc>
+<titleStmt>
+<title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="s" type="uniform">Tanach</title>
+<title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="s" type="uniformhebrew">תנ״ך</title>
+<title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="s" type="main">Unicode/XML Leningrad Codex</title>
+<title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="a" type="main">2 Kings</title>
+<title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="a" type="mainhebrew">מלכים ב</title>
+<title xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="a" type="filename">Kings_2</title>
+<title type="1" level="x"/>
+<title type="2" level="x"/>
+<title type="3" level="x"/>
+<title type="4" level="x"/>
+<title type="5" level="x"/>
+<title level="chk"/>
+</titleStmt>
+<editionStmt>
+<edition>
+<version xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">UXLC 2.5</version>
+<date xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1 Apr 2026</date>
+<build xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">27.6</build>
+<buildDateTime xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">31 Mar 2026  12:00</buildDateTime>
+</edition>
+<respStmt>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">WLC2XML[8 Jul 2024] - Transcription from Michigan-Claremont encoding to Unicode with XML markings. See details in notes.</resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">ScanReplace/EditWLC[30 Dec 2020] - Edits/removes transcription notes; removes MDs.</resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">ScanReplace/InsertCGJs[29 Dec 2020] - Places CGJ in Jerusalem VUV words and leading metegs.</resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2020.02.19 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2020.10.19 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2021.04.01 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2021.10.19 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2022.04.01 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2022.07.04 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2022.10.19 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2022.12.07 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2023.04.01 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2023.07.04 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2023.10.19 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2024.04.01 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2024.10.19 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2025.04.01 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2025.10.19 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Updater[2 May 2024] - Changes.xml file dated 2026.04.01 . </resp>
+<resp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">ScanReplace/RemoveNewlines[18 May 2024] - Removes newlines (\n) from w, q, k tags.</resp>
+</respStmt>
+</editionStmt>
+<notesStmt>
+<note xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">The original text file wlc420_ps.txt was provided by the Groves Center. 
+The file has the MD5 hash: d31a 6a6e 9afa bf82 272c 2efb 0522 a12e 
+and was dated 25 Jan 2016. Six transcription notes (5,7,F) have been moved to the noted character (Lev 11:42.4, Judg 18:30.11, Isa 9.6.1, Ps 80:14.3, Job 38:13.5, Job 38:15.2) to produce the file wlc420_ps_td.txt for conversion to Unicode and XML by the program WLC2XML. The only other changes to the Groves Center text are: The book names in English and Hebrew of the Jewish Publication Society Tanach and book abbreviations from the New Revised Standard Version have been added. MC code 32 added as atnah hafukh by Steve Salisbury, 30 Sep 2021. The atnah hafukh codepoint, x05a2, has been added to the character table; it does not appear in WLC 4.20. </note>
+</notesStmt>
+</fileDesc>
+<profileDesc>
+<creation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">From WLC 4.20 provided by the Groves Center.</creation>
+<date>2026.08.24-19.21</date>
+</profileDesc>
+</teiHeader>
+<tanach>
+<book>
+<names xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>2 Kings</name>
+      <abbrev>2 Kings</abbrev>
+      <number>11</number>
+      <filename>Kings_2</filename>
+      <hebrewname>מלכים ב</hebrewname>
+    </names>
+<c n="1">
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="1">
+        <w>וַיִּפְשַׁ֤ע</w>
+        <w>מוֹאָב֙</w>
+        <w>בְּיִשְׂרָאֵ֔ל</w>
+        <w>אַחֲרֵ֖י</w>
+        <w>מ֥וֹת</w>
+        <w>אַחְאָֽב׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="2">
+        <w>וַיִּפֹּ֨ל</w>
+        <w>אֲחַזְיָ֜ה</w>
+        <w>בְּעַ֣ד</w>
+        <w>הַשְּׂבָכָ֗ה</w>
+        <w>בַּעֲלִיָּ֛תוֹ</w>
+        <w>אֲשֶׁ֥ר</w>
+        <w>בְּשֹׁמְר֖וֹן</w>
+        <w>וַיָּ֑חַל</w>
+        <w>וַיִּשְׁלַ֣ח</w>
+        <w>מַלְאָכִ֗ים</w>
+        <w>וַיֹּ֤אמֶר</w>
+        <w>אֲלֵהֶם֙</w>
+        <w>לְכ֣וּ</w>
+        <w>דִרְשׁ֗וּ</w>
+        <w>בְּבַ֤עַל</w>
+        <w>זְבוּב֙</w>
+        <w>אֱלֹהֵ֣י</w>
+        <w>עֶקְר֔וֹן</w>
+        <w>אִם־</w>
+        <w>אֶחְיֶ֖ה</w>
+        <w>מֵחֳלִ֥י</w>
+        <w>זֶֽה׃</w>
+        <samekh/>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="3">
+        <w>וּמַלְאַ֣ךְ</w>
+        <w>יְהוָ֗ה</w>
+        <w>דִּבֶּר֙</w>
+        <w>אֶל־</w>
+        <w>אֵלִיָּ֣ה</w>
+        <w>הַתִּשְׁבִּ֔י</w>
+        <w>ק֣וּם</w>
+        <w>עֲלֵ֔ה</w>
+        <w>לִקְרַ֖את</w>
+        <w>מַלְאֲכֵ֣י</w>
+        <w>מֶֽלֶךְ־</w>
+        <w>שֹׁמְר֑וֹן</w>
+        <w>וְדַבֵּ֣ר</w>
+        <w>אֲלֵהֶ֔ם</w>
+        <w>הַֽמִבְּלִ֤י</w>
+        <w>אֵין־</w>
+        <w>אֱלֹהִים֙</w>
+        <w>בְּיִשְׂרָאֵ֔ל</w>
+        <w>אַתֶּם֙</w>
+        <w>הֹֽלְכִ֔ים</w>
+        <w>לִדְרֹ֕שׁ</w>
+        <w>בְּבַ֥עַל</w>
+        <w>זְב֖וּב</w>
+        <w>אֱלֹהֵ֥י</w>
+        <w>עֶקְרֽוֹן׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="4">
+        <w>וְלָכֵן֙</w>
+        <w>כֹּֽה־</w>
+        <w>אָמַ֣ר</w>
+        <w>יְהוָ֔ה</w>
+        <w>הַמִּטָּ֞ה</w>
+        <w>אֲשֶׁר־</w>
+        <w>עָלִ֥יתָ</w>
+        <w>שָּׁ֛ם</w>
+        <w>לֹֽא־</w>
+        <w>תֵרֵ֥ד</w>
+        <w>מִמֶּ֖נָּה</w>
+        <w>כִּ֣י</w>
+        <w>מ֣וֹת</w>
+        <w>תָּמ֑וּת</w>
+        <w>וַיֵּ֖לֶךְ</w>
+        <w>אֵלִיָּֽה׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="5">
+        <w>וַיָּשׁ֥וּבוּ</w>
+        <w>הַמַּלְאָכִ֖ים</w>
+        <w>אֵלָ֑יו</w>
+        <w>וַיֹּ֥אמֶר</w>
+        <w>אֲלֵיהֶ֖ם</w>
+        <w>מַה־</w>
+        <w>זֶּ֥ה</w>
+        <w>שַׁבְתֶּֽם׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="6">
+        <w>וַיֹּאמְר֨וּ</w>
+        <w>אֵלָ֜יו</w>
+        <w>אִ֣ישׁ ׀</w>
+        <w>עָלָ֣ה</w>
+        <w>לִקְרָאתֵ֗נוּ</w>
+        <w>וַיֹּ֣אמֶר</w>
+        <w>אֵלֵינוּ֮</w>
+        <w>לְכ֣וּ</w>
+        <w>שׁוּבוּ֮</w>
+        <w>אֶל־</w>
+        <w>הַמֶּ֣לֶךְ</w>
+        <w>אֲשֶׁר־</w>
+        <w>שָׁלַ֣ח</w>
+        <w>אֶתְכֶם֒</w>
+        <w>וְדִבַּרְתֶּ֣ם</w>
+        <w>אֵלָ֗יו</w>
+        <w>כֹּ֚ה</w>
+        <w>אָמַ֣ר</w>
+        <w>יְהוָ֔ה</w>
+        <w>הַֽמִבְּלִ֤י</w>
+        <w>אֵין־</w>
+        <w>אֱלֹהִים֙</w>
+        <w>בְּיִשְׂרָאֵ֔ל</w>
+        <w>אַתָּ֣ה</w>
+        <w>שֹׁלֵ֔חַ</w>
+        <w>לִדְרֹ֕שׁ</w>
+        <w>בְּבַ֥עַל</w>
+        <w>זְב֖וּב</w>
+        <w>אֱלֹהֵ֣י</w>
+        <w>עֶקְר֑וֹן</w>
+        <w>לָ֠כֵן</w>
+        <w>הַמִּטָּ֞ה</w>
+        <w>אֲשֶׁר־</w>
+        <w>עָלִ֥יתָ</w>
+        <w>שָּׁ֛ם</w>
+        <w>לֹֽא־</w>
+        <w>תֵרֵ֥ד</w>
+        <w>מִמֶּ֖נָּה</w>
+        <w>כִּֽי־</w>
+        <w>מ֥וֹת</w>
+        <w>תָּמֽוּת׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="7">
+        <w>וַיְדַבֵּ֣ר</w>
+        <w>אֲלֵהֶ֔ם</w>
+        <w>מֶ֚ה</w>
+        <w>מִשְׁפַּ֣ט</w>
+        <w>הָאִ֔ישׁ</w>
+        <w>אֲשֶׁ֥ר</w>
+        <w>עָלָ֖ה</w>
+        <w>לִקְרַאתְכֶ֑ם</w>
+        <w>וַיְדַבֵּ֣ר</w>
+        <w>אֲלֵיכֶ֔ם</w>
+        <w>אֶת־</w>
+        <w>הַדְּבָרִ֖ים</w>
+        <w>הָאֵֽלֶּה׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="8">
+        <w>וַיֹּאמְר֣וּ</w>
+        <w>אֵלָ֗יו</w>
+        <w>אִ֚ישׁ</w>
+        <w>בַּ֣עַל</w>
+        <w>שֵׂעָ֔ר</w>
+        <w>וְאֵז֥וֹר</w>
+        <w>ע֖וֹר</w>
+        <w>אָז֣וּר</w>
+        <w>בְּמָתְנָ֑יו</w>
+        <w>וַיֹּאמַ֕ר</w>
+        <w>אֵלִיָּ֥ה</w>
+        <w>הַתִּשְׁבִּ֖י</w>
+        <w>הֽוּא׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="9">
+        <w>וַיִּשְׁלַ֥ח</w>
+        <w>אֵלָ֛יו</w>
+        <w>שַׂר־</w>
+        <w>חֲמִשִּׁ֖ים</w>
+        <w>וַחֲמִשָּׁ֑יו</w>
+        <w>וַיַּ֣עַל</w>
+        <w>אֵלָ֗יו</w>
+        <w>וְהִנֵּה֙</w>
+        <w>יֹשֵׁב֙</w>
+        <w>עַל־</w>
+        <w>רֹ֣אשׁ</w>
+        <w>הָהָ֔ר</w>
+        <w>וַיְדַבֵּ֣ר</w>
+        <w>אֵלָ֔יו</w>
+        <w>אִ֚ישׁ</w>
+        <w>הָֽאֱלֹהִ֔ים</w>
+        <w>הַמֶּ֥לֶךְ</w>
+        <w>דִּבֶּ֖ר</w>
+        <w>רֵֽדָה׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="10">
+        <w>וַיַּעֲנֶ֣ה</w>
+        <w>אֵלִיָּ֗הוּ</w>
+        <w>וַיְדַבֵּר֮</w>
+        <w>אֶל־</w>
+        <w>שַׂ֣ר</w>
+        <w>הַחֲמִשִּׁים֒</w>
+        <w>וְאִם־</w>
+        <w>אִ֤ישׁ</w>
+        <w>אֱלֹהִים֙</w>
+        <w>אָ֔נִי</w>
+        <w>תֵּ֤רֶד</w>
+        <w>אֵשׁ֙</w>
+        <w>מִן־</w>
+        <w>הַשָּׁמַ֔יִם</w>
+        <w>וְתֹאכַ֥ל</w>
+        <w>אֹתְךָ֖</w>
+        <w>וְאֶת־</w>
+        <w>חֲמִשֶּׁ֑יךָ</w>
+        <w>וַתֵּ֤רֶד</w>
+        <w>אֵשׁ֙</w>
+        <w>מִן־</w>
+        <w>הַשָּׁמַ֔יִם</w>
+        <w>וַתֹּ֥אכַל</w>
+        <w>אֹת֖וֹ</w>
+        <w>וְאֶת־</w>
+        <w>חֲמִשָּֽׁיו׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="11">
+        <w>וַיָּ֜שָׁב</w>
+        <w>וַיִּשְׁלַ֥ח</w>
+        <w>אֵלָ֛יו</w>
+        <w>שַׂר־</w>
+        <w>חֲמִשִּׁ֥ים</w>
+        <w>אַחֵ֖ר</w>
+        <w>וַחֲמִשָּׁ֑יו</w>
+        <w>וַיַּ֙עַן֙</w>
+        <w>וַיְדַבֵּ֣ר</w>
+        <w>אֵלָ֔יו</w>
+        <w>אִ֚ישׁ</w>
+        <w>הָאֱלֹהִ֔ים</w>
+        <w>כֹּֽה־</w>
+        <w>אָמַ֥ר</w>
+        <w>הַמֶּ֖לֶךְ</w>
+        <w>מְהֵרָ֥ה</w>
+        <w>רֵֽדָה׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="12">
+        <w>וַיַּ֣עַן</w>
+        <w>אֵלִיָּה֮</w>
+        <w>וַיְדַבֵּ֣ר</w>
+        <w>אֲלֵיהֶם֒</w>
+        <w>אִם־</w>
+        <w>אִ֤ישׁ</w>
+        <w>הֽ͏ָאֱלֹהִים֙</w>
+        <w>אָ֔נִי</w>
+        <w>תֵּ֤רֶד</w>
+        <w>אֵשׁ֙</w>
+        <w>מִן־</w>
+        <w>הַשָּׁמַ֔יִם</w>
+        <w>וְתֹאכַ֥ל</w>
+        <w>אֹתְךָ֖</w>
+        <w>וְאֶת־</w>
+        <w>חֲמִשֶּׁ֑יךָ</w>
+        <w>וַתֵּ֤רֶד</w>
+        <w>אֵשׁ־</w>
+        <w>אֱלֹהִים֙</w>
+        <w>מִן־</w>
+        <w>הַשָּׁמַ֔יִם</w>
+        <w>וַתֹּ֥אכַל</w>
+        <w>אֹת֖וֹ</w>
+        <w>וְאֶת־</w>
+        <w>חֲמִשָּֽׁיו׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="13">
+        <w>וַיָּ֗שָׁב</w>
+        <w>וַיִּשְׁלַ֛ח</w>
+        <w>שַׂר־</w>
+        <w>חֲמִשִּׁ֥ים</w>
+        <w>שְׁלִשִׁ֖ים</w>
+        <w>וַחֲמִשָּׁ֑יו</w>
+        <w>וַיַּ֡עַל</w>
+        <w>וַיָּבֹא֩</w>
+        <w>שַׂר־</w>
+        <w>הַחֲמִשִּׁ֨ים</w>
+        <w>הַשְּׁלִישִׁ֜י</w>
+        <w>וַיִּכְרַ֥ע</w>
+        <w>עַל־</w>
+        <w>בִּרְכָּ֣יו ׀</w>
+        <w>לְנֶ֣גֶד</w>
+        <w>אֵלִיָּ֗הוּ</w>
+        <w>וַיִּתְחַנֵּ֤ן</w>
+        <w>אֵלָיו֙</w>
+        <w>וַיְדַבֵּ֣ר</w>
+        <w>אֵלָ֔יו</w>
+        <w>אִ֚ישׁ</w>
+        <w>הָֽאֱלֹהִ֔ים</w>
+        <w>תִּֽיקַר־</w>
+        <w>נָ֣א</w>
+        <w>נַפְשִׁ֗י</w>
+        <w>וְנֶ֨פֶשׁ</w>
+        <w>עֲבָדֶ֥יךָֽ</w>
+        <w>אֵ֛לֶּה</w>
+        <w>חֲמִשִּׁ֖ים</w>
+        <w>בְּעֵינֶֽיךָ׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="14">
+        <w>הִ֠נֵּה</w>
+        <w>יָ֤רְדָה</w>
+        <w>אֵשׁ֙</w>
+        <w>מִן־</w>
+        <w>הַשָּׁמַ֔יִם</w>
+        <w>וַ֠תֹּאכַל</w>
+        <w>אֶת־</w>
+        <w>שְׁנֵ֞י</w>
+        <w>שָׂרֵ֧י</w>
+        <w>הַחֲמִשִּׁ֛ים</w>
+        <w>הָרִאשֹׁנִ֖ים</w>
+        <w>וְאֶת־</w>
+        <w>חֲמִשֵּׁיהֶ֑ם</w>
+        <w>וְעַתָּ֕ה</w>
+        <w>תִּיקַ֥ר</w>
+        <w>נַפְשִׁ֖י</w>
+        <w>בְּעֵינֶֽיךָ׃</w>
+        <samekh/>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="15">
+        <w>וַיְדַבֵּ֞ר</w>
+        <w>מַלְאַ֤ךְ</w>
+        <w>יְהוָה֙</w>
+        <w>אֶל־</w>
+        <w>אֵ֣לִיָּ֔הוּ</w>
+        <w>רֵ֣ד</w>
+        <w>אוֹת֔וֹ</w>
+        <w>אַל־</w>
+        <w>תִּירָ֖א</w>
+        <w>מִפָּנָ֑יו</w>
+        <w>וַיָּ֛קָם</w>
+        <w>וַיֵּ֥רֶד</w>
+        <w>אוֹת֖וֹ</w>
+        <w>אֶל־</w>
+        <w>הַמֶּֽלֶךְ׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="16">
+        <w>וַיְדַבֵּ֨ר</w>
+        <w>אֵלָ֜יו</w>
+        <w>כֹּֽה־</w>
+        <w>אָמַ֣ר</w>
+        <w>יְהוָ֗ה</w>
+        <w>יַ֜עַן</w>
+        <w>אֲשֶׁר־</w>
+        <w>שָׁלַ֣חְתָּ</w>
+        <w>מַלְאָכִים֮</w>
+        <w>לִדְרֹשׁ֮</w>
+        <w>בְּבַ֣עַל</w>
+        <w>זְבוּב֮</w>
+        <w>אֱלֹהֵ֣י</w>
+        <w>עֶקְרוֹן֒</w>
+        <w>הַֽמִבְּלִ֤י</w>
+        <w>אֵין־</w>
+        <w>אֱלֹהִים֙</w>
+        <w>בְּיִשְׂרָאֵ֔ל</w>
+        <w>לִדְרֹ֖שׁ</w>
+        <w>בִּדְבָר֑וֹ</w>
+        <w>לָ֠כֵן</w>
+        <w>הַמִּטָּ֞ה</w>
+        <w>אֲשֶׁר־</w>
+        <w>עָלִ֥יתָ</w>
+        <w>שָּׁ֛ם</w>
+        <w>לֹֽא־</w>
+        <w>תֵרֵ֥ד</w>
+        <w>מִמֶּ֖נָּה</w>
+        <w>כִּֽי־</w>
+        <w>מ֥וֹת</w>
+        <w>תָּמֽוּת׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="17">
+        <w>וַיָּ֜מָת</w>
+        <w>כִּדְבַ֥ר</w>
+        <w>יְהוָ֣ה ׀</w>
+        <w>אֲשֶׁר־</w>
+        <w>דִּבֶּ֣ר</w>
+        <w>אֵלִיָּ֗הוּ</w>
+        <w>וַיִּמְלֹ֤ךְ</w>
+        <w>יְהוֹרָם֙</w>
+        <w>תַּחְתָּ֔יו</w>
+        <pe/>
+        <w>בִּשְׁנַ֣ת</w>
+        <w>שְׁתַּ֔יִם</w>
+        <w>לִיהוֹרָ֥ם</w>
+        <w>בֶּן־</w>
+        <w>יְהוֹשָׁפָ֖ט</w>
+        <w>מֶ֣לֶךְ</w>
+        <w>יְהוּדָ֑ה</w>
+        <w>כִּ֛י</w>
+        <w>לֹֽא־</w>
+        <w>הָ֥יָה</w>
+        <w>ל֖וֹ</w>
+        <w>בֵּֽן׃</w>
+      </v>
+<v xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" n="18">
+        <w>וְיֶ֛תֶר</w>
+        <w>דִּבְרֵ֥י</w>
+        <w>אֲחַזְיָ֖הוּ</w>
+        <w>אֲשֶׁ֣ר</w>
+        <w>עָשָׂ֑ה</w>
+        <w>הֲלֽוֹא־</w>
+        <w>הֵ֣מָּה</w>
+        <w>כְתוּבִ֗ים</w>
+        <w>עַל־</w>
+        <w>סֵ֛פֶר</w>
+        <w>דִּבְרֵ֥י</w>
+        <w>הַיָּמִ֖ים</w>
+        <w>לְמַלְכֵ֥י</w>
+        <w>יִשְׂרָאֵֽל׃</w>
+        <pe/>
+      </v>
+</c>
+</book>
+</tanach>
+<notes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <note>
+    <code>4</code>
+    <gccode>4</gccode>
+    <note>Puncta extraordinaria -- an x05c4 is used to mark such marks in the text when they are above the line and an x05c5 when they are below the line. </note>
+  </note>
+  <note>
+    <code>5</code>
+    <gccode>5</gccode>
+    <note>Large letter(s). Shown as large letters.</note>
+  </note>
+  <note>
+    <code>6</code>
+    <gccode>6</gccode>
+    <note>Small letter(s). Shown as small letters.</note>
+  </note>
+  <note>
+    <code>7</code>
+    <gccode>7</gccode>
+    <note>Suspended letter(s). Shown as suspended letters.</note>
+  </note>
+  <note>
+    <code>8</code>
+    <gccode>8</gccode>
+    <note>Inverted nun in the text.</note>
+  </note>
+  <note>
+    <code>c</code>
+    <gccode>c</gccode>
+    <note>Text is correct relative to LC. Usually this marks a peculiarity of the LC relative to the other Masoretic texts.</note>
+  </note>
+  <note>
+    <code>d</code>
+    <gccode>d</gccode>
+    <note>This tipeha is a dehi in other texts.</note>
+  </note>
+  <note>
+    <code>m</code>
+    <gccode>m</gccode>
+    <note>This meteg is a merkha in other texts.</note>
+  </note>
+  <note>
+    <code>q</code>
+    <gccode>q</gccode>
+    <note>UXLC differs from the conventional word for the qere.</note>
+  </note>
+  <note>
+    <code>t</code>
+    <gccode>t</gccode>
+    <note>Transcription uncertain. Examine the LC image for other possible readings.</note>
+  </note>
+  <note>
+    <code>X</code>
+    <gccode>X</gccode>
+    <note>This verse does NOT occur in the Leningrad Codex. Included for continuity of verse numbering.</note>
+  </note>
+  <note>
+    <code>y</code>
+    <gccode>y</gccode>
+    <note>Yatir: The preceding Hebrew letter is "superfluous".</note>
+  </note>
+</notes>
+</Tanach>
