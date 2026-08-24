@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+URLS="${1:-primary_history_tanach_urls.txt}"
+
+declare -A BOOK_NUM=(
+    [Gen]=01
+    [Exod]=02
+    [Lev]=03
+    [Num]=04
+    [Deut]=05
+    [Josh]=06
+    [Judg]=07
+    [1Sam]=08
+    [2Sam]=09
+    [1Kgs]=10
+    [2Kgs]=11
+)
+
+declare -A BOOK_NAME=(
+    [Gen]=genesis
+    [Exod]=exodus
+    [Lev]=leviticus
+    [Num]=numbers
+    [Deut]=deuteronomy
+    [Josh]=joshua
+    [Judg]=judges
+    [1Sam]=1-samuel
+    [2Sam]=2-samuel
+    [1Kgs]=1-kings
+    [2Kgs]=2-kings
+)
+
+while IFS= read -r url; do
+    [[ -z "$url" ]] && continue
+
+    ref="${url#*\?}"
+    start="${ref%%:*}"
+
+    book="${start%%[0-9]*}"
+    chapter="${start#"$book"}"
+
+    dir="${BOOK_NUM[$book]}-${BOOK_NAME[$book]}"
+    file=$(printf '%02d.xml' "$chapter")
+
+    mkdir -p "$dir"
+
+    echo "$url -> $dir/$file"
+    wget -q --show-progress -O "$dir/$file" "$url"
+done < "$URLS"
