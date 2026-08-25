@@ -288,9 +288,7 @@
 \newfontfamily\EgyptianFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
-    Scale=1.9,
-    FakeBold=2.0,
-    %BoldFont=egyptian-hieroglyphs-regular-noto-sans.ttf
+    Scale=1.9
 ]{egyptian-hieroglyphs-regular-noto-sans.ttf}
 
 % Historical alphabet fonts.  These are normal text-size declarations.
@@ -560,6 +558,9 @@
 \ExplSyntaxOn
 \NewDocumentCommand{\egypt}{ m }{
   {\leavevmode\EgyptianFont\tl_reverse:n { #1 }}
+}
+\NewDocumentCommand{\egyptbold}{ m }{
+  {\leavevmode\EgyptianFont\addfontfeatures{FakeBold=2.0}\tl_reverse:n { #1 }}
 }
 \NewDocumentCommand{\proto}{ m }{
   {\leavevmode\textdir TRT\ProtoSinaiticFifteenthCenturyFont\tl_reverse:n { #1 }}
@@ -2608,7 +2609,7 @@
     \thispagestyle{empty}
     \vspace*{\fill}
     \begin{flushright}
-    \FitAlphabetHistorySample{\egypt{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}}
+    \FitAlphabetHistorySample{\egyptbold{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}}
     \AlphabetHistoryASCII{\ProtoSinaiticBestFont}{1.81}{\healphabet}\\ % Roughly Serabit el-Khadim (improve it)
     \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoalower}\\	% Roughly Wadi el-Hol
     \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoaupper}\\
