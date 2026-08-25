@@ -3,10 +3,6 @@
 lord --verbose << "EOF"
 Use the data in src/ (fetched from https://tanach.us/Tanach.html) to properly attribute sources to the verses in [01][0-9]-*/*.tex.
 
-    !!! Specifically, just focus on the source attribution xml files in 02-exodus and 09-kings.
-    !!! Don't change the other tex files.
-    !!! We already manually 'git add --patch'ed the xml into there with lots of manual work.
-
 Read master.tex and [01][0-9]-*/*.tex to see how we're currently assigning sources.
 
 Then use the data for each verse, i.e., the XML that's available in the src/ directory
