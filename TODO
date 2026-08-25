@@ -1,81 +1,45 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Make this fully grammatical egyptian of the ~1300 BC era.
+Put this where it belongs in master.tex
 
-	𓅓𓎡!
+% Egyptian quadrat helpers.
+% Requires graphicx.
 
-	𓈖𓃀𓇋 𓈖 𓂋𓐍
-
-    𓐍𓏏 𓈖𓃀𓏏 𓅓 𓉐𓏤!
-
-	𓂧𓇋 𓐍𓏏 𓈖𓃀𓏏 𓅓 𓂝𓇋! 𓂺
-
-I want it to be grammatical, but to permit a very clear double reading where the Hebrew original is a plausible MISTRANSLATION from the even earlier excited egyptian.
-
-The joke should be that Joseph had sex with her and was excited, but the Hebrew original is a euphemistic re-reading.
-
-So it should translate as VERY NEARLY THE HEBREW AND ENGLISH ORIGINAL, but it should also actually mean. "Hell yeah! He doesn't know anything! Let me grab 'em" in double meaning space.
-
-Here's the current version:
-
-\Verse{7}
-{
-	\hJ{וַיְהִי אַחַר הַדְּבָרִים הָאֵלֶּה וַתִּשָּׂא אֵשֶׁת אֲדֹנָיו אֶת עֵינֶיהָ אֶל יוֹסֵף וַתֹּאמֶר שִׁכְבָה עִמִּי׃}
-}
-{
-	\eJ{
-		And it was after these things, and his lord’s wife raised
-		her eyes to Joseph and said, “Lie with me.”
-	}
-}
-{
-	\aB{So before long, the wife looks up at Joseph and goes}
-
-	\begin{center}
-	\aB{\egypt{𓈖𓎡 𓅓𓂝𓇋 𓂺}}%
-	\end{center}%
-	\fC{
-		The Egyptian may be rendered \emph{nk n=i}, using the rather
-		less than euphemistic verb \emph{nk}, “to copulate”. The Hebrew
-		\hE{שִׁכְבָה עִמִּי}, by contrast, literally says only “lie with me,”
-		which in no way suggests copulation on the surface.
-	}
+% Two signs stacked inside approximately one sign-width.
+\newcommand{\egstack}[2]{%
+	\makebox[1em][c]{%
+		\raisebox{0.34em}{\scalebox{0.72}{#1}}%
+		\kern-0.72em%
+		\raisebox{-0.34em}{\scalebox{0.72}{#2}}%
+	}%
 }
 
-
-\Verse{8}
-{
-	\hJ{וַיְמָאֵן וַיֹּאמֶר אֶל אֵשֶׁת אֲדֹנָיו הֵן אֲדֹנִי לֹא יָדַע אִתִּי מַה בַּבָּיִת וְכֹל אֲשֶׁר יֶשׁ לוֹ נָתַן בְּיָדִי׃}
-}
-{
-	\eJ{
-		And he refused, and he said to his lord’s wife, “Here, my
-		lord doesn’t know what he has with me in the house, and
-		he’s put everything that he has in my hand.
-	}
-}
-{
-	\aB{So Joseph, being a gentleman, refuses, and he spoke to her, saying}
-
-	\begin{center}
-	\aB{\egypt{
-	𓅓𓎡!
-
-	𓈖𓃀𓇋 𓈖 𓂋𓐍
-	
-	𓐍𓏏 𓈖𓃀𓏏 𓅓 𓉐𓏤!
-
-	𓂧𓇋 𓐍𓏏 𓈖𓃀𓏏 𓅓 𓂝𓇋! 𓂺
-	}}%
-	\end{center}%
-	\fC{
-		Very roughly, and I do mean roughly, “Here my lord
-		doesn’t know what he has put everything in my hand.”
-		Punctuation omitted to maintain at least a modicum of
-		propriety.
-	}
+% Top sign over two signs side-by-side.
+\newcommand{\egtop}[3]{%
+	\makebox[1.45em][c]{%
+		\raisebox{0.38em}{\scalebox{0.72}{#1}}%
+		\kern-0.72em%
+		\raisebox{-0.34em}{\scalebox{0.66}{#2#3}}%
+	}%
 }
 
-Make it grammatical egyptian, but keep the ejaculating penis at the end, don't change my footnotes, JUST change the egyptian.
+% Two side-by-side over one.
+\newcommand{\egbottom}[3]{%
+	\makebox[1.45em][c]{%
+		\raisebox{0.35em}{\scalebox{0.66}{#1#2}}%
+		\kern-0.90em%
+		\raisebox{-0.36em}{\scalebox{0.72}{#3}}%
+	}%
+}
+
+% Compress a cluster horizontally.
+\newcommand{\egtuck}[1]{%
+	\makebox[0.72em][c]{\scalebox{0.82}[1]{#1}}%
+}
+
+% Tiny sign, useful for complements/determinatives tucked into gaps.
+\newcommand{\egsmall}[1]{%
+	\raisebox{-0.08em}{\scalebox{0.68}{#1}}%
+}
 EOF
