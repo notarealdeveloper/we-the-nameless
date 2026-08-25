@@ -557,7 +557,7 @@
 
 \ExplSyntaxOn
 \NewDocumentCommand{\egypt}{ +m }{
-  {\leavevmode\EgyptianFont\tl_reverse:n { #1 }}
+  {\leavevmode\textdir TLT\EgyptianFont #1}
 }
 \NewDocumentCommand{\egyptbold}{ m }{
   {\leavevmode\EgyptianFont\addfontfeatures{FakeBold=2.0}\tl_reverse:n { #1 }}
