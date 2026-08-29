@@ -1,0 +1,173 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Edit the source attributions in 01-genesis/49.tex so that they use the following fonts, as described in the prompt below:
+
+Every time you switch fonts, add a comment fence (two comments) to the resulting latex file explaining why you switched fonts for a given interval.
+
+Whenever you switch fonts, do this:
+
+    \eXXX{...}
+    \eYYY{...}
+
+Never this:
+
+    \eXXX{...\eYYY{...}...}
+
+Work on this until you're satisfied with the result.
+
+The prompt follows below:
+
+---
+
+For **Genesis 49 specifically**, I’d make **10th-century transitional Paleo-Hebrew your default ancient-poetry font**, and then visibly “age” later editorial material forward through your font chronology. I would **not** use Proto-Sinaitic, Ugaritic, or the 13th-century Proto-Canaanite fonts for the Blessing except as an explicitly speculative visual joke: even very early datings of the poem do not warrant a 15th–13th-century script. Izbet Sartah is the absolute earliest I would contemplate, and even that is probably too aggressive: its script is Early Alphabetic and the language of the inscription cannot securely be called Hebrew. ([Mnamon][1])
+
+### My default: `08-bc10c-paleo-hebrew-tel-zayit.ttf`
+
+That is almost absurdly well suited to what you are doing. Tel Zayit is **mid-10th century BCE**, and its letterforms are transitional: derived from the older Canaanite/Phoenician tradition but already anticipating the differentiated Hebrew national script. ([RCNi Company Limited][2])
+
+So if the question is:
+
+> “What might an early written edition of these old tribal poems have looked like around the formation of the monarchy?”
+
+**Tel Zayit is probably your best font.**
+
+I'd use your fonts something like this:
+
+| Gen 49     | What I think you're representing              | Font I'd use                                                   | Why                                                                                         |
+| ---------- | --------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| **2–7**    | very old tribal material: Reuben, Simeon/Levi | **`08-bc10c-paleo-hebrew-tel-zayit.ttf`**                      | Early material, but 10th c. is a much safer point for *writing it down* than 12th c.        |
+| **8–9**    | old Judah saying, now tied to Judah's rise    | **Tel Zayit / Gezer**                                          | Transitional early-monarchic is perfect                                                     |
+| **10**     | monarchic/dynastic Judah expansion            | **`09-bc09c-paleo-hebrew-standard-a.ttf`** or **Mesha-style**  | This line looks more politically developed than the underlying tribal sayings               |
+| **11–12**  | Judah continuation; probably monarchic        | **Tel Zayit or 9th-c. standard**                               | Depends whether you treat 8–12 as one composition                                           |
+| **13–17**  | Zebulun–Dan tribal sayings                    | **Tel Zayit / Gezer**                                          | Very plausible inherited early sayings                                                      |
+| **18**     | “I wait for your salvation, YHWH”             | **`10-bc08c-paleo-hebrew-siloam-a.ttf`**                       | Best candidate for deliberately showing a conspicuous secondary insertion                   |
+| **19–24a** | Gad–Joseph, old tribal/northern material      | **`08-bc10c-paleo-hebrew-gezer-a.ttf`**                        | Gezer feels especially good for the less-Judah-centric old material                         |
+| **24b–26** | expanded Joseph blessing                      | **9th-c. Paleo-Hebrew**, perhaps `mesha-stele-a` aesthetically | These verses are a particularly plausible secondary expansion, though the date is uncertain |
+| **27**     | Benjamin wolf saying                          | **Tel Zayit / Gezer**                                          | Sounds exactly like the old tribal-saying layer                                             |
+| **28**     | prose/editorial colophon                      | **9th–8th-c. Paleo-Hebrew**                                    | Clearly frame/editor material rather than one of the sayings                                |
+
+That division should be understood as a **critical visualization rather than a claim that paleography lets us date the verses**. Gen 49 is notoriously composite-looking. One major critical tradition sees separate tribal sayings collected and subsequently reworked; older criticism specifically flagged **v. 10, vv. 25–26, and probably v. 18** as interpolations. More recent work is more cautious and emphasizes substantial literary reworking rather than a clean recoverable sequence of interpolations. ([Jewish Encyclopedia][3])
+
+## I would actually use **Gezer + Tel Zayit as two flavors of the oldest layer**
+
+You have an unusually nice opportunity here.
+
+`08-bc10c-paleo-hebrew-gezer-a.ttf`
+
+for the **tribal-song material**, and
+
+`08-bc10c-paleo-hebrew-tel-zayit.ttf`
+
+for material that feels more specifically **Judah / early state scribal**.
+
+The Gezer Calendar sits linguistically somewhere between Phoenician/Canaanite and Archaic Hebrew, perhaps even reflecting a dialect preceding the later dominance of Jerusalem Hebrew. ([Center for Online Judaic Studies][4]) Tel Zayit, meanwhile, comes from the Judaean Shephelah and is precisely a transitional early-Iron-II script heading toward distinctively Hebrew writing. ([RCNi Company Limited][2])
+
+That makes the typography semantically useful rather than merely chronological:
+
+**old pan-Israelite / tribal / dialectally weird stuff**
+→ `gezer-a`
+
+**early Judah / monarchy material**
+→ `tel-zayit`
+
+**clearly developed monarchic redaction**
+→ `09-bc09c-paleo-hebrew-standard-a`
+
+**8th-c. editorial hand**
+→ `10-bc08c-paleo-hebrew-siloam-a`
+
+**late First-Temple additions**
+→ `11-bc07c-paleo-hebrew-ketef-hinnom-a`
+
+**exilic / immediately pre-exilic**
+→ `12-bc06c-paleo-hebrew-lachish-*.ttf`
+
+**Persian-period editing**
+→ `13-bc05c-imperial-aramaic-noto-sans.ttf`
+
+That last transition matters: under Persian rule, Aramaic scribal practice became dominant, and by the fifth century BCE the Aramaic script was being standardized empire-wide. ([TheTorah][5]) So **Imperial Aramaic should mean something very strong in your book**: “I think this wording is Persian-period or later,” not merely “this is an editorial addition.”
+
+### And that means I would *not* casually use Ketef Hinnom/Lachish either.
+
+They are extremely useful chronological flags:
+
+**Siloam** = 8th c. Hebrew. ([Wikipedia][6])
+**Ketef Hinnom** = late 7th/early 6th c. Paleo-Hebrew. ([RCNi Company Limited][7])
+**Lachish** = late 7th/early 6th c., right before Babylon. ([Biblical Archaeology Society][8])
+
+So readers can eventually learn your typography almost unconsciously:
+
+> weird angular old letters = **this shit is old**
+> mature Paleo-Hebrew = **monarchy-era author/editor**
+> elegant late Paleo-Hebrew = **late Judah**
+> Aramaic-looking letters = **post-collapse scribal world**
+> DSS square-ish hand = **really late textual history**
+
+## For Gen 49, I'd therefore do this
+
+```text
+49:1       later prose frame              9th/8th c. Paleo-Hebrew
+49:2-7     archaic collection             Gezer / Tel Zayit
+49:8-9     early Judah material            Tel Zayit
+49:10      monarchic expansion             9th-c. Paleo-Hebrew
+49:11-17   old sayings                     Gezer / Tel Zayit
+49:18      conspicuous insertion           Siloam
+49:19-24a  old sayings / Joseph core       Gezer
+49:24b-26  expanded Joseph blessing        9th-c. Paleo-Hebrew
+49:27      old Benjamin saying             Gezer
+49:28      compiler's colophon             9th/8th c. Paleo-Hebrew
+```
+
+I wouldn't pretend we can defend those century assignments verse-for-verse. The important historical point is that **the chapter does not belong cleanly to a single horizon**. Reuben and the non-priestly treatment of Levi can suggest an early setting, while Judah's political supremacy—especially 49:10—presupposes a very different situation. Encyclopaedia Judaica summarizes the problem nicely: the sayings resist assignment to one historical horizon, while the Judah material points toward the emergence of the monarchy/Davidic hegemony. ([Encyclopedia.com][9])
+
+There is also a useful corrective from newer linguistic work: some supposedly “archaic” Torah poetry includes unmistakably Classical or even later Hebrew constructions. Gen 49 itself mixes old-looking material with forms that can fit exilic/post-exilic Hebrew, suggesting **old traditions that have been linguistically handled by later scribes**, rather than a pristine Iron-I poem frozen in amber. ([TheTorah][10])
+
+That makes your font-switching idea **particularly appropriate**—provided you let the fonts represent *layers*, not simply assign one “date of Genesis 49.”
+
+### One change I'd make to your catalog philosophy
+
+I'd reserve
+
+`07-bc12c-proto-canaanite-izbet-sartah-*`
+
+for passages where you are making the unusually strong claim:
+
+> **“This could plausibly descend from something already being recited/written in the Judges period.”**
+
+Not merely “archaic Hebrew.”
+
+And I would reserve
+
+`06-bc13c-proto-canaanite-*`
+
+for something even stronger.
+
+The 15th/18th/19th-century Proto-Sinaitic files should basically be **off limits for ordinary biblical Hebrew composition**. They are fantastic for your Exodus alphabet-evolution business, but putting Gen 49 into them would visually imply a Bronze-Age textual antiquity that the evidence simply doesn't warrant.
+
+**So if you want one answer:**
+
+### `08-bc10c-paleo-hebrew-tel-zayit.ttf`
+
+is the best single font for the Blessing of Jacob.
+
+**If you want the maximally cool historically meaningful version:**
+
+### Gezer/Tel Zayit → 9th-c. Paleo-Hebrew → Siloam
+
+with the switches concentrated particularly around **49:10, 49:18, and 49:24b–26**.
+
+And for **49:29–33**, if you're keeping your Hezekiah-era dating of P, `10-bc08c-paleo-hebrew-siloam-a.ttf` is almost comically perfect: actual 8th-century Judah Hebrew script for your P layer. ([Wikipedia][6])
+
+[1]: https://mnamon.sns.it/index.php?id=53&lang=en&page=Esempi&utm_source=chatgpt.com "Proto-Canaanite - Examples of writing"
+[2]: https://www.journals.uchicago.edu/doi/abs/10.1086/BASOR25066976?utm_source=chatgpt.com "An Abecedary of the Mid-Tenth Century B.C.E. from the Judaean Shephelah | Bulletin of the American Schools of Oriental Research: Vol 344, No null"
+[3]: https://www.jewishencyclopedia.com/articles/8382-jacob-blessing-of?utm_source=chatgpt.com "JACOB, BLESSING OF - JewishEncyclopedia.com"
+[4]: https://cojs.org/gezer_calendar-_10th_century_bce/?utm_source=chatgpt.com "Gezer Calendar, 10th century BCE | Center for Online Judaic Studies"
+[5]: https://www.thetorah.com/article/the-transformation-of-hebrew-script-from-paleo-hebrew-to-aramaic?utm_source=chatgpt.com "The Transformation of Hebrew Script: From Paleo-Hebrew to Aramaic - TheTorah.com"
+[6]: https://en.wikipedia.org/wiki/Siloam_inscription?utm_source=chatgpt.com "Siloam inscription"
+[7]: https://www.journals.uchicago.edu/doi/10.2307/3557916?utm_source=chatgpt.com "The Challenges of Ketef Hinnom: Using Advanced Technologies to Reclaim the Earliest Biblical Texts and Their Context | Near Eastern Archaeology: Vol 66, No 4"
+[8]: https://www.biblicalarchaeology.org/daily/ancient-cultures/ancient-israel/the-lachish-letters/?utm_source=chatgpt.com "The Lachish Letters - Biblical Archaeology Society"
+[9]: https://www.encyclopedia.com/religion/encyclopedias-almanacs-transcripts-and-maps/jacob-blessing?utm_source=chatgpt.com "Jacob, Blessing of | Encyclopedia.com"
+[10]: https://www.thetorah.com/article/remnants-of-archaic-hebrew-poetry-embedded-in-the-torah?utm_source=chatgpt.com "Remnants of Archaic Hebrew Poetry Embedded in the Torah - TheTorah.com"
+
+EOF
