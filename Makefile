@@ -164,10 +164,7 @@ $(SUBSET_TARGETS):
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$@")"; \
 	bin/book-subset --build-dir "$(BUILD)" "$@"; \
-	$(LATEX) $(LATEXFLAGS) "\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(BUILD)/$$basename.tex}"; \
-	if grep -q 'Rerun to get' "$(BUILD)/$$basename.log"; then \
-		$(LATEX) $(LATEXFLAGS) "\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(BUILD)/$$basename.tex}"; \
-	fi
+	$(LATEX) $(LATEXFLAGS) "\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(BUILD)/$$basename.tex}"
 	$(MAKE) clean-stray-aux
 	@basename="$$(bin/book-subset --output-name "$@")"; \
 	cp "$(BUILD)/$$basename.pdf" "$$basename.pdf"
