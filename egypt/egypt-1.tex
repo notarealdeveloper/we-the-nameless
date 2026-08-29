@@ -72,6 +72,10 @@ Unicode signs.
 	egypt person/.style={
 		inner sep=0pt,
 		outer sep=0pt
+	},
+	hand label/.style={
+		font=\small,
+		inner sep=1pt
 	}
 }
 
@@ -139,7 +143,7 @@ Unicode signs.
 	\node[
 		anchor=south,
 		inner sep=0pt,
-		yshift=.22em
+		yshift=.10em
 	] at (ephraim.north)
 	{
 		Ephraim
@@ -160,10 +164,10 @@ Unicode signs.
 	};
 
 	\node[
-		anchor=north,
+		anchor=south,
 		inner sep=0pt,
-		yshift=-.22
-	] at (manasseh.south)
+		yshift=.10em
+	] at (manasseh.north)
 	{
 		Manasseh
 	};
@@ -205,7 +209,7 @@ Unicode signs.
 	%
 
 	\coordinate (jacob-hand-axis) at
-		($(jacob.west)!0.33!(jacob.east)$);
+		($(jacob.west)!0.46!(jacob.east)$);
 
 	% Two slightly separated origins on Jacob's upper body.
 	\coordinate (jacob-left-root) at
@@ -316,10 +320,45 @@ Unicode signs.
 
 	\end{scope}
 
+	% --------------------------------------------------------
+	% Hand labels
+	% --------------------------------------------------------
+	%
+	% These live on the SAME paths as their hands, so if any
+	% character moves, each label follows its hand automatically.
+	%
+
+	\path
+		(jacob-left-root)
+		--
+		(ephraim-head)
+		node[
+			pos=.30,
+			sloped,
+			above=.10em,
+			hand label
+		]
+		{
+			left
+		};
+
+	\path
+		(jacob-right-root)
+		--
+		(manasseh-head)
+		node[
+			pos=.30,
+			sloped,
+			below=.10em,
+			hand label
+		]
+		{
+			right
+		};
+
 \end{tikzpicture}
 
 \end{center}
-
 
 
 \subsection*{Manual Jacob and grandsons --- crossed hands}
@@ -338,33 +377,17 @@ Unicode signs.
 	% --------------------------------------------------------
 	% Crossed hands
 	% --------------------------------------------------------
-	%
-	% Put the CENTER of both giant forearm glyphs at the same
-	% dynamically measured point. This forces a clean, visible X
-	% through approximately the midpoint of the visible arms.
-	%
-	% The crossing point is measured from Jacob's anatomical hand
-	% axis toward the midpoint between the two boys' heads. Moving
-	% any of the people therefore moves the crossing automatically.
-	%
-
-	\coordinate (grandsons-mid) at
-		($(ephraim-head)!0.5!(manasseh-head)$);
-
-	\coordinate (hands-cross) at
-		($(jacob-hand-axis)!0.58!(grandsons-mid)$);
 
 	\begin{scope}[on background layer]
 
-		% Arm ending at Ephraim.  Centering the glyph on hands-cross
-		% makes its forearm extend back down-left toward Jacob.
+		% Left hand -> Manasseh
 		\path
-			(hands-cross)
+			(jacob-left-root)
 			--
-			(ephraim-head)
+			(manasseh-head)
 			node[
 				pos=0,
-				anchor=center,
+				anchor=west,
 				inner sep=0pt,
 				sloped
 			]
@@ -372,15 +395,14 @@ Unicode signs.
 				\JacobBlessingHand
 			};
 
-		% Arm ending at Manasseh.  Same center, opposite slope, so
-		% the two forearms visibly cross at their midpoints.
+		% Right hand -> Ephraim
 		\path
-			(hands-cross)
+			(jacob-right-root)
 			--
-			(manasseh-head)
+			(ephraim-head)
 			node[
 				pos=0,
-				anchor=center,
+				anchor=west,
 				inner sep=0pt,
 				sloped
 			]
@@ -390,9 +412,42 @@ Unicode signs.
 
 	\end{scope}
 
+	% --------------------------------------------------------
+	% Hand labels
+	% --------------------------------------------------------
+
+	\path
+		(jacob-left-root)
+		--
+		(manasseh-head)
+		node[
+			pos=.28,
+			sloped,
+			above=.10em,
+			hand label
+		]
+		{
+			left
+		};
+
+	\path
+		(jacob-right-root)
+		--
+		(ephraim-head)
+		node[
+			pos=.28,
+			sloped,
+			below=.10em,
+			hand label
+		]
+		{
+			right
+		};
+
 \end{tikzpicture}
 
 \end{center}
+
 
 
 \subsection*{Unicode controls and HieroJax}

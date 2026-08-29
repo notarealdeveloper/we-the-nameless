@@ -1,0 +1,739 @@
+% !TEX program = lualatex
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.8in]{geometry}
+\usepackage[no-math]{fontspec}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{ruby}
+
+\renewcommand{\rubysize}{0.45}
+\renewcommand{\rubysep}{0.15ex}
+
+\newcommand{\egRuby}[2]{%
+  \ruby{#1}{{\normalfont #2}}%
+}
+
+% Compile from egypt/ so the repository-local font is one directory up.
+\newfontfamily\NewGardinerFont[
+  Path=../fonts/,
+  Renderer=HarfBuzz,
+  Scale=1.9
+]{NewGardiner.ttf}
+\newcommand{\egypt}[1]{{\leavevmode\textdir TLT\NewGardinerFont #1}}
+
+% Small, composable tools. Each accepts either signs or a cluster made by another tool.
+\newcommand{\egH}[2]{#1\kern.08em#2}
+\newcommand{\egV}[2]{%
+  \raisebox{-.35em}{\shortstack{%
+    \resizebox{!}{.68em}{#1}\\[-.28em]
+    \resizebox{!}{.68em}{#2}}}}
+\newcommand{\egScale}[2]{\scalebox{#1}{#2}}
+\newcommand{\egWide}[2]{\scalebox{#1}[1]{#2}}
+\newcommand{\egTall}[2]{\scalebox{1}[#1]{#2}}
+\newcommand{\egRaise}[2]{\raisebox{#1}{#2}}
+\newcommand{\egMirror}[1]{\reflectbox{#1}}
+\newcommand{\egRotate}[2]{\rotatebox[origin=c]{#1}{#2}}
+\newcommand{\egOverlap}[2]{\makebox[0pt][c]{#1}#2}
+
+\setlength{\parindent}{0pt}
+\newcommand{\demo}[2]{%
+  \par\smallskip
+  {\ttfamily #1}\hfill\egypt{#2}\par
+}
+
+\begin{document}
+\section*{NewGardiner: a small LuaLaTeX how-to}
+
+Write Unicode hieroglyphs inside \verb|\egypt{...}|.  The helpers below are
+ordinary TeX commands, so they nest: first make a cluster, then scale, raise,
+mirror, rotate, or overlap it.  Their arguments remain normal, searchable
+Unicode signs.
+
+\demo{\string\egypt\{\egypt{𓂀𓆣𓇳}\}}{𓂀𓆣𓇳}
+\demo{\string\egypt\{\string\egH\{\egypt{𓂀}\}\{\egypt{𓆣}\}\}}{\egH{𓂀}{𓆣}}
+\demo{\string\egypt\{\string\egV\{\egypt{𓂀}\}\{\egypt{𓆣}\}\}}{\egV{𓂀}{𓆣}}
+\demo{\string\egypt\{\string\egV\{\egypt{𓂀}\}\{\string\egH\{\egypt{𓆣}\}\{\egypt{𓇳}\}\}\}}{\egV{𓂀}{\egH{𓆣}{𓇳}}}
+\demo{\string\egypt\{\string\egScale\{0.7\}\{\egypt{𓂀𓆣}\}\}}{\egScale{0.7}{𓂀𓆣}}
+\demo{\string\egypt\{\string\egWide\{0.65\}\{\egypt{𓂀𓆣}\}\}}{\egWide{0.65}{𓂀𓆣}}
+\demo{\string\egypt\{\string\egTall\{1.35\}\{\egypt{𓂀}\}\}}{\egTall{1.35}{𓂀}}
+\demo{\string\egypt\{\egypt{𓂀}\string\egRaise\{0.3em\}\{\string\egScale\{0.55\}\{\egypt{𓇳}\}\}\}}{𓂀\egRaise{0.3em}{\egScale{0.55}{𓇳}}}
+\demo{\string\egypt\{\string\egMirror\{\egypt{𓀀𓆣}\}\}}{\egMirror{𓀀𓆣}}
+\demo{\string\egypt\{\string\egRotate\{15\}\{\egypt{𓂀}\}\}}{\egRotate{15}{𓂀}}
+\demo{\string\egypt\{\string\egOverlap\{\string\egScale\{0.65\}\{\egypt{𓇳}\}\}\{\egypt{𓂀}\}\}}{\egOverlap{\egScale{0.65}{𓇳}}{𓂀}}
+
+\section*{Tests}
+
+%𓂸       A phallus with a scrotum.
+%𓂹       A phallus with a scrotum (D52), written over a folded piece of cloth (S29).
+%𓂺       A phallus with a scrotum, with a line of liquid issuing from it.
+%𓒑       Naked man, standing, phallus erect, producing a line of liquid, right arm hanging downwards, hand above the phallus, left arm hanging beside the body.
+%𓥚       The head of a human male in profile, with two arms, one arm forwards, angling downwards, holding a phallus with a scrotum (D52) horizontally, other arm extended towards the back, forearm upwards.
+%𓨇       A phallus with a scrotum, written with the tip in a vulva (N41).
+%𓨈       A phallus with a scrotum, with a line of liquid issuing from it (D53), pouring into a wide cup (W10).
+%𓨉       A phallus with a scrotum, with a line of liquid issuing from it (D53), pouring into a vulva (N42).
+
+\egypt{𓨈}
+
+\egypt{𓒑}
+
+\egypt{\egScale{3.0}{𓒑}}
+
+\egypt{\egV{\egScale{3.00}{𓂺}}{𓂀}}
+
+\egypt{𓂀\egRaise{1.0em}{\egTall{2.0}{\egWide{3.00}{𓂺}}}}
+
+\section*{Genesis verses}
+
+\subsection*{Genesis 39:7}
+
+\egypt{𓈖𓎡 𓈖𓇋 𓂺}
+
+\subsection*{Genesis 39:8}
+
+\egypt{𓅓𓎡}
+
+\egypt{𓈖 𓂋𓐍 𓎟𓃀𓇋}
+
+\egypt{𓐍𓏏 𓎟𓃀𓏏 𓅓 𓉐𓂋𓏤}
+
+\egypt{𓂞𓇋 𓐍𓏏 𓎟𓃀𓏏 𓅓 𓂝𓇋 𓂺}
+
+\subsection*{Genesis 39:12}
+
+\egypt{𓈖𓎡𓈖𓇋 𓂺𓀟𓂨𓁐}
+
+\subsection*{Genesis 41:45}
+
+\egypt{𓇋𓅱𓊃𓆑𓀀}
+
+\egypt{𓊗𓈖𓏏 𓊪𓂝𓋹}
+
+\egypt{𓃒𓃽𓃓𓃕𓃖𓃜𓃔}
+
+\egypt{𓏏𓏒𓏙𓊰𓌾𓏘𓉅}
+
+\egypt{𓁹𓁀}
+
+\egypt{𓂺}
+
+\egypt{𓃒}
+
+\egypt{𓂸𓊝}
+
+\egypt{𓅭}\egypt{𓇳}
+
+\subsection*{Genesis 42:24}
+
+\egypt{𓋴𓃀𓏏𓀁 𓋴𓃀𓏏𓀁 𓋴𓃀𓏏𓀁𓁿𓁿𓀿!}
+
+\subsection*{Genesis 48:13}
+
+\begin{center}
+
+\egRuby{
+	\egypt{\egScale{1.15}{𓀀}}
+}{Jacob}
+
+\vspace{1.5em}
+
+\egRuby{
+	\egypt{\egScale{.78}{𓀔}}
+}{Ephraim}
+\hspace{4em}
+\egRuby{
+	\egypt{\egScale{.78}{𓀔}}
+}{Manasseh}
+
+\vspace{1.5em}
+
+\egRuby{
+	\egypt{\egScale{1.15}{\egMirror{𓀀}}}
+}{Joseph}
+
+\end{center}
+
+
+\subsection*{Genesis 48:14}
+
+\begin{center}
+
+\egRuby{
+	\egypt{
+		\egRotate{-28}{
+			\egWide{1.7}{𓂝}
+		}
+	}
+}{Jacob's right}
+\hspace{5em}
+\egRuby{
+	\egypt{
+		\egRotate{28}{
+			\egWide{1.7}{\egMirror{𓂝}}
+		}
+	}
+}{Jacob's left}
+
+\end{center}
+
+\subsection*{Genesis 48:13}
+
+\begin{center}
+
+\egRuby{
+	\egypt{\egScale{1.25}{𓀗}}
+}{Jacob}
+\hspace{3em}
+\egRuby{
+	\egypt{\egScale{.90}{𓀔}}
+}{Ephraim}
+\hspace{1.5em}
+\egRuby{
+	\egypt{\egScale{.90}{𓀕}}
+}{Manasseh}
+\hspace{3em}
+\egRuby{
+	\egypt{\egScale{1.15}{\egMirror{𓀠}}}
+}{Joseph}
+
+\end{center}
+
+\subsection*{Genesis 48:13}
+
+\begin{center}
+
+\egRuby{
+	\egypt{\egScale{1.25}{\egMirror{𓀗}}}
+}{Jacob}
+\hspace{3em}
+\egRuby{
+	\egypt{\egScale{.90}{𓀔}}
+}{Ephraim}
+\hspace{1.5em}
+\egRuby{
+	\egypt{\egScale{.90}{\egMirror{𓀕}}}
+}{Manasseh}
+\hspace{3em}
+\egRuby{
+	\egypt{\egScale{1.15}{𓀠}}
+}{Joseph}
+
+\end{center}
+
+
+\subsection*{Genesis 48:13}
+
+\begin{center}
+
+\egRuby{
+	\egypt{\egScale{1.25}{\egMirror{𓀗}}}
+}{Jacob}
+\hspace{3em}
+\begin{tabular}{c}
+	\egRuby{
+		\egypt{\egScale{.90}{𓀔}}
+	}{Ephraim}
+	\\[1.0em]
+	\egRuby{
+		\egypt{\egScale{.90}{\egMirror{𓀕}}}
+	}{Manasseh}
+\end{tabular}
+\hspace{3em}
+\egRuby{
+	\egypt{\egScale{1.15}{𓀠}}
+}{Joseph}
+
+\end{center}
+
+
+\subsection*{Genesis 48:14}
+
+\begin{center}
+
+\egRuby{
+	\egypt{
+		\egRotate{-18}{
+			\egWide{1.9}{𓂝}
+		}
+	}
+}{Jacob's right $\rightarrow$ Ephraim}
+\hspace{4em}
+\egRuby{
+	\egypt{
+		\egRotate{18}{
+			\egWide{1.9}{\egMirror{𓂝}}
+		}
+	}
+}{Jacob's left $\rightarrow$ Manasseh}
+
+\end{center}
+
+
+\subsection*{Genesis 48:14}
+
+\begin{center}
+
+\begin{tabular}{c@{\hspace{5em}}c}
+
+\egRuby{
+	\egypt{
+		\egRotate{-22}{
+			\egWide{1.9}{𓂝}
+		}
+	}
+}{Jacob's right}
+&
+\egRuby{
+	\egypt{
+		\egRotate{22}{
+			\egWide{1.9}{\egMirror{𓂝}}
+		}
+	}
+}{Jacob's left}
+\\[1.0em]
+
+\egRuby{
+	\egypt{\egScale{.82}{𓀔}}
+}{Ephraim}
+&
+\egRuby{
+	\egypt{\egScale{.82}{\egMirror{𓀕}}}
+}{Manasseh}
+
+\end{tabular}
+
+\end{center}
+
+\subsection*{Genesis 48:14}
+
+\begin{center}
+
+\begin{tabular}{c@{\hspace{4em}}c}
+
+\multicolumn{2}{c}{
+	\egypt{
+		\egOverlap{
+			\egRaise{.08em}{
+				\egRotate{28}{
+					\egWide{2.4}{𓂝}
+				}
+			}
+		}{
+			\egRaise{-.08em}{
+				\egRotate{-28}{
+					\egWide{2.4}{\egMirror{𓂝}}
+				}
+			}
+		}
+	}
+}
+\\[-.1em]
+
+{\scriptsize Jacob's right} &
+{\scriptsize Jacob's left}
+\\[.8em]
+
+\egRuby{
+	\egypt{\egScale{.82}{𓀔}}
+}{Ephraim}
+&
+\egRuby{
+	\egypt{\egScale{.82}{\egMirror{𓀕}}}
+}{Manasseh}
+
+\end{tabular}
+
+\end{center}
+
+
+\subsection*{Genesis 48:14 — normal hands}
+
+\begin{center}
+
+\begin{tabular}{c@{\hspace{2.5em}}c@{\hspace{1.5em}}c@{\hspace{2.5em}}c}
+
+% Jacob
+\egRuby{
+	\egypt{\egScale{1.25}{\egMirror{𓀗}}}
+}{Jacob}
+
+&
+
+% Jacob's right hand -> Ephraim
+\egRuby{
+	\egypt{
+		\egRaise{.8em}{
+			\egRotate{-28}{
+				\egWide{2.4}{
+					\egMirror{𓂝}
+				}
+			}
+		}
+	}
+}{right}
+
+&
+
+% Kids stacked vertically
+\begin{tabular}{c}
+	\egRuby{
+		\egypt{\egScale{.90}{𓀔}}
+	}{Ephraim}
+	\\[2.0em]
+	\egRuby{
+		\egypt{\egScale{.90}{\egMirror{𓀕}}}
+	}{Manasseh}
+\end{tabular}
+
+&
+
+% Joseph
+\egRuby{
+	\egypt{\egScale{1.15}{𓀠}}
+}{Joseph}
+
+\end{tabular}
+
+% Jacob's left hand -> Manasseh
+\vspace{-5.0em}
+
+\hspace{-11em}
+\egRuby{
+	\egypt{
+		\egRaise{-.9em}{
+			\egRotate{28}{
+				\egWide{2.4}{
+					\egMirror{𓂝}
+				}
+			}
+		}
+	}
+}{left}
+
+\end{center}
+
+
+\subsection*{Genesis 48:14 — normal hands}
+
+\begin{center}
+
+\begin{tabular}{c@{\hspace{1.0em}}c@{\hspace{1.2em}}c@{\hspace{1.8em}}c}
+
+% Jacob
+\egRuby{
+	\egypt{\egScale{1.25}{\egMirror{𓀗}}}
+}{Jacob}
+
+&
+
+% Two normal hands, aimed separately at the two children
+\begin{tabular}{c}
+
+\egRuby{
+	\egypt{
+		\egRotate{-28}{
+			\egWide{2.35}{
+				\egMirror{𓂝}
+			}
+		}
+	}
+}{right}
+
+\\[-1.0em]
+
+\egRuby{
+	\egypt{
+		\egRotate{28}{
+			\egWide{2.35}{
+				\egMirror{𓂝}
+			}
+		}
+	}
+}{left}
+
+\end{tabular}
+
+&
+
+% Kids
+\begin{tabular}{c}
+
+\egRuby{
+	\egypt{\egScale{.90}{𓀔}}
+}{Ephraim}
+
+\\[2.0em]
+
+\egRuby{
+	\egypt{\egScale{.90}{\egMirror{𓀕}}}
+}{Manasseh}
+
+\end{tabular}
+
+&
+
+% Joseph
+\egRuby{
+	\egypt{\egScale{1.15}{𓀠}}
+}{Joseph}
+
+\end{tabular}
+
+\end{center}
+
+
+\subsection*{Genesis 48:14 — crossed hands}
+
+\begin{center}
+
+\begin{tabular}{c@{\hspace{1.0em}}c@{\hspace{1.2em}}c@{\hspace{1.8em}}c}
+
+% Jacob
+\egRuby{
+	\egypt{\egScale{1.25}{\egMirror{𓀗}}}
+}{Jacob}
+
+&
+
+% Crossed hands
+\begin{tabular}{c}
+
+\egOverlap{
+	\egRaise{.15em}{
+		\egRuby{
+			\egypt{
+				\egRotate{28}{
+					\egWide{2.55}{
+						\egMirror{𓂝}
+					}
+				}
+			}
+		}{right}
+	}
+}{
+	\egRaise{-.15em}{
+		\egRuby{
+			\egypt{
+				\egRotate{-28}{
+					\egWide{2.55}{
+						\egMirror{𓂝}
+					}
+				}
+			}
+		}{left}
+	}
+}
+
+\end{tabular}
+
+&
+
+% Kids
+\begin{tabular}{c}
+
+\egRuby{
+	\egypt{\egScale{.90}{𓀔}}
+}{Ephraim}
+
+\\[2.0em]
+
+\egRuby{
+	\egypt{\egScale{.90}{\egMirror{𓀕}}}
+}{Manasseh}
+
+\end{tabular}
+
+&
+
+% Joseph
+\egRuby{
+	\egypt{\egScale{1.15}{𓀠}}
+}{Joseph}
+
+\end{tabular}
+
+\end{center}
+
+\subsection*{Manual Jacob and grandsons}
+
+\begin{center}
+
+\begin{tabular}{c@{\hspace{2.5em}}c@{\hspace{1.5em}}c@{\hspace{2.5em}}c}
+
+% Jacob
+\egRuby{
+	\egypt{\egScale{1.25}{\egMirror{𓀗}}}
+}{Jacob}
+
+&
+
+% Crossed hands
+\begin{tabular}{c}
+
+\egRuby{
+	\egypt{
+		\egRotate{28}{
+			\egWide{2.6}{
+				\egMirror{𓂝}
+			}
+		}
+	}
+}{left}
+
+\\[-1.7em]
+
+\egRuby{
+	\egypt{
+		\egRaise{.15em}{
+			\egRotate{-28}{
+				\egWide{2.6}{
+					\egMirror{𓂝}
+				}
+			}
+		}
+	}
+}{right}
+
+\end{tabular}
+
+&
+
+% Kids stacked vertically
+\begin{tabular}{c}
+	\egRuby{
+		\egypt{\egScale{.90}{𓀔}}
+	}{Ephraim}
+	\\[2.0em]
+	\egRuby{
+		\egypt{\egScale{.90}{\egMirror{𓀕}}}
+	}{Manasseh}
+\end{tabular}
+
+&
+
+% Joseph
+\egRuby{
+	\egypt{\egScale{1.15}{𓀠}}
+}{Joseph}
+
+\end{tabular}
+
+\end{center}
+
+\subsection*{Manual Jacob and grandsons}
+
+\begin{center}
+
+\begingroup
+\setlength{\unitlength}{1em}
+
+\begin{picture}(32,13)
+
+% ------------------------------------------------------------
+% Jacob
+% ------------------------------------------------------------
+
+\put(1.5,5.0){
+	\egRuby{
+		\egypt{
+			\egScale{1.25}{
+				\egMirror{𓀗}
+			}
+		}
+	}{Jacob}
+}
+
+% ------------------------------------------------------------
+% Jacob's crossed hands
+% ------------------------------------------------------------
+
+% Left hand: crosses downward toward Manasseh.
+\put(7.2,6.6){
+	\egRuby{
+		\egypt{
+			\egRaise{-.15em}{
+				\egRotate{-28}{
+					\egWide{2.8}{
+						\egMirror{𓂝}
+					}
+				}
+			}
+		}
+	}{left}
+}
+
+% Right hand: crosses upward toward Ephraim.
+\put(7.2,4.6){
+	\egRuby{
+		\egypt{
+			\egRaise{.15em}{
+				\egRotate{28}{
+					\egWide{2.8}{
+						\egMirror{𓂝}
+					}
+				}
+			}
+		}
+	}{right}
+}
+
+% ------------------------------------------------------------
+% Ephraim
+% ------------------------------------------------------------
+
+\put(19.5,8.0){
+	\egRuby{
+		\egypt{
+			\egScale{.90}{𓀔}
+		}
+	}{Ephraim}
+}
+
+% ------------------------------------------------------------
+% Manasseh
+% ------------------------------------------------------------
+
+\put(19.5,2.6){
+	\egRuby{
+		\egypt{
+			\egScale{.90}{
+				\egMirror{𓀕}
+			}
+		}
+	}{Manasseh}
+}
+
+% ------------------------------------------------------------
+% Joseph
+% ------------------------------------------------------------
+
+\put(27.0,5.0){
+	\egRuby{
+		\egypt{
+			\egScale{1.15}{𓀠}
+		}
+	}{Joseph}
+}
+
+\end{picture}
+
+\endgroup
+
+\end{center}
+
+\subsection*{Unicode controls and HieroJax}
+
+Unicode also defines joiners, segment markers, insertions, enclosures,
+mirroring, rotation selectors, blanks, and damage markers.  For example,
+U+13430 is the vertical joiner (\egypt{𓐰}) and U+13431 is the horizontal
+joiner (\egypt{𓐱}).  NewGardiner contains glyphs used by implementations of
+that standard, but the plain TTF is a glyph source rather than a complete
+layout engine: LuaLaTeX does not turn those controls into quadrats by itself.
+Use the TeX helpers above for predictable PDF layout.  Use the
+\href{https://nederhof.github.io/hierojax/}{HieroJax editor and renderer} when
+you need the complete Unicode composition system; its
+\href{https://nederhof.github.io/hierojax/syntax.html}{syntax table} is the
+compact reference.  Font coverage and releases are documented in the
+\href{https://github.com/nederhof/newgardiner}{NewGardiner repository}.
+
+\end{document}
