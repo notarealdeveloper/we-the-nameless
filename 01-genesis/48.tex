@@ -182,8 +182,8 @@
 
 	He couldn't see a thing.
 
-	And so he does the thing he tricked dad into doing.%
-	\footnote{
+	And so he does the thing he tricked his dad into doing.%
+	\fC{
 		REF: Israel’s eyes were heavy from old age. The analogy to his father is
 		obvious. When Isaac had been old, on his deathbed, unable to see, Jacob
 		had come and appropriated his brother Esau’s blessing. Now Jacob himself
@@ -219,8 +219,10 @@
 {
 	Ok so Joseph brings his kids to grandpa, then he bows, nose to the ground.
 
-	Fortunately we're in Egypt, where the local writing system
-	allows us to express this situation with surprising clarity.
+	\aB{
+		Fortunately we're in Egypt, where the local writing system
+		allows us to express this situation with surprising clarity.
+	}
 
 	\begin{center}
 	
@@ -256,7 +258,13 @@
 }
 {
 
-	Now he stands up and brings them over.
+	\aB{
+		Now he stands up and brings them over to dad.
+
+		Ephraim's on Joseph's right, at Jacob's left.
+
+		Manasseh's on Joseph's left, at Jacob's right.
+	}
 
 	\begin{center}
 	
@@ -294,7 +302,7 @@
 				--
 				(ephraim-head)
 				node[
-					pos=0,
+					pos=-0.05,
 					anchor=west,
 					inner sep=0pt,
 					sloped
@@ -309,7 +317,7 @@
 				--
 				(manasseh-head)
 				node[
-					pos=0,
+					pos=-0.05,
 					anchor=west,
 					inner sep=0pt,
 					sloped
@@ -340,78 +348,84 @@
 }
 {
 
-\begin{center}
+	\aB{
+		So now Jacob, the original blessing stealer and younger brother,
+		crosses his hands, so his right hand goes on the younger and
+		his left hand goes on the firstborn.
+	}
 
-\begin{tikzpicture}
-
-	\path[use as bounding box]
-		(0,0)
-		rectangle
-		(\linewidth,10em);
-
-	\JacobFamilyPeople
-			{𓀗}
-		{𓀔}     {𓀕}
-			{𓀠}
-
-	% --------------------------------------------------------
-	% Crossed hands
-	% --------------------------------------------------------
-	%
-	% Put the CENTER of both giant forearm glyphs at the same
-	% dynamically measured point. This forces a clean, visible X
-	% through approximately the midpoint of the visible arms.
-	%
-	% The crossing point is measured from Jacob's anatomical hand
-	% axis toward the midpoint between the two boys' heads. Moving
-	% any of the people therefore moves the crossing automatically.
-	%
-
-	\coordinate (grandsons-mid) at
-		($(ephraim-head)!0.5!(manasseh-head)$);
-
-	\coordinate (hands-cross) at
-		($(jacob-hand-axis)!0.58!(grandsons-mid)$);
-
-	\begin{scope}[on background layer]
-
-		% Arm ending at Ephraim.  Centering the glyph on hands-cross
-		% makes its forearm extend back down-left toward Jacob.
-		\path
-			(hands-cross)
-			--
-			(ephraim-head)
-			node[
-				pos=0,
-				anchor=center,
-				inner sep=0pt,
-				sloped
-			]
-			{
-				\JacobBlessingHand
-			};
-
-		% Arm ending at Manasseh.  Same center, opposite slope, so
-		% the two forearms visibly cross at their midpoints.
-		\path
-			(hands-cross)
-			--
-			(manasseh-head)
-			node[
-				pos=0,
-				anchor=center,
-				inner sep=0pt,
-				sloped
-			]
-			{
-				\JacobBlessingHand
-			};
-
-	\end{scope}
-
-\end{tikzpicture}
-
-\end{center}
+	\begin{center}
+	
+	\begin{tikzpicture}
+	
+		\path[use as bounding box]
+			(0,0)
+			rectangle
+			(\linewidth,10em);
+	
+		\JacobFamilyPeople
+				{𓀗}
+			{𓀔}     {𓀕}
+				{𓀠}
+	
+		% --------------------------------------------------------
+		% Crossed hands
+		% --------------------------------------------------------
+		%
+		% Put the CENTER of both giant forearm glyphs at the same
+		% dynamically measured point. This forces a clean, visible X
+		% through approximately the midpoint of the visible arms.
+		%
+		% The crossing point is measured from Jacob's anatomical hand
+		% axis toward the midpoint between the two boys' heads. Moving
+		% any of the people therefore moves the crossing automatically.
+		%
+	
+		\coordinate (grandsons-mid) at
+			($(ephraim-head)!0.5!(manasseh-head)$);
+	
+		\coordinate (hands-cross) at
+			($(jacob-hand-axis)!0.58!(grandsons-mid)$);
+	
+		\begin{scope}[on background layer]
+	
+			% Arm ending at Ephraim.  Centering the glyph on hands-cross
+			% makes its forearm extend back down-left toward Jacob.
+			\path
+				(hands-cross)
+				--
+				(ephraim-head)
+				node[
+					pos=0,
+					anchor=center,
+					inner sep=0pt,
+					sloped
+				]
+				{
+					\JacobBlessingHand
+				};
+	
+			% Arm ending at Manasseh.  Same center, opposite slope, so
+			% the two forearms visibly cross at their midpoints.
+			\path
+				(hands-cross)
+				--
+				(manasseh-head)
+				node[
+					pos=0,
+					anchor=center,
+					inner sep=0pt,
+					sloped
+				]
+				{
+					\JacobBlessingHand
+				};
+	
+		\end{scope}
+	
+	\end{tikzpicture}
+	
+	\end{center}
 
 }
 
