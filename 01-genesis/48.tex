@@ -284,7 +284,7 @@
 		\JacobFamilyPeople
 				{𓀗}
 			{𓀔}     {𓀕}
-				{𓀠}
+				{𓀞}
 	
 		% --------------------------------------------------------
 		% Hands
@@ -372,7 +372,7 @@
 		\JacobFamilyPeople
 				{𓀗}
 			{𓀔}     {𓀕}
-				{𓀠}
+				{𓀞}
 	
 		% --------------------------------------------------------
 		% Crossed hands
@@ -447,6 +447,7 @@
 	}
 }
 {
+	\aB{And he blesses Joseph.}
 %	\footnote{
 %		before whom my fathers walked. Note here and in Gen 6:9 and 17:1 that
 %		this is technical covenant terminology known from ancient Near Eastern
@@ -467,6 +468,14 @@
 	}
 }
 {
+	\aB{
+		He asks for Ephraim and Manasseh to be called ``Israel,''
+		and to be spawned into a great number, which comes true,
+		because all these people become tribes once we get to Exodus,
+		and then they become places once we're in the land,
+		which (unsurprisingly) is called Israel
+		(sort of (some of the time (more often in the North.)))
+	}
 }
 
 \Verse{17}
@@ -482,6 +491,83 @@
 	}
 }
 {
+	\aB{So Joseph sees this whole situation, and he disapproves.}
+
+	\aB{In Egyptian, that's pronounced like this:}
+
+	\begin{center}
+	
+	\begin{tikzpicture}
+	
+		\path[use as bounding box]
+			(0,0)
+			rectangle
+			(\linewidth,10em);
+	
+		\JacobFamilyPeople
+				{𓀗}
+			{𓀔}     {𓀕}
+				{𓀠}
+	
+		% --------------------------------------------------------
+		% Crossed hands
+		% --------------------------------------------------------
+		%
+		% Put the CENTER of both giant forearm glyphs at the same
+		% dynamically measured point. This forces a clean, visible X
+		% through approximately the midpoint of the visible arms.
+		%
+		% The crossing point is measured from Jacob's anatomical hand
+		% axis toward the midpoint between the two boys' heads. Moving
+		% any of the people therefore moves the crossing automatically.
+		%
+	
+		\coordinate (grandsons-mid) at
+			($(ephraim-head)!0.5!(manasseh-head)$);
+	
+		\coordinate (hands-cross) at
+			($(jacob-hand-axis)!0.58!(grandsons-mid)$);
+	
+		\begin{scope}[on background layer]
+	
+			% Arm ending at Ephraim.  Centering the glyph on hands-cross
+			% makes its forearm extend back down-left toward Jacob.
+			\path
+				(hands-cross)
+				--
+				(ephraim-head)
+				node[
+					pos=0,
+					anchor=center,
+					inner sep=0pt,
+					sloped
+				]
+				{
+					\JacobBlessingHand
+				};
+	
+			% Arm ending at Manasseh.  Same center, opposite slope, so
+			% the two forearms visibly cross at their midpoints.
+			\path
+				(hands-cross)
+				--
+				(manasseh-head)
+				node[
+					pos=0,
+					anchor=center,
+					inner sep=0pt,
+					sloped
+				]
+				{
+					\JacobBlessingHand
+				};
+	
+		\end{scope}
+	
+	\end{tikzpicture}
+	
+	\end{center}
+
 }
 
 \Verse{18}
