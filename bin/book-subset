@@ -143,6 +143,7 @@ class Target:
     toc_chapters: bool = False
     book_title_override: str | None = None
     passthrough_includes: frozenset[str] = frozenset()
+    exact_includes: frozenset[str] = frozenset()
 
 
 J_ARCHAIC_EXCEPTIONS = frozenset(
@@ -639,6 +640,48 @@ def dynamic_book_targets():
     return tuple(targets)
 
 
+def chapter_target(include, book):
+    directory, chapter_file = include.split("/", 1)
+    number, slug = NUMBERED_BOOK_DIR_RE.fullmatch(directory).groups()
+    chapter = chapter_file.lstrip("0") or "0"
+    title = book["title"]
+
+    # Samuel and Kings store both volumes in one directory (for example,
+    # 08-samuel/1-01.tex), so expose the natural make target 1-samuel-1.
+    compound = re.fullmatch(r"([12])-(\d+)", chapter_file)
+    if compound:
+        volume, raw_chapter = compound.groups()
+        chapter = raw_chapter.lstrip("0") or "0"
+        name = f"{volume}-{slug}-{chapter}"
+        title = f"{'I' if volume == '1' else 'II'} {title}"
+    else:
+        name = f"{slug}-{chapter}"
+
+    return Target(
+        name,
+        title,
+        f"{title}, chapter {chapter}.",
+        output_name=name,
+        book_title_override=title,
+        exact_includes=frozenset({include}),
+    )
+
+
+@lru_cache(maxsize=1)
+def dynamic_chapter_targets():
+    targets = []
+    for book in master_books():
+        for item_type, value in book["items"]:
+            chapter_file = value.rsplit("/", 1)[-1]
+            if (
+                item_type == "include"
+                and re.fullmatch(r"(?:[12]-)?\d+", chapter_file)
+                and (ROOT / f"{value}.tex").is_file()
+            ):
+                targets.append(chapter_target(value, book))
+    return tuple(targets)
+
+
 @lru_cache(maxsize=1)
 def target_aliases():
     aliases = {name: target for name, target in TARGETS.items()}
@@ -648,6 +691,10 @@ def target_aliases():
             if name in aliases:
                 fatal(f"target alias {name!r} is ambiguous")
             aliases[name] = target
+    for target in dynamic_chapter_targets():
+        if target.name in aliases:
+            fatal(f"target alias {target.name!r} is ambiguous")
+        aliases[target.name] = target
     return aliases
 
 
@@ -1134,6 +1181,8 @@ def copy_or_filter_chapter(include, target, target_dir):
 
 
 def selected_include(include, target):
+    if target.exact_includes:
+        return include in target.exact_includes
     if include in target.passthrough_includes:
         return True
     if include in SUBSET_EXCLUDED_INCLUDES:
@@ -1214,7 +1263,14 @@ def print_list():
 
 
 def print_make_targets():
-    print(" ".join(sorted(target_aliases())))
+    names = set(TARGETS)
+    for target in dynamic_book_targets():
+        names.update({target.name, *target.aliases})
+    print(" ".join(sorted(names)))
+
+
+def print_make_chapter_targets():
+    print(" ".join(target.name for target in dynamic_chapter_targets()))
 
 
 def print_make_book_targets():
@@ -1242,6 +1298,11 @@ def main():
         action="store_true",
         help="print callable whole-book make targets and aliases",
     )
+    parser.add_argument(
+        "--make-chapter-targets",
+        action="store_true",
+        help="print callable single-chapter make targets",
+    )
     parser.add_argument("--output-name", action="store_true", help="print the canonical output basename for a target")
     args = parser.parse_args()
 
@@ -1254,9 +1315,12 @@ def main():
     if args.make_book_targets:
         print_make_book_targets()
         return
+    if args.make_chapter_targets:
+        print_make_chapter_targets()
+        return
     if args.target is None:
         parser.error(
-            "target is required unless --list, --make-targets, or --make-book-targets is used"
+            "target is required unless a listing option is used"
         )
     if args.output_name:
         print(target_output_name(resolve_target(args.target)))

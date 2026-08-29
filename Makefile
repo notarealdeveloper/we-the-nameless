@@ -12,12 +12,13 @@ LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-di
 TEX_SOURCES := $(shell find . -path './build' -prune -o -name '*.tex' -print)
 SUBSET_TARGETS := $(shell bin/book-subset --make-targets)
 BOOK_TARGETS := $(shell bin/book-subset --make-book-targets)
+CHAPTER_TARGETS := $(shell bin/book-subset --make-chapter-targets)
 COMMENT_BOOK_TARGETS := $(addprefix comment-,$(BOOK_TARGETS))
 UNCOMMENT_BOOK_TARGETS := $(addprefix uncomment-,$(BOOK_TARGETS))
 
 export TEXMFVAR = $(CACHE)
 
-.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 all: $(PDF) open
 
@@ -48,6 +49,8 @@ help:
 		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
 		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
 		'  make genesis      Build 01-genesis.pdf; numbered book targets also accept 1-genesis and 01-genesis forms.' \
+		'  make genesis-1    Build only Genesis 1 as build/test/test.pdf and open it.' \
+		'  make 1-samuel-1   Build only 1 Samuel 1; chapter targets share build/test/.' \
 		'  make samuel       Build 08-samuel.pdf; use 1-samuel or 2-samuel for the individual books.' \
 		'  make kings        Build 09-kings.pdf; use 1-kings or 2-kings for the individual books.' \
 		'  make clean        Remove transient TeX aux files.' \
@@ -168,3 +171,17 @@ $(SUBSET_TARGETS):
 	$(MAKE) clean-stray-aux
 	@basename="$$(bin/book-subset --output-name "$@")"; \
 	cp "$(BUILD)/$$basename.pdf" "$$basename.pdf"
+
+$(CHAPTER_TARGETS): BUILD = build/test
+$(CHAPTER_TARGETS):
+	@$(MAKE) BUILD="build/test" TRANSLATION="$(TRANSLATION)" build-translation
+	@set -e; \
+	basename="$$(bin/book-subset --output-name "$@")"; \
+	bin/book-subset --build-dir "build/test" "$@"; \
+	$(LATEX) $(LATEXFLAGS) -jobname=test "\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{build/test/$$basename.tex}"
+	@$(MAKE) clean-stray-aux
+	@if command -v xdg-open >/dev/null 2>&1; then \
+		xdg-open "build/test/test.pdf" >/dev/null 2>&1 & \
+	else \
+		echo "Built build/test/test.pdf"; \
+	fi
