@@ -615,6 +615,87 @@
 	}
 }
 {
+	\aB{But Jacob says}
+
+	\begin{center}
+	
+	\begin{tikzpicture}
+	
+		\path[use as bounding box]
+			(0,0)
+			rectangle
+			(\linewidth,10em);
+	
+		\JacobFamilyPeople
+				{𓀗}
+			{𓀔}     {𓀕}
+				{𓀠}
+	
+		% --------------------------------------------------------
+		% Crossed hands
+		% --------------------------------------------------------
+		%
+		% Put the CENTER of both giant forearm glyphs at the same
+		% dynamically measured point. This forces a clean, visible X
+		% through approximately the midpoint of the visible arms.
+		%
+		% The crossing point is measured from Jacob's anatomical hand
+		% axis toward the midpoint between the two boys' heads. Moving
+		% any of the people therefore moves the crossing automatically.
+		%
+	
+		\coordinate (grandsons-mid) at
+			($(ephraim-head)!0.5!(manasseh-head)$);
+	
+		\coordinate (hands-cross) at
+			($(jacob-hand-axis)!0.58!(grandsons-mid)$);
+	
+		\begin{scope}[on background layer]
+	
+			% Arm ending at Ephraim.  Centering the glyph on hands-cross
+			% makes its forearm extend back down-left toward Jacob.
+			\path
+				(hands-cross)
+				--
+				(ephraim-head)
+				node[
+					pos=0,
+					anchor=center,
+					inner sep=0pt,
+					sloped
+				]
+				{
+					\JacobBlessingHand
+				};
+	
+			% Arm ending at Manasseh.  Same center, opposite slope, so
+			% the two forearms visibly cross at their midpoints.
+			\path
+				(hands-cross)
+				--
+				(manasseh-head)
+				node[
+					pos=0,
+					anchor=center,
+					inner sep=0pt,
+					sloped
+				]
+				{
+					\JacobBlessingHand
+				};
+	
+		\end{scope}
+	
+	\end{tikzpicture}
+	
+	\end{center}
+
+	\aB{No, son.}
+
+	\aB{It has to be this way.}
+
+	\aB{For the book.}
+
 %	\footnote{
 %		full-fledged of nations. The unusual phrase ml’-haggyim is usually taken
 %		to mean a multitude of nations, but that makes no particular sense in
