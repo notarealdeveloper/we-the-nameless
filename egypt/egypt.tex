@@ -12,7 +12,7 @@
   Renderer=HarfBuzz,
   Scale=1.9
 ]{NewGardiner.ttf}
-\newcommand{\egyptNew}[1]{{\leavevmode\textdir TLT\NewGardinerFont #1}}
+\newcommand{\egypt}[1]{{\leavevmode\textdir TLT\NewGardinerFont #1}}
 
 % Small, composable tools. Each accepts either signs or a cluster made by another tool.
 \newcommand{\egH}[2]{#1\kern.08em#2}
@@ -31,28 +31,28 @@
 \setlength{\parindent}{0pt}
 \newcommand{\demo}[2]{%
   \par\smallskip
-  {\ttfamily #1}\hfill\egyptNew{#2}\par
+  {\ttfamily #1}\hfill\egypt{#2}\par
 }
 
 \begin{document}
 \section*{NewGardiner: a small LuaLaTeX how-to}
 
-Write Unicode hieroglyphs inside \verb|\egyptNew{...}|.  The helpers below are
+Write Unicode hieroglyphs inside \verb|\egypt{...}|.  The helpers below are
 ordinary TeX commands, so they nest: first make a cluster, then scale, raise,
 mirror, rotate, or overlap it.  Their arguments remain normal, searchable
 Unicode signs.
 
-\demo{\string\egyptNew\{\egyptNew{𓂀𓆣𓇳}\}}{𓂀𓆣𓇳}
-\demo{\string\egyptNew\{\string\egH\{\egyptNew{𓂀}\}\{\egyptNew{𓆣}\}\}}{\egH{𓂀}{𓆣}}
-\demo{\string\egyptNew\{\string\egV\{\egyptNew{𓂀}\}\{\egyptNew{𓆣}\}\}}{\egV{𓂀}{𓆣}}
-\demo{\string\egyptNew\{\string\egV\{\egyptNew{𓂀}\}\{\string\egH\{\egyptNew{𓆣}\}\{\egyptNew{𓇳}\}\}\}}{\egV{𓂀}{\egH{𓆣}{𓇳}}}
-\demo{\string\egyptNew\{\string\egScale\{0.7\}\{\egyptNew{𓂀𓆣}\}\}}{\egScale{0.7}{𓂀𓆣}}
-\demo{\string\egyptNew\{\string\egWide\{0.65\}\{\egyptNew{𓂀𓆣}\}\}}{\egWide{0.65}{𓂀𓆣}}
-\demo{\string\egyptNew\{\string\egTall\{1.35\}\{\egyptNew{𓂀}\}\}}{\egTall{1.35}{𓂀}}
-\demo{\string\egyptNew\{\egyptNew{𓂀}\string\egRaise\{0.3em\}\{\string\egScale\{0.55\}\{\egyptNew{𓇳}\}\}\}}{𓂀\egRaise{0.3em}{\egScale{0.55}{𓇳}}}
-\demo{\string\egyptNew\{\string\egMirror\{\egyptNew{𓀀𓆣}\}\}}{\egMirror{𓀀𓆣}}
-\demo{\string\egyptNew\{\string\egRotate\{15\}\{\egyptNew{𓂀}\}\}}{\egRotate{15}{𓂀}}
-\demo{\string\egyptNew\{\string\egOverlap\{\string\egScale\{0.65\}\{\egyptNew{𓇳}\}\}\{\egyptNew{𓂀}\}\}}{\egOverlap{\egScale{0.65}{𓇳}}{𓂀}}
+\demo{\string\egypt\{\egypt{𓂀𓆣𓇳}\}}{𓂀𓆣𓇳}
+\demo{\string\egypt\{\string\egH\{\egypt{𓂀}\}\{\egypt{𓆣}\}\}}{\egH{𓂀}{𓆣}}
+\demo{\string\egypt\{\string\egV\{\egypt{𓂀}\}\{\egypt{𓆣}\}\}}{\egV{𓂀}{𓆣}}
+\demo{\string\egypt\{\string\egV\{\egypt{𓂀}\}\{\string\egH\{\egypt{𓆣}\}\{\egypt{𓇳}\}\}\}}{\egV{𓂀}{\egH{𓆣}{𓇳}}}
+\demo{\string\egypt\{\string\egScale\{0.7\}\{\egypt{𓂀𓆣}\}\}}{\egScale{0.7}{𓂀𓆣}}
+\demo{\string\egypt\{\string\egWide\{0.65\}\{\egypt{𓂀𓆣}\}\}}{\egWide{0.65}{𓂀𓆣}}
+\demo{\string\egypt\{\string\egTall\{1.35\}\{\egypt{𓂀}\}\}}{\egTall{1.35}{𓂀}}
+\demo{\string\egypt\{\egypt{𓂀}\string\egRaise\{0.3em\}\{\string\egScale\{0.55\}\{\egypt{𓇳}\}\}\}}{𓂀\egRaise{0.3em}{\egScale{0.55}{𓇳}}}
+\demo{\string\egypt\{\string\egMirror\{\egypt{𓀀𓆣}\}\}}{\egMirror{𓀀𓆣}}
+\demo{\string\egypt\{\string\egRotate\{15\}\{\egypt{𓂀}\}\}}{\egRotate{15}{𓂀}}
+\demo{\string\egypt\{\string\egOverlap\{\string\egScale\{0.65\}\{\egypt{𓇳}\}\}\{\egypt{𓂀}\}\}}{\egOverlap{\egScale{0.65}{𓇳}}{𓂀}}
 
 \section*{Proposed Genesis compositions}
 
@@ -61,27 +61,31 @@ signs in Genesis 39, 41, and 42. Spaces separate words or larger sense groups;
 within them, low and narrow signs share a quadrat where their shapes permit it.
 The chapter files are deliberately unchanged while these are reviewed here.
 
+\subsection*{Tests}
+
+\egypt{𓨇}
+
 \subsection*{Genesis 39:7}
 
 \textit{So before long, the wife looks up at Joseph and goes}
 
-\egyptNew{\egV{\egWide{.45}{𓈖}}{𓎡}\kern.22em
+\egypt{\egV{\egWide{.45}{𓈖}}{𓎡}\kern.22em
   \egV{\egWide{.45}{𓈖}}{𓇋}\kern.22em𓂺}
 
 \subsection*{Genesis 39:8}
 
 \textit{So Joseph, being a gentleman, refuses, and he spoke to her, saying}
 
-\egyptNew{\egV{𓅓}{𓎡}}
+\egypt{\egV{𓅓}{𓎡}}
 
-\egyptNew{𓈖\kern.22em\egV{𓂋}{𓐍}\kern.22em
+\egypt{𓈖\kern.22em\egV{𓂋}{𓐍}\kern.22em
   \egH{𓎟}{\egV{𓃀}{𓇋}}}
 
-\egyptNew{\egV{𓐍}{𓏏}\kern.22em
+\egypt{\egV{𓐍}{𓏏}\kern.22em
   \egH{𓎟}{\egV{𓃀}{𓏏}}\kern.22em
   \egV{𓅓}{\egH{𓉐}{\egV{𓂋}{𓏤}}}}
 
-\egyptNew{\egV{𓂞}{𓇋}\kern.22em
+\egypt{\egV{𓂞}{𓇋}\kern.22em
   \egV{𓐍}{𓏏}\kern.22em
   \egH{𓎟}{\egV{𓃀}{𓏏}}\kern.22em
   \egV{𓅓}{\egH{𓂝}{𓇋}}\kern.22em𓂺}
@@ -90,7 +94,7 @@ The chapter files are deliberately unchanged while these are reviewed here.
 
 \textit{She grabs him by his clothes and says again,}
 
-\egyptNew{\egV{\egWide{.45}{𓈖}}{𓎡}\kern.18em
+\egypt{\egV{\egWide{.45}{𓈖}}{𓎡}\kern.18em
   \egV{\egWide{.45}{𓈖}}{𓇋}\kern.24em𓂺\kern.28em
   \egH{𓀟}{\egV{\egScale{.72}{𓂨}}{\egScale{.72}{𓁐}}}}
 
@@ -98,35 +102,35 @@ The chapter files are deliberately unchanged while these are reviewed here.
 
 \textit{Welcome to Egypt, your name will no longer be}
 
-\egyptNew{\egH{𓇋}{\egV{𓅱}{𓊃}}\kern.10em
+\egypt{\egH{𓇋}{\egV{𓅱}{𓊃}}\kern.10em
   \egV{𓆑}{\egH{𓆑}{𓀀}}}
 
 \textit{but rather}
 
-\egyptNew{\egV{𓊗}{\egH{𓈖}{𓏏}}\kern.25em
+\egypt{\egV{𓊗}{\egH{𓈖}{𓏏}}\kern.25em
   \egV{𓊪}{\egH{𓂝}{𓋹}}}
 
 \textit{of seven cows and seven breads,}
 
-\egyptNew{\egV{\egH{𓃒}{𓃽}}{\egH{𓃓}{𓃕}}\kern.10em
+\egypt{\egV{\egH{𓃒}{𓃽}}{\egH{𓃓}{𓃕}}\kern.10em
   \egV{\egH{𓃖}{𓃜}}{𓃔}\kern.35em
   \egV{\egH{𓏏}{𓏒}}{\egH{𓏙}{𓊰}}\kern.10em
   \egV{\egH{𓌾}{𓏘}}{𓉅}}
 
 \textit{who sees dreams, and came in a time of hardship.}
 
-\egyptNew{\egV{𓁹}{𓁀}\kern.28em𓂺\kern.28em
+\egypt{\egV{𓁹}{𓁀}\kern.28em𓂺\kern.28em
   \egV{𓃒}{\egH{𓂸}{𓊝}}}
 
 \textit{Lord}
 
-\egyptNew{\egV{\egScale{.78}{𓅭}}{𓇳}}
+\egypt{\egV{\egScale{.78}{𓅭}}{𓇳}}
 
 \subsection*{Genesis 42:24}
 
 \textit{Joseph is like}
 
-\egyptNew{\egV{𓋴}{\egH{𓃀}{𓏏}}\kern.16em
+\egypt{\egV{𓋴}{\egH{𓃀}{𓏏}}\kern.16em
   \egV{𓋴}{\egH{𓃀}{𓏏}}\kern.16em
   \egV{𓋴}{\egH{𓃀}{𓏏}}\kern.24em
   \egV{\egH{𓀁}{𓁿}}{\egH{𓁿}{𓀿}}}!
@@ -135,8 +139,8 @@ The chapter files are deliberately unchanged while these are reviewed here.
 
 Unicode also defines joiners, segment markers, insertions, enclosures,
 mirroring, rotation selectors, blanks, and damage markers.  For example,
-U+13430 is the vertical joiner (\egyptNew{𓐰}) and U+13431 is the horizontal
-joiner (\egyptNew{𓐱}).  NewGardiner contains glyphs used by implementations of
+U+13430 is the vertical joiner (\egypt{𓐰}) and U+13431 is the horizontal
+joiner (\egypt{𓐱}).  NewGardiner contains glyphs used by implementations of
 that standard, but the plain TTF is a glyph source rather than a complete
 layout engine: LuaLaTeX does not turn those controls into quadrats by itself.
 Use the TeX helpers above for predictable PDF layout.  Use the
