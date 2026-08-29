@@ -17,3 +17,4 @@ main.pdf
 *.egg-info
 .obsidian/workspace.json
 apocrypha/
+AGENTS.md
