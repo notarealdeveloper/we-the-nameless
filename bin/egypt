@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+"""Search the Unicode 17 Egyptian Hieroglyph Database (Unikemet)."""
+
+from __future__ import annotations
+
+import argparse
+import os
+from pathlib import Path
+import sys
+import tempfile
+import urllib.error
+import urllib.request
+
+
+UNICODE_VERSION = "17.0.0"
+DATA_URL = f"https://www.unicode.org/Public/{UNICODE_VERSION}/ucd/Unikemet.txt"
+DATA_HEADER = f"# Unikemet-{UNICODE_VERSION}.txt"
+FIELDS = {"kEH_Cat", "kEH_Desc", "kEH_Func", "kEH_FVal", "kEH_UniK", "kEH_JSesh"}
+
+
+def cache_path() -> Path:
+    override = os.environ.get("EGYPT_UNIKEMET_PATH")
+    if override:
+        return Path(override).expanduser()
+    root = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
+    return root / "egypt" / f"Unikemet-{UNICODE_VERSION}.txt"
+
+
+def valid_data(path: Path) -> bool:
+    try:
+        with path.open(encoding="utf-8") as source:
+            return source.readline().rstrip("\n") == DATA_HEADER
+    except OSError:
+        return False
+
+
+def download_data(path: Path) -> None:
+    if os.environ.get("EGYPT_UNIKEMET_PATH"):
+        raise RuntimeError(f"EGYPT_UNIKEMET_PATH does not contain Unicode {UNICODE_VERSION} data: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    request = urllib.request.Request(DATA_URL, headers={"User-Agent": "egypt/1"})
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            data = response.read()
+    except (OSError, urllib.error.URLError) as error:
+        raise RuntimeError(f"could not download {DATA_URL}: {error}") from error
+    if not data.startswith(DATA_HEADER.encode() + b"\n"):
+        raise RuntimeError(f"downloaded file is not Unicode {UNICODE_VERSION} Unikemet data")
+    with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as output:
+        temporary = Path(output.name)
+        output.write(data)
+    temporary.replace(path)
+
+
+def data_path(update: bool = False) -> Path:
+    path = cache_path()
+    if update or not valid_data(path):
+        download_data(path)
+    return path
+
+
+def records(path: Path) -> list[tuple[int, dict[str, list[str]]]]:
+    signs: dict[int, dict[str, list[str]]] = {}
+    with path.open(encoding="utf-8") as source:
+        for raw_line in source:
+            line = raw_line.rstrip("\n")
+            if not line or line.startswith("#"):
+                continue
+            try:
+                code, field, value = line.split("\t", 2)
+            except ValueError:
+                continue
+            if field in FIELDS:
+                signs.setdefault(int(code[2:], 16), {}).setdefault(field, []).append(value)
+    return sorted(signs.items())
+
+
+def description(values: dict[str, list[str]]) -> str:
+    desc = values.get("kEH_Desc")
+    if desc:
+        return " / ".join(desc)
+    catalog = values.get("kEH_Cat") or values.get("kEH_UniK")
+    return f"[no Unicode description; catalog {', '.join(catalog)}]" if catalog else "[no Unicode description]"
+
+
+def searchable(codepoint: int, values: dict[str, list[str]]) -> str:
+    parts = [f"U+{codepoint:05X}"]
+    for field_values in values.values():
+        parts.extend(field_values)
+    return "\n".join(parts).casefold()
+
+
+def matches(terms: list[str], codepoint: int, values: dict[str, list[str]]) -> bool:
+    haystack = searchable(codepoint, values)
+    return all(term.casefold() in haystack for term in terms)
+
+
+def completion(shell: str) -> str:
+    if shell == "bash":
+        return r'''_egypt_complete() {
+    local cur
+    cur=${COMP_WORDS[COMP_CWORD]}
+    if [[ $cur == -* ]]; then
+        COMPREPLY=( $(compgen -W '--all --category --codepoint --completion --help --update --version' -- "$cur") )
+    else
+        mapfile -t COMPREPLY < <(egypt --complete "$cur")
+        compopt -o filenames
+    fi
+}
+complete -F _egypt_complete egypt'''
+    return r'''#compdef egypt
+_egypt() {
+  local -a descriptions
+  descriptions=("${(@f)$(egypt --complete "$words[CURRENT]")}")
+  _describe -t descriptions 'Unicode description' descriptions
+}
+compdef _egypt egypt'''
+
+
+def parser() -> argparse.ArgumentParser:
+    result = argparse.ArgumentParser(
+        description="Search descriptions and metadata for Egyptian hieroglyphs in Unicode 17.",
+        epilog="Terms are case-insensitive and are ANDed. Data: " + DATA_URL,
+    )
+    result.add_argument("terms", nargs="*", help="words in a description, function, category, catalog ID, or code point")
+    result.add_argument("--all", action="store_true", help="list every sign (the default without terms)")
+    result.add_argument("--category", action="store_true", help="include the Unikemet catalog category")
+    result.add_argument("--codepoint", action="store_true", help="include the Unicode code point")
+    result.add_argument("--update", action="store_true", help="redownload the pinned Unicode 17 data")
+    result.add_argument("--completion", choices=("bash", "zsh"), help="print shell completion code")
+    result.add_argument("--complete", metavar="PREFIX", help=argparse.SUPPRESS)
+    result.add_argument("--version", action="version", version=f"%(prog)s (Unicode {UNICODE_VERSION})")
+    return result
+
+
+def main() -> int:
+    args = parser().parse_args()
+    if args.completion:
+        print(completion(args.completion))
+        return 0
+    try:
+        path = data_path(args.update)
+        signs = records(path)
+    except (OSError, RuntimeError) as error:
+        print(f"egypt: {error}", file=sys.stderr)
+        return 1
+
+    if args.complete is not None:
+        prefix = args.complete.casefold()
+        seen: set[str] = set()
+        for _, values in signs:
+            desc = description(values)
+            if prefix in desc.casefold() and desc not in seen:
+                print(desc)
+                seen.add(desc)
+        return 0
+
+    for codepoint, values in signs:
+        if args.terms and not matches(args.terms, codepoint, values):
+            continue
+        columns = [chr(codepoint)]
+        if args.codepoint:
+            columns.append(f"U+{codepoint:05X}")
+        if args.category:
+            columns.append(", ".join(values.get("kEH_Cat", ["-"])))
+        columns.append(description(values))
+        print("\t".join(columns))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
