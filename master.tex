@@ -3906,6 +3906,25 @@
 \newcommand{\egRotate}[2]{\rotatebox[origin=c]{#1}{#2}}
 \newcommand{\egOverlap}[2]{\makebox[0pt][c]{#1}#2}
 
+\newcommand{\egAbove}[5][1]{%
+	% #1 = scale
+	% #2 = x shift
+	% #3 = y shift
+	% #4 = overlay glyph
+	% #5 = base glyphs
+	\tikz[baseline=(base.base)]{
+		\node[inner sep=0pt] (base) {\egypt{#5}};
+		\node[
+			overlay,
+			anchor=south,
+			xshift=#2,
+			yshift=#3
+		] at (base.north) {
+			\egypt{\scalebox{#1}{#4}}
+		};
+	}%
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Genesis 48: Jacob and his grandsons hieroglyphs %%%

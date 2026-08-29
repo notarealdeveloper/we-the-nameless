@@ -394,6 +394,28 @@ Unicode signs.
 
 \end{center}
 
+\subsection*{Nod good dad}
+
+\newcommand{\egAbove}[5][1]{%
+	% #1 = scale
+	% #2 = x shift
+	% #3 = y shift
+	% #4 = overlay glyph
+	% #5 = base glyphs
+	\tikz[baseline=(base.base)]{
+		\node[inner sep=0pt] (base) {\egypt{#5}};
+		\node[
+			overlay,
+			anchor=south,
+			xshift=#2,
+			yshift=#3
+		] at (base.north) {
+			\egypt{\scalebox{#1}{#4}}
+		};
+	}%
+}
+
+\egAbove[1.0]{0em}{0.2em}{\egypt{𓂜}}{𓄤𓀗}
 
 \subsection*{Set your right hand on his head}
 
