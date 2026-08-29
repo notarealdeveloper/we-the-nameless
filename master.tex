@@ -178,6 +178,8 @@
 \usepackage{lua-ul}
 \usepackage{needspace}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc,backgrounds,positioning}
 
 % Short, explicit dash commands for prose whose dash length matters.
 \newcommand{\ndash}{\textendash}
@@ -3776,6 +3778,18 @@
 \NewDocumentCommand{\aR}{ O{l} +m }{\smash{\as{\eR}[#1]{#2}}}
 \NewDocumentCommand{\aRJE}{ O{l} +m }{\smash{\as{\eRJE}[#1]{#2}}}
 
+
+\newcommand{\fA}[1]{%
+	\aA{\footnote{#1}}
+}
+\newcommand{\fB}[1]{%
+	\aB{\footnote{#1}}
+}
+\newcommand{\fC}[1]{%
+	\aC{\footnote{#1}}
+}
+
+
 % ------------------------------------------------------------
 % Alignment sugar
 % ------------------------------------------------------------
@@ -3838,31 +3852,6 @@
 
 \makeatother
 
-\defineword{\God}{God}
-
-\def\cum{c\redacted{um}\eR{hildren}}
-\def\pussya{p\redacted{ussy}\eR{aternit}y}
-\def\pussyb{p\redacted{ussy}\eR{atriarch}y}
-\def\pussy{\pussya}
-\def\dick{d\redacted{ick}\eR{ownstairs}}
-\def\penisa{p\redacted{enis}\eR{aternity}}
-\def\penisb{p\redacted{enis}\eR{atriarchy}}
-\def\penisc{p\redacted{enis}\eR{ride and joy}}
-\def\penisd{p\redacted{enis}\eR{aternity, and the meaning of paternity is children, and the meaning of childr}enis}
-\def\penis{\penisa}
-\def\foreskin{\eR{be}fore\eR{skin there is blood, and after blood there i}skin}
-\def\reubenface{\mbox{\aC{。}\aB{\egypt{𓂋}}\aC{〇}}}
-
-\newcommand{\fA}[1]{%
-	\aA{\footnote{#1}}
-}
-\newcommand{\fB}[1]{%
-	\aB{\footnote{#1}}
-}
-\newcommand{\fC}[1]{%
-	\aC{\footnote{#1}}
-}
-
 % Rename God to dave dynamically throughout arbitrary
 % subsections of the document, redefining at any point.
 
@@ -3878,6 +3867,181 @@
 % \defineword{\God}{\cR{dave}}[\cR{Dave}]
 % \redefineword{\God}{\cB{bob}}[\cB{Bob}]
 
+\defineword{\God}{God}
+
+
+% Some other reusable helper defs
+
+\def\cum{c\redacted{um}\eR{hildren}}
+\def\pussya{p\redacted{ussy}\eR{aternit}y}
+\def\pussyb{p\redacted{ussy}\eR{atriarch}y}
+\def\pussy{\pussya}
+\def\dick{d\redacted{ick}\eR{ownstairs}}
+\def\penisa{p\redacted{enis}\eR{aternity}}
+\def\penisb{p\redacted{enis}\eR{atriarchy}}
+\def\penisc{p\redacted{enis}\eR{ride and joy}}
+\def\penisd{p\redacted{enis}\eR{aternity, and the meaning of paternity is children, and the meaning of childr}enis}
+\def\penis{\penisa}
+\def\foreskin{\eR{be}fore\eR{skin there is blood, and after blood there i}skin}
+\def\reubenface{\mbox{\aC{。}\aB{\egypt{𓂋}}\aC{〇}}}
+
+% Small, composable tools for egyptian hieroglyph positioning.
+% Each accepts either signs or a cluster made by another tool.
+\newcommand{\egH}[2]{#1\kern.08em#2}
+\newcommand{\egV}[2]{%
+  \raisebox{-.35em}{\shortstack{%
+    \resizebox{!}{.68em}{#1}\\[-.28em]
+    \resizebox{!}{.68em}{#2}}}}
+\newcommand{\egScale}[2]{\scalebox{#1}{#2}}
+\newcommand{\egWide}[2]{\scalebox{#1}[1]{#2}}
+\newcommand{\egTall}[2]{\scalebox{1}[#1]{#2}}
+\newcommand{\egRaise}[2]{\raisebox{#1}{#2}}
+\newcommand{\egMirror}[1]{\reflectbox{#1}}
+\newcommand{\egRotate}[2]{\rotatebox[origin=c]{#1}{#2}}
+\newcommand{\egOverlap}[2]{\makebox[0pt][c]{#1}#2}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Genesis 48: Jacob and his grandsons hieroglyphs %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ------------------------------------------------------------
+% Genesis 48: Jacob blessing Ephraim and Manasseh
+% ------------------------------------------------------------
+
+\tikzset{
+	egypt person/.style={
+		inner sep=0pt,
+		outer sep=0pt
+	}
+}
+
+% Giant forearm/hand.
+% Cut end on the left, fingers pointing right.
+\newcommand{\JacobBlessingHand}{%
+	\egypt{
+		\egWide{2.8}{
+			\egMirror{𓂝}
+		}
+	}%
+}
+
+% Shared placement of Jacob, Ephraim, Manasseh, and Joseph.
+%
+% Arguments:
+%   #1 = Jacob hieroglyph
+%   #2 = Ephraim hieroglyph
+%   #3 = Manasseh hieroglyph
+%   #4 = Joseph hieroglyph
+%
+\newcommand{\JacobFamilyPeople}[4]{%
+
+	% Jacob
+	\node[
+		egypt person
+	] (jacob) at
+		(.30\linewidth,5em)
+	{
+		\egypt{
+			\egScale{1.25}{
+				\egMirror{#1}
+			}
+		}
+	};
+
+	\node[
+		anchor=south,
+		inner sep=0pt,
+		yshift=.10em
+	] at (jacob.north)
+	{
+		Jacob
+	};
+
+	% Ephraim
+	\node[
+		egypt person
+	] (ephraim) at
+		(.50\linewidth,7.15em)
+	{
+		\egypt{
+			\egScale{.90}{#2}
+		}
+	};
+
+	\node[
+		anchor=south,
+		inner sep=0pt,
+		yshift=.10em
+	] at (ephraim.north)
+	{
+		Ephraim
+	};
+
+	% Manasseh
+	\node[
+		egypt person
+	] (manasseh) at
+		(.50\linewidth,2.85em)
+	{
+		\egypt{
+			\egScale{1.20}{#3}
+		}
+	};
+
+	\node[
+		anchor=south,
+		inner sep=0pt,
+		yshift=.10em
+	] at (manasseh.north)
+	{
+		Manasseh
+	};
+
+	% Joseph
+	\node[
+		egypt person
+	] (joseph) at
+		(.68\linewidth,5em)
+	{
+		\egypt{
+			\egScale{1.15}{#4}
+		}
+	};
+
+	\node[
+		anchor=south,
+		inner sep=0pt,
+		yshift=.10em
+	] at (joseph.north)
+	{
+		Joseph
+	};
+
+	% --------------------------------------------------------
+	% Jacob's anatomical hand anchors
+	% --------------------------------------------------------
+
+	% DON'T use jacob.east: the staff is part of the glyph.
+	\coordinate (jacob-hand-axis) at
+		($(jacob.west)!0.46!(jacob.east)$);
+
+	\coordinate (jacob-left-root) at
+		([yshift=.43em]jacob-hand-axis);
+
+	\coordinate (jacob-right-root) at
+		([yshift=.04em]jacob-hand-axis);
+
+	% --------------------------------------------------------
+	% Targets on the boys' heads
+	% --------------------------------------------------------
+
+	\coordinate (ephraim-head) at
+		([xshift=-.18em,yshift=-.28em]ephraim.north);
+
+	\coordinate (manasseh-head) at
+		([xshift=-.18em,yshift=-.28em]manasseh.north);
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

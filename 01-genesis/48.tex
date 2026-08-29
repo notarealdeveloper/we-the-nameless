@@ -217,7 +217,30 @@
 	}
 }
 {
-	He brings his kids out from between his knees and bows.
+	Ok so Joseph brings his kids to grandpa, then he bows, nose to the ground.
+
+	Fortunately we're in Egypt, where the local writing system
+	allows us to express this situation with surprising clarity.
+
+	\begin{center}
+	
+	\begin{tikzpicture}
+	
+		% Full available width, compact vertical scene.
+		\path[use as bounding box]
+			(0,0)
+			rectangle
+			(\linewidth,10em);
+	
+		\JacobFamilyPeople
+				{𓀗}
+			{𓀔}     {𓀕}
+				{𓒹}
+
+	\end{tikzpicture}
+	
+	\end{center}
+
 }
 
 \Verse{13}
@@ -232,6 +255,75 @@
 	}
 }
 {
+
+	Now he stands up and brings them over.
+
+	\begin{center}
+	
+	\begin{tikzpicture}
+	
+		\path[use as bounding box]
+			(0,0)
+			rectangle
+			(\linewidth,10em);
+	
+		\JacobFamilyPeople
+				{𓀗}
+			{𓀔}     {𓀕}
+				{𓀠}
+	
+		% --------------------------------------------------------
+		% Hands
+		% --------------------------------------------------------
+		%
+		% Draw them on the background layer.  Their roots therefore
+		% disappear underneath Jacob's body instead of looking like
+		% detached floating arms.
+		%
+	
+		\begin{scope}[on background layer]
+	
+			% Left hand -> Ephraim
+			%
+			% pos=0      puts the hand at the START of the path.
+			% anchor=west glues the LEFT/CUT end of the forearm
+			%             precisely to jacob-left-root.
+			% sloped      automatically aims it toward Ephraim's head.
+			\path
+				(jacob-left-root)
+				--
+				(ephraim-head)
+				node[
+					pos=0,
+					anchor=west,
+					inner sep=0pt,
+					sloped
+				]
+				{
+					\JacobBlessingHand
+				};
+	
+			% Right hand -> Manasseh
+			\path
+				(jacob-right-root)
+				--
+				(manasseh-head)
+				node[
+					pos=0,
+					anchor=west,
+					inner sep=0pt,
+					sloped
+				]
+				{
+					\JacobBlessingHand
+				};
+	
+		\end{scope}
+	
+	\end{tikzpicture}
+	
+	\end{center}
+
 }
 
 \Verse{14}
@@ -247,6 +339,80 @@
 	}
 }
 {
+
+\begin{center}
+
+\begin{tikzpicture}
+
+	\path[use as bounding box]
+		(0,0)
+		rectangle
+		(\linewidth,10em);
+
+	\JacobFamilyPeople
+		  {\aC{𓀗}}
+	{\aB{𓀔}}     {\aB{𓀕}}
+		  {\aA{𓀠}}
+
+	% --------------------------------------------------------
+	% Crossed hands
+	% --------------------------------------------------------
+	%
+	% Put the CENTER of both giant forearm glyphs at the same
+	% dynamically measured point. This forces a clean, visible X
+	% through approximately the midpoint of the visible arms.
+	%
+	% The crossing point is measured from Jacob's anatomical hand
+	% axis toward the midpoint between the two boys' heads. Moving
+	% any of the people therefore moves the crossing automatically.
+	%
+
+	\coordinate (grandsons-mid) at
+		($(ephraim-head)!0.5!(manasseh-head)$);
+
+	\coordinate (hands-cross) at
+		($(jacob-hand-axis)!0.58!(grandsons-mid)$);
+
+	\begin{scope}[on background layer]
+
+		% Arm ending at Ephraim.  Centering the glyph on hands-cross
+		% makes its forearm extend back down-left toward Jacob.
+		\path
+			(hands-cross)
+			--
+			(ephraim-head)
+			node[
+				pos=0,
+				anchor=center,
+				inner sep=0pt,
+				sloped
+			]
+			{
+				\aC{\JacobBlessingHand}
+			};
+
+		% Arm ending at Manasseh.  Same center, opposite slope, so
+		% the two forearms visibly cross at their midpoints.
+		\path
+			(hands-cross)
+			--
+			(manasseh-head)
+			node[
+				pos=0,
+				anchor=center,
+				inner sep=0pt,
+				sloped
+			]
+			{
+				\aC{\JacobBlessingHand}
+			};
+
+	\end{scope}
+
+\end{tikzpicture}
+
+\end{center}
+
 }
 
 \Verse{15}
