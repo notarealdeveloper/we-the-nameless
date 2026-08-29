@@ -3824,6 +3824,10 @@
    \colorbox{RedactedColor}{\strut\phantom{#1}}}%
 }
 
+\newcommand{\flipvertical}[1]{%
+	\scalebox{1}[-1]{#1}%
+}
+
 % ------------------------------------------------------------
 % Dynamic words
 % ------------------------------------------------------------
@@ -3946,7 +3950,7 @@
 \newcommand{\JacobBlessingHand}{%
 	\aC{
 		\egypt{
-			\egWide{2.7}{
+			\egWide{2.2}{
 				\egMirror{𓂝}
 			}
 		}%
@@ -4059,7 +4063,7 @@
 
 	% DON'T use jacob.east: the staff is part of the glyph.
 	\coordinate (jacob-hand-axis) at
-		($(jacob.west)!0.38!(jacob.east)$);
+		($(jacob.west)!0.45!(jacob.east)$);
 
 	\coordinate (jacob-left-root) at
 		([yshift=.43em]jacob-hand-axis);
