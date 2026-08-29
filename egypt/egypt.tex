@@ -1,0 +1,72 @@
+% !TEX program = lualatex
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.8in]{geometry}
+\usepackage[no-math]{fontspec}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+% Compile from egypt/ so the repository-local font is one directory up.
+\newfontfamily\NewGardinerFont[
+  Path=../fonts/,
+  Renderer=HarfBuzz,
+  Scale=1.9
+]{NewGardiner.ttf}
+\newcommand{\egyptNew}[1]{{\leavevmode\textdir TLT\NewGardinerFont #1}}
+
+% Small, composable tools. Each accepts either signs or a cluster made by another tool.
+\newcommand{\egH}[2]{#1\kern.08em#2}
+\newcommand{\egV}[2]{%
+  \raisebox{-.35em}{\shortstack{%
+    \resizebox{!}{.68em}{#1}\\[-.28em]
+    \resizebox{!}{.68em}{#2}}}}
+\newcommand{\egScale}[2]{\scalebox{#1}{#2}}
+\newcommand{\egWide}[2]{\scalebox{#1}[1]{#2}}
+\newcommand{\egTall}[2]{\scalebox{1}[#1]{#2}}
+\newcommand{\egRaise}[2]{\raisebox{#1}{#2}}
+\newcommand{\egMirror}[1]{\reflectbox{#1}}
+\newcommand{\egRotate}[2]{\rotatebox[origin=c]{#1}{#2}}
+\newcommand{\egOverlap}[2]{\makebox[0pt][c]{#1}#2}
+
+\setlength{\parindent}{0pt}
+\newcommand{\demo}[2]{%
+  \par\smallskip
+  {\ttfamily #1}\hfill\egyptNew{#2}\par
+}
+
+\begin{document}
+\section*{NewGardiner: a small LuaLaTeX how-to}
+
+Write Unicode hieroglyphs inside \verb|\egyptNew{...}|.  The helpers below are
+ordinary TeX commands, so they nest: first make a cluster, then scale, raise,
+mirror, rotate, or overlap it.  Their arguments remain normal, searchable
+Unicode signs.
+
+\demo{\string\egyptNew\{\egyptNew{𓂀𓆣𓇳}\}}{𓂀𓆣𓇳}
+\demo{\string\egyptNew\{\string\egH\{\egyptNew{𓂀}\}\{\egyptNew{𓆣}\}\}}{\egH{𓂀}{𓆣}}
+\demo{\string\egyptNew\{\string\egV\{\egyptNew{𓂀}\}\{\egyptNew{𓆣}\}\}}{\egV{𓂀}{𓆣}}
+\demo{\string\egyptNew\{\string\egV\{\egyptNew{𓂀}\}\{\string\egH\{\egyptNew{𓆣}\}\{\egyptNew{𓇳}\}\}\}}{\egV{𓂀}{\egH{𓆣}{𓇳}}}
+\demo{\string\egyptNew\{\string\egScale\{0.7\}\{\egyptNew{𓂀𓆣}\}\}}{\egScale{0.7}{𓂀𓆣}}
+\demo{\string\egyptNew\{\string\egWide\{0.65\}\{\egyptNew{𓂀𓆣}\}\}}{\egWide{0.65}{𓂀𓆣}}
+\demo{\string\egyptNew\{\string\egTall\{1.35\}\{\egyptNew{𓂀}\}\}}{\egTall{1.35}{𓂀}}
+\demo{\string\egyptNew\{\egyptNew{𓂀}\string\egRaise\{0.3em\}\{\string\egScale\{0.55\}\{\egyptNew{𓇳}\}\}\}}{𓂀\egRaise{0.3em}{\egScale{0.55}{𓇳}}}
+\demo{\string\egyptNew\{\string\egMirror\{\egyptNew{𓀀𓆣}\}\}}{\egMirror{𓀀𓆣}}
+\demo{\string\egyptNew\{\string\egRotate\{15\}\{\egyptNew{𓂀}\}\}}{\egRotate{15}{𓂀}}
+\demo{\string\egyptNew\{\string\egOverlap\{\string\egScale\{0.65\}\{\egyptNew{𓇳}\}\}\{\egyptNew{𓂀}\}\}}{\egOverlap{\egScale{0.65}{𓇳}}{𓂀}}
+
+\subsection*{Unicode controls and HieroJax}
+
+Unicode also defines joiners, segment markers, insertions, enclosures,
+mirroring, rotation selectors, blanks, and damage markers.  For example,
+U+13430 is the vertical joiner (\egyptNew{𓐰}) and U+13431 is the horizontal
+joiner (\egyptNew{𓐱}).  NewGardiner contains glyphs used by implementations of
+that standard, but the plain TTF is a glyph source rather than a complete
+layout engine: LuaLaTeX does not turn those controls into quadrats by itself.
+Use the TeX helpers above for predictable PDF layout.  Use the
+\href{https://nederhof.github.io/hierojax/}{HieroJax editor and renderer} when
+you need the complete Unicode composition system; its
+\href{https://nederhof.github.io/hierojax/syntax.html}{syntax table} is the
+compact reference.  Font coverage and releases are documented in the
+\href{https://github.com/nederhof/newgardiner}{NewGardiner repository}.
+
+\end{document}

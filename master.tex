@@ -292,6 +292,12 @@
     Scale=1.9
 ]{egyptian-hieroglyphs-regular-noto-sans.ttf}
 
+\newfontfamily\NewGardinerFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.9
+]{NewGardiner.ttf}
+
 % Historical alphabet fonts.  These are normal text-size declarations.
 % The larger, individually calibrated versions used by the alphabet-history
 % front matter live with those pages in frontmatter/alphabet-history.tex.
@@ -557,9 +563,15 @@
 %]{english-alegreya-sc-regular.ttf}
 
 \ExplSyntaxOn
-\NewDocumentCommand{\egypt}{ +m }{
+\NewDocumentCommand{\egyptRaw}{ +m }{
   {\leavevmode\textdir TLT\EgyptianFont #1}
 }
+\NewDocumentCommand{\egyptNew}{ +m }{
+  {\leavevmode\textdir TLT\NewGardinerFont #1}
+}
+% Switch the book's Egyptian font here.
+% \let\egypt\egyptRaw
+\let\egypt\egyptNew
 \NewDocumentCommand{\egyptbold}{ m }{
   {\leavevmode\EgyptianFont\addfontfeatures{FakeBold=2.0}\tl_reverse:n { #1 }}
 }
