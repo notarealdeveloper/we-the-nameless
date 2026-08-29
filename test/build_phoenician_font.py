@@ -35,10 +35,6 @@ FINALS = [(0x05DA, 0x05DB), (0x05DD, 0x05DE), (0x05DF, 0x05E0),
           (0x05E3, 0x05E4), (0x05E5, 0x05E6)]
 
 
-def number(value):
-    return float(re.match(r"[-+0-9.eE]+", value).group())
-
-
 def split_svg():
     tree = ET.parse(SOURCE)
     root = tree.getroot()
@@ -69,7 +65,8 @@ def split_svg():
         output = GLYPH_DIR / f"{codepoint:04X}-{name}.svg"
         temp = GLYPH_DIR / f".{name}.svg"
         temp.write_text(
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-200 -50 1000 700">'
+            '<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" '
+            'viewBox="0 0 1000 700">'
             f'<path id="letter" transform="translate({tx} 0)" d="{data}"/>'
             '</svg>\n', encoding="utf-8")
         query = subprocess.check_output(
@@ -118,7 +115,6 @@ def build_font(images):
         glyph.transform(psMat.translate(sidebearing - bounds[0], baseline - bounds[1]))
         bounds = glyph.boundingBox()
         glyph.width = int(round(bounds[2] + sidebearing))
-        glyph.removeOverlap()
         glyph.correctDirection()
 
     for final_codepoint, base_codepoint in FINALS:
