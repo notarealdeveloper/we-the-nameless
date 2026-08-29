@@ -1005,11 +1005,31 @@ def build_navigation_overrides(target, books):
     return "\n".join(lines)
 
 
-def build_toc_overrides(target):
+def build_toc_overrides(target, books):
     if not target.toc_chapters:
         return ""
-    return "\n".join(
+    lines = [
+        r"\renewcommand{\WeContentsPage}{%",
+        r"    \clearpage",
+        r"    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}",
+        r"    \phantomsection",
+        r"    \hypertarget{tableofcontents}{}%",
+        r"    \BookHeading{Contents}%",
+    ]
+    for book in books:
+        title = book["title"]
+        lines.extend(
+            [
+                rf"    \FancyBookChapterLinkArray{{{title}}}%",
+                rf"    \BookExtraLinkArray{{{title}}}%",
+            ]
+        )
+    lines.extend(
         [
+            r"    \WeContentsPageBottomMark",
+            r"    \newpage",
+            r"    \restoregeometry",
+            r"}",
             r"\renewcommand{\Book}[1]{%",
             r"    \def\CurrentTitleBook{#1}%",
             r"    \BookHeading{\TableOfContentsLink{#1}}%",
@@ -1025,10 +1045,10 @@ def build_toc_overrides(target):
             r"    \ChapterHeading{\ChapterTitleText{#1}}%",
             r"    \def\CurrentChapter{#1}%",
             r"    \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%",
-            r"    \addcontentsline{toc}{chapter}{\CurrentBook\ #1}%",
             r"}",
         ]
     )
+    return "\n".join(lines)
 
 
 def write_entrypoint(target, preamble, books, build_root):
@@ -1040,7 +1060,7 @@ def write_entrypoint(target, preamble, books, build_root):
         "",
         build_navigation_overrides(target, books),
         "",
-        build_toc_overrides(target),
+        build_toc_overrides(target, books),
         "",
         (
             r"\GenesisApocryphaTocEntrytrue"
