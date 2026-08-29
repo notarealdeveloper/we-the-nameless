@@ -1,0 +1,262 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# ============================================================
+# NewGardiner installer / project-font fetcher
+#
+# Upstream:
+#   https://github.com/nederhof/newgardiner
+#
+# NewGardiner is released under the SIL Open Font License 1.1.
+#
+# The upstream repository already contains the built TrueType
+# font at:
+#
+#   fonts/NewGardiner.ttf
+#
+# So there is normally NOTHING TO BUILD. We just download the
+# official TTF and either:
+#
+#   1. install it for the current user, or
+#   2. copy it into ./fonts/ for a self-contained LuaLaTeX repo.
+#
+# Usage:
+#
+#   ./get-newgardiner.sh install
+#       Install for the current Linux user.
+#
+#   ./get-newgardiner.sh local
+#       Put NewGardiner.ttf in ./fonts/
+#
+#   ./get-newgardiner.sh both
+#       Do both.
+#
+# No root access and no NixOS configuration changes are needed.
+# ============================================================
+
+
+# "main" follows upstream development.
+#
+# For a completely reproducible build, replace this with a
+# particular git commit SHA:
+#
+#   NEWGARDINER_REF=0123456789abcdef...
+#
+# You can also override it from the shell:
+#
+#   NEWGARDINER_REF=<commit> ./get-newgardiner.sh local
+#
+NEWGARDINER_REF="${NEWGARDINER_REF:-main}"
+
+BASE_URL="https://raw.githubusercontent.com/nederhof/newgardiner/${NEWGARDINER_REF}/fonts"
+
+FONT_URL="${BASE_URL}/NewGardiner.ttf"
+LICENSE_URL="${BASE_URL}/OFL.txt"
+
+FONT_NAME="NewGardiner.ttf"
+
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+
+
+download() {
+    echo "Downloading NewGardiner from official upstream..."
+    curl \
+        --fail \
+        --location \
+        --retry 3 \
+        --retry-delay 1 \
+        --output "${TMP}/${FONT_NAME}" \
+        "${FONT_URL}"
+
+    curl \
+        --fail \
+        --location \
+        --retry 3 \
+        --retry-delay 1 \
+        --output "${TMP}/OFL.txt" \
+        "${LICENSE_URL}"
+
+    echo
+    echo "Downloaded:"
+    ls -lh "${TMP}/${FONT_NAME}"
+}
+
+
+install_user() {
+    # --------------------------------------------------------
+    # USER INSTALLATION ON NIXOS
+    #
+    # Fontconfig scans ~/.local/share/fonts on normal Linux
+    # desktops, including NixOS when Fontconfig is enabled.
+    #
+    # This does NOT modify /nix/store and does NOT require sudo.
+    # --------------------------------------------------------
+
+    FONT_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/fonts/NewGardiner"
+
+    mkdir -p "${FONT_DIR}"
+
+    install -m 0644 \
+        "${TMP}/${FONT_NAME}" \
+        "${FONT_DIR}/${FONT_NAME}"
+
+    install -m 0644 \
+        "${TMP}/OFL.txt" \
+        "${FONT_DIR}/OFL.txt"
+
+    # Rebuild the per-user Fontconfig cache.
+    #
+    # On a normal NixOS desktop `fc-cache` should already be in
+    # your environment. If not, you can temporarily obtain it:
+    #
+    #   nix shell nixpkgs#fontconfig
+    #
+    # and then run this script from that shell.
+    #
+    if command -v fc-cache >/dev/null 2>&1; then
+        fc-cache -f
+    else
+        echo
+        echo "WARNING: fc-cache not found."
+        echo "Run:"
+        echo
+        echo "    nix shell nixpkgs#fontconfig"
+        echo "    fc-cache -f"
+        echo
+    fi
+
+    echo
+    echo "Installed for current user:"
+    echo "  ${FONT_DIR}/${FONT_NAME}"
+
+    # Verify that Fontconfig can see it.
+    #
+    # You can run this manually too:
+    #
+    #   fc-match NewGardiner
+    #
+    if command -v fc-match >/dev/null 2>&1; then
+        echo
+        echo "Fontconfig says:"
+        fc-match NewGardiner || true
+    fi
+}
+
+
+install_local() {
+    # --------------------------------------------------------
+    # REPO-LOCAL INSTALLATION
+    #
+    # Run this script from your repository root.
+    #
+    # It creates:
+    #
+    #   ./fonts/NewGardiner.ttf
+    #   ./fonts/OFL-NewGardiner.txt
+    #
+    # LuaLaTeX/fontspec can load the TTF DIRECTLY from this
+    # directory. The font does not need to be installed in
+    # Fontconfig at all.
+    #
+    # This is generally the nicest option for a reproducible
+    # LaTeX project, because every machine uses the exact same
+    # font file.
+    # --------------------------------------------------------
+
+    mkdir -p fonts
+
+    install -m 0644 \
+        "${TMP}/${FONT_NAME}" \
+        "fonts/${FONT_NAME}"
+
+    install -m 0644 \
+        "${TMP}/OFL.txt" \
+        "fonts/OFL-NewGardiner.txt"
+
+    echo
+    echo "Installed repo-local font:"
+    echo "  $(pwd)/fonts/${FONT_NAME}"
+
+    cat <<'EOF'
+
+LuaLaTeX / fontspec example
+---------------------------
+
+In your preamble:
+
+    \usepackage{fontspec}
+
+    \newfontfamily\egypt[
+        Path = fonts/,
+        Extension = .ttf
+    ]{NewGardiner}
+
+Then:
+
+    {\egypt 𓇋𓅱𓊃𓆑𓀀}
+
+or, if you already use a macro:
+
+    \newcommand{\egyptian}[1]{{\egypt #1}}
+
+    \egyptian{𓇋𓅱𓊃𓆑𓀀}
+
+
+You can also tell LuaLaTeX explicitly to use HarfBuzz:
+
+    \newfontfamily\egypt[
+        Path = fonts/,
+        Extension = .ttf,
+        Renderer = HarfBuzz
+    ]{NewGardiner}
+
+That is a sensible choice when experimenting with OpenType
+features, ligatures, or Egyptian format controls.
+
+
+Build the project normally:
+
+    lualatex master.tex
+
+or, with latexmk:
+
+    latexmk -lualatex master.tex
+
+
+IMPORTANT:
+
+Because Path=fonts/ tells fontspec to open the TTF directly,
+you do NOT need:
+
+    fc-cache
+    ~/.local/share/fonts/
+    /etc/nixos/configuration.nix
+
+for the repo-local version.
+
+EOF
+}
+
+
+MODE="${1:-both}"
+
+download
+
+case "$MODE" in
+    install)
+        install_user
+        ;;
+    local)
+        install_local
+        ;;
+    both)
+        install_user
+        install_local
+        ;;
+    *)
+        echo "Usage: $0 {install|local|both}" >&2
+        exit 2
+        ;;
+esac

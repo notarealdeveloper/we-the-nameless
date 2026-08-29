@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
+
 Modify `master.tex` and `01-genesis/39.tex` so the Egyptian in Genesis 39:7–9 is typeset with genuine Egyptian hieroglyphic quadrat/layout behavior rather than flat Unicode strings or manual `\raisebox`/`\kern` hacks.
 
 The goal is twofold:
