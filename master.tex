@@ -381,6 +381,12 @@
     Scale=1.43
 ]{paleo-hebrew-gezer.ttf}
 
+\newfontfamily\PaleoHebrewGezerAFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.43
+]{08-bc10c-paleo-hebrew-gezer-a.ttf}
+
 \newfontfamily\PaleoHebrewTelDanFont[
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
@@ -1359,6 +1365,7 @@
 \DeclareHebrewRenderer{PaleoASCIIStandard}{\PaleoHebrewStandardFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIITelZayit}{\PaleoHebrewTelZayitFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIIGezer}{\PaleoHebrewGezerFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIIGezerA}{\PaleoHebrewGezerAFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIITelDan}{\PaleoHebrewTelDanFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIIMoabite}{\PaleoHebrewMoabiteFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIISiloam}{\PaleoHebrewSiloamFont}{\EncodePaleoASCII}
@@ -1653,7 +1660,7 @@
 
 \DeclareSourceProfile{Proto}
 	{\EnglishProtoFont}			{\color{ProtoColor}\mdseries}
-	{\PaleoHebrewTelZayit}		{\color{ProtoColor}\ProtoSinaiticASCIIWeight}
+	{\PaleoASCIIGezerA}			{\color{ProtoColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{ProtoA}
 	{\EnglishProtoFont}			{\color{ProtoAColor}\mdseries}
