@@ -695,6 +695,30 @@
 \fi
 
 \makeatletter
+% Footnote marks belong to the preceding word. Remove any source whitespace before
+% every mark, and put an unbreakable thin space between consecutive marks so that
+% (for example) footnotes 1 and 2 cannot read as footnote 12.
+\newdimen\ConsecutiveFootnoteMarker
+\ConsecutiveFootnoteMarker=3sp
+\let\BaseFootnoteMark\@footnotemark
+\let\BaseFootnoteText\@footnotetext
+\long\def\@footnotetext#1{%
+    \BaseFootnoteText{#1}%
+    % The insertion for the note text follows its mark in the horizontal list,
+    % so renew the marker after the insertion as well.
+    \kern\ConsecutiveFootnoteMarker
+}
+\renewcommand{\@footnotemark}{%
+    \leavevmode
+    \unskip
+    \ifdim\lastkern=\ConsecutiveFootnoteMarker
+        \unkern
+        \nobreak\thinspace
+    \fi
+    \BaseFootnoteMark
+    \kern\ConsecutiveFootnoteMarker
+}
+
 \let\RecursiveFootnoteQueue\@empty
 \newif\ifRecursiveFootnoteFlushing
 
