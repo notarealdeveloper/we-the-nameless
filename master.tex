@@ -164,6 +164,7 @@
     ]{geometry}
 \fi
 \usepackage[no-math]{fontspec}
+\usepackage{amsmath}
 \usepackage{titlesec}
 \usepackage{tocloft}
 \usepackage{xcolor}
@@ -191,7 +192,6 @@
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{luacode}
-\usepackage{amsmath}
 \usepackage[hidelinks]{hyperref}
 \usepackage[normalem]{ulem}
 \usepackage{ruby}
@@ -1144,6 +1144,17 @@
     paleo_x = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"}
   }
 
+  -- The Tel Zayit font uses O/o for ayin and has no punctuation glyphs.
+  -- Keep punctuation in the surrounding text font instead of asking the
+  -- historical alphabet font to render characters it does not contain.
+  local tel_zayit_ascii = variant_map {
+    "A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","O","P","C","Q","R","V","T"
+  }
+
+  local function tel_zayit_punctuation(s)
+    return "\\PaleoTelZayitPunctuation{" .. s .. "}"
+  end
+
   local function encode_ascii_variant(s, variant)
     local map = ascii_variants[variant]
     local out = {}
@@ -1244,6 +1255,34 @@
     return table.concat(out)
   end
 
+  function paleotex.hebrew_to_tel_zayit_ascii(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = tel_zayit_ascii[code]
+      if mapped ~= nil then
+        table.insert(out, mapped)
+      elseif code == 0x05BE then
+        table.insert(out, tel_zayit_punctuation("-"))
+      elseif code == 0x05C0 then
+        table.insert(out, tel_zayit_punctuation("|"))
+      elseif code == 0x05C3 then
+        -- Sof pasuq is omitted by the other ASCII historical renderers too.
+      elseif code == 0x05F3 then
+        table.insert(out, tel_zayit_punctuation("'"))
+      elseif code == 0x05F4 then
+        table.insert(out, tel_zayit_punctuation('"'))
+      elseif not is_hebrew_mark(code) then
+        local char = utf8.char(code)
+        if char == "-" or char == "(" or char == ")" or char == "[" or char == "]" then
+          table.insert(out, tel_zayit_punctuation(char))
+        else
+          table.insert(out, char)
+        end
+      end
+    end
+    return table.concat(out)
+  end
+
   function paleotex.hebrew_to_ascii_variant(s, variant)
     return encode_ascii_variant(s, variant)
   end
@@ -1300,6 +1339,10 @@
 \newcommand{\EncodeHebrewNoNiqqud}[1]{\HebrewNoNiqqud{#1}}
 \newcommand{\EncodeHebrewRaw}[1]{\HebrewRaw{#1}}
 \newcommand{\EncodePaleoASCII}[1]{\HebrewToPaleoASCII{#1}}
+\newcommand{\PaleoTelZayitPunctuation}[1]{{\normalfont #1}}
+\newcommand{\EncodePaleoTelZayitASCII}[1]{%
+  \directlua{tex.sprint(paleotex.hebrew_to_tel_zayit_ascii("\luaescapestring{\detokenize{#1}}"))}%
+}
 \newcommand{\EncodePaleoUnicode}[1]{\HebrewForPaleoUnicode{#1}}
 \newcommand{\EncodeProtoA}[1]{\EncodeASCIIVariant{proto_a}{#1}}
 \newcommand{\EncodePaleoHebrewPhoenician}[1]{\HebrewToPaleoHebrewPhoenician{#1}}
@@ -1363,7 +1406,7 @@
 \DeclareHebrewRenderer{ProtoFFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoF}
 \DeclareHebrewRenderer{ProtoGFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoG}
 \DeclareHebrewRenderer{PaleoASCIIStandard}{\PaleoHebrewStandardFont}{\EncodePaleoASCII}
-\DeclareHebrewRenderer{PaleoASCIITelZayit}{\PaleoHebrewTelZayitFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIITelZayit}{\PaleoHebrewTelZayitFont}{\EncodePaleoTelZayitASCII}
 \DeclareHebrewRenderer{PaleoASCIIGezer}{\PaleoHebrewGezerFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIIGezerA}{\PaleoHebrewGezerAFont}{\EncodePaleoASCII}
 \DeclareHebrewRenderer{PaleoASCIITelDan}{\PaleoHebrewTelDanFont}{\EncodePaleoASCII}
@@ -2685,7 +2728,7 @@
 \def\protocupper{{ABGDH\;WZXJ\!Y\!KL\;NS]PC\;Q\;R\,V\,T}}
 \def\protoclower{{abgdh\;wzxj\!yklns]p\!c\,q\,R\,v\,t}}
 
-\def\paleoalower{{abgdhw\!zxjyklmns]p\!cq\,r\,v\,t}}
+\def\paleoalower{{abgdhw\!zxjyklmnsop\!cq\,r\,v\,t}}
 
 \def\paleobupper{{A\;BG\,DH\;WZX YKLM S]PCQRVT}}
 \def\paleoblower{{a\,bg\!dh\!wzx yklm\;s]p\!cqrvt}}
