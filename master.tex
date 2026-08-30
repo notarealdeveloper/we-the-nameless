@@ -1324,11 +1324,7 @@
         table.insert(out, tel_zayit_punctuation('"'))
       elseif not is_hebrew_mark(code) then
         local char = utf8.char(code)
-        if char == "[" or char == "]" then
-          -- The repaired face contains full-size brackets. Mirror them before
-          -- the RTL run so the visible opening and closing forms stay correct.
-          table.insert(out, mirrored_bracket[char])
-        elseif char == "-" or char == "(" or char == ")" then
+        if char == "-" or char == "(" or char == ")" then
           table.insert(out, tel_zayit_punctuation(char))
         else
           table.insert(out, char)
