@@ -1,0 +1,38 @@
+{
+  "source": {
+    "pdf_dpi": 600
+  },
+  "script": "paleo-hebrew",
+  "encoding": "phoenician",
+  "preprocessing": {
+    "adaptive_radius": 15,
+    "adaptive_bias": 8
+  },
+  "segmentation": {
+    "min_area_ratio": 2e-05,
+    "max_hypotheses": 4
+  },
+  "tracing": {
+    "turd_size": 2,
+    "corner_threshold": 1.0,
+    "opt_tolerance": 0.2
+  },
+  "normalization": {
+    "upm": 1000,
+    "ascent": 800,
+    "descent": 200,
+    "body_height": 650,
+    "sidebearing": 60,
+    "monospace": false
+  },
+  "font": {
+    "name": "PHOENICIAN",
+    "version": "1.0"
+  },
+  "ai": {
+    "max_repairs": 2
+  },
+  "qa": {},
+  "output": "/home/jason/obsidian/We The Nameless/PHOENICIAN",
+  "package": "full"
+}

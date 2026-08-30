@@ -16,7 +16,15 @@ def ingest(run:Path, source:Path, pdf_page=1, pdf_dpi=600):
     fmt=im.format; mode=im.mode; size=im.size; dpi=im.info.get("dpi"); exif_orientation=None
     try: exif_orientation=im.getexif().get(274)
     except Exception: pass
-    im=ImageOps.exif_transpose(im).convert("RGB"); transforms.append({"operation":"exif-transpose","orientation":exif_orientation})
+    im=ImageOps.exif_transpose(im)
+    if "A" in im.getbands():
+        rgba=im.convert("RGBA")
+        background=Image.new("RGBA",rgba.size,"white")
+        im=Image.alpha_composite(background,rgba).convert("RGB")
+        transforms.append({"operation":"alpha-composite","background":"white"})
+    else:
+        im=im.convert("RGB")
+    transforms.append({"operation":"exif-transpose","orientation":exif_orientation})
     im.save(run/"source/source.png")
     atomic_json(run/"manifests/source.json",{"source_path":str(source.resolve()),"archival_copy":str(raw),"source_png":"source/source.png","sha256":sha256(source),"dimensions":list(size),"format":fmt,"mode":mode,"dpi":dpi,"pdf_page":pdf_page if source.suffix.lower()==".pdf" else None,"exif_orientation":exif_orientation,"transformations":transforms})
 

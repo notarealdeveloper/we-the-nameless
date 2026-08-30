@@ -1,0 +1,732 @@
+{
+  "config": {
+    "ai": {
+      "max_repairs": 2
+    },
+    "encoding": "phoenician",
+    "font": {
+      "name": "PHOENICIAN",
+      "version": "1.0"
+    },
+    "normalization": {
+      "ascent": 800,
+      "body_height": 650,
+      "descent": 200,
+      "monospace": false,
+      "sidebearing": 60,
+      "upm": 1000
+    },
+    "output": "/home/jason/obsidian/We The Nameless/PHOENICIAN",
+    "package": "full",
+    "preprocessing": {
+      "adaptive_bias": 8,
+      "adaptive_radius": 15
+    },
+    "qa": {},
+    "script": "paleo-hebrew",
+    "segmentation": {
+      "max_hypotheses": 4,
+      "min_area_ratio": 2e-05
+    },
+    "source": {
+      "pdf_dpi": 600
+    },
+    "tracing": {
+      "corner_threshold": 1.0,
+      "opt_tolerance": 0.2,
+      "turd_size": 2
+    }
+  },
+  "glyphs": [
+    {
+      "advance_width": 654,
+      "candidate_id": "g-row01-col01-v01",
+      "canonical_name": "aleph",
+      "clean_svg": "traces/clean/g-row01-col01-v01.svg",
+      "glyph_name": "aleph",
+      "normalized_svg": "normalized/g-row01-col01-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col01-v01.svg",
+      "selected_mask": "masks/final/g-row01-col01-v01.png",
+      "source_crop": "crops/g-row01-col01-v01/source.png",
+      "source_rect": [
+        7,
+        3,
+        32,
+        27
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67840
+    },
+    {
+      "advance_width": 631,
+      "candidate_id": "g-row01-col02-v01",
+      "canonical_name": "bet",
+      "clean_svg": "traces/clean/g-row01-col02-v01.svg",
+      "glyph_name": "bet",
+      "normalized_svg": "normalized/g-row01-col02-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col02-v01.svg",
+      "selected_mask": "masks/final/g-row01-col02-v01.png",
+      "source_crop": "crops/g-row01-col02-v01/source.png",
+      "source_rect": [
+        7,
+        32,
+        32,
+        26
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67841
+    },
+    {
+      "advance_width": 631,
+      "candidate_id": "g-row01-col03-v01",
+      "canonical_name": "gimel",
+      "clean_svg": "traces/clean/g-row01-col03-v01.svg",
+      "glyph_name": "gimel",
+      "normalized_svg": "normalized/g-row01-col03-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col03-v01.svg",
+      "selected_mask": "masks/final/g-row01-col03-v01.png",
+      "source_crop": "crops/g-row01-col03-v01/source.png",
+      "source_rect": [
+        7,
+        59,
+        32,
+        26
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67842
+    },
+    {
+      "advance_width": 863,
+      "candidate_id": "g-row01-col04-v01",
+      "canonical_name": "dalet",
+      "clean_svg": "traces/clean/g-row01-col04-v01.svg",
+      "glyph_name": "dalet",
+      "normalized_svg": "normalized/g-row01-col04-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col04-v01.svg",
+      "selected_mask": "masks/final/g-row01-col04-v01.png",
+      "source_crop": "crops/g-row01-col04-v01/source.png",
+      "source_rect": [
+        7,
+        86,
+        32,
+        24
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67843
+    },
+    {
+      "advance_width": 608,
+      "candidate_id": "g-row01-col05-v01",
+      "canonical_name": "he",
+      "clean_svg": "traces/clean/g-row01-col05-v01.svg",
+      "glyph_name": "he",
+      "normalized_svg": "normalized/g-row01-col05-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col05-v01.svg",
+      "selected_mask": "masks/final/g-row01-col05-v01.png",
+      "source_crop": "crops/g-row01-col05-v01/source.png",
+      "source_rect": [
+        7,
+        113,
+        32,
+        25
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67844
+    },
+    {
+      "advance_width": 608,
+      "candidate_id": "g-row01-col06-v01",
+      "canonical_name": "waw",
+      "clean_svg": "traces/clean/g-row01-col06-v01.svg",
+      "glyph_name": "waw",
+      "normalized_svg": "normalized/g-row01-col06-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col06-v01.svg",
+      "selected_mask": "masks/final/g-row01-col06-v01.png",
+      "source_crop": "crops/g-row01-col06-v01/source.png",
+      "source_rect": [
+        7,
+        140,
+        32,
+        25
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67845
+    },
+    {
+      "advance_width": 584,
+      "candidate_id": "g-row01-col07-v01",
+      "canonical_name": "zayin",
+      "clean_svg": "traces/clean/g-row01-col07-v01.svg",
+      "glyph_name": "zayin",
+      "normalized_svg": "normalized/g-row01-col07-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col07-v01.svg",
+      "selected_mask": "masks/final/g-row01-col07-v01.png",
+      "source_crop": "crops/g-row01-col07-v01/source.png",
+      "source_rect": [
+        7,
+        171,
+        32,
+        24
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67846
+    },
+    {
+      "advance_width": 608,
+      "candidate_id": "g-row01-col08-v01",
+      "canonical_name": "het",
+      "clean_svg": "traces/clean/g-row01-col08-v01.svg",
+      "glyph_name": "het",
+      "normalized_svg": "normalized/g-row01-col08-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col08-v01.svg",
+      "selected_mask": "masks/final/g-row01-col08-v01.png",
+      "source_crop": "crops/g-row01-col08-v01/source.png",
+      "source_rect": [
+        7,
+        197,
+        32,
+        24
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67847
+    },
+    {
+      "advance_width": 770,
+      "candidate_id": "g-row01-col09-v01",
+      "canonical_name": "tet",
+      "clean_svg": "traces/clean/g-row01-col09-v01.svg",
+      "glyph_name": "tet",
+      "normalized_svg": "normalized/g-row01-col09-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col09-v01.svg",
+      "selected_mask": "masks/final/g-row01-col09-v01.png",
+      "source_crop": "crops/g-row01-col09-v01/source.png",
+      "source_rect": [
+        99,
+        3,
+        28,
+        27
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67848
+    },
+    {
+      "advance_width": 747,
+      "candidate_id": "g-row01-col10-v01",
+      "canonical_name": "yod",
+      "clean_svg": "traces/clean/g-row01-col10-v01.svg",
+      "glyph_name": "yod",
+      "normalized_svg": "normalized/g-row01-col10-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col10-v01.svg",
+      "selected_mask": "masks/final/g-row01-col10-v01.png",
+      "source_crop": "crops/g-row01-col10-v01/source.png",
+      "source_rect": [
+        99,
+        32,
+        28,
+        26
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67849
+    },
+    {
+      "advance_width": 747,
+      "candidate_id": "g-row01-col11-v01",
+      "canonical_name": "kaf",
+      "clean_svg": "traces/clean/g-row01-col11-v01.svg",
+      "glyph_name": "kaf",
+      "normalized_svg": "normalized/g-row01-col11-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col11-v01.svg",
+      "selected_mask": "masks/final/g-row01-col11-v01.png",
+      "source_crop": "crops/g-row01-col11-v01/source.png",
+      "source_rect": [
+        99,
+        59,
+        28,
+        26
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67850
+    },
+    {
+      "advance_width": 352,
+      "candidate_id": "g-row01-col12-v01",
+      "canonical_name": "lamed",
+      "clean_svg": "traces/clean/g-row01-col12-v01.svg",
+      "glyph_name": "lamed",
+      "normalized_svg": "normalized/g-row01-col12-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col12-v01.svg",
+      "selected_mask": "masks/final/g-row01-col12-v01.png",
+      "source_crop": "crops/g-row01-col12-v01/source.png",
+      "source_rect": [
+        99,
+        86,
+        28,
+        24
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67851
+    },
+    {
+      "advance_width": 584,
+      "candidate_id": "g-row01-col13-v01",
+      "canonical_name": "mem",
+      "clean_svg": "traces/clean/g-row01-col13-v01.svg",
+      "glyph_name": "mem",
+      "normalized_svg": "normalized/g-row01-col13-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col13-v01.svg",
+      "selected_mask": "masks/final/g-row01-col13-v01.png",
+      "source_crop": "crops/g-row01-col13-v01/source.png",
+      "source_rect": [
+        99,
+        113,
+        28,
+        25
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67852
+    },
+    {
+      "advance_width": 468,
+      "candidate_id": "g-row01-col14-v01",
+      "canonical_name": "nun",
+      "clean_svg": "traces/clean/g-row01-col14-v01.svg",
+      "glyph_name": "nun",
+      "normalized_svg": "normalized/g-row01-col14-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col14-v01.svg",
+      "selected_mask": "masks/final/g-row01-col14-v01.png",
+      "source_crop": "crops/g-row01-col14-v01/source.png",
+      "source_rect": [
+        99,
+        140,
+        28,
+        25
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67853
+    },
+    {
+      "advance_width": 468,
+      "candidate_id": "g-row01-col15-v01",
+      "canonical_name": "samekh",
+      "clean_svg": "traces/clean/g-row01-col15-v01.svg",
+      "glyph_name": "samekh",
+      "normalized_svg": "normalized/g-row01-col15-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col15-v01.svg",
+      "selected_mask": "masks/final/g-row01-col15-v01.png",
+      "source_crop": "crops/g-row01-col15-v01/source.png",
+      "source_rect": [
+        99,
+        171,
+        28,
+        24
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67854
+    },
+    {
+      "advance_width": 584,
+      "candidate_id": "g-row01-col16-v01",
+      "canonical_name": "ayin",
+      "clean_svg": "traces/clean/g-row01-col16-v01.svg",
+      "glyph_name": "ayin",
+      "normalized_svg": "normalized/g-row01-col16-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col16-v01.svg",
+      "selected_mask": "masks/final/g-row01-col16-v01.png",
+      "source_crop": "crops/g-row01-col16-v01/source.png",
+      "source_rect": [
+        99,
+        197,
+        28,
+        24
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67855
+    },
+    {
+      "advance_width": 608,
+      "candidate_id": "g-row01-col17-v01",
+      "canonical_name": "pe",
+      "clean_svg": "traces/clean/g-row01-col17-v01.svg",
+      "glyph_name": "pe",
+      "normalized_svg": "normalized/g-row01-col17-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col17-v01.svg",
+      "selected_mask": "masks/final/g-row01-col17-v01.png",
+      "source_crop": "crops/g-row01-col17-v01/source.png",
+      "source_rect": [
+        182,
+        3,
+        39,
+        27
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67856
+    },
+    {
+      "advance_width": 631,
+      "candidate_id": "g-row01-col18-v01",
+      "canonical_name": "tsade",
+      "clean_svg": "traces/clean/g-row01-col18-v01.svg",
+      "glyph_name": "tsade",
+      "normalized_svg": "normalized/g-row01-col18-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col18-v01.svg",
+      "selected_mask": "masks/final/g-row01-col18-v01.png",
+      "source_crop": "crops/g-row01-col18-v01/source.png",
+      "source_rect": [
+        182,
+        32,
+        39,
+        26
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67857
+    },
+    {
+      "advance_width": 584,
+      "candidate_id": "g-row01-col19-v01",
+      "canonical_name": "qof",
+      "clean_svg": "traces/clean/g-row01-col19-v01.svg",
+      "glyph_name": "qof",
+      "normalized_svg": "normalized/g-row01-col19-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col19-v01.svg",
+      "selected_mask": "masks/final/g-row01-col19-v01.png",
+      "source_crop": "crops/g-row01-col19-v01/source.png",
+      "source_rect": [
+        182,
+        59,
+        39,
+        26
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67858
+    },
+    {
+      "advance_width": 608,
+      "candidate_id": "g-row01-col20-v01",
+      "canonical_name": "resh",
+      "clean_svg": "traces/clean/g-row01-col20-v01.svg",
+      "glyph_name": "resh",
+      "normalized_svg": "normalized/g-row01-col20-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col20-v01.svg",
+      "selected_mask": "masks/final/g-row01-col20-v01.png",
+      "source_crop": "crops/g-row01-col20-v01/source.png",
+      "source_rect": [
+        182,
+        86,
+        39,
+        24
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67859
+    },
+    {
+      "advance_width": 1025,
+      "candidate_id": "g-row01-col21-v01",
+      "canonical_name": "shin",
+      "clean_svg": "traces/clean/g-row01-col21-v01.svg",
+      "glyph_name": "shin",
+      "normalized_svg": "normalized/g-row01-col21-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col21-v01.svg",
+      "selected_mask": "masks/final/g-row01-col21-v01.png",
+      "source_crop": "crops/g-row01-col21-v01/source.png",
+      "source_rect": [
+        182,
+        113,
+        39,
+        25
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67860
+    },
+    {
+      "advance_width": 608,
+      "candidate_id": "g-row01-col22-v01",
+      "canonical_name": "taw",
+      "clean_svg": "traces/clean/g-row01-col22-v01.svg",
+      "glyph_name": "taw",
+      "normalized_svg": "normalized/g-row01-col22-v01.svg",
+      "raw_svg": "traces/raw/g-row01-col22-v01.svg",
+      "selected_mask": "masks/final/g-row01-col22-v01.png",
+      "source_crop": "crops/g-row01-col22-v01/source.png",
+      "source_rect": [
+        182,
+        140,
+        39,
+        25
+      ],
+      "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+      "unicode": 67861
+    }
+  ],
+  "pipeline_version": "0.1.0",
+  "qa": {
+    "confidence": 0.2,
+    "dimensions": {
+      "accidental_noise": 40,
+      "alphabet_completeness": 100,
+      "identification_confidence": 20,
+      "obvious_omissions": 100,
+      "scale_coherence": 50,
+      "source_fidelity": 40,
+      "spacing_coherence": 50,
+      "tracing_quality": 40
+    },
+    "glyphs": [
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col01-v01",
+        "canonical_name": "aleph",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col02-v01",
+        "canonical_name": "bet",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col03-v01",
+        "canonical_name": "gimel",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col04-v01",
+        "canonical_name": "dalet",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col05-v01",
+        "canonical_name": "he",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col06-v01",
+        "canonical_name": "waw",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col07-v01",
+        "canonical_name": "zayin",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col08-v01",
+        "canonical_name": "het",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col09-v01",
+        "canonical_name": "tet",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col10-v01",
+        "canonical_name": "yod",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col11-v01",
+        "canonical_name": "kaf",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col12-v01",
+        "canonical_name": "lamed",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col13-v01",
+        "canonical_name": "mem",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col14-v01",
+        "canonical_name": "nun",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col15-v01",
+        "canonical_name": "samekh",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col16-v01",
+        "canonical_name": "ayin",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col17-v01",
+        "canonical_name": "pe",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col18-v01",
+        "canonical_name": "tsade",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col19-v01",
+        "canonical_name": "qof",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col20-v01",
+        "canonical_name": "resh",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col21-v01",
+        "canonical_name": "shin",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      },
+      {
+        "action": "manual_review",
+        "adjustment": {},
+        "candidate_id": "g-row01-col22-v01",
+        "canonical_name": "taw",
+        "confidence": 0.2,
+        "rationale": "AI-disabled QA; visual judgment not performed",
+        "score": 40
+      }
+    ],
+    "overall_score": 40,
+    "review_recommended": [
+      "aleph",
+      "bet",
+      "gimel",
+      "dalet",
+      "he",
+      "waw",
+      "zayin",
+      "het",
+      "tet",
+      "yod",
+      "kaf",
+      "lamed",
+      "mem",
+      "nun",
+      "samekh",
+      "ayin",
+      "pe",
+      "tsade",
+      "qof",
+      "resh",
+      "shin",
+      "taw"
+    ]
+  },
+  "source": {
+    "archival_copy": "/home/jason/obsidian/We The Nameless/FONT-MAGIC/work/PHOENICIAN-85796086530d/source/original.webp",
+    "dimensions": [
+      250,
+      225
+    ],
+    "dpi": null,
+    "exif_orientation": null,
+    "format": "WEBP",
+    "mode": "RGBA",
+    "pdf_page": null,
+    "sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c",
+    "source_path": "/home/jason/obsidian/We The Nameless/phoenician.webp",
+    "source_png": "source/source.png",
+    "transformations": [
+      {
+        "background": "white",
+        "operation": "alpha-composite"
+      },
+      {
+        "operation": "exif-transpose",
+        "orientation": null
+      }
+    ]
+  },
+  "validation": {
+    "fatal": [],
+    "status": "passed",
+    "warnings": [
+      "ots-sanitize unavailable",
+      "hb-shape unavailable"
+    ]
+  }
+}
