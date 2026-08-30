@@ -1,0 +1,24 @@
+{
+  "archival_copy": "/home/jason/obsidian/We The Nameless/FONT-MAGIC2/work/SyntheticEpigraphy-d3627434e6b4/source/original.png",
+  "dimensions": [
+    1800,
+    620
+  ],
+  "dpi": [
+    299.9994,
+    299.9994
+  ],
+  "exif_orientation": null,
+  "format": "PNG",
+  "mode": "RGB",
+  "pdf_page": null,
+  "sha256": "d3627434e6b4a5bdc75add9fc331b302325087d23b43803ced9cb088c5ddb75a",
+  "source_path": "/home/jason/obsidian/We The Nameless/FONT-MAGIC2/tests/fixtures/synthetic-chart.png",
+  "source_png": "source/source.png",
+  "transformations": [
+    {
+      "operation": "exif-transpose",
+      "orientation": null
+    }
+  ]
+}

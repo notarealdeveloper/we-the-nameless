@@ -1,0 +1,634 @@
+{
+  "id": 4,
+  "method": "row-cluster",
+  "regions": [
+    {
+      "area": 167,
+      "bbox": [
+        11,
+        4,
+        23,
+        26
+      ],
+      "confidence": 0.45,
+      "id": "h4-r001",
+      "method": "row-cluster"
+    },
+    {
+      "area": 115,
+      "bbox": [
+        191,
+        4,
+        21,
+        26
+      ],
+      "confidence": 0.45,
+      "id": "h4-r002",
+      "method": "row-cluster"
+    },
+    {
+      "area": 7,
+      "bbox": [
+        45,
+        10,
+        3,
+        4
+      ],
+      "confidence": 0.45,
+      "id": "h4-r003",
+      "method": "row-cluster"
+    },
+    {
+      "area": 284,
+      "bbox": [
+        99,
+        7,
+        28,
+        20
+      ],
+      "confidence": 0.45,
+      "id": "h4-r004",
+      "method": "row-cluster"
+    },
+    {
+      "area": 24,
+      "bbox": [
+        136,
+        11,
+        2,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h4-r005",
+      "method": "row-cluster"
+    },
+    {
+      "area": 24,
+      "bbox": [
+        229,
+        11,
+        2,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h4-r006",
+      "method": "row-cluster"
+    },
+    {
+      "area": 17,
+      "bbox": [
+        232,
+        11,
+        5,
+        7
+      ],
+      "confidence": 0.45,
+      "id": "h4-r007",
+      "method": "row-cluster"
+    },
+    {
+      "area": 150,
+      "bbox": [
+        13,
+        32,
+        20,
+        25
+      ],
+      "confidence": 0.45,
+      "id": "h4-r008",
+      "method": "row-cluster"
+    },
+    {
+      "area": 63,
+      "bbox": [
+        45,
+        37,
+        11,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r009",
+      "method": "row-cluster"
+    },
+    {
+      "area": 75,
+      "bbox": [
+        100,
+        36,
+        25,
+        17
+      ],
+      "confidence": 0.45,
+      "id": "h4-r010",
+      "method": "row-cluster"
+    },
+    {
+      "area": 29,
+      "bbox": [
+        132,
+        37,
+        7,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r011",
+      "method": "row-cluster"
+    },
+    {
+      "area": 114,
+      "bbox": [
+        191,
+        33,
+        21,
+        23
+      ],
+      "confidence": 0.45,
+      "id": "h4-r012",
+      "method": "row-cluster"
+    },
+    {
+      "area": 31,
+      "bbox": [
+        227,
+        38,
+        9,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h4-r013",
+      "method": "row-cluster"
+    },
+    {
+      "area": 120,
+      "bbox": [
+        12,
+        59,
+        22,
+        25
+      ],
+      "confidence": 0.45,
+      "id": "h4-r014",
+      "method": "row-cluster"
+    },
+    {
+      "area": 36,
+      "bbox": [
+        44,
+        64,
+        12,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r015",
+      "method": "row-cluster"
+    },
+    {
+      "area": 147,
+      "bbox": [
+        100,
+        59,
+        27,
+        25
+      ],
+      "confidence": 0.45,
+      "id": "h4-r016",
+      "method": "row-cluster"
+    },
+    {
+      "area": 29,
+      "bbox": [
+        132,
+        65,
+        4,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r017",
+      "method": "row-cluster"
+    },
+    {
+      "area": 19,
+      "bbox": [
+        136,
+        69,
+        8,
+        9
+      ],
+      "confidence": 0.45,
+      "id": "h4-r018",
+      "method": "row-cluster"
+    },
+    {
+      "area": 145,
+      "bbox": [
+        192,
+        59,
+        19,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h4-r019",
+      "method": "row-cluster"
+    },
+    {
+      "area": 20,
+      "bbox": [
+        227,
+        64,
+        4,
+        11
+      ],
+      "confidence": 0.45,
+      "id": "h4-r020",
+      "method": "row-cluster"
+    },
+    {
+      "area": 21,
+      "bbox": [
+        235,
+        64,
+        5,
+        11
+      ],
+      "confidence": 0.45,
+      "id": "h4-r021",
+      "method": "row-cluster"
+    },
+    {
+      "area": 12,
+      "bbox": [
+        52,
+        72,
+        4,
+        5
+      ],
+      "confidence": 0.45,
+      "id": "h4-r022",
+      "method": "row-cluster"
+    },
+    {
+      "area": 12,
+      "bbox": [
+        234,
+        75,
+        6,
+        4
+      ],
+      "confidence": 0.45,
+      "id": "h4-r023",
+      "method": "row-cluster"
+    },
+    {
+      "area": 203,
+      "bbox": [
+        8,
+        89,
+        30,
+        18
+      ],
+      "confidence": 0.45,
+      "id": "h4-r024",
+      "method": "row-cluster"
+    },
+    {
+      "area": 25,
+      "bbox": [
+        46,
+        92,
+        3,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h4-r025",
+      "method": "row-cluster"
+    },
+    {
+      "area": 29,
+      "bbox": [
+        51,
+        92,
+        6,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h4-r026",
+      "method": "row-cluster"
+    },
+    {
+      "area": 45,
+      "bbox": [
+        108,
+        90,
+        10,
+        18
+      ],
+      "confidence": 0.45,
+      "id": "h4-r027",
+      "method": "row-cluster"
+    },
+    {
+      "area": 30,
+      "bbox": [
+        132,
+        91,
+        5,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r028",
+      "method": "row-cluster"
+    },
+    {
+      "area": 143,
+      "bbox": [
+        191,
+        86,
+        21,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h4-r029",
+      "method": "row-cluster"
+    },
+    {
+      "area": 50,
+      "bbox": [
+        229,
+        92,
+        9,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h4-r030",
+      "method": "row-cluster"
+    },
+    {
+      "area": 132,
+      "bbox": [
+        14,
+        114,
+        17,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h4-r031",
+      "method": "row-cluster"
+    },
+    {
+      "area": 28,
+      "bbox": [
+        45,
+        119,
+        4,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r032",
+      "method": "row-cluster"
+    },
+    {
+      "area": 28,
+      "bbox": [
+        53,
+        119,
+        4,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r033",
+      "method": "row-cluster"
+    },
+    {
+      "area": 101,
+      "bbox": [
+        104,
+        115,
+        19,
+        22
+      ],
+      "confidence": 0.45,
+      "id": "h4-r034",
+      "method": "row-cluster"
+    },
+    {
+      "area": 42,
+      "bbox": [
+        132,
+        119,
+        9,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r035",
+      "method": "row-cluster"
+    },
+    {
+      "area": 24,
+      "bbox": [
+        143,
+        119,
+        5,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r036",
+      "method": "row-cluster"
+    },
+    {
+      "area": 238,
+      "bbox": [
+        182,
+        114,
+        39,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h4-r037",
+      "method": "row-cluster"
+    },
+    {
+      "area": 26,
+      "bbox": [
+        228,
+        118,
+        8,
+        11
+      ],
+      "confidence": 0.45,
+      "id": "h4-r038",
+      "method": "row-cluster"
+    },
+    {
+      "area": 89,
+      "bbox": [
+        14,
+        140,
+        20,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h4-r039",
+      "method": "row-cluster"
+    },
+    {
+      "area": 23,
+      "bbox": [
+        45,
+        145,
+        6,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r040",
+      "method": "row-cluster"
+    },
+    {
+      "area": 24,
+      "bbox": [
+        52,
+        146,
+        6,
+        11
+      ],
+      "confidence": 0.45,
+      "id": "h4-r041",
+      "method": "row-cluster"
+    },
+    {
+      "area": 99,
+      "bbox": [
+        106,
+        141,
+        14,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h4-r042",
+      "method": "row-cluster"
+    },
+    {
+      "area": 38,
+      "bbox": [
+        133,
+        145,
+        11,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r043",
+      "method": "row-cluster"
+    },
+    {
+      "area": 66,
+      "bbox": [
+        195,
+        146,
+        14,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r044",
+      "method": "row-cluster"
+    },
+    {
+      "area": 43,
+      "bbox": [
+        226,
+        145,
+        12,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r045",
+      "method": "row-cluster"
+    },
+    {
+      "area": 114,
+      "bbox": [
+        14,
+        171,
+        18,
+        23
+      ],
+      "confidence": 0.45,
+      "id": "h4-r046",
+      "method": "row-cluster"
+    },
+    {
+      "area": 46,
+      "bbox": [
+        46,
+        175,
+        9,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r047",
+      "method": "row-cluster"
+    },
+    {
+      "area": 110,
+      "bbox": [
+        105,
+        171,
+        14,
+        23
+      ],
+      "confidence": 0.45,
+      "id": "h4-r048",
+      "method": "row-cluster"
+    },
+    {
+      "area": 41,
+      "bbox": [
+        132,
+        175,
+        8,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r049",
+      "method": "row-cluster"
+    },
+    {
+      "area": 233,
+      "bbox": [
+        12,
+        198,
+        21,
+        23
+      ],
+      "confidence": 0.45,
+      "id": "h4-r050",
+      "method": "row-cluster"
+    },
+    {
+      "area": 117,
+      "bbox": [
+        103,
+        201,
+        20,
+        16
+      ],
+      "confidence": 0.45,
+      "id": "h4-r051",
+      "method": "row-cluster"
+    },
+    {
+      "area": 66,
+      "bbox": [
+        45,
+        204,
+        12,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h4-r052",
+      "method": "row-cluster"
+    }
+  ],
+  "source_dimensions": [
+    250,
+    225
+  ]
+}

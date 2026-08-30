@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["font","glyphs","confidence","rationale"],"properties":{"font":{"type":"object","required":["upm","ascent","descent"]},"glyphs":{"type":"object"},"confidence":{"type":"number"},"rationale":{"type":"string"}}}

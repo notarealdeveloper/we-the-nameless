@@ -1,0 +1,574 @@
+{
+  "id": 2,
+  "method": "otsu",
+  "regions": [
+    {
+      "area": 184,
+      "bbox": [
+        11,
+        4,
+        23,
+        26
+      ],
+      "confidence": 0.45,
+      "id": "h2-r001",
+      "method": "otsu"
+    },
+    {
+      "area": 328,
+      "bbox": [
+        99,
+        6,
+        28,
+        22
+      ],
+      "confidence": 0.45,
+      "id": "h2-r002",
+      "method": "otsu"
+    },
+    {
+      "area": 125,
+      "bbox": [
+        191,
+        4,
+        21,
+        26
+      ],
+      "confidence": 0.45,
+      "id": "h2-r003",
+      "method": "otsu"
+    },
+    {
+      "area": 5,
+      "bbox": [
+        45,
+        10,
+        2,
+        4
+      ],
+      "confidence": 0.45,
+      "id": "h2-r004",
+      "method": "otsu"
+    },
+    {
+      "area": 41,
+      "bbox": [
+        131,
+        11,
+        12,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r005",
+      "method": "otsu"
+    },
+    {
+      "area": 48,
+      "bbox": [
+        228,
+        11,
+        9,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r006",
+      "method": "otsu"
+    },
+    {
+      "area": 171,
+      "bbox": [
+        12,
+        32,
+        21,
+        25
+      ],
+      "confidence": 0.45,
+      "id": "h2-r007",
+      "method": "otsu"
+    },
+    {
+      "area": 65,
+      "bbox": [
+        45,
+        37,
+        11,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r008",
+      "method": "otsu"
+    },
+    {
+      "area": 83,
+      "bbox": [
+        100,
+        36,
+        26,
+        18
+      ],
+      "confidence": 0.45,
+      "id": "h2-r009",
+      "method": "otsu"
+    },
+    {
+      "area": 32,
+      "bbox": [
+        131,
+        37,
+        8,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r010",
+      "method": "otsu"
+    },
+    {
+      "area": 122,
+      "bbox": [
+        191,
+        33,
+        21,
+        23
+      ],
+      "confidence": 0.45,
+      "id": "h2-r011",
+      "method": "otsu"
+    },
+    {
+      "area": 31,
+      "bbox": [
+        227,
+        38,
+        9,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h2-r012",
+      "method": "otsu"
+    },
+    {
+      "area": 133,
+      "bbox": [
+        12,
+        58,
+        22,
+        26
+      ],
+      "confidence": 0.45,
+      "id": "h2-r013",
+      "method": "otsu"
+    },
+    {
+      "area": 57,
+      "bbox": [
+        44,
+        64,
+        13,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r014",
+      "method": "otsu"
+    },
+    {
+      "area": 159,
+      "bbox": [
+        100,
+        59,
+        27,
+        25
+      ],
+      "confidence": 0.45,
+      "id": "h2-r015",
+      "method": "otsu"
+    },
+    {
+      "area": 29,
+      "bbox": [
+        132,
+        65,
+        4,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r016",
+      "method": "otsu"
+    },
+    {
+      "area": 19,
+      "bbox": [
+        136,
+        69,
+        8,
+        9
+      ],
+      "confidence": 0.45,
+      "id": "h2-r017",
+      "method": "otsu"
+    },
+    {
+      "area": 168,
+      "bbox": [
+        192,
+        59,
+        19,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h2-r018",
+      "method": "otsu"
+    },
+    {
+      "area": 27,
+      "bbox": [
+        227,
+        63,
+        8,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h2-r019",
+      "method": "otsu"
+    },
+    {
+      "area": 38,
+      "bbox": [
+        233,
+        64,
+        7,
+        16
+      ],
+      "confidence": 0.45,
+      "id": "h2-r020",
+      "method": "otsu"
+    },
+    {
+      "area": 230,
+      "bbox": [
+        7,
+        89,
+        32,
+        18
+      ],
+      "confidence": 0.45,
+      "id": "h2-r021",
+      "method": "otsu"
+    },
+    {
+      "area": 63,
+      "bbox": [
+        45,
+        91,
+        12,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r022",
+      "method": "otsu"
+    },
+    {
+      "area": 48,
+      "bbox": [
+        108,
+        90,
+        10,
+        18
+      ],
+      "confidence": 0.45,
+      "id": "h2-r023",
+      "method": "otsu"
+    },
+    {
+      "area": 38,
+      "bbox": [
+        132,
+        91,
+        10,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r024",
+      "method": "otsu"
+    },
+    {
+      "area": 153,
+      "bbox": [
+        191,
+        86,
+        21,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h2-r025",
+      "method": "otsu"
+    },
+    {
+      "area": 60,
+      "bbox": [
+        228,
+        91,
+        11,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r026",
+      "method": "otsu"
+    },
+    {
+      "area": 164,
+      "bbox": [
+        14,
+        114,
+        18,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h2-r027",
+      "method": "otsu"
+    },
+    {
+      "area": 65,
+      "bbox": [
+        45,
+        119,
+        12,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r028",
+      "method": "otsu"
+    },
+    {
+      "area": 113,
+      "bbox": [
+        103,
+        114,
+        20,
+        23
+      ],
+      "confidence": 0.45,
+      "id": "h2-r029",
+      "method": "otsu"
+    },
+    {
+      "area": 43,
+      "bbox": [
+        132,
+        119,
+        9,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r030",
+      "method": "otsu"
+    },
+    {
+      "area": 33,
+      "bbox": [
+        143,
+        119,
+        5,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r031",
+      "method": "otsu"
+    },
+    {
+      "area": 253,
+      "bbox": [
+        182,
+        114,
+        39,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h2-r032",
+      "method": "otsu"
+    },
+    {
+      "area": 35,
+      "bbox": [
+        228,
+        117,
+        8,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h2-r033",
+      "method": "otsu"
+    },
+    {
+      "area": 95,
+      "bbox": [
+        14,
+        140,
+        20,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h2-r034",
+      "method": "otsu"
+    },
+    {
+      "area": 30,
+      "bbox": [
+        45,
+        145,
+        7,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r035",
+      "method": "otsu"
+    },
+    {
+      "area": 26,
+      "bbox": [
+        52,
+        146,
+        6,
+        12
+      ],
+      "confidence": 0.45,
+      "id": "h2-r036",
+      "method": "otsu"
+    },
+    {
+      "area": 106,
+      "bbox": [
+        106,
+        141,
+        14,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h2-r037",
+      "method": "otsu"
+    },
+    {
+      "area": 64,
+      "bbox": [
+        132,
+        145,
+        12,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r038",
+      "method": "otsu"
+    },
+    {
+      "area": 71,
+      "bbox": [
+        195,
+        146,
+        15,
+        14
+      ],
+      "confidence": 0.45,
+      "id": "h2-r039",
+      "method": "otsu"
+    },
+    {
+      "area": 44,
+      "bbox": [
+        226,
+        145,
+        12,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r040",
+      "method": "otsu"
+    },
+    {
+      "area": 122,
+      "bbox": [
+        14,
+        171,
+        18,
+        23
+      ],
+      "confidence": 0.45,
+      "id": "h2-r041",
+      "method": "otsu"
+    },
+    {
+      "area": 47,
+      "bbox": [
+        46,
+        175,
+        9,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r042",
+      "method": "otsu"
+    },
+    {
+      "area": 121,
+      "bbox": [
+        105,
+        171,
+        15,
+        23
+      ],
+      "confidence": 0.45,
+      "id": "h2-r043",
+      "method": "otsu"
+    },
+    {
+      "area": 42,
+      "bbox": [
+        132,
+        175,
+        8,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r044",
+      "method": "otsu"
+    },
+    {
+      "area": 254,
+      "bbox": [
+        12,
+        197,
+        21,
+        24
+      ],
+      "confidence": 0.45,
+      "id": "h2-r045",
+      "method": "otsu"
+    },
+    {
+      "area": 130,
+      "bbox": [
+        103,
+        201,
+        20,
+        16
+      ],
+      "confidence": 0.45,
+      "id": "h2-r046",
+      "method": "otsu"
+    },
+    {
+      "area": 66,
+      "bbox": [
+        45,
+        204,
+        12,
+        13
+      ],
+      "confidence": 0.45,
+      "id": "h2-r047",
+      "method": "otsu"
+    }
+  ],
+  "source_dimensions": [
+    250,
+    225
+  ]
+}

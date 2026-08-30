@@ -1,0 +1,17 @@
+{
+  "crop_bbox": [
+    191,
+    142,
+    213,
+    163
+  ],
+  "id": "g-row01-col17-v01",
+  "layout_confidence": 0.25,
+  "source_bbox": [
+    195,
+    146,
+    14,
+    13
+  ],
+  "source_sha256": "85796086530dd71c0ed9e698e7a75842d5f430525d94b87d66f2ec244272f17c"
+}

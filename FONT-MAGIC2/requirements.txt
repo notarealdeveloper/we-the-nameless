@@ -1,0 +1,6 @@
+Pillow>=10
+numpy>=1.26
+fonttools>=4.45
+jsonschema>=4.20
+# Optional richer image processing: opencv-python-headless, scikit-image
+# Optional report/config conveniences: reportlab, PyYAML

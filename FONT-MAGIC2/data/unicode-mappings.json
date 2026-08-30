@@ -1,0 +1,5 @@
+{
+  "phoenician":{"aleph":"10900","bet":"10901","gimel":"10902","dalet":"10903","he":"10904","waw":"10905","zayin":"10906","het":"10907","tet":"10908","yod":"10909","kaf":"1090A","lamed":"1090B","mem":"1090C","nun":"1090D","samekh":"1090E","ayin":"1090F","pe":"10910","tsade":"10911","qof":"10912","resh":"10913","shin":"10914","taw":"10915"},
+  "hebrew":{"aleph":"05D0","bet":"05D1","gimel":"05D2","dalet":"05D3","he":"05D4","waw":"05D5","zayin":"05D6","het":"05D7","tet":"05D8","yod":"05D9","kaf":"05DB","lamed":"05DC","mem":"05DE","nun":"05E0","samekh":"05E1","ayin":"05E2","pe":"05E4","tsade":"05E6","qof":"05E7","resh":"05E8","shin":"05E9","taw":"05EA"},
+  "pua":{"aleph":"E000","bet":"E001","gimel":"E002","dalet":"E003","he":"E004","waw":"E005","zayin":"E006","het":"E007","tet":"E008","yod":"E009","kaf":"E00A","lamed":"E00B","mem":"E00C","nun":"E00D","samekh":"E00E","ayin":"E00F","pe":"E010","tsade":"E011","qof":"E012","resh":"E013","shin":"E014","taw":"E015"}
+}

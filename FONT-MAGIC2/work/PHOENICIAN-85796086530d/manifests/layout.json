@@ -1,0 +1,32 @@
+{
+  "chosen_hypothesis": 1,
+  "alphabets": [{"id":"alphabet-1","glyph_ids":["g-row01-col01-v01","g-row01-col02-v01","g-row01-col03-v01","g-row01-col04-v01","g-row01-col05-v01","g-row01-col06-v01","g-row01-col07-v01","g-row01-col08-v01","g-row01-col09-v01","g-row01-col10-v01","g-row01-col11-v01","g-row01-col12-v01","g-row01-col13-v01","g-row01-col14-v01","g-row01-col15-v01","g-row01-col16-v01","g-row01-col17-v01","g-row01-col18-v01","g-row01-col19-v01","g-row01-col20-v01","g-row01-col21-v01","g-row01-col22-v01"],"direction":"ltr","is_default":true}],
+  "default_alphabet": "alphabet-1",
+  "glyph_regions": [
+    {"id":"g-row01-col01-v01","region_ids":[],"bbox":[7,3,32,27],"role":"glyph","confidence":0.99,"rationale":"Column 1 row 1; label excluded."},
+    {"id":"g-row01-col02-v01","region_ids":[],"bbox":[7,32,32,26],"role":"glyph","confidence":0.99,"rationale":"Column 1 row 2; label excluded."},
+    {"id":"g-row01-col03-v01","region_ids":[],"bbox":[7,59,32,26],"role":"glyph","confidence":0.99,"rationale":"Column 1 row 3; label excluded."},
+    {"id":"g-row01-col04-v01","region_ids":[],"bbox":[7,86,32,24],"role":"glyph","confidence":0.99,"rationale":"Column 1 row 4; label excluded."},
+    {"id":"g-row01-col05-v01","region_ids":[],"bbox":[7,113,32,25],"role":"glyph","confidence":0.99,"rationale":"Column 1 row 5; label excluded."},
+    {"id":"g-row01-col06-v01","region_ids":[],"bbox":[7,140,32,25],"role":"glyph","confidence":0.99,"rationale":"Column 1 row 6; label excluded."},
+    {"id":"g-row01-col07-v01","region_ids":[],"bbox":[7,171,32,24],"role":"glyph","confidence":0.99,"rationale":"Column 1 row 7; label excluded."},
+    {"id":"g-row01-col08-v01","region_ids":[],"bbox":[7,197,32,24],"role":"glyph","confidence":0.99,"rationale":"Column 1 row 8; label excluded."},
+    {"id":"g-row01-col09-v01","region_ids":[],"bbox":[99,3,28,27],"role":"glyph","confidence":0.99,"rationale":"Column 2 row 1; label excluded."},
+    {"id":"g-row01-col10-v01","region_ids":[],"bbox":[99,32,28,26],"role":"glyph","confidence":0.99,"rationale":"Column 2 row 2; label excluded."},
+    {"id":"g-row01-col11-v01","region_ids":[],"bbox":[99,59,28,26],"role":"glyph","confidence":0.99,"rationale":"Column 2 row 3; label excluded."},
+    {"id":"g-row01-col12-v01","region_ids":[],"bbox":[99,86,28,24],"role":"glyph","confidence":0.99,"rationale":"Column 2 row 4; label excluded."},
+    {"id":"g-row01-col13-v01","region_ids":[],"bbox":[99,113,28,25],"role":"glyph","confidence":0.99,"rationale":"Column 2 row 5; label excluded."},
+    {"id":"g-row01-col14-v01","region_ids":[],"bbox":[99,140,28,25],"role":"glyph","confidence":0.99,"rationale":"Column 2 row 6; label excluded."},
+    {"id":"g-row01-col15-v01","region_ids":[],"bbox":[99,171,28,24],"role":"glyph","confidence":0.99,"rationale":"Column 2 row 7; label excluded."},
+    {"id":"g-row01-col16-v01","region_ids":[],"bbox":[99,197,28,24],"role":"glyph","confidence":0.99,"rationale":"Column 2 row 8; label excluded."},
+    {"id":"g-row01-col17-v01","region_ids":[],"bbox":[182,3,39,27],"role":"glyph","confidence":0.99,"rationale":"Column 3 row 1; label excluded."},
+    {"id":"g-row01-col18-v01","region_ids":[],"bbox":[182,32,39,26],"role":"glyph","confidence":0.99,"rationale":"Column 3 row 2; label excluded."},
+    {"id":"g-row01-col19-v01","region_ids":[],"bbox":[182,59,39,26],"role":"glyph","confidence":0.99,"rationale":"Column 3 row 3; label excluded."},
+    {"id":"g-row01-col20-v01","region_ids":[],"bbox":[182,86,39,24],"role":"glyph","confidence":0.99,"rationale":"Column 3 row 4; label excluded."},
+    {"id":"g-row01-col21-v01","region_ids":[],"bbox":[182,113,39,25],"role":"glyph","confidence":0.99,"rationale":"Column 3 row 5; label excluded."},
+    {"id":"g-row01-col22-v01","region_ids":[],"bbox":[182,140,39,25],"role":"glyph","confidence":0.99,"rationale":"Column 3 row 6; label excluded."}
+  ],
+  "ignored_regions": [],
+  "confidence": 0.99,
+  "rationale": "Clean 22-sign chart in three labeled columns (8 + 8 + 6); boxes isolate signs from labels."
+}

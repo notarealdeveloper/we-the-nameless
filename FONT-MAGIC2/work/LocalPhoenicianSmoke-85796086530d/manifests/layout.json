@@ -1,0 +1,370 @@
+{
+  "alphabets": [
+    {
+      "direction": "unknown",
+      "glyph_ids": [
+        "g-row01-col01-v01",
+        "g-row01-col02-v01",
+        "g-row01-col03-v01",
+        "g-row01-col04-v01",
+        "g-row01-col05-v01",
+        "g-row01-col06-v01",
+        "g-row01-col07-v01",
+        "g-row01-col08-v01",
+        "g-row01-col09-v01",
+        "g-row01-col10-v01",
+        "g-row01-col11-v01",
+        "g-row01-col12-v01",
+        "g-row01-col13-v01",
+        "g-row01-col14-v01",
+        "g-row01-col15-v01",
+        "g-row01-col16-v01",
+        "g-row01-col17-v01",
+        "g-row01-col18-v01",
+        "g-row01-col19-v01",
+        "g-row01-col20-v01",
+        "g-row01-col21-v01",
+        "g-row01-col22-v01"
+      ],
+      "id": "alphabet-1",
+      "is_default": true
+    }
+  ],
+  "chosen_hypothesis": 4,
+  "confidence": 0.2,
+  "default_alphabet": "alphabet-1",
+  "glyph_regions": [
+    {
+      "bbox": [
+        11,
+        4,
+        23,
+        26
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col01-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r001"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        191,
+        4,
+        21,
+        26
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col02-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r002"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        99,
+        7,
+        28,
+        20
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col03-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r004"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        13,
+        32,
+        20,
+        25
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col04-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r008"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        191,
+        33,
+        21,
+        23
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col05-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r012"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        100,
+        36,
+        25,
+        17
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col06-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r010"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        12,
+        59,
+        22,
+        25
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col07-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r014"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        100,
+        59,
+        27,
+        25
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col08-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r016"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        192,
+        59,
+        19,
+        24
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col09-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r019"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        191,
+        86,
+        21,
+        24
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col10-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r029"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        8,
+        89,
+        30,
+        18
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col11-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r024"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        14,
+        114,
+        17,
+        24
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col12-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r031"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        182,
+        114,
+        39,
+        24
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col13-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r037"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        104,
+        115,
+        19,
+        22
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col14-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r034"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        14,
+        140,
+        20,
+        24
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col15-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r039"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        106,
+        141,
+        14,
+        24
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col16-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r042"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        195,
+        146,
+        14,
+        13
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col17-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r044"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        14,
+        171,
+        18,
+        23
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col18-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r046"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        105,
+        171,
+        14,
+        23
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col19-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r048"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        12,
+        198,
+        21,
+        23
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col20-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r050"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        103,
+        201,
+        20,
+        16
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col21-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r051"
+      ],
+      "role": "glyph"
+    },
+    {
+      "bbox": [
+        45,
+        204,
+        12,
+        13
+      ],
+      "confidence": 0.25,
+      "id": "g-row01-col22-v01",
+      "rationale": "Deterministic size/order guess; AI disabled.",
+      "region_ids": [
+        "h4-r052"
+      ],
+      "role": "glyph"
+    }
+  ],
+  "ignored_regions": [],
+  "rationale": "Largest-component fallback"
+}
