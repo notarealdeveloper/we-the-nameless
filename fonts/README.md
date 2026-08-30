@@ -52,6 +52,7 @@ The following glyphs existed but were judged historically or visually wrong for 
 | `08-bc10c-paleo-hebrew-gezer-b.ttf` | `e` | ה | `08-bc10c-paleo-hebrew-tel-zayit.ttf` | `e` |
 | `08-bc10c-paleo-hebrew-gezer-b.ttf` | `T` | ט | `08-bc10c-paleo-hebrew-tel-zayit.ttf` | `T` |
 | `08-bc10c-paleo-hebrew-gezer-b.ttf` | `n` | נ | `08-bc10c-paleo-hebrew-tel-zayit.ttf` | `n` |
+| `08-bc10c-paleo-hebrew-tel-zayit.ttf` | `o` | ע | `09-bc09c-paleo-hebrew-mesha-stele-a.ttf` | `o` |
 | `09-bc09c-paleo-hebrew-mesha-stele-a.ttf` | `o` | ע | `09-bc09c-paleo-hebrew-tel-dan-a.ttf` | `o` |
 | `09-bc09c-paleo-hebrew-mesha-stele-b.ttf` | `o` | ע | `09-bc09c-paleo-hebrew-tel-dan-a.ttf` | `o` |
 | `09-bc09c-paleo-hebrew-standard-a.ttf` | `o` | ע | `09-bc09c-paleo-hebrew-tel-dan-a.ttf` | `o` |

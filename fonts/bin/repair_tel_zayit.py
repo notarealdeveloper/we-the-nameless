@@ -4,36 +4,11 @@
 from __future__ import annotations
 
 import sys
+from copy import deepcopy
 from pathlib import Path
 
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont
-
-
-def circle_glyph(radius: int = 250, stroke: int = 28):
-    """Return a hand-drawn-weight circular ayin as a TrueType outline."""
-    pen = TTGlyphPen(None)
-    cx, cy = 310, 450
-
-    # Quadratic Bézier control distance for a close approximation of a circle.
-    control = round(radius * 0.41421356237)
-    pen.moveTo((cx, cy + radius))
-    pen.qCurveTo((cx + control, cy + radius), (cx + radius, cy + control), (cx + radius, cy))
-    pen.qCurveTo((cx + radius, cy - control), (cx + control, cy - radius), (cx, cy - radius))
-    pen.qCurveTo((cx - control, cy - radius), (cx - radius, cy - control), (cx - radius, cy))
-    pen.qCurveTo((cx - radius, cy + control), (cx - control, cy + radius), (cx, cy + radius))
-    pen.closePath()
-
-    inner = radius - stroke
-    control = round(inner * 0.41421356237)
-    # Reverse winding makes the inner contour a counter.
-    pen.moveTo((cx, cy + inner))
-    pen.qCurveTo((cx - control, cy + inner), (cx - inner, cy + control), (cx - inner, cy))
-    pen.qCurveTo((cx - inner, cy - control), (cx - control, cy - inner), (cx, cy - inner))
-    pen.qCurveTo((cx + control, cy - inner), (cx + inner, cy - control), (cx + inner, cy))
-    pen.qCurveTo((cx + inner, cy + control), (cx + control, cy + inner), (cx, cy + inner))
-    pen.closePath()
-    return pen.glyph()
 
 
 def polygon_glyph(points):
@@ -57,13 +32,15 @@ def add_glyph(font: TTFont, name: str, codepoint: int, glyph, advance: int) -> N
             table.cmap[codepoint] = name
 
 
-def repair(path: Path) -> None:
+def repair(path: Path, mesha_path: Path) -> None:
     font = TTFont(path)
+    mesha = TTFont(mesha_path)
 
-    # Ayin is encoded as O/o by master.tex. Both glyph slots get the same ring.
+    # Ayin is encoded as O/o by master.tex. Use the nearby Mesha Stele hand
+    # instead of the conspicuously geometric ring formerly drawn here.
     for glyph_name in ("O", "o"):
-        font["glyf"][glyph_name] = circle_glyph()
-        font["hmtx"][glyph_name] = (620, 60)
+        font["glyf"][glyph_name] = deepcopy(mesha["glyf"][glyph_name])
+        font["hmtx"][glyph_name] = mesha["hmtx"][glyph_name]
 
     # This face stores He at E/e. Point H/h there too, replacing the Heth map.
     for table in font["cmap"].tables:
@@ -92,18 +69,22 @@ def repair(path: Path) -> None:
         (85, 690), (565, 375), (565, 325), (85, 10),
         (85, 90), (475, 350), (85, 610),
     ]), 620)
+    # Plain, narrow ASCII brackets. Tel Zayit's letters sit unusually high in
+    # its em square, so position the brackets here rather than compensating in
+    # document markup.
     add_glyph(font, "bracketleft", ord("["), polygon_glyph([
-        (150, 690), (520, 690), (520, 625), (230, 625),
-        (230, 75), (520, 75), (520, 10), (150, 10),
-    ]), 620)
+        (70, 880), (265, 880), (265, 825), (130, 825),
+        (130, 140), (265, 140), (265, 85), (70, 85),
+    ]), 335)
     add_glyph(font, "bracketright", ord("]"), polygon_glyph([
-        (100, 690), (470, 690), (470, 10), (100, 10),
-        (100, 75), (390, 75), (390, 625), (100, 625),
-    ]), 620)
+        (70, 880), (265, 880), (265, 85), (70, 85),
+        (70, 140), (205, 140), (205, 825), (70, 825),
+    ]), 335)
 
     font.save(path)
 
 
 if __name__ == "__main__":
     font_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).parents[1] / "08-bc10c-paleo-hebrew-tel-zayit.ttf"
-    repair(font_path)
+    mesha_path = Path(__file__).parents[1] / "09-bc09c-paleo-hebrew-mesha-stele-a.ttf"
+    repair(font_path, mesha_path)
