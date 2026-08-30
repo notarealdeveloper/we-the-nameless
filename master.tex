@@ -1038,6 +1038,8 @@
     [")"] = "(",
     ["["] = "]",
     ["]"] = "[",
+    ["<"] = ">",
+    [">"] = "<",
   }
 
   local function mirror_ascii_brackets(s)
@@ -1102,10 +1104,17 @@
     end)
   end
 
+  local function protect_standalone_angle_brackets(s)
+    return s:gsub("<([^>]*)>", function(contents)
+      return "\\QereKetivInline{" .. mirrored_bracket["<"] .. contents .. mirrored_bracket[">"] .. "}"
+    end)
+  end
+
   function paleotex.protect_qere_ketiv(s)
     s = protect_bracket_pair(s, "(", ")", "[", "]")
     s = protect_bracket_pair(s, "[", "]", "(", ")")
-    return protect_standalone_square_brackets(s)
+    s = protect_standalone_square_brackets(s)
+    return protect_standalone_angle_brackets(s)
   end
 
   local function is_hebrew_mark(code)
