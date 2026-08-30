@@ -71,6 +71,13 @@ def repair(path: Path) -> None:
             table.cmap[ord("H")] = table.cmap[ord("E")]
             table.cmap[ord("h")] = table.cmap[ord("e")]
 
+        # Shin and tav live in this face's lowercase s/t slots. Keep direct
+        # Hebrew-codepoint rendering aligned with the Tel Zayit ASCII encoder;
+        # the uppercase V/T slots contain waw and teth forms in this font.
+        if table.isUnicode():
+            table.cmap[ord("ש")] = table.cmap[ord("s")]
+            table.cmap[ord("ת")] = table.cmap[ord("t")]
+
     # Editorial gaps and supplied text use these ASCII characters in the
     # reconstructed FMC/DNF Hebrew. Keep them in the historical face so they
     # survive font selection instead of rendering as missing-glyph boxes.
