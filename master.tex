@@ -1969,6 +1969,12 @@
 	{\HebrewEzraRaw}			{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Scale=1.40}\mdseries}
 	% Don't change this font scale!
 
+% Textual differences in commentary tables: preserve the surrounding inline
+% Hebrew typography while using the blue redactor background.
+\DeclareSourceProfile{Diff}
+	{\EnglishFont}				{\SourceBackground{Rbgcolor}\Redactor}
+	{\HebrewDavidRaw}			{\SourceBackground{Rbgcolor}\Redactor}
+
 \DeclareSourceProfile{Red}
 	{\EnglishFont}				{\SourceBackground{RedSourcebgcolor}\color{RedSourcecolor}\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
 	{\HebrewEzraRaw}			{\SourceBackground{RedSourcebgcolor}\color{RedSourcecolor}\Redactor\addfontfeatures{Ligatures=TeX,Scale=1.40}\mdseries}
@@ -2038,7 +2044,7 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,JP,JPP,PR,JE,E,EP,EPP,P,PP,DtrA,DtrB,DtrH,Dtn,Records,Other,X,Aramaic,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
+\DeclareSourceCommandList{J,JP,JPP,PR,JE,E,EP,EPP,P,PP,DtrA,DtrB,DtrH,Dtn,Diff,Records,Other,X,Aramaic,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
 
 % P defaults to square Ezra. Use \UsePaleoP for occasional Hezekiah-era Paleo-P,
 % then \UseSquareP to switch P back.
