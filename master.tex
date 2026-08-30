@@ -1086,10 +1086,26 @@
     return table.concat(out)
   end
 
+  local function protect_standalone_square_brackets(s)
+    local protected = {}
+    s = s:gsub("\\QereKetivInline{(.-)}", function(contents)
+      table.insert(protected, contents)
+      return "QEREKETIVPLACEHOLDER" .. #protected .. "END"
+    end)
+
+    s = s:gsub("%[([^%]]*)%]", function(contents)
+      return "\\QereKetivInline{]" .. contents .. "[}"
+    end)
+
+    return s:gsub("QEREKETIVPLACEHOLDER(%d+)END", function(index)
+      return "\\QereKetivInline{" .. protected[tonumber(index)] .. "}"
+    end)
+  end
+
   function paleotex.protect_qere_ketiv(s)
     s = protect_bracket_pair(s, "(", ")", "[", "]")
     s = protect_bracket_pair(s, "[", "]", "(", ")")
-    return s
+    return protect_standalone_square_brackets(s)
   end
 
   local function is_hebrew_mark(code)
@@ -1298,7 +1314,9 @@
       elseif not is_hebrew_mark(code) then
         local char = utf8.char(code)
         if char == "-" or char == "(" or char == ")" or char == "[" or char == "]" then
-          table.insert(out, tel_zayit_punctuation(char))
+          table.insert(out, tel_zayit_punctuation(
+            (char == "[" or char == "]") and mirrored_bracket[char] or char
+          ))
         else
           table.insert(out, char)
         end
