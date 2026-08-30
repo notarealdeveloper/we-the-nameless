@@ -2523,6 +2523,10 @@ Smooth out the rough edges a bit before you call the work done.
 
 And remember, no pngs. SVGs only, arbitrarily scalable, use whatever means necessary to get this done.
 
+FINAL NOTE: Don't rotate shit. The fonts you'll be handling are oriented correctly. Don't be dumb. Think hard.
+
+AND ONLY SVGS!!!
+
 Go!
 
 EOF
