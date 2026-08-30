@@ -71,7 +71,7 @@ def repair(path: Path) -> None:
             table.cmap[ord("H")] = table.cmap[ord("E")]
             table.cmap[ord("h")] = table.cmap[ord("e")]
 
-    # Editorial gaps and supplied text use these three ASCII characters in the
+    # Editorial gaps and supplied text use these ASCII characters in the
     # reconstructed FMC/DNF Hebrew. Keep them in the historical face so they
     # survive font selection instead of rendering as missing-glyph boxes.
     add_glyph(font, "underscore", ord("_"), polygon_glyph([
@@ -84,6 +84,14 @@ def repair(path: Path) -> None:
     add_glyph(font, "greater", ord(">"), polygon_glyph([
         (85, 690), (565, 375), (565, 325), (85, 10),
         (85, 90), (475, 350), (85, 610),
+    ]), 620)
+    add_glyph(font, "bracketleft", ord("["), polygon_glyph([
+        (150, 690), (520, 690), (520, 625), (230, 625),
+        (230, 75), (520, 75), (520, 10), (150, 10),
+    ]), 620)
+    add_glyph(font, "bracketright", ord("]"), polygon_glyph([
+        (100, 690), (470, 690), (470, 10), (100, 10),
+        (100, 75), (390, 75), (390, 625), (100, 625),
     ]), 620)
 
     font.save(path)

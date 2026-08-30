@@ -1322,10 +1322,12 @@
         table.insert(out, tel_zayit_punctuation('"'))
       elseif not is_hebrew_mark(code) then
         local char = utf8.char(code)
-        if char == "-" or char == "(" or char == ")" or char == "[" or char == "]" then
-          table.insert(out, tel_zayit_punctuation(
-            (char == "[" or char == "]") and mirrored_bracket[char] or char
-          ))
+        if char == "[" or char == "]" then
+          -- The repaired face contains full-size brackets. Mirror them before
+          -- the RTL run so the visible opening and closing forms stay correct.
+          table.insert(out, mirrored_bracket[char])
+        elseif char == "-" or char == "(" or char == ")" then
+          table.insert(out, tel_zayit_punctuation(char))
         else
           table.insert(out, char)
         end
@@ -3727,6 +3729,7 @@
         \vtop{%
             \hsize=#1
             \rightskip=0pt plus 2em
+            \parindent=0pt
             \emergencystretch=3em
             \tolerance=9999
             \begin{RTL}
