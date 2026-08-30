@@ -17,6 +17,10 @@ COMMENT_BOOK_TARGETS := $(addprefix comment-,$(BOOK_TARGETS))
 UNCOMMENT_BOOK_TARGETS := $(addprefix uncomment-,$(BOOK_TARGETS))
 
 export TEXMFVAR = $(CACHE)
+# Two Deuteronomy aux-file markers occupy exactly TeX's default 79-column
+# print width.  Leave room for their separator so LuaTeX does not wrap a
+# closing parenthesis onto the next build-output line.
+export max_print_line = 80
 
 .PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
