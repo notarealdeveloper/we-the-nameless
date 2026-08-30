@@ -44,11 +44,11 @@ def repair(path: Path) -> None:
         font["glyf"][glyph_name] = circle_glyph()
         font["hmtx"][glyph_name] = (620, 60)
 
-    # This face stores He at Y/y. Point H/h there too, replacing the Heth map.
+    # This face stores He at E/e. Point H/h there too, replacing the Heth map.
     for table in font["cmap"].tables:
         if ord("H") in table.cmap and ord("h") in table.cmap:
-            table.cmap[ord("H")] = "Y"
-            table.cmap[ord("h")] = "y"
+            table.cmap[ord("H")] = table.cmap[ord("E")]
+            table.cmap[ord("h")] = table.cmap[ord("e")]
 
     font.save(path)
 
