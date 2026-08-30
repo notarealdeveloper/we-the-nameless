@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Repair the ASCII glyph map in the chronological Tel Zayit font."""
+"""Repair the ASCII glyph map and punctuation in the Tel Zayit font."""
 
 from __future__ import annotations
 
@@ -36,6 +36,27 @@ def circle_glyph(radius: int = 250, stroke: int = 28):
     return pen.glyph()
 
 
+def polygon_glyph(points):
+    """Return a closed polygon as a TrueType outline."""
+    pen = TTGlyphPen(None)
+    pen.moveTo(points[0])
+    for point in points[1:]:
+        pen.lineTo(point)
+    pen.closePath()
+    return pen.glyph()
+
+
+def add_glyph(font: TTFont, name: str, codepoint: int, glyph, advance: int) -> None:
+    """Add a glyph and expose it through every Unicode cmap."""
+    if name not in font.getGlyphOrder():
+        font.setGlyphOrder([*font.getGlyphOrder(), name])
+    font["glyf"][name] = glyph
+    font["hmtx"][name] = (advance, 50)
+    for table in font["cmap"].tables:
+        if table.isUnicode():
+            table.cmap[codepoint] = name
+
+
 def repair(path: Path) -> None:
     font = TTFont(path)
 
@@ -49,6 +70,21 @@ def repair(path: Path) -> None:
         if ord("H") in table.cmap and ord("h") in table.cmap:
             table.cmap[ord("H")] = table.cmap[ord("E")]
             table.cmap[ord("h")] = table.cmap[ord("e")]
+
+    # Editorial gaps and supplied text use these three ASCII characters in the
+    # reconstructed FMC/DNF Hebrew. Keep them in the historical face so they
+    # survive font selection instead of rendering as missing-glyph boxes.
+    add_glyph(font, "underscore", ord("_"), polygon_glyph([
+        (50, -105), (570, -105), (570, -55), (50, -55),
+    ]), 620)
+    add_glyph(font, "less", ord("<"), polygon_glyph([
+        (535, 690), (535, 610), (145, 350), (535, 90),
+        (535, 10), (55, 325), (55, 375),
+    ]), 620)
+    add_glyph(font, "greater", ord(">"), polygon_glyph([
+        (85, 690), (565, 375), (565, 325), (85, 10),
+        (85, 90), (475, 350), (85, 610),
+    ]), 620)
 
     font.save(path)
 
