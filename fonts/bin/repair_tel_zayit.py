@@ -3,12 +3,18 @@
 
 from __future__ import annotations
 
+import subprocess
 import sys
 from copy import deepcopy
 from pathlib import Path
 
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont
+
+
+THIN_GLYPHS = ("A", "O")
+THIN_ALIASES = {"a": "A", "o": "O"}
+THIN_AMOUNT = 10
 
 
 def polygon_glyph(points):
@@ -30,6 +36,48 @@ def add_glyph(font: TTFont, name: str, codepoint: int, glyph, advance: int) -> N
     for table in font["cmap"].tables:
         if table.isUnicode():
             table.cmap[codepoint] = name
+
+
+def thin_heavy_letters(path: Path) -> None:
+    """Reduce aleph and ayin weight without moving or resizing the forms."""
+    script = f"""
+import fontforge
+import psMat
+
+font = fontforge.open({str(path)!r})
+for name in {THIN_GLYPHS!r}:
+    glyph = font[name]
+    advance = glyph.width
+    before = glyph.boundingBox()
+    glyph.changeWeight(-{THIN_AMOUNT})
+    glyph.removeOverlap()
+    glyph.correctDirection()
+    after = glyph.boundingBox()
+    before_center = ((before[0] + before[2]) / 2, (before[1] + before[3]) / 2)
+    after_center = ((after[0] + after[2]) / 2, (after[1] + after[3]) / 2)
+    glyph.transform(psMat.translate(
+        before_center[0] - after_center[0],
+        before_center[1] - after_center[1],
+    ))
+    glyph.round()
+    glyph.width = advance
+font.generate({str(path)!r}, flags=("dummy-dsig",))
+font.close()
+"""
+    subprocess.run(
+        ["fontforge", "-lang=py", "-c", script],
+        check=True,
+        stdout=subprocess.DEVNULL,
+    )
+
+    # FontForge can round two initially identical outlines differently. Copy
+    # the finished masters so each lowercase alias remains byte-identical.
+    font = TTFont(path)
+    for alias, master in THIN_ALIASES.items():
+        font["glyf"][alias] = deepcopy(font["glyf"][master])
+        font["hmtx"][alias] = font["hmtx"][master]
+    font.save(path)
+    font.close()
 
 
 def repair(path: Path, mesha_path: Path) -> None:
@@ -82,6 +130,9 @@ def repair(path: Path, mesha_path: Path) -> None:
     ]), 335)
 
     font.save(path)
+    font.close()
+    mesha.close()
+    thin_heavy_letters(path)
 
 
 if __name__ == "__main__":
