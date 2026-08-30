@@ -2,7 +2,7 @@
 
 lord --verbose << "EOF"
 
-PUT ALL RESULTS IN A NEW DIRECTORY `FONT-MAGIC`.
+PUT ALL RESULTS IN A NEW DIRECTORY `FONT-MAGIC2`.
 
 ---
 
@@ -2511,7 +2511,9 @@ NEVER BEAUTIFY AWAY THE EPIGRAPHY.
 ---
 
 
-PUT ALL RESULTS IN A NEW DIRECTORY `FONT-MAGIC`
+PUT ALL RESULTS IN A NEW DIRECTORY `FONT-MAGIC2`
+
+ONE FINAL REQUIREMENT: It's not real unless it produces vector graphics. Don't bullshit with pngs. You can Re-use any pre-existing work in FONT-MAGIC to produce FONT-MAGIC2, but make it a full pipeline, and remember: it's not real unless the font at the end is arbitrarily scalable vector graphics. They don't need to be smooth and perfect, but they should be reasonably good, and they MUST be svgs.
 
 Go!
 EOF
