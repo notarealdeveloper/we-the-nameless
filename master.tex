@@ -2003,7 +2003,9 @@
 	{\EnglishFont}				{\SourceBackground{Otherbgcolor}\OtherSource}
 	{\PaleoASCIIMoabite}		{\SourceBackground{Otherbgcolor}\OtherSource}
 
-\newcommand{\InlineHebrewRenderer}{\HebrewDavid}
+% Inline Hebrew can contain Qere/Ketiv and reconstruction brackets.  Keep it
+% on the raw encoder so those ASCII delimiters are mirrored for the RTL run.
+\newcommand{\InlineHebrewRenderer}{\HebrewDavidRaw}
 
 % Direct helpers for experiments.
 \newcommand{\Paleo}[1]{\PaleoHebrewPhoenician{}{#1}}
