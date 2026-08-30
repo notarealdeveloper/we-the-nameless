@@ -1,9 +1,0 @@
-{
-  "hypotheses": [
-    "segmentation/hypothesis-1.json",
-    "segmentation/hypothesis-2.json",
-    "segmentation/hypothesis-3.json",
-    "segmentation/hypothesis-4.json"
-  ],
-  "min_area": 3
-}
