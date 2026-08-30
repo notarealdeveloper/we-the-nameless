@@ -1099,15 +1099,17 @@
       return "\\QereKetivInline{]" .. contents .. "[}"
     end)
 
-    return s:gsub("QEREKETIVPLACEHOLDER(%d+)END", function(index)
+    local result = s:gsub("QEREKETIVPLACEHOLDER(%d+)END", function(index)
       return "\\QereKetivInline{" .. protected[tonumber(index)] .. "}"
     end)
+    return result
   end
 
   local function protect_standalone_angle_brackets(s)
-    return s:gsub("<([^>]*)>", function(contents)
+    local result = s:gsub("<([^>]*)>", function(contents)
       return "\\QereKetivInline{" .. mirrored_bracket["<"] .. contents .. mirrored_bracket[">"] .. "}"
     end)
+    return result
   end
 
   function paleotex.protect_qere_ketiv(s)
