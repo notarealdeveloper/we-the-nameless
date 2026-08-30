@@ -1,0 +1,60 @@
+\documentclass[10pt]{article}
+
+\usepackage[paperwidth=7in,paperheight=10in,margin=0.56in]{geometry}
+\usepackage[no-math]{fontspec}
+\usepackage{xcolor}
+\usepackage{microtype}
+
+\definecolor{Paleo}{HTML}{704214}
+\newfontfamily\PaleoRegular[Path=../../fonts/,Renderer=HarfBuzz]{paleo-hebrew-regular.ttf}
+\newfontfamily\PaleoEvyoni[Path=../../fonts/,Script=Hebrew,Renderer=HarfBuzz]{paleo-hebrew-evyoni.ttf}
+\newfontfamily\PaleoAlphabet[Path=../../fonts/,Script=Hebrew,Renderer=HarfBuzz]{paleo-hebrew-alphabet.ttf}
+
+\newcommand{\ASCIISample}[1]{{\PaleoRegular\fontsize{21}{25}\selectfont\color{Paleo}#1\par}}
+\newcommand{\HebrewSample}[2]{{\textdir TRT#1\fontsize{19}{24}\selectfont\color{Paleo}#2\par}}
+\newcommand{\SampleText}{אבגדהוזחטיכלמנסעפצקרשת}
+\newcommand{\JacobText}{הקבצו בני יעקב ושמעו אל ישראל אביכם}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.35em}
+
+\begin{document}
+{\Large Three new paleo-Hebrew hands}\par
+{\small A proposal for the source typography of Genesis 49}\par
+
+\section*{paleo-hebrew-regular.ttf --- \texttt{\string\hPaleoZ}}
+\ASCIISample{ABGDHWZXJYKLMNS]PCQRVT}
+\ASCIISample{HQBCW BNY Y]QB WVM]W AL YVRAL ABYKM}
+This is the liveliest and most visibly hand-drawn face. Its irregular stroke and
+open spacing suit reconstructed, orally inherited poetry, but it is a generic
+modern evocation rather than an epigraphically dated hand. It could be useful
+for a deliberately conjectural display, not as a replacement for the chapter's
+dated Gezer, Tel Zayit, Mesha, or Siloam source intervals.
+
+\section*{paleo-hebrew-evyoni.ttf --- \texttt{\string\hPaleoAA}}
+\HebrewSample{\PaleoEvyoni}{\SampleText}
+\HebrewSample{\PaleoEvyoni}{\JacobText}
+This face is clean, compact, and readable in sustained Hebrew. It is the best
+of the three for long reconstructed passages if legibility is allowed to outrank
+the present inscription-based chronology. Its regularity, however, weakens the
+chapter's useful claim that the changing hands carry historical argument.
+
+\section*{paleo-hebrew-alphabet.ttf --- \texttt{\string\hPaleoAB}}
+\HebrewSample{\PaleoAlphabet}{\SampleText}
+\HebrewSample{\PaleoAlphabet}{\JacobText}
+This face has the strongest monumental, incised character. That makes it a good
+candidate for short headings, isolated tribal names, or a reconstructed line
+presented as an emblem. Its uneven widths and emphatic silhouettes become noisy
+across the long blessings, and its source is not a securely dated inscription.
+
+\section*{Recommendation for 01-genesis/49.tex}
+Keep the current choices for the chapter's historical source intervals. Gezer,
+Tel Zayit, Mesha-style, and Siloam encode explicit chronological and editorial
+claims which none of these generic faces can substantiate. If a distinct visual
+register is later wanted for the most conjectural reconstructions, use
+\texttt{\string\hPaleoZ} sparingly; if continuous-reading clarity becomes the
+priority, test \texttt{\string\hPaleoAA}. Reserve \texttt{\string\hPaleoAB} for
+short display matter. On the present evidence, no replacement in Genesis 49 is
+better than the current historically named hands.
+\end{document}

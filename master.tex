@@ -442,6 +442,28 @@
     Scale=1.22
 ]{paleo-hebrew-mono.ttf}
 
+% Additional generic paleo-Hebrew display hands.  Unlike the inscription-based
+% faces above, these names describe the design rather than assigning a date.
+\newfontfamily\PaleoHebrewRegularFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{paleo-hebrew-regular.ttf}
+
+\newfontfamily\PaleoHebrewEvyoniFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{paleo-hebrew-evyoni.ttf}
+
+\newfontfamily\PaleoHebrewAlphabetFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{paleo-hebrew-alphabet.ttf}
+
 \newfontfamily\AramaicFont[
     Path=\LocalFontPath,
 	BoldFont=noto-sans-imperial-aramaic-regular.ttf,
@@ -1366,6 +1388,9 @@
 \DeclareHebrewRenderer{PaleoXFont}{\DeadSeaScrollsIsaiahFont}{\EncodePaleoX}
 \DeclareHebrewRenderer{PaleoYFont}{\PaleoHebrewMonoFont}{\EncodePaleoUnicode}
 \DeclareHebrewRenderer{PaleoHebrewMono}{\PaleoHebrewMonoFont}{\EncodePaleoUnicode}
+\DeclareHebrewRenderer{PaleoZFont}{\PaleoHebrewRegularFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoAAFont}{\PaleoHebrewEvyoniFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{PaleoABFont}{\PaleoHebrewAlphabetFont}{\EncodeHebrewNoNiqqud}
 
 % Source profiles bundle the English font/style with the Hebrew renderer/style.
 % These declarations are the only source-to-font bindings normally changed.
@@ -1755,6 +1780,18 @@
 \DeclareSourceProfile{PaleoY}
 	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
 	{\PaleoYFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoZ}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoZFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoAA}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoAAFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoAB}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoABFont}				{\color{PaleoColor}\mdseries}
 
 % J
 
