@@ -370,9 +370,10 @@
 
 \newfontfamily\PaleoHebrewTelZayitFont[
     Path=\LocalFontPath,
+    Script=Hebrew,
     Renderer=HarfBuzz,
     Scale=1.71
-]{paleo-hebrew-tel-zayit.ttf}
+]{08-bc10c-paleo-hebrew-tel-zayit.ttf}
 
 \newfontfamily\PaleoHebrewGezerFont[
     Path=\LocalFontPath,
@@ -1341,6 +1342,7 @@
 \DeclareHebrewRenderer{HebrewSquare}{\HebrewSquareFont}{\EncodeHebrewNoNiqqud}
 \DeclareHebrewRenderer{PaleoHebrewRobo}{\PaleoHebrewRoboFont}{\EncodePaleoUnicode}
 \DeclareHebrewRenderer{PaleoHebrewPhoenician}{\PaleoHebrewPhoenicianFont}{\EncodePaleoHebrewPhoenician}
+\DeclareHebrewRenderer{PaleoHebrewTelZayit}{\PaleoHebrewTelZayitFont}{\EncodeHebrewNoNiqqud}
 
 % ASCII historical renderers.  Use these with fonts that expect ABGDHWZX... input.
 \DeclareHebrewRenderer{ProtoSinaiticBest}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
@@ -1651,7 +1653,7 @@
 
 \DeclareSourceProfile{Proto}
 	{\EnglishProtoFont}			{\color{ProtoColor}\mdseries}
-	{\ProtoDFont}				{\color{ProtoColor}\ProtoSinaiticASCIIWeight}
+	{\PaleoHebrewTelZayit}		{\color{ProtoColor}\ProtoSinaiticASCIIWeight}
 
 \DeclareSourceProfile{ProtoA}
 	{\EnglishProtoFont}			{\color{ProtoAColor}\mdseries}
