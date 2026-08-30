@@ -2,35 +2,6 @@
 %%% gen 49 %%%
 %%%%%%%%%%%%%%%%
 
-% Font policy for the Blessing of Jacob:
-% - the full v. 1 surface block stays as in 49-orig.tex; the dissected v. 1a
-%   keeps the ordinary J hand because it is prose framing.
-% - the inherited/reconstructed poem uses one readable generic Paleo-Hebrew
-%   display hand throughout. It marks genre, not a particular scribe, city, or
-%   century. Proto-Sinaitic would push the whole collection much too early;
-%   rotating Gezer/Siloam/Tel-Zayit hands would fake line-by-line precision.
-% - the prose conclusion returns to the ordinary R/P source fonts.
-%
-% paleo-hebrew-regular.ttf is PaleoZ in master.tex. It is the most readable of
-% the new samples and looks like a coherent hand rather than a museum label.
-\providecommand{\hPaleoZ}[1]{\PaleoZFont{\color{PaleoColor}\mdseries}{#1}}
-\providecommand{\ePaleoZ}[1]{%
-	\ApplyEnglishSourceProfile{\EnglishProtoFont\color{PaleoColor}\mdseries}{#1}%
-}
-
-% Witness strips live inside the Hebrew column. They are deliberately square
-% Hebrew or Greek: the reader should be able to see when the reconstructed
-% Paleo-Hebrew line is not what any surviving manuscript literally says.
-\providecommand{\GenXLIXWitness}[2]{%
-	\par\smallskip
-	\begin{LTR}
-		{\EnglishFont\scriptsize\color{Graycolor}\textsc{#1}\enspace #2\par}%
-	\end{LTR}%
-}
-\providecommand{\GenXLIXMT}[1]{\GenXLIXWitness{MT}{\heb{#1}}}
-\providecommand{\GenXLIXSP}[1]{\GenXLIXWitness{SP}{\heb{#1}}}
-\providecommand{\GenXLIXLXX}[1]{\GenXLIXWitness{LXX}{#1}}
-
 \Chapter{49}
 
 \Verse{1}
@@ -39,1089 +10,401 @@
 	\hJ{הֵאָסְפוּ וְאַגִּידָה לָכֶם אֵת אֲשֶׁר יִקְרָא אֶתְכֶם בְּאַחֲרִית הַיָּמִים׃}
 }
 {
-	\eJ{And Jacob called to his sons and said:}
-	\eJ{Gather, and I’ll tell you what will happen to you in the future days.}
-}
-{
-	Strap in. Genesis has reached its final boss.
-
-	This is not one clean poem from one clean moment. It is a pile of tribal
-	sayings, family stories, regional words, royal politics, old spellings, and
-	later repairs, all placed in Jacob’s mouth for his last speech.
-
-	\aB{
-		One crucial rule for the ride: the Leningrad Codex does \emph{not} have
-		literal white holes in Genesis 49. Its Hebrew runs straight through. The
-		blanks below mean, ``The surviving words are too mangled to reverse
-		confidently,'' not, ``The manuscript left this space empty.'' \textsc{MT}
-		means the old consonantal text as preserved in the medieval Masoretic
-		tradition together with its later pointing and reading; \textsc{SP} the
-		Samaritan Pentateuch; \textsc{LXX} the old Greek translation. The large
-		Paleo-Hebrew line is the proposed reconstruction; the small square-Hebrew
-		or Greek strips are surviving witnesses. Angle brackets supply letters;
-		empty brackets delete them; a long blank refuses to guess. Greek may
-		preserve an older Hebrew reading, or merely an ancient translator taking
-		his own swing.
+	\eJ{
+		And Jacob called to his sons and said:
 	}
-
-	Only scraps of the chapter survive at Qumran: 4QGen-Exod\textit{a} reaches
-	parts of vv. 1--5 and 4QGen\textit{e} parts of vv. 6--8. They are broadly
-	MT-like. After v. 8, there is no Dead Sea Scroll waiting to solve the poem for
-	us.
-
-	\aC{
-		The safest picture is an anthology of tribal material with more than one
-		history, not one pristine poem dateable line by line from grammar alone.
-		Some oddities may be archaic; others are poetic, northern/Israelian, or
-		simply corrupt.
+	\eJ{
+		Gather, and I’ll tell you what will happen to you in the future days.
 	}
-
-	Politically, the chapter splits the firstborn package three ways: Reuben
-	loses first place, Judah gets rule, and Joseph gets the double share and the
-	absurd fertility blessing. 1 Chr. 5:1--2 later says nearly that in prose.
-}
-
-\Verse{1a}
-{
-	\hJ{וַיִּקְרָא יַעֲקֹב אֶל בָּנָיו וַיֹּאמֶר}
 }
 {
-	\eJ{And Jacob called to his sons and said:}
-}
-{
-	This little prose frame is healthy. MT, LXX, and the Qumran scraps give no
-	reason to replace it.
+	Strap in folks.
 
-	\aB{One clean line. Cherish it. The surgery starts after ``said.''}
+	Here we have the Blessing of Jacob.
 
-	The frame need not be the same age as the poem. An editor can put inherited
-	tribal material into Jacob’s deathbed speech without telling us when each
-	saying began.
-}
+	It's one of the oldest things in the bible.
 
-\Verse{1b}
-{
-	\hPaleoZ{האסף ואגד לכם [ ]}
-	\GenXLIXMT{האספו ואגידה לכם את אשר יקרא אתכם באחרית הימים}
-	\GenXLIXLXX{τί ἀπαντήσει ὑμῖν ἐπ᾽ ἐσχάτων τῶν ἡμερῶν}
-}
-{
-	\ePaleoZ{Gather, and let me tell you---}
-}
-{
-	The empty brackets delete MT’s ``what will happen to you in future days.''
-	That whole tail is also in the LXX. Nothing has been recovered from Greek;
-	this is a metrical and literary guess that a shorter summons came first.
+	There's no way to explain what's going on here.
 
-	\aB{In other words: the manuscript kept the words. We are the ones holding the knife.}
+	... We can't just say some words and color the sources.
 
-	``Future days'' need not mean the end of the world; it can mean what happens
-	down the road. The full frame also makes a sound joke: Jacob \emph{calls}
-	(q-r-ʾ) his sons to say what will be\emph{fall} them (q-r-ʾ).
+	... The book hasn't had to do something like this before.
+
+	... Not sure how to make this work, but w/e, fuck it, follow me.
 }
 
 \Verse{2}
 {
-	\hPaleoZ{
-		הקבצו [ ] בני יעקב
-
-		ושמע אל ישראל אבכם
-	}
-	\GenXLIXMT{הקבצו ושמעו בני יעקב ושמעו אל ישראל אביכם}
+	\hProto{הִקָּבְצוּ וְשִׁמְעוּ בְּנֵי יַעֲקֹב וְשִׁמְעוּ אֶל יִשְׂרָאֵל אֲבִיכֶם׃}
 }
 {
-	\ePaleoZ{
-		Gather, sons of Jacob;
-
-		listen to Israel, your father.
+	\eProto{
+		Assemble and listen, sons of Jacob, and listen to Israel,
+		your father.
 	}
 }
 {
-	MT says ``listen'' twice. The reconstruction deletes the first one as a
-	copying echo from the next line, producing three short beats: gather / sons
-	of Jacob / listen to Israel. Every major ancient version also has both
-	``listens,'' so the deletion is conjecture, not a variant handed to us.
-
-	``Jacob'' and ``Israel'' let one dying father become the whole nation. From
-	here on, sons are tribes and family gossip is political history. Deut. 33 and
-	Judg. 5 are the closest companion tribal poems.
 }
 
 \Verse{3}
 {
-	\hPaleoZ{
-		ראובן בכר
-
-		את כח
-
-		[ו־] ראשית אן
-
-		[ ] יתר עז
-	}
-	\GenXLIXMT{ראובן בכרי אתה כחי וראשית אוני יתר שאת ויתר עז}
+	\hProto{רְאוּבֵן בְּכֹרִי אַתָּה כֹּחִי וְרֵאשִׁית אוֹנִי יֶתֶר שְׂאֵת וְיֶתֶר עָז׃}
 }
 {
-	\ePaleoZ{
-		Reuben, my firstborn;
-
-		you are my strength,
-
-		the first of my manhood,
-
-		the best of my might.
+	\eProto{
+		Reuben, you’re my firstborn, my power, and the beginning
+		of my might, preeminent in bearing and preeminent in
+		strength.
 	}
 }
 {
-	Reuben is Leah’s firstborn. His traditional territory lies east of the Dead
-	Sea, south of Gad and north of Moab.
-
-	The verse inventories everything he should inherit before v. 4 cancels it.
-	Compare Deut. 21:17, ``the first of his strength,'' and 1 Chr. 5:1--2, where
-	Reuben loses the birthright, Joseph gets the double share, and Judah gets
-	rule.
-
-	\aB{
-		``The first of my vigor'' is politely reproductive. Reuben is the first
-		thing Jacob’s dad-making equipment successfully made.
-	}
-
-	\aC{
-		The neat four-line rhyme is reconstructed: it deletes the difficult
-		\heb{יתר שאת} and reads an unwritten final \emph{-i} in the last word so
-		each colon ends ``my ---.'' No witness preserves exactly this cleaned text.
-	}
 }
 
 \Verse{4}
 {
-	\hPaleoZ{
-		\_\_\_\_\_\_
-
-		\_\_\_\_\_\_
-
-		כ עלת <על> משכבי [ ]
-
-		אז חללת יצעי <אבך>
-	}
-	\GenXLIXMT{פחז כמים אל תותר}
-	\GenXLIXLXX{ἐξύβρισας ὡς ὕδωρ, μὴ ἐκζέσῃς}
+	\hProto{פַּחַז כַּמַּיִם אַל תּוֹתַר כִּי עָלִיתָ מִשְׁכְּבֵי אָבִיךָ אָז חִלַּלְתָּ יְצוּעִי עָלָה׃}
 }
 {
-	\ePaleoZ{
-		\ldots\ldots\ldots
-
-		\ldots\ldots\ldots
-
-		For you mounted my bed;
-
-		yes, you profaned your father’s couch.
+	\eProto{
+		Unstable as water, you’ll not be preeminent, for you
+		ascended your father’s bed; then you defiled, going up to
+		my couch.
 	}
 }
 {
-	Reuben lost first place when he slept with Bilhah, Jacob’s concubine
-	(Gen. 35:22; 1 Chr. 5:1).
-
-	The first two lines are present in MT, but \heb{פחז} is a one-off word and
-	the rest never settles into a secure sentence. The LXX already offers a
-	different try: roughly, ``You ran wild like water; do not boil over.'' The
-	blanks admit that neither witness gives us the lost wording.
-
-	The bed half is easier: supply the normal preposition ``onto,'' read ``my
-	bed'' as singular, and move ``your father'' beside ``couch.'' 1 Chr. 5:1
-	helps with that rearrangement.
-
-	\aB{
-		The sex is blunt: you \emph{went up}, you \emph{mounted}, you defiled
-		the bed. In royal politics, taking Dad’s or the king’s women can also claim
-		his place: Absalom does it to David (2 Sam. 16:21--22); Abner and
-		Adonijah are accused through the same logic (2 Sam. 3:7--8; 1 Kgs. 2).
-		The water may carry a fluid/ejaculation wink, but the mounting language is
-		the part we can actually defend.
-	}
-
-	\aC{The first bicolon is unintelligible as it stands; the versions were already translating a damaged text.}
 }
 
 \Verse{5}
 {
-	\hPaleoZ{
-		שמעון ולו אחים
-
-		כל חמס מכרתם [ ]
-	}
-	\GenXLIXMT{שמעון ולוי אחים כלי חמס מכרתיהם}
+	\hProto{שִׁמְעוֹן וְלֵוִי אַחִים כְּלֵי חָמָס מְכֵרֹתֵיהֶם׃}
 }
 {
-	\ePaleoZ{
-		Simeon and Levi are brothers;
-
-		violence is their stock in trade.
+	\eProto{
+		Simeon and Levi are brothers: Implements of violence are
+		their tools of trade.
 	}
 }
 {
-	Simeon and Levi are Leah’s full sons and Dinah’s full brothers. Gen. 34 is
-	the backstory: they turn the Shechemites’ circumcision into a town-wide stun
-	grenade and then murder the men. Simeon later survives as towns embedded
-	inside Judah; Levi receives scattered cities rather than one territory.
-
-	Everything hangs on \heb{מכרתיהם}, a word used nowhere else. It may mean
-	weapons, merchandise/stock-in-trade, plans, or cutting instruments. The LXX
-	does not preserve a clean equivalent.
-
-	\aB{
-		If it means ``cutting tools,'' the verse points straight at the
-		circumcision knives: genital surgery was both the con and the weapon. Very
-		nasty. Very possible. Still not certain.
-	}
 }
 
 \Verse{6}
 {
-	\hPaleoZ{
-		בסדם אל תבא נפש
-
-		בקהלם אל תחד כבדי
-
-		[ ] באפם הרג אש
-
-		[ו־] ברצנם עקר שר
-	}
-	\GenXLIXMT{בסדם אל תבא נפשי בקהלם אל תחד כבודי}
-	\GenXLIXLXX{μὴ ἐρίσαιτο τὰ ἥπατά μου}
+	\hProto{בְּסֹדָם אַל תָּבֹא נַפְשִׁי בִּקְהָלָם אַל תֵּחַד כְּבֹדִי כִּי בְאַפָּם הָרְגוּ אִישׁ וּבִרְצֹנָם עִקְּרוּ שׁוֹר׃}
 }
 {
-	\ePaleoZ{
-		Into their council, do not come, my soul;
-
-		in their assembly, do not join, my liver.
-
-		In anger they killed a man;
-
-		by choice they hamstrung a bull.
+	\eProto{
+		Let my soul not come in their council; let my glory not be
+		united in their society. For in their anger they killed a
+		man, and by their will they crippled an ox.
 	}
 }
 {
-	Jacob refuses ownership of the heroic version of Gen. 34: leave my whole
-	self out of their meeting, their plan, and their song.
-
-	MT is normally read ``my glory,'' but the LXX has ``my liver.'' In old
-	body-language the liver could be the seat of emotion, so ``my soul / my
-	liver'' is a perfectly normal pair. Qumran preserves only scraps here and
-	does not settle it.
-
-	Gen. 34 never says they crippled cattle. That may be another memory of the
-	sack, a generic war image, or damaged wording. The David story later stages
-	the same political distancing: David condemns Joab and Abishai, the violent
-	``sons of Zeruiah,'' after Abner’s murder (2 Sam. 3:28--39).
-
-	\aB{
-		There may even be a broken animal joke: \heb{שור}, ``bull,'' beside
-		Hamor, ``donkey,'' the name of Shechem’s father. Notice it; do not build a
-		house on it.
-	}
 }
 
 \Verse{7}
 {
-	\hPaleoZ{
-		ארר אפם כי עז
-
-		ועברתם כי קשת
-
-		אחלקם ביעקב
-
-		אפצם בישראל
+	\hProto{אָרוּר אַפָּם כִּי עָז וְעֶבְרָתָם כִּי קָשָׁתָה אֲחַלְּקֵם בְּיַעֲקֹב וַאֲפִיצֵם בְּיִשְׂרָאֵל׃}
+}
+{
+	\eProto{
+		Cursed is their anger, for it’s strong, and their wrath,
+		for it’s hard. I’ll divide them in Jacob, and I’ll scatter
+		them in Israel.
 	}
 }
 {
-	\ePaleoZ{
-		Cursed is their fierce anger,
-
-		and their hard fury.
-
-		I’ll divide them in Jacob;
-
-		I’ll scatter them in Israel.
-	}
-}
-{
-	This one is mostly healthy. The reconstruction chiefly removes later vowel
-	letters to show how the same poem might look in older spelling; 4QGen\textit{e}
-	is broadly compatible with MT.
-
-	The curse explains two later maps at once: Simeon is divided inside Judah;
-	Levi is scattered through Israel. Levi’s punishment can then be rewritten as
-	a priestly privilege in Deut. 33.
-
-	\aB{Verse 28 will call all this a ``blessing.'' Here that means a father’s binding fate, not a compliment.}
 }
 
 \Verse{8}
 {
-	\hPaleoZ{
-		יהד <הד> את
-
-		ידך בערף איבך
-
-		יהד ידך אחך
-
-		ישתחו לך בני אבך
-	}
-	\GenXLIXMT{יהודה אתה יודוך אחיך ידך בערף איביך ישתחוו לך בני אביך}
+	\hProto{יְהוּדָה אַתָּה יוֹדוּךָ אַחֶיךָ יָדְךָ בְּעֹרֶף אֹיְבֶיךָ יִשְׁתַּחֲווּ לְךָ בְּנֵי אָבִיךָ׃}
 }
 {
-	\ePaleoZ{
-		Judah, my splendor, you;
-
-		your hand is on your enemies’ neck.
-
-		Judah, your brothers praise you;
-
-		your father’s sons bow to you.
+	\eProto{
+		Judah: You, your brothers will praise you. Your hand on
+		your enemies’ neck, your father’s sons will bow to you.
 	}
 }
 {
-	Judah is Leah’s fourth son; his traditional territory is the southern hill
-	country, with Benjamin north, Philistia west, and Edom south.
-
-	\aB{
-		The three older brothers have just been disqualified. Now number four gets
-		praise, victory, brothers bowing, and soon a permanent staff between his
-		legs. Come on: this section reads like a Davidic succession brief.
-	}
-
-	The name pun is explicit: \emph{Yehudah}, your brothers will
-	\emph{yodukha}, ``praise you'' (Gen. 29:35). More politically, Joseph’s
-	dream image---the brothers bowing---is transferred to Judah. Gen. 43--44
-	already turns Judah into spokesman and substitute; Judg. 1:1--2 and 2 Sam.
-	5:1--3 give the tribal and royal payoff.
-
-	\aC{
-		``My splendor'' (\heb{הודי}) is a conjectural restoration based on short,
-		similar-looking old spellings and meter. The versions help rearrange the
-		lines, but no surviving manuscript actually contains that restored word.
-	}
+%	\footnote{
+%		Judah. Reuben is demoted from firstborn preeminence (49:4); Simeon and
+%		Levi are condemned to be scattered (49:7). The fourth-born Judah is the
+%		one to receive praise, success, and dominion. The fulfillment will come
+%		when Judah becomes the largest of the tribes, and its royal family, the
+%		kings descended from David, rule for centuries and hold the messianic
+%		promise. Judah was the brother who saved Joseph’s life, who promised to
+%		be the protector of Benjamin, whose relationship with Tamar resulted in
+%		the birth of the clan of the future kings of Israel. The patriarchs will
+%		all be buried in Hebron, the capital city of the tribe of Judah. Here at
+%		the end of Genesis we find the denouement of the stories of the
+%		brothers, and we are made aware of their significance for the future.
+%	}
 }
 
 \Verse{9}
 {
-	\hPaleoZ{
-		גר ארי יהד
-
-		מטרף בני עלת
-
-		כרע רבץ כארי
-
-		[ו־] כלבא מי יקמנו
+	\hProto{גּוּר אַרְיֵה יְהוּדָה מִטֶּרֶף בְּנִי עָלִיתָ כָּרַע רָבַץ כְּאַרְיֵה וּכְלָבִיא מִי יְקִימֶנּוּ׃}
+}
+{
+	\eProto{
+		A lion’s whelp is Judah; from prey, my son, you’ve risen.
+		He bent, crouched, like a lion; and, like a feline, who
+		will rouse him?
 	}
 }
 {
-	\ePaleoZ{
-		Judah is a lion cub;
-
-		from the prey, my son, you rose.
-
-		He crouches and lies like a lion,
-
-		like a lioness---who dares wake him?
-	}
-}
-{
-	There is little textual surgery here. Judah has already eaten and can lie
-	down because nobody dares disturb him: conquest followed by secure rule,
-	not merely generic animal violence. Num. 24:9 repeats the crouching lion and
-	``who will rouse him?''
-
-	``From the prey, my son, you rose'' may glance back at Judah pulling Joseph
-	away from immediate murder in Gen. 37. It is attractive, not demonstrable.
 }
 
 \Verse{10}
 {
-	\hPaleoZ{
-		לא יסר שפט מיהד
-
-		ומחקק מבין דגלו
-
-		\_\_\_\_\_\_
-
-		\_\_\_\_\_\_
-	}
-	\GenXLIXMT{לא יסור שבט מיהודה ומחקק מבין רגליו עד כי יבא שילה ולו יקהת עמים}
-	\GenXLIXSP{לא יסור שבט מיהודה ומחקק מבין דגליו}
-	\GenXLIXLXX{οὐκ ἐκλείψει ἄρχων ἐξ Ιουδα καὶ ἡγούμενος ἐκ τῶν μηρῶν αὐτοῦ \ldots{}}
+	\hProto{לֹא יָסוּר שֵׁבֶט מִיהוּדָה וּמְחֹקֵק מִבֵּין רַגְלָיו עַד כִּי יָבֹא שִׁילֹה וְלוֹ יִקְּהַת עַמִּים׃}
 }
 {
-	\ePaleoZ{
-		A judge will not fail from Judah,
-
-		nor a commander from among his standards.
-
-		\ldots\ldots\ldots
-
-		\ldots\ldots\ldots
+	\eProto{
+		The scepter won’t depart from Judah or the staff from
+		between his legs until he comes to Shiloh, and peoples’
+		obedience is his.
 	}
 }
 {
-	MT gives the famous ``scepter from Judah / ruler’s staff from between his
-	legs.'' This reconstruction changes \heb{שבט}, ``staff/scepter,'' to
-	\heb{שפט}, ``judge,'' and follows SP’s ``his banners'' instead of MT’s
-	``his legs.'' Old \emph{bet} and \emph{pe} were easy to confuse, and the LXX
-	has ``ruler,'' so the first change is plausible. SP supplies the second.
-
-	\aB{
-		But MT’s version absolutely leaves the staff in Judah’s crotch. A seated
-		ruler can hold a scepter there; ``feet'' can also cover the genitals; and
-		the thing between his legs produces the ruling line. Political staff first,
-		dynastic dick second. SP’s banners are precisely the reading that makes the
-		penis disappear. The LXX, however, still has the ruler coming ``from his
-		thighs,'' so the body reading is ancient, not a trick created by medieval
-		vowel points.
-	}
-
-	Genesis turns up the voltage: in Gen. 38 Judah gives Tamar a different
-	word for ``staff'' during the sex that produces Perez, ancestor of David.
-	Staff + sex + descendants + Judahite rule is therefore a real cluster even
-	without an exact lexical pun.
-
-	The final two lines are worse. ``Shiloh'' may be a place, a title, ``until he
-	comes,'' ``until what belongs to him comes,'' or part of a tribute formula;
-	\heb{יקהת} may be obedience, gathering, or allegiance. Ezek. 21:32 already
-	looks like one ancient interpretation: ``until the one whose right it is
-	comes.''
-
-	\aC{No satisfactory solution of the problems in this bicolon has ever been presented.}
 }
 
 \Verse{11}
 {
-	\hPaleoZ{
-		אסר לגפנו ערו
-
-		[ו־] לשרק בני אתנו
-
-		כבס בין לבש
-
-		[ו־] בדם ענבים סות
+	\hProto{אֹסְרִי לַגֶּפֶן עִירֹה וְלַשֹּׂרֵקָה בְּנִי אֲתֹנוֹ כִּבֵּס בַּיַּיִן לְבֻשׁוֹ וּבְדַם עֲנָבִים סוּתֹה׃}
+}
+{
+	\eProto{
+		Tying his ass to the vine and his she-ass’s foal to the
+		choice vine, he washed in wine his clothing and in blood
+		of grapes his garment,
 	}
 }
 {
-	\ePaleoZ{
-		He ties his ass to a vine,
-
-		his she-ass’s colt to a choice vine;
-
-		he washes his clothes in wine,
-
-		his robe in grape-blood.
-	}
-}
-{
-	The joke is economic insanity. A donkey tied to a good vine can eat or ruin
-	it; Judah has so many vines that they are hitching posts. Wine is so cheap
-	that it replaces wash water. Compare Gen. 27:28 and Amos 9:13.
-
-	\aB{Grapes are weeds. Wine is laundry water. That is the whole ridiculous blessing.}
-
-	\aC{
-		An ingenious Ugaritic re-reading makes the first pair ``bridle'' and
-		``trappings,'' but no Hebrew witness supplies it and the LXX plainly reads
-		vineyard language. The rare \heb{סותה}, ``robe,'' does have good
-		Phoenician support.
-	}
 }
 
 \Verse{12}
 {
-	\hPaleoZ{
-		חכלל ענם מיין
-
-		לבן שנם מחלב
-	}
+	\hProto{חַכְלִילִי עֵינַיִם מִיָּיִן וּלְבֶן שִׁנַּיִם מֵחָלָב׃}
 }
 {
-	\ePaleoZ{
-		His eyes are darker than wine;
-
-		his teeth are whiter than milk.
-	}
+	\eProto{eyes darker than wine and teeth whiter than milk.}
 }
 {
-	\heb{חכלילי} occurs nowhere else. It may mean dark, red, gleaming, or
-	bloodshot, and the comparison can be ``darker than wine'' or ``dark from
-	wine.''
-
-	\aB{So Judah is rich, hot, healthy, and possibly hammered.}
-
-	The wine-red / milk-white face is unusually sensual, but there is no secure
-	genital joke hiding in this one.
 }
 
 \Verse{13}
 {
-	\hPaleoZ{
-		זבלן
-
-		לחף ימים [ו]ישב
-
-		על מפרצן ישכן
-
-		\_\_\_\_\_\_
-
-		\_\_\_\_\_\_
-	}
-	\GenXLIXMT{זבולן לחוף ימים ישכן והוא לחוף אנית וירכתו על צידן}
-	\GenXLIXLXX{παράλιος κατοικήσει \ldots{} παρ᾽ ὅρμον πλοίων \ldots{} ἕως Σιδῶνος}
+	\hProto{זְבוּלֻן לְחוֹף יַמִּים יִשְׁכֹּן וְהוּא לְחוֹף אֳנִיֹּת וְיַרְכָתוֹ עַל צִידֹן׃}
 }
 {
-	\ePaleoZ{
-		Zebulun:
-
-		by the shore of the seas he settles;
-
-		at its inlets he camps.
-
-		\ldots\ldots\ldots
-
-		\ldots\ldots\ldots
+	\eProto{
+		Zebulun will dwell by seashores: and he’ll be a shore for
+		boats, and his border at Sidon.
 	}
 }
 {
-	Zebulun is Leah’s son. Joshua places him inland in Lower Galilee, between
-	Asher, Naphtali, Issachar, and Manasseh---not on a neat coast reaching
-	Sidon.
-
-	The first reconstructed pair borrows cleaner shore/landing-place language
-	from Judg. 5:17. Attempts to rebuild two more lines about sailing Sidonian
-	ships are too speculative, so they stay blank. The LXX only smooths MT’s
-	sea-and-Sidon picture; it does not recover the lost wording.
-
-	The map problem may be trade access or a road into Phoenician commercial
-	space rather than a Joshua-style coastline. Deut. 33 again gives Zebulun the
-	wealth of the seas.
 }
 
 \Verse{14}
 {
-	\hPaleoZ{
-		יששכר חמר \_\_\_
-
-		רבץ בין [־] משפתם
-	}
-	\GenXLIXMT{יששכר חמר גרם רבץ בין המשפתים}
-	\GenXLIXLXX{Ἰσσαχαρ τὸ καλὸν ἐπεθύμησεν}
+	\hProto{יִשָּׂשכָר חֲמֹר גָּרֶם רֹבֵץ בֵּין הַמִּשְׁפְּתָיִם׃}
 }
 {
-	\ePaleoZ{
-		Issachar is an ass \ldots
-
-		crouching between the \ldots
+	\eProto{
+		Issachar is a strong ass crouching between the
+		saddle-packs:
 	}
 }
 {
-	Issachar is Leah’s son; his traditional land is the fertile Jezreel Valley,
-	between Manasseh, Zebulun, Naphtali, and the Jordan.
-
-	``Ass'' is clear and need not insult him: donkeys are strong, valuable work
-	animals. The next words are the wreck. \heb{גרם} may mean bony,
-	strong-boned, sinewy, or something else; \heb{משפתים} has been rendered
-	saddlebags, sheepfolds, boundary ridges, hearths, or rubbish heaps. The LXX
-	appears to have given up on the donkey too.
-
-	\aB{Strong ass? Bony ass? Sinewy ass? Castrated ass? We have a donkey and vibes.}
-
-	\heb{גרם} is a useful northern/Israelian word, not automatic proof that the
-	line predates J. Issachar’s name already comes from Leah hiring Jacob for a
-	night in Gen. 30; v. 15 finishes the joke.
 }
 
 \Verse{15}
 {
-	\hPaleoZ{
-		ירא מנחה כי טוב
-
-		יבט ארצו כי נעם
-
-		יט שכמו לסבל
-
-		ויה למס עבד
+	\hProto{וַיַּרְא מְנֻחָה כִּי טוֹב וְאֶת הָאָרֶץ כִּי נָעֵמָה וַיֵּט שִׁכְמוֹ לִסְבֹּל וַיְהִי לְמַס עֹבֵד׃}
+}
+{
+	\eProto{
+		and he saw rest, that it was good, and the land, that it
+		was pleasant, and he leaned his shoulder to bear and
+		became a work-company servant.
 	}
 }
 {
-	\ePaleoZ{
-		He sees a good resting place;
-
-		he looks on a pleasant land.
-
-		He bends his shoulder to the burden
-
-		and becomes a corvée slave.
-	}
-}
-{
-	This is not ``Issachar has a great work ethic.'' \heb{מס עבד} is levy labor,
-	corvée: good farmland bought at the price of political subjection. Compare
-	the subjected populations in Judg. 1 and the labor state in 1 Kgs.
-
-	The extra ``he looks'' is a conjectural restoration to balance ``he sees'';
-	the possessive readings ``his rest / his land'' receive some versional
-	support. The basic land--shoulder--forced-labor sequence is secure.
-
-	\aB{Mom rented Dad for the night; the child becomes rented labor. Genesis spent fifteen chapters setting up that joke.}
-
-	The word for ``pleasant'' is another likely northern/Israelian feature.
 }
 
 \Verse{16}
 {
-	\hPaleoZ{
-		דן ידן <דין> עם
-
-		כאחד שבט ישראל
-	}
+	\hProto{דָּן יָדִין עַמּוֹ כְּאַחַד שִׁבְטֵי יִשְׂרָאֵל׃}
 }
 {
-	\ePaleoZ{
-		Dan pleads his people’s case,
-
-		as one of Israel’s tribes.
-	}
+	\eProto{Dan will judge his people as one of the tribes of Israel:}
 }
 {
-	Dan is Bilhah’s son and Naphtali’s full brother. His first allotment lies
-	west of Benjamin and Judah under Philistine pressure; Judg. 18 moves the
-	tribe to Laish in the far north.
-
-	The pun flashes in neon: \emph{Dan yadin}, ``Dan will judge.'' Gen. 30:6
-	already explains his name by judgment, and the famous Danite Samson becomes
-	a judge.
-
-	The inserted matching noun \heb{דין}, ``case,'' gives an old Semitic
-	``judge the case'' idiom and better meter, but no manuscript has it. MT’s
-	shorter ``Dan will judge his people'' already makes sense.
-
-	``As one of Israel’s tribes'' may defensively insist that displaced,
-	shrine-haunted Dan still counts. That is history inferred from the line, not
-	grammar proving it.
+%	\footnote{
+%		as one of the tribes of Israel. David Noel Freedman says: “as one of the
+%		tribes of Israel” is too banal to merit utterance. ’d must mean “first”
+%		as in the opening chapter of Genesis. Now why should Dan be first among
+%		the tribes? Because it is always mentioned first, when anyone describes
+%		the territory of Israel: from Dan to Beer-sheba.
+%	}
 }
 
 \Verse{17}
 {
-	\hPaleoZ{
-		[ ] דן נחש על דרך
-
-		שפפן על ארח
-
-		הנשך עקבי סס
-
-		ויפל רכב אחר
-	}
-	\GenXLIXMT{יהי דן נחש עלי דרך שפיפן עלי ארח הנשך עקבי סוס ויפל רכבו אחור}
+	\hProto{יְהִי דָן נָחָשׁ עֲלֵי דֶרֶךְ שְׁפִיפֹן עֲלֵי אֹרַח הַנֹּשֵׁךְ עִקְּבֵי סוּס וַיִּפֹּל רֹכְבוֹ אָחוֹר׃}
 }
 {
-	\ePaleoZ{
-		Dan is a snake on the road,
-
-		a venomous snake on the path,
-
-		biting a horse’s heels
-
-		so its rider falls backward.
+	\eProto{
+		Dan will be a snake on a road, a venomous snake on a path,
+		that bites a horse’s heels, and its rider falls backward.
 	}
 }
 {
-	The animal is a military tactic. Tiny Dan does not beat horse and rider
-	head-on; he hits the vulnerable heel and lets the larger system crash.
-	Samson’s sabotage-and-ambush war against the Philistines fits perfectly.
-
-	Snake + heel recalls Gen. 3:15, while ``heel'' also echoes Jacob the
-	heel-grabber. The family has produced a heel-biting tribe.
-
-	The opening blank deletes MT’s \heb{יהי}, ``let Dan be.'' The LXX retains
-	it. Again, this is a meter-based deletion, not lost text recovered elsewhere.
 }
 
 \Verse{18}
 {
-	\hPaleoZ{לישעתך קויתי יהוה}
+	\hProto{לִישׁוּעָתְךָ קִוִּיתִי יְהֹוָה׃}
 }
 {
-	\ePaleoZ{For your rescue I wait, YHWH.}
+	\eProto{I wait for your salvation, YHWH.}
 }
 {
-	\aB{Mid-snake poem, Jacob looks up and says: God, please save us.}
-
-	This is the only explicit YHWH-line inside the tribal poem. Its abrupt
-	first-person prayer may be a liturgical seam or midpoint insertion.
-
-	But all the major ancient witnesses contain it. The previous draft deleted
-	v. 18 as literary history; no manuscript actually supplies a Blessing of
-	Jacob without it. So it stays, visibly separate and honestly labeled.
 }
 
 \Verse{19}
 {
-	\hPaleoZ{
-		גד גדד יגדנו
-
-		והא יגד עקבם
-	}
-	\GenXLIXMT{והוא יגד עקב | מאשר שמנה לחמו}
-	\GenXLIXWitness{RESEGMENT}{\heb{והוא יגד עקבם | אשר שמן לחמו}}
+	\hProto{גָּד גְּדוּד יְגוּדֶנּוּ וְהוּא יָגֻד עָקֵב׃}
 }
 {
-	\ePaleoZ{
-		Gad is a raiding band;
-
-		he raids from the rear.
-	}
+	\eProto{Gad: a troop will trap him, and he’ll trap their heel.}
 }
 {
-	Gad is Zilpah’s son and Asher’s full brother. His traditional territory is
-	Gilead east of the Jordan, exposed between Reuben, Manasseh, Ammon, and
-	desert raiders.
-
-	The Hebrew is a tongue-twister: \emph{Gad / gedud / yagud}---Gad, gang,
-	raid. Sound is the substance of the line.
-
-	The tiny textual trick is visual above. MT attaches \heb{מ} to the next
-	tribe, ``\emph{from} Asher.'' LXX, Vulgate, and Peshitta begin simply
-	``Asher,'' supporting movement of that one letter backward: ``at their
-	heel/from the rear.'' Nothing huge vanished; one consonant probably crossed
-	a verse boundary.
 }
 
 \Verse{20}
 {
-	\hPaleoZ{
-		אשר שמן לחמו
-
-		שמנה ארצו
-
-		[ ] יתן מעדני מלך
-	}
-	\GenXLIXWitness{SP/LXX}{\heb{אשר שמן לחמו}}
-	\GenXLIXWitness{SYR./TG. $\rightarrow$ HEB.}{\heb{אשר שמנה ארצו}}
+	\hProto{מֵאָשֵׁר שְׁמֵנָה לַחְמוֹ וְהוּא יִתֵּן מַעֲדַנֵּי מֶלֶךְ׃}
 }
 {
-	\ePaleoZ{
-		Asher’s food is rich;
-
-		his land is fertile;
-
-		he supplies royal delicacies.
+	\eProto{
+		Asher: his bread will be rich, and he’ll provide a king’s
+		delights.
 	}
 }
 {
-	Asher is Zilpah’s son. His traditional country is the Akko plain and
-	northern coast beside Phoenician territory, with Naphtali east and Zebulun
-	south---excellent olive country.
-
-	MT’s adjective and ``bread'' disagree in gender. The witnesses look like two
-	old lines mashed together: SP/LXX support ``his food is rich''; Peshitta and
-	Targum reflect ``his land is fertile.'' The second witness strip is therefore
-	a Hebrew back-translation, not literal Syriac. The reconstruction prints both
-	rather than choosing which corpse to hide.
-
-	Deut. 33’s ``dip his foot in oil'' belongs to the same agricultural portrait.
-	Asher’s name lives in the world of happiness/fortune; royal groceries are an
-	appropriately fortunate fate.
+%	\footnote{
+%		Asher. The MT says “from Asher,” but that is a scribal mistake. The
+%		Hebrew letter mem (meaning “from”) has been displaced from the end of
+%		the preceding word, ‘qbm (where it means “their” heel).
+%	}
 }
 
 \Verse{21}
 {
-	\hPaleoZ{
-		\_\_\_\_\_\_
-
-		\_\_\_\_\_\_
-	}
-	\GenXLIXMT{נפתלי אילה שלחה הנתן אמרי שפר}
-	\GenXLIXLXX{Νεφθαλι στέλεχος ἀνειμένον, ἐπιδιδοὺς ἐν τῷ γενήματι κάλλος}
+	\hProto{נַפְתָּלִי אַיָּלָה שְׁלֻחָה הַנֹּתֵן אִמְרֵי שָׁפֶר׃}
 }
 {
-	\ePaleoZ{
-		\ldots\ldots\ldots
-
-		\ldots\ldots\ldots
-	}
+	\eProto{Naphtali: a hind let loose, who gives lovely words.}
 }
 {
-	Naphtali is Bilhah’s son and Dan’s full brother. His traditional territory is
-	Upper and eastern Galilee beside Asher, Zebulun, the Sea of Galilee, and
-	Aram.
-
-	\aB{
-		MT gives a free doe who ``gives beautiful words.'' Greek gives a spreading
-		shoot producing beautiful growth. Pick your ancient hallucination.
-	}
-
-	The LXX proves that early readers saw something very different; it does not
-	let us reconstruct the exact Hebrew. One northern reading keeps the animal:
-	\heb{אמרי שפר} means beautiful young, so the doe bears lovely fawns. Another
-	rebuilds a terebinth putting out beautiful leaves.
-
-	Judg. 4--5 makes Naphtali quick and willing to risk itself. Speed, freedom,
-	grace, and fertility all fit better than pretending the talking deer is secure.
-
-	\aC{The present text is unsatisfactory in many respects; perhaps nothing better can now be attained.}
 }
 
 \Verse{22}
 {
-	\hPaleoZ{
-		\_\_\_\_\_\_
-
-		\_\_\_\_\_\_
-	}
-	\GenXLIXMT{בן פרת יוסף בן פרת עלי עין בנות צעדה עלי שור}
-	\GenXLIXLXX{υἱὸς ηὐξημένος Ἰωσήφ \ldots{} υἱός μου νεώτατος· πρός με ἀνάστρεψον}
+	\hProto{בֵּן פֹּרָת יוֹסֵף בֵּן פֹּרָת עֲלֵי עָיִן בָּנוֹת צָעֲדָה עֲלֵי שׁוּר׃}
 }
 {
-	\ePaleoZ{
-		\ldots\ldots\ldots
-
-		\ldots\ldots\ldots
+	\eProto{
+		A fruitful bough is Joseph, a fruitful bough over a
+		spring, branches running over a wall:
 	}
 }
 {
-	Joseph is Rachel’s son and Benjamin’s full brother. His tribal double share
-	becomes Ephraim and Manasseh across the central highlands, northern valleys,
-	and eastern Manasseh.
-
-	MT is traditionally made into ``a fruitful bough by a spring; branches climb
-	over a wall.'' But \heb{פרת} is obscure, the genders fight, ``daughters
-	marched'' is not ``branches climbed,'' SP differs, LXX gives a flourishing
-	young son, and Qumran is gone by this point.
-
-	\aB{Plant? Wild she-ass? Either way Joseph is wet, fertile, and multiplying.}
-
-	The plant reading echoes Ephraim’s name, ``God made me fruitful'' (Gen.
-	41:52). A serious northern reading makes \heb{פרת} a wild she-ass, completing
-	the run of tribal animals. Both literary systems work; neither restores the
-	original line securely.
-
-	\aC{This verse is hopelessly corrupt, as witness the versions and commentaries.}
 }
 
 \Verse{23}
 {
-	\hPaleoZ{וימררהו <ויריבהו> וישתמהו בעלי חצים}
-	\GenXLIXMT{וימררהו ורבו וישתמהו בעלי חצים}
+	\hProto{וַיְמָרְרֻהוּ וָרֹבּוּ וַיִּשְׂטְמֻהוּ בַּעֲלֵי חִצִּים׃}
 }
 {
-	\ePaleoZ{Archers embittered him, fought him, and hated him.}
-}
-{
-	Unlike v. 22, this line is mostly readable. SP’s \heb{ויריבהו}, ``they fought
-	him,'' replaces MT’s difficult \heb{ורבו}; the LXX keeps the same general
-	scene of hostile ``lords of arrows.''
-
-	The archers can compress Joseph’s whole history---brothers, accusation,
-	prison---into one battle image, or point toward later warfare involving
-	Joseph and Ephraim. ``Masters of arrows'' is also a likely northern Northwest
-	Semitic construction.
-
-	\aB{The old draft blanked this because the neighborhood was on fire. This particular house is still standing.}
-}
-
-\Verse{24a}
-{
-	\hPaleoZ{
-		\_\_\_\_\_\_
-
-		\_\_\_\_\_\_
-	}
-	\GenXLIXMT{ותשב באיתן קשתו ויפזו זרעי ידיו}
-	\GenXLIXLXX{καὶ συνετρίβη μετὰ κράτους τὰ τόξα αὐτῶν, καὶ ἐξελύθη τὰ νεῦρα βραχιόνων χειρῶν αὐτῶν}
-}
-{
-	\ePaleoZ{
-		\ldots\ldots\ldots
-
-		\ldots\ldots\ldots
+	\eProto{
+		And archers bitterly attacked him, shot at him, and
+		despised him.
 	}
 }
 {
-	MT can be smoothed into ``his bow stayed firm; the arms of his hands were
-	strong.'' The LXX says nearly the opposite: ``their bows were shattered; the
-	sinews of their arms were loosened.'' Even the owner flips from Joseph to
-	his attackers.
-
-	That may reflect another Hebrew text, interpretation, or corruption on either
-	side. There is no clean path backward, so the reconstructed line stays blank.
-
-	\aB{And no, the firm bow does not need to be a boner. We already have archers, arrows, bows, and arms. The poem brought a complete war metaphor.}
-
-	\aC{Verse 24a has defied the best efforts of scholars; the versions only add to the confusion.}
 }
 
-\Verse{24b}
+\Verse{24}
 {
-	\hPaleoZ{
-		מיד אביר יעקב
-
-		משמר
-
-		מרעה בני ישראל
-	}
-	\GenXLIXMT{מידי אביר יעקב משם רעה אבן ישראל}
+	\hProto{וַתֵּשֶׁב בְּאֵיתָן קַשְׁתּוֹ וַיָּפֹזּוּ זְרֹעֵי יָדָיו מִידֵי אֲבִיר יַעֲקֹב מִשָּׁם רֹעֶה אֶבֶן יִשְׂרָאֵל׃}
 }
 {
-	\ePaleoZ{
-		From the hands of Jacob’s Champion,
-
-		from the Keeper,
-
-		from the Shepherd of Israel’s sons.
+	\eProto{
+		And his bow stayed strong, and his forearms were nimble,
+		from the hands of the Mighty One of Jacob, from there, the
+		shepherd, the rock of Israel,
 	}
 }
 {
-	MT ends roughly, ``from the Mighty One of Jacob; from there, shepherd,
-	stone of Israel.'' ``Stone of Israel'' can be a divine title, but the syntax is
-	rough and the line is long.
-
-	The reconstruction treats \heb{משם רעה} as two readings fused together,
-	``from the Keeper / from the Shepherd,'' and changes \heb{אבן}, ``stone,''
-	to \heb{בני}, ``sons of.'' Ps. 121 calls YHWH Israel’s keeper and Ps. 80
-	Israel’s shepherd. The titles are real; this exact repair remains conjectural.
-
-	The theology answers Gen. 39 in poetry: Joseph’s hands held because divine
-	hands held them.
 }
 
 \Verse{25}
 {
-	\hPaleoZ{
-		מאל אבך ויעזרך
-
-		ואל־שדי ויברכך
-
-		ברכת שמם מעל
-
-		ברכת תהם [רבצת] מתחת
-
-		ברכת שדם ורחם
-	}
-	\GenXLIXMT{ואת שדי}
-	\GenXLIXSP{ואל שדי}
-	\GenXLIXLXX{ὁ θεὸς ὁ ἐμός}
+	\hProto{מֵאֵל אָבִיךָ וְיַעְזְרֶךָּ וְאֵת שַׁדַּי וִיבָרְכֶךָּ בִּרְכֹת שָׁמַיִם מֵעָל בִּרְכֹת תְּהוֹם רֹבֶצֶת תָּחַת בִּרְכֹת שָׁדַיִם וָרָחַם׃}
 }
 {
-	\ePaleoZ{
-		From your father’s God, who helps you,
-
-		and El-Shaddai, who blesses you:
-
-		blessings of heaven above,
-
-		blessings of the Deep beneath,
-
-		blessings of breasts and womb.
+	\eProto{
+		from your father’s {\God}, and He’ll strengthen you, and
+		Shadday, and He’ll bless you, blessings of skies from
+		above, blessings of deep, crouching below, blessings of
+		breast and womb.
 	}
 }
 {
-	The first repair has actual witness support. MT’s awkward ``and Shaddai'' is
-	``and El-Shaddai'' in three Hebrew manuscripts, SP, and Peshitta; LXX instead
-	has ``my God.''
-
-	The Deep line also moved in transmission. MT has ``the Deep crouching
-	beneath''; this reconstruction drops ``crouching'' as an overlong
-	harmonization toward Deut. 33, while the LXX gives ``earth containing
-	everything.'' Genesis 49 and Deut. 33 preserve related Joseph blessings, not
-	two photocopies of one fixed master.
-
-	The blessing runs vertically through the fertility machine: rain from heaven,
-	groundwater from the Deep, milk from breasts, children from womb.
-
-	\aB{
-		And yes: \emph{Shaddai} is immediately followed by \emph{shadayim},
-		``breasts,'' and then womb. Shaddai gives shadayim. Boob-God gives boob
-		blessings. That does not prove the divine name’s etymology; it does prove
-		that Hebrew ears could hear the rhyme.
-	}
+%	\footnote{
+%		Shadday. The MT reads just Shadday, but evidence from other versions
+%		indicates that the line should read El Shadday. (The MT reads ’et where
+%		it should read ’l.)
+%	}
 }
 
 \Verse{26}
 {
-	\hPaleoZ{
-		ברכת אב <ואם>
-
-		גבר ועל
-
-		ברכת הרי עד
-
-		ברכת גבעת עלם
-
-		תהיין לראש יסף
-
-		ולקדקד נזר אחיו
-	}
-	\GenXLIXMT{ברכת אביך גברו על ברכת הורי עד תאות גבעת עולם}
-	\GenXLIXLXX{εὐλογίας πατρός σου καὶ μητρός σου}
+	\hProto{בִּרְכֹת אָבִיךָ גָּבְרוּ עַל בִּרְכֹת הוֹרַי עַד תַּאֲוַת גִּבְעֹת עוֹלָם תִּהְיֶיןָ לְרֹאשׁ יוֹסֵף וּלְקדְקֹד נְזִיר אֶחָיו׃}
 }
 {
-	\ePaleoZ{
-		Blessings of father and mother,
-
-		man and child;
-
-		blessings of the ancient mountains,
-
-		blessings of the eternal hills---
-
-		let them rest on Joseph’s head,
-
-		on the brow of the brother set apart.
+	\eProto{
+		blessings of your father, the mighty and most high,
+		blessings of the mountains of old desired object of the
+		hills of antiquity. They’ll be on Joseph’s head, on the
+		top of the head of the one separate from his brothers.
 	}
 }
 {
-	MT’s opening is mashed together. SP and LXX preserve the clear pair
-	``father and mother''; the reconstruction suspects that MT fused it with
-	another line about ``man and child'' and therefore prints both. That is a
-	conflation hypothesis, not one surviving Hebrew manuscript.
-
-	MT’s ``my progenitors/parents'' is then read ``mountains,'' helped by Hab.
-	3:6 and the almost parallel Joseph blessing in Deut. 33:15--16. LXX also
-	supports ``blessings'' where MT has the difficult ``desire.'' The closing
-	crown-on-Joseph’s-head image is much safer.
-
-	\heb{נזיר אחיו} need not mean a law-code Nazirite. Joseph is the brother
-	separated from the others who becomes distinguished above them. Gen. 48
-	turns that elevation into the practical firstborn share: Ephraim and Manasseh
-	both become Jacob’s tribal sons.
+%	\footnote{
+%		the mighty and most high. This is based on a reconstruction proposed by
+%		David Noel Freedman, reading instead of . Footnote 49:26. mountains of
+%		old. This understanding involves an emendation of the text based on the
+%		parallel with “hills of antiquity” in the next line and on comparison
+%		with Moses’ blessing of Joseph: “from the top of the ancient mountains,
+%		and from the most precious of the hills of antiquity” (Deut 33:15).
+%	}
 }
 
 \Verse{27}
 {
-	\hPaleoZ{
-		בנימן זאב יטרף
-
-		בבקר יאכל עד
-
-		לערב יחלק שלל
+	\hProto{בִּנְיָמִין זְאֵב יִטְרָף בַּבֹּקֶר יֹאכַל עַד וְלָעֶרֶב יְחַלֵּק שָׁלָל׃}
+}
+{
+	\eProto{
+		Benjamin is a tearing wolf: in the morning eating prey,
+		and at evening dividing booty.
 	}
 }
 {
-	\ePaleoZ{
-		Benjamin is a wolf who preys;
-
-		in the morning he eats prey,
-
-		at evening he divides spoil.
-	}
-}
-{
-	Benjamin is Rachel’s son and Joseph’s full brother. His compact hill country
-	lies between Judah and Ephraim, with Dan west and the Jordan east.
-
-	The missing ``who'' is normal compact old poetry, not damage. LXX softens
-	``spoil'' into ``food,'' but MT’s raiding image is coherent.
-
-	A wolf can be praise in a warrior society: the herder’s nightmare is the
-	raider’s mascot. Judg. 19--21 makes Benjamin terrifyingly effective and
-	nearly extinct; Saul and Jonathan continue the Benjaminite warrior cycle.
-
-	\aB{Morning he eats it; evening he splits the loot. This tribe has a full-time job.}
 }
 
 \Verse{28}
@@ -1136,11 +419,6 @@
 	}
 }
 {
-	``Blessing'' has included demotion, curse, forced labor, ambush, raiding,
-	and text nobody can read. It means an authoritative statement of destiny,
-	not that Dad found something nice to say about everybody.
-
-	\aB{Reuben lost it, Simeon and Levi got cursed, Issachar got corvée. Narrator: ``Each according to his personalized blessing.''}
 }
 
 \Verse{29}
@@ -1210,6 +488,4 @@
 	}
 }
 {
-	The chapter began with the sons gathering and ends with Jacob gathering his
-	feet and being gathered to his people.
 }
