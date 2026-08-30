@@ -1655,7 +1655,12 @@
 \newcommand{\SourceProfilePlainText}[1]{#1}
 \let\SourceProfileTextWrapper\SourceProfilePlainText
 \newcommand{\SourceProfileHighlightedText}[1]{\highLight[\SourceBgColor]{#1}}
-\DeclareRobustCommand{\Redactor}{\let\SourceProfileTextWrapper\SourceProfileHighlightedText}
+\DeclareRobustCommand{\Redactor}{%
+    \let\SourceProfileTextWrapper\SourceProfileHighlightedText
+    % Redactional Hebrew is always consonantal, even in a composite profile
+    % whose base script normally preserves niqqud.
+    \let\EncodeHebrewRaw\EncodeHebrewNoNiqqud
+}
 \newcommand{\PriestStyle}{\bfseries}
 \newcommand{\LeviteStyle}{\color{Levitecolor}}
 \newcommand{\Native}{\mdseries}
