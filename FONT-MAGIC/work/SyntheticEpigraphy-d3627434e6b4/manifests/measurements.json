@@ -1,0 +1,669 @@
+{
+  "glyphs": [
+    {
+      "area": 2103,
+      "aspect_ratio": 0.6474358974358975,
+      "candidate_id": "g-row01-col01-v01",
+      "canonical_name": "aleph",
+      "centroid": [
+        90.80741797432239,
+        125.50261531145982
+      ],
+      "component_count": 15,
+      "dominant_stroke_width": null,
+      "height": 156,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1618,
+        73,
+        143,
+        228
+      ],
+      "source_row_position": 1,
+      "vector_bbox": [
+        0,
+        0,
+        101,
+        156
+      ],
+      "visual_mass": 2103,
+      "width": 101
+    },
+    {
+      "area": 1871,
+      "aspect_ratio": 1.1521739130434783,
+      "candidate_id": "g-row01-col02-v01",
+      "canonical_name": "bet",
+      "centroid": [
+        95.0475681453768,
+        136.19668626402992
+      ],
+      "component_count": 17,
+      "dominant_stroke_width": null,
+      "height": 138,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1460,
+        74,
+        143,
+        228
+      ],
+      "source_row_position": 2,
+      "vector_bbox": [
+        0,
+        0,
+        159,
+        138
+      ],
+      "visual_mass": 1871,
+      "width": 159
+    },
+    {
+      "area": 1933,
+      "aspect_ratio": 1.096551724137931,
+      "candidate_id": "g-row01-col03-v01",
+      "canonical_name": "gimel",
+      "centroid": [
+        92.93998965338851,
+        134.3150543197103
+      ],
+      "component_count": 20,
+      "dominant_stroke_width": null,
+      "height": 145,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        986,
+        78,
+        143,
+        228
+      ],
+      "source_row_position": 3,
+      "vector_bbox": [
+        0,
+        0,
+        159,
+        145
+      ],
+      "visual_mass": 1933,
+      "width": 159
+    },
+    {
+      "area": 1650,
+      "aspect_ratio": 1.2875816993464053,
+      "candidate_id": "g-row01-col04-v01",
+      "canonical_name": "dalet",
+      "centroid": [
+        87.06787878787878,
+        135.66121212121212
+      ],
+      "component_count": 23,
+      "dominant_stroke_width": null,
+      "height": 153,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        828,
+        79,
+        143,
+        228
+      ],
+      "source_row_position": 4,
+      "vector_bbox": [
+        0,
+        0,
+        197,
+        153
+      ],
+      "visual_mass": 1650,
+      "width": 197
+    },
+    {
+      "area": 1470,
+      "aspect_ratio": 1.127659574468085,
+      "candidate_id": "g-row01-col05-v01",
+      "canonical_name": "he",
+      "centroid": [
+        103.53401360544218,
+        133.30544217687074
+      ],
+      "component_count": 23,
+      "dominant_stroke_width": null,
+      "height": 141,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        354,
+        83,
+        143,
+        228
+      ],
+      "source_row_position": 5,
+      "vector_bbox": [
+        0,
+        0,
+        159,
+        141
+      ],
+      "visual_mass": 1470,
+      "width": 159
+    },
+    {
+      "area": 2077,
+      "aspect_ratio": 1.06,
+      "candidate_id": "g-row01-col06-v01",
+      "canonical_name": "waw",
+      "centroid": [
+        91.0775156475686,
+        128.03514684641308
+      ],
+      "component_count": 24,
+      "dominant_stroke_width": null,
+      "height": 150,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        196,
+        84,
+        143,
+        228
+      ],
+      "source_row_position": 6,
+      "vector_bbox": [
+        0,
+        0,
+        159,
+        150
+      ],
+      "visual_mass": 2077,
+      "width": 159
+    },
+    {
+      "area": 2030,
+      "aspect_ratio": 1.0449438202247192,
+      "candidate_id": "g-row01-col07-v01",
+      "canonical_name": "zayin",
+      "centroid": [
+        57.15812807881773,
+        55.78423645320197
+      ],
+      "component_count": 1,
+      "dominant_stroke_width": null,
+      "height": 89,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1637,
+        123,
+        93,
+        89
+      ],
+      "source_row_position": 7,
+      "vector_bbox": [
+        0,
+        0,
+        93,
+        89
+      ],
+      "visual_mass": 2030,
+      "width": 93
+    },
+    {
+      "area": 2342,
+      "aspect_ratio": 1.164835164835165,
+      "candidate_id": "g-row01-col08-v01",
+      "canonical_name": "het",
+      "centroid": [
+        60.00085397096499,
+        55.14859094790777
+      ],
+      "component_count": 2,
+      "dominant_stroke_width": null,
+      "height": 91,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1323,
+        127,
+        95,
+        91
+      ],
+      "source_row_position": 8,
+      "vector_bbox": [
+        0,
+        0,
+        106,
+        91
+      ],
+      "visual_mass": 2342,
+      "width": 106
+    },
+    {
+      "area": 2589,
+      "aspect_ratio": 1.0674157303370786,
+      "candidate_id": "g-row01-col09-v01",
+      "canonical_name": "tet",
+      "centroid": [
+        58.10621861722673,
+        56.70490536886829
+      ],
+      "component_count": 1,
+      "dominant_stroke_width": null,
+      "height": 89,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1163,
+        134,
+        95,
+        90
+      ],
+      "source_row_position": 9,
+      "vector_bbox": [
+        0,
+        0,
+        95,
+        89
+      ],
+      "visual_mass": 2589,
+      "width": 95
+    },
+    {
+      "area": 2324,
+      "aspect_ratio": 1.1647058823529413,
+      "candidate_id": "g-row01-col10-v01",
+      "canonical_name": "yod",
+      "centroid": [
+        55.56497418244406,
+        51.78657487091222
+      ],
+      "component_count": 2,
+      "dominant_stroke_width": null,
+      "height": 85,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        67,
+        140,
+        89,
+        86
+      ],
+      "source_row_position": 10,
+      "vector_bbox": [
+        0,
+        0,
+        99,
+        85
+      ],
+      "visual_mass": 2324,
+      "width": 99
+    },
+    {
+      "area": 1999,
+      "aspect_ratio": 1.0609756097560976,
+      "candidate_id": "g-row01-col11-v01",
+      "canonical_name": "kaf",
+      "centroid": [
+        52.94047023511756,
+        51.09154577288644
+      ],
+      "component_count": 1,
+      "dominant_stroke_width": null,
+      "height": 82,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        218,
+        140,
+        87,
+        83
+      ],
+      "source_row_position": 11,
+      "vector_bbox": [
+        0,
+        0,
+        87,
+        82
+      ],
+      "visual_mass": 1999,
+      "width": 87
+    },
+    {
+      "area": 2405,
+      "aspect_ratio": 0.9395973154362416,
+      "candidate_id": "g-row01-col12-v01",
+      "canonical_name": "lamed",
+      "centroid": [
+        89.39168399168399,
+        133.12307692307692
+      ],
+      "component_count": 24,
+      "dominant_stroke_width": null,
+      "height": 149,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1620,
+        323,
+        143,
+        228
+      ],
+      "source_row_position": 12,
+      "vector_bbox": [
+        0,
+        0,
+        140,
+        149
+      ],
+      "visual_mass": 2405,
+      "width": 140
+    },
+    {
+      "area": 2137,
+      "aspect_ratio": 1.1605839416058394,
+      "candidate_id": "g-row01-col13-v01",
+      "canonical_name": "mem",
+      "centroid": [
+        103.7182966775854,
+        137.90407112774918
+      ],
+      "component_count": 25,
+      "dominant_stroke_width": null,
+      "height": 137,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1304,
+        325,
+        143,
+        228
+      ],
+      "source_row_position": 13,
+      "vector_bbox": [
+        0,
+        0,
+        159,
+        137
+      ],
+      "visual_mass": 2137,
+      "width": 159
+    },
+    {
+      "area": 1794,
+      "aspect_ratio": 1.1357142857142857,
+      "candidate_id": "g-row01-col14-v01",
+      "canonical_name": "nun",
+      "centroid": [
+        96.62040133779264,
+        132.92809364548495
+      ],
+      "component_count": 19,
+      "dominant_stroke_width": null,
+      "height": 140,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        830,
+        329,
+        143,
+        228
+      ],
+      "source_row_position": 14,
+      "vector_bbox": [
+        0,
+        0,
+        159,
+        140
+      ],
+      "visual_mass": 1794,
+      "width": 159
+    },
+    {
+      "area": 1849,
+      "aspect_ratio": 1.0743243243243243,
+      "candidate_id": "g-row01-col15-v01",
+      "canonical_name": "samekh",
+      "centroid": [
+        97.73769605191995,
+        127.27582477014603
+      ],
+      "component_count": 20,
+      "dominant_stroke_width": null,
+      "height": 148,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        672,
+        330,
+        144,
+        228
+      ],
+      "source_row_position": 15,
+      "vector_bbox": [
+        0,
+        0,
+        159,
+        148
+      ],
+      "visual_mass": 1849,
+      "width": 159
+    },
+    {
+      "area": 1882,
+      "aspect_ratio": 1.3873239436619718,
+      "candidate_id": "g-row01-col16-v01",
+      "canonical_name": "ayin",
+      "centroid": [
+        93.2422954303932,
+        132.70722635494155
+      ],
+      "component_count": 16,
+      "dominant_stroke_width": null,
+      "height": 142,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        356,
+        333,
+        143,
+        228
+      ],
+      "source_row_position": 16,
+      "vector_bbox": [
+        0,
+        0,
+        197,
+        142
+      ],
+      "visual_mass": 1882,
+      "width": 197
+    },
+    {
+      "area": 2231,
+      "aspect_ratio": 1.0890410958904109,
+      "candidate_id": "g-row01-col17-v01",
+      "canonical_name": "pe",
+      "centroid": [
+        102.17705064993277,
+        134.5392200806813
+      ],
+      "component_count": 20,
+      "dominant_stroke_width": null,
+      "height": 146,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        40,
+        335,
+        143,
+        228
+      ],
+      "source_row_position": 17,
+      "vector_bbox": [
+        0,
+        0,
+        159,
+        146
+      ],
+      "visual_mass": 2231,
+      "width": 159
+    },
+    {
+      "area": 2426,
+      "aspect_ratio": 1.0520833333333333,
+      "candidate_id": "g-row01-col18-v01",
+      "canonical_name": "tsade",
+      "centroid": [
+        62.16281945589448,
+        60.14633140972795
+      ],
+      "component_count": 1,
+      "dominant_stroke_width": null,
+      "height": 96,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1002,
+        376,
+        101,
+        96
+      ],
+      "source_row_position": 18,
+      "vector_bbox": [
+        0,
+        0,
+        101,
+        96
+      ],
+      "visual_mass": 2426,
+      "width": 101
+    },
+    {
+      "area": 2313,
+      "aspect_ratio": 1.0543478260869565,
+      "candidate_id": "g-row01-col19-v01",
+      "canonical_name": "qof",
+      "centroid": [
+        59.22913964548206,
+        57.33722438391699
+      ],
+      "component_count": 1,
+      "dominant_stroke_width": null,
+      "height": 92,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1636,
+        380,
+        97,
+        92
+      ],
+      "source_row_position": 19,
+      "vector_bbox": [
+        0,
+        0,
+        97,
+        92
+      ],
+      "visual_mass": 2313,
+      "width": 97
+    },
+    {
+      "area": 2125,
+      "aspect_ratio": 1.043010752688172,
+      "candidate_id": "g-row01-col20-v01",
+      "canonical_name": "resh",
+      "centroid": [
+        58.97270588235294,
+        58.48094117647059
+      ],
+      "component_count": 1,
+      "dominant_stroke_width": null,
+      "height": 93,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1171,
+        383,
+        98,
+        94
+      ],
+      "source_row_position": 20,
+      "vector_bbox": [
+        0,
+        0,
+        97,
+        93
+      ],
+      "visual_mass": 2125,
+      "width": 97
+    },
+    {
+      "area": 2654,
+      "aspect_ratio": 1.1578947368421053,
+      "candidate_id": "g-row01-col21-v01",
+      "canonical_name": "shin",
+      "centroid": [
+        61.894498869630745,
+        57.705350414468725
+      ],
+      "component_count": 2,
+      "dominant_stroke_width": null,
+      "height": 95,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        1484,
+        385,
+        99,
+        96
+      ],
+      "source_row_position": 21,
+      "vector_bbox": [
+        0,
+        0,
+        110,
+        95
+      ],
+      "visual_mass": 2654,
+      "width": 110
+    },
+    {
+      "area": 2169,
+      "aspect_ratio": 1.058139534883721,
+      "candidate_id": "g-row01-col22-v01",
+      "canonical_name": "taw",
+      "centroid": [
+        56.13231904103274,
+        54.83725218994928
+      ],
+      "component_count": 1,
+      "dominant_stroke_width": null,
+      "height": 86,
+      "neighbor_distances": [],
+      "principal_axis": 0,
+      "source_bbox": [
+        71,
+        396,
+        92,
+        87
+      ],
+      "source_row_position": 22,
+      "vector_bbox": [
+        0,
+        0,
+        91,
+        86
+      ],
+      "visual_mass": 2169,
+      "width": 91
+    }
+  ],
+  "population": {
+    "median_height": 137.5,
+    "median_visual_mass": 2114.0,
+    "median_width": 125.0
+  }
+}

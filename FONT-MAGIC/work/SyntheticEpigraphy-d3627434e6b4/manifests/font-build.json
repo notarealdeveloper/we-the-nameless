@@ -1,0 +1,186 @@
+{
+  "artifacts": {
+    "otf": "build/SyntheticEpigraphy.otf",
+    "sfd": "build/SyntheticEpigraphy.sfd",
+    "ttf": "build/SyntheticEpigraphy.ttf"
+  },
+  "font_name": "SyntheticEpigraphy",
+  "glyphs": [
+    {
+      "advance_width": 597,
+      "candidate_id": "g-row01-col01-v01",
+      "canonical_name": "aleph",
+      "glyph_name": "aleph",
+      "normalized_svg": "normalized/g-row01-col01-v01.svg",
+      "unicode": 67840
+    },
+    {
+      "advance_width": 872,
+      "candidate_id": "g-row01-col02-v01",
+      "canonical_name": "bet",
+      "glyph_name": "bet",
+      "normalized_svg": "normalized/g-row01-col02-v01.svg",
+      "unicode": 67841
+    },
+    {
+      "advance_width": 872,
+      "candidate_id": "g-row01-col03-v01",
+      "canonical_name": "gimel",
+      "glyph_name": "gimel",
+      "normalized_svg": "normalized/g-row01-col03-v01.svg",
+      "unicode": 67842
+    },
+    {
+      "advance_width": 1051,
+      "candidate_id": "g-row01-col04-v01",
+      "canonical_name": "dalet",
+      "glyph_name": "dalet",
+      "normalized_svg": "normalized/g-row01-col04-v01.svg",
+      "unicode": 67843
+    },
+    {
+      "advance_width": 872,
+      "candidate_id": "g-row01-col05-v01",
+      "canonical_name": "he",
+      "glyph_name": "he",
+      "normalized_svg": "normalized/g-row01-col05-v01.svg",
+      "unicode": 67844
+    },
+    {
+      "advance_width": 872,
+      "candidate_id": "g-row01-col06-v01",
+      "canonical_name": "waw",
+      "glyph_name": "waw",
+      "normalized_svg": "normalized/g-row01-col06-v01.svg",
+      "unicode": 67845
+    },
+    {
+      "advance_width": 560,
+      "candidate_id": "g-row01-col07-v01",
+      "canonical_name": "zayin",
+      "glyph_name": "zayin",
+      "normalized_svg": "normalized/g-row01-col07-v01.svg",
+      "unicode": 67846
+    },
+    {
+      "advance_width": 621,
+      "candidate_id": "g-row01-col08-v01",
+      "canonical_name": "het",
+      "glyph_name": "het",
+      "normalized_svg": "normalized/g-row01-col08-v01.svg",
+      "unicode": 67847
+    },
+    {
+      "advance_width": 569,
+      "candidate_id": "g-row01-col09-v01",
+      "canonical_name": "tet",
+      "glyph_name": "tet",
+      "normalized_svg": "normalized/g-row01-col09-v01.svg",
+      "unicode": 67848
+    },
+    {
+      "advance_width": 588,
+      "candidate_id": "g-row01-col10-v01",
+      "canonical_name": "yod",
+      "glyph_name": "yod",
+      "normalized_svg": "normalized/g-row01-col10-v01.svg",
+      "unicode": 67849
+    },
+    {
+      "advance_width": 531,
+      "candidate_id": "g-row01-col11-v01",
+      "canonical_name": "kaf",
+      "glyph_name": "kaf",
+      "normalized_svg": "normalized/g-row01-col11-v01.svg",
+      "unicode": 67850
+    },
+    {
+      "advance_width": 782,
+      "candidate_id": "g-row01-col12-v01",
+      "canonical_name": "lamed",
+      "glyph_name": "lamed",
+      "normalized_svg": "normalized/g-row01-col12-v01.svg",
+      "unicode": 67851
+    },
+    {
+      "advance_width": 872,
+      "candidate_id": "g-row01-col13-v01",
+      "canonical_name": "mem",
+      "glyph_name": "mem",
+      "normalized_svg": "normalized/g-row01-col13-v01.svg",
+      "unicode": 67852
+    },
+    {
+      "advance_width": 872,
+      "candidate_id": "g-row01-col14-v01",
+      "canonical_name": "nun",
+      "glyph_name": "nun",
+      "normalized_svg": "normalized/g-row01-col14-v01.svg",
+      "unicode": 67853
+    },
+    {
+      "advance_width": 872,
+      "candidate_id": "g-row01-col15-v01",
+      "canonical_name": "samekh",
+      "glyph_name": "samekh",
+      "normalized_svg": "normalized/g-row01-col15-v01.svg",
+      "unicode": 67854
+    },
+    {
+      "advance_width": 1051,
+      "candidate_id": "g-row01-col16-v01",
+      "canonical_name": "ayin",
+      "glyph_name": "ayin",
+      "normalized_svg": "normalized/g-row01-col16-v01.svg",
+      "unicode": 67855
+    },
+    {
+      "advance_width": 872,
+      "candidate_id": "g-row01-col17-v01",
+      "canonical_name": "pe",
+      "glyph_name": "pe",
+      "normalized_svg": "normalized/g-row01-col17-v01.svg",
+      "unicode": 67856
+    },
+    {
+      "advance_width": 597,
+      "candidate_id": "g-row01-col18-v01",
+      "canonical_name": "tsade",
+      "glyph_name": "tsade",
+      "normalized_svg": "normalized/g-row01-col18-v01.svg",
+      "unicode": 67857
+    },
+    {
+      "advance_width": 579,
+      "candidate_id": "g-row01-col19-v01",
+      "canonical_name": "qof",
+      "glyph_name": "qof",
+      "normalized_svg": "normalized/g-row01-col19-v01.svg",
+      "unicode": 67858
+    },
+    {
+      "advance_width": 579,
+      "candidate_id": "g-row01-col20-v01",
+      "canonical_name": "resh",
+      "glyph_name": "resh",
+      "normalized_svg": "normalized/g-row01-col20-v01.svg",
+      "unicode": 67859
+    },
+    {
+      "advance_width": 640,
+      "candidate_id": "g-row01-col21-v01",
+      "canonical_name": "shin",
+      "glyph_name": "shin",
+      "normalized_svg": "normalized/g-row01-col21-v01.svg",
+      "unicode": 67860
+    },
+    {
+      "advance_width": 550,
+      "candidate_id": "g-row01-col22-v01",
+      "canonical_name": "taw",
+      "glyph_name": "taw",
+      "normalized_svg": "normalized/g-row01-col22-v01.svg",
+      "unicode": 67861
+    }
+  ]
+}
