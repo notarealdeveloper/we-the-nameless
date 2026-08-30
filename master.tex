@@ -3508,6 +3508,7 @@
 \fi
 
 \newcommand{\Chapter}[1]{%
+    \setcounter{footnote}{0}%
     \hypertarget{chapter.\CurrentBook.#1}{}%
     \ChapterHeading{\ChapterTitleText{#1}}%
     \def\CurrentChapter{#1}%
