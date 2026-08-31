@@ -1,0 +1,102 @@
+{
+  "name": "yhwh-primary-history",
+  "format": "jsonl.gz",
+  "schema_version": 1,
+  "books": {
+    "Genesis": {
+      "chapters": 50,
+      "verses": 1534
+    },
+    "Exodus": {
+      "chapters": 40,
+      "verses": 1210
+    },
+    "Leviticus": {
+      "chapters": 27,
+      "verses": 859
+    },
+    "Numbers": {
+      "chapters": 36,
+      "verses": 1288
+    },
+    "Deuteronomy": {
+      "chapters": 34,
+      "verses": 956
+    },
+    "Joshua": {
+      "chapters": 24,
+      "verses": 658
+    },
+    "Judges": {
+      "chapters": 21,
+      "verses": 618
+    },
+    "1 Samuel": {
+      "chapters": 31,
+      "verses": 811
+    },
+    "2 Samuel": {
+      "chapters": 24,
+      "verses": 695
+    },
+    "1 Kings": {
+      "chapters": 22,
+      "verses": 817
+    },
+    "2 Kings": {
+      "chapters": 25,
+      "verses": 719
+    }
+  },
+  "verses": 10165,
+  "hebrew_source_spans": {
+    "BookOfRecords": 33,
+    "Dtn": 341,
+    "DtrA": 479,
+    "DtrB": 98,
+    "DtrH": 486,
+    "E": 919,
+    "J": 2771,
+    "JE": 32,
+    "JP": 9,
+    "JPP": 2,
+    "Other": 125,
+    "P": 2918,
+    "PR": 1,
+    "PaleoM": 3,
+    "Proto": 147,
+    "ProtoA": 18,
+    "ProtoF": 36,
+    "R": 237,
+    "RJE": 14,
+    "Reblacktor": 1,
+    "Red": 3,
+    "X": 1812
+  },
+  "english_source_spans": {
+    "BookOfRecords": 33,
+    "Dtn": 341,
+    "DtrA": 478,
+    "DtrB": 96,
+    "DtrH": 486,
+    "E": 909,
+    "J": 2708,
+    "JE": 32,
+    "JP": 9,
+    "JPP": 2,
+    "Other": 124,
+    "P": 2874,
+    "PR": 1,
+    "Proto": 89,
+    "ProtoA": 18,
+    "ProtoF": 36,
+    "R": 220,
+    "RJE": 14,
+    "Reblacktor": 1,
+    "Red": 3,
+    "X": 1812
+  },
+  "sha256": "52bd01d993b09a2b0fa5596421990b93aeaa7cd22d85bbc238e2bcfe04e66199",
+  "generated_from": "primary-history TeX source files",
+  "note": "Prior experimental frequency outputs were not used to construct this dataset."
+}

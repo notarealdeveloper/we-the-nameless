@@ -1,0 +1,12 @@
+[project]
+name = "yhwh"
+version = "0.1.0"
+description = "Source-aware lexical search, frequency analysis, and authorship evidence for the Primary History"
+dependencies = [
+    "pytest",
+    "matplotlib",
+    "pandas",
+]
+
+[project.scripts]
+yhwh = "yhwh.cli:main"
