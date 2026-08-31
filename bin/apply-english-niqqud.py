@@ -9,41 +9,56 @@ import unicodedata
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# Longest first keeps related words from shadowing one another.  These are all
-# Hebrew *points*, never cantillation marks.  Descenders get only upper/inner
-# points; capitals and tall b/d get only lower points.  Everything else gets
-# the typographical equivalent of an entire box of glitter.
-WORDS = (
-    "Tent of Meeting", "pomegranates", "breastplate", "carnelian",
-    "anointing", "headdress", "Holiness", "amethyst", "judgment",
-    "sapphire", "diamond", "jacinth", "golden", "emerald", "incense",
-    "scarlet", "Tummim", "holies", "agate", "ephod", "purple",
-    "shekel", "Aaron", "jasper", "linen", "beryl", "rings", "topaz",
-    "onyx", "Urim", "cubit", "ruby", "Holy", "holy", "gold", "blue",
-    "belt", "bell", "sash", "glory", "beauty",
-)
+# Longest first keeps related words from shadowing one another.  Each spelling
+# uses a small number of Hebrew vowel points, with at most one point per Latin
+# letter.  That keeps the joke visible without turning every word into a dark
+# knot of stacked marks.  Across the set, every Hebrew vowel-point shape is
+# represented; cantillation, dagesh, shin dots, and other inner marks are not.
+MARKS = {
+    "Tent of Meeting": "Teֶnְt of Meֵeִtiַnְg",
+    "pomegranates": "poֹmְeֶgraָnaַteֵs",
+    "breastplate": "breֵaַsְtplaָteֶ",
+    "carnelian": "caַrְneֶliִaָn",
+    "anointing": "aֲnoֹiִnְtiֵng",
+    "headdress": "heֶaַdְdreֵss",
+    "Holiness": "Hoֹliִneֶsְs",
+    "amethyst": "aֱmeֶthִysְt",
+    "judgment": "juֻdְgmeֶnְt",
+    "sapphire": "saַpphְiִreֵ",
+    "diamond": "diִaַmoֹnְd",
+    "jacinth": "jaַciִnְth",
+    "golden": "goֹlְdeֶn",
+    "emerald": "eֶmeֵraַlְd",
+    "incense": "iִnְceֶnְseֵ",
+    "scarlet": "sְcaַrleֶtְ",
+    "Tummim": "Tuֻmְmiִm",
+    "holies": "hoֹliִeֵs",
+    "agate": "aֳgaָteֵ",
+    "ephod": "eֶphoֹd",
+    "purple": "puֻrְpleֶ",
+    "shekel": "sheֶkeֵlְ",
+    "Aaron": "Aaָrֲoֹnְ",
+    "jasper": "jaַsְpeֶr",
+    "linen": "liִnְeֶn",
+    "beryl": "beֶrֵyְl",
+    "rings": "riִnְgsֵ",
+    "topaz": "toֹpaַzְ",
+    "onyx": "oֳnְyxֵ",
+    "Urim": "Uֻriִmְ",
+    "cubit": "cuֻbiִtְ",
+    "ruby": "ruֻbְy",
+    "Holy": "Hoֹlֵy",
+    "holy": "hoֹlֵy",
+    "gold": "goֹlְd",
+    "blue": "bluֻeֵ",
+    "belt": "beֶlְt",
+    "bell": "beֶlְl",
+    "sash": "saַsְh",
+    "glory": "gloֹrֵy",
+    "beauty": "beְaׇuֻtֵy",
+}
 
-LOWER_POINTS = "ְֱֲֳִֵֶַָׇֻ"
-UPPER_INNER_POINTS = "ֹּׁׂ"
-ALL_POINTS = LOWER_POINTS + UPPER_INNER_POINTS
-
-
-def festoon(word: str) -> str:
-    marked = []
-    for character in word:
-        marked.append(character)
-        if not character.isascii() or not character.isalpha():
-            continue
-        if character in "pg":
-            marked.append(UPPER_INNER_POINTS)
-        elif character.isupper() or character in "bd":
-            marked.append(LOWER_POINTS)
-        else:
-            marked.append(ALL_POINTS)
-    return "".join(marked)
-
-
-MARKS = {word: festoon(word) for word in WORDS}
+WORDS = tuple(MARKS)
 
 HEBREW_MARKS = r"[\u0591-\u05c7]*"
 
