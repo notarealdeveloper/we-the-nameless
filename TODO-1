@@ -9,8 +9,12 @@ PREVIOUS PROMPT: Ok now remove the 'Source: P' text from the top left, don't use
 
 PREVIOUS PROMPT: Ok remove congregation, chieftain, command, and Tabernacle. Y axis increments all in increments of 5. On J/E/P plots, share the legend and don't duplicate. However, give each axis its own x axis labels. Space the axes out so they don't hit each other. Sup the summaries like 'Ark; furniture made' in the fig title not the axis title, and keep Exodus N in the suptitle. Move the % tracker out of the way over to the top right, the high gold bar hits it in one plot. Also do a quick word count of all words that are especially frequently used by P in Exodus 28-40 but not much or at all in J or E, and add the most absurd examples to the plots.
 
-THIS PROMPT:
+PREVIOUS PROMPT:
 - Almost perfect! Now, in the "whole Torah" plots, make the y axis more sensible, not units of 5, it's incomprehensible for the full plot.
 - Also, I'm reconsidering the constant y-axes for the other plots. Keep the y axis constant for the J/E/P comparisons.
 - But for the other plots, generate different plot filenames (don't overwrite the existing ones) with the same basename + '-y-axis-variable' and let the y-axis adapt.
+
+THIS PROMPT:
+- Doing great! Ok now KEEP the plots you currently have, they're great, but also add these:
+- For the "Whole Torah" plots, generate one more that removes holy, Aaron, and offering. Then another whole torah plot that adds chieftain, command, and according to.
 EOF
