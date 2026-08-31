@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-PREVIOUS PROMPT:
+PREVIOUS PROMPT 1:
 
 In 02-exodus/ chapters 28-40, only in the P sections, when P's getting really excited about his clothes and the tabernacle and Aaron becoming the high priest, add some English with Niqqud to show P getting all worked up.
 
@@ -17,7 +17,7 @@ Only add the english niqqud to Exodus 28 to Exodus 40, and only in P.
 
 Go!
 
-CURRENT PROMPT:
+PREVIOUS PROMPT 2:
 
 Ok great work so far, but I want much more intense niqqud on each word. As a second attempt, let's add not just the niqqud like we already have, we need more.
 
@@ -30,4 +30,20 @@ Also remember you can add cantillation marks too! We want to make P practically 
 That said, try to avoid putting niqqud that appear UNDER a letter in a place that will cause it to overlap with the tail of a letter that extends lower like p or g, and try to avoid putting upper niqqud on capital letters or letters with bits protruding upward, like d or b.
 
 Do that now, and work until you're satisfied.
+
+
+CURRENT PROMPT:
+Remove the dagesh's from the consonants and any dots that go horizontally between letters.
+Remove the 3 underdots from the p in ephod.
+Remove the final niqqud or cantillation from the words like headdress and breastplate and linen: it's two vertical dots like a colon up high and it's trailing over to the next word.
+In scarlett, there are 3 diagonal down cantillations, remove the first, it's interfering with the : shaped thing above the c.
+In onyx, you can keep the horizontal dot between the y and x, it's a good dagesh type thing and not too overlappy.
+Remove the upper dots that are showing up at the top left of lowercase "l"s, they're colliding with the l.
+The little hollow circle above the d in judgement is colliding, move it elsewhere, on a letter that's not higher than an ascii x.
+In purple, remove the diagonal up to the right cantillation between the r and p, it's overlapping some other mark.
+The r in scarlett has two marks under it, choose one.
+Remove the diamond above the d in emerald.
+The word agate should have no marks below the g, they're colliding.
+Do anything else like the above that I didn't mention.
+
 EOF
