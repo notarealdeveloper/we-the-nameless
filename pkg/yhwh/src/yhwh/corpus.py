@@ -44,7 +44,7 @@ def verse_sort_key(verse: Verse) -> tuple[Any, ...]:
 
 def discover_tex_files(root: str | os.PathLike[str]) -> list[Path]:
     path = Path(root)
-    candidates = [path] if path.is_file() else list(path.rglob("*.tex"))
+    candidates = [path] if path.is_file() else list(path.glob("[01][0-9]-*/*.tex"))
     result: list[Path] = []
     for candidate in candidates:
         try:

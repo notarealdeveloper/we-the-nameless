@@ -138,7 +138,12 @@ def _lang(value: str) -> str:
 
 
 def _load(path: str | None, *, use_cache: bool) -> Corpus:
-    value = path or os.environ.get("YHWH_DATASET") or os.environ.get("YHWH_CORPUS")
+    value = (
+        path
+        or os.environ.get("YHWH_DATASET")
+        or os.environ.get("WE_THE_NAMELESS")
+        or os.environ.get("YHWH_CORPUS")
+    )
     if value:
         target = Path(value).expanduser()
         if target.is_file() and (

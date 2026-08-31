@@ -57,19 +57,19 @@ def clean_cache(path: str | os.PathLike[str] | None = None) -> Path:
 def find_corpus(path: str | os.PathLike[str] | None = None) -> Path:
     """Find a TeX corpus root.
 
-    Resolution order: explicit argument, ``YHWH_CORPUS``, then a few conventional
-    paths beneath the current directory. A root is accepted when it contains at
-    least one ``.tex`` file.
+    Resolution order: explicit argument, ``WE_THE_NAMELESS``, ``YHWH_CORPUS``,
+    then the current directory. A root is accepted when it contains at least one
+    book chapter matching ``[01][0-9]-*/*.tex``.
     """
     candidates: list[Path] = []
     if path is not None:
         candidates.append(Path(path).expanduser())
+    if value := os.environ.get("WE_THE_NAMELESS"):
+        candidates.append(Path(value).expanduser())
     if value := os.environ.get("YHWH_CORPUS"):
         candidates.append(Path(value).expanduser())
     cwd = Path.cwd()
-    candidates.extend(
-        [cwd, cwd / "primary-history", cwd / "corpus", cwd / "data" / "tex", cwd / "src"]
-    )
+    candidates.append(cwd)
     checked: list[str] = []
     for candidate in candidates:
         candidate = candidate.resolve()
@@ -78,10 +78,10 @@ def find_corpus(path: str | os.PathLike[str] | None = None) -> Path:
         checked.append(str(candidate))
         if candidate.is_file() and candidate.suffix == ".tex":
             return candidate
-        if candidate.is_dir() and next(candidate.rglob("*.tex"), None) is not None:
+        if candidate.is_dir() and next(candidate.glob("[01][0-9]-*/*.tex"), None) is not None:
             return candidate
     raise FileNotFoundError(
-        "Could not find a TeX corpus. Pass a path or set YHWH_CORPUS. Checked: "
+        "Could not find [01][0-9]-*/*.tex. Pass a path or set WE_THE_NAMELESS. Checked: "
         + ", ".join(checked)
     )
 
