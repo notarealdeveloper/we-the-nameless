@@ -144,6 +144,7 @@ class Target:
     book_title_override: str | None = None
     passthrough_includes: frozenset[str] = frozenset()
     exact_includes: frozenset[str] = frozenset()
+    full_frontmatter: bool = False
 
 
 J_ARCHAIC_EXCEPTIONS = frozenset(
@@ -582,6 +583,7 @@ def numbered_book_target(directory):
         output_name=directory,
         aliases=aliases,
         toc_chapters=True,
+        full_frontmatter=True,
         passthrough_includes=(
             frozenset({"01-genesis/apocrypha"})
             if directory == "01-genesis"
@@ -602,6 +604,7 @@ def individual_compound_book_targets():
             output_name="1-samuel",
             toc_chapters=True,
             book_title_override="I Samuel",
+            full_frontmatter=True,
         ),
         Target(
             "2-samuel",
@@ -611,6 +614,7 @@ def individual_compound_book_targets():
             output_name="2-samuel",
             toc_chapters=True,
             book_title_override="II Samuel",
+            full_frontmatter=True,
         ),
         Target(
             "1-kings",
@@ -620,6 +624,7 @@ def individual_compound_book_targets():
             output_name="1-kings",
             toc_chapters=True,
             book_title_override="I Kings",
+            full_frontmatter=True,
         ),
         Target(
             "2-kings",
@@ -629,6 +634,7 @@ def individual_compound_book_targets():
             output_name="2-kings",
             toc_chapters=True,
             book_title_override="II Kings",
+            full_frontmatter=True,
         ),
     )
 
@@ -1120,12 +1126,31 @@ def write_entrypoint(target, preamble, books, build_root):
         r"\pagenumbering{gobble}",
         r"\pagestyle{empty}",
         r"\wetitlepage",
-        r"\WeContentsPage",
-        r"\mainmatter",
-        r"\hypersetup{pageanchor=true}",
-        r"\pagestyle{fancy}",
-        "",
     ]
+    if target.full_frontmatter:
+        lines.extend(
+            [
+                r"\pagestyle{empty}",
+                r"\clearpage",
+                r"\AlphabetHistoryPage",
+            ]
+        )
+    lines.append(r"\WeContentsPage")
+    if target.full_frontmatter:
+        lines.extend(
+            [
+                r"\clearpage",
+                r"\SourceLegendPage",
+            ]
+        )
+    lines.extend(
+        [
+            r"\mainmatter",
+            r"\hypersetup{pageanchor=true}",
+            r"\pagestyle{fancy}",
+            "",
+        ]
+    )
     for book in books:
         lines.append(rf"\Book{{{book['title']}}}")
         pending_part = None
