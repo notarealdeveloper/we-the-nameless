@@ -3,8 +3,8 @@
   "scope": "Torah numbered chapters (Genesis through Deuteronomy)",
   "chapter_files": 187,
   "source_spans": 1032,
-  "total_words": 24404,
-  "unique_words": 2015,
+  "total_words": 24401,
+  "unique_words": 2014,
   "tokenization": "lowercase; contractions and hyphenated compounds retained",
   "frequencies": {
     "and": 2612,
@@ -769,7 +769,6 @@
     "prepare": 3,
     "prepared": 3,
     "prisoners": 3,
-    "pt": 3,
     "quarrel": 3,
     "quiet": 3,
     "rain": 3,

@@ -78,6 +78,24 @@ def render(text: str) -> str:
         elif command in discard_arg and i < len(text) and text[i] == "{":
             _, i = braced(text, i)
             out.append(" ")
+        elif command == "genfrac" and i < len(text) and text[i] == "{":
+            args = []
+            for _ in range(6):
+                arg, i = braced(text, i)
+                args.append(arg)
+            out.extend((render(args[4]), " ", render(args[5])))
+        elif command in {"Above", "Below"} and i < len(text) and text[i] == "{":
+            _, i = braced(text, i)  # Vertical measurement.
+            if i < len(text) and text[i] == "{":
+                arg, i = braced(text, i)
+                out.append(render(arg))
+            if i < len(text) and text[i] == "{":
+                _, i = braced(text, i)  # Non-English annotation.
+        elif command == "size" and i < len(text) and text[i] == "{":
+            _, i = braced(text, i)  # Font measurement.
+            if i < len(text) and text[i] == "{":
+                arg, i = braced(text, i)
+                out.append(render(arg))
         elif command == "raisebox" and i < len(text) and text[i] == "{":
             _, i = braced(text, i)
             i = optional(text, i)
