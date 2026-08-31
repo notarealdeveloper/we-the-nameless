@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+In 02-exodus/ chapters 28-40, only in the P sections, when P's getting really excited about his clothes and the tabernacle and Aaron becoming the high priest, add some English with Niqqud to show P getting all worked up.
+
+Give English niqqud to these words every time they appear in P in that range.
+
+gold, golden, blue, purple, scarlet, linen, onyx, Aaron, ephod, holy, holies, Holy, Holiness, breastplate, judgment, carnelian, topaz, emerald, ruby, sapphire, diamond, jacinth, agate, amethyst, beryl, onyx, jasper, belt, rings, Urim, Tummim, pomegranates, bell, headdress, sash, Tent of Meeting, incense, cubit, shekel, anointing
+
+Keep the niqqud consistent, they should be the correct niqqud for the vowels of the word in question.
+
+Then write a file at the end saying how many times each word appeared in each chapter, and overall in the section, and overall in all of P in [01][0-9]-*/*.tex.
+
+Only add the english niqqud to Exodus 28 to Exodus 40, and only in P.
+
+Go!
+EOF

@@ -2,8 +2,6 @@
 
 ## Exodus
 
-Exodus 28. When P's getting really excited about his clothes, add some English with Niqqud in P style.
-
 ## Samuel
 
 II Samuel 5. The reference to 1 Chronicles 14:12 uses a form of the verb "To carry off" that means "bonfire" to suggest that David burned Philistine icons that another text says he "carried off." Halpern David pg 145.
