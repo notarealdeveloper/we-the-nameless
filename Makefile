@@ -53,7 +53,7 @@ help:
 		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
 		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
 		'  make genesis      Build 01-genesis.pdf; numbered book targets also accept 1-genesis and 01-genesis forms.' \
-		'  make genesis-1    Build only Genesis 1, copy test.pdf to the repo root, and open it.' \
+		'  make genesis-1    Build only Genesis 1 as test-genesis-1.pdf and open it.' \
 		'  make 1-samuel-1   Build only 1 Samuel 1; chapter targets share build/test/.' \
 		'  make samuel       Build 08-samuel.pdf; use 1-samuel or 2-samuel for the individual books.' \
 		'  make kings        Build 09-kings.pdf; use 1-kings or 2-kings for the individual books.' \
@@ -182,11 +182,11 @@ $(CHAPTER_TARGETS):
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$@")"; \
 	bin/book-subset --build-dir "build/test" "$@"; \
-	$(LATEX) $(LATEXFLAGS) -jobname=test "\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{build/test/$$basename.tex}"
+	$(LATEX) $(LATEXFLAGS) -jobname="test-$@" "\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{build/test/$$basename.tex}"
 	@$(MAKE) clean-stray-aux
-	@cp "build/test/test.pdf" "test.pdf"
+	@cp "build/test/test-$@.pdf" "test-$@.pdf"
 	@if command -v xdg-open >/dev/null 2>&1; then \
-		xdg-open "test.pdf" >/dev/null 2>&1 & \
+		xdg-open "test-$@.pdf" >/dev/null 2>&1 & \
 	else \
-		echo "Built test.pdf"; \
+		echo "Built test-$@.pdf"; \
 	fi
