@@ -9,48 +9,41 @@ import unicodedata
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# Keep these in longest-first order so related words do not shadow one another.
-MARKS = {
-    "Tent of Meeting": "Tֶ֔e֔n֗t oְ֜f֔ Meֵ֔e֔t֗iִ֗n֔g",
-    "pomegranates": "p֜oֹ֜m֙eְ֔g֜r֙aַֽn֔aַֽt֗e֔s",
-    "breastplate": "br֙eֶ֔aַֽs֔t֗p֜laֵֽt֗e",
-    "carnelian": "c֙aָֽr֙n֔eִ֔liִ֗aְֽn",
-    "anointing": "aְֽn֔oֹ֜iִ֗n֔t֗iִ֗n֔g",
-    "headdress": "h֗eֶ֔aַֽddr֙eֶ֔s֔s",
-    "Holiness": "Hoֹ֜liִ֗n֔eֶ֔s֔s",
-    "amethyst": "aַֽm֙eְ֔t֗h֗yִ֗s֔t",
-    "judgment": "j֙uָdg֠m֙eֶ֔n֔t",
-    "sapphire": "s֔aַֽp֜p֜h֗iִ֗r֙e",
-    "diamond": "diַ֗aְֽm֙oֹ֜n֔d",
-    "jacinth": "j֙aַֽc֙iִ֗n֔t֗h",
-    "golden": "g֜oֹ֜ldeֶ֔n",
-    "emerald": "eֶ֔m֙eְ֔r֙aַֽld",
-    "incense": "iִ֗n֔c֙eֶ֔n֔s֔e",
-    "scarlet": "s֔caַr֙leֶ֔t",
-    "Tummim": "Tuֻ֠m֙m֙iִ֗m",
-    "holies": "h֗oֹ֜liִ֗eֶ֔s",
-    "agate": "aַֽg֜aְֽt֗e",
-    "ephod": "e֔p֜h֗oָ֜d",
-    "purple": "p֜uֻ֠r֙ple",
-    "shekel": "s֔h֗eֶ֔k֔eֶ֔l",
-    "Aaron": "Aַaֽr֙oֹ֜n",
-    "jasper": "j֙aַֽs֔p֜eְ֔r",
-    "linen": "liִ֗n֔eֶ֔n",
-    "beryl": "beֶ֔r֙yִ֗l",
-    "rings": "r֙iִ֗n֔g֜s",
-    "topaz": "t֗oֹ֜p֜aַֽz",
-    "onyx": "oָ֜n֔yִּ֗x",
-    "Urim": "Ur֙iִ֗m",
-    "cubit": "c֙u֠biִ֗t",
-    "ruby": "r֙u֠byִ֗",
-    "Holy": "Hoֹ֜lyִ֗",
-    "holy": "h֗oֹ֜lyִ֗",
-    "gold": "g֜oֹ֜ld",
-    "blue": "bluֻ֠e",
-    "belt": "beֶ֔lt",
-    "bell": "beֶ֔ll",
-    "sash": "s֔aַֽs֔h",
-}
+# Longest first keeps related words from shadowing one another.  These are all
+# Hebrew *points*, never cantillation marks.  Descenders get only upper/inner
+# points; capitals and tall b/d get only lower points.  Everything else gets
+# the typographical equivalent of an entire box of glitter.
+WORDS = (
+    "Tent of Meeting", "pomegranates", "breastplate", "carnelian",
+    "anointing", "headdress", "Holiness", "amethyst", "judgment",
+    "sapphire", "diamond", "jacinth", "golden", "emerald", "incense",
+    "scarlet", "Tummim", "holies", "agate", "ephod", "purple",
+    "shekel", "Aaron", "jasper", "linen", "beryl", "rings", "topaz",
+    "onyx", "Urim", "cubit", "ruby", "Holy", "holy", "gold", "blue",
+    "belt", "bell", "sash", "glory", "beauty",
+)
+
+LOWER_POINTS = "ְֱֲֳִֵֶַָׇֻ"
+UPPER_INNER_POINTS = "ֹּׁׂ"
+ALL_POINTS = LOWER_POINTS + UPPER_INNER_POINTS
+
+
+def festoon(word: str) -> str:
+    marked = []
+    for character in word:
+        marked.append(character)
+        if not character.isascii() or not character.isalpha():
+            continue
+        if character in "pg":
+            marked.append(UPPER_INNER_POINTS)
+        elif character.isupper() or character in "bd":
+            marked.append(LOWER_POINTS)
+        else:
+            marked.append(ALL_POINTS)
+    return "".join(marked)
+
+
+MARKS = {word: festoon(word) for word in WORDS}
 
 HEBREW_MARKS = r"[\u0591-\u05c7]*"
 
@@ -113,6 +106,19 @@ def unmark_english_blocks(text: str) -> str:
     return "".join(lines)
 
 
+def update_mapping_table() -> None:
+    path = ROOT / "exodus-28-40-p-niqqud-counts.md"
+    text = path.read_text()
+    heading = "## Niqqud mapping\n"
+    prefix, separator, _old_mapping = text.partition(heading)
+    if not separator:
+        raise ValueError(f"Missing mapping heading in {path}")
+    rows = [heading, "| Plain           | Marked |\n", "| --------------- | ------ |\n"]
+    for plain in WORDS:
+        rows.append(f"| {plain:<15} | {MARKS[plain]} |\n")
+    path.write_text(prefix + "".join(rows))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--remove", action="store_true", help="remove marks instead of applying them")
@@ -124,6 +130,8 @@ def main() -> None:
         revised = transform(original)
         if revised != original:
             path.write_text(revised)
+    if not args.remove:
+        update_mapping_table()
 
 
 if __name__ == "__main__":
