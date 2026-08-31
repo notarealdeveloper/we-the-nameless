@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Apply the documented English-niqqud spellings to Exodus 28--40 P text."""
 
+import argparse
 from pathlib import Path
 import re
+import unicodedata
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -90,9 +92,39 @@ def mark_p_blocks(text: str) -> str:
     return "".join(lines)
 
 
-for chapter in range(28, 41):
-    path = ROOT / "02-exodus" / f"{chapter:02}.tex"
-    original = path.read_text()
-    revised = mark_p_blocks(original)
-    if revised != original:
-        path.write_text(revised)
+def unmark_english_blocks(text: str) -> str:
+    """Remove Hebrew marks from English source macros without touching Hebrew."""
+    lines = text.splitlines(keepends=True)
+    inside = False
+    depth = 0
+    for index, line in enumerate(lines):
+        if not inside and re.search(r"\\e[A-Z]+\{", line):
+            inside = True
+            depth = 0
+        if inside:
+            line = "".join(
+                char for char in unicodedata.normalize("NFD", line)
+                if not 0x0591 <= ord(char) <= 0x05C7
+            )
+            depth += line.count("{") - line.count("}")
+            lines[index] = line
+            if depth == 0:
+                inside = False
+    return "".join(lines)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--remove", action="store_true", help="remove marks instead of applying them")
+    args = parser.parse_args()
+    transform = unmark_english_blocks if args.remove else mark_p_blocks
+    for chapter in range(28, 41):
+        path = ROOT / "02-exodus" / f"{chapter:02}.tex"
+        original = path.read_text()
+        revised = transform(original)
+        if revised != original:
+            path.write_text(revised)
+
+
+if __name__ == "__main__":
+    main()
