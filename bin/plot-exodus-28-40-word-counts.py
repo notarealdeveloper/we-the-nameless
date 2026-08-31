@@ -6,7 +6,7 @@ from collections import Counter
 from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
-from matplotlib.ticker import MultipleLocator
+from matplotlib.ticker import MaxNLocator, MultipleLocator
 import seaborn as sns
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -72,9 +72,15 @@ def percentages(chapters):
                 for s in sources: shares[s] += 1/len(sources)
     return "  ".join(f"{s}: {100*shares[s]/n:.1f}%" for s in "JEP")
 
-def style(ax,ymax=None):
-    if ymax is not None: ax.set_ylim(0,ymax)
-    ax.yaxis.set_major_locator(MultipleLocator(5))
+def style(ax,ymax=None,tick_step=5):
+    if ymax is not None:
+        ax.set_ylim(0,ymax)
+    else:
+        ax.set_ylim(bottom=0)
+    if tick_step is None:
+        ax.yaxis.set_major_locator(MaxNLocator(nbins=8,integer=True,min_n_ticks=5))
+    else:
+        ax.yaxis.set_major_locator(MultipleLocator(tick_step))
     ax.tick_params(axis="x",labelrotation=35)
     for label in ax.get_xticklabels(): label.set_ha("right")
 
@@ -89,14 +95,15 @@ def bars(ax,words,values,legend=True):
     if legend:
         ax.legend(handles=legend_handles(words),title="Words",loc="upper left",bbox_to_anchor=(1.01,1),frameon=True)
 
-def chapter_plot(chapter,source,words):
+def chapter_plot(chapter,source,words,variable_y=False):
     text=(ROOT/f"02-exodus/{chapter:02}.tex").read_text(encoding="utf-8")
-    fig,ax=plt.subplots(figsize=(15,8)); bars(ax,words,counts(text,source,words)); style(ax,20)
+    fig,ax=plt.subplots(figsize=(15,8)); bars(ax,words,counts(text,source,words)); style(ax,None if variable_y else 20)
     ax.text(.99,.98,percentages([chapter]),transform=ax.transAxes,ha="right",va="top",fontsize=12)
     fig.suptitle(f"Exodus {chapter}",fontsize=23,y=.995)
     fig.text(.5,.945,SUMMARIES[chapter],ha="center",va="top",fontsize=17)
     fig.tight_layout(rect=(0,0,1,.89))
-    fig.savefig(OUTPUT/f"exodus-{chapter:02}-{source.lower()}.png",dpi=200,bbox_inches="tight"); plt.close(fig)
+    suffix="-y-axis-variable" if variable_y else ""
+    fig.savefig(OUTPUT/f"exodus-{chapter:02}-{source.lower()}{suffix}.png",dpi=200,bbox_inches="tight"); plt.close(fig)
 
 def source_totals(files,words):
     result={s:[0]*len(words) for s in "JEP"}
@@ -105,11 +112,11 @@ def source_totals(files,words):
         for s in "JEP": result[s]=[a+b for a,b in zip(result[s],counts(text,s,words))]
     return result
 
-def stacked(words,totals,scope,filename):
+def stacked(words,totals,scope,filename,auto_ticks=False):
     ymax=max(5,math.ceil(max(totals["P"])/5)*5)
     fig,axes=plt.subplots(3,1,figsize=(17,23),sharex=True,sharey=True)
     for ax,s in zip(axes,"JEP"):
-        bars(ax,words,totals[s],legend=False); style(ax,ymax); ax.set_title(s,fontsize=19,pad=8)
+        bars(ax,words,totals[s],legend=False); style(ax,ymax,None if auto_ticks else 5); ax.set_title(s,fontsize=19,pad=8)
         ax.tick_params(axis="x",labelbottom=True)
     fig.legend(handles=legend_handles(words),title="Words",loc="center left",bbox_to_anchor=(.89,.5),frameon=True)
     fig.suptitle(f"All selected terms: {scope}",fontsize=24,y=.995)
@@ -120,11 +127,12 @@ def main():
     parser=argparse.ArgumentParser(); parser.add_argument("--limit",type=int,default=10,choices=range(5,11)); args=parser.parse_args()
     sns.set_theme(context="talk",style="whitegrid",rc={"axes.facecolor":"#FBF8F0","figure.facecolor":"#FBF8F0","grid.color":"#DDD4C2","axes.edgecolor":"#5C554B","text.color":"#29251F"})
     OUTPUT.mkdir(parents=True,exist_ok=True); words=selected_words(args.limit)
+    # Preserve the existing fixed-height chapter figures and add adaptive versions.
     for chapter,sources in CHAPTERS.items():
-        for source in sources: chapter_plot(chapter,source,words)
+        for source in sources: chapter_plot(chapter,source,words,variable_y=True)
     exodus=[ROOT/f"02-exodus/{c:02}.tex" for c in CHAPTERS]
     stacked(words,source_totals(exodus,words),"Exodus 28–40","exodus-28-40-source-totals.png")
     torah=sorted(p for d in TORAH for p in d.glob("[0-9][0-9].tex"))
-    stacked(words,source_totals(torah,words),"the whole Torah","torah-source-totals.png")
+    stacked(words,source_totals(torah,words),"the whole Torah","torah-source-totals.png",auto_ticks=True)
     print(f"Plotted {', '.join(words)}"); print(f"Wrote {sum(map(len,CHAPTERS.values()))+2} figures")
 if __name__=="__main__": main()
