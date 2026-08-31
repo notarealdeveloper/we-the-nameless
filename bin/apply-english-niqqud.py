@@ -10,39 +10,41 @@ import unicodedata
 ROOT = Path(__file__).resolve().parents[1]
 
 # Longest first keeps related words from shadowing one another.  Each spelling
-# uses a small number of Hebrew vowel points, with at most one point per Latin
-# letter.  That keeps the joke visible without turning every word into a dark
-# knot of stacked marks.  Across the set, every Hebrew vowel-point shape is
-# represented; cantillation, dagesh, shin dots, and other inner marks are not.
+# uses a playful but readable scattering of Hebrew vowel points, with at most
+# one point per Latin letter.  Upper points avoid ascenders (b, d, f, h, k, l,
+# and t), while lower points avoid descenders (g, j, p, q, and y).  Dotted and
+# qamats-like forms predominate over flat marks.  Across the set, every Hebrew
+# vowel-point shape is represented; cantillation, dagesh, shin dots, and other
+# inner marks are not.
 MARKS = {
     "Tent of Meeting": "Teֶnְt of Meֵeִtiַnְg",
-    "pomegranates": "poֹmְeֶgraָnaַteֵs",
+    "pomegranates": "poֹmְeֶgraָnaַteֵsְ",
     "breastplate": "breֵaַsְtplaָteֶ",
-    "carnelian": "caַrְneֶliִaָn",
+    "carnelian": "caָrְneֶliִaָnְ",
     "anointing": "aֲnoֹiִnְtiֵng",
-    "headdress": "heֶaַdְdreֵss",
+    "headdress": "heֶaָdְdreֵsִs",
     "Holiness": "Hoֹliִneֶsְs",
     "amethyst": "aֱmeֶthִysְt",
     "judgment": "juֻdְgmeֶnְt",
-    "sapphire": "saַpphְiִreֵ",
-    "diamond": "diִaַmoֹnְd",
-    "jacinth": "jaַciִnְth",
-    "golden": "goֹlְdeֶn",
+    "sapphire": "saַpphiִreֵ",
+    "diamond": "diִaָmoֹnְd",
+    "jacinth": "jaciִnְth",
+    "golden": "goֹlְdeֶnְ",
     "emerald": "eֶmeֵraַlְd",
     "incense": "iִnְceֶnְseֵ",
-    "scarlet": "sְcaַrleֶtְ",
-    "Tummim": "Tuֻmְmiִm",
-    "holies": "hoֹliִeֵs",
+    "scarlet": "sְcaָrְleֶt",
+    "Tummim": "Tuֻmְmiִmְ",
+    "holies": "hoֹliִeֵsְ",
     "agate": "aֳgaָteֵ",
     "ephod": "eֶphoֹd",
     "purple": "puֻrְpleֶ",
-    "shekel": "sheֶkeֵlְ",
+    "shekel": "sְheֶkeֵlְ",
     "Aaron": "Aaָrֲoֹnְ",
-    "jasper": "jaַsְpeֶr",
-    "linen": "liִnְeֶn",
+    "jasper": "jasְpeֶrְ",
+    "linen": "liִnְeֶnְ",
     "beryl": "beֶrֵylְ",
     "rings": "riִnְgsֵ",
-    "topaz": "toֹpaַzְ",
+    "topaz": "toֹpaָzְ",
     "onyx": "oֳnְyxֵ",
     "Urim": "Uֻriִmְ",
     "cubit": "cuֻbiִtְ",
@@ -53,7 +55,7 @@ MARKS = {
     "blue": "bluֻeֵ",
     "belt": "beֶlְt",
     "bell": "beֶlְl",
-    "sash": "saַsְh",
+    "sash": "saָsְh",
     "glory": "gloֹrֵy",
     "beauty": "beְaׇuֻtֵy",
 }
