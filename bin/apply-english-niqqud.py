@@ -40,7 +40,7 @@ MARKS = {
     "Aaron": "Aaָrֲoֹnְ",
     "jasper": "jaַsְpeֶr",
     "linen": "liִnְeֶn",
-    "beryl": "beֶrֵyְl",
+    "beryl": "beֶrֵylְ",
     "rings": "riִnְgsֵ",
     "topaz": "toֹpaַzְ",
     "onyx": "oֳnְyxֵ",

@@ -54,9 +54,9 @@ Counts are case-sensitive lexical matches within `\eP{...}` source spans. `Aaron
 | anointing       | aֲnoֹiִnְtiֵng |
 | headdress       | heֶaַdְdreֵss |
 | Holiness        | Hoֹliִneֶsְs |
-| amethyst        | aֱmeֶthyִsְt |
+| amethyst        | aֱmeֶthִysְt |
 | judgment        | juֻdְgmeֶnְt |
-| sapphire        | saַpְphiִreֵ |
+| sapphire        | saַpphְiִreֵ |
 | diamond         | diִaַmoֹnְd |
 | jacinth         | jaַciִnְth |
 | golden          | goֹlְdeֶn |
@@ -72,7 +72,7 @@ Counts are case-sensitive lexical matches within `\eP{...}` source spans. `Aaron
 | Aaron           | Aaָrֲoֹnְ |
 | jasper          | jaַsְpeֶr |
 | linen           | liִnְeֶn |
-| beryl           | beֶrֵyְl |
+| beryl           | beֶrֵylְ |
 | rings           | riִnְgsֵ |
 | topaz           | toֹpaַzְ |
 | onyx            | oֳnְyxֵ |
