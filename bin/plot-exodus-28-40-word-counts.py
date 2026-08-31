@@ -20,6 +20,9 @@ PATTERNS = {
     "holy": r"hol(?:y|ies|iness)",
     "bases": r"bases?",
     "offering": r"offerings?",
+    "chieftain": r"chieftains?",
+    "command": r"command(?:s|ed|ing)?",
+    "according to": r"according\s+to",
 }
 # Especially stark P vocabulary in Exodus 28–40 (P/J/E counts respectively):
 # bases 30/0/0, offering 29/0/0, bronze 26/0/0, equipment 21/0/0.
@@ -124,15 +127,31 @@ def stacked(words,totals,scope,filename,auto_ticks=False):
     fig.savefig(OUTPUT/filename,dpi=200,bbox_inches="tight"); plt.close(fig)
 
 def main():
-    parser=argparse.ArgumentParser(); parser.add_argument("--limit",type=int,default=10,choices=range(5,11)); args=parser.parse_args()
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--limit",type=int,default=10,choices=range(5,11))
+    parser.add_argument("--whole-torah-variants-only",action="store_true",
+                        help="write only the supplemental whole-Torah figures")
+    args=parser.parse_args()
     sns.set_theme(context="talk",style="whitegrid",rc={"axes.facecolor":"#FBF8F0","figure.facecolor":"#FBF8F0","grid.color":"#DDD4C2","axes.edgecolor":"#5C554B","text.color":"#29251F"})
     OUTPUT.mkdir(parents=True,exist_ok=True); words=selected_words(args.limit)
-    # Preserve the existing fixed-height chapter figures and add adaptive versions.
-    for chapter,sources in CHAPTERS.items():
-        for source in sources: chapter_plot(chapter,source,words,variable_y=True)
-    exodus=[ROOT/f"02-exodus/{c:02}.tex" for c in CHAPTERS]
-    stacked(words,source_totals(exodus,words),"Exodus 28–40","exodus-28-40-source-totals.png")
     torah=sorted(p for d in TORAH for p in d.glob("[0-9][0-9].tex"))
-    stacked(words,source_totals(torah,words),"the whole Torah","torah-source-totals.png",auto_ticks=True)
-    print(f"Plotted {', '.join(words)}"); print(f"Wrote {sum(map(len,CHAPTERS.values()))+2} figures")
+    if not args.whole_torah_variants_only:
+        # Preserve the existing fixed-height chapter figures and add adaptive versions.
+        for chapter,sources in CHAPTERS.items():
+            for source in sources: chapter_plot(chapter,source,words,variable_y=True)
+        exodus=[ROOT/f"02-exodus/{c:02}.tex" for c in CHAPTERS]
+        stacked(words,source_totals(exodus,words),"Exodus 28–40","exodus-28-40-source-totals.png")
+        stacked(words,source_totals(torah,words),"the whole Torah","torah-source-totals.png",auto_ticks=True)
+
+    reduced_words=[word for word in words if word not in {"holy","Aaron","offering"}]
+    expanded_words=words + [word for word in ("chieftain","command","according to") if word not in words]
+    stacked(reduced_words,source_totals(torah,reduced_words),
+            "the whole Torah (excluding holy, Aaron, and offering)",
+            "torah-source-totals-without-holy-aaron-offering.png",auto_ticks=True)
+    stacked(expanded_words,source_totals(torah,expanded_words),
+            "the whole Torah (with chieftain, command, and according to)",
+            "torah-source-totals-with-chieftain-command-according-to.png",auto_ticks=True)
+    print(f"Base terms: {', '.join(words)}")
+    print("Wrote 2 supplemental whole-Torah figures" if args.whole_torah_variants_only
+          else f"Wrote {sum(map(len,CHAPTERS.values()))+4} figures")
 if __name__=="__main__": main()
