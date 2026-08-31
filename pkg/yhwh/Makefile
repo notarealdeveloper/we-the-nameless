@@ -4,7 +4,7 @@ install:
 	pip install dist/*.tar.gz
 
 develop:
-	pip install -e '.[plots]'
+	pip install -e '.[plots,dev]'
 
 check:
 	pytest -v tests

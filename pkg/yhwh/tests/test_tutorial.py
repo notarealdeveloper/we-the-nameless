@@ -34,7 +34,7 @@ def test_open_the_project_from_the_environment(monkeypatch, tmp_path):
 
 def test_walk_search_and_count(corpus):
     assert corpus.book("Genesis").chapter(1).verse(1).ref.id == "Genesis.1.1"
-    assert corpus.grep_english("light")[0].english == "Let there be light"
+    assert corpus.grep_english("appeared")[0].english == "And he appeared in fire—and it burned."
     assert corpus.grep_hebrew("באש")[0].ref.id == "Genesis.1.2"
-    assert corpus.verse("Genesis", 1, 1).sources() == {"J", "P"}
-    assert corpus.frequency("english")["light"] == 1
+    assert corpus.verse("Genesis", 1, 1).sources() == ("P", "R")
+    assert corpus.frequency("english")["beginning"] == 1
