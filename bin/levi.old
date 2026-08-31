@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Run this from the root of the destination repo.
+#
+# Expected:
+#   ./We -> /home/jason/obsidian/We
+#   ./tbrncl/   # currently empty
+#   ./.git/     # destination repo already exists
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+git clone --no-local We "$tmp/we-import"
+git -C "$tmp/we-import" filter-repo --to-subdirectory-filter tbrncl
+git remote add we-import "$tmp/we-import"
+git fetch we-import
+git merge we-import/master --allow-unrelated-histories
+git remote remove we-import
