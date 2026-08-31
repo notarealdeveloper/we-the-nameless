@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
+PREVIOUS PROMPT:
+
 In 02-exodus/ chapters 28-40, only in the P sections, when P's getting really excited about his clothes and the tabernacle and Aaron becoming the high priest, add some English with Niqqud to show P getting all worked up.
 
 Give English niqqud to these words every time they appear in P in that range.
@@ -14,4 +16,18 @@ Then write a file at the end saying how many times each word appeared in each ch
 Only add the english niqqud to Exodus 28 to Exodus 40, and only in P.
 
 Go!
+
+CURRENT PROMPT:
+
+Ok great work so far, but I want much more intense niqqud on each word. As a second attempt, let's add not just the niqqud like we already have, we need more.
+
+So now:
+
+Remember you can put english niqqud on more than just vowels! Also add them on ds an ts to the right or wherever you think they fit, because the hebrew does. (Dagesh or whatever I forget the name, just add as many dots as you can possibly justify.)
+
+Also remember you can add cantillation marks too! We want to make P practically be screaming as he gets more excited.
+
+That said, try to avoid putting niqqud that appear UNDER a letter in a place that will cause it to overlap with the tail of a letter that extends lower like p or g, and try to avoid putting upper niqqud on capital letters or letters with bits protruding upward, like d or b.
+
+Do that now, and work until you're satisfied.
 EOF
