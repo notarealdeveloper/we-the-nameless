@@ -6,7 +6,7 @@ from collections import Counter
 from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
-from matplotlib.ticker import MaxNLocator
+from matplotlib.ticker import MultipleLocator
 import seaborn as sns
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,8 +16,14 @@ TORAH = [ROOT / x for x in ("01-genesis", "02-exodus", "03-leviticus", "04-numbe
 CHAPTERS = {28:("P",),29:("P",),30:("P",),31:("P",),32:("E",),33:("E",),34:("J","P"),35:("P",),36:("P",),37:("P",),38:("P",),39:("P",),40:("P",)}
 SUMMARIES = {28:"Priest clothes",29:"Priests installed",30:"Incense; census; oil",31:"Bezalel; Sabbath",32:"Golden calf",33:"Tent; God's back",34:"New tablets",35:"Work begins",36:"Tabernacle built",37:"Ark; furniture made",38:"Altar; courtyard; inventory",39:"Priest clothes done",40:"Tabernacle complete"}
 COLORS = ["#C79A2B","#285F8F","#B33A3A","#68458C","#E0B94B","#4E83AD","#D35B4F","#8A68A6","#9B7419","#173E63","#A52F32","#593473","#D6A928","#3975A3"]
-PATTERNS = {"holy":r"hol(?:y|ies|iness)","congregation":r"congregations?","chieftain":r"chieftains?","command":r"command(?:ed)?","Tabernacle":r"Tabernacles?"}
-ADDED = ["congregation", "chieftain", "command", "Tabernacle"]
+PATTERNS = {
+    "holy": r"hol(?:y|ies|iness)",
+    "bases": r"bases?",
+    "offering": r"offerings?",
+}
+# Especially stark P vocabulary in Exodus 28–40 (P/J/E counts respectively):
+# bases 30/0/0, offering 29/0/0, bronze 26/0/0, equipment 21/0/0.
+P_SKEWED = ["bases", "offering", "bronze", "equipment"]
 
 def selected_words(limit=10):
     totals = Counter()
@@ -27,7 +33,7 @@ def selected_words(limit=10):
             word = "holy" if cells[0].lower() in {"holy","holies","holiness"} else cells[0]
             totals[word] += int(cells[14])
     words = [x for x,_ in totals.most_common(limit)]
-    return words + [x for x in ADDED if x not in words]
+    return words + [x for x in P_SKEWED if x not in words]
 
 def macro_contents(text, source):
     out = []
@@ -68,22 +74,28 @@ def percentages(chapters):
 
 def style(ax,ymax=None):
     if ymax is not None: ax.set_ylim(0,ymax)
-    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.yaxis.set_major_locator(MultipleLocator(5))
     ax.tick_params(axis="x",labelrotation=35)
     for label in ax.get_xticklabels(): label.set_ha("right")
 
-def bars(ax,words,values):
+def legend_handles(words):
+    palette=[COLORS[i%len(COLORS)] for i in range(len(words))]
+    return [Patch(facecolor=palette[i],label=w) for i,w in enumerate(words)]
+
+def bars(ax,words,values,legend=True):
     palette=[COLORS[i%len(COLORS)] for i in range(len(words))]
     sns.barplot(x=words,y=values,hue=words,palette=palette,legend=False,ax=ax)
     ax.set(xlabel="",ylabel="Appearances")
-    ax.legend(handles=[Patch(facecolor=palette[i],label=w) for i,w in enumerate(words)],title="Words",loc="upper left",bbox_to_anchor=(1.01,1),frameon=True)
+    if legend:
+        ax.legend(handles=legend_handles(words),title="Words",loc="upper left",bbox_to_anchor=(1.01,1),frameon=True)
 
 def chapter_plot(chapter,source,words):
     text=(ROOT/f"02-exodus/{chapter:02}.tex").read_text(encoding="utf-8")
     fig,ax=plt.subplots(figsize=(15,8)); bars(ax,words,counts(text,source,words)); style(ax,20)
-    ax.set_title(SUMMARIES[chapter],fontsize=17,pad=10)
-    ax.text(.01,.98,percentages([chapter]),transform=ax.transAxes,va="top",fontsize=12)
-    fig.suptitle(f"Exodus {chapter}",fontsize=23,y=.99); fig.tight_layout(rect=(0,0,1,.94))
+    ax.text(.99,.98,percentages([chapter]),transform=ax.transAxes,ha="right",va="top",fontsize=12)
+    fig.suptitle(f"Exodus {chapter}",fontsize=23,y=.995)
+    fig.text(.5,.945,SUMMARIES[chapter],ha="center",va="top",fontsize=17)
+    fig.tight_layout(rect=(0,0,1,.89))
     fig.savefig(OUTPUT/f"exodus-{chapter:02}-{source.lower()}.png",dpi=200,bbox_inches="tight"); plt.close(fig)
 
 def source_totals(files,words):
@@ -94,12 +106,14 @@ def source_totals(files,words):
     return result
 
 def stacked(words,totals,scope,filename):
-    ymax=max(1,math.ceil(max(totals["P"])/10)*10)
-    fig,axes=plt.subplots(3,1,figsize=(15,21),sharex=True,sharey=True)
+    ymax=max(5,math.ceil(max(totals["P"])/5)*5)
+    fig,axes=plt.subplots(3,1,figsize=(17,23),sharex=True,sharey=True)
     for ax,s in zip(axes,"JEP"):
-        bars(ax,words,totals[s]); style(ax,ymax); ax.set_title(s,fontsize=19,pad=8)
-    axes[-1].tick_params(axis="x",labelbottom=True)
-    fig.suptitle(f"All selected terms: {scope}",fontsize=24,y=.995); fig.tight_layout(rect=(0,0,1,.98))
+        bars(ax,words,totals[s],legend=False); style(ax,ymax); ax.set_title(s,fontsize=19,pad=8)
+        ax.tick_params(axis="x",labelbottom=True)
+    fig.legend(handles=legend_handles(words),title="Words",loc="center left",bbox_to_anchor=(.89,.5),frameon=True)
+    fig.suptitle(f"All selected terms: {scope}",fontsize=24,y=.995)
+    fig.subplots_adjust(left=.08,right=.87,bottom=.08,top=.95,hspace=.42)
     fig.savefig(OUTPUT/filename,dpi=200,bbox_inches="tight"); plt.close(fig)
 
 def main():
