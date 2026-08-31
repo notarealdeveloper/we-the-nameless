@@ -1,34 +1,55 @@
-PKG = yhwh
-DATA = $(abspath ../..)
-TEX = $(wildcard $(DATA)/[01][0-9]-*/*.tex)
+PYTHON ?= python
+CORPUS ?= primary-history
+DATASET ?= dataset
 
-build: build-deps
-	python -m build
+.PHONY: help install dev test test-full lint typecheck dataset validate dist release clean clean-cache
+
+help:
+	@printf '%s\n' \
+	  'make install      Install editable package' \
+	  'make dev          Install development and plotting extras' \
+	  'make test         Run unit tests' \
+	  'make test-full    Run tests and parse/validate CORPUS' \
+	  'make dataset      Build portable dataset from CORPUS' \
+	  'make validate     Validate source-span integrity' \
+	  'make dist         Build wheel and sdist' \
+	  'make release      Build deterministic repository archives' \
+	  'make clean-cache  Remove ~/.cache/yhwh'
 
 install:
-	pip install dist/*.tar.gz
+	$(PYTHON) -m pip install .
 
 develop:
-	pip install -e .
+	$(PYTHON) -m pip install -e '.[all]'
 
 check:
-	PYTHONPATH=src pytest -v tests
-	PYTHONPATH=src python -m yhwh.cli --data '$(DATA)' grep 'dream' -l english >/dev/null
-	PYTHONPATH=src python -m yhwh.cli --data '$(DATA)' grep 'באש' -l hebrew >/dev/null
+	$(PYTHON) -m pytest -v
 
-uninstall:
-	pip uninstall $(PKG)
+check-full: test
+	$(PYTHON) -m yhwh --corpus '$(CORPUS)' info
+	$(PYTHON) -m yhwh --corpus '$(CORPUS)' validate
+
+lint:
+	$(PYTHON) -m ruff check src tests
+
+typecheck:
+	$(PYTHON) -m mypy src/yhwh
+
+dataset:
+	PYTHONPATH=src $(PYTHON) -m yhwh --corpus '$(CORPUS)' build '$(DATASET)'
+
+validate:
+	PYTHONPATH=src $(PYTHON) -m yhwh --corpus '$(CORPUS)' validate
+
+dist:
+	$(PYTHON) -m build
+
+release:
+	$(PYTHON) scripts/make_release.py --root . --output dist
 
 clean:
-	rm -rvf dist/ build/ .pytest_cache/ src/*.egg-info
+	rm -rf build dist .pytest_cache .coverage htmlcov .mypy_cache .ruff_cache
+	find . -type d -name __pycache__ -prune -exec rm -rf {} +
 
-dataset: $(TEX)
-	PYTHONPATH=src python -m yhwh.cli --data '$(DATA)' dataset data/primary-history.jsonl.gz
-
-cache-clean:
-	PYTHONPATH=src python -c 'import yhwh; yhwh.clean_cache()'
-
-build-deps:
-	@python -c 'import build' &>/dev/null || pip install build
-
-test: check
+clean-cache:
+	PYTHONPATH=src $(PYTHON) -m yhwh cache clean

@@ -1,128 +1,289 @@
 # yhwh
 
-`yhwh` is a source-aware lexical workbench for the Hebrew Bible files in this project. It parses the project's TeX source assignments into a machine-readable verse dataset, searches English or Hebrew without flattening mixed-source verses, computes source-conditioned frequency tables, plots them, and scores novel text against source language learned from the Torah.
+`yhwh` turns the source-colored Hebrew/English LaTeX corpus into a lossless,
+machine-readable dataset and a Python library for concordance search, complete
+long-tail frequency analysis, visualization, and quantified source attribution.
 
-The important rule is simple: **the TeX assignments are ground truth for the corpus layer.** Statistical attribution is a separate layer. By default authorship evidence is trained only on Genesis–Deuteronomy, while Joshua–Kings can be treated as material to test rather than labels to trust.
+The TeX source assignments are treated as ground truth **at parse time**. Literal
+labels such as `J`, `E`, `P`, `RJE`, `Dtr1`, `Dtr2`, `Dtn`, `Other`, and the
+various proto-poetic labels remain in every record. Canonical groupings (`RJE →
+R`, the Deuteronomistic labels → `D`, and so on) are a configurable analysis
+view, never a destructive rewrite.
+
+## What is included
+
+- A balanced-brace TeX parser for paired `\hSOURCE{}` / `\eSOURCE{}` macros.
+- Character-offset source spans, including nested source changes inside a verse
+  or even inside a whitespace token.
+- `Corpus`, `Book`, `Chapter`, `Verse`, and `Verses` objects with useful colored
+  reprs: Book light grey, Chapter red, Verse blue.
+- English literal/phrase/regex search, case-insensitive by default.
+- Hebrew literal/regex search that ignores niqqud and spaces by default, while
+  projecting each match back onto original text offsets.
+- Module-level and context-local niqqud settings.
+- Whitespace-only `Word` tokenization: apostrophes, hyphens, maqaf, punctuation,
+  and unusual Unicode characters do **not** terminate a word.
+- Complete source counters with majority, all, composite, or character-
+  fractional treatment of mixed-source words.
+- Per-word counts, rates, surprisal, PMI, shrinkage-adjusted log-odds z-scores,
+  enrichment, and information contribution.
+- A Torah-trained hybrid lexical/character n-gram attribution model reporting
+  model posteriors, log evidence, log2 Bayes factors, coverage, and token-by-token
+  contributions. All vocabulary—including the long tail—is used.
+- Portable gzip JSONL, SQLite, precomputed frequency JSON, serialized models,
+  schema, manifest, checksums, and validation output.
+- Optional matplotlib plots, an argparse CLI, tests, a Makefile, and cache tools.
 
 ## Install
 
 ```bash
-pip install -e '.[dev]'
-export YHWH_DATA_DIR=/path/to/primary-history
+python -m pip install -e .
+# plotting support
+python -m pip install -e '.[plots]'
 ```
 
-If the generated dataset shipped in `data/primary-history.jsonl.gz` is present, `yhwh.load()` can use it directly. Otherwise it looks for `$YHWH_DATA_DIR`, `./primary-history`, or a compatible chapter tree in the current directory.
-
-## Python API
-
-```python
-import yhwh
-
-bible = yhwh.load()
-
-bible.book("Genesis")
-bible.book("Genesis")[30]
-bible.book("Genesis")[30][1]
-
-# English: case-insensitive by default, spaces remain significant.
-verses = bible.english("give me children")
-verses = bible.english(r"give .* children", regex=True)
-
-# Hebrew: niqqud and whitespace are ignored by default.
-# This can match across a supplied word boundary.
-verses = bible.hebrew("באש")
-verses = bible.hebrew("ב אש")
-verses = bible.hebrew("ב אש", spaces=True)
-verses = bible.hebrew(r"באש.*בער", regex=True)
-
-# Per-call or global niqqud behavior.
-yhwh.set_niqqud(True)
-yhwh.get_niqqud()
-yhwh.set_niqqud(False)
-
-# Optional mater normalization. We conservatively treat ו/י as matres.
-bible.hebrew("...", matres="internal")
-bible.hebrew("...", matres="all")
-
-# Frequency analysis. Word boundaries are whitespace only.
-f = bible.frequency("english")                  # Primary History by default
-jep = bible.frequency("english", books=yhwh.TORAH_BOOKS,
-                       by_source=True, sources=["J", "E", "P"])
-hebrew = bible.frequency("hebrew", books=["Genesis", "Exodus"])
-
-# A source-conditioned count for one word.
-yhwh.word_by_source(bible.subset(yhwh.TORAH_BOOKS), "dream", language="english")
-
-# Long-tail lexical source evidence, trained on the Torah by default.
-result = bible.evidence("וַיֹּאמֶר יְהוָה אֶל מֹשֶׁה")
-result.best
-result.posteriors
-result.table()
-```
-
-`Book`, `Chapter`, and `Verse` reprs are ANSI light-grey, red, and blue respectively. A `Verse` stores both whole-language strings and exact `SourceSpan`s with source, raw source label, text, and character offsets. `Verses` is a `list` subclass; `Frequency` is a `collections.Counter` subclass; `Word` is a `str` subclass.
-
-## Source labels
-
-Raw TeX labels are never discarded. Current corpus labels include J, E, P, R, RJE, JE, JP, PR, Other, several Proto families, BookOfRecords, and Deuteronomistic labels such as Dtn, DtrA, DtrB, and DtrH. Analysis exposes a canonical `D` family that groups the Deuteronomistic labels while retaining their raw labels in every span. This makes it possible to ask a broad authorship question without making the dataset itself less precise.
-
-## Tokenization and Hebrew normalization
-
-Search and frequency tokenization are intentionally separate. English frequency tokens end **only at whitespace**: apostrophes, hyphens, Unicode dashes, and other punctuation do not create a boundary. Hebrew frequency analysis also uses supplied whitespace, as a concordance normally would.
-
-Hebrew grep is deliberately more permissive. By default it strips Unicode Hebrew marks and all whitespace from both query and verse, so a string can be found even when the manuscript/transcription puts a word boundary inside it. `spaces=True` restores space sensitivity. `niqqud=True` preserves marks. `matres="internal"` removes internal ו/י; `matres="all"` removes ו/י everywhere. א/ה are not blindly removed because they are too often consonantal.
-
-## Evidence model
-
-`yhwh.evidence` implements a smoothed multinomial Naive Bayes model over the **entire observed token vocabulary**, not a hand-curated list of diagnostic terms. Each Torah source span contributes its full token counts. A novel text is scored under each requested source language model with additive smoothing and an empirical source-size prior; log-scores are normalized with softmax into posterior probabilities. The result includes training-token totals and per-token log-likelihood contributions so conclusions can be audited.
-
-The default classes are J, E, P, R, and canonical D. A requested class with no training text is omitted rather than assigned fabricated evidence. Small classes (especially R) naturally have greater uncertainty; posterior numbers are evidence under this lexical model, not a claim that authorship can be reduced to vocabulary alone.
-
-For exploratory work on Joshua, for example, concatenate the Hebrew of a `Verses` selection and score it against a Torah-trained model:
-
-```python
-model = yhwh.train(bible, language="hebrew")
-joshua_late = yhwh.Verses(v for v in bible.book("Joshua").verses if v.chapter >= 13)
-text = " ".join(v.hebrew for v in joshua_late)
-model.score(text)
-```
-
-## Plotting
-
-Plotting is optional (`pip install -e '.[plot]'`). Functions return Matplotlib axes and do not call `show()`:
-
-```python
-from yhwh import plot
-ax = plot.frequency(jep["P"], n=40)
-ax.figure.savefig("p-frequency.png", bbox_inches="tight")
-
-ax = plot.sources(jep, "offering")
-ax = plot.evidence(result)
-```
-
-## CLI
+Point the library at the extracted TeX tree:
 
 ```bash
-yhwh --data /path/to/primary-history grep dream -l english
-yhwh --data /path/to/primary-history grep 'באש' -l hebrew
-yhwh --data /path/to/primary-history grep 'באש' -l hebrew --spaces
-yhwh --data /path/to/primary-history freq -l english --source J --source E --source P -n 50 --json
-yhwh --data /path/to/primary-history word dream -l english
-yhwh --data /path/to/primary-history evidence 'וַיֹּאמֶר יְהוָה אֶל מֹשֶׁה' --json
-yhwh --data /path/to/primary-history dataset data/primary-history.jsonl.gz
-yhwh cache-clean
+export YHWH_CORPUS=/path/to/primary-history
 ```
 
-## Dataset schema
+Or point it at a built dataset:
 
-`data/primary-history.jsonl.gz` is UTF-8 gzip JSON Lines, one object per verse. Each object has `book`, `chapter`, `verse`, `hebrew`, `english`, `hebrew_spans`, and `english_spans`. A span has `source`, `raw_source`, `text`, `start`, and `end`. The dataset is generated from the TeX files in this run; it is not derived from the earlier frequency experiments.
+```bash
+export YHWH_DATASET=/path/to/dataset/primary-history.jsonl.gz
+```
+
+Parsed corpora are cached under `${XDG_CACHE_HOME:-~/.cache}/yhwh`. Disable the
+CLI cache with `--no-cache`, call `yhwh.clean_cache()`, or run
+`yhwh cache clean`.
+
+## Python quick start
+
+```python
+from yhwh import Corpus
+
+corpus = Corpus.from_tex("/path/to/primary-history")
+
+# English: a one-token literal is a whitespace-delimited word by default.
+fire = corpus.grep_english("fire")
+
+# Hebrew: niqqud and spaces are ignored by default. This can find באש even when
+# the corpus has ב + אש as separately spaced material.
+be_esh = corpus.grep_hebrew("באש")
+for verse in be_esh:
+    print(verse, be_esh.match_info(verse))
+
+# Literal phrase and regex searches.
+corpus.grep_english("and he said")
+corpus.grep_english(r"\btabernacl\w*", regex=True)
+corpus.grep_hebrew(r"בער.*אש", regex=True)
+
+# Make Hebrew spaces or niqqud significant for one operation.
+corpus.grep_hebrew("בְּאֵשׁ", niqqud=True, spaces=True)
+```
+
+### Global niqqud behavior
+
+```python
+from yhwh import get_niqqud, niqqud, set_niqqud
+
+set_niqqud(True)
+assert get_niqqud()
+
+with niqqud(False):
+    # Temporarily ignore niqqud in this context.
+    ...
+```
+
+### Objects and source spans
+
+```python
+verse = corpus.verse("Genesis", 1, 1)
+print(verse.hebrew)
+print(verse.english)
+print(verse.hebrew_spans)          # literal source labels and offsets
+print(verse.sources(canonical=True))
+print(verse.segments("english"))
+
+book = corpus.book("Genesis")
+chapter = book.chapter(22)
+all_genesis = book.verses
+```
+
+`Corpus.records` retains every parsed record, including duplicate editions.
+Normal iteration uses one best analytical record per canonical reference.
+`corpus.variants("Genesis.22.1")` returns every retained version.
+
+## Search semantics
+
+The pure string functions are separate from corpus parsing and work on arbitrary
+text:
+
+```python
+from yhwh import find_english, find_hebrew, frequency_text
+
+find_english("Fire and firewood", "fire")
+find_hebrew("בְּ אֵשׁ", "באש")
+frequency_text("father-in-law God's", language="english")
+```
+
+English text is Unicode-normalized and casefolded by default. Extracted corpus
+whitespace is collapsed to ordinary spaces; a literal English phrase therefore
+cares about its spaces. Hebrew search removes niqqud and all whitespace by
+default. Regexes run against that normalized stream, and match offsets are mapped
+back to the original verse.
+
+Matres can be retained (default), ignored only inside whitespace tokens, or
+ignored everywhere:
+
+```python
+corpus.grep_hebrew("שלם", matres="internal")
+corpus.grep_hebrew("שלם", matres="all")
+```
+
+## Complete frequency analysis
+
+```python
+from yhwh import frequencies_by_source
+
+# Any subset can be analyzed. The default top-level `frequency()` loader uses
+# all available Primary History books; source-attribution training does not.
+torah = corpus.torah()
+
+english = torah.frequency("english")
+hebrew_by_source = torah.frequencies_by_source(
+    "hebrew",
+    canonical_sources=True,
+    attribution="fractional",
+)
+
+print(hebrew_by_source["J"].most_common(25))
+print(hebrew_by_source["P"].total_tokens)
+
+profile = torah.source_profile("אלהים", language="hebrew")
+for row in profile.evidence:
+    print(row.source, row.count, row.log_odds_z, row.enrichment_log2)
+```
+
+The default tokenizer splits only on Unicode whitespace. It does not silently
+strip commas, apostrophes, dashes, maqaf, brackets, or editorial marks. This is
+intentional and follows the corpus rule; callers can perform alternative
+standalone tokenization before constructing a `Frequency` when desired.
+
+Mixed-source tokens can be handled four ways:
+
+- `fractional`: divide one count according to source-character overlap.
+- `majority`: assign the token to its largest span.
+- `all`: give one count to every overlapping source.
+- `composite`: assign it to a label such as `J+R`.
+
+`characteristic_words()` ranks every eligible type, not a hand-picked vocabulary,
+using shrinkage-adjusted log odds or another requested metric.
+
+## Source attribution
+
+```python
+from yhwh import SourceAttributor
+
+# The trusted default: train only on Genesis–Deuteronomy assignments.
+model = SourceAttributor.train(corpus, scope="torah", language="hebrew")
+result = model.attribute("וַיֹּאמֶר יְהוָה אֶל מֹשֶׁה")
+
+print(result.posterior)
+print(result.log2_bayes_factor)
+print(result.coverage)
+for token in result.strongest_tokens(limit=10):
+    print(token.original, token.contribution_vs_mean_bits[result.winner])
+```
+
+The model is a smoothed multinomial Naive Bayes classifier over the **entire**
+Torah vocabulary. Known words use source-conditional lexical frequencies.
+Unknown words back off to averaged, smoothed 2–5-character n-grams, so a novel
+sentence remains scoreable without pretending an unseen token has no evidence.
+The default source classes are `J`, `E`, `P`, `R`, and combined `D`; they can be
+changed.
+
+A posterior of 0.9 means “0.9 inside this specified lexical model and its
+assumptions,” not “a 90% historical probability that this author wrote the
+passage.” Token independence, translation choices, topic, genre, editorial
+mixture, corpus size, and uncertain training labels can all make raw Naive Bayes
+posteriors overconfident. The result therefore also exposes raw evidence in bits,
+coverage, token contributions, model fingerprint, and training scope.
+
+To test a hypothesis such as Priestly material in Joshua, train on Torah and
+score Joshua passages without adding Joshua labels to the training data:
+
+```python
+model = SourceAttributor.train(corpus, scope="torah", language="hebrew")
+joshua_13_on = corpus.select(books="Joshua", chapters=range(13, 25))
+for verse in joshua_13_on:
+    result = model.attribute(verse)
+    print(verse.ref, result.winner, result.evidence_for("P"))
+```
+
+## Dataset format
+
+```bash
+yhwh --corpus /path/to/primary-history build dataset/
+```
+
+This writes:
+
+```text
+dataset/
+├── primary-history.jsonl.gz
+├── primary-history.sqlite3
+├── manifest.json
+├── schema.json
+├── source-labels.json
+├── validation.json
+├── frequencies/
+│   ├── torah-hebrew-literal.json.gz
+│   ├── torah-hebrew-canonical.json.gz
+│   └── ...
+└── models/
+    ├── torah-hebrew-hybrid.json.gz
+    └── torah-english-hybrid.json.gz
+```
+
+Every JSONL record contains paired text, reference data, raw TeX, file provenance,
+and half-open source spans. SQLite stores the same records and spans in normalized
+tables, plus normalized search columns and FTS5 when the local SQLite build
+supports it. `manifest.json` gives checksums and exact counts.
+
+## CLI examples
+
+```bash
+# Inspect corpus
+ yhwh --corpus primary-history info
+
+# Hebrew cross-boundary search
+ yhwh --corpus primary-history search באש -l hebrew --segments
+
+# English regex
+ yhwh --corpus primary-history search 'tabernacl\w*' --regex -l english
+
+# Full Torah source counters
+ yhwh --corpus primary-history freq --scope torah -l hebrew --by-source --top 100
+
+# Evidence profile
+ yhwh --corpus primary-history profile אלהים -l hebrew --scope torah
+
+# Long-tail P vocabulary
+ yhwh --corpus primary-history characteristic -l hebrew --source P --limit 200
+
+# Novel text attribution, trained on Torah only
+ yhwh --corpus primary-history attribute 'וַיֹּאמֶר יְהוָה' -l hebrew --json
+```
 
 ## Development
 
 ```bash
 make test
-make check DATA=/path/to/primary-history
-make dataset DATA=/path/to/primary-history
+make dataset CORPUS=/path/to/primary-history
+make dist
 ```
 
-The TeX parser lives in `yhwh.tex`; normalization/tokenization lives in `yhwh.normalize`; search, frequency, evidence, plotting, and models are separate modules. This is intentional so the text-analysis pieces can be used on strings or manually constructed `Verse`/`Verses` objects without adopting the project's TeX format.
+See `docs/dataset-schema.md` for the record contract and
+`docs/methodology.md` for normalization, mixed spans, and attribution details.

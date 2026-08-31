@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "name": "primary-history",
+  "corpus_fingerprint": "c714fecf7904d5c562da2f5de8eb9fddc9d964a7498aaf0389c358f789d2ab73",
+  "records": 10183,
+  "analytical_verses": 10135,
+  "duplicates_retained": 48,
+  "books": [
+    "Genesis",
+    "Exodus",
+    "Leviticus",
+    "Numbers",
+    "Deuteronomy",
+    "Joshua",
+    "Judges",
+    "1 Samuel",
+    "2 Samuel",
+    "1 Kings",
+    "2 Kings"
+  ],
+  "source_suffixes": [
+    "BookOfRecords",
+    "Dtn",
+    "DtrA",
+    "DtrB",
+    "DtrH",
+    "E",
+    "J",
+    "JE",
+    "JP",
+    "JPP",
+    "Other",
+    "P",
+    "PR",
+    "Proto",
+    "ProtoA",
+    "ProtoF",
+    "R",
+    "RJE",
+    "Reblacktor",
+    "Red",
+    "X"
+  ],
+  "normalization": {
+    "dataset_text": "TeX rendered and Unicode whitespace collapsed",
+    "hebrew_search_default": "niqqud and spaces ignored; matres retained",
+    "word_boundary": "Unicode whitespace only"
+  },
+  "files": {
+    "jsonl": {
+      "path": "primary-history.jsonl.gz",
+      "bytes": 2248096,
+      "sha256": "ea49d9bc660f8ed938660d0889733cd576c04c36c8a6c4dc636e1784bd88856e"
+    },
+    "sqlite": {
+      "path": "primary-history.sqlite3",
+      "bytes": 22867968,
+      "sha256": "2a1faa7849aa4b9cf13b94dcbd08264384e72c8ddad73a865403f3e2fc49bbba"
+    },
+    "schema": {
+      "path": "schema.json",
+      "bytes": 1553,
+      "sha256": "d74b56c2181dc0d4b8dc882de34a51644f89b1e6dd3a068f625668b07d0b4233"
+    },
+    "source_labels": {
+      "path": "source-labels.json",
+      "bytes": 868,
+      "sha256": "b1e04f51e6b663e98d22ccb316289cd0dc6e10a6307cdf606b052e4daad42297"
+    },
+    "frequency_torah_hebrew_literal": {
+      "path": "frequencies/torah-hebrew-literal.json.gz",
+      "bytes": 89671,
+      "sha256": "6da99fb24d75b728b6ef800ab4f0c33d3773a048b37f1506da32c68a4a0250db"
+    },
+    "frequency_torah_hebrew_canonical": {
+      "path": "frequencies/torah-hebrew-canonical.json.gz",
+      "bytes": 86098,
+      "sha256": "5f3b1003695af2e15d0f96bb4290202cfbad4d5a708faa503903af9046e5996c"
+    },
+    "frequency_torah_english_literal": {
+      "path": "frequencies/torah-english-literal.json.gz",
+      "bytes": 76847,
+      "sha256": "d3690c88d803e18c7c1af8e044ad6ae50ca98b84d5cc35325c80cfc34f6a857d"
+    },
+    "frequency_torah_english_canonical": {
+      "path": "frequencies/torah-english-canonical.json.gz",
+      "bytes": 72885,
+      "sha256": "805ba03394bd406b83ae0212cc517361257a4723148611123aaead49f41c6227"
+    },
+    "frequency_primary-history_hebrew_literal": {
+      "path": "frequencies/primary-history-hebrew-literal.json.gz",
+      "bytes": 178524,
+      "sha256": "fd7776da4cc5465bbde46ef1d5a7ae36ccb112151b5053746075325602f27f2a"
+    },
+    "frequency_primary-history_hebrew_canonical": {
+      "path": "frequencies/primary-history-hebrew-canonical.json.gz",
+      "bytes": 171680,
+      "sha256": "ca16e8f1e12e54897d057bb8b7302b504d6afac66640782a9101d173ea2559cf"
+    },
+    "frequency_primary-history_english_literal": {
+      "path": "frequencies/primary-history-english-literal.json.gz",
+      "bytes": 143839,
+      "sha256": "f0e1b4b891370a94cb074d64604a5089bd8db0b7f4fe568ddacdc7a91bbcfef9"
+    },
+    "frequency_primary-history_english_canonical": {
+      "path": "frequencies/primary-history-english-canonical.json.gz",
+      "bytes": 136399,
+      "sha256": "2afd84064747e29db4552a4faaba28c278f72a9f90ba6e02a158137f1352aaab"
+    },
+    "model_hebrew": {
+      "path": "models/torah-hebrew-hybrid.json.gz",
+      "bytes": 394153,
+      "sha256": "7aab429473ad8557d1a833aaf28fb52cad5dcffa75eb3acb45ca49ce90063253"
+    },
+    "model_english": {
+      "path": "models/torah-english-hybrid.json.gz",
+      "bytes": 353693,
+      "sha256": "086db03dff263a00e5c572e01e706361d02d66943ddecc71909fceb727fa7673"
+    },
+    "validation": {
+      "path": "validation.json",
+      "bytes": 6556,
+      "sha256": "50ee6ebfae304f67e81579fe89db69f7dafe656b1c19543e74624bfb7a323231"
+    }
+  }
+}

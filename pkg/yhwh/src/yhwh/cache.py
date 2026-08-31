@@ -1,7 +1,4 @@
-from pathlib import Path
-import os, shutil
+"""Public cache helpers."""
+from .config import cache_dir, clean_cache
 
-def cache_dir(): return Path(os.environ.get('YHWH_CACHE_DIR',Path.home()/'.cache'/'yhwh'))
-def clean_cache():
-    p=cache_dir()
-    if p.exists(): shutil.rmtree(p)
+__all__ = ["cache_dir", "clean_cache"]
