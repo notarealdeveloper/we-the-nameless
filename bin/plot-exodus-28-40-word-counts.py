@@ -5,11 +5,13 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+import math
 from pathlib import Path
 import re
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
+from matplotlib.ticker import MaxNLocator
 import seaborn as sns
 
 
@@ -109,6 +111,44 @@ def counts_for(chapter: int, source: str, words: list[str]) -> list[int]:
     return [word_count(source_text, word) for word in words]
 
 
+def source_percentages(chapters: list[int]) -> dict[str, float]:
+    """Return verse-weighted J/E/P percentages, splitting mixed verses equally."""
+    shares = Counter({source: 0.0 for source in "JEP"})
+    verse_count = 0
+    for chapter in chapters:
+        chapter_text = (ROOT / "02-exodus" / f"{chapter:02}.tex").read_text(encoding="utf-8")
+        verses = re.split(r"(?=\\Verse\{\d+\})", chapter_text)[1:]
+        for verse in verses:
+            tags = re.findall(r"\\e([A-Z]+)\{", verse)
+            sources = {source for source in "JEP" if any(source in tag for tag in tags)}
+            if not sources:
+                continue
+            verse_count += 1
+            for source in sources:
+                shares[source] += 1 / len(sources)
+    return {source: 100 * shares[source] / verse_count for source in "JEP"}
+
+
+def percentage_label(percentages: dict[str, float]) -> str:
+    return "  ".join(f"{source}: {percentages[source]:.1f}%" for source in "JEP")
+
+
+def style_count_axis(ax: plt.Axes, ymax: int | None = None) -> None:
+    if ymax is not None:
+        ax.set_ylim(0, ymax)
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+    labels = [label.get_text() for label in ax.get_xticklabels()]
+    ax.set_xticks(
+        ax.get_xticks(),
+        ["Tent of\nMeeting" if label == "Tent of Meeting" else label for label in labels],
+    )
+    for label in ax.get_xticklabels():
+        if label.get_text() == "Tent of\nMeeting":
+            label.set(rotation=0, ha="center")
+        else:
+            label.set(rotation=35, ha="right", rotation_mode="anchor")
+
+
 def set_theme() -> None:
     sns.set_theme(
         context="talk",
@@ -129,7 +169,7 @@ def chapter_plot(chapter: int, source: str, words: list[str], counts: list[int])
     ax.set_xlabel("")
     ax.set_ylabel("Appearances")
     ax.set_title(SUMMARIES[chapter], fontsize=17, pad=10)
-    ax.tick_params(axis="x", rotation=35)
+    style_count_axis(ax, ymax=20)
     ax.legend(
         handles=[Patch(facecolor=color, label=word) for word, color in zip(words, COLORS)],
         title="Words",
@@ -138,7 +178,9 @@ def chapter_plot(chapter: int, source: str, words: list[str], counts: list[int])
         bbox_to_anchor=(1.01, 1),
         frameon=True,
     )
+    composition = percentage_label(source_percentages([chapter]))
     ax.text(0.01, 0.98, f"Source: {source}", transform=ax.transAxes, va="top", fontsize=12)
+    ax.text(0.99, 0.98, composition, transform=ax.transAxes, va="top", ha="right", fontsize=12)
     fig.suptitle(f"Exodus {chapter}", fontsize=23, y=0.99)
     fig.tight_layout(rect=(0, 0, 1, 0.94))
     fig.savefig(OUTPUT / f"exodus-{chapter:02}-{source.lower()}.png", dpi=200, bbox_inches="tight")
@@ -152,7 +194,7 @@ def total_plot(words: list[str], all_counts: dict[tuple[int, str], list[int]]) -
     ax.set_xlabel("")
     ax.set_ylabel("Appearances")
     ax.set_title("Selected-source totals across chapters 28--40", fontsize=17, pad=10)
-    ax.tick_params(axis="x", rotation=35)
+    style_count_axis(ax)
     ax.legend(
         handles=[Patch(facecolor=color, label=word) for word, color in zip(words, COLORS)],
         title="Words",
@@ -162,9 +204,42 @@ def total_plot(words: list[str], all_counts: dict[tuple[int, str], list[int]]) -
         frameon=True,
     )
     fig.suptitle("Exodus 28--40", fontsize=23, y=0.99)
+    ax.text(0.99, 0.98, percentage_label(source_percentages(list(CHAPTERS))), transform=ax.transAxes, va="top", ha="right", fontsize=12)
     fig.tight_layout(rect=(0, 0, 1, 0.94))
     fig.savefig(OUTPUT / "exodus-28-40-total.png", dpi=200, bbox_inches="tight")
     plt.close(fig)
+
+
+def source_total_plots(words: list[str]) -> None:
+    totals = {
+        source: [
+            sum(counts_for(chapter, source, words)[index] for chapter in CHAPTERS)
+            for index in range(len(words))
+        ]
+        for source in "JEP"
+    }
+    ymax = math.ceil(max(totals["P"]) / 10) * 10
+    composition = percentage_label(source_percentages(list(CHAPTERS)))
+    for source in "JEP":
+        fig, ax = plt.subplots(figsize=(12, 7))
+        sns.barplot(x=words, y=totals[source], hue=words, palette=COLORS, legend=False, ax=ax)
+        ax.set_xlabel("")
+        ax.set_ylabel("Appearances")
+        ax.set_title(f"All selected terms in source {source}", fontsize=17, pad=10)
+        style_count_axis(ax, ymax=ymax)
+        ax.legend(
+            handles=[Patch(facecolor=color, label=word) for word, color in zip(words, COLORS)],
+            title="Words",
+            ncol=1,
+            loc="upper left",
+            bbox_to_anchor=(1.01, 1),
+            frameon=True,
+        )
+        ax.text(0.99, 0.98, composition, transform=ax.transAxes, va="top", ha="right", fontsize=12)
+        fig.suptitle("Exodus 28--40", fontsize=23, y=0.99)
+        fig.tight_layout(rect=(0, 0, 1, 0.94))
+        fig.savefig(OUTPUT / f"exodus-28-40-{source.lower()}-total.png", dpi=200, bbox_inches="tight")
+        plt.close(fig)
 
 
 def main() -> None:
@@ -182,8 +257,9 @@ def main() -> None:
             all_counts[(chapter, source)] = counts
             chapter_plot(chapter, source, words, counts)
     total_plot(words, all_counts)
+    source_total_plots(words)
     print(f"Plotted {', '.join(words)}")
-    print(f"Wrote {len(all_counts) + 1} graphs to {OUTPUT.relative_to(ROOT)}")
+    print(f"Wrote {len(all_counts) + 4} graphs to {OUTPUT.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
