@@ -1,7 +1,5 @@
 ## Genesis
 
-Genesis 38. Judah and Tamar. Add something about how in J, women get power "By hooker by crook."
-
 ## Exodus
 
 Exodus 28. When P's getting really excited about his clothes, add some English with Niqqud in P style.
