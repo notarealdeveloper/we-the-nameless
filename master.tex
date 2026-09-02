@@ -970,11 +970,19 @@
 
 \arrayrulecolor{RuleColor}
 \newcommand{\TocFont}{\EnglishFont\color{TextColor}}
+\ifx\ConfigTheme\ConfigThemeDark
+    % Preserve the existing, brighter link blue against the dark background.
+    \colorlet{ContentsLinkColor}{MobileLinkColor}
+\else
+    % Match \aC text exactly in light mode.
+    \colorlet{ContentsLinkColor}{Bluecolor}
+\fi
+\newcommand{\TocLinkFont}{\EnglishFont\color{ContentsLinkColor}}
 \renewcommand{\cfttoctitlefont}{\TocFont\Huge\bfseries}
-\renewcommand{\cftchapfont}{\TocFont}
-\renewcommand{\cftchappagefont}{\TocFont}
-\renewcommand{\cftsecfont}{\TocFont}
-\renewcommand{\cftsecpagefont}{\TocFont}
+\renewcommand{\cftchapfont}{\TocLinkFont}
+\renewcommand{\cftchappagefont}{\TocLinkFont}
+\renewcommand{\cftsecfont}{\TocLinkFont}
+\renewcommand{\cftsecpagefont}{\TocLinkFont}
 \renewcommand{\headrule}{%
     {\color{RuleColor}\hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}%
 }
@@ -2933,9 +2941,9 @@
 }
 \newcommand{\ChapterLinkText}[1]{%
     \ifConfigOutputModeMobile
-        {\color{MobileLinkColor}\underLine{#1}}%
+        {\color{ContentsLinkColor}\underLine{#1}}%
     \else
-        {\color{TextColor}#1}%
+        {\color{ContentsLinkColor}#1}%
     \fi
 }
 \newcommand{\ChapterLink}[1]{%
@@ -3011,9 +3019,9 @@
 }
 \newcommand{\ChapterSummaryLinkText}[1]{%
     \ifConfigOutputModeMobile
-        {\color{MobileLinkColor}\underLine{#1}}%
+        {\color{ContentsLinkColor}\underLine{#1}}%
     \else
-        {\color{TextColor}#1}%
+        {\color{ContentsLinkColor}#1}%
     \fi
 }
 \newcommand{\ChapterSummaryUpperAlt}[1]{%
@@ -3075,9 +3083,9 @@
 }
 \newcommand{\BookExtraLinkText}[1]{%
     \ifConfigOutputModeMobile
-        {\color{MobileLinkColor}\underLine{#1}}%
+        {\color{ContentsLinkColor}\underLine{#1}}%
     \else
-        {\color{TextColor}#1}%
+        {\color{ContentsLinkColor}#1}%
     \fi
 }
 \newcommand{\BookLink}[2]{%
