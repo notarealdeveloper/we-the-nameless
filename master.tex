@@ -2726,6 +2726,12 @@
 \section{nav: title}
 \fi
 
+% Subset builds replace these hooks with their own title and contents marks.
+% Keep the full-book defaults visually empty now that the LD logo lives on
+% the publication-notice page.
+\newcommand{\WeTitlePageBottomMark}{\vspace*{\fill}}
+\newcommand{\WeContentsPageBottomMark}{}
+
 \newcommand{\wetitlepage}{%
     \clearpage
     \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
@@ -2736,7 +2742,7 @@
     {\fontsize{100}{120}\fontfamily{lmr}\selectfont\textsc{We}\par}
     \vspace*{0.2\textheight}
     {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
-    \vspace*{\fill}
+    \WeTitlePageBottomMark
     \newpage
     }
     \restoregeometry
@@ -2749,9 +2755,7 @@
     \begingroup
     \centering
     \vspace*{\fill}
-    \includegraphics[width=1.00in]{\TitlePageLogoImage}\par
-    \vspace{2\baselineskip}
-    {\footnotesize
+    {\scriptsize
     \aA{\ttfamily
         LD LLC makes no claim to have written the book that follows.\\
         We could not find a published edition of it, and thought one\\
@@ -2771,6 +2775,8 @@
         It is, at least, a bible, and the rules of that genre apply.
     }\par
     }
+    \vspace{2\baselineskip}
+    \includegraphics[width=1.00in]{\TitlePageLogoImage}\par
     \vspace*{\fill}
     \endgroup
     \clearpage
