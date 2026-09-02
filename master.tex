@@ -108,7 +108,7 @@
     \DeclareConfiguredTextSize{\Huge}{33.17pt}{40pt}%
 }
 
-\newcommand{\AlphabetHistoryMobileTextSizes}{%
+\newcommand{\AlphabetHistoryPageTextSizes}{%
     \DeclareConfiguredTextSize{\tiny}{7.5pt}{8.75pt}%
     \DeclareConfiguredTextSize{\scriptsize}{10pt}{11.875pt}%
     \DeclareConfiguredTextSize{\footnotesize}{11.25pt}{13.75pt}%
@@ -2760,7 +2760,12 @@
     \begingroup
     \centering
     \vspace*{\fill}
-    {\tiny
+    {\ifConfigOutputModeMobile
+        \BookModeTextSizes
+        \tiny
+    \else
+        \tiny
+    \fi
     \aA{\ttfamily
         LD LLC makes no claim to have written the book that follows.\\
         We could not find a published edition of it, and thought one\\
@@ -2867,10 +2872,12 @@
 \def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
 
 \newcommand{\AlphabetHistoryTextSizes}{%
-    \ifConfigOutputModeMobile
-        \AlphabetHistoryMobileTextSizes
-        \normalsize
-    \fi
+    % Use one fixed canvas in both output modes.  At the ordinary book-mode
+    % text size, the samples fall below \linewidth and expose their manually
+    % tuned, uneven widths; this size makes the existing fit-to-linewidth rule
+    % produce the same clean alignment that mobile mode has.
+    \AlphabetHistoryPageTextSizes
+    \normalsize
 }
 
 \newcommand{\AlphabetHistoryPage}{%
