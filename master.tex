@@ -870,9 +870,9 @@
 \definecolor{DefColor}{RGB}{0,70,170}
 \definecolor{RedactedColor}{RGB}{0,70,170}
 \definecolor{MobileLinkColor}{HTML}{8ec7ff}
-\colorlet{HLAbgcolor}{Kcolor!13!white}
-\colorlet{HLBbgcolor}{Redcolor!14!white}
-\colorlet{HLCbgcolor}{Bluecolor!18!white}
+\colorlet{HLAbgcolor}{Kcolor!28!white}
+\colorlet{HLBbgcolor}{Redcolor!28!white}
+\colorlet{HLCbgcolor}{Bluecolor!28!white}
 
 \colorlet{TextColor}{black}
 \colorlet{RuleColor}{TextColor}
@@ -954,9 +954,9 @@
     \colorlet{Yellowcolor}{Ecolor}
     \colorlet{Graycolor}{ObsGray!70!fg}
     \colorlet{DefColor}{ObsBlue!65!fg}
-    \colorlet{HLAbgcolor}{Kcolor!18!bg}
+    \colorlet{HLAbgcolor}{Kcolor!28!bg}
     \colorlet{HLBbgcolor}{Redcolor!28!bg}
-    \colorlet{HLCbgcolor}{Bluecolor!34!bg}
+    \colorlet{HLCbgcolor}{Bluecolor!28!bg}
     \renewcommand{\TitlePageLogoImage}{img/ld-book-dark.png}
     \pagecolor{bg}
     \AtBeginDocument{\color{TextColor}}
@@ -1611,6 +1611,10 @@
 % ------------------------------------------------------------
 
 \newcommand{\heb}[1]{%
+    {\HebrewDavid{}{#1}}%
+}
+
+\newcommand{\hebniq}[1]{%
     {\InlineHebrewRenderer{}{#1}}%
 }
 
@@ -2830,7 +2834,7 @@
     \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protobupper}\\
     \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protocupper}\\
     \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protoclower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewTelZayitFont}{1.81}{\paleoalower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelZayitFont}{1.81}{ABGDHWZXTYKLMNSOPCQRst}\\
     \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleobupper}\\
     \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleoblower}\\
     \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleoupper}\\
