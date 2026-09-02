@@ -182,7 +182,7 @@ progress:
 	xdg-open "$(MAIN).tex" >/dev/null 2>&1 &
 
 parallel:
-	WTN_BUILD_DIR="$(BUILD)/parallel" WTN_OUTPUT_MODE="$(OUTPUT_MODE)" WTN_THEME="$(THEME)" bin/parallel-build
+	bin/parallel-build
 
 $(SUBSET_TARGETS): BUILD = build/$@
 $(SUBSET_TARGETS):

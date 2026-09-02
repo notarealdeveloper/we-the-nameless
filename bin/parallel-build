@@ -17,8 +17,26 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 MASTER = ROOT / "master.tex"
-OUTPUT_MODE = os.environ.get("WTN_OUTPUT_MODE", "book")
-THEME = os.environ.get("WTN_THEME", "dark")
+
+
+def read_master_config(name):
+    text = MASTER.read_text()
+    match = re.search(
+        rf"^[ \t]*\\def\\{name}[ \t]*\{{([^}}]+)\}}",
+        text,
+        re.MULTILINE,
+    )
+    if not match:
+        raise RuntimeError(f"master.tex has no active \\def\\{name}{{...}}")
+    return match.group(1).strip()
+
+
+# master.tex is the default source of truth.  Environment variables remain
+# available for callers that deliberately want to override its active config.
+OUTPUT_MODE_OVERRIDE = os.environ.get("WTN_OUTPUT_MODE")
+THEME_OVERRIDE = os.environ.get("WTN_THEME")
+OUTPUT_MODE = OUTPUT_MODE_OVERRIDE or read_master_config("ConfigOutputMode")
+THEME = THEME_OVERRIDE or read_master_config("ConfigTheme")
 BUILD = Path(
     os.environ.get("WTN_BUILD_DIR", ROOT / "build" / f"{OUTPUT_MODE}-{THEME}" / "parallel")
 )
@@ -54,8 +72,16 @@ def read_document_parts():
     if not doc_match:
         raise RuntimeError("master.tex has no \\begin{document}")
 
-    config = rf"\def\ConfigOutputMode{{{OUTPUT_MODE}}}\def\ConfigTheme{{{THEME}}}"
-    preamble = config + "\n" + text[: doc_match.end()]
+    preamble = text[: doc_match.end()]
+    if OUTPUT_MODE_OVERRIDE or THEME_OVERRIDE:
+        config = "".join(
+            [
+                rf"\def\ConfigOutputMode{{{OUTPUT_MODE}}}",
+                rf"\def\ConfigTheme{{{THEME}}}",
+            ]
+        )
+        # Apply deliberate overrides after master.tex's config declarations.
+        preamble = text[: doc_match.start()] + config + "\n" + text[doc_match.start() : doc_match.end()]
     books = list(BOOK_RE.finditer(text))
     if not books:
         raise RuntimeError("master.tex has no \\Book blocks")
