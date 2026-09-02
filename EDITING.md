@@ -1,9 +1,29 @@
-## TODO
-
-- [ ] Catch R up on Gen 44-48. (manually)
-- [ ] Do everything below. (automateable)
 
 ---
+
+## Stuff that can't be automated
+
+- [ ] Catch R up on Gen 44-48. (manually)
+
+- [ ] Alphabet history page. Row 9 is fucked up. Put it in the right order manually.
+
+
+---
+
+## Stuff that can be automated
+
+### Assorted
+
+Gen 21:12. 'sending should be `sending.
+
+Gen 41:45. Footnote. that's YHWH should be that YHWH.
+
+Genesis 23:2. Mention Joshua here in the commentary block. Say:
+- \aC{This is one of the only _stories_ that P has but J and E don't.\fC{Others include the priestly inauguration and Nadab and Abihu (Lev 8--10), the blasphemer (Lev 24:10--23), the Sabbath stick-gatherer (Num 15:32--36), Korah's rebellion (Num 16--17), and the daughters of Zelophehad (Num 27; 36).} Machpelah is in Hebron, and Hebron was an Aaronid priestly city (Josh 21:13).}
+
+---
+
+### Linear
 
 Gen 1:1. Need to decide on a punctuation policy. Here's the best one: 
 - Red uses almost perfect punctuation in Genesis 1.
@@ -54,8 +74,3 @@ Gen 10:25. The word small has a single quote on the left side, make it a double 
 
 Gen 11:1. Need a "the" in "the" whole world as one nation.
 
-RESUME GENESIS 11.
-WELCOME TO BABEL.
-WE DID IT NAMELESS.
-NEVER EXPECTED WE.
-🖤❤️💙
