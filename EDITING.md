@@ -1,35 +1,21 @@
 
 ---
 
-## Stuff that can't be automated
+## Stuff to do later
 
-- [ ] Catch R up on Gen 44-48. (manually)
-
-- [ ] Alphabet history page. Row 9 is fucked up. Put it in the right order manually.
-
+- [ ] Catch R up on Gen 44-48.
 
 ---
 
-## Stuff that can be automated
+## Stuff to do now
 
-### Assorted
-
-Gen 21:12. 'sending should be `sending.
-
-Gen 41:45. Footnote. that's YHWH should be that YHWH.
-
-Genesis 23:2. Mention Joshua here in the commentary block. Say:
-- \aC{This is one of the only _stories_ that P has but J and E don't.\fC{Others include the priestly inauguration and Nadab and Abihu (Lev 8--10), the blasphemer (Lev 24:10--23), the Sabbath stick-gatherer (Num 15:32--36), Korah's rebellion (Num 16--17), and the daughters of Zelophehad (Num 27; 36).} Machpelah is in Hebron, and Hebron was an Aaronid priestly city (Josh 21:13).}
-
----
-
-### Linear
+master.tex: Alphabet history page. Row 9 is fucked up. Put it in the right order by looking at the ascii or whatever codes that that font uses, and use that to properly order the letters.
 
 Gen 2:4b. Make the \heb{} primitive strip niqqud, and add a \hebniq{} primitive that keeps them.
 
 Gen 2:6-7. Delete the redactor \eR{God} and \hR{אלהים} in this one, it distracts from the point.
 
-Gen 2 and 3: Make the backgrounds for the highlighted words less milky. I want the blue to be more like \eR{...} redactor blue, and the red to be more like \eReblackor{...} red, and the black to be a similar level of color: it should be light grey (darker than the bg) in light mode and dark grey (lighter than the bg) in dark mode. Achieve this by using the latex ! color mixing primitive.
+Gen 2 and 3: Make the backgrounds for the highlighted words less milky. The blue should be more like \eR{...} redactor blue, the red should be more like \eReblackor{...} red, and the black should be a similar level of color/non-milkiness: It should be light grey (darker than the bg) in light mode and dark grey (lighter than the bg) in dark mode. Achieve this by using the latex ! color mixing primitive.
 
 Gen 3:1. Remove the 2nd God from Redactor blue in the Hebrew.
 
@@ -65,3 +51,9 @@ Gen 10:25. The word small has a single quote on the left side, make it a double 
 
 Gen 11:1. Need a "the" in "the" whole world as one nation.
 
+Gen 21:12. 'sending should be `sending.
+
+Genesis 23:2. Mention Joshua here in the commentary block. Say:
+- \aC{This is one of the only _stories_ that P has but J and E don't.\fC{Others include the priestly inauguration and Nadab and Abihu (Lev 8--10), the blasphemer (Lev 24:10--23), the Sabbath stick-gatherer (Num 15:32--36), Korah's rebellion (Num 16--17), and the daughters of Zelophehad (Num 27; 36).} Machpelah is in Hebron, and Hebron was an Aaronid priestly city (Josh 21:13).}
+
+Gen 41:45. Footnote. that's YHWH should be that YHWH.
