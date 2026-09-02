@@ -1,8 +1,3 @@
 
-Dear Reader,
+The Bible is weirder than you remember.
 
-It's been a while
-
-Or it will have
-
-By now.
