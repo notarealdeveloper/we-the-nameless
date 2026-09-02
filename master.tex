@@ -15,6 +15,11 @@
 % choices: true, false
 \def\ConfigCommentary{true}
 
+% choices: apocryphal, canonical
+\ifdefined\ConfigApocrypha\else
+    \def\ConfigApocrypha{apocryphal}
+\fi
+
 % choices: default, kjv, nrsv, etc. from translations/
 \def\ConfigEnglishTranslation{default}
 
@@ -40,12 +45,15 @@
 \def\ConfigVerseLayoutVertical{vertical}
 \def\ConfigOutputModeBook{book}
 \def\ConfigOutputModeMobile{mobile}
+\def\ConfigApocryphaApocryphal{apocryphal}
+\def\ConfigApocryphaCanonical{canonical}
 \def\ConfigEnglishTranslationDefault{default}
 \def\IndividualBookTitlePageStyleFancy{fancy}
 
 \newif\ifConfigCommentaryOn
 \newif\ifConfigVerseLayoutVertical
 \newif\ifConfigOutputModeMobile
+\newif\ifConfigApocryphaOn
 \newif\ifConfigEnglishTranslationDefault
 \newif\ifIndividualBookTitlePageStyleFancy
 
@@ -63,6 +71,11 @@
     \ConfigOutputModeMobiletrue
 \else
     \ConfigOutputModeMobilefalse
+\fi
+\ifx\ConfigApocrypha\ConfigApocryphaApocryphal
+    \ConfigApocryphaOntrue
+\else
+    \ConfigApocryphaOnfalse
 \fi
 \ifx\ConfigEnglishTranslation\ConfigEnglishTranslationDefault
     \ConfigEnglishTranslationDefaulttrue
@@ -995,6 +1008,7 @@
 \renewcommand{\cftchappagefont}{\TocLinkFont}
 \renewcommand{\cftsecfont}{\TocLinkFont}
 \renewcommand{\cftsecpagefont}{\TocLinkFont}
+\cftpagenumberson{chapter}
 \renewcommand{\headrule}{%
     {\color{RuleColor}\hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}%
 }
@@ -2344,7 +2358,6 @@
     \ifConfigOutputModeMobile
         \vspace*{\fill}%
     \fi
-    \clearpage
 }
 
 \newcommand{\SourceLegendPage}{%
@@ -2748,7 +2761,6 @@
     \vspace*{0.2\textheight}
     {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
     \WeTitlePageBottomMark
-    \newpage
     }
     \restoregeometry
     \pagestyle{fancy}
@@ -2789,7 +2801,6 @@
     \includegraphics[width=1.00in]{\TitlePageLogoImage}\par
     \vspace*{\fill}
     \endgroup
-    \clearpage
 }
 
 \newcommand{\WeContentsPage}{%
@@ -2798,7 +2809,6 @@
     \phantomsection
     \hypertarget{tableofcontents}{}%
     \tableofcontents
-    \newpage
     \restoregeometry
 }
 
@@ -3171,7 +3181,9 @@
 \DeclareChapterLinkRange{On the Lamb}{1}
 \DeclareChapterLinkRange{Esther}{10}
 \DeclareBookExtraLinkList{Genesis}{%
-    \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%
+    \ifConfigApocryphaOn
+        \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%
+    \fi
 }
 \DeclareBookChapterLinkList{Samuel}{%
     \BookPartChapterLinks{I Samuel}%
@@ -3652,8 +3664,10 @@
     \def\CurrentTitleBook{\CurrentBook}%
     \phantomsection
     \hypertarget{book.\CurrentBook}{}%
-    \ifGenesisApocryphaTocEntry
-        \addcontentsline{toc}{chapter}{\CurrentBook}%
+    \ifConfigApocryphaOn
+        \ifGenesisApocryphaTocEntry
+            \addcontentsline{toc}{chapter}{\CurrentBook}%
+        \fi
     \fi
     \markboth{\CurrentApocryphaHeader}{\CurrentApocryphaHeader}%
     \begingroup
@@ -4340,12 +4354,10 @@
 \wetitlepage
 \pagestyle{empty}
 
-\clearpage
 \AlphabetHistoryPage
 
 \WeContentsPage
 
-\clearpage
 \SourceLegendPage
 
 \LDPublicationNoticePage
@@ -4405,7 +4417,9 @@
 \include{01-genesis/48}
 \include{01-genesis/49}
 \include{01-genesis/50}
+\ifConfigApocryphaOn
 \include{01-genesis/apocrypha}
+\fi
 
 \Book{Exodus}
 \include{02-exodus/01}

@@ -1080,7 +1080,6 @@ def build_toc_overrides(target, books):
     lines.extend(
         [
             r"    \WeContentsPageBottomMark",
-            r"    \newpage",
             r"    \restoregeometry",
             r"}",
             r"\renewcommand{\Book}[1]{%",
@@ -1163,7 +1162,16 @@ def write_entrypoint(target, preamble, books, build_root):
             if generated is None:
                 continue
             if include_path in target.passthrough_includes:
-                lines.append(rf"\include{{{generated}}}")
+                if include_path == "01-genesis/apocrypha":
+                    lines.extend(
+                        [
+                            r"\ifConfigApocryphaOn",
+                            rf"\include{{{generated}}}",
+                            r"\fi",
+                        ]
+                    )
+                else:
+                    lines.append(rf"\include{{{generated}}}")
                 pending_part = None
                 continue
             if pending_part is not None:
