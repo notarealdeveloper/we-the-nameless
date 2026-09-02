@@ -9,6 +9,7 @@
 
 ## Stuff to do now
 
+- Unfuck the frontmatter in light/book mode. Note: This may be the fault of the parallel build, not the book or light config modes. However, it doesn't happen in dark/mobile mode (again, not sure which is responsible, but probably mobile, since color shouldn't change anything unless something dumb is happening, which it is.)
 
 ---
 
