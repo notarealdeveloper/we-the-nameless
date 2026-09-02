@@ -2726,18 +2726,6 @@
 \section{nav: title}
 \fi
 
-\newcommand{\WeLDLogoAtPageBottom}{%
-    \vspace*{\fill}
-    {%
-    \centering
-    \includegraphics[width=1.00in]{\TitlePageLogoImage}\par
-    }%
-    \vspace*{1.2in}
-}
-
-\newcommand{\WeTitlePageBottomMark}{\WeLDLogoAtPageBottom}
-\newcommand{\WeContentsPageBottomMark}{\WeLDLogoAtPageBottom}
-
 \newcommand{\wetitlepage}{%
     \clearpage
     \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
@@ -2748,11 +2736,44 @@
     {\fontsize{100}{120}\fontfamily{lmr}\selectfont\textsc{We}\par}
     \vspace*{0.2\textheight}
     {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
-    \WeTitlePageBottomMark
+    \vspace*{\fill}
     \newpage
     }
     \restoregeometry
     \pagestyle{fancy}
+}
+
+\newcommand{\LDPublicationNoticePage}{%
+    \clearpage
+    \thispagestyle{empty}
+    \begingroup
+    \centering
+    \vspace*{\fill}
+    \includegraphics[width=1.00in]{\TitlePageLogoImage}\par
+    \vspace{2\baselineskip}
+    {\footnotesize
+    \aA{\ttfamily
+        LD LLC makes no claim to have written the book that follows.\\
+        We could not find a published edition of it, and thought one\\
+        ought to exist. LD undertook the preparation of the text for\\
+        publication, including its editing, typesetting, design, and
+    }\\
+    \aB{\ttfamily
+        production and is responsible for the volume presented here,\\
+        but we make no claim to know the identity of the individuals\\
+        who wrote the original text, nor do we make any claim to the\\
+        effect that the original authors did not incorporate in that
+    }\\
+    \aC{\ttfamily
+        volume any earlier sources either in paraphrase or verbatim.\\
+        If your work has been incorporated into the resulting volume\\
+        and you would like to be removed from the bible, contact us.\\
+        It is, at least, a bible, and the rules of that genre apply.
+    }\par
+    }
+    \vspace*{\fill}
+    \endgroup
+    \clearpage
 }
 
 \newcommand{\WeContentsPage}{%
@@ -2761,7 +2782,6 @@
     \phantomsection
     \hypertarget{tableofcontents}{}%
     \tableofcontents
-    \WeContentsPageBottomMark
     \newpage
     \restoregeometry
 }
@@ -4317,6 +4337,8 @@
 
 \wetitlepage
 \pagestyle{empty}
+
+\LDPublicationNoticePage
 
 \clearpage
 \AlphabetHistoryPage
