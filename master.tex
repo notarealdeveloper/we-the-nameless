@@ -4,28 +4,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % choices: light, dark
-\ifdefined\ConfigTheme
-\else
-\def\ConfigTheme{dark}
-\fi
+\def\ConfigTheme{light}
 
 % choices: horizontal, vertical
 \def\ConfigVerseLayout{horizontal}
 
 % choices: book, mobile
-\ifdefined\ConfigOutputMode
-\else
 \def\ConfigOutputMode{book}
-\fi
 
 % choices: true, false
 \def\ConfigCommentary{true}
 
 % choices: default, kjv, nrsv, etc. from translations/
-\ifdefined\ConfigEnglishTranslation
-\else
 \def\ConfigEnglishTranslation{default}
-\fi
 
 % choices: plain, fancy
 \def\IndividualBookTitlePageStyle{fancy}

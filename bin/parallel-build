@@ -17,9 +17,11 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 MASTER = ROOT / "master.tex"
-BUILD = Path(os.environ.get("WTN_BUILD_DIR", ROOT / "build" / "book-dark" / "parallel"))
 OUTPUT_MODE = os.environ.get("WTN_OUTPUT_MODE", "book")
 THEME = os.environ.get("WTN_THEME", "dark")
+BUILD = Path(
+    os.environ.get("WTN_BUILD_DIR", ROOT / "build" / f"{OUTPUT_MODE}-{THEME}" / "parallel")
+)
 SOURCE_DIR = BUILD / "masters"
 MERGED_PDF = BUILD / "master.pdf"
 RAW_MERGED_PDF = BUILD / "master-raw.pdf"
