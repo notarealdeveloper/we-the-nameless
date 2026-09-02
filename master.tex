@@ -2822,6 +2822,9 @@
 \NewDocumentCommand{\AlphabetHistoryASCII}{ m m m }{
   {\FitAlphabetHistorySample{\leavevmode\textdir TRT\scalebox{#2}{#1\tl_reverse:n { #3 }}}}
 }
+\NewDocumentCommand{\AlphabetHistoryLeftToRight}{ m m m }{
+  {\FitAlphabetHistorySample{\leavevmode\textdir TLT\scalebox{#2}{#1 { #3 }}}}
+}
 \NewDocumentCommand{\AlphabetHistoryRightToLeft}{ m m m }{
   {\FitAlphabetHistorySample{\leavevmode\textdir TRT\scalebox{#2}{#1 { #3 }}}}
 }
@@ -2880,7 +2883,7 @@
     \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protobupper}\\
     \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protocupper}\\
     \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protoclower}\\
-    \AlphabetHistoryASCII{\PaleoHebrewTelZayitFont}{1.81}{ABGDHWZXTYKLMNSOPCQRst}\\
+    \AlphabetHistoryLeftToRight{\PaleoHebrewTelZayitFont}{1.81}{ABGDHWZXTYKLMNSOPCQRst}\\
     \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleobupper}\\
     \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleoblower}\\
     \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleoupper}\\
