@@ -529,6 +529,13 @@
     Scale=1.15
 ]{arabic-amiri-regular.ttf}
 
+% Syriac
+\newfontfamily\SyriacFont[
+    Script=Syriac,
+    Renderer=HarfBuzz,
+    Scale=1.15
+]{Noto Sans Syriac}
+
 % Telugu
 \newfontfamily\TeluguFont[
     Path=\LocalFontPath,
@@ -1628,6 +1635,10 @@
 
 \newcommand{\arb}[1]{%
     {\leavevmode\textdir TRT\ArabicFont #1}%
+}
+
+\newcommand{\syriac}[1]{%
+    {\leavevmode\textdir TRT\SyriacFont #1}%
 }
 
 \newcommand{\telugu}[1]{%
