@@ -828,8 +828,8 @@
 \colorlet{ProtoFColor}{ProtoCanaaniteColor}
 \colorlet{ProtoGColor}{ProtoCanaaniteColor}
 
-\definecolor{Jcolor}{RGB}{0,120,0}
-\definecolor{Ecolor}{RGB}{150,112,0}
+\definecolor{Jcolor}{RGB}{0,135,0}
+\definecolor{Ecolor}{RGB}{185,140,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
 \colorlet{Levitecolor}{Ecolor!50!Pcolor!65!black}
 \colorlet{MushiteAaronidcolor}{Ecolor!50!Pcolor}
@@ -862,6 +862,9 @@
 \colorlet{Recordsbgcolor}{Recordcolor!14!white}
 
 \definecolor{OtherColor}{RGB}{80,80,80}
+% The lighter-looking English face needs a slightly darker ink value to
+% visually match the Hebrew face in the light theme.
+\definecolor{EnglishOtherColor}{RGB}{65,65,65}
 \colorlet{Otherbgcolor}{OtherColor!12!white}
 %\definecolor{OtherColor}{RGB}{0,120,0}
 
@@ -955,6 +958,7 @@
     \colorlet{RecordsColor}{Recordcolor}
     \colorlet{Recordsbgcolor}{Recordcolor!18!bg}
     \colorlet{OtherColor}{ObsGray!88!fg}
+    \colorlet{EnglishOtherColor}{OtherColor}
     \colorlet{Otherbgcolor}{OtherColor!18!bg}
 
     \colorlet{Kcolor}{fg}
@@ -1701,6 +1705,7 @@
 \newcommand{\Records}{\Record}
 \newcommand{\Poetry}{\slshape}
 \newcommand{\OtherSource}{\color{OtherColor}\upshape\mdseries}
+\newcommand{\EnglishOtherSource}{\color{EnglishOtherColor}\upshape\mdseries}
 \newif\ifDeuteronomistBackgrounds
 \DeuteronomistBackgroundsfalse
 \newcommand{\ShowDeuteronomistBackgrounds}{\DeuteronomistBackgroundstrue}
@@ -2039,7 +2044,7 @@
 	{\PaleoHebrewMono}			{\SourceBackground{Recordsbgcolor}\Records}
 
 \DeclareSourceProfile{Other}
-	{\EnglishFont}				{\SourceBackground{Otherbgcolor}\OtherSource}
+	{\EnglishFont}				{\SourceBackground{Otherbgcolor}\EnglishOtherSource}
 	{\PaleoASCIIMoabite}		{\SourceBackground{Otherbgcolor}\OtherSource}
 
 % Inline Hebrew can contain Qere/Ketiv and reconstruction brackets.  Keep it
