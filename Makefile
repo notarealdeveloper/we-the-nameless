@@ -188,7 +188,7 @@ progress:
 	xdg-open "$(MAIN).tex" >/dev/null 2>&1 &
 
 parallel:
-	bin/parallel-build --passes 1
+	bin/parallel-build
 
 $(SUBSET_TARGETS): BUILD = build/$@
 $(SUBSET_TARGETS):

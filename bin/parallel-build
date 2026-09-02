@@ -130,11 +130,45 @@ def write_front_toc(books, output_dir, page_starts=None):
     toc = output_dir / f"{FRONT_SLUG}.toc"
     toc.write_text(
         "".join(
-            rf"\contentsline {{chapter}}{{{book['title']}}}{{{page_starts.get(book['index'], '') if page_starts else ''}}}{{book.{book['title']}}}"
+            rf"\contentsline {{chapter}}{{{book['title']}}}{{{toc_page_number(page_starts, book['index'])}}}{{book.{book['title']}}}"
             + "\n"
             for book in books
         )
     )
+
+
+def toc_page_number(page_starts, index):
+    if not page_starts:
+        return ""
+    return page_starts.get(index, page_starts.get(str(index), ""))
+
+
+def cached_page_starts(books):
+    """Return reusable starts only when the previous parallel build is complete."""
+    toc = BUILD / FRONT_SLUG / f"{FRONT_SLUG}.toc"
+    required = [
+        BUILD / FRONT_SLUG / f"{FRONT_SLUG}.aux",
+        FRONT_PDF,
+        toc,
+    ]
+    for book in books:
+        output_dir = BUILD / book["slug"]
+        required.extend(
+            [
+                output_dir / f"{book['slug']}.aux",
+                output_dir / f"{book['slug']}.pdf",
+            ]
+        )
+    if not all(path.is_file() for path in required):
+        return None
+
+    entries = re.findall(
+        r"\\contentsline\s*\{chapter\}\{[^}]*\}\{(\d+)\}\{book\.[^}]+\}",
+        toc.read_text(),
+    )
+    if len(entries) != len(books):
+        return None
+    return {str(book["index"]): int(page) for book, page in zip(books, entries)}
 
 
 def write_worker_master(preamble, book, start_page=None):
@@ -298,7 +332,8 @@ def worker_main(book, preamble, passes, page_starts, event_queue):
     output_dir = BUILD / book["slug"]
     texmfvar = texmfvar_for(book["slug"])
     try:
-        master_path = write_worker_master(preamble, book)
+        cached_start = page_starts.get(str(book["index"])) if page_starts is not None else None
+        master_path = write_worker_master(preamble, book, start_page=cached_start)
         prepare_build_dirs(book, output_dir)
         event_queue.put(("started", book["index"], book["title"], len(book["includes"])))
 
@@ -342,7 +377,7 @@ def front_main(preamble, front_body, books, passes, page_starts, event_queue):
     }
     try:
         master_path = write_front_master(preamble, front_body)
-        write_front_toc(books, output_dir)
+        write_front_toc(books, output_dir, page_starts)
         event_queue.put(("front-started", "compiling front matter"))
         rc, tail = stream_lualatex(front, master_path, output_dir, texmfvar, event_queue, 1)
         if rc == 0 and passes > 1 and page_starts is not None:
@@ -591,11 +626,15 @@ class Dashboard:
             pass
 
 
-def run_curses(books, preamble, front_body, include_front, passes):
+def run_curses(books, preamble, front_body, include_front, passes, initial_page_starts=None):
     event_queue = mp.Queue()
-    coordinated = passes > 1 and include_front
+    coordinated = include_front and (passes > 1 or initial_page_starts is not None)
     manager = mp.Manager() if coordinated else None
     page_starts = manager.dict() if manager else None
+    if page_starts is not None and initial_page_starts:
+        page_starts.update(initial_page_starts)
+        page_starts["ready"] = True
+        page_starts["front_toc_ready"] = True
     front_process = launch_front_worker(preamble, front_body, books, passes, page_starts, event_queue) if include_front else None
     processes = launch_workers(books, preamble, passes, page_starts, event_queue)
 
@@ -670,11 +709,15 @@ def run_curses(books, preamble, front_body, include_front, passes):
     return 1 if failures else 0
 
 
-def run_plain(books, preamble, front_body, include_front, passes):
+def run_plain(books, preamble, front_body, include_front, passes, initial_page_starts=None):
     event_queue = mp.Queue()
-    coordinated = passes > 1 and include_front
+    coordinated = include_front and (passes > 1 or initial_page_starts is not None)
     manager = mp.Manager() if coordinated else None
     page_starts = manager.dict() if manager else None
+    if page_starts is not None and initial_page_starts:
+        page_starts.update(initial_page_starts)
+        page_starts["ready"] = True
+        page_starts["front_toc_ready"] = True
     front_process = launch_front_worker(preamble, front_body, books, passes, page_starts, event_queue) if include_front else None
     processes = launch_workers(books, preamble, passes, page_starts, event_queue)
     completed = 0
@@ -1014,11 +1057,11 @@ def main():
     parser.add_argument(
         "--passes",
         type=int,
-        default=DEFAULT_PASSES,
-        help=f"run this many LuaLaTeX passes per chunk; default: {DEFAULT_PASSES}",
+        default=None,
+        help=f"force this many LuaLaTeX passes per chunk; default: reuse a complete prior build, otherwise {DEFAULT_PASSES}",
     )
     args = parser.parse_args()
-    if args.passes < 1:
+    if args.passes is not None and args.passes < 1:
         parser.error("--passes must be at least 1")
 
     preamble, front_body, books = read_document_parts()
@@ -1033,7 +1076,7 @@ def main():
         warm_tex_cache()
         prepare_worker_tex_caches([], True)
         event_queue = mp.Queue()
-        front_main(preamble, front_body, books, args.passes, None, event_queue)
+        front_main(preamble, front_body, books, args.passes or DEFAULT_PASSES, None, event_queue)
     if args.only:
         matches = [book for book in books if args.only.lower() in book["title"].lower() or args.only in book["slug"]]
         if len(matches) != 1:
@@ -1044,6 +1087,11 @@ def main():
     full_build = not args.only
     include_front = full_build
 
+    initial_page_starts = None
+    if args.passes is None and full_build and not args.clean:
+        initial_page_starts = cached_page_starts(books)
+    passes = args.passes if args.passes is not None else (1 if initial_page_starts else DEFAULT_PASSES)
+
     if args.clean:
         clean()
     BUILD.mkdir(parents=True, exist_ok=True)
@@ -1051,9 +1099,9 @@ def main():
     prepare_worker_tex_caches(books, include_front)
 
     if args.plain or not sys.stdout.isatty() or os.environ.get("TERM") in (None, "", "dumb"):
-        rc = run_plain(books, preamble, front_body, include_front, args.passes)
+        rc = run_plain(books, preamble, front_body, include_front, passes, initial_page_starts)
     else:
-        rc = run_curses(books, preamble, front_body, include_front, args.passes)
+        rc = run_curses(books, preamble, front_body, include_front, passes, initial_page_starts)
     if rc != 0:
         return rc
     if not full_build:
