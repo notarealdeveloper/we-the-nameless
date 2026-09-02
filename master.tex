@@ -3751,32 +3751,12 @@
     \directlua{tex.sprint(book_translation_lookup("\luaescapestring{\CurrentBook}", "\luaescapestring{\CurrentChapter}", "\luaescapestring{\detokenize{#1}}"))}%
 }
 
-\newcount\VerseLineBreakHorizontalPenalty
-\newcount\VerseLineBreakMobileHorizontalPenalty
-\newcount\VerseLineBreakVerticalPenalty
-\VerseLineBreakHorizontalPenalty=-700
-\VerseLineBreakMobileHorizontalPenalty=3000
-\VerseLineBreakVerticalPenalty=-50
-
 % TeX reads a control word through the next nonletter, so use this as
 % `\nl` followed by source whitespace or another delimiter.
 \newcommand{\nl}{%
     \ifhmode
         \unskip
-        \ifConfigVerseLayoutVertical
-            \penalty\VerseLineBreakVerticalPenalty
-        \else
-            \ifConfigOutputModeMobile
-                \penalty\VerseLineBreakMobileHorizontalPenalty
-            \else
-                \penalty\VerseLineBreakHorizontalPenalty
-            \fi
-        \fi
-        \hskip 0.333em plus 0.167em minus 0.111em\relax
-    \else
-        \ifvmode
-            \penalty\VerseLineBreakVerticalPenalty
-        \fi
+        \newline
     \fi
 }
 
