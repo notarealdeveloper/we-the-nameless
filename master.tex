@@ -3659,7 +3659,7 @@
     \begingroup
     \centering
     \vspace*{1.6em}%
-    {\textdir TRT\DeadSeaScrollsIsaiahFont\fontsize{24}{28}\selectfont\color{RuleColor}\paleolower\par}%
+    {\textdir TRT\DeadSeaScrollsIsaiahFont\large\color{RuleColor}\paleolower\par}%
     \vspace{0.8em}%
     {\textdir TLT\EnglishProtoFont\fontsize{34}{38}\selectfont #1\par}%
     \vspace{0.25em}%
@@ -3673,6 +3673,7 @@
 
 % \Apocryphon defines an apocryphal text heading.
 \newcommand{\Apocryphon}[1]{%
+    \clearpage
     \hypertarget{chapter.\CurrentBook.#1}{}%
     \def\CurrentChapter{#1}%
     \markboth{\CurrentApocryphaHeader}{\CurrentApocryphaHeader}%
