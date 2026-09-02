@@ -25,20 +25,11 @@ Genesis 23:2. Mention Joshua here in the commentary block. Say:
 
 ### Linear
 
-Gen 1:1. Need to decide on a punctuation policy. Here's the best one: 
-- Red uses almost perfect punctuation in Genesis 1.
-- Then when new Red is born, they almost never use periods ever except in footnotes, and the periods slowly increase in frequency throughout the book as Red ages and slowly becomes Black.
-- That'll let you make a good first impression on the idiots, and then surprise them when things suddenly change.
-- But the Black who takes over will have almost perfect punctuation, but not completely.
-- The more playful verses have less perfect punctuation.
-- This is a pattern we can sustain throughout the book with very low cognitive load.
-- It's about age, and time, and what we are throughout a life.
-- It's the book of life.
-- Do it.
+Gen 2:4b. Make the \heb{} primitive strip niqqud, and add a \hebniq{} primitive that keeps them.
 
-Gen 2:4b. Make the \heb{} primitive strip niqqud, and add a \Heb{} primitive that keeps them.
+Gen 2:6-7. Delete the redactor \eR{God} and \hR{אלהים} in this one, it distracts from the point.
 
-Gen 2:6-7. Delete the redactor God in this one, it distracts from the point.
+Gen 2 and 3: Make the backgrounds for the highlighted words less milky. I want the blue to be more like \eR{...} redactor blue, and the red to be more like \eReblackor{...} red, and the black to be a similar level of color: it should be light grey (darker than the bg) in light mode and dark grey (lighter than the bg) in dark mode. Achieve this by using the latex ! color mixing primitive.
 
 Gen 3:1. Remove the 2nd God from Redactor blue in the Hebrew.
 
