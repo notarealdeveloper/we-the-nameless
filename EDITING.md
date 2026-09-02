@@ -9,6 +9,11 @@
 
 ## Stuff to do now
 
+
+---
+
+## Stuff already done (probably)
+
 master.tex: Alphabet history page. Row 9 is fucked up. Put it in the right order by looking at the ascii or whatever codes that that font uses, and use that to properly order the letters.
 
 Gen 2:4b. Make the \heb{} primitive strip niqqud, and add a \hebniq{} primitive that keeps them.
