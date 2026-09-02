@@ -1,8 +1,12 @@
 MAIN  := master
 PDF   := $(MAIN).pdf
 TRANSLATION ?= default
-OUTPUT_MODE ?= book
-THEME ?= dark
+
+# Keep the active settings in $(MAIN).tex as the defaults.  Command-line and
+# environment assignments still take precedence through ?=.
+read-config = $(strip $(shell sed -n 's/^[[:space:]]*\\def\\$(1)[[:space:]]*{\([^}]*\)}.*/\1/p' "$(MAIN).tex" | head -n 1))
+OUTPUT_MODE ?= $(call read-config,ConfigOutputMode)
+THEME ?= $(call read-config,ConfigTheme)
 BUILD ?= build/$(OUTPUT_MODE)-$(THEME)
 CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
