@@ -4,13 +4,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % choices: light, dark
+\ifdefined\ConfigTheme
+\else
 \def\ConfigTheme{dark}
+\fi
 
 % choices: horizontal, vertical
 \def\ConfigVerseLayout{horizontal}
 
 % choices: book, mobile
+\ifdefined\ConfigOutputMode
+\else
 \def\ConfigOutputMode{book}
+\fi
 
 % choices: true, false
 \def\ConfigCommentary{true}

@@ -17,7 +17,9 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 MASTER = ROOT / "master.tex"
-BUILD = ROOT / "build" / "parallel"
+BUILD = Path(os.environ.get("WTN_BUILD_DIR", ROOT / "build" / "book-dark" / "parallel"))
+OUTPUT_MODE = os.environ.get("WTN_OUTPUT_MODE", "book")
+THEME = os.environ.get("WTN_THEME", "dark")
 SOURCE_DIR = BUILD / "masters"
 MERGED_PDF = BUILD / "master.pdf"
 RAW_MERGED_PDF = BUILD / "master-raw.pdf"
@@ -50,7 +52,8 @@ def read_document_parts():
     if not doc_match:
         raise RuntimeError("master.tex has no \\begin{document}")
 
-    preamble = text[: doc_match.end()]
+    config = rf"\def\ConfigOutputMode{{{OUTPUT_MODE}}}\def\ConfigTheme{{{THEME}}}"
+    preamble = config + "\n" + text[: doc_match.end()]
     books = list(BOOK_RE.finditer(text))
     if not books:
         raise RuntimeError("master.tex has no \\Book blocks")

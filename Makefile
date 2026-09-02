@@ -1,10 +1,14 @@
 MAIN  := master
 PDF   := $(MAIN).pdf
 TRANSLATION ?= default
-BUILD := build/$(TRANSLATION)
+OUTPUT_MODE ?= book
+THEME ?= dark
+BUILD ?= build/$(OUTPUT_MODE)-$(THEME)
 CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
-LATEX_INPUT = \def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(MAIN).tex}
+LATEX_INPUT = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(MAIN).tex}
+
+BUILD_MODES := book-light book-dark mobile-light mobile-dark
 
 LATEX      := lualatex
 LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
@@ -22,7 +26,7 @@ export TEXMFVAR = $(CACHE)
 # closing parenthesis onto the next build-output line.
 export max_print_line = 80
 
-.PHONY: all pdf ci view open clean distclean debug progress parallel build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 all: $(PDF) open
 
@@ -31,6 +35,9 @@ help:
 		'Public targets:' \
 		'  make              Build master.pdf and open it.' \
 		'  make pdf          Build master.pdf without opening it.' \
+		'  make book-light   Build build/book-light/master.pdf (also: book-dark, mobile-light, mobile-dark).' \
+		'  make all-modes    Build all four mode/theme combinations concurrently.' \
+		'  make OUTPUT_MODE=mobile THEME=light pdf  Build one explicit combination.' \
 		'  make TRANSLATION=kjv pdf  Build with translations/kjv instead of inline English.' \
 		'  make parallel     Build the book with the parallel chapter workflow.' \
 		'  make progress     Open master.tex.' \
@@ -63,9 +70,9 @@ help:
 list:
 	bin/book-subset --list
 
-pdf: $(PDF)
+pdf: build-pdf
 
-ci: $(PDF)
+ci: build-pdf
 
 again:
 	@if [ -f $(PDF) ]; then mv $(PDF) mistress.pdf; fi
@@ -84,11 +91,23 @@ build-translation: build-prepare
 		bin/book-translation-lua "$(TRANSLATION)" "$(TRANSLATION_LUA)"; \
 	fi
 
-$(PDF): $(TEX_SOURCES)
+build-pdf: $(BUILD)/$(PDF)
+	cp "$(BUILD)/$(MAIN).pdf" .
+
+$(BUILD)/$(PDF): $(TEX_SOURCES)
 	$(MAKE) BUILD="$(BUILD)" TRANSLATION="$(TRANSLATION)" build-translation
 	$(LATEX) $(LATEXFLAGS) "$(LATEX_INPUT)"
 	$(MAKE) clean-stray-aux
-	cp "$(BUILD)/$(MAIN).pdf" .
+
+$(PDF): build-pdf
+
+$(BUILD_MODES):
+	@mode="$(word 1,$(subst -, ,$@))"; \
+	theme="$(word 2,$(subst -, ,$@))"; \
+	$(MAKE) OUTPUT_MODE="$$mode" THEME="$$theme" BUILD="build/$@" build-pdf
+
+all-modes:
+	@$(MAKE) -j4 $(BUILD_MODES)
 
 draft: $(MAIN).tex
 	$(MAKE) BUILD="$(BUILD)" TRANSLATION="$(TRANSLATION)" build-translation
@@ -163,7 +182,7 @@ progress:
 	xdg-open "$(MAIN).tex" >/dev/null 2>&1 &
 
 parallel:
-	bin/parallel-build
+	WTN_BUILD_DIR="$(BUILD)/parallel" WTN_OUTPUT_MODE="$(OUTPUT_MODE)" WTN_THEME="$(THEME)" bin/parallel-build
 
 $(SUBSET_TARGETS): BUILD = build/$@
 $(SUBSET_TARGETS):
