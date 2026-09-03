@@ -12,4 +12,3 @@ Agents: Do all the items below except the ones marked as manual.
 
 Gen 11:7. Reword "Yhwh unexpectedly speaks in the plural here" footnote and make it shorter.
 
-Gen 15:18. MANUAL. Do another um thing.
