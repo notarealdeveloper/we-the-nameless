@@ -549,8 +549,18 @@
 			] at (balls.north) {\egyptNew{𓂾}};
 		}%
 		𓀟𓂿𓀐%
-		\makebox[0pt]{\raisebox{-0.65em}{𓀿}}%
-		\raisebox{0.45em}{𓉸}
+		\tikz[baseline=0em]{
+			\node[
+				inner sep=0pt,
+				anchor=north
+			] (guy) at (0,-0.30em) {\egyptNew{𓀿}};
+		
+			\node[
+				inner sep=0pt,
+				anchor=south,
+				yshift=-0.05em
+			] at (guy.north) {\egyptNew{𓉸}};
+		}%
 	}\fA{
 		Lit. ``Abe! You're breaking my balls man,
 		cut it out, you're killin' me.''
