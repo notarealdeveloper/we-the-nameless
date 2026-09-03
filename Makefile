@@ -81,7 +81,7 @@ pdf: build-pdf
 ci: build-pdf
 
 again:
-	@if [ -f $(PDF) ]; then mv $(PDF) mistress.pdf; fi
+	@if [ -f $(PDF) ]; then mv $(PDF) mister.pdf; fi
 	$(MAKE) all
 
 build-prepare:
