@@ -4,10 +4,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % choices: light, dark
-\def\ConfigTheme{dark}
+\def\ConfigTheme{light}
+
+% choices: default, lighter
+\ifdefined\ConfigColors\else
+    \def\ConfigColors{default}
+\fi
 
 % choices: book, mobile
-\def\ConfigOutputMode{mobile}
+\def\ConfigOutputMode{book}
 
 % choices: horizontal, vertical
 \def\ConfigVerseLayout{horizontal}
@@ -41,6 +46,7 @@
 
 \def\ConfigTrue{true}
 \def\ConfigThemeDark{dark}
+\def\ConfigColorsLighter{lighter}
 \def\ConfigVerseLayoutHorizontal{horizontal}
 \def\ConfigVerseLayoutVertical{vertical}
 \def\ConfigOutputModeBook{book}
@@ -844,6 +850,9 @@
 \definecolor{Jcolor}{RGB}{0,135,0}
 \definecolor{Ecolor}{RGB}{185,140,0}
 \definecolor{Pcolor}{RGB}{0,70,170}
+\ifx\ConfigColors\ConfigColorsLighter
+    \definecolor{Pcolor}{RGB}{33,102,165}
+\fi
 \colorlet{Levitecolor}{Ecolor!50!Pcolor!65!black}
 \colorlet{MushiteAaronidcolor}{Ecolor!50!Pcolor}
 \colorlet{Dtr1color}{Ecolor!78!black}
@@ -884,9 +893,15 @@
 \definecolor{Kcolor}{RGB}{0,0,0}
 \colorlet{Xcolor}{Kcolor!92!white}
 \definecolor{Redcolor}{RGB}{130,0,0}
+\ifx\ConfigColors\ConfigColorsLighter
+    \definecolor{Redcolor}{RGB}{181,45,53}
+\fi
 \definecolor{ApocryphonYHWHDialogueColor}{RGB}{69,0,0}
 \colorlet{ApocryphonYHWHDialogueBgcolor}{ApocryphonYHWHDialogueColor!12!white}
 \definecolor{Bluecolor}{RGB}{0,70,170}
+\ifx\ConfigColors\ConfigColorsLighter
+    \definecolor{Bluecolor}{RGB}{33,102,165}
+\fi
 \definecolor{Greencolor}{RGB}{0,120,0}
 \definecolor{Yellowcolor}{RGB}{185,145,0}
 \definecolor{Graycolor}{RGB}{110,110,110}
@@ -2893,8 +2908,9 @@
 \newcommand{\AlphabetHistoryPage}{%
     \begingroup
     \AlphabetHistoryTextSizes
+    \clearpage
     \thispagestyle{empty}
-    \vspace*{\fill}
+    \noindent\begin{minipage}[c][\textheight][c]{\textwidth}
     \begin{flushright}
     \FitAlphabetHistorySample{\egyptbold{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}}
     \AlphabetHistoryASCII{\ProtoSinaiticBestFont}{1.81}{\healphabet}\\ % Roughly Serabit el-Khadim (improve it)
@@ -2916,10 +2932,10 @@
     \AlphabetHistoryRightToLeft{\PaleoHebrewRoboFont}{1.81}{\healphabet}\\
     \AlphabetHistoryRightToLeft{\PaleoHebrewPhoenicianFont}{2.13}{𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕}\\
     \end{flushright}
-    \vspace*{\fill}
+    \end{minipage}
     \clearpage
     \thispagestyle{empty}
-    \vspace*{\fill}
+    \noindent\begin{minipage}[c][\textheight][c]{\textwidth}
     \begin{flushright}
     \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleofupper}\\
     \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleoflower}\\
@@ -2939,7 +2955,8 @@
     \AlphabetHistoryASCII{\HebrewDavidFont}{2.66}{\healphabet}\\
     %\AlphabetHistoryASCII{\HebrewEzraFont}{2.68}{\healphabet}\\
     \end{flushright}
-    \vspace*{\fill}
+    \end{minipage}
+    \clearpage
     \endgroup
     %\cleardoublepage
 }

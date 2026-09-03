@@ -35,8 +35,10 @@ def read_master_config(name):
 # available for callers that deliberately want to override its active config.
 OUTPUT_MODE_OVERRIDE = os.environ.get("WTN_OUTPUT_MODE")
 THEME_OVERRIDE = os.environ.get("WTN_THEME")
+COLORS_OVERRIDE = os.environ.get("WTN_COLORS")
 OUTPUT_MODE = OUTPUT_MODE_OVERRIDE or read_master_config("ConfigOutputMode")
 THEME = THEME_OVERRIDE or read_master_config("ConfigTheme")
+COLORS = COLORS_OVERRIDE or read_master_config("ConfigColors")
 BUILD = Path(
     os.environ.get("WTN_BUILD_DIR", ROOT / "build" / f"{OUTPUT_MODE}-{THEME}" / "parallel")
 )
@@ -82,6 +84,10 @@ def read_document_parts():
         )
         # Apply deliberate overrides after master.tex's config declarations.
         preamble = text[: doc_match.start()] + config + "\n" + text[doc_match.start() : doc_match.end()]
+    if COLORS_OVERRIDE:
+        # ConfigColors is guarded in master.tex, so define it before the
+        # preamble applies the palette.
+        preamble = rf"\def\ConfigColors{{{COLORS}}}" + "\n" + preamble
     books = list(BOOK_RE.finditer(text))
     if not books:
         raise RuntimeError("master.tex has no \\Book blocks")

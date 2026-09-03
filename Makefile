@@ -7,11 +7,12 @@ TRANSLATION ?= default
 read-config = $(strip $(shell sed -n 's/^[[:space:]]*\\def\\$(1)[[:space:]]*{\([^}]*\)}.*/\1/p' "$(MAIN).tex" | head -n 1))
 OUTPUT_MODE ?= $(call read-config,ConfigOutputMode)
 THEME ?= $(call read-config,ConfigTheme)
+COLORS ?= $(call read-config,ConfigColors)
 APOCRYPHA ?= $(call read-config,ConfigApocrypha)
 BUILD ?= build/$(OUTPUT_MODE)-$(THEME)
 CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
-LATEX_INPUT = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(MAIN).tex}
+LATEX_INPUT = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(MAIN).tex}
 
 BUILD_MODES := book-light book-dark mobile-light mobile-dark
 
@@ -43,6 +44,7 @@ help:
 		'  make book-light   Build build/book-light/master.pdf (also: book-dark, mobile-light, mobile-dark).' \
 		'  make all-modes    Build all four mode/theme combinations concurrently.' \
 		'  make OUTPUT_MODE=mobile THEME=light pdf  Build one explicit combination.' \
+		'  make THEME=light COLORS=lighter pdf  Use the lighter light-mode palette.' \
 		'  make APOCRYPHA=canonical pdf  Build without apocrypha (default: apocryphal).' \
 		'  make TRANSLATION=kjv pdf  Build with translations/kjv instead of inline English.' \
 		'  make parallel     Build the book with the parallel chapter workflow.' \
@@ -196,7 +198,7 @@ $(SUBSET_TARGETS):
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$@")"; \
 	bin/book-subset --build-dir "$(BUILD)" "$@"; \
-	$(LATEX) $(LATEXFLAGS) "\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(BUILD)/$$basename.tex}"
+	$(LATEX) $(LATEXFLAGS) "\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(BUILD)/$$basename.tex}"
 	$(MAKE) clean-stray-aux
 	@basename="$$(bin/book-subset --output-name "$@")"; \
 	cp "$(BUILD)/$$basename.pdf" "$$basename.pdf"
@@ -207,7 +209,7 @@ $(CHAPTER_TARGETS):
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$@")"; \
 	bin/book-subset --build-dir "build/test" "$@"; \
-	$(LATEX) $(LATEXFLAGS) -jobname="test-$@" "\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{build/test/$$basename.tex}"
+	$(LATEX) $(LATEXFLAGS) -jobname="test-$@" "\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{build/test/$$basename.tex}"
 	@$(MAKE) clean-stray-aux
 	@cp "build/test/test-$@.pdf" "test-$@.pdf"
 	@if command -v xdg-open >/dev/null 2>&1; then \
