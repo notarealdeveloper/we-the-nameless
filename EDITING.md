@@ -10,9 +10,7 @@ Catch R up on Gen 44-48.
 
 Agents: Do all the items below except the ones marked as manual.
 
-Gen 14. Wrap all hebrew in \heb{...} if it isn't already.
-
-Gen 11:7. MANUAL: Reword "let's" footnote and make it shorter.
+Gen 11:7. Reword "Yhwh unexpectedly speaks in the plural here" footnote and make it shorter.
 
 Gen 12:18. MANUAL. Egyptian "Nut" goddess hieroglyph.
 
