@@ -6,11 +6,6 @@
 % choices: light, dark
 \def\ConfigTheme{light}
 
-% choices: default, lighter
-\ifdefined\ConfigColors\else
-    \def\ConfigColors{default}
-\fi
-
 % choices: book, mobile
 \def\ConfigOutputMode{book}
 
@@ -20,16 +15,21 @@
 % choices: true, false
 \def\ConfigCommentary{true}
 
-% choices: apocryphal, canonical
-\ifdefined\ConfigApocrypha\else
-    \def\ConfigApocrypha{apocryphal}
-\fi
-
 % choices: default, kjv, nrsv, etc. from translations/
 \def\ConfigEnglishTranslation{default}
 
 % choices: plain, fancy
 \def\IndividualBookTitlePageStyle{fancy}
+
+% choices: apocryphal, canonical
+\ifdefined\ConfigApocrypha\else
+    \def\ConfigApocrypha{apocryphal}
+\fi
+
+% choices: default, lighter
+\ifdefined\ConfigColors\else
+    \def\ConfigColors{default}
+\fi
 
 %%%%%%%%%%%%%%%%%%
 %%% master.tex %%%
