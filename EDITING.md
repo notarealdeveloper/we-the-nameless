@@ -10,8 +10,6 @@
 
 Agents: Do all the items below except the ones marked as manual.
 
-- [ ] Gen 6:13. "I'm going to kill everybody on earth" should be "I'm going to kill everything."
-
 - [ ] Gen 10:27-30. The headings are blue b/c there's a \aC{...} wrapped around everything, make it more local.
 
 - [ ] Gen 11:4. Delete "I mean," and replace the final line in the commentary block with "We should make sure we know what to call each other, so we don't forget who we are.
