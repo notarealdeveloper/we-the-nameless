@@ -10,60 +10,60 @@
 
 Agents: Do all the items below except the ones marked as manual.
 
-- [ ] Gen 10:27-30. The headings are blue b/c there's a \aC{...} wrapped around everything, make it more local.
+- [x] Gen 10:27-30. The headings are blue b/c there's a \aC{...} wrapped around everything, make it more local.
 
-- [ ] Gen 11:4. Delete "I mean," and replace the final line in the commentary block with "We should make sure we know what to call each other, so we don't forget who we are.
+- [x] Gen 11:4. Delete "I mean," and replace the final line in the commentary block with "We should make sure we know what to call each other, so we don't forget who we are.
 
-- [ ] Gen 11:5. And he looks at the One People.
+- [x] Gen 11:5. And he looks at the One People.
 
 - [ ] Gen 11:7. MANUAL: Reword "let's" footnote and make it shorter.
 
-- [ ] Gen 11:8.
+- [x] Gen 11:8.
 - Line 1: So YHWH invents nations and languages and tribes.
 - Append at the end: And the people stop being a people.
 - And they forget to make a name.
 
-- [ ] Gen 11:9.
+- [x] Gen 11:9.
 - What? It's nothing.
 - There's just something in my eye is all.
 - Just give me a minute.
 - (Narrator: A biblical silence elapses.)
 
-- [ ] Gen 11:10.
+- [x] Gen 11:10.
 - Ok back to work.
 - "and babbling to me." should be "if you ask me."
 
-- [ ] Gen 11:13.
+- [x] Gen 11:13.
 - Delete current comment.
 - Replace it with this: "And Ehad begat Jdah, and Jdah begat Jebediah and Jebediah begat Ezekiel and Ezekiel begat Hermaphrodite and Hermaphrodite begat Michelin."
 
-- [ ] Gen 11:15. You in the comment should just be \chineseA{曰}. Delete the footnote.
+- [x] Gen 11:15. You in the comment should just be \chineseA{曰}. Delete the footnote.
 
-- [ ] Gen 12:2. Reword. Say: He promises to make him into a country. And to make his name great.\fA{His current name is apparently not great, which may be related to why YHWH changes it later.}
+- [x] Gen 12:2. Reword. Say: He promises to make him into a country. And to make his name great.\fA{His current name is apparently not great, which may be related to why YHWH changes it later.}
 
-- [ ] Gen 12:7. Replace "Abe! Baby." with "Abe! Babe." And replace the final "baby" with "um, baby." Leave no space between the closing right curly brace of the \eR{...} and the "um", and delete the \redacted{}, like this: c\eR{hildren}um, baby.
+- [x] Gen 12:7. Replace "Abe! Baby." with "Abe! Babe." And replace the final "baby" with "um, baby." Leave no space between the closing right curly brace of the \eR{...} and the "um", and delete the \redacted{}, like this: c\eR{hildren}um, baby.
 
-- [ ] Gen 12:12. Make "y'know" into "well"
+- [x] Gen 12:12. Make "y'know" into "well"
 
 - [ ] Gen 12:18. MANUAL. Egyptian "Nut" goddess hieroglyph.
 
-- [ ] Gen 13:6. \textsc{Lot} instead of LOT
+- [x] Gen 13:6. \textsc{Lot} instead of LOT
 
-- [ ] Gen 13:11. The uncle and nephew each separate from their brother, which is each other, because fictive kin terms are a thing.
+- [x] Gen 13:11. The uncle and nephew each separate from their brother, which is each other, because fictive kin terms are a thing.
 
 - [ ] Gen 13:15. MANUAL. Make it more "This babe, these babies."
 
-- [ ] Gen 14:5. Add a \fA{} footnote to the Rephaim saying \fA{**Rephaim** (Hebrew: רְפָאִים) in biblical and ancient Near Eastern contexts refers to a mythical race of ancient giants, and to the shadowy spirits of the dead in the underworld.} Then add another \fB{} footnote on the same word saying \fB{Rephaim are like these really tall ghosts.}
+- [x] Gen 14:5. Add a \fA{} footnote to the Rephaim saying \fA{**Rephaim** (Hebrew: רְפָאִים) in biblical and ancient Near Eastern contexts refers to a mythical race of ancient giants, and to the shadowy spirits of the dead in the underworld.} Then add another \fB{} footnote on the same word saying \fB{Rephaim are like these really tall ghosts.}
 
-- [ ] Gen 14:13. Add a \fB{} footnote saying "You know the ones." to the word oaks.
+- [x] Gen 14:13. Add a \fB{} footnote saying "You know the ones." to the word oaks.
 
-- [ ] Gen 14:15. Check if it really says "to the left" about geography. If it does, put a \fB{} footnote saying "Yes they really just said something is `to the left' of a city." or something like that.
+- [x] Gen 14:15. Check if it really says "to the left" about geography. If it does, put a \fB{} footnote saying "Yes they really just said something is `to the left' of a city." or something like that.
 
-- [ ] Gen 14:16. Add \fB{} footnote commenting on "the women and the people."
+- [x] Gen 14:16. Add \fB{} footnote commenting on "the women and the people."
 
-- [ ] Gen 14:22. Remove newlines in footnote.
+- [x] Gen 14:22. Remove newlines in footnote.
 
-- [ ] Gen 15:16. Delete the quotation marks.
+- [x] Gen 15:16. Delete the quotation marks.
 
 - [ ] Gen 15:5. MANUAL. How many stars do you think that is eh? Eh b--- Abe baby?
 
