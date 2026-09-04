@@ -15,6 +15,11 @@
 % choices: true, false
 \def\ConfigCommentary{true}
 
+% choices: censored, uncensored
+\ifdefined\ConfigRedactor\else
+    \def\ConfigRedactor{uncensored}
+\fi
+
 % choices: default, kjv, nrsv, etc. from translations/
 \def\ConfigEnglishTranslation{default}
 
@@ -45,6 +50,7 @@
 % ------------------------------------------------------------
 
 \def\ConfigTrue{true}
+\def\ConfigRedactorCensored{censored}
 \def\ConfigThemeDark{dark}
 \def\ConfigColorsLighter{lighter}
 \def\ConfigVerseLayoutHorizontal{horizontal}
@@ -57,6 +63,7 @@
 \def\IndividualBookTitlePageStyleFancy{fancy}
 
 \newif\ifConfigCommentaryOn
+\newif\ifConfigRedactorCensored
 \newif\ifConfigVerseLayoutVertical
 \newif\ifConfigOutputModeMobile
 \newif\ifConfigApocryphaOn
@@ -67,6 +74,11 @@
     \ConfigCommentaryOntrue
 \else
     \ConfigCommentaryOnfalse
+\fi
+\ifx\ConfigRedactor\ConfigRedactorCensored
+    \ConfigRedactorCensoredtrue
+\else
+    \ConfigRedactorCensoredfalse
 \fi
 \ifx\ConfigVerseLayout\ConfigVerseLayoutVertical
     \ConfigVerseLayoutVerticaltrue
@@ -2025,7 +2037,7 @@
 	{\PaleoASCIIStandard}		{\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
 
 \DeclareSourceProfile{R}
-	{\EnglishFont}				{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\mdseries}
+	{\EnglishFont}				{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
 	{\HebrewEzraRaw}			{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Scale=1.40}\mdseries}
 	% Don't change this font scale!
 
@@ -2041,7 +2053,7 @@
 	% Don't change this font scale!
 
 \DeclareSourceProfile{Reblacktor}
-	{\EnglishFont}				{\SourceBackground{Reblacktorbgcolor}\color{Reblacktorcolor}\Redactor\mdseries}
+	{\EnglishFont}				{\SourceBackground{Reblacktorbgcolor}\color{Reblacktorcolor}\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
 	{\HebrewEzraRaw}			{\SourceBackground{Reblacktorbgcolor}\color{Reblacktorcolor}\Redactor\addfontfeatures{Scale=1.40}\mdseries}
 	% Don't change this font scale!
 
@@ -2056,7 +2068,7 @@
 	{\Aramaic}					{\color{TextColor}\mdseries}
 
 \DeclareSourceProfile{RJE}
-	{\EnglishFont}				{\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\mdseries}
+	{\EnglishFont}				{\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
 	{\PaleoASCIISiloam}			{\addfontfeatures{Scale=1.30}\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\mdseries}
 
 \DeclareSourceProfile{Records}
@@ -4003,6 +4015,15 @@
 \DeclareSpeakerShortcut{A}{\cK}
 \DeclareSpeakerShortcut{B}{\cR}
 \DeclareSpeakerShortcut{C}{\cB}
+\ifConfigRedactorCensored
+    \NewDocumentCommand{\aAX}{ O{l} +m }{}
+    \NewDocumentCommand{\aBX}{ O{l} +m }{}
+    \NewDocumentCommand{\aCX}{ O{l} +m }{}
+\else
+    \NewDocumentCommand{\aAX}{ O{l} +m }{\aA[#1]{#2}}
+    \NewDocumentCommand{\aBX}{ O{l} +m }{\aB[#1]{#2}}
+    \NewDocumentCommand{\aCX}{ O{l} +m }{\aC[#1]{#2}}
+\fi
 \DeclareSpeakerShortcut{J}{\eJ}
 \DeclareSpeakerShortcut{E}{\eE}
 \DeclareSpeakerShortcut{P}{\aPEnglish}
@@ -4025,6 +4046,15 @@
 \newcommand{\fC}[1]{%
 	\aC{\footnote{#1}}
 }
+\ifConfigRedactorCensored
+    \newcommand{\fAX}[1]{}
+    \newcommand{\fBX}[1]{}
+    \newcommand{\fCX}[1]{}
+\else
+    \newcommand{\fAX}[1]{\fA{#1}}
+    \newcommand{\fBX}[1]{\fB{#1}}
+    \newcommand{\fCX}[1]{\fC{#1}}
+\fi
 
 
 % ------------------------------------------------------------
