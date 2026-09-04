@@ -15,26 +15,20 @@
 % choices: true, false
 \def\ConfigCommentary{true}
 
-% choices: censored, uncensored
-\ifdefined\ConfigRedactor\else
-    \def\ConfigRedactor{uncensored}
-\fi
-
 % choices: default, kjv, nrsv, etc. from translations/
 \def\ConfigEnglishTranslation{default}
 
 % choices: plain, fancy
 \def\IndividualBookTitlePageStyle{fancy}
 
-% choices: apocryphal, canonical
-\ifdefined\ConfigApocrypha\else
-    \def\ConfigApocrypha{apocryphal}
-\fi
-
 % choices: default, lighter
-\ifdefined\ConfigColors\else
-    \def\ConfigColors{default}
-\fi
+\def\ConfigColors{default}
+
+% choices: apocryphal, canonical
+\def\ConfigApocrypha{apocryphal}
+
+% choices: censored, uncensored
+\def\ConfigRedactor{uncensored}
 
 %%%%%%%%%%%%%%%%%%
 %%% master.tex %%%
