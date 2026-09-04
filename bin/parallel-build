@@ -53,7 +53,15 @@ CONFIG_OVERRIDES = {
 }
 OUTPUT_MODE = CONFIG["ConfigOutputMode"]
 THEME = CONFIG["ConfigTheme"]
-BUILD = Path(
+
+
+def project_path(value):
+    """Resolve caller-supplied relative paths from the project root."""
+    path = Path(value)
+    return path if path.is_absolute() else ROOT / path
+
+
+BUILD = project_path(
     os.environ.get("WTN_BUILD_DIR", ROOT / "build" / f"{OUTPUT_MODE}-{THEME}" / "parallel")
 )
 SOURCE_DIR = BUILD / "masters"
