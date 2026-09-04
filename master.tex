@@ -398,8 +398,7 @@
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
     BoldFont=paleo-hebrew-phoenician.ttf,
-    Scale=1.22,
-    YOffset=-0.10ex
+    Scale=1.22
 ]{paleo-hebrew-phoenician.ttf}
 
 \newfontfamily\PaleoHebrewRoboFont[
@@ -663,7 +662,7 @@
   {\leavevmode\textdir TRT\ProtoSinaiticFifteenthCenturyFont\tl_reverse:n { #1 }}
 }
 \NewDocumentCommand{\paleo}{ m }{
-  {\PaleoHebrewPhoenician{}{#1}}
+  \dn{0.22em}{\PaleoHebrewPhoenician{}{#1}}
 }
 
 \NewDocumentCommand{\ChineseText}{ m m }{%
