@@ -33,12 +33,26 @@ def read_master_config(name):
 
 # master.tex is the default source of truth.  Environment variables remain
 # available for callers that deliberately want to override its active config.
-OUTPUT_MODE_OVERRIDE = os.environ.get("WTN_OUTPUT_MODE")
-THEME_OVERRIDE = os.environ.get("WTN_THEME")
-COLORS_OVERRIDE = os.environ.get("WTN_COLORS")
-OUTPUT_MODE = OUTPUT_MODE_OVERRIDE or read_master_config("ConfigOutputMode")
-THEME = THEME_OVERRIDE or read_master_config("ConfigTheme")
-COLORS = COLORS_OVERRIDE or read_master_config("ConfigColors")
+CONFIG_ENV = {
+    "ConfigOutputMode": "WTN_OUTPUT_MODE",
+    "ConfigTheme": "WTN_THEME",
+    "ConfigVerseLayout": "WTN_VERSE_LAYOUT",
+    "ConfigCommentary": "WTN_COMMENTARY",
+    "ConfigEnglishTranslation": "WTN_TRANSLATION",
+    "IndividualBookTitlePageStyle": "WTN_TITLE_PAGE_STYLE",
+    "ConfigColors": "WTN_COLORS",
+    "ConfigApocrypha": "WTN_APOCRYPHA",
+    "ConfigRedactor": "WTN_REDACTOR",
+}
+CONFIG = {
+    name: os.environ.get(env_name) or read_master_config(name)
+    for name, env_name in CONFIG_ENV.items()
+}
+CONFIG_OVERRIDES = {
+    name: value for name, value in CONFIG.items() if os.environ.get(CONFIG_ENV[name]) is not None
+}
+OUTPUT_MODE = CONFIG["ConfigOutputMode"]
+THEME = CONFIG["ConfigTheme"]
 BUILD = Path(
     os.environ.get("WTN_BUILD_DIR", ROOT / "build" / f"{OUTPUT_MODE}-{THEME}" / "parallel")
 )
@@ -48,6 +62,7 @@ RAW_MERGED_PDF = BUILD / "master-raw.pdf"
 NORMALIZED_MERGED_PDF = BUILD / "master-normalized.pdf"
 TEXMFVAR_ROOT = BUILD / "texmf-var"
 TEXMFVAR_SEED = TEXMFVAR_ROOT / "_seed"
+CONFIG_SIGNATURE = BUILD / "config.json"
 FRONT_SLUG = "front-matter"
 FRONT_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}.pdf"
 FRONT_MERGE_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}-merge.pdf"
@@ -75,19 +90,14 @@ def read_document_parts():
         raise RuntimeError("master.tex has no \\begin{document}")
 
     preamble = text[: doc_match.end()]
-    if OUTPUT_MODE_OVERRIDE or THEME_OVERRIDE:
-        config = "".join(
-            [
-                rf"\def\ConfigOutputMode{{{OUTPUT_MODE}}}",
-                rf"\def\ConfigTheme{{{THEME}}}",
-            ]
-        )
-        # Apply deliberate overrides after master.tex's config declarations.
-        preamble = text[: doc_match.start()] + config + "\n" + text[doc_match.start() : doc_match.end()]
-    if COLORS_OVERRIDE:
-        # ConfigColors is guarded in master.tex, so define it before the
-        # preamble applies the palette.
-        preamble = rf"\def\ConfigColors{{{COLORS}}}" + "\n" + preamble
+    if CONFIG_OVERRIDES:
+        config = "".join(rf"\def\{name}{{{value}}}" for name, value in CONFIG_OVERRIDES.items())
+        # Define overrides before master.tex's guarded defaults and before its
+        # conditionals and layout setup consume them.
+        preamble = config + "\n" + preamble
+    translation_lua = os.environ.get("WTN_TRANSLATION_LUA")
+    if translation_lua:
+        preamble = rf"\def\ConfigEnglishTranslationLuaFile{{{translation_lua}}}" + "\n" + preamble
     books = list(BOOK_RE.finditer(text))
     if not books:
         raise RuntimeError("master.tex has no \\Book blocks")
@@ -151,6 +161,13 @@ def toc_page_number(page_starts, index):
 
 def cached_page_starts(books):
     """Return reusable starts only when the previous parallel build is complete."""
+    if not CONFIG_SIGNATURE.is_file():
+        return None
+    try:
+        if json.loads(CONFIG_SIGNATURE.read_text()) != CONFIG:
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
     toc = BUILD / FRONT_SLUG / f"{FRONT_SLUG}.toc"
     required = [
         BUILD / FRONT_SLUG / f"{FRONT_SLUG}.aux",
@@ -1101,6 +1118,7 @@ def main():
     if args.clean:
         clean()
     BUILD.mkdir(parents=True, exist_ok=True)
+    CONFIG_SIGNATURE.write_text(json.dumps(CONFIG, indent=2, sort_keys=True) + "\n")
     warm_tex_cache()
     prepare_worker_tex_caches(books, include_front)
 

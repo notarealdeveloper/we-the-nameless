@@ -1,18 +1,22 @@
 MAIN  := master
 PDF   := $(MAIN).pdf
-TRANSLATION ?= default
-
 # Keep the active settings in $(MAIN).tex as the defaults.  Command-line and
 # environment assignments still take precedence through ?=.
 read-config = $(strip $(shell sed -n 's/^[[:space:]]*\\def\\$(1)[[:space:]]*{\([^}]*\)}.*/\1/p' "$(MAIN).tex" | head -n 1))
 OUTPUT_MODE ?= $(call read-config,ConfigOutputMode)
 THEME ?= $(call read-config,ConfigTheme)
+VERSE_LAYOUT ?= $(call read-config,ConfigVerseLayout)
+COMMENTARY ?= $(call read-config,ConfigCommentary)
+TRANSLATION ?= $(call read-config,ConfigEnglishTranslation)
+TITLE_PAGE_STYLE ?= $(call read-config,IndividualBookTitlePageStyle)
 COLORS ?= $(call read-config,ConfigColors)
 APOCRYPHA ?= $(call read-config,ConfigApocrypha)
+REDACTOR ?= $(call read-config,ConfigRedactor)
 BUILD ?= build/$(OUTPUT_MODE)-$(THEME)
 CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
-LATEX_INPUT = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(MAIN).tex}
+LATEX_CONFIG = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigVerseLayout{$(VERSE_LAYOUT)}\def\ConfigCommentary{$(COMMENTARY)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\IndividualBookTitlePageStyle{$(TITLE_PAGE_STYLE)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigRedactor{$(REDACTOR)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}
+LATEX_INPUT = $(LATEX_CONFIG)\input{$(MAIN).tex}
 
 BUILD_MODES := book-light book-dark mobile-light mobile-dark
 
@@ -46,6 +50,8 @@ help:
 		'  make OUTPUT_MODE=mobile THEME=light pdf  Build one explicit combination.' \
 		'  make THEME=light COLORS=lighter pdf  Use the lighter light-mode palette.' \
 		'  make APOCRYPHA=canonical pdf  Build without apocrypha (default: apocryphal).' \
+		'  make VERSE_LAYOUT=vertical COMMENTARY=false pdf  Override verse layout and commentary.' \
+		'  make TITLE_PAGE_STYLE=plain REDACTOR=censored pdf  Override title pages and redaction.' \
 		'  make TRANSLATION=kjv pdf  Build with translations/kjv instead of inline English.' \
 		'  make parallel     Build the book with the parallel chapter workflow.' \
 		'  make progress     Open master.tex.' \
@@ -190,7 +196,8 @@ progress:
 	xdg-open "$(MAIN).tex" >/dev/null 2>&1 &
 
 parallel:
-	bin/parallel-build
+	@$(MAKE) BUILD="$(BUILD)/parallel" TRANSLATION="$(TRANSLATION)" build-translation
+	WTN_BUILD_DIR="$(BUILD)/parallel" WTN_OUTPUT_MODE="$(OUTPUT_MODE)" WTN_THEME="$(THEME)" WTN_VERSE_LAYOUT="$(VERSE_LAYOUT)" WTN_COMMENTARY="$(COMMENTARY)" WTN_TRANSLATION="$(TRANSLATION)" WTN_TRANSLATION_LUA="$(BUILD)/parallel/translation-$(TRANSLATION).lua" WTN_TITLE_PAGE_STYLE="$(TITLE_PAGE_STYLE)" WTN_COLORS="$(COLORS)" WTN_APOCRYPHA="$(APOCRYPHA)" WTN_REDACTOR="$(REDACTOR)" bin/parallel-build
 
 $(SUBSET_TARGETS): BUILD = build/$@
 $(SUBSET_TARGETS):
@@ -198,7 +205,7 @@ $(SUBSET_TARGETS):
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$@")"; \
 	bin/book-subset --build-dir "$(BUILD)" "$@"; \
-	$(LATEX) $(LATEXFLAGS) "\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{$(BUILD)/$$basename.tex}"
+	$(LATEX) $(LATEXFLAGS) "$(LATEX_CONFIG)\input{$(BUILD)/$$basename.tex}"
 	$(MAKE) clean-stray-aux
 	@basename="$$(bin/book-subset --output-name "$@")"; \
 	cp "$(BUILD)/$$basename.pdf" "$$basename.pdf"
@@ -209,7 +216,7 @@ $(CHAPTER_TARGETS):
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$@")"; \
 	bin/book-subset --build-dir "build/test" "$@"; \
-	$(LATEX) $(LATEXFLAGS) -jobname="test-$@" "\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}\input{build/test/$$basename.tex}"
+	$(LATEX) $(LATEXFLAGS) -jobname="test-$@" "$(LATEX_CONFIG)\input{build/test/$$basename.tex}"
 	@$(MAKE) clean-stray-aux
 	@cp "build/test/test-$@.pdf" "test-$@.pdf"
 	@if command -v xdg-open >/dev/null 2>&1; then \

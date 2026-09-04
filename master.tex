@@ -4,31 +4,49 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % choices: light, dark
-\def\ConfigTheme{dark}
+\ifdefined\ConfigTheme\else
+    \def\ConfigTheme{dark}
+\fi
 
 % choices: book, mobile
-\def\ConfigOutputMode{mobile}
+\ifdefined\ConfigOutputMode\else
+    \def\ConfigOutputMode{mobile}
+\fi
 
 % choices: horizontal, vertical
-\def\ConfigVerseLayout{horizontal}
+\ifdefined\ConfigVerseLayout\else
+    \def\ConfigVerseLayout{horizontal}
+\fi
 
 % choices: true, false
-\def\ConfigCommentary{true}
+\ifdefined\ConfigCommentary\else
+    \def\ConfigCommentary{true}
+\fi
 
 % choices: default, kjv, nrsv, etc. from translations/
-\def\ConfigEnglishTranslation{default}
+\ifdefined\ConfigEnglishTranslation\else
+    \def\ConfigEnglishTranslation{default}
+\fi
 
 % choices: plain, fancy
-\def\IndividualBookTitlePageStyle{fancy}
+\ifdefined\IndividualBookTitlePageStyle\else
+    \def\IndividualBookTitlePageStyle{fancy}
+\fi
 
 % choices: default, lighter
-\def\ConfigColors{default}
+\ifdefined\ConfigColors\else
+    \def\ConfigColors{default}
+\fi
 
 % choices: apocryphal, canonical
-\def\ConfigApocrypha{apocryphal}
+\ifdefined\ConfigApocrypha\else
+    \def\ConfigApocrypha{apocryphal}
+\fi
 
 % choices: censored, uncensored
-\def\ConfigRedactor{uncensored}
+\ifdefined\ConfigRedactor\else
+    \def\ConfigRedactor{uncensored}
+\fi
 
 %%%%%%%%%%%%%%%%%%
 %%% master.tex %%%
