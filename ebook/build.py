@@ -435,7 +435,7 @@ def tex_to_markdown(text: str) -> str:
             label = html.escape(SOURCE_NAMES[key])
             if language == "hebrew":
                 rendered = historical_hebrew(rendered, key)
-            is_block = any(marker in rendered for marker in ("<div ", "<table"))
+            is_block = any(marker in rendered for marker in ("<div ", "<table", "WTNTABLERUN"))
             if is_block:
                 # HTML tables/divs cannot legally be children of an inline
                 # source span. Their cells retain their own semantic markup.
@@ -447,7 +447,12 @@ def tex_to_markdown(text: str) -> str:
             base_name = name[:-1] if name not in COMMENTARY else name
             cls = COMMENTARY.get(base_name, "annotation")
             alignment = {"l": "start", "c": "center", "r": "end"}.get(name[-1], "start")
-            if any(marker in rendered for marker in ("<div ", "<table")):
+            if "^[" in rendered:
+                # A display annotation around a footnote is a TeX color scope,
+                # not part of the note's content model. Wrapping Pandoc's note
+                # token in HTML would move unmatched tags into the footnote.
+                out.append(rendered)
+            elif any(marker in rendered for marker in ("<div ", "<table", "WTNTABLERUN")):
                 out.append(rendered)
             elif "\n\n" in rendered:
                 out.append(annotation_block(rendered, cls, alignment))
@@ -456,8 +461,18 @@ def tex_to_markdown(text: str) -> str:
                 out.append(f'<span class="annotation {cls} align-{alignment}" role="note">{note}</span>')
         elif name in {"fA", "fB", "fC", "fAX", "fBX", "fCX"}:
             voice = name[1]
-            out.append(f'^[<span class="footnote-voice annotation-{voice.lower()}">{rendered}</span>]')
+            if "annotation-paragraph" in rendered:
+                rendered = re.sub(r"</?span(?:\s[^>]*)?>", "", rendered)
+            if any(tag in rendered for tag in ("<div ", "<table", "<figure", "WTNTABLERUN")) or "\n\n" in rendered:
+                # Pandoc's inline-note syntax cannot legally contain a span
+                # wrapped around block HTML. The blocks retain their own source
+                # classes; keeping valid note structure takes precedence.
+                out.append(f"^[{rendered}]")
+            else:
+                out.append(f'^[<span class="footnote-voice annotation-{voice.lower()}">{rendered}</span>]')
         elif name == "footnote" or name in {"recursivefootnote", "hangingfootnote"}:
+            if "annotation-paragraph" in rendered:
+                rendered = re.sub(r"</?span(?:\s[^>]*)?>", "", rendered)
             out.append(f"^[{rendered}]")
         elif name == "href":
             second = group(text, end)
@@ -660,7 +675,7 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
             # reference/rule header, then English-before-Hebrew document order.
             lines += [
                 f':::::: {{.verse #{verse_anchor}}}',
-                f'### {book} {chapter}:{number} {{#{verse_anchor}-number .verse-reference}}',
+                f'<p id="{verse_anchor}-number" class="verse-reference">{book} {chapter}:{number}</p>',
                 "::::: {.verse-translation}", tex_to_markdown(english), ":::::",
                 '::::: {.verse-source lang="he" dir="rtl"}', tex_to_markdown(hebrew), ":::::",
             ]

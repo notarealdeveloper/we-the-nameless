@@ -131,6 +131,13 @@ th { font-weight: bold; }
 .cjk { font-family: serif; }
 @media (max-width: 30em) { .contents-book ol { columns: 1; } .wtn-table { width: 100%; } }
 @media (prefers-color-scheme: dark) {
+  :root {
+    --annotation-a: #e8e2d2; --annotation-b: #dca5a4; --annotation-c: #8ec7ff;
+    --definition-color: #9aafd0; --rule-color: #777a76;
+    --source-j-bg: #344837; --source-e-bg: #554a32; --source-p-bg: #343f4b;
+    --source-r-bg: #343f4b; --source-rje-bg: #344837;
+    --source-record-bg: #424a4d; --source-other-bg: #454d50;
+  }
   html { background: #2d353b; color: #e8e2d2; } body { color: #e8e2d2; }
   .contents-list a, .annotation-c, .annotation-p { color: #8ec7ff; }
   .annotation-a { color: #e8e2d2; } .annotation-b { color: #dca5a4; } .annotation-r, .source-r { color: #7f9fcf; background: #343f4b; }
