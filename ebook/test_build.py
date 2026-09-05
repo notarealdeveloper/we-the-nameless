@@ -90,9 +90,30 @@ class ConversionTests(unittest.TestCase):
         self.assertEqual(rendered.count('class="smallcaps"'), 1)
         self.assertIn('<span class="smallcaps">Small Caps</span>', rendered)
 
-    def test_source_transition_does_not_create_whitespace(self) -> None:
+    def test_uncommented_source_transition_has_tex_interword_space(self) -> None:
         rendered = build.tex_to_markdown("\\eJ{first}\n    \\eE{second}")
+        self.assertIn("first</span> <span", rendered)
+
+    def test_commented_source_transition_has_no_interword_space(self) -> None:
+        rendered = build.tex_to_markdown("\\eJ{first}% comment\n    \\eE{second}")
         self.assertIn("first</span><span", rendered)
+
+    def test_source_transition_preserves_authored_horizontal_space(self) -> None:
+        rendered = build.tex_to_markdown(r"\eJ{first} \eE{second}")
+        self.assertIn("first</span> <span", rendered)
+
+    def test_paleo_sources_are_left_to_right(self) -> None:
+        self.assertIn('lang="he" dir="ltr"', build.tex_to_markdown(r"\hJ{אבג}"))
+        self.assertIn('lang="he" dir="ltr"', build.tex_to_markdown(r"\hE{אבג}"))
+        self.assertIn('class="paleo" lang="he" dir="ltr"', build.tex_to_markdown(r"\paleo{אבג}"))
+        self.assertIn('lang="he" dir="rtl"', build.tex_to_markdown(r"\hP{אָבג}"))
+
+    def test_chapter_summaries_are_toc_only(self) -> None:
+        self.assertEqual(build.chapter_heading("Genesis", "46"), "Genesis 46")
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn(".chapter-title", stylesheet)
+        self.assertIn("font-family: serif", stylesheet)
+        self.assertIn("font-size: 2.2em", stylesheet)
 
     def test_footnote_marker_is_attached_to_preceding_annotation(self) -> None:
         rendered = build.tex_to_markdown(r"\aB{Blah.}\fC{Footnote}")
@@ -112,6 +133,8 @@ class ConversionTests(unittest.TestCase):
         self.assertIn("# The History of the Alphabet", matter)
         self.assertIn('class="alphabet-page"', matter)
         self.assertIn('<div class="title-book">Genesis</div>', matter)
+        self.assertIn('class="alphabet paleo" dir="ltr"', matter)
+        self.assertIn('class="source source-j hebrew" dir="ltr"', matter)
         self.assertNotIn("we-cover-2.png", Path(build.__file__).read_text())
 
     def test_definition_list_has_markdown_block_boundaries(self) -> None:

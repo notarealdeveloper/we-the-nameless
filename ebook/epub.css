@@ -60,7 +60,7 @@ h1, h2, h3 { font-family: sans-serif; }
 .publication-logo { width: 1in; margin: 2em auto 0; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 .book-title { text-align: center; page-break-before: always; break-before: page; font-size: 3.2em; font-variant: small-caps; }
-.chapter-title { page-break-before: always; break-before: page; text-align: center; }
+.chapter-title { page-break-before: always; break-before: page; font-family: serif; font-size: 2.2em; text-align: center; }
 .verse { font-size: .82em; line-height: 1.45; margin: .75em 0 1.6em; break-inside: avoid-page; page-break-inside: avoid; }
 .verse-reference {
   border-top: 1px solid #6e6e6e !important; border-bottom: 1px solid #6e6e6e !important;

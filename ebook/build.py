@@ -72,6 +72,10 @@ SOURCE_NAMES = {
 
 SOURCE_ALIASES = {"BookOfRecords": "Records"}
 
+# The embedded historical faces are laid out left-to-right, matching their
+# TeX font encodings. Square Hebrew remains right-to-left.
+PALEO_SOURCE_KEYS = {"J", "E", "JE", "RJE", "Records", "Proto", "ProtoA", "ProtoF", "Other"}
+
 # master.tex's speaker shortcuts are commentary-sized wrappers around either
 # the A/B/C inks or a complete English source profile.  Keep that distinction:
 # aJ is not merely generic commentary, for example; it is commentary in J's
@@ -196,7 +200,11 @@ def render_complex_math(math: str) -> str | None:
 
 
 def strip_comments(text: str) -> str:
-    return re.sub(r"(?<!\\)%[^\n]*", "", text)
+    # A TeX comment consumes its line ending too. Consuming indentation on the
+    # continuation line models TeX's ignored beginning-of-line space and, most
+    # importantly, distinguishes `%\n` (no interword space) from a plain line
+    # ending (one interword space after normalisation).
+    return re.sub(r"(?<!\\)%[^\r\n]*(?:\r?\n[ \t]*)?", "", text)
 
 
 def group(text: str, pos: int) -> tuple[str, int] | None:
@@ -822,7 +830,8 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
         src = source_class(name)
         if src:
             language, key = src
-            attrs = ' lang="he" dir="rtl"' if language == "hebrew" else ""
+            direction = "ltr" if key in PALEO_SOURCE_KEYS else "rtl"
+            attrs = f' lang="he" dir="{direction}"' if language == "hebrew" else ""
             label = html.escape(SOURCE_NAMES[key])
             if language == "hebrew":
                 rendered = historical_hebrew(rendered, key)
@@ -902,7 +911,7 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             tag = INLINE[name]
             attrs = ""
             if name == "heb": attrs = ' class="hebrew" lang="he" dir="rtl"'
-            elif name == "paleo" or name == "Paleo": attrs = ' class="paleo" lang="he" dir="rtl"'
+            elif name == "paleo" or name == "Paleo": attrs = ' class="paleo" lang="he" dir="ltr"'
             elif name == "textsc": attrs = ' class="smallcaps"'
             elif name == "redacted": attrs = ' class="redacted"'
             out.append(f"<{tag}{attrs}>{rendered}</{tag}>")
@@ -947,12 +956,11 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
     # TeX's `%` commonly suppresses whitespace before a footnote marker. The
     # comment is gone by this stage, so enforce the same attachment directly.
     result = re.sub(r"[ \t\r\n]+\^\[", "^[", result)
-    # Source files commonly put adjacent source wrappers on separate lines for
-    # readability. A source change is not itself a word space or line break;
-    # preserve spaces authored on one line, but discard formatting newlines
-    # between consecutive source spans.
+    # TeX turns an uncommented line ending between words into one interword
+    # space. Commented endings have already been removed by strip_comments and
+    # therefore leave the source spans directly adjacent.
     result = re.sub(
-        r'(</span>)[ \t]*\r?\n[ \t]*(?=<span class="source\b)', r"\1", result,
+        r'(</span>)[ \t]*\r?\n[ \t]*(?=<span class="source\b)', r"\1 ", result,
     )
     if compact:
         result = re.sub(r"\s*\n\s*", " ", result)
@@ -1034,6 +1042,11 @@ def chapter_summaries() -> dict[tuple[str, str], str]:
     return summaries
 
 
+def chapter_heading(book: str, chapter: str) -> str:
+    r"""The running chapter page follows \Chapter, not the summary-only ToC."""
+    return f"{book} {chapter}"
+
+
 def front_matter(
     sequence: list[tuple[str, str]],
     summaries: dict[tuple[str, str], str],
@@ -1064,7 +1077,7 @@ def front_matter(
         '</section>', "",
         '# The History of the Alphabet {.front-heading .alphabet-heading}', "",
         '<div class="alphabet-page" dir="rtl" epub:type="frontmatter">',
-        '<p class="alphabet paleo">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p>',
+        '<p class="alphabet paleo" dir="ltr">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p>',
         '<p class="alphabet hebrew-david">אבגדהוזחטיכלמנסעפצקרשת</p>',
         '<p class="alphabet hebrew-ezra">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p>',
         '</div>', "",
@@ -1084,8 +1097,8 @@ def front_matter(
         '<dt class="source source-bookofrecords">Record Grey</dt><dd class="source source-bookofrecords">Records. Begat lists, genealogies, and miscellaneous documents.</dd>',
         '</dl>', "",
         '# The Source Fonts {.front-heading}', "",
-        '<div class="font-legend"><p class="source source-j hebrew" dir="rtl">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
-        '<p class="source source-e hebrew" dir="rtl">ABGDHWZXJYKLMNS]PCQRVT</p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
+        '<div class="font-legend"><p class="source source-j hebrew" dir="ltr">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
+        '<p class="source source-e hebrew" dir="ltr">ABGDHWZXJYKLMNS]PCQRVT</p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
         '<p class="source source-p hebrew" dir="rtl">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p><p class="source source-p">P is rendered in the modern Hebrew square script with niqqud.</p>',
         '<p><span class="source source-r hebrew" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</span></p><p><span class="source source-r">R uses the Ezra variant of the Hebrew square script with no niqqud.</span></p></div>', "",
         '# Publication Notice {.front-heading .visually-hidden}', "",
@@ -1111,8 +1124,7 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
             lines += [f"# {book} {{.book-title}}", ""]
             last_book = book
         anchor = re.sub(r"[^a-z0-9]+", "-", f"{book}-{chapter}".lower()).strip("-")
-        summary = summaries.get((book, chapter), "")
-        heading = f"{chapter}. {summary}" if summary else f"{book} {chapter}"
+        heading = chapter_heading(book, chapter)
         lines += [f"## {heading} {{#{anchor} .chapter-title}}", ""]
         chapter_count += 1
         verse_occurrences: dict[str, int] = {}
