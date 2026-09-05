@@ -13,6 +13,7 @@ import tempfile
 import textwrap
 import time
 import unicodedata
+import zipfile
 from pathlib import Path
 
 
@@ -712,10 +713,6 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 out.append(first_rendered)
             i = end
             continue
-        if name == "egMirror":
-            out.append(f'<span class="glyph-mirror">{rendered}</span>')
-            i = end
-            continue
         if name == "tikz":
             glyphs: list[str] = []
             cursor = 0
@@ -780,6 +777,10 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 )
             else:
                 out.append(rendered)
+            i = end
+            continue
+        if name == "egMirror":
+            out.append(f'<span class="glyph-mirror">{rendered}</span>')
             i = end
             continue
         src = source_class(name)
@@ -1088,6 +1089,51 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
     return chapter_count, verse_count
 
 
+def colorize_epub_footnotes(path: Path) -> None:
+    """Copy A/B/C voice classes from detached notes onto their links."""
+    with zipfile.ZipFile(path, "r") as source:
+        entries = [(info, source.read(info.filename)) for info in source.infolist()]
+    rewritten: list[tuple[zipfile.ZipInfo, bytes]] = []
+    for info, payload in entries:
+        if not info.filename.endswith((".xhtml", ".html")):
+            rewritten.append((info, payload))
+            continue
+        document = payload.decode("utf-8")
+        voices: dict[str, str] = {}
+        def mark_aside(match: re.Match[str]) -> str:
+            opening, note_id, body = match.groups()
+            voice_match = re.search(r'footnote-voice[^"<]*\bannotation-([abc])\b', body)
+            if not voice_match:
+                return match.group(0)
+            voice = voice_match.group(1)
+            voices[note_id] = voice
+            voice_class = f"footnote-{voice}"
+            opening = opening[:-1] + f' class="{voice_class}">'
+            body = re.sub(
+                r'(class="footnote-back)(")', rf'\1 {voice_class}\2', body, count=1,
+            )
+            return opening + body
+
+        document = re.sub(
+            r'(<aside\b[^>]*\bid="(fn\d+)"[^>]*>)(.*?</aside>)',
+            mark_aside, document, flags=re.DOTALL,
+        )
+        for note_id, voice in voices.items():
+            voice_class = f"footnote-{voice}"
+            document = re.sub(
+                rf'(<a\b[^>]*href="#{note_id}"\s+class="footnote-ref)(")',
+                rf'\1 {voice_class}\2', document,
+            )
+        rewritten.append((info, document.encode("utf-8")))
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    with zipfile.ZipFile(temporary, "w") as target:
+        for info, payload in rewritten:
+            if info.filename == "mimetype":
+                info.compress_type = zipfile.ZIP_STORED
+            target.writestr(info, payload)
+    temporary.replace(path)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=OUTPUT)
@@ -1147,6 +1193,7 @@ def main() -> int:
         if any(marker in result.stderr for marker in fatal_warnings):
             log("Pandoc emitted structural warnings; refusing a potentially damaged EPUB")
             return 2
+        colorize_epub_footnotes(args.output)
         validator = HERE / "validate.py"
         log("Running EPUB package and link validation...")
         validation = subprocess.run(

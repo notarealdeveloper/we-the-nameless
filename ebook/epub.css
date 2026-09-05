@@ -157,6 +157,9 @@ th { font-weight: bold; }
 .footnote-ref, .footnote-back { color: inherit; text-decoration: none; }
 .footnote-ref { font-size: .72em; line-height: 0; vertical-align: super; margin: 0; padding: 0; }
 .footnote-voice { color: inherit; }
+.footnote-a { color: #000; color: var(--annotation-a); }
+.footnote-b { color: #820000; color: var(--annotation-b); }
+.footnote-c { color: #0046aa; color: var(--annotation-c); }
 .egyptian { font-family: "WTN Egyptian", sans-serif; font-size: 1.9em; }
 .arabic { font-family: "WTN Arabic", serif; font-size: 1.15em; }
 .syriac { font-family: "WTN Syriac", sans-serif; font-size: 1.15em; }
