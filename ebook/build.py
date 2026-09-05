@@ -287,6 +287,34 @@ def tex_to_markdown(text: str) -> str:
     """Conservatively retain prose while translating semantic TeX markup."""
     text = textwrap.dedent(strip_comments(text)).replace("~", "\u00a0")
     text = text.replace("``", "“").replace("''", "”")
+    # Tables may contain currency dollars. Render them before scanning TeX math
+    # so a price in one cell can never pair with a later price as an equation.
+    table_runs: list[str] = []
+    table_pos = 0
+    while True:
+        match = re.search(r"\\Table\s*", text[table_pos:])
+        if not match:
+            break
+        start = table_pos + match.start()
+        cursor = table_pos + match.end()
+        setup = optional_group(text, cursor)
+        setup_value = None
+        if setup:
+            setup_value, cursor = setup
+        columns = group(text, cursor)
+        if not columns:
+            table_pos = cursor
+            continue
+        column_spec, cursor = columns
+        rows = group(text, cursor)
+        if not rows:
+            table_pos = cursor
+            continue
+        row_body, end = rows
+        token = f"WTNTABLERUN{len(table_runs)}TOKEN"
+        table_runs.append(render_table(row_body, column_spec, setup_value is not None))
+        text = text[:start] + token + text[end:]
+        table_pos = start + len(token)
     math_runs: list[str] = []
 
     def protect_math(match: re.Match[str]) -> str:
@@ -476,6 +504,8 @@ def tex_to_markdown(text: str) -> str:
     result = re.sub(r"\n{4,}", "\n\n\n", result)
     for number, math in enumerate(math_runs):
         result = result.replace(f"WTNMATHRUN{number}TOKEN", math)
+    for number, table in enumerate(table_runs):
+        result = result.replace(f"WTNTABLERUN{number}TOKEN", table)
     return result.strip()
 
 
