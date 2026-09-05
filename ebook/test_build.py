@@ -62,11 +62,13 @@ class ConversionTests(unittest.TestCase):
         self.assertIn(".hebrew.source-records", stylesheet)
         self.assertIn('font-family: "WTN Paleo Mono"', stylesheet)
 
-    def test_smallcaps_font_is_not_exposed_as_the_only_embedded_latin_face(self) -> None:
+    def test_english_uses_regular_noto_sans_without_global_smallcaps(self) -> None:
         self.assertFalse(any("english-im-fell-english-sc" in str(font) for font in build.FONT_FILES))
+        self.assertTrue(any("noto-sans-regular.ttf" in str(font) for font in build.FONT_FILES))
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn('@font-face { font-family: "WTN Noto Sans";', stylesheet)
         self.assertIn("body {", stylesheet)
-        self.assertIn("font-family: serif; font-variant: normal;", stylesheet)
+        self.assertIn('font-family: "WTN Noto Sans", sans-serif; font-variant: normal;', stylesheet)
 
     def test_preconverted_math_omits_reparsed_tex_annotation(self) -> None:
         rendered = build.render_complex_math(r"$$\Delta_t = \text{gap}.$$ ")
