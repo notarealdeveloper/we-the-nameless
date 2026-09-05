@@ -26,16 +26,3 @@ Agents: Do all the items below except the ones marked as MANUAL. If there are no
 Switch ed/ from being symlinks to being hardlinks, they're currently not syncing properly so we need to fool obsidian somehow.
 
 Move lines 3 and 4 of the alphabet history page above line. So it goes 1, 3, 4, 2 in terms of the current ordering of the lines.
-
-Gen 4:23. In the \aC{} text, invert the indentation. The indented lines should be unindented, and the unindented lines should be intended.
-
-Gen 17:17. In the final line, add "infinite" before the pu, so it's "I'll give you infinite pu" before the macro.
-
-Gen 17:18. Same edit as above in Gen 17:17.
-
-Gen 18:16. The footnote on "people" should be \aB{...}.
-
-Gen 18:28. Make the footnote \aB{...}
-
-Gen 21:6. Now Sarah speaks
-Gen 24:41. Add below the first two lines. "Side Note: This is the longest chapter in Genesis by the way."
