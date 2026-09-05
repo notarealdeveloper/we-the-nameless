@@ -66,6 +66,8 @@ class ConversionTests(unittest.TestCase):
         self.assertFalse(any("english-im-fell-english-sc" in str(font) for font in build.FONT_FILES))
         self.assertFalse(any("noto-sans-regular.ttf" in str(font) for font in build.FONT_FILES))
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertNotIn("noto-sans-regular.ttf", stylesheet)
+        self.assertNotIn('font-family: "Noto Sans"', stylesheet)
         self.assertNotIn('font-family: "WTN Noto Sans"', stylesheet)
         self.assertIn("body {", stylesheet)
         self.assertIn("font-family: sans-serif; font-size: 87.5%; font-variant: normal;", stylesheet)
