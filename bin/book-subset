@@ -973,6 +973,7 @@ def transform_chapter(source_path, target, include):
 
 
 def build_title_logo_override(target):
+    position_overrides = []
     if target.name == "court":
         body = r"{\fontsize{24}{30}\fontfamily{lmr}\selectfont\textrm{The Court History}\par}"
     elif target.name == "r":
@@ -981,10 +982,17 @@ def build_title_logo_override(target):
         # Standalone book volumes echo the roman title face used by
         # "The Nameless", at a subtly smaller size.
         body = rf"{{\fontsize{{23}}{{28}}\fontfamily{{lmr}}\selectfont\textrm{{{target.title_logo}}}\par}}"
+        # Raise "We" while leaving "The Nameless" near the page's midpoint.
+        # The flexible fill below it keeps the individual book title fixed.
+        position_overrides = [
+            r"\renewcommand{\WeTitlePageTopSpace}{\vspace*{0.08\textheight}}",
+            r"\renewcommand{\WeTitlePageMiddleSpace}{\vspace*{0.28\textheight}}",
+        ]
     else:
         body = rf"{{\fontsize{{42}}{{50}}\fontfamily{{lmr}}\selectfont {target.title_logo}\par}}"
     return "\n".join(
-        [
+        position_overrides
+        + [
             r"\renewcommand{\WeTitlePageBottomMark}{%",
             r"    \vspace*{\fill}%",
             r"    \begingroup",

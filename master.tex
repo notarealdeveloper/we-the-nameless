@@ -2788,6 +2788,8 @@
 % the publication-notice page.
 \newcommand{\WeTitlePageBottomMark}{\vspace*{\fill}}
 \newcommand{\WeContentsPageBottomMark}{}
+\newcommand{\WeTitlePageTopSpace}{\vspace*{0.2\textheight}}
+\newcommand{\WeTitlePageMiddleSpace}{\vspace*{0.2\textheight}}
 
 \newcommand{\wetitlepage}{%
     \clearpage
@@ -2795,9 +2797,9 @@
     \pagestyle{empty}
     {
     \centering
-    \vspace*{0.2\textheight}
+    \WeTitlePageTopSpace
     {\fontsize{100}{120}\fontfamily{lmr}\selectfont\textsc{We}\par}
-    \vspace*{0.2\textheight}
+    \WeTitlePageMiddleSpace
     {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
     \WeTitlePageBottomMark
     }
