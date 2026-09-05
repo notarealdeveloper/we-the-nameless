@@ -40,12 +40,28 @@ export max_print_line = 80
 
 .PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
-all: $(PDF) open
+define publish-and-open
+	@set -e; \
+	if [ "$(OUTPUT_MODE)-$(THEME)" = "book-light" ]; then \
+		published="mistress.pdf"; \
+	else \
+		published="master.pdf"; \
+	fi; \
+	cp "$(1)" "$$published"; \
+	if command -v xdg-open >/dev/null 2>&1; then \
+		xdg-open "$$published" >/dev/null 2>&1 & \
+	else \
+		echo "Built $$published"; \
+	fi
+endef
+
+all: $(BUILD)/$(PDF)
+	$(call publish-and-open,$(BUILD)/$(PDF))
 
 help:
 	@printf '%s\n' \
 		'Public targets:' \
-		'  make              Build master.pdf and open it.' \
+		'  make              Build and open master.pdf (mobile-dark) or mistress.pdf (book-light).' \
 		'  make pdf          Build master.pdf without opening it.' \
 		'  make book-light   Build build/book-light/master.pdf (also: book-dark, mobile-light, mobile-dark).' \
 		'  make all-modes    Build all four mode/theme combinations concurrently.' \
@@ -212,6 +228,7 @@ progress:
 parallel:
 	@$(MAKE) BUILD="$(BUILD)/parallel" TRANSLATION="$(TRANSLATION)" build-translation
 	WTN_BUILD_DIR="$(BUILD)/parallel" WTN_OUTPUT_MODE="$(OUTPUT_MODE)" WTN_THEME="$(THEME)" WTN_VERSE_LAYOUT="$(VERSE_LAYOUT)" WTN_COMMENTARY="$(COMMENTARY)" WTN_TRANSLATION="$(TRANSLATION)" WTN_TRANSLATION_LUA="$(BUILD)/parallel/translation-$(TRANSLATION).lua" WTN_TITLE_PAGE_STYLE="$(TITLE_PAGE_STYLE)" WTN_COLORS="$(COLORS)" WTN_APOCRYPHA="$(APOCRYPHA)" WTN_REDACTOR="$(REDACTOR)" bin/parallel-build
+	$(call publish-and-open,$(BUILD)/parallel/$(PDF))
 
 $(SUBSET_TARGETS): BUILD = build/$@
 $(SUBSET_TARGETS):
