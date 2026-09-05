@@ -142,6 +142,10 @@
     \DeclareConfiguredTextSize{\Huge}{24.88pt}{30pt}%
 }
 
+% Older chapter sources use this name when temporarily restoring the compact
+% print-size ladder inside larger-format sections.
+\let\BookModeTextSizes\PrintModeTextSizes
+
 \newcommand{\PhoneModeTextSizes}{%
     \DeclareConfiguredTextSize{\tiny}{8pt}{9.33pt}%
     \DeclareConfiguredTextSize{\scriptsize}{10.67pt}{12.67pt}%
@@ -207,6 +211,7 @@
         includefoot
     ]{geometry}
 \fi
+\usepackage{lmodern}
 \usepackage[no-math]{fontspec}
 % The alphabet-history page deliberately uses a custom size ladder.  Permit
 % Computer Modern's legacy text and math fonts at those exact sizes instead
