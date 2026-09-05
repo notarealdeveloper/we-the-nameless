@@ -19,10 +19,9 @@ Gen 17:15-17. Move half of the Gen 17:15 comment down into 17:16 so that when th
 Gen 22:21-24. Have red add one liner comments about the names.
 
 Gen 22. Find a way to remove the duplicate copy.
+
 ## Stuff to do now
 
 Agents: Do all the items below except the ones marked as MANUAL. If there are no MANUAL ones, do them all.
-
-Switch ed/ from being symlinks to being hardlinks, they're currently not syncing properly so we need to fool obsidian somehow.
 
 Move lines 3 and 4 of the alphabet history page above line. So it goes 1, 3, 4, 2 in terms of the current ordering of the lines.
