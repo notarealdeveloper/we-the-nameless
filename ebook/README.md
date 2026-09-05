@@ -42,9 +42,9 @@ A build requires Pandoc 3. `--keep-markdown` on `build.py` preserves
 - J/E/P, redactors, records, Deuteronomists, composite sources, and primeval
   sources become labeled source spans with centralized classes. Priest/bold and
   redactor-highlight distinctions remain independent of hue.
-- Commentary voices retain distinct classes inside a bordered commentary
-  region. Print indentation becomes spacing and voice color rather than fake
-  margins.
+- Commentary voices retain distinct classes inside a commentary region. Print
+  indentation becomes spacing and voice color rather than fake margins; no
+  border is added because `\Verse` adds none around commentary.
 - Footnote macros become EPUB noteref links and `epub:type="footnote"` asides
   with backlinks.
 - `\Table` becomes a genuine table with header/body cells, wrapping, and a
@@ -98,8 +98,10 @@ editorial relationships while replacing paper geometry with reflow-safe HTML.
   definition: each is a colored commentary wrapper around `\footnote`.
 - `\eJ`/`\hJ` and the other `e*`/`h*` source-profile pairs map to shared
   `.source-*` identities applied independently to English and Hebrew spans.
-  Hue, weight, highlight background, source-specific face, and consonantal
-  conversion follow the profile bundles in `master.tex`; Hebrew spans also
+  Hue, language-specific weight, source-specific face, and consonantal
+  conversion follow the profile bundles in `master.tex`; backgrounds appear
+  only on profiles that actually invoke `\Redactor` (merely setting a latent
+  `\SourceBgColor` does not paint text). Hebrew spans also
   carry `lang="he" dir="rtl"` in markup.
 - `\paleo` and historical source profiles use embedded Paleo-Hebrew faces;
   `\egypt`, Hebrew, Arabic, Syriac, Ugaritic, and cuneiform helpers carry

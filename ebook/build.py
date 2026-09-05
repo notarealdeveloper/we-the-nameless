@@ -51,9 +51,19 @@ SOURCE_NAMES = {
 
 SOURCE_ALIASES = {"BookOfRecords": "Records"}
 
-COMMENTARY = {"aA": "annotation-a", "aB": "annotation-b",
-              "aC": "annotation-c", "aP": "annotation-p",
-              "aR": "annotation-r", "aRJE": "annotation-rje"}
+# master.tex's speaker shortcuts are commentary-sized wrappers around either
+# the A/B/C inks or a complete English source profile.  Keep that distinction:
+# aJ is not merely generic commentary, for example; it is commentary in J's
+# source face/colour.
+COMMENTARY = {
+    "aA": "annotation-a", "aB": "annotation-b", "aC": "annotation-c",
+    "aJ": "source source-j english", "aE": "source source-e english",
+    "aP": "annotation-p", "aDtrA": "source source-dtra english",
+    "aDtrB": "source source-dtrb english", "aDtn": "source source-dtn english",
+    "aR": "source source-r english", "aRJE": "source source-rje english",
+    "aRecords": "source source-records english",
+    "aOther": "source source-other english",
+}
 
 INLINE = {
     "textbf": "strong", "bf": "strong", "emph": "em", "textit": "em",
@@ -627,9 +637,13 @@ def tex_to_markdown(text: str) -> str:
                 rendered = re.sub(r"\s*\n\s*", " ", rendered)
                 out.append(f'<span class="source source-{key.lower()} {language}"{attrs} data-source="{label}">{rendered}</span>')
         elif name in COMMENTARY or re.fullmatch(r"a(?:A|B|C|J|E|P|DtrA|DtrB|Dtn|R|RJE|Records|Other)[lcr]", name):
-            base_name = name[:-1] if name not in COMMENTARY else name
+            has_alignment_suffix = name not in COMMENTARY
+            base_name = name[:-1] if has_alignment_suffix else name
             cls = COMMENTARY.get(base_name, "annotation")
-            alignment = {"l": "start", "c": "center", "r": "end"}.get(name[-1], "start")
+            alignment = (
+                {"l": "start", "c": "center", "r": "end"}[name[-1]]
+                if has_alignment_suffix else "start"
+            )
             if "^[" in rendered:
                 # A display annotation around a footnote is a TeX color scope,
                 # not part of the note's content model. Wrapping Pandoc's note

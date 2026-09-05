@@ -19,9 +19,7 @@
   --annotation-a: #000; --annotation-b: #820000; --annotation-c: #0046aa;
   --source-red: #aa0000; --source-record: #6e6e6e; --source-other: #505050;
   --definition-color: #0046aa; --rule-color: currentColor;
-  --source-j-bg: #e0f1e0; --source-e-bg: #f4edd6; --source-p-bg: #dbe5f3;
   --source-r-bg: #e0e8f5; --source-rje-bg: #e1f5e1;
-  --source-record-bg: #e9e9e9; --source-other-bg: #e7e7e7;
   --space-xs: .25em; --space-sm: .5em; --space-md: .75em;
   --space-lg: 1em; --space-xl: 1.6em;
   --verse-number-size: 1.1em; --commentary-size: 1em;
@@ -73,19 +71,18 @@ h1, h2, h3 { font-family: serif; }
 .annotation-a { color: var(--annotation-a); } .annotation-b { color: var(--annotation-b); }
 .annotation-c, .annotation-p { color: var(--annotation-c); }
 .annotation-r { color: var(--source-p); background: var(--source-r-bg); }
+.annotation-rje { color: #006400; background: var(--source-rje-bg); }
 .align-start { text-align: start; } .align-center { text-align: center; } .align-end { text-align: end; }
 .source-j, .source-je, .source-jp, .source-jpp, .source-jm { color: var(--source-j); }
 .source-e, .source-ep, .source-epp { color: var(--source-e); font-weight: 700; }
 .source-p, .source-pr, .source-pp { color: var(--source-p); font-weight: 700; }
-.source-j { background-color: var(--source-j-bg); }
-.source-e { background-color: var(--source-e-bg); }
-.source-p { background-color: var(--source-p-bg); }
 .source-r, .source-diff { color: var(--source-p); background-color: var(--source-r-bg); }
+.source-pr { background-color: var(--source-r-bg); }
 .source-rje { color: #006400; background-color: var(--source-rje-bg); }
 .source-dtra, .source-dtrh, .source-dtn { color: #806100; }
 .source-dtrb { color: #995e00; }
-.source-bookofrecords, .source-records { color: var(--source-record); background-color: var(--source-record-bg); }
-.source-other, .source-x { color: var(--source-other); background-color: var(--source-other-bg); }
+.source-bookofrecords, .source-records { color: var(--source-record); }
+.source-other, .source-x { color: var(--source-other); }
 .source-red { color: var(--source-red); background: #f5e0e0; }
 .source-reblacktor { color: inherit; background: rgba(128, 128, 128, .18); }
 .source-proto, .source-protoa, .source-protof { color: #878787; font-family: "WTN Primeval", serif; }
@@ -98,6 +95,13 @@ h1, h2, h3 { font-family: serif; }
 .hebrew.source-r, .source-r.hebrew { font-family: "WTN Hebrew Ezra", serif; }
 .hebrew.source-rje, .source-rje.hebrew { font-family: "WTN Paleo RJE", serif; }
 .hebrew.source-bookofrecords, .source-bookofrecords.hebrew { font-family: "WTN Paleo Mono", monospace; }
+/* Source-profile weight is language-specific in master.tex. */
+.english.source-jp, .english.source-jpp, .english.source-je,
+.english.source-e, .english.source-ep, .english.source-epp,
+.english.source-p, .english.source-pp, .english.source-pr { font-weight: 700; }
+.hebrew.source-jp, .hebrew.source-jpp, .hebrew.source-je,
+.hebrew.source-e, .hebrew.source-ep, .hebrew.source-epp,
+.hebrew.source-p, .hebrew.source-pr { font-weight: 400; }
 .smallcaps { font-variant: small-caps; }
 .stacked-reading {
   display: inline-block; vertical-align: middle; line-height: 1;
@@ -148,17 +152,15 @@ th { font-weight: bold; }
   :root {
     --annotation-a: #e8e2d2; --annotation-b: #dca5a4; --annotation-c: #8ec7ff;
     --definition-color: #9aafd0; --rule-color: #777a76;
-    --source-j-bg: #344837; --source-e-bg: #554a32; --source-p-bg: #343f4b;
     --source-r-bg: #343f4b; --source-rje-bg: #344837;
-    --source-record-bg: #424a4d; --source-other-bg: #454d50;
   }
   html { background: #2d353b; color: #e8e2d2; } body { color: #e8e2d2; }
   .contents-list a, .annotation-c, .annotation-p { color: #8ec7ff; }
   .annotation-a { color: #e8e2d2; } .annotation-b { color: #dca5a4; } .annotation-r, .source-r { color: #7f9fcf; background: #343f4b; }
   .source-j, .source-je, .source-jp, .source-jpp, .source-jm { color: #b0cfae; }
   .source-e, .source-ep, .source-epp { color: #c4ad82; } .source-p, .source-pr { color: #718aaa; }
-  .source-rje { color: #b4d0b3; background: #344837; } .source-dtra, .source-dtrh, .source-dtn { color: #917c59; }
-  .source-dtrb { color: #a77a5d; } .source-bookofrecords { color: #bdc3bd; background: #424a4d; }
-  .source-other, .source-x { color: #d3d2c9; background: #454d50; } .source-proto, .source-protoa, .source-protof { color: #b7b9b3; }
+  .source-rje, .annotation-rje { color: #b4d0b3; background: #344837; } .source-dtra, .source-dtrh, .source-dtn { color: #917c59; }
+  .source-dtrb { color: #a77a5d; } .source-bookofrecords, .source-records { color: #bdc3bd; }
+  .source-other, .source-x { color: #d3d2c9; } .source-proto, .source-protoa, .source-protof { color: #b7b9b3; }
   .paleo { color: #a9c8a7; }
 }
