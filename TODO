@@ -19,8 +19,6 @@ The result should feel like **the same book designed natively for an ebook reade
 
 ## First: understand the repository
 
-Before making architectural changes:
-
 1. Inspect the root `Makefile` and all relevant included makefiles.
 2. Inspect `ebook/` completely.
 3. Find the existing book-specific ebook Make targets and determine exactly how they work.
@@ -29,8 +27,6 @@ Before making architectural changes:
 6. Identify the book's recurring visual constructs and their corresponding source representation/macros.
 7. Build the current ebook before changing it so you know the existing baseline and failure modes.
 
-Do not rewrite working infrastructure merely because you would have designed it differently.
-
 Preserve useful existing interfaces, especially commands of the form:
 
 ```sh
@@ -38,6 +34,8 @@ make <book-specific-ebook-target>
 ```
 
 or whatever equivalent already exists.
+
+Aside from that, feel free to make changes that cause the tex structure to be more closely reflected in the ebook.
 
 The final workflow should remain easy enough that ebook generation is an ordinary build target, not a manual publishing procedure.
 
@@ -775,5 +773,7 @@ Most importantly:
 > **Do not optimize for making the EPUB resemble individual PDF pages. Optimize for making it feel as though the original book designer had designed the same book specifically for a modern ebook reader.**
 
 Be ambitious. EPUB 3 is much closer to a modern web platform than to an old stripped-down ebook format. Use that capability, while maintaining fallbacks for the real reading systems we care about.
+
+Finally, make sure the index in the ebook matches the book's ToC, it's currently quite wrong.
 
 EOF
