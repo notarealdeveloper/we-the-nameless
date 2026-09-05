@@ -263,6 +263,10 @@ def main() -> int:
     parser.add_argument("--book", help="build only the named top-level \\Book from master.tex")
     parser.add_argument("--keep-markdown", action="store_true")
     args = parser.parse_args()
+    # Pandoc runs from the repository root so source-relative images resolve.
+    # Resolve the requested destination first so a relative --output remains
+    # relative to the caller instead of being written into ROOT.
+    args.output = args.output.resolve()
     if not shutil.which("pandoc"):
         parser.error("pandoc is required")
     started = time.monotonic()
