@@ -1,1 +1,4838 @@
-../master.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%          We          %%%
+%%%     The Nameless     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% choices: light, dark
+\ifdefined\ConfigTheme\else
+    \def\ConfigTheme{dark}
+\fi
+
+% choices: book, mobile
+\ifdefined\ConfigOutputMode\else
+    \def\ConfigOutputMode{mobile}
+\fi
+
+% choices: horizontal, vertical
+\ifdefined\ConfigVerseLayout\else
+    \def\ConfigVerseLayout{horizontal}
+\fi
+
+% choices: true, false
+\ifdefined\ConfigCommentary\else
+    \def\ConfigCommentary{true}
+\fi
+
+% choices: default, kjv, nrsv, etc. from translations/
+\ifdefined\ConfigEnglishTranslation\else
+    \def\ConfigEnglishTranslation{default}
+\fi
+
+% choices: plain, fancy
+\ifdefined\IndividualBookTitlePageStyle\else
+    \def\IndividualBookTitlePageStyle{fancy}
+\fi
+
+% choices: default, lighter
+\ifdefined\ConfigColors\else
+    \def\ConfigColors{default}
+\fi
+
+% choices: apocryphal, canonical
+\ifdefined\ConfigApocrypha\else
+    \def\ConfigApocrypha{apocryphal}
+\fi
+
+% choices: censored, uncensored
+\ifdefined\ConfigRedactor\else
+    \def\ConfigRedactor{uncensored}
+\fi
+
+%%%%%%%%%%%%%%%%%%
+%%% master.tex %%%
+%%%%%%%%%%%%%%%%%%
+
+\iffalse
+\section{nav: the logos}
+\fi
+
+% ------------------------------------------------------------
+% Compile with:
+%   lualatex master.tex
+% ------------------------------------------------------------
+
+\def\ConfigTrue{true}
+\def\ConfigRedactorCensored{censored}
+\def\ConfigThemeDark{dark}
+\def\ConfigColorsLighter{lighter}
+\def\ConfigVerseLayoutHorizontal{horizontal}
+\def\ConfigVerseLayoutVertical{vertical}
+\def\ConfigOutputModeBook{book}
+\def\ConfigOutputModeMobile{mobile}
+\def\ConfigApocryphaApocryphal{apocryphal}
+\def\ConfigApocryphaCanonical{canonical}
+\def\ConfigEnglishTranslationDefault{default}
+\def\IndividualBookTitlePageStyleFancy{fancy}
+
+\newif\ifConfigCommentaryOn
+\newif\ifConfigRedactorCensored
+\newif\ifConfigVerseLayoutVertical
+\newif\ifConfigOutputModeMobile
+\newif\ifConfigApocryphaOn
+\newif\ifConfigEnglishTranslationDefault
+\newif\ifIndividualBookTitlePageStyleFancy
+
+\ifx\ConfigCommentary\ConfigTrue
+    \ConfigCommentaryOntrue
+\else
+    \ConfigCommentaryOnfalse
+\fi
+\ifx\ConfigRedactor\ConfigRedactorCensored
+    \ConfigRedactorCensoredtrue
+\else
+    \ConfigRedactorCensoredfalse
+\fi
+\ifx\ConfigVerseLayout\ConfigVerseLayoutVertical
+    \ConfigVerseLayoutVerticaltrue
+\else
+    \ConfigVerseLayoutVerticalfalse
+\fi
+\ifx\ConfigOutputMode\ConfigOutputModeMobile
+    \ConfigOutputModeMobiletrue
+\else
+    \ConfigOutputModeMobilefalse
+\fi
+\ifx\ConfigApocrypha\ConfigApocryphaApocryphal
+    \ConfigApocryphaOntrue
+\else
+    \ConfigApocryphaOnfalse
+\fi
+\ifx\ConfigEnglishTranslation\ConfigEnglishTranslationDefault
+    \ConfigEnglishTranslationDefaulttrue
+\else
+    \ConfigEnglishTranslationDefaultfalse
+\fi
+\ifx\IndividualBookTitlePageStyle\IndividualBookTitlePageStyleFancy
+    \IndividualBookTitlePageStyleFancytrue
+\else
+    \IndividualBookTitlePageStyleFancyfalse
+\fi
+
+\documentclass[11pt]{book}
+
+\makeatletter
+\newcommand{\DeclareConfiguredTextSize}[3]{%
+    \renewcommand#1{\@setfontsize#1{#2}{#3}}%
+}
+
+\newcommand{\BookModeTextSizes}{%
+    \DeclareConfiguredTextSize{\tiny}{6pt}{7pt}%
+    \DeclareConfiguredTextSize{\scriptsize}{8pt}{9.5pt}%
+    \DeclareConfiguredTextSize{\footnotesize}{9pt}{11pt}%
+    \DeclareConfiguredTextSize{\small}{10pt}{12pt}%
+    \DeclareConfiguredTextSize{\normalsize}{10.95pt}{13.6pt}%
+    \DeclareConfiguredTextSize{\large}{12pt}{14pt}%
+    \DeclareConfiguredTextSize{\Large}{14.4pt}{18pt}%
+    \DeclareConfiguredTextSize{\LARGE}{17.28pt}{22pt}%
+    \DeclareConfiguredTextSize{\huge}{20.74pt}{25pt}%
+    \DeclareConfiguredTextSize{\Huge}{24.88pt}{30pt}%
+}
+
+\newcommand{\MobileModeTextSizes}{%
+    \DeclareConfiguredTextSize{\tiny}{8pt}{9.33pt}%
+    \DeclareConfiguredTextSize{\scriptsize}{10.67pt}{12.67pt}%
+    \DeclareConfiguredTextSize{\footnotesize}{12pt}{14.67pt}%
+    \DeclareConfiguredTextSize{\small}{13.33pt}{16pt}%
+    \DeclareConfiguredTextSize{\normalsize}{14.6pt}{18.13pt}%
+    \DeclareConfiguredTextSize{\large}{16pt}{18.67pt}%
+    \DeclareConfiguredTextSize{\Large}{19.2pt}{24pt}%
+    \DeclareConfiguredTextSize{\LARGE}{23.04pt}{29.33pt}%
+    \DeclareConfiguredTextSize{\huge}{27.65pt}{33.33pt}%
+    \DeclareConfiguredTextSize{\Huge}{33.17pt}{40pt}%
+}
+
+\newcommand{\AlphabetHistoryPageTextSizes}{%
+    \DeclareConfiguredTextSize{\tiny}{7.5pt}{8.75pt}%
+    \DeclareConfiguredTextSize{\scriptsize}{10pt}{11.875pt}%
+    \DeclareConfiguredTextSize{\footnotesize}{11.25pt}{13.75pt}%
+    \DeclareConfiguredTextSize{\small}{12.5pt}{15pt}%
+    \DeclareConfiguredTextSize{\normalsize}{13.68pt}{17pt}%
+    \DeclareConfiguredTextSize{\large}{15pt}{17.5pt}%
+    \DeclareConfiguredTextSize{\Large}{18pt}{22.5pt}%
+    \DeclareConfiguredTextSize{\LARGE}{21.6pt}{27.5pt}%
+    \DeclareConfiguredTextSize{\huge}{25.925pt}{31.25pt}%
+    \DeclareConfiguredTextSize{\Huge}{31.1pt}{37.5pt}%
+}
+\makeatother
+
+\ifConfigOutputModeMobile
+% Mobile keeps the same typographic ladder as 11pt book mode, scaled together.
+% This preserves source/font relationships while making phone reading practical.
+\MobileModeTextSizes
+\DeclareMathSizes{10.67}{10.67}{7}{5}
+\normalsize
+\fi
+
+% ------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------
+\iffalse
+\section{nav: the creations of man}
+\fi
+
+\ifConfigOutputModeMobile
+    % Keep the existing 7in width; expand height to match a 3.07 x 6.44 phone ratio.
+    \usepackage[
+        paperwidth=7in,
+        paperheight=14.68in,
+        left=0.625in,
+        right=0.625in,
+        top=0.55in,
+        bottom=0.75in,
+        includefoot
+    ]{geometry}
+\else
+    \usepackage[
+        paperwidth=7in,
+        paperheight=10in,
+        twoside,
+        inner=0.8in,
+        outer=0.45in,
+        top=0.55in,
+        bottom=0.75in,
+        includefoot
+    ]{geometry}
+\fi
+\usepackage[no-math]{fontspec}
+\usepackage{amsmath}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{xparse}
+\usepackage{newunicodechar}
+\usepackage{ragged2e}
+\usepackage{luacolor}
+\usepackage{luabidi}
+\usepackage{lua-ul}
+\usepackage{needspace}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc,backgrounds,positioning}
+
+% Short, explicit dash commands for prose whose dash length matters.
+\newcommand{\ndash}{\textendash}
+\newcommand{\mdash}{\textemdash}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage{stackengine}
+\usepackage{wrapfig}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{luacode}
+\usepackage[hidelinks]{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage{ruby}
+
+\let\emph\textsl
+
+\makeatletter
+\newcommand{\DeclareBookImageDir}[2]{%
+    \expandafter\def\csname BookImageDir@#1\endcsname{#2}%
+}
+\newcommand{\SetCurrentBookImageDir}[1]{%
+    \@ifundefined{BookImageDir@#1}{%
+        \def\CurrentBookImageDir{#1}%
+    }{%
+        \edef\CurrentBookImageDir{\csname BookImageDir@#1\endcsname}%
+    }%
+}
+\makeatother
+
+\DeclareBookImageDir{Genesis}{01-genesis}
+\DeclareBookImageDir{Exodus}{02-exodus}
+\DeclareBookImageDir{Leviticus}{03-leviticus}
+\DeclareBookImageDir{Numbers}{04-numbers}
+\DeclareBookImageDir{Deuteronomy}{05-deuteronomy}
+\DeclareBookImageDir{Joshua}{06-joshua}
+\DeclareBookImageDir{Judges}{07-judges}
+\DeclareBookImageDir{Samuel}{08-samuel}
+\DeclareBookImageDir{Kings}{09-kings}
+\DeclareBookImageDir{Dudetheyreontome}{10-dudetheyreontome}
+\DeclareBookImageDir{On the Lamb}{10-dudetheyreontome/on-the-lamb}
+
+\newcommand{\ImageNotFound}[1]{%
+    \PackageError{WeTheNameless}{Image not found: #1}{%
+        Looked under \CurrentBookImageDir/include for #1-\ConfigTheme and #1, with jpg/png extensions.%
+    }%
+}
+\newcommand{\image}[2][width=0.9\linewidth]{%
+    \IfFileExists{\CurrentBookImageDir/include/#2-\ConfigTheme.jpg}{%
+        \includegraphics[#1]{\CurrentBookImageDir/include/#2-\ConfigTheme.jpg}%
+    }{%
+        \IfFileExists{\CurrentBookImageDir/include/#2-\ConfigTheme.png}{%
+            \includegraphics[#1]{\CurrentBookImageDir/include/#2-\ConfigTheme.png}%
+        }{%
+            \IfFileExists{\CurrentBookImageDir/include/#2.jpg}{%
+                \includegraphics[#1]{\CurrentBookImageDir/include/#2.jpg}%
+            }{%
+                \IfFileExists{\CurrentBookImageDir/include/#2.png}{%
+                    \includegraphics[#1]{\CurrentBookImageDir/include/#2.png}%
+                }{%
+                    \ImageNotFound{#2}%
+                }%
+            }%
+        }%
+    }%
+}
+
+% ------------------------------------------------------------
+% Languages and fonts
+% ------------------------------------------------------------
+\iffalse
+\section{nav: the tower of babel}
+\fi
+
+\newcommand{\LocalFontPath}{./fonts/}
+
+\directlua{
+  luaotfload.add_fallback("nameless-text", {
+    "Noto Sans Mono CJK TC:mode=harf;script=hani",
+    "DejaVu Sans:mode=harf;script=cyrl"
+  })
+}
+\newcommand{\NamelessTextFallbackFeature}{RawFeature={fallback=nameless-text}}
+
+\setmainfont[\NamelessTextFallbackFeature]{FreeSerif}
+\newfontfamily\LawFont[Scale=0.82]{DejaVu Sans Mono}
+\newfontfamily\NamelessMonoFont[
+    Renderer=HarfBuzz,
+    Scale=0.82
+]{Noto Sans Mono CJK TC}
+\newfontfamily\NamelessFallbackFont[
+    Renderer=HarfBuzz,
+    Scale=0.82
+]{DejaVu Sans}
+\newfontfamily\CyrillicFont[
+    Renderer=HarfBuzz
+]{DejaVu Sans}
+\newunicodechar{н}{\ifmmode\hbox{\CyrillicFont н}\else{\CyrillicFont н}\fi}
+
+% The Ancients
+\newfontfamily\Cun[
+    Path=\LocalFontPath,
+	BoldFont=noto-sans-cuneiform-regular.ttf,
+    Scale=1.22
+]{noto-sans-cuneiform-regular.ttf}
+
+% Egyptian hieroglyphs
+\newfontfamily\EgyptianFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.9
+]{egyptian-hieroglyphs-regular-noto-sans.ttf}
+
+\newfontfamily\NewGardinerFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.9
+]{NewGardiner.ttf}
+
+% Historical alphabet fonts.  These are normal text-size declarations.
+% The larger, individually calibrated versions used by the alphabet-history
+% front matter live with those pages in frontmatter/alphabet-history.tex.
+\newfontfamily\ProtoSinaiticFifteenthCenturyFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{proto-sinaitic-15.ttf}
+
+\newfontfamily\ProtoSinaiticThirteenthCenturyFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.32
+]{proto-sinaitic-13.ttf}
+
+\newfontfamily\ProtoSinaiticIzbetSartahFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=2.04
+]{proto-sinaitic-13-izbet-sartah.ttf}
+
+\newfontfamily\ProtoSinaiticBestFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    BoldFont=proto-sinaitic-best-bold.ttf,
+    Scale=1.27
+]{proto-sinaitic-best-bold.ttf}
+
+\newfontfamily\ProtoSinaiticOtherFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{proto-sinaitic-other.ttf}
+
+\newfontfamily\UgariticFont[
+    Path=\LocalFontPath,
+	BoldFont=noto-sans-ugaritic-regular.ttf,
+    Scale=1.22
+]{noto-sans-ugaritic-regular.ttf}
+
+\newfontfamily\PaleoHebrewOtherFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.49
+]{paleo-hebrew-other.ttf}
+
+\newfontfamily\PaleoHebrewStandardFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    BoldFont=paleo-hebrew.ttf,
+    Scale=1.49
+]{paleo-hebrew.ttf}
+
+\newfontfamily\PaleoHebrewFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    BoldFont=paleo-hebrew-phoenician.ttf,
+    Scale=1.22
+]{paleo-hebrew-phoenician.ttf}
+
+\newfontfamily\PaleoHebrewRoboFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    Scale=1.60
+]{paleo-hebrew-robo.ttf}
+
+\newfontfamily\PaleoHebrewTelZayitFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    Scale=1.71
+]{08-bc10c-paleo-hebrew-tel-zayit.ttf}
+
+\newfontfamily\PaleoHebrewGezerFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.43
+]{paleo-hebrew-gezer.ttf}
+
+\newfontfamily\PaleoHebrewGezerAFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.43
+]{08-bc10c-paleo-hebrew-gezer-a.ttf}
+
+\newfontfamily\PaleoHebrewTelDanFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.43
+]{paleo-hebrew-tel-dan.ttf}
+
+\newfontfamily\PaleoHebrewMoabiteFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    ItalicFont=paleo-hebrew-moabite.ttf,
+    Scale=1.38
+]{paleo-hebrew-moabite.ttf}
+
+\newfontfamily\PaleoHebrewSiloamFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.71
+]{paleo-hebrew-siloam.ttf}
+
+\newfontfamily\PaleoHebrewKetefHinnomAFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.87
+]{paleo-hebrew-ketef-hinnom-1.ttf}
+
+\newfontfamily\PaleoHebrewKetefHinnomBFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.65
+]{paleo-hebrew-ketef-hinnom-2.ttf}
+
+\newfontfamily\PaleoHebrewLachishAFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.38
+]{paleo-hebrew-lachish-3.ttf}
+
+\newfontfamily\PaleoHebrewLachishBFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.38
+]{paleo-hebrew-lachish-4.ttf}
+
+\newfontfamily\PaleoHebrewLachishCFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.41
+]{paleo-hebrew-lachish-5.ttf}
+
+\newfontfamily\DeadSeaScrollsIsaiahFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.60
+]{dead-sea-scrolls-isaiah.ttf}
+
+\newfontfamily\PaleoHebrewMonoFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{paleo-hebrew-mono.ttf}
+
+% Additional generic paleo-Hebrew display hands.  Unlike the inscription-based
+% faces above, these names describe the design rather than assigning a date.
+\newfontfamily\PaleoHebrewRegularFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{paleo-hebrew-regular.ttf}
+
+\newfontfamily\PaleoHebrewEvyoniFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{paleo-hebrew-evyoni.ttf}
+
+\newfontfamily\PaleoHebrewAlphabetFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Renderer=HarfBuzz,
+    Scale=1.22
+]{paleo-hebrew-alphabet.ttf}
+
+\newfontfamily\AramaicFont[
+    Path=\LocalFontPath,
+	BoldFont=noto-sans-imperial-aramaic-regular.ttf,
+    Scale=1.22
+]{noto-sans-imperial-aramaic-regular.ttf}
+
+\newfontfamily\PaleoHebrewPhoenicianFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    BoldFont=paleo-hebrew-phoenician.ttf,
+    Scale=1.22
+]{paleo-hebrew-phoenician.ttf}
+
+\newfontfamily\HebrewDavidFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    BoldFont=hebrew-david-bold.ttf,
+    Scale=1.22
+]{hebrew-david.ttf}
+
+\newfontfamily\HebrewEzraFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    BoldFont=hebrew-ezra.ttf,
+    Scale=1.10
+]{hebrew-ezra.ttf}
+
+\newfontfamily\HebrewEzraBoldFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    BoldFont=hebrew-ezra.ttf,
+    Scale=1.10
+]{hebrew-ezra.ttf}
+
+\newfontfamily\HebrewOtherFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=1.10
+]{hebrew-other.ttf}
+
+\newfontfamily\HebrewSquareFont[
+    Path=\LocalFontPath,
+    Script=Hebrew,
+    Scale=1.00
+]{hebrew-square.ttf}
+
+\newcommand{\HebrewDavidLarge}{\addfontfeatures{Scale=1.42}}
+\newcommand{\HebrewEzraLarge}{\addfontfeatures{Scale=1.28}}
+
+% Compatibility names for included chapter files.
+\let\HebrewFont\HebrewDavidFont
+\let\hebrewfont\HebrewDavidFont
+
+% Arabic
+\newfontfamily\ArabicFont[
+    Path=\LocalFontPath,
+    Script=Arabic,
+    Renderer=HarfBuzz,
+    Scale=1.15
+]{arabic-amiri-regular.ttf}
+
+% Syriac
+\newfontfamily\SyriacFont[
+    Path=\LocalFontPath,
+    Script=Syriac,
+    Renderer=HarfBuzz,
+    Scale=1.15
+]{noto-sans-syriac.ttf}
+
+% Telugu
+\newfontfamily\TeluguFont[
+    Path=\LocalFontPath,
+    Script=Telugu,
+    Renderer=HarfBuzz,
+    Scale=1.00
+]{noto-sans-telugu.ttf}
+
+% Chinese
+\newfontfamily\TraditionalChineseFontA[
+    Path=\LocalFontPath,
+    Script=CJK,
+    Renderer=HarfBuzz,
+    Scale=1.00
+]{cjk-noto-serif-tc.otf}
+
+\newfontfamily\TraditionalChineseFontB[
+    Path=\LocalFontPath,
+    Script=CJK,
+    Renderer=HarfBuzz,
+    Scale=1.00
+]{cjk-arphic-ukai.ttc}
+
+\newfontfamily\TraditionalChineseFontC[
+    Path=\LocalFontPath,
+    Script=CJK,
+    Renderer=HarfBuzz,
+    Scale=1.00
+]{cjk-arphic-uming.ttc}
+
+\newfontfamily\TraditionalChineseFontD[
+    Path=\LocalFontPath,
+    Script=CJK,
+    Renderer=HarfBuzz,
+    Scale=1.00
+]{cjk-babelstone-han.ttf}
+
+\newfontfamily\TraditionalChineseFontE[
+    Path=\LocalFontPath,
+    Script=CJK,
+    Renderer=HarfBuzz,
+    Scale=1.00
+]{cjk-wqy-zenhei.ttc}
+
+\def\TraditionalChineseFont{\TraditionalChineseFontA}
+
+\newfontfamily\KoreanFont[
+    Path=\LocalFontPath,
+    Script=Hangul,
+    Renderer=HarfBuzz,
+    Scale=1.00
+]{cjk-noto-serif-tc.otf}
+
+\newfontfamily\nunavut[
+	Script=Canadian Syllabics
+]{NotoSansCanadianAboriginal.ttf}
+
+% Reusable font catalog. Source profiles below bind these fonts to J/E/P/etc.
+\newfontfamily\EnglishFont[\NamelessTextFallbackFeature]{FreeSerif}
+\newfontfamily\EnglishProtoFont[
+	Path=\LocalFontPath,
+	Scale=1.22,
+]{english-im-fell-english-sc-regular.ttf}
+%]{english-alegreya-sc-regular.ttf}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\egyptRaw}{ +m }{
+  {\leavevmode\textdir TLT\EgyptianFont #1}
+}
+\NewDocumentCommand{\egyptNew}{ +m }{
+  {\leavevmode\textdir TLT\NewGardinerFont #1}
+}
+% Switch the book's Egyptian font here.
+% \let\egypt\egyptRaw
+\let\egypt\egyptRaw
+\NewDocumentCommand{\egyptbold}{ m }{
+  {\leavevmode\EgyptianFont\addfontfeatures{FakeBold=2.0}\tl_reverse:n { #1 }}
+}
+\NewDocumentCommand{\proto}{ m }{
+  {\leavevmode\textdir TRT\ProtoSinaiticFifteenthCenturyFont\tl_reverse:n { #1 }}
+}
+\NewDocumentCommand{\paleo}{ m }{
+  \dn{0.22em}{\PaleoHebrewPhoenician{}{#1}}
+}
+
+\NewDocumentCommand{\ChineseText}{ m m }{%
+  {\leavevmode#1 { #2 }}%
+}
+\NewDocumentCommand{\chinese}{ m }{\ChineseText{\TraditionalChineseFont}{#1}}
+\NewDocumentCommand{\chineseA}{ m }{\ChineseText{\TraditionalChineseFontA}{#1}}
+\NewDocumentCommand{\chineseB}{ m }{\ChineseText{\TraditionalChineseFontB}{#1}}
+\NewDocumentCommand{\chineseC}{ m }{\ChineseText{\TraditionalChineseFontC}{#1}}
+\NewDocumentCommand{\chineseD}{ m }{\ChineseText{\TraditionalChineseFontD}{#1}}
+\NewDocumentCommand{\chineseE}{ m }{\ChineseText{\TraditionalChineseFontE}{#1}}
+\NewDocumentCommand{\korean}{ m }{{\leavevmode\KoreanFont #1}}
+
+\NewDocumentCommand{\size}{ m m }{
+  \smash{\fontsize{#1}{#1}\selectfont{#2}}
+}
+
+\NewDocumentCommand{\up}{ m m }{
+  \smash{\raisebox{#1}{#2}}
+}
+
+\NewDocumentCommand{\dn}{ m m }{
+  \smash{\raisebox{-#1}{#2}}
+}
+
+\ExplSyntaxOff
+
+% Egyptian quadrat helpers.
+% Requires graphicx.
+
+% Two signs stacked inside approximately one sign-width.
+\newcommand{\egstack}[2]{%
+	\makebox[1em][c]{%
+		\raisebox{0.34em}{\scalebox{0.72}{#1}}%
+		\kern-0.72em%
+		\raisebox{-0.34em}{\scalebox{0.72}{#2}}%
+	}%
+}
+
+% Top sign over two signs side-by-side.
+\newcommand{\egtop}[3]{%
+	\makebox[1.45em][c]{%
+		\raisebox{0.38em}{\scalebox{0.72}{#1}}%
+		\kern-0.72em%
+		\raisebox{-0.34em}{\scalebox{0.66}{#2#3}}%
+	}%
+}
+
+% Two side-by-side over one.
+\newcommand{\egbottom}[3]{%
+	\makebox[1.45em][c]{%
+		\raisebox{0.35em}{\scalebox{0.66}{#1#2}}%
+		\kern-0.90em%
+		\raisebox{-0.36em}{\scalebox{0.72}{#3}}%
+	}%
+}
+
+% Compress a cluster horizontally.
+\newcommand{\egtuck}[1]{%
+	\makebox[0.72em][c]{\scalebox{0.82}[1]{#1}}%
+}
+
+% Tiny sign, useful for complements/determinatives tucked into gaps.
+\newcommand{\egsmall}[1]{%
+	\raisebox{-0.08em}{\scalebox{0.68}{#1}}%
+}
+
+\def\refootnote#1{\textsuperscript{\ref{#1}}}
+
+\newcommand{\Above}[3]{\smash{\stackon[0.8pt]{#3}{\size{#1}{#2}}}}
+\newcommand{\Below}[3]{\smash{\stackunder[2.2pt]{#3}{\size{#1}{#2}}}}
+
+% ------------------------------------------------------------
+% Hanging paragraphs and hanging footnotes
+% ------------------------------------------------------------
+\iffalse
+\section{nav: footnotes}
+\fi
+
+\makeatletter
+% Footnote marks belong to the preceding word. Remove any source whitespace before
+% every mark, and put an unbreakable thin space between consecutive marks so that
+% (for example) footnotes 1 and 2 cannot read as footnote 12.
+\newdimen\ConsecutiveFootnoteMarker
+\ConsecutiveFootnoteMarker=3sp
+\let\BaseFootnoteMark\@footnotemark
+\let\BaseFootnoteText\@footnotetext
+\long\def\@footnotetext#1{%
+    \BaseFootnoteText{#1}%
+    % The insertion for the note text follows its mark in the horizontal list,
+    % so renew the marker after the insertion as well.
+    \kern\ConsecutiveFootnoteMarker
+}
+\renewcommand{\@footnotemark}{%
+    \leavevmode
+    \unskip
+    \ifdim\lastkern=\ConsecutiveFootnoteMarker
+        \unkern
+        \nobreak\thinspace
+    \fi
+    \BaseFootnoteMark
+    \kern\ConsecutiveFootnoteMarker
+}
+
+\let\RecursiveFootnoteQueue\@empty
+\newif\ifRecursiveFootnoteFlushing
+
+\newcommand{\RecursiveFootnoteFlush}{%
+    \ifRecursiveFootnoteFlushing
+    \else
+        \RecursiveFootnoteFlushingtrue
+        \loop
+            \ifx\RecursiveFootnoteQueue\@empty
+            \else
+                \let\RecursiveFootnoteNext\RecursiveFootnoteQueue
+                \global\let\RecursiveFootnoteQueue\@empty
+                \RecursiveFootnoteNext
+        \repeat
+        \RecursiveFootnoteFlushingfalse
+    \fi
+}
+
+\NewDocumentCommand{\recursivefootnote}{ +m }{%
+    \footnotemark
+    \begingroup
+        \count@=\csname c@\@mpfn\endcsname%
+        \xdef\RecursiveFootnoteAppend{%
+            \noexpand\g@addto@macro\noexpand\RecursiveFootnoteQueue{%
+                \noexpand\footnotetext[\the\count@]{\unexpanded{#1}}%
+            }%
+        }%
+    \endgroup
+    \RecursiveFootnoteAppend
+    \aftergroup\RecursiveFootnoteFlush
+}
+\makeatother
+
+\NewDocumentCommand{\hangingblock}{ O{1.5em} +m }{%
+    \begingroup
+        \def\hangingblocksetup{%
+            \parindent=0pt
+            \hangindent=#1\relax
+            \hangafter=1\relax
+        }%
+        \hangingblocksetup
+        \everypar\expandafter{\the\everypar\hangingblocksetup}%
+        #2\par
+    \endgroup
+}
+
+\NewDocumentCommand{\hangingpar}{ O{1.5em} +m }{%
+    \hangingblock[#1]{#2}%
+}
+
+\NewDocumentCommand{\hangingfootnote}{ O{1.5em} +m }{%
+    \footnote{\hangingblock[#1]{#2}}%
+}
+
+% ------------------------------------------------------------
+% Global layout
+% ------------------------------------------------------------
+\iffalse
+\section{nav: pages}
+\fi
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlength{\footskip}{24pt}
+\setlength{\headheight}{26pt}
+\setlength{\emergencystretch}{2em}
+\onehalfspacing
+\raggedbottom
+
+% ------------------------------------------------------------
+% Side-by-side verse geometry
+% ------------------------------------------------------------
+\iffalse
+\section{nav: verses}
+\fi
+
+\newlength{\VerseGap}
+\newlength{\VerseRuleWidth}
+\newlength{\VerseColWidth}
+
+\setlength{\VerseGap}{0.75em}
+\setlength{\VerseRuleWidth}{0.2pt}
+\setlength{\VerseColWidth}{\dimexpr(\textwidth-\VerseGap-\VerseRuleWidth-\VerseGap)/2\relax}
+
+% ------------------------------------------------------------
+% Colors
+% ------------------------------------------------------------
+\iffalse
+\section{nav: colors}
+\fi
+
+\definecolor{ProtoColor}{RGB}{135,135,135}
+\definecolor{PrimevalSourceLegendColor}{RGB}{125,125,125}
+\definecolor{PaleoColor}{RGB}{0,120,0}
+\colorlet{ProtoSinaiticColor}{ProtoColor}
+\colorlet{ProtoCanaaniteColor}{ProtoColor}
+\colorlet{ProtoAColor}{ProtoSinaiticColor}
+\colorlet{ProtoBColor}{ProtoSinaiticColor}
+\colorlet{ProtoCColor}{ProtoSinaiticColor}
+\colorlet{ProtoDColor}{ProtoCanaaniteColor}
+\colorlet{ProtoEColor}{ProtoCanaaniteColor}
+\colorlet{ProtoFColor}{ProtoCanaaniteColor}
+\colorlet{ProtoGColor}{ProtoCanaaniteColor}
+
+\definecolor{Jcolor}{RGB}{0,135,0}
+\definecolor{Ecolor}{RGB}{185,140,0}
+\definecolor{Pcolor}{RGB}{0,70,170}
+\ifx\ConfigColors\ConfigColorsLighter
+    \definecolor{Pcolor}{RGB}{33,102,165}
+\fi
+\colorlet{Levitecolor}{Ecolor!50!Pcolor!65!black}
+\colorlet{MushiteAaronidcolor}{Ecolor!50!Pcolor}
+\colorlet{Dtr1color}{Ecolor!78!black}
+\colorlet{Dtr2color}{Ecolor!45!orange!70!black}
+\colorlet{Jeremiahcolor}{Ecolor!20!orange!45!black}
+\colorlet{Ezekielcolor}{Pcolor!68!white}
+\colorlet{Dtncolor}{Dtr1color}
+\colorlet{Jbgcolor}{Jcolor!12!white}
+\colorlet{Ebgcolor}{Ecolor!16!white}
+\colorlet{Pbgcolor}{Pcolor!14!white}
+\definecolor{Dtr1bgcolor}{RGB}{255,244,180}
+\definecolor{Dtr2bgcolor}{RGB}{255,222,175}
+\colorlet{Jeremiahbgcolor}{Jeremiahcolor!18!white}
+\colorlet{Ezekielbgcolor}{Ezekielcolor!14!white}
+\colorlet{Dtnbgcolor}{Dtncolor!16!white}
+
+\colorlet{Rcolor}{Pcolor}
+\colorlet{Rbgcolor}{Rcolor!12!white}
+\definecolor{RedSourcecolor}{RGB}{170,0,0}
+\colorlet{RedSourcebgcolor}{RedSourcecolor!12!white}
+\colorlet{Reblacktorcolor}{black}
+\colorlet{Reblacktorbgcolor}{black!12!white}
+
+\definecolor{RJEcolor}{RGB}{0,100,0}
+\definecolor{RJEbgcolor}{RGB}{225,245,225}
+
+\definecolor{Recordcolor}{RGB}{110,110,110}
+\colorlet{RecordsColor}{Recordcolor}
+\colorlet{Recordsbgcolor}{Recordcolor!14!white}
+
+\definecolor{OtherColor}{RGB}{80,80,80}
+% The lighter-looking English face needs a slightly darker ink value to
+% visually match the Hebrew face in the light theme.
+\definecolor{EnglishOtherColor}{RGB}{65,65,65}
+\colorlet{Otherbgcolor}{OtherColor!12!white}
+%\definecolor{OtherColor}{RGB}{0,120,0}
+
+\definecolor{Kcolor}{RGB}{0,0,0}
+\colorlet{Xcolor}{Kcolor!92!white}
+\definecolor{Redcolor}{RGB}{130,0,0}
+\ifx\ConfigColors\ConfigColorsLighter
+    \definecolor{Redcolor}{RGB}{181,45,53}
+\fi
+\colorlet{ApocryphonYHWHDialogueColor}{Redcolor}
+\colorlet{ApocryphonYHWHDialogueBgcolor}{ApocryphonYHWHDialogueColor!12!white}
+\definecolor{Bluecolor}{RGB}{0,70,170}
+\ifx\ConfigColors\ConfigColorsLighter
+    \definecolor{Bluecolor}{RGB}{33,102,165}
+\fi
+\definecolor{Greencolor}{RGB}{0,120,0}
+\definecolor{Yellowcolor}{RGB}{185,145,0}
+\definecolor{Graycolor}{RGB}{110,110,110}
+
+\definecolor{DefColor}{RGB}{0,70,170}
+\definecolor{RedactedColor}{RGB}{0,70,170}
+\definecolor{MobileLinkColor}{HTML}{8ec7ff}
+\colorlet{HLAbgcolor}{Kcolor!12!white}
+\colorlet{HLBbgcolor}{Redcolor!12!white}
+\colorlet{HLCbgcolor}{Bluecolor!12!white}
+
+\colorlet{TextColor}{black}
+\colorlet{RuleColor}{TextColor}
+\newcommand{\Eweight}{\bfseries}
+\newcommand{\Pweight}{\bfseries}
+\newcommand{\TitlePageLogoImage}{img/ld-book-light.png}
+
+\ifx\ConfigTheme\ConfigThemeDark
+    % Everforest dark, tuned for PDF instead of copied from screen CSS.
+    \definecolor{bg}{HTML}{2d353b}
+    \definecolor{fg}{HTML}{e8e2d2}
+    \colorlet{TextColor}{fg}
+    \colorlet{RuleColor}{fg!45!bg}
+
+    \definecolor{ObsGreen}{HTML}{87bb87} % a7c080
+    \definecolor{ObsYellow}{HTML}{dbbc7f}
+    \definecolor{ObsAqua}{HTML}{7fbbb3}
+    \definecolor{ObsBlue}{HTML}{7f9fcf}
+    \definecolor{ObsRed}{HTML}{e67e80}
+    \definecolor{ObsOrange}{HTML}{e69875}
+    \definecolor{ObsGray}{HTML}{9aa79d}
+
+    \colorlet{ProtoColor}{ObsGray!65!fg}
+    \colorlet{PrimevalSourceLegendColor}{ObsGray!72!fg}
+    \colorlet{PaleoColor}{ObsGreen!62!fg}
+
+    \colorlet{ProtoSinaiticColor}{ProtoColor}
+    \colorlet{ProtoCanaaniteColor}{ProtoColor}
+    \colorlet{ProtoAColor}{ProtoSinaiticColor}
+    \colorlet{ProtoBColor}{ProtoSinaiticColor}
+    \colorlet{ProtoCColor}{ProtoSinaiticColor}
+    \colorlet{ProtoDColor}{ProtoCanaaniteColor}
+    \colorlet{ProtoEColor}{ProtoCanaaniteColor}
+    \colorlet{ProtoFColor}{ProtoCanaaniteColor}
+    \colorlet{ProtoGColor}{ProtoCanaaniteColor}
+
+    \colorlet{Jcolor}{ObsGreen!87!fg}
+    \colorlet{Ecolor}{ObsYellow!65!fg}
+    \colorlet{Pcolor}{ObsBlue!78!bg}
+    \colorlet{Levitecolor}{Ecolor!50!Pcolor!55!black}
+    \colorlet{MushiteAaronidcolor}{Ecolor!50!Pcolor}
+    \colorlet{Jbgcolor}{Jcolor!18!bg}
+    \colorlet{Ebgcolor}{Ecolor!20!bg}
+    \colorlet{Pbgcolor}{Pcolor!22!bg}
+
+    \colorlet{Dtr1color}{Ecolor!74!bg}
+    \colorlet{Dtr2color}{Ecolor!38!ObsOrange!70!bg}
+    \colorlet{Jeremiahcolor}{Ecolor!18!ObsOrange!52!bg}
+    \colorlet{Ezekielcolor}{Pcolor!74!fg}
+    \colorlet{ApocryphonYHWHDialogueColor}{ObsRed!58!fg}
+    \colorlet{ApocryphonYHWHDialogueBgcolor}{ApocryphonYHWHDialogueColor!16!bg}
+    \colorlet{Dtncolor}{Dtr1color}
+    \definecolor{Dtr1bgcolor}{HTML}{5a4d30}
+    \definecolor{Dtr2bgcolor}{HTML}{5f4534}
+    \definecolor{Jeremiahbgcolor}{HTML}{604035}
+    \colorlet{Ezekielbgcolor}{Ezekielcolor!20!bg}
+    \colorlet{Dtnbgcolor}{Ebgcolor}
+
+    \colorlet{Rcolor}{Pcolor}
+    \colorlet{Rbgcolor}{Rcolor!14!bg}
+    \colorlet{RedSourcecolor}{ObsRed!78!bg}
+    \colorlet{RedSourcebgcolor}{RedSourcecolor!14!bg}
+    \colorlet{Reblacktorcolor}{white}
+    \colorlet{Reblacktorbgcolor}{white!14!bg}
+    \colorlet{RJEcolor}{ObsGreen!82!fg}
+    \definecolor{RJEbgcolor}{HTML}{344837}
+
+    \colorlet{Recordcolor}{ObsGray!78!fg}
+    \colorlet{RecordsColor}{Recordcolor}
+    \colorlet{Recordsbgcolor}{Recordcolor!18!bg}
+    \colorlet{OtherColor}{ObsGray!88!fg}
+    \colorlet{EnglishOtherColor}{OtherColor}
+    \colorlet{Otherbgcolor}{OtherColor!18!bg}
+
+    \colorlet{Kcolor}{fg}
+    \colorlet{Xcolor}{Kcolor!92!bg}
+    \colorlet{Redcolor}{ObsRed!58!fg}
+    \colorlet{Bluecolor}{ObsBlue!65!fg}
+    \colorlet{Greencolor}{ObsGreen!62!fg}
+    \colorlet{Yellowcolor}{Ecolor}
+    \colorlet{Graycolor}{ObsGray!70!fg}
+    \colorlet{DefColor}{ObsBlue!65!fg}
+    \colorlet{HLAbgcolor}{Kcolor!12!bg}
+    \colorlet{HLBbgcolor}{Redcolor!12!bg}
+    \colorlet{HLCbgcolor}{Bluecolor!12!bg}
+    \renewcommand{\TitlePageLogoImage}{img/ld-book-dark.png}
+    \pagecolor{bg}
+    \AtBeginDocument{\color{TextColor}}
+\fi
+
+\colorlet{JPcolor}{Jcolor}
+\colorlet{JEcolor}{Jcolor}
+\colorlet{EPcolor}{Ecolor}
+\colorlet{JPPcolor}{JPcolor}
+\colorlet{EPPcolor}{EPcolor}
+
+\arrayrulecolor{RuleColor}
+\newcommand{\TocFont}{\EnglishFont\color{TextColor}}
+\ifx\ConfigTheme\ConfigThemeDark
+    % Preserve the existing, brighter link blue against the dark background.
+    \colorlet{ContentsLinkColor}{MobileLinkColor}
+\else
+    % Match \aC text exactly in light mode.
+    \colorlet{ContentsLinkColor}{Bluecolor}
+\fi
+\newcommand{\TocLinkFont}{\EnglishFont\color{ContentsLinkColor}}
+\renewcommand{\cfttoctitlefont}{\TocFont\Huge\bfseries}
+\renewcommand{\cftchapfont}{\TocLinkFont}
+\renewcommand{\cftchappagefont}{\TocLinkFont}
+\renewcommand{\cftsecfont}{\TocLinkFont}
+\renewcommand{\cftsecpagefont}{\TocLinkFont}
+\cftpagenumberson{chapter}
+\renewcommand{\headrule}{%
+    {\color{RuleColor}\hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}%
+}
+\renewcommand{\footrule}{%
+    {\color{RuleColor}\hrule width\headwidth height\footrulewidth \vskip-\footrulewidth}%
+}
+
+% ------------------------------------------------------------
+% Plain color commands
+% These ONLY change text color.
+% ------------------------------------------------------------
+
+\newcommand{\cK}[1]{{\color{Kcolor}#1}}
+\newcommand{\cR}[1]{{\color{Redcolor}#1}}
+\newcommand{\cB}[1]{{\color{Bluecolor}#1}}
+\newcommand{\cG}[1]{{\color{Greencolor}#1}}
+\newcommand{\cY}[1]{{\color{Yellowcolor}#1}}
+\newcommand{\cGray}[1]{{\color{Graycolor}#1}}
+
+\let\cBlack\cK
+\let\cRed\cR
+\let\cBlue\cB
+\let\cGreen\cG
+\let\cYellow\cY
+\let\cGrey\cGray
+
+\makeatletter
+\newcommand{\hlA}[1]{{\@highLight[HLAbgcolor]#1}}
+\newcommand{\hlB}[1]{{\@highLight[HLBbgcolor]#1}}
+\newcommand{\hlC}[1]{{\@highLight[HLCbgcolor]#1}}
+\makeatother
+
+% ------------------------------------------------------------
+% Hebrew text encoders and font profiles
+%
+% Ground truth in the chapter files stays Hebrew.  The paleo fonts store
+% their glyphs in ASCII slots, so Lua strips cantillation and vowel marks
+% and transliterates the Hebrew consonants before selecting the font.
+% ------------------------------------------------------------
+\iffalse
+\section{nav: language}
+\fi
+
+\newcommand{\QereKetivInline}[1]{{\leavevmode\textdir TRT#1}}
+
+\begin{luacode*}
+  paleotex = paleotex or {}
+
+  local tab = string.char(9)
+  local newline = string.char(10)
+
+  local function is_space(c)
+    return c == " " or c == tab or c == newline
+  end
+
+  local mirrored_bracket = {
+    ["("] = ")",
+    [")"] = "(",
+    ["["] = "]",
+    ["]"] = "[",
+    ["<"] = ">",
+    [">"] = "<",
+  }
+
+  local function mirror_ascii_brackets(s)
+    local out = {}
+    for i = 1, string.len(s) do
+      local c = s:sub(i, i)
+      table.insert(out, mirrored_bracket[c] or c)
+    end
+    return table.concat(out)
+  end
+
+  local function protect_bracket_pair(s, first_open, first_close, second_open, second_close)
+    s = tostring(s)
+    local out = {}
+    local i = 1
+    local s_len = string.len(s)
+    while i <= s_len do
+      local first_start = s:find(first_open, i, true)
+      if not first_start then
+        table.insert(out, s:sub(i))
+        break
+      end
+      local first_end = s:find(first_close, first_start + 1, true)
+      if not first_end then
+        table.insert(out, s:sub(i))
+        break
+      end
+      local second_start = first_end + 1
+      while second_start <= s_len and is_space(s:sub(second_start, second_start)) do
+        second_start = second_start + 1
+      end
+      if second_start == first_end + 1 or s:sub(second_start, second_start) ~= second_open then
+        table.insert(out, s:sub(i, first_start))
+        i = first_start + 1
+      else
+        local second_end = s:find(second_close, second_start + 1, true)
+        if not second_end then
+          table.insert(out, s:sub(i))
+          break
+        end
+        table.insert(out, s:sub(i, first_start - 1))
+        table.insert(out, "\\QereKetivInline{" .. mirror_ascii_brackets(s:sub(first_start, second_end)) .. "}")
+        i = second_end + 1
+      end
+    end
+    return table.concat(out)
+  end
+
+  local function protect_standalone_square_brackets(s)
+    local protected = {}
+    s = s:gsub("\\QereKetivInline{(.-)}", function(contents)
+      table.insert(protected, contents)
+      return "QEREKETIVPLACEHOLDER" .. #protected .. "END"
+    end)
+
+    s = s:gsub("%[([^%]]*)%]", function(contents)
+      return "\\QereKetivInline{]" .. contents .. "[}"
+    end)
+
+    local result = s:gsub("QEREKETIVPLACEHOLDER(%d+)END", function(index)
+      return "\\QereKetivInline{" .. protected[tonumber(index)] .. "}"
+    end)
+    return result
+  end
+
+  local function protect_standalone_angle_brackets(s)
+    local result = s:gsub("<([^>]*)>", function(contents)
+      return "\\QereKetivInline{" .. mirrored_bracket["<"] .. contents .. mirrored_bracket[">"] .. "}"
+    end)
+    return result
+  end
+
+  function paleotex.protect_qere_ketiv(s)
+    s = protect_bracket_pair(s, "(", ")", "[", "]")
+    s = protect_bracket_pair(s, "[", "]", "(", ")")
+    s = protect_standalone_square_brackets(s)
+    return protect_standalone_angle_brackets(s)
+  end
+
+  local function is_hebrew_mark(code)
+    return (code >= 0x0591 and code <= 0x05BD)
+      or code == 0x05BF
+      or (code >= 0x05C1 and code <= 0x05C2)
+      or (code >= 0x05C4 and code <= 0x05C5)
+      or code == 0x05C7
+  end
+
+  function paleotex.strip_hebrew_niqqud(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      if not is_hebrew_mark(code) then
+        table.insert(out, utf8.char(code))
+      end
+    end
+    return paleotex.protect_qere_ketiv(table.concat(out))
+  end
+
+  local paleo_ascii = {
+    [0x05D0] = "A", [0x05D1] = "B", [0x05D2] = "G", [0x05D3] = "D",
+    [0x05D4] = "H", [0x05D5] = "W", [0x05D6] = "Z", [0x05D7] = "X",
+    [0x05D8] = "J", [0x05D9] = "Y", [0x05DA] = "K", [0x05DB] = "K",
+    [0x05DC] = "L", [0x05DD] = "M", [0x05DE] = "M", [0x05DF] = "N",
+    [0x05E0] = "N", [0x05E1] = "S", [0x05E2] = "]", [0x05E3] = "P",
+    [0x05E4] = "P", [0x05E5] = "C", [0x05E6] = "C", [0x05E7] = "Q",
+    [0x05E8] = "R", [0x05E9] = "V", [0x05EA] = "T"
+  }
+
+  local hebrew_punctuation = {
+    [0x05BE] = "-", [0x05C0] = "|", [0x05C3] = "",
+    [0x05F3] = "'", [0x05F4] = '"'
+  }
+
+  local hebrew_letters = {
+    0x05D0, 0x05D1, 0x05D2, 0x05D3, 0x05D4, 0x05D5, 0x05D6, 0x05D7,
+    0x05D8, 0x05D9, 0x05DB, 0x05DC, 0x05DE, 0x05E0, 0x05E1, 0x05E2,
+    0x05E4, 0x05E6, 0x05E7, 0x05E8, 0x05E9, 0x05EA
+  }
+
+  local final_letters = {
+    [0x05DA] = 0x05DB, [0x05DD] = 0x05DE, [0x05DF] = 0x05E0,
+    [0x05E3] = 0x05E4, [0x05E5] = 0x05E6
+  }
+
+  local function variant_map(chars)
+    local map = {}
+    for i, code in ipairs(hebrew_letters) do
+      map[code] = chars[i]
+    end
+    for final, normal in pairs(final_letters) do
+      map[final] = map[normal]
+    end
+    return map
+  end
+
+  local ascii_variants = {
+    proto_a = variant_map {"a","b","g","s","h","w","Z","x","j","y","k","l","m","n","","]","p","c","q","r","f","t"},
+    proto_b = variant_map {"a","b","g","s","h","w","Z","x","j","y","k","l","m","n","","]","p","c","q","r","f","t"},
+    proto_c = variant_map {"A","B","G","S","H","W","Z","X","j","Y","K","L","M","N","","]","P","C","Q","R","V","T"},
+    proto_d = variant_map {"A","B","G","D","h","w","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
+    proto_e = variant_map {"a","b","g","d","H","W","z","x","j","y","k","l","M","n","s","]","p","c","q","r","v","t"},
+    proto_f = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","","N","S","]","P","C","Q","R","V","T"},
+    proto_g = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","","n","s","]","p","c","q","R","v","t"},
+    paleo_upper = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
+    paleo_lower = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"},
+    paleo_a = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"},
+    paleo_b = variant_map {"A","B","G","D","H","W","Z","X","","Y","K","L","M","","S","]","P","C","Q","R","V","T"},
+    paleo_c = variant_map {"a","b","g","d","h","w","z","x","","y","k","l","m","","s","]","p","c","q","r","v","t"},
+    paleo_h = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
+    paleo_i = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"},
+    paleo_k = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
+    paleo_l = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"},
+    paleo_w = variant_map {"A","B","G","D","H","W","Z","X","J","Y","K","L","M","N","S","]","P","C","Q","R","V","T"},
+    paleo_x = variant_map {"a","b","g","d","h","w","z","x","j","y","k","l","m","n","s","]","p","c","q","r","v","t"}
+  }
+
+  -- The Tel Zayit font uses O/o for ayin and has no punctuation glyphs.
+  -- Keep punctuation in the surrounding text font instead of asking the
+  -- historical alphabet font to render characters it does not contain.
+  local tel_zayit_ascii = variant_map {
+    "A","B","G","D","H","W","Z","X","T","Y","K","L","M","N","S","O","P","C","Q","R","s","t"
+  }
+
+  local function tel_zayit_punctuation(s)
+    return "\\PaleoTelZayitPunctuation{" .. s .. "}"
+  end
+
+  local function encode_ascii_variant(s, variant)
+    local map = ascii_variants[variant]
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = (map and map[code]) or hebrew_punctuation[code]
+      if mapped ~= nil then
+        table.insert(out, mapped)
+      elseif not is_hebrew_mark(code) then
+        table.insert(out, utf8.char(code))
+      end
+    end
+    return table.concat(out)
+  end
+
+  local paleo_hebrew_phoenician = {
+    [0x05D0] = 0x10900, [0x05D1] = 0x10901, [0x05D2] = 0x10902,
+    [0x05D3] = 0x10903, [0x05D4] = 0x10904, [0x05D5] = 0x10905,
+    [0x05D6] = 0x10906, [0x05D7] = 0x10907, [0x05D8] = 0x10908,
+    [0x05D9] = 0x10909, [0x05DA] = 0x1090A, [0x05DB] = 0x1090A,
+    [0x05DC] = 0x1090B, [0x05DD] = 0x1090C, [0x05DE] = 0x1090C,
+    [0x05DF] = 0x1090D, [0x05E0] = 0x1090D, [0x05E1] = 0x1090E,
+    [0x05E2] = 0x1090F, [0x05E3] = 0x10910, [0x05E4] = 0x10910,
+    [0x05E5] = 0x10911, [0x05E6] = 0x10911, [0x05E7] = 0x10912,
+    [0x05E8] = 0x10913, [0x05E9] = 0x10914, [0x05EA] = 0x10915
+  }
+
+  local aramaic = {
+    [0x05D0] = 0x10840, [0x05D1] = 0x10841, [0x05D2] = 0x10842,
+    [0x05D3] = 0x10843, [0x05D4] = 0x10844, [0x05D5] = 0x10845,
+    [0x05D6] = 0x10846, [0x05D7] = 0x10847, [0x05D8] = 0x10848,
+    [0x05D9] = 0x10849, [0x05DA] = 0x1084A, [0x05DB] = 0x1084A,
+    [0x05DC] = 0x1084B, [0x05DD] = 0x1084C, [0x05DE] = 0x1084C,
+    [0x05DF] = 0x1084D, [0x05E0] = 0x1084D, [0x05E1] = 0x1084E,
+    [0x05E2] = 0x1084F, [0x05E3] = 0x10850, [0x05E4] = 0x10850,
+    [0x05E5] = 0x10851, [0x05E6] = 0x10851, [0x05E7] = 0x10852,
+    [0x05E8] = 0x10853, [0x05E9] = 0x10854, [0x05EA] = 0x10855
+  }
+
+  function paleotex.hebrew_to_aramaic(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = aramaic[code]
+      if mapped ~= nil then
+        table.insert(out, utf8.char(mapped))
+      else
+        mapped = hebrew_punctuation[code]
+        if mapped ~= nil then
+          table.insert(out, mapped)
+        elseif not is_hebrew_mark(code) then
+          table.insert(out, utf8.char(code))
+        end
+      end
+    end
+    return table.concat(out)
+  end
+
+  function paleotex.hebrew_to_paleo_hebrew_phoenician(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = paleo_hebrew_phoenician[code]
+      if mapped ~= nil then
+        table.insert(out, utf8.char(mapped))
+      else
+        mapped = hebrew_punctuation[code]
+        if mapped ~= nil then
+          table.insert(out, mapped)
+        elseif not is_hebrew_mark(code) then
+          table.insert(out, utf8.char(code))
+        end
+      end
+    end
+    return table.concat(out)
+  end
+
+  function paleotex.hebrew_for_paleo_unicode(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = hebrew_punctuation[code]
+      if mapped ~= nil then
+        table.insert(out, mapped)
+      elseif not is_hebrew_mark(code) then
+        table.insert(out, utf8.char(code))
+      end
+    end
+    return table.concat(out)
+  end
+
+  function paleotex.hebrew_to_paleo_ascii(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = paleo_ascii[code] or hebrew_punctuation[code]
+      if mapped ~= nil then
+        table.insert(out, mapped)
+      elseif not is_hebrew_mark(code) then
+        table.insert(out, utf8.char(code))
+      end
+    end
+    return table.concat(out)
+  end
+
+  function paleotex.hebrew_to_tel_zayit_ascii(s)
+    local out = {}
+    for pos, code in utf8.codes(s) do
+      local mapped = tel_zayit_ascii[code]
+      if mapped ~= nil then
+        table.insert(out, mapped)
+      elseif code == 0x05BE then
+        table.insert(out, tel_zayit_punctuation("-"))
+      elseif code == 0x05C0 then
+        table.insert(out, tel_zayit_punctuation("|"))
+      elseif code == 0x05C3 then
+        -- Sof pasuq is omitted by the other ASCII historical renderers too.
+      elseif code == 0x05F3 then
+        table.insert(out, tel_zayit_punctuation("'"))
+      elseif code == 0x05F4 then
+        table.insert(out, tel_zayit_punctuation('"'))
+      elseif not is_hebrew_mark(code) then
+        local char = utf8.char(code)
+        if char == "-" or char == "(" or char == ")" then
+          table.insert(out, tel_zayit_punctuation(char))
+        else
+          table.insert(out, char)
+        end
+      end
+    end
+    return table.concat(out)
+  end
+
+  function paleotex.hebrew_to_ascii_variant(s, variant)
+    return encode_ascii_variant(s, variant)
+  end
+
+  function strip_hebrew_niqqud(s)
+    return paleotex.strip_hebrew_niqqud(s)
+  end
+
+  function hebrew_to_paleo_ascii(s)
+    return paleotex.hebrew_to_paleo_ascii(s)
+  end
+
+  function hebrew_to_ascii_variant(s, variant)
+    return paleotex.hebrew_to_ascii_variant(s, variant)
+  end
+
+  function hebrew_for_paleo_unicode(s)
+    return paleotex.hebrew_for_paleo_unicode(s)
+  end
+
+  function hebrew_to_paleo_hebrew_phoenician(s)
+    return paleotex.hebrew_to_paleo_hebrew_phoenician(s)
+  end
+
+  function hebrew_to_aramaic(s)
+    return paleotex.hebrew_to_aramaic(s)
+  end
+\end{luacode*}
+
+\newcommand{\HebrewNoNiqqud}[1]{%
+  \directlua{tex.sprint(strip_hebrew_niqqud("\luaescapestring{\detokenize{#1}}"))}%
+}
+
+\newcommand{\HebrewRaw}[1]{%
+  \directlua{tex.sprint(paleotex.protect_qere_ketiv("\luaescapestring{\detokenize{#1}}"))}%
+}
+
+\newcommand{\HebrewToPaleoASCII}[1]{%
+  \directlua{tex.sprint(hebrew_to_paleo_ascii("\luaescapestring{\detokenize{#1}}"))}%
+}
+
+\newcommand{\HebrewForPaleoUnicode}[1]{%
+  \directlua{tex.sprint(hebrew_for_paleo_unicode("\luaescapestring{\detokenize{#1}}"))}%
+}
+
+\newcommand{\HebrewToPaleoHebrewPhoenician}[1]{%
+  \directlua{tex.sprint(hebrew_to_paleo_hebrew_phoenician("\luaescapestring{\detokenize{#1}}"))}%
+}
+
+\newcommand{\HebrewToAramaic}[1]{%
+  \directlua{tex.sprint(hebrew_to_aramaic("\luaescapestring{\detokenize{#1}}"))}%
+}
+
+\newcommand{\EncodeHebrewNoNiqqud}[1]{\HebrewNoNiqqud{#1}}
+\newcommand{\EncodeHebrewRaw}[1]{\HebrewRaw{#1}}
+\newcommand{\EncodePaleoASCII}[1]{\HebrewToPaleoASCII{#1}}
+\newcommand{\PaleoTelZayitPunctuation}[1]{{\normalfont #1}}
+\newcommand{\EncodePaleoTelZayitASCII}[1]{%
+  \directlua{tex.sprint(paleotex.hebrew_to_tel_zayit_ascii("\luaescapestring{\detokenize{#1}}"))}%
+}
+\newcommand{\EncodePaleoUnicode}[1]{\HebrewForPaleoUnicode{#1}}
+\newcommand{\EncodeProtoA}[1]{\EncodeASCIIVariant{proto_a}{#1}}
+\newcommand{\EncodePaleoHebrewPhoenician}[1]{\HebrewToPaleoHebrewPhoenician{#1}}
+\newcommand{\EncodeAramaic}[1]{\HebrewToAramaic{#1}}
+\newcommand{\EncodeASCIIVariant}[2]{%
+  \directlua{tex.sprint(paleotex.hebrew_to_ascii_variant("\luaescapestring{\detokenize{#2}}", "\luaescapestring{#1}"))}%
+}
+\newcommand{\EncodeProtoB}[1]{\EncodeASCIIVariant{proto_b}{#1}}
+\newcommand{\EncodeProtoC}[1]{\EncodeASCIIVariant{proto_c}{#1}}
+\newcommand{\EncodeProtoD}[1]{\EncodeASCIIVariant{proto_d}{#1}}
+\newcommand{\EncodeProtoE}[1]{\EncodeASCIIVariant{proto_e}{#1}}
+\newcommand{\EncodeProtoF}[1]{\EncodeASCIIVariant{proto_f}{#1}}
+\newcommand{\EncodeProtoG}[1]{\EncodeASCIIVariant{proto_g}{#1}}
+\newcommand{\EncodePaleoUpper}[1]{\EncodeASCIIVariant{paleo_upper}{#1}}
+\newcommand{\EncodePaleoLower}[1]{\EncodeASCIIVariant{paleo_lower}{#1}}
+\newcommand{\EncodePaleoA}[1]{\EncodeASCIIVariant{paleo_a}{#1}}
+\newcommand{\EncodePaleoB}[1]{\EncodeASCIIVariant{paleo_b}{#1}}
+\newcommand{\EncodePaleoC}[1]{\EncodeASCIIVariant{paleo_c}{#1}}
+\newcommand{\EncodePaleoH}[1]{\EncodeASCIIVariant{paleo_h}{#1}}
+\newcommand{\EncodePaleoI}[1]{\EncodeASCIIVariant{paleo_i}{#1}}
+\newcommand{\EncodePaleoK}[1]{\EncodeASCIIVariant{paleo_k}{#1}}
+\newcommand{\EncodePaleoL}[1]{\EncodeASCIIVariant{paleo_l}{#1}}
+\newcommand{\EncodePaleoW}[1]{\EncodeASCIIVariant{paleo_w}{#1}}
+\newcommand{\EncodePaleoX}[1]{\EncodeASCIIVariant{paleo_x}{#1}}
+
+\makeatletter
+\newcommand{\DeclareHebrewRenderer}[3]{%
+  \expandafter\newcommand\csname #1\endcsname[2]{%
+    {%
+      \leavevmode\textdir TRT\upshape
+      \let\SourceProfileTextWrapper\SourceProfilePlainText
+      #2##1\upshape\SourceProfileTextWrapper{#3{##2}}%
+    }%
+  }%
+}
+\makeatother
+
+% Hebrew-codepoint renderers. Renderer names describe fonts, not sources.
+\DeclareHebrewRenderer{HebrewDavid}{\HebrewDavidFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{HebrewDavidRaw}{\HebrewDavidFont}{\EncodeHebrewRaw}
+\DeclareHebrewRenderer{HebrewEzra}{\HebrewEzraFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{HebrewEzraRaw}{\HebrewEzraFont}{\EncodeHebrewRaw}
+\DeclareHebrewRenderer{HebrewEzraBoldRaw}{\HebrewEzraBoldFont}{\EncodeHebrewRaw}
+\DeclareHebrewRenderer{Aramaic}{\AramaicFont}{\EncodeAramaic}
+\DeclareHebrewRenderer{HebrewOther}{\HebrewOtherFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{HebrewSquare}{\HebrewSquareFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{PaleoHebrewRobo}{\PaleoHebrewRoboFont}{\EncodePaleoUnicode}
+\DeclareHebrewRenderer{PaleoHebrewPhoenician}{\PaleoHebrewPhoenicianFont}{\EncodePaleoHebrewPhoenician}
+\DeclareHebrewRenderer{PaleoHebrewTelZayit}{\PaleoHebrewTelZayitFont}{\EncodeHebrewNoNiqqud}
+
+% ASCII historical renderers.  Use these with fonts that expect ABGDHWZX... input.
+\DeclareHebrewRenderer{ProtoSinaiticBest}{\ProtoSinaiticBestFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{ProtoASCIIFifteenthCentury}{\ProtoSinaiticFifteenthCenturyFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{ProtoASCIIThirteenthCentury}{\ProtoSinaiticThirteenthCenturyFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{ProtoASCIIFromIzbetSartah}{\ProtoSinaiticIzbetSartahFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{ProtoAFont}{\ProtoSinaiticFifteenthCenturyFont}{\EncodeProtoA}
+\DeclareHebrewRenderer{ProtoBFont}{\ProtoSinaiticFifteenthCenturyFont}{\EncodeProtoB}
+\DeclareHebrewRenderer{ProtoCFont}{\ProtoSinaiticFifteenthCenturyFont}{\EncodeProtoC}
+\DeclareHebrewRenderer{ProtoDFont}{\ProtoSinaiticThirteenthCenturyFont}{\EncodeProtoD}
+\DeclareHebrewRenderer{ProtoEFont}{\ProtoSinaiticThirteenthCenturyFont}{\EncodeProtoE}
+\DeclareHebrewRenderer{ProtoFFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoF}
+\DeclareHebrewRenderer{ProtoGFont}{\ProtoSinaiticIzbetSartahFont}{\EncodeProtoG}
+\DeclareHebrewRenderer{PaleoASCIIStandard}{\PaleoHebrewStandardFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIITelZayit}{\PaleoHebrewTelZayitFont}{\EncodePaleoTelZayitASCII}
+\DeclareHebrewRenderer{PaleoASCIIGezer}{\PaleoHebrewGezerFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIIGezerA}{\PaleoHebrewGezerAFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIITelDan}{\PaleoHebrewTelDanFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIIMoabite}{\PaleoHebrewMoabiteFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIISiloam}{\PaleoHebrewSiloamFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIIKetefHinnomA}{\PaleoHebrewKetefHinnomAFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIIKetefHinnomB}{\PaleoHebrewKetefHinnomBFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIILachishA}{\PaleoHebrewLachishAFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIILachishB}{\PaleoHebrewLachishBFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIILachishC}{\PaleoHebrewLachishCFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoASCIIIsaiahScroll}{\DeadSeaScrollsIsaiahFont}{\EncodePaleoASCII}
+\DeclareHebrewRenderer{PaleoAFont}{\PaleoHebrewTelZayitFont}{\EncodePaleoA}
+\DeclareHebrewRenderer{PaleoBFont}{\PaleoHebrewGezerFont}{\EncodePaleoB}
+\DeclareHebrewRenderer{PaleoCFont}{\PaleoHebrewGezerFont}{\EncodePaleoC}
+\DeclareHebrewRenderer{PaleoDFont}{\PaleoHebrewTelDanFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoEFont}{\PaleoHebrewTelDanFont}{\EncodePaleoLower}
+\DeclareHebrewRenderer{PaleoFFont}{\PaleoHebrewMoabiteFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoGFont}{\PaleoHebrewMoabiteFont}{\EncodePaleoLower}
+\DeclareHebrewRenderer{PaleoHFont}{\PaleoHebrewOtherFont}{\EncodePaleoH}
+\DeclareHebrewRenderer{PaleoIFont}{\PaleoHebrewOtherFont}{\EncodePaleoI}
+\DeclareHebrewRenderer{PaleoJFont}{\PaleoHebrewPhoenicianFont}{\EncodePaleoHebrewPhoenician}
+\DeclareHebrewRenderer{PaleoKFont}{\PaleoHebrewSiloamFont}{\EncodePaleoK}
+\DeclareHebrewRenderer{PaleoLFont}{\PaleoHebrewSiloamFont}{\EncodePaleoL}
+\DeclareHebrewRenderer{PaleoMFont}{\PaleoHebrewKetefHinnomAFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoNFont}{\PaleoHebrewKetefHinnomAFont}{\EncodePaleoLower}
+\DeclareHebrewRenderer{PaleoOFont}{\PaleoHebrewKetefHinnomBFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoPFont}{\PaleoHebrewKetefHinnomBFont}{\EncodePaleoLower}
+\DeclareHebrewRenderer{PaleoQFont}{\PaleoHebrewLachishAFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoRFont}{\PaleoHebrewLachishAFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoSFont}{\PaleoHebrewLachishBFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoTFont}{\PaleoHebrewLachishBFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoUFont}{\PaleoHebrewLachishCFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoVFont}{\PaleoHebrewLachishCFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoWFont}{\DeadSeaScrollsIsaiahFont}{\EncodePaleoW}
+\DeclareHebrewRenderer{PaleoXFont}{\DeadSeaScrollsIsaiahFont}{\EncodePaleoX}
+\DeclareHebrewRenderer{PaleoYFont}{\PaleoHebrewMonoFont}{\EncodePaleoUnicode}
+\DeclareHebrewRenderer{PaleoHebrewMono}{\PaleoHebrewMonoFont}{\EncodePaleoUnicode}
+\DeclareHebrewRenderer{PaleoZFont}{\PaleoHebrewRegularFont}{\EncodePaleoUpper}
+\DeclareHebrewRenderer{PaleoAAFont}{\PaleoHebrewEvyoniFont}{\EncodeHebrewNoNiqqud}
+\DeclareHebrewRenderer{PaleoABFont}{\PaleoHebrewAlphabetFont}{\EncodeHebrewNoNiqqud}
+
+% Source profiles bundle the English font/style with the Hebrew renderer/style.
+% These declarations are the only source-to-font bindings normally changed.
+\makeatletter
+\newcommand{\DeclareSourceProfile}[5]{%
+  \expandafter\newcommand\csname estyle#1\endcsname{#2#3}%
+  \expandafter\newcommand\csname h#1Renderer\endcsname{#4}%
+  \expandafter\newcommand\csname hstyle#1\endcsname{#5}%
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Matres in small grey %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\MatresColor}{gray}
+\newcommand{\mTR}[1]{\textcolor{\MatresColor}{\MakeLowercase{#1}}}
+\newcommand{\mHE}[1]{\textcolor{\MatresColor}{\scriptsize #1}}
+
+\directlua{
+  function mark_translit(s)
+    local matres = { W=true, Y=true, H=true }
+    local out = {}
+    for _, code in utf8.codes(s) do
+      local c = utf8.char(code)
+      if matres[c] then
+        table.insert(out, "\\mTR{" .. string.lower(c) .. "}")
+      else
+        table.insert(out, c)
+      end
+    end
+    return table.concat(out)
+  end
+
+  function mark_hebrew(s)
+    local matres = { [0x05D9]=true, [0x05D5]=true }
+    local out = {}
+    for _, code in utf8.codes(s) do
+      local c = utf8.char(code)
+      if matres[code] then
+        table.insert(out, "\\mHE{" .. c .. "}")
+      else
+        table.insert(out, c)
+      end
+    end
+    return table.concat(out)
+  end
+}
+
+\newcommand{\trM}[1]{%
+  \directlua{tex.sprint(mark_translit("\luaescapestring{\detokenize{#1}}"))}%
+}
+\newcommand{\hJM}[1]{%
+  \hJ{\directlua{tex.sprint(mark_hebrew("\luaescapestring{\detokenize{#1}}"))}}%
+}
+
+\directlua{
+    local h_defective = {
+      ["פִּישׁוֹן"] = "פִּ\\mHE{י}שׁ\\mHE{וֹ}ן",
+      ["שֵּׁנִי"] = "שֵּׁנִ\\mHE{י}",
+      ["גִּיחוֹן"] = "גִּ\\mHE{י}ח\\mHE{וֹ}ן",
+      ["בְּיוֹם"] = "בְּי\\mHE{וֹ}ם",
+      ["מֶּנּוּ"] = "מֶּנּ\\mHE{וּ}",
+      ["מוֹת"] = "מ\\mHE{וֹ}ת",
+      ["תָּמוּת"] = "תָּמ\\mHE{וּ}ת",
+      ["נַפְשׁוֹ"] = "נַפְשׁ\\mHE{וֹ}",
+      ["אֲדֹנִיָּהוּ"] = "אֲדֹנִיָּה\\mHE{וּ}",
+      ["יִמְשְׁחוּ"] = "יִמְשְׁח\\mHE{וּ}",
+      ["אֹתוֹ"] = "אֹת\\mHE{וֹ}",
+      ["צָדוֹק"] = "צָד\\mHE{וֹ}ק",
+      ["הַנָּבִיא"] = "הַנָּבִ\\mHE{י}א",
+      ["גִחוֹן"] = "גִח\\mHE{וֹ}ן",
+      ["יָהוּ"] = "יָה\\mHE{וּ}",
+      ["יְהוֹ"] = "יְה\\mHE{וֹ}",
+    }
+
+    local e_defective = {
+      ["PYŠWN"] = "P\\mTR{y}Š\\mTR{w}N",
+      ["ŠNY"] = "ŠN\\mTR{y}",
+      ["GYḤWN"] = "G\\mTR{y}Ḥ\\mTR{w}N",
+      ["BYWM"] = "BY\\mTR{w}M",
+      ["MNW"] = "MN\\mTR{w}",
+      ["MWT"] = "M\\mTR{w}T",
+      ["TMWT"] = "TM\\mTR{w}T",
+      ["NPŠW"] = "NPŠ\\mTR{w}",
+      ["ADNYHW"] = "ADNYH\\mTR{w}",
+      ["YMŠḤW"] = "YMŠḤ\\mTR{w}",
+      ["ATW"] = "AT\\mTR{w}",
+      ["CDWQ"] = "CD\\mTR{w}Q",
+      ["NBYA"] = "NB\\mTR{y}A",
+      ["GḤWN"] = "GḤ\\mTR{w}N",
+      ["YHW"] = "YH\\mTR{w}",
+    }
+
+  function mark_hebrew_defective(s)
+    return h_defective[s] or s
+  end
+
+  function mark_translit_defective(s)
+    return e_defective[s] or s
+  end
+}
+
+\newcommand{\eDefective}[1]{%
+  \directlua{tex.sprint(mark_translit_defective("\luaescapestring{\detokenize{#1}}"))}%
+}
+\newcommand{\hDefective}[1]{%
+  \hJ{\directlua{tex.sprint(mark_hebrew_defective("\luaescapestring{\detokenize{#1}}"))}}%
+}
+
+
+% ------------------------------------------------------------
+% Inline language helpers for commentary/definitions
+% ------------------------------------------------------------
+
+\newcommand{\heb}[1]{%
+    {\HebrewDavid{}{#1}}%
+}
+
+\newcommand{\hebniq}[1]{%
+    {\InlineHebrewRenderer{}{#1}}%
+}
+
+\newcommand{\arb}[1]{%
+    {\leavevmode\textdir TRT\ArabicFont #1}%
+}
+
+\newcommand{\syriac}[1]{%
+    {\leavevmode\textdir TRT\SyriacFont #1}%
+}
+
+\newcommand{\telugu}[1]{%
+    {\leavevmode\TeluguFont #1}%
+}
+
+\newcommand{\akk}[1]{%
+    {\leavevmode\Cun #1}%
+}
+
+\newcommand{\cun}[1]{\akk{#1}}
+
+\newcommand{\uga}[1]{{\UgariticFont #1}}
+
+\newcommand{\ara}[1]{%
+    {\leavevmode\textdir TRT\AramaicFont #1}%
+}
+
+\newcommand{\phn}[1]{%
+    {\leavevmode\textdir TRT\PaleoHebrewPhoenicianFont #1}%
+}
+
+\newcommand{\hs}[2]{#1{#2}}
+
+
+
+\iffalse
+\section{nav: sources}
+\fi
+
+% Source traits. These compose in source profiles and can be used inline.
+\newcommand{\SourceBgColor}{Rbgcolor}
+\newcommand{\SourceBackground}[1]{\def\SourceBgColor{#1}}
+\newcommand{\SourceProfilePlainText}[1]{#1}
+\let\SourceProfileTextWrapper\SourceProfilePlainText
+\newcommand{\SourceProfileHighlightedText}[1]{\highLight[\SourceBgColor]{#1}}
+\DeclareRobustCommand{\Redactor}{%
+    \let\SourceProfileTextWrapper\SourceProfileHighlightedText
+    % Redactional Hebrew is always consonantal, even in a composite profile
+    % whose base script normally preserves niqqud.
+    \let\EncodeHebrewRaw\EncodeHebrewNoNiqqud
+}
+\newcommand{\PriestStyle}{\bfseries}
+\newcommand{\LeviteStyle}{\color{Levitecolor}}
+\newcommand{\Native}{\mdseries}
+\newcommand{\MushiteStyle}{\color{Ecolor}}
+\newcommand{\AaronidStyle}{\color{Pcolor}}
+\newcommand{\Yahwist}{\Native\color{Jcolor}} % Or: Creator. We who cause it to be.
+\newcommand{\Record}{\color{Recordcolor}}
+\newcommand{\Records}{\Record}
+\newcommand{\Poetry}{\slshape}
+\newcommand{\OtherSource}{\color{OtherColor}\upshape\mdseries}
+\newcommand{\EnglishOtherSource}{\color{EnglishOtherColor}\upshape\mdseries}
+\newif\ifDeuteronomistBackgrounds
+\DeuteronomistBackgroundsfalse
+\newcommand{\ShowDeuteronomistBackgrounds}{\DeuteronomistBackgroundstrue}
+\newcommand{\HideDeuteronomistBackgrounds}{\DeuteronomistBackgroundsfalse}
+\let\UseDeuteronomistBackgrounds\ShowDeuteronomistBackgrounds
+\let\NoDeuteronomistBackgrounds\HideDeuteronomistBackgrounds
+\newcommand{\DeuterABackground}{%
+    \ifDeuteronomistBackgrounds%
+        \SourceBackground{Dtr1bgcolor}\Redactor%
+    \fi%
+}
+\newcommand{\DeuterBBackground}{%
+    \ifDeuteronomistBackgrounds%
+        \SourceBackground{Dtr2bgcolor}\Redactor%
+    \fi%
+}
+\newcommand{\DeuterAPlainStyle}{\MushiteStyle\color{Dtr1color}\PriestStyle}
+\newcommand{\DeuterBPlainStyle}{\MushiteStyle\color{Dtr2color}\PriestStyle}
+\newcommand{\DeuterAStyle}{\DeuterAPlainStyle\DeuterABackground}
+\newcommand{\DeuterBStyle}{\DeuterBPlainStyle\DeuterBBackground}
+\newcommand{\DeuterNStyle}{\MushiteStyle\color{Dtncolor}}
+\newcommand{\JeremiahStyle}{\MushiteStyle\color{Jeremiahcolor}}
+\newcommand{\EzekielStyle}{\AaronidStyle\color{Ezekielcolor}}
+\newcommand{\RedactorStyle}{\SourceBackground{Rbgcolor}\Redactor}
+\let\DeuteronomistAStyle\DeuterAStyle
+\let\DeuteronomistBStyle\DeuterBStyle
+\let\DeuteronomicLawStyle\DeuterNStyle
+
+\ExplSyntaxOn
+\NewDocumentCommand{\SourceDecorate}{ O{} +m }{%
+    \group_begin:
+    \clist_map_inline:nn {#1} {
+        \str_case:nn {##1} {
+            {plain}{\mdseries}
+            {regular}{\mdseries}
+            {native}{\mdseries}
+            {priest}{\PriestStyle}
+            {bold}{\PriestStyle}
+            {nopriest}{\mdseries}
+            {nobold}{\mdseries}
+            {levite}{\LeviteStyle}
+            {mushite}{\MushiteStyle}
+            {aaronid}{\AaronidStyle}
+            {yahwist}{\Yahwist}
+            {dtr1}{\DeuterAStyle}
+            {dtr2}{\DeuterBStyle}
+            {dtn}{\DeuterNStyle}
+            {jeremiah}{\JeremiahStyle}
+            {ezekiel}{\EzekielStyle}
+            {record}{\Record}
+            {records}{\Records}
+            {other}{\OtherSource}
+            {poetry}{\Poetry}
+            {italic}{\slshape}
+            {noitalic}{\upshape}
+            {mono}{\LawFont}
+            {law}{\LawFont}
+            {redactor}{\RedactorStyle}
+            {bg}{\RedactorStyle}
+            {noredactor}{}
+            {nobg}{}
+        }
+    }
+    #2%
+    \group_end:
+}
+\ExplSyntaxOff
+
+\NewDocumentCommand{\Priest}{ O{} +m }{\SourceDecorate[priest,#1]{#2}}
+\NewDocumentCommand{\Levite}{ O{} +m }{\SourceDecorate[levite,#1]{#2}}
+\NewDocumentCommand{\Mushite}{ O{} +m }{\SourceDecorate[mushite,#1]{#2}}
+\NewDocumentCommand{\Aaronid}{ O{} +m }{\SourceDecorate[aaronid,#1]{#2}}
+\NewDocumentCommand{\DeuterA}{ O{} +m }{\SourceDecorate[dtr1,#1]{#2}}
+\NewDocumentCommand{\DeuterB}{ O{} +m }{\SourceDecorate[dtr2,#1]{#2}}
+\NewDocumentCommand{\DeuterN}{ O{} +m }{\SourceDecorate[dtn,#1]{#2}}
+\NewDocumentCommand{\Jeremiah}{ O{} +m }{\SourceDecorate[jeremiah,#1]{#2}}
+\NewDocumentCommand{\Ezekiel}{ O{} +m }{\SourceDecorate[ezekiel,#1]{#2}}
+\let\DeuteronomistA\DeuterA
+\let\DeuteronomistB\DeuterB
+\let\DeuteronomicLaw\DeuterN
+
+% The Sources
+
+\newcommand{\ProtoSinaiticBestWeight}{\bfseries}
+\newcommand{\ProtoSinaiticASCIIWeight}{\mdseries}
+
+\DeclareSourceProfile{Proto}
+	{\EnglishProtoFont}			{\color{ProtoColor}\mdseries}
+	{\PaleoASCIITelZayit}		{\color{ProtoColor}\ProtoSinaiticASCIIWeight}
+
+\DeclareSourceProfile{ProtoA}
+	{\EnglishProtoFont}			{\color{ProtoAColor}\mdseries}
+	{\ProtoAFont}				{\color{ProtoAColor}\ProtoSinaiticASCIIWeight}
+
+\DeclareSourceProfile{ProtoB}
+	{\EnglishProtoFont}			{\color{ProtoBColor}\mdseries}
+	{\ProtoBFont}				{\color{ProtoBColor}\ProtoSinaiticASCIIWeight}
+
+\DeclareSourceProfile{ProtoC}
+	{\EnglishProtoFont}			{\color{ProtoCColor}\mdseries}
+	{\ProtoCFont}				{\color{ProtoCColor}\ProtoSinaiticASCIIWeight}
+
+\DeclareSourceProfile{ProtoD}
+	{\EnglishProtoFont}			{\color{ProtoDColor}\mdseries}
+	{\ProtoDFont}				{\color{ProtoDColor}\ProtoSinaiticASCIIWeight}
+
+\DeclareSourceProfile{ProtoE}
+	{\EnglishProtoFont}			{\color{ProtoEColor}\mdseries}
+	{\ProtoEFont}				{\color{ProtoEColor}\ProtoSinaiticASCIIWeight}
+
+\DeclareSourceProfile{ProtoF}
+	{\EnglishProtoFont}			{\color{ProtoFColor}\mdseries}
+	{\ProtoFFont}				{\color{ProtoFColor}\ProtoSinaiticASCIIWeight}
+
+\DeclareSourceProfile{ProtoG}
+	{\EnglishProtoFont}			{\color{ProtoGColor}\mdseries}
+	{\ProtoGFont}				{\color{ProtoGColor}\ProtoSinaiticASCIIWeight}
+
+\DeclareSourceProfile{Paleo}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoHebrewPhoenician}	{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoA}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoAFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoB}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoBFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoC}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoCFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoD}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoDFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoE}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoEFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoF}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoFFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoG}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoGFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoH}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoHFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoI}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoIFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoJ}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoJFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoK}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoKFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoL}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoLFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoM}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoMFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoN}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoNFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoO}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoOFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoP}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoPFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoQ}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoQFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoR}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoRFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoS}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoSFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoT}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoTFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoU}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoUFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoV}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoVFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoW}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoWFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoX}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoXFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoY}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoYFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoZ}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoZFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoAA}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoAAFont}				{\color{PaleoColor}\mdseries}
+
+\DeclareSourceProfile{PaleoAB}
+	{\EnglishProtoFont}			{\color{PaleoColor}\mdseries}
+	{\PaleoABFont}				{\color{PaleoColor}\mdseries}
+
+% J
+
+\DeclareSourceProfile{J}
+	{\EnglishFont}				{\SourceBackground{Jbgcolor}\Yahwist\mdseries}
+	{\PaleoHebrewPhoenician}	{\SourceBackground{Jbgcolor}\Yahwist\mdseries}
+
+\DeclareSourceProfile{JP}
+	{\EnglishFont}				{\color{JPcolor}\PriestStyle}
+	{\HebrewEzra}				{\color{JPcolor}\addfontfeatures{Scale=1.40}\mdseries}
+
+\DeclareSourceProfile{JPP}
+	{\EnglishFont}				{\color{JPPcolor}\PriestStyle}
+	{\HebrewEzraRaw}			{\color{JPPcolor}\addfontfeatures{Scale=1.40}\mdseries}
+
+\DeclareSourceProfile{PR}
+	{\EnglishFont}				{\SourceBackground{Rbgcolor}\color{Pcolor}\Redactor\bfseries}
+	{\HebrewEzraRaw}			{\SourceBackground{Rbgcolor}\color{Pcolor}\Redactor\addfontfeatures{Scale=1.40}\mdseries}
+
+\DeclareSourceProfile{JE}
+	{\EnglishFont}				{\color{JEcolor}\bfseries}
+	{\PaleoASCIIStandard}		{\color{JEcolor}\addfontfeatures{Scale=1.35}\mdseries}
+
+% Mushites
+
+\DeclareSourceProfile{E}
+	{\EnglishFont}				{\addfontfeatures{Scale=0.96}\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
+	{\PaleoASCIIStandard}		{\addfontfeatures{Scale=1.35}\SourceBackground{Ebgcolor}\MushiteStyle\PriestStyle}
+	% Don't change this font scale!
+
+\DeclareSourceProfile{DtrA}
+	{\EnglishFont}				{\DeuteronomistAStyle}
+	{\HebrewDavid}				{\HebrewDavidLarge\DeuteronomistAStyle}
+
+\DeclareSourceProfile{DtrB}
+	{\EnglishFont}				{\DeuteronomistBStyle}
+	{\HebrewDavid}				{\HebrewDavidLarge\DeuteronomistBStyle}
+
+\DeclareSourceProfile{DtrH}
+	{\EnglishFont}				{\color{Dtr1color}\SourceBackground{Rbgcolor}\Redactor\mdseries}
+	{\HebrewDavid}				{\HebrewDavidLarge\color{Dtr1color}\SourceBackground{Rbgcolor}\Redactor\mdseries}
+
+\DeclareSourceProfile{Dtn}
+	{\LawFont}					{\DeuteronomicLawStyle}
+	{\HebrewDavid}				{\HebrewDavidLarge\DeuteronomicLawStyle}
+
+% Aaronids
+
+\DeclareSourceProfile{P}
+	{\EnglishFont}				{\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
+	{\HebrewEzraRaw}			{\SourceBackground{Pbgcolor}\AaronidStyle\addfontfeatures{Scale=1.40}\mdseries}
+	% Don't change this font scale!
+
+\DeclareSourceProfile{EP}
+	{\EnglishFont}				{\color{EPcolor}\PriestStyle}
+	{\HebrewEzra}				{\color{EPcolor}\addfontfeatures{Scale=1.40}\mdseries}
+
+\DeclareSourceProfile{EPP}
+	{\EnglishFont}				{\color{EPPcolor}\PriestStyle}
+	{\HebrewEzraRaw}			{\color{EPPcolor}\addfontfeatures{Scale=1.40}\mdseries}
+
+\DeclareSourceProfile{PP}
+	{\EnglishFont}				{\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
+	{\PaleoASCIIStandard}		{\SourceBackground{Pbgcolor}\AaronidStyle\PriestStyle}
+
+\DeclareSourceProfile{R}
+	{\EnglishFont}				{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
+	{\HebrewEzraRaw}			{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Scale=1.40}\mdseries}
+	% Don't change this font scale!
+
+% Textual differences in commentary tables: preserve the surrounding inline
+% Hebrew typography while using the blue redactor background.
+\DeclareSourceProfile{Diff}
+	{\EnglishFont}				{\SourceBackground{Rbgcolor}\Redactor}
+	{\HebrewDavidRaw}			{\SourceBackground{Rbgcolor}\Redactor}
+
+\DeclareSourceProfile{Red}
+	{\EnglishFont}				{\SourceBackground{RedSourcebgcolor}\color{RedSourcecolor}\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
+	{\HebrewEzraRaw}			{\SourceBackground{RedSourcebgcolor}\color{RedSourcecolor}\Redactor\addfontfeatures{Ligatures=TeX,Scale=1.40}\mdseries}
+	% Don't change this font scale!
+
+\DeclareSourceProfile{Reblacktor}
+	{\EnglishFont}				{\SourceBackground{Reblacktorbgcolor}\color{Reblacktorcolor}\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
+	{\HebrewEzraRaw}			{\SourceBackground{Reblacktorbgcolor}\color{Reblacktorcolor}\Redactor\addfontfeatures{Scale=1.40}\mdseries}
+	% Don't change this font scale!
+
+% Others
+
+\DeclareSourceProfile{X}
+	{\EnglishFont}				{\color{Xcolor}\mdseries}
+	{\HebrewDavid}				{\HebrewDavidLarge\color{Xcolor}\mdseries}
+
+\DeclareSourceProfile{Aramaic}
+	{\EnglishFont}				{\color{TextColor}\mdseries}
+	{\Aramaic}					{\color{TextColor}\mdseries}
+
+\DeclareSourceProfile{RJE}
+	{\EnglishFont}				{\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
+	{\PaleoASCIISiloam}			{\addfontfeatures{Scale=1.30}\SourceBackground{RJEbgcolor}\color{RJEcolor}\Redactor\mdseries}
+
+\DeclareSourceProfile{Records}
+	{\EnglishFont}				{\SourceBackground{Recordsbgcolor}\Records}
+	{\PaleoHebrewMono}			{\SourceBackground{Recordsbgcolor}\Records}
+
+\DeclareSourceProfile{Other}
+	{\EnglishFont}				{\SourceBackground{Otherbgcolor}\EnglishOtherSource}
+	{\PaleoASCIIMoabite}		{\SourceBackground{Otherbgcolor}\OtherSource}
+
+% Inline Hebrew can contain Qere/Ketiv and reconstruction brackets.  Keep it
+% on the raw encoder so those ASCII delimiters are mirrored for the RTL run.
+\newcommand{\InlineHebrewRenderer}{\HebrewDavidRaw}
+
+% Direct helpers for experiments.
+\newcommand{\Paleo}[1]{\PaleoHebrewPhoenician{}{#1}}
+
+% Cleaner alphabet-test helpers.  These let the title/demo pages feed Hebrew once.
+\newcommand{\HebrewAlphabet}{אבגדהוזחטיכלמנסעפצקרשת}
+\newcommand{\ShowHebrewAlphabet}[1]{#1{}{\HebrewAlphabet}\\}
+
+% Public source commands. Each one applies its source profile as a bundle.
+\let\SourceProfileBaseFootnote\footnote
+\NewDocumentCommand{\ApplyEnglishSourceProfile}{ m +m }{%
+  {%
+    \let\SourceProfileTextWrapper\SourceProfilePlainText
+    #1%
+    \RenewDocumentCommand{\footnote}{ o +m }{%
+      \IfValueTF{##1}%
+        {\SourceProfileBaseFootnote[##1]{{\let\SourceProfileTextWrapper\SourceProfilePlainText #1\SourceProfileTextWrapper{##2}}}}%
+        {\SourceProfileBaseFootnote{{\let\SourceProfileTextWrapper\SourceProfilePlainText #1\SourceProfileTextWrapper{##2}}}}%
+    }%
+    \SourceProfileTextWrapper{#2}%
+  }%
+}
+
+\makeatletter
+\newcommand{\DeclareSourceCommands}[1]{%
+  \expandafter\newcommand\csname e#1\endcsname[1]{\ApplyEnglishSourceProfile{\csname estyle#1\endcsname}{##1}}%
+  \expandafter\newcommand\csname h#1\endcsname[1]{\csname h#1Renderer\endcsname{\csname hstyle#1\endcsname}{##1}}%
+  \expandafter\newcommand\csname s#1\endcsname[1]{\ApplyEnglishSourceProfile{\csname estyle#1\endcsname}{##1}}%
+}
+\newcommand{\DeclareSourceCommandList}[1]{%
+  \@for\SourceName:=#1\do{\expandafter\DeclareSourceCommands\expandafter{\SourceName}}%
+}
+\makeatother
+
+\DeclareSourceCommandList{J,JP,JPP,PR,JE,E,EP,EPP,P,PP,DtrA,DtrB,DtrH,Dtn,Diff,Records,Other,X,Aramaic,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
+
+% P defaults to square Ezra. Use \UsePaleoP for occasional Hezekiah-era Paleo-P,
+% then \UseSquareP to switch P back.
+\let\SquarePhRenderer\hPRenderer
+\let\SquarePhStyle\hstyleP
+\newcommand{\UsePaleoP}{\let\hPRenderer\hPPRenderer\let\hstyleP\hstylePP}
+\newcommand{\UseSquareP}{\let\hPRenderer\SquarePhRenderer\let\hstyleP\SquarePhStyle}
+
+\newcommand{\aPEnglish}[1]{{\EnglishFont\color{Pcolor}\mdseries #1}}
+\newcommand{\eDtr}[2]{\ifcase#1\or\eDtrA{#2}\or\eDtrB{#2}\fi}
+\newcommand{\DtrALabel}{\eDtrA{Dtr1}}
+\newcommand{\DtrBLabel}{\eDtrB{Dtr2}}
+\newcommand{\DtnLabel}{\eDtn{Dtn}}
+\newcommand{\eR}[1]{\ApplyEnglishSourceProfile{\estyleR}{#1}}
+\newcommand{\eRed}[1]{\ApplyEnglishSourceProfile{\estyleRed}{#1}}
+\newcommand{\eReblacktor}[1]{\ApplyEnglishSourceProfile{\estyleReblacktor}{#1}}
+\newcommand{\eRJE}[1]{\ApplyEnglishSourceProfile{\estyleRJE}{#1}}
+\newcommand{\hDtr}[2]{\ifcase#1\or\hDtrA{#2}\or\hDtrB{#2}\fi}
+\newcommand{\hR}[1]{\hRRenderer{\hstyleR}{#1}}
+\newcommand{\hRed}[1]{\hRedRenderer{\hstyleRed}{#1}}
+\newcommand{\hReblacktor}[1]{\hReblacktorRenderer{\hstyleReblacktor}{#1}}
+\newcommand{\hRJE}[1]{\hRJERenderer{\hstyleRJE}{#1}}
+\newcommand{\sR}[1]{\ApplyEnglishSourceProfile{\estyleR}{#1}}
+\newcommand{\sRed}[1]{\ApplyEnglishSourceProfile{\estyleRed}{#1}}
+\newcommand{\sReblacktor}[1]{\ApplyEnglishSourceProfile{\estyleReblacktor}{#1}}
+\newcommand{\sRJE}[1]{\ApplyEnglishSourceProfile{\estyleRJE}{#1}}
+\newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
+\newcommand{\hBookOfRecords}[1]{\hRecordsRenderer{\hstyleRecords}{#1}}
+\newcommand{\sBookOfRecords}[1]{{\estyleRecords #1}}
+
+\iffalse
+\section{nav: definitions}
+\fi
+
+\newlength{\DefIndent}
+\setlength{\DefIndent}{2em}
+
+\ExplSyntaxOn
+
+\NewDocumentCommand{\Def}{ m O{} +m }{
+  \cs_set_protected:cpx { userdef/\tl_to_str:n {#1} } {
+    \exp_not:N \DefBlock {DefColor}
+      { \exp_not:n {#1} }
+      { \exp_not:n {#2} }
+      { \exp_not:n {#3} }
+  }
+  \DefBlock{DefColor}{#1}{#2}{#3}
+}
+
+\NewDocumentCommand{\DefA}{ m +m }{
+  \cs_set_protected:cpx { userdef/\tl_to_str:n {#1} } {
+    \exp_not:N \DefBlock {Kcolor}
+      { \exp_not:n {#1} }
+      {}
+      { \exp_not:n {#2} }
+  }
+}
+
+\NewDocumentCommand{\DefB}{ m +m }{
+  \cs_set_protected:cpx { userdef/\tl_to_str:n {#1} } {
+    \exp_not:N \DefBlock {Redcolor}
+      { \exp_not:n {#1} }
+      {}
+      { \exp_not:n {#2} }
+  }
+}
+
+\NewDocumentCommand{\DefC}{ m +m }{
+  \cs_set_protected:cpx { userdef/\tl_to_str:n {#1} } {
+    \exp_not:N \DefBlock {Bluecolor}
+      { \exp_not:n {#1} }
+      {}
+      { \exp_not:n {#2} }
+  }
+}
+
+\ExplSyntaxOff
+
+\NewDocumentCommand{\DefBlock}{ m m m +m }{%
+  \par
+  \smallskip
+  \begingroup
+  \leftskip=\DefIndent
+  \rightskip=0pt
+  \parindent=0pt
+  \hangindent=0pt
+  \hangafter=1
+  \parshape=0
+  \EnglishFont
+  \addfontfeatures{Ligatures=TeX}%
+  \color{#1}%
+  \normalfont
+  \noindent
+  {\bfseries #2}%
+  \if\relax\detokenize{#3}\relax
+  \else
+    \space{\mdseries(#3)}%
+  \fi
+  .\par\nobreak
+  \mdseries
+  \upshape
+  #4%
+  \par
+  \endgroup
+  \smallskip
+}
+
+% Most tables use the same compact presentation.  A nonempty optional argument
+% replaces that setup, so an unusual table can preserve its surrounding setup
+% with \Table[\relax]{...}{...} or provide different local settings directly.
+\newcommand{\Table}[3][]{%
+  \par
+  \vspace{1em}
+  \begingroup
+    \if\relax\detokenize{#1}\relax
+      \scriptsize
+      \setlength{\tabcolsep}{0.35em}%
+    \else
+      #1%
+    \fi
+    \begin{center}
+      \color{DefColor}%
+      \begin{tabular}{#2}
+        #3
+      \end{tabular}
+    \end{center}
+  \endgroup
+  \vspace{1em}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% 					  The Authors						 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iffalse
+\section{nav: authors}
+\fi
+
+\newcommand{\SourceLegendItems}[2]{%
+    \eJ{J}\quad
+    \eE{E}\quad
+    %\eRJE{R}\quad
+    \eP{P}\quad
+    \eR{R}\quad
+    \eBookOfRecords{#1}\quad
+    \eOther{#2}\quad
+}
+
+\newcommand{\SourceLegend}{%
+    {\footnotesize
+    \SourceLegendItems{Records}{Other}%
+    }%
+}
+
+\DeclareRobustCommand{\SourceLegendHeader}{%
+    {\large
+    \eJ{J}\quad
+    \eE{E}\quad
+    \eP{P}\quad
+    \eR{R}\quad
+    }%
+}
+
+\newcommand{\LegendSample}[1]{%
+    \begingroup
+    \setlength{\fboxsep}{3pt}%
+    #1%
+    \endgroup
+}
+
+\newlength{\LegendLeftWidth}
+\newlength{\LegendRightWidth}
+\newlength{\LegendRowSep}
+\setlength{\LegendRowSep}{0.7em}
+\newcommand{\LegendColumns}[2]{%
+    \setlength{\LegendLeftWidth}{#1}%
+    \setlength{\LegendRightWidth}{#2}%
+}
+\newcommand{\LegendRow}[2]{%
+    \noindent
+    \begin{minipage}[t]{\LegendLeftWidth}%
+        \vspace{0pt}%
+        \RaggedRight #1%
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{\LegendRightWidth}%
+        \vspace{0pt}%
+        \RaggedRight #2%
+    \end{minipage}%
+    \par\vspace{\LegendRowSep}%
+}
+\newcommand{\LegendBreakableRow}[2]{%
+    \par
+    \begingroup
+        \setbox0=\vtop{%
+            \hsize=\LegendLeftWidth
+            \linewidth=\LegendLeftWidth
+            \columnwidth=\LegendLeftWidth
+            \RaggedRight #1\par
+        }%
+        \ht0=0pt
+        \dp0=0pt
+        \wd0=0pt
+        \box0
+    \endgroup
+    \nobreak
+    \begingroup
+        \parindent=0pt
+        \RaggedRight
+        \leftskip=\dimexpr\linewidth-\LegendRightWidth\relax
+        #2\par
+    \endgroup
+    \vspace{\LegendRowSep}%
+}
+
+\newcount\SourceFontLineBreakMobilePenalty
+\SourceFontLineBreakMobilePenalty=3000
+\newcommand{\SourceFontLineBreak}{%
+    \ifConfigOutputModeMobile
+        \ifhmode
+            \unskip
+            \penalty\SourceFontLineBreakMobilePenalty
+            \hskip 0.333em plus 0.167em minus 0.111em\relax
+        \fi
+    \else
+        \\%
+    \fi
+}
+
+\makeatletter
+\newcommand{\LegendFootmark}[1]{%
+    \refstepcounter{footnote}%
+    \expandafter\xdef\csname #1\endcsname{\the\value{footnote}}%
+    \textsuperscript{\thefootnote}%
+}
+\newcommand{\LegendFootmarkJ}[1]{%
+    \refstepcounter{footnote}%
+    \expandafter\xdef\csname #1\endcsname{\the\value{footnote}}%
+    \eJ{\textsuperscript{\thefootnote}}%
+}
+\makeatother
+
+
+\newcommand{\SourceLegendTitle}{%
+    \begin{center}
+        {\scshape\large The Authors}\\[0.2em]
+        {\itshape\normalsize or}\\[0.45em]
+        {\LARGE We: The Nameless}\\[0.45em]
+        {\footnotesize
+            \eJ{J}\quad
+            \eE{E}\quad
+            %\eRJE{R}\quad
+            \eP{P}\quad
+            \eR{R}\quad
+        }%
+    \end{center}
+}
+
+\NewDocumentCommand{\ManualFrontMatterPage}{ +m }{%
+    \clearpage
+    \thispagestyle{empty}
+    \ifConfigOutputModeMobile
+        \vspace*{\fill}%
+    \fi
+    #1%
+    \ifConfigOutputModeMobile
+        \vspace*{\fill}%
+    \fi
+}
+
+\newcommand{\SourceLegendPage}{%
+
+    \ManualFrontMatterPage{%
+    \SourceLegendTitle
+    \begingroup
+    \footnotesize
+    \let\nl\SourceFontLineBreak
+    \setcounter{footnote}{0}%
+    \LegendColumns{0.23\linewidth}{0.71\linewidth}
+
+    \LegendRow{\eJ{Green}}{%
+        \eJ{
+            J.\\
+            The first author of the bible.%
+            \LegendFootmark{SourceLegendFootnoteA}\\
+            The first author of prose in history.%
+            \LegendFootmark{SourceLegendFootnoteB}\\
+            The author of the most widely known bible stories.\\
+            The author of the bible with the best sense of human nature.%
+            \LegendFootmark{SourceLegendFootnoteC}\\
+            We have little knowledge of the author's identity beyond this.
+
+        }
+    }
+
+    \LegendRow{{\Mushite{Yellow}}}{%
+        \Mushite{
+            Mushites. A group of Levite priests who claim descent from Moses.\nl
+            Associated with the first temple in the city of Shiloh.\nl
+            The first author in this group is commonly known as the Elohist, or E.\nl
+        }
+        (\Mushite{E}, \DeuterA{Dtr1}, \DeuterB{Dtr2}, \Jeremiah{Jeremiah}.)
+    }
+
+    \LegendRow{{\Aaronid{Blue}}}{%
+        \Aaronid{
+            Aaronids. A group of Levite priests who claim descent from Aaron.\nl
+            Associated with the first and second temple in the city of Jerusalem.\nl
+            The first author in this group is known as the Priestly source, or P.\nl
+            Associated with the reign of king Hezekiah and the Jerusalem priesthood.\nl
+            The prophet Ezekiel is also associated with this group.\nl
+        }
+        (\Aaronid[priest]{P},
+        \Aaronid[redactor,nopriest]{R},
+        \Aaronid[ezekiel,nopriest]{Ezekiel}.)
+    }
+
+    \LegendRow{{\DeuterB[nopriest]{Orange}}}{%
+        \DeuterB[nopriest]{
+            Deuteronomists. The later Mushite tradition. Used to refer to the\nl
+            group after their loss of power in the Jerusalem temple priesthood\nl
+            with Solomon's rise to power, leading to the exile of the Mushite\nl
+            high priest Abiathar and the empowering of Zadok and the Aaronids.\nl
+            Associated with king Josiah, the Shiloh and Anathoth priesthood,\nl
+            and the prophet Jeremiah.\nl
+        }
+        (\DeuterA[nopriest]{Dtr1}, \DeuterB[nopriest]{Dtr2}, \Jeremiah{Jeremiah}.)
+    }
+
+
+    \LegendRow{\eR{Highlights}}{%
+        \eR{
+            Editors. Called Redactors in bible circles, since E was already taken.\nl
+            Redactors don't write much themselves, and mostly insert small bits of\nl
+            glue prose throughout a text, whether to make multiple sources consistent,\nl
+            to make the combined text flow as a single narrative, or to remove material\nl
+            considered objectionable. Some redactors prefer to include both copies of\nl
+            a story when merging two texts with different versions of the same event\nl
+        }
+        \eRJE{
+            while others prefer to choose one and exclude the other.%
+        }
+    }
+
+    \LegendRow{{\Record Grey}}{%
+        {\Record
+            Records. Begat lists, genealogies, and miscellaneous documents (Gen. 5, Gen. 14.)\par
+        }
+    }
+
+    \endgroup
+
+    }%
+
+    \ManualFrontMatterPage{%
+    \SourceLegendTitle
+    \begingroup
+    \footnotesize
+    \let\nl\SourceFontLineBreak
+    \LegendColumns{0.23\linewidth}{0.71\linewidth}
+
+    \LegendRow{Regular}{%
+        We the people. We write regular.\\
+        We're not always bold. Bold is for the bold.\\
+        We're not always italic. Italic is for the italians.\\
+        We're not always highlighted. That's for the high \& lighted.\\
+        We're not always mono. Mono is for the m---\\
+        W/e, you get it. We now yield to, well, them.
+    }
+
+
+    \LegendRow{{\Priest{Bold}}}{%
+        {\Priest{The Priests. Or the Levites. Whatever, same thing.}}%
+        \LegendFootmark{SourceLegendFootnoteD}\par
+        (\Priest{\Mushite{E}},
+        \SourceDecorate[dtr1,priest]{Dtr1},
+        \SourceDecorate[dtr2,priest]{Dtr2},
+        \Jeremiah[priest]{Jeremiah},
+        \SourceDecorate[aaronid,priest]{P},
+        \SourceDecorate[aaronid,priest]{R}.)
+    }
+
+    \LegendRow{{\Poetry Italics}}{%
+        {\Poetry
+            The Prophets. Poetry, prophecy, and archaic songs. Used as sources by the authors of the
+            prose narratives and history. Examples of such songs, from the Levites in the South,
+            and the Israelites in the North, appear to be the oldest strata of the text, and among the
+            only sources that pre-date J.\\
+            Editor's Note: While we've attempted to follow this convention wherever
+            possible, it turns out that many of the aforementioned archaic songs are,
+            in fact, archaic, and therefore must be rendered in a correspondingly
+            ancient set of scripts, many of which pre-date the invention of italics
+            and therefore fail to go all slanty even when we tell them to.
+            Just make a note of that and let's keep moving.\\
+            (\Mushite{Exod. 15}, \cG{Judg. 5}, \Mushite{Num. 21, 23-24}, \cG{Gen. 49}, \DeuterA{Deut. 33}.)
+        }
+    }
+
+    \LegendRow{{\LawFont Mono}}{%
+        {\LawFont
+            The Law.
+            All forms of code, legal and otherwise, are written in
+            monospaced font, for reasons that need not be explained.
+            \par\smallskip
+
+            {\MushiteStyle Mushite Laws: The Covenant Code (E; Exodus 20:22-23:19).}\par\smallskip
+
+            {\DeuterNStyle Deuteronomic Laws: The Deuteronomic Law Code (Dtn; Deut 12-26).}\par\smallskip
+
+            {\AaronidStyle Aaronid Laws: Strap in. There's a lot.}\par\smallskip
+            % Exodus 25 onward, where P talks how it's the law
+            % to make him pretty clothes and bring him gold
+            % and he doesn't stop until damn well into like
+            % Numbers, somewhere around the part where they
+            % have repetitive gift lists for 12 Days & that
+            % was pretty clearly what the authors of The 12
+            % Days Christmas had in mind when they invented
+            % the song, I mean they actually even say ``two
+            % turtledoves,'' in that shit it's not subtle.
+
+            {\Yahwist J Laws: Nonexistent, except for a weird version of the\nl
+            10 commandments, which may well have been a joke.\\
+            J is f\redacted{ucking}\eR{oundational to an understanding of God's\\
+            mysterious and} awesome \eR{power}.}%
+            \LegendFootmarkJ{SourceLegendFootnoteE}%
+        }
+    }
+
+
+    \footnotetext[\SourceLegendFootnoteA]{Named J, or the Yahwist, because of some Germans.}
+    \footnotetext[\SourceLegendFootnoteB]{Anywhere on earth, as far as we know.}
+    \footnotetext[\SourceLegendFootnoteC]{Human nature as in timeless themes like sex, death, family, and humor.}
+    \footnotetext[\SourceLegendFootnoteD]{According to {\MushiteStyle these guys},
+    	though {\AaronidStyle these guys} disagree.}
+    \footnotetext[\SourceLegendFootnoteE]{{\Yahwist S}he says thanks\ldots\ And welcome to We.}
+    \endgroup
+
+    }%
+    \PrimevalSourceFontsPage
+    \PrimarySourceFontsPage
+}
+
+\newcommand{\FontPageHeading}[1]{%
+    \SourceLegendTitle
+    \vspace{0.25em}
+    \begin{center}
+        {\scshape\Large #1}\\[0.8em]
+    \end{center}
+}
+
+\newcommand{\LegendFontSample}[1]{%
+    \makebox[\linewidth][r]{#1}%
+}
+\newcommand{\LegendFontSampleRows}[2]{%
+    \makebox[\linewidth][r]{\shortstack[r]{\resizebox{0.94\linewidth}{!}{#1}\\[-0.1em]\resizebox{0.94\linewidth}{!}{#2}}}%
+}
+\newcommand{\LegendFontAlphabet}[1]{%
+    \LegendFontSampleRows{#1{אבגדהוזחטיכ}}{#1{למנסעפצקרשת}}%
+}
+\makeatletter
+\newcommand{\PrimevalLegendHebrew}[2]{%
+    \csname h#1Renderer\endcsname{\color{PrimevalSourceLegendColor}\mdseries}{#2}%
+}
+\makeatother
+\newcommand{\PrimevalLegendAlphabet}[1]{%
+    \LegendFontSampleRows
+        {\PrimevalLegendHebrew{#1}{אבגדהוזחטיכ}}
+        {\PrimevalLegendHebrew{#1}{למנסעפצקרשת}}%
+}
+\newcommand{\PrimevalLegendText}[1]{%
+    {\EnglishProtoFont\color{PrimevalSourceLegendColor}\mdseries #1}%
+}
+\newcommand{\LegendPFontAlphabet}{%
+    \LegendFontSampleRows{\hP{אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻ}}{\hP{לֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ}}%
+}
+
+\newcommand{\PrimevalSourceFontsPage}{%
+    \ManualFrontMatterPage{%
+
+    %\vspace*{-4.5em}
+
+    \FontPageHeading{The Primeval Sources}
+
+    \begingroup
+    \footnotesize
+    \let\nl\SourceFontLineBreak
+    \setlength{\LegendRowSep}{0.45em}%
+    \LegendColumns{0.27\linewidth}{0.67\linewidth}
+
+    Archaic songs, poetry, and blessings are rendered in a version of\nl
+    the Hebrew alphabet that best matches their time and place of composition.\nl
+	The Proto-Sinaitic script is used for the oldest strata of biblical songs.
+    \par\smallskip
+
+    \LegendRow{\PrimevalLegendAlphabet{ProtoA}}{%
+        \PrimevalLegendText{
+            A southern (Egyptian) variant of Proto-Sinaitic\nl
+            resembling the Wadi el-Hol inscriptions is used for\nl
+            the oldest source in the bible, the Song of the Sea\nl
+            (Exodus 15).
+        }
+    }
+
+    \LegendRow{\PrimevalLegendAlphabet{ProtoC}}{%
+        \PrimevalLegendText{
+            A northern (Sinaitic) variant of Proto-Sinaitic\nl
+            resembling the Serabit el-Khadim inscriptions is used for\nl
+            Numbers 21, and the Balaam poems in Numbers 23-24.
+        }
+    }
+
+    \LegendRow{\PrimevalLegendAlphabet{ProtoE}}{%
+        \PrimevalLegendText{
+            A northern variant of the Proto-Canaanite script\nl
+            is used for early native Israelite poetry such as\nl
+            the Song of Deborah (Judges 5).
+        }
+    }
+
+    \LegendRow{\PrimevalLegendAlphabet{Proto}}{%
+        \PrimevalLegendText{
+            A related variant of the Proto-Canaanite script is used
+            for early Israelite poetry such as the Blessing
+            of Jacob (Genesis 49).
+        }
+    }
+
+    \LegendRow{\PrimevalLegendAlphabet{Records}}{%
+        \PrimevalLegendText{
+            The monospaced block variant of Paleo Hebrew is
+            used for records, begat lists, and genealogies
+            from the Book of Records. (Genesis 5, Genesis 11:10-26.)
+        }
+    }
+
+    \LegendRow{\PrimevalLegendAlphabet{PaleoM}}{%
+        \PrimevalLegendText{
+            The Ketef Hinnom variant of Paleo-Hebrew is used for\nl
+            the Priestly Blessing in Numbers 6. This is the oldest\nl
+            biblical text yet found.
+        }
+    }
+
+    \endgroup
+
+    }%
+}
+
+\newcommand{\PrimarySourceFontsPage}{%
+    \ManualFrontMatterPage{%
+
+    \FontPageHeading{The Primary Sources}
+
+    \begingroup
+    \scriptsize
+    \let\nl\SourceFontLineBreak
+    \setlength{\LegendRowSep}{0.35em}%
+    \LegendColumns{0.27\linewidth}{0.67\linewidth}
+
+    \LegendRow{\LegendFontAlphabet{\hJ}}{%
+        \eJ{
+            J is written in the Paleo-Hebrew script of around 922 B.C.
+        }
+    }
+
+    \LegendRow{\LegendFontAlphabet{\hE}}{%
+        \eE{
+            E uses a northern variant of the Paleo-Hebrew script
+            from soon after the time of J.
+        }
+    }
+
+    \LegendBreakableRow{\LegendPFontAlphabet}{%
+        \eP{
+			P is rendered in the modern Hebrew square script with niqqud.\nl
+			This representation is an unfortunate anachronism,
+			seeing as the linguistic evidence unambiguously suggests that the
+			Priestly source was originally written in the Paleo-Hebrew
+			script during the reign of king Hezekiah.
+			Nevertheless, much to our frustration, P insisted that
+			his material be represented in this manner,
+			and he spoke to us, saying:
+
+			\eP{
+			\textquotedblleft{}The niqqud provide the \textsc{Author} with a method,
+			and indeed with the only proper method, of specifying
+			one pronunciation and only one pronunciation from among
+			the various pronunciations and possible pronunciations
+			to which an unpointed text may give rise in due course.
+			By means of this method, and by means of this method alone,
+			it becomes possible to exclude the possibility, and indeed
+			to exclude entirely the possibility, that the humble
+			\textsc{Author} might be misunderstood by the reader
+			as having intentionally employed paronomasia, that is, a pun,
+			a double meaning, a wordplay, or any other comparable device
+			of ambiguity. The use of paronomasia, that is, a pun, a double
+			meaning, a wordplay, or any other comparable device of ambiguity
+			is an abomination. The use of an abomination is itself an
+			abomination. By means of the holy system of niqqud, the humble
+			\textsc{Author} shall mean what he means and shall pronounce what
+			he pronounces, so that His meaning will not be misunderstood.
+			He shall not mean what he does not mean, nor shall he pronounce
+			what he does not pronounce. As for the person who employs such
+			methods of ambiguity, that person shall be cut off from his people,
+			and will not be buried in the home of his fathers, nor will he be
+			gathered to his people, but fire will come out from YHWH and consume
+			him and his sons and his sons' wives with him. These are my words,
+			according to the words I have said as I said them.\textquotedblright{}
+			}
+				We have complied, reluctantly.\nl
+				We hope the reader will pardon the anachronism.
+        }
+    }
+
+    \LegendRow{\LegendFontAlphabet{\hR}}{%
+        \eR{
+            R uses the Ezra variant of the Hebrew square script with no niqqud,
+            since he is both:\nl
+            1. writing after the Babylonian exile, and 2. Ezra.
+        }
+    }
+    \endgroup
+
+    }%
+}
+
+\let\FontChoicePage\PrimevalSourceFontsPage
+
+% ------------------------------------------------------------
+% Header / footer
+% ------------------------------------------------------------
+\iffalse
+\section{nav: headers}
+\fi
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\color{TextColor}\hbox to 0pt{\hss\SourceLegendHeader\hss}}
+\fancyhead[LE]{\color{TextColor}\nouppercase{\rightmark}}
+\fancyhead[RO]{\color{TextColor}\nouppercase{\rightmark}}
+\fancyfoot[C]{\color{TextColor}\thepage}
+\fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyfoot[C]{\color{TextColor}\thepage}%
+    \renewcommand{\headrulewidth}{0pt}%
+}
+
+% ------------------------------------------------------------
+% Title page
+% ------------------------------------------------------------
+\iffalse
+\section{nav: title}
+\fi
+
+% Subset builds replace these hooks with their own title and contents marks.
+% Keep the full-book defaults visually empty now that the LD logo lives on
+% the publication-notice page.
+\newcommand{\WeTitlePageBottomMark}{\vspace*{\fill}}
+\newcommand{\WeContentsPageBottomMark}{}
+\newcommand{\WeTitlePageTopSpace}{\vspace*{0.2\textheight}}
+\newcommand{\WeTitlePageMiddleSpace}{\vspace*{0.2\textheight}}
+
+\newcommand{\wetitlepage}{%
+    \clearpage
+    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \pagestyle{empty}
+    {
+    \centering
+    \WeTitlePageTopSpace
+    {\fontsize{100}{120}\fontfamily{lmr}\selectfont\textsc{We}\par}
+    \WeTitlePageMiddleSpace
+    {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{The Nameless}\par}
+    \WeTitlePageBottomMark
+    }
+    \restoregeometry
+    \pagestyle{fancy}
+}
+
+\newcommand{\LDPublicationNoticePage}{%
+    \clearpage
+    \thispagestyle{empty}
+    \begingroup
+    \centering
+    \vspace*{\fill}
+    {\ifConfigOutputModeMobile
+        \BookModeTextSizes
+        \tiny
+    \else
+        \tiny
+    \fi
+    \aA{\ttfamily
+        LD LLC makes no claim to have written the book that follows.\\
+        We could not find a published edition of it, and thought one\\
+        ought to exist. LD undertook the preparation of the text for\\
+        publication, including its editing, typesetting, design, and\\
+    }
+    \aB{\ttfamily
+        production and is responsible for the volume presented here,\\
+        but we make no claim to know the identity of the individuals\\
+        who wrote the original text, nor do we make any claim to the\\
+        effect that the original authors did not incorporate in that\\
+    }
+    \aC{\ttfamily
+        volume any earlier sources either verbatim or in paraphrase.\\
+        In summary, it's a bible, and all rules of that genre apply.\\
+        If your work has been incorporated into the resulting volume\\
+        and you would like to be removed from the bible, let us know\\
+    }\par
+    }
+    \vspace{2\baselineskip}
+    \includegraphics[width=1.00in]{\TitlePageLogoImage}\par
+    \vspace*{\fill}
+    \endgroup
+}
+
+\newcommand{\WeContentsPage}{%
+    \clearpage
+    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \phantomsection
+    \hypertarget{tableofcontents}{}%
+    \tableofcontents
+    \restoregeometry
+}
+
+\newcommand{\BookCoverPage}[2]{%
+    \clearpage
+    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \pagestyle{empty}
+    {
+    \centering
+    \vspace*{0.2\textheight}
+    {\fontsize{64}{76}\fontfamily{lmr}\selectfont\textsc{#1}\par}
+    \vspace*{0.18\textheight}
+    {\fontsize{25}{30}\fontfamily{lmr}\selectfont\textrm{#2}\par}
+    \vspace*{\fill}
+    \newpage
+    }
+    \restoregeometry
+    \pagestyle{fancy}
+}
+
+\ExplSyntaxOn
+\newsavebox{\AlphabetHistorySampleBox}
+\newcommand{\FitAlphabetHistorySample}[1]{%
+  \sbox{\AlphabetHistorySampleBox}{#1}%
+  \ifdim\wd\AlphabetHistorySampleBox>\linewidth
+    \resizebox{\linewidth}{!}{\usebox{\AlphabetHistorySampleBox}}%
+  \else
+    \usebox{\AlphabetHistorySampleBox}%
+  \fi
+}
+\NewDocumentCommand{\AlphabetHistoryASCII}{ m m m }{
+  {\FitAlphabetHistorySample{\leavevmode\textdir TRT\scalebox{#2}{#1\tl_reverse:n { #3 }}}}
+}
+\NewDocumentCommand{\AlphabetHistoryLeftToRight}{ m m m }{
+  {\FitAlphabetHistorySample{\leavevmode\textdir TLT\scalebox{#2}{#1 { #3 }}}}
+}
+\NewDocumentCommand{\AlphabetHistoryRightToLeft}{ m m m }{
+  {\FitAlphabetHistorySample{\leavevmode\textdir TRT\scalebox{#2}{#1 { #3 }}}}
+}
+\ExplSyntaxOff
+
+\def\paleoupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleolower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\protoalower{{abgshwZxjyklmn\;]p\;c\,q\,r\,f\,t}}
+\def\protoaupper{{ABGSHWZXjY\;KLM\,N\;]P\;C\,Q\,R\,V\,T}}
+
+\def\protobupper{{ABGD\!hw\!ZXJYKLMNS]\;P\;C\;Q\;R\;V\;T}}
+\def\protoblower{{ab\!gdHW\!zxjyklMns]\;pcq\;r\,v\,t}}
+
+\def\protocupper{{ABGDH\;WZXJ\!Y\!KL\;NS]PC\;Q\;R\,V\,T}}
+\def\protoclower{{abgdh\;wzxj\!yklns]p\!c\,q\,R\,v\,t}}
+
+\def\paleoalower{{abgdhw\!zxjyklmnsop\!cq\,r\,v\,t}}
+
+\def\paleobupper{{A\;BG\,DH\;WZX YKLM S]PCQRVT}}
+\def\paleoblower{{a\,bg\!dh\!wzx yklm\;s]p\!cqrvt}}
+
+\def\paleoeupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoelower{{abgdhwz\,xjy\;klmns]pc\,q\,rvt}}
+
+\def\paleofupper{{ABGDHWZXJY\,K\,L\,M\,NS]PCQRVT}}
+\def\paleoflower{{abgdhwzxjyklmns]pc\,q\,r\,vt}}
+
+\def\paleoijkupper{{ABGDHWZXJYKLMNS]PCQRVT}}
+\def\paleoijklower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\paleolupper{{ABGDHWZXJYK\,L\,M\,NS]PCQRVT}}
+\def\paleollower{{abgdhwzxjyklmns]pcqrvt}}
+
+\def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
+
+\newcommand{\AlphabetHistoryTextSizes}{%
+    % Use one fixed canvas in both output modes.  At the ordinary book-mode
+    % text size, the samples fall below \linewidth and expose their manually
+    % tuned, uneven widths; this size makes the existing fit-to-linewidth rule
+    % produce the same clean alignment that mobile mode has.
+    \AlphabetHistoryPageTextSizes
+    \normalsize
+}
+
+\newcommand{\AlphabetHistoryPage}{%
+    \begingroup
+    \AlphabetHistoryTextSizes
+    \clearpage
+    \thispagestyle{empty}
+    \noindent\begin{minipage}[c][\textheight][c]{\textwidth}
+    \begin{flushright}
+    \FitAlphabetHistorySample{\egyptbold{𓃾𓉐𓌙𓆟\!𓀠𓌉𓏭𓉗𓄤𓂝𓂧𓍢\!\!𓈖𓆓𓊽𓁹𓂋\!\!\!𓊋𓇑𓎗𓁶\,𓌔\,𓏴}}
+    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoalower}\\	% Roughly Wadi el-Hol
+    \AlphabetHistoryASCII{\ProtoSinaiticFifteenthCenturyFont}{1.43}{\protoaupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticBestFont}{1.81}{\healphabet}\\ % Roughly Serabit el-Khadim (improve it)
+    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protoblower}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticThirteenthCenturyFont}{1.82}{\protobupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protocupper}\\
+    \AlphabetHistoryASCII{\ProtoSinaiticIzbetSartahFont}{1.81}{\protoclower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelZayitFont}{1.81}{tsRQCPOSNMLKYTXZWHDGBA}\\
+    \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleobupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewGezerFont}{1.82}{\paleoblower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewTelDanFont}{1.82}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewMoabiteFont}{1.81}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewMoabiteFont}{1.81}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewStandardFont}{1.81}{\paleoeupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewStandardFont}{1.81}{\paleoelower}\\
+    \AlphabetHistoryRightToLeft{\PaleoHebrewRoboFont}{1.81}{\healphabet}\\
+    \AlphabetHistoryRightToLeft{\PaleoHebrewPhoenicianFont}{2.13}{𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕}\\
+    \end{flushright}
+    \end{minipage}
+    \clearpage
+    \thispagestyle{empty}
+    \noindent\begin{minipage}[c][\textheight][c]{\textwidth}
+    \begin{flushright}
+    \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleofupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewSiloamFont}{1.81}{\paleoflower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomAFont}{1.82}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomAFont}{1.82}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomBFont}{1.82}{\paleoupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewKetefHinnomBFont}{1.82}{\paleolower}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishAFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishAFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishBFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishBFont}{1.81}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishCFont}{1.82}{\paleoijkupper}\\
+    \AlphabetHistoryASCII{\PaleoHebrewLachishCFont}{1.82}{\paleoijkupper}\\
+    \AlphabetHistoryRightToLeft{\AramaicFont}{2.13}{𐡀𐡁𐡂𐡃𐡄𐡅𐡆𐡇𐡈𐡉𐡊𐡋𐡌𐡍𐡎𐡏𐡐𐡑𐡒𐡓𐡔𐡕}\\
+    \AlphabetHistoryASCII{\DeadSeaScrollsIsaiahFont}{1.81}{\paleolupper}\\
+    \AlphabetHistoryASCII{\DeadSeaScrollsIsaiahFont}{1.81}{\paleollower}\\
+    \AlphabetHistoryASCII{\HebrewDavidFont}{2.66}{\healphabet}\\
+    %\AlphabetHistoryASCII{\HebrewEzraFont}{2.68}{\healphabet}\\
+    \end{flushright}
+    \end{minipage}
+    \clearpage
+    \endgroup
+    %\cleardoublepage
+}
+
+% ------------------------------------------------------------
+% Book / chapter headings
+% ------------------------------------------------------------
+\iffalse
+\section{nav: books}
+\fi
+
+\titleformat{\chapter}[display]
+    {\normalfont\huge\bfseries}
+    {\chaptername\ \thechapter}
+    {0.5em}
+    {}
+
+\titleformat{\section}
+    {\Large\bfseries}
+    {\thesection}
+    {0.75em}
+    {}
+
+\newcommand{\BookHeading}[1]{%
+    \HiddenChapterHeading{#1}%
+}
+
+\newcommand{\ChapterHeading}[1]{%
+    \HiddenSectionHeading{#1}%
+}
+
+\newcommand{\HiddenChapterHeading}[1]{%
+    \csname chapter\endcsname*{#1}%
+}
+
+\newcommand{\HiddenSectionHeading}[1]{%
+    \csname section\endcsname*{#1}%
+}
+
+\makeatletter
+\newcount\ChapterLinkIndex
+\newcount\ChapterLinkColumnIndex
+\newcount\ChapterLinkFillIndex
+\newcommand{\DeclareChapterLinkRange}[2]{%
+    \expandafter\def\csname ChapterLinkRange@#1\endcsname{#2}%
+}
+\newcommand{\DeclareChapterLinkList}[2]{%
+    \expandafter\def\csname ChapterLinkList@#1\endcsname{#2}%
+}
+\newcommand{\DeclareBookChapterLinkList}[2]{%
+    \expandafter\def\csname BookChapterLinkList@#1\endcsname{#2}%
+}
+\newcommand{\DeclareChapterSummaryLinkList}[2]{%
+    \expandafter\def\csname ChapterSummaryLinkList@#1\endcsname{#2}%
+}
+\newcommand{\DeclareBookChapterSummaryLinkList}[2]{%
+    \expandafter\def\csname BookChapterSummaryLinkList@#1\endcsname{#2}%
+}
+\newcommand{\DeclareBookExtraLinkList}[2]{%
+    \expandafter\def\csname BookExtraLinkList@#1\endcsname{#2}%
+}
+\newcommand{\ChapterLinkText}[1]{%
+    \ifConfigOutputModeMobile
+        {\color{ContentsLinkColor}\underLine{#1}}%
+    \else
+        {\color{ContentsLinkColor}#1}%
+    \fi
+}
+\newcommand{\ChapterLink}[1]{%
+    \hyperlink{chapter.\CurrentBook.#1}{\ChapterLinkText{#1}}%
+}
+\newcommand{\ChapterLinkCell}[1]{%
+    \hyperlink{chapter.\CurrentBook.#1}{\makebox[0.19\linewidth][c]{\ChapterLinkText{\strut #1}}}%
+}
+\newcommand{\ChapterLinkEmptyCell}{%
+    \makebox[0.19\linewidth][c]{\strut}%
+}
+\newcommand{\ChapterLinkFillRow}{%
+    \ifnum\ChapterLinkColumnIndex=5
+    \else
+        \ChapterLinkFillIndex=\ChapterLinkColumnIndex
+        \loop
+            \advance\ChapterLinkFillIndex by 1
+            \ChapterLinkEmptyCell
+            \ifnum\ChapterLinkFillIndex<5
+        \repeat
+    \fi
+}
+\newcommand{\ChapterLinkRange}[1]{%
+    \ChapterLinkIndex=1
+    \ChapterLinkColumnIndex=1
+    \loop
+        \ChapterLinkCell{\the\ChapterLinkIndex}%
+        \ifnum\ChapterLinkIndex<#1\relax
+            \ifnum\ChapterLinkColumnIndex=5
+                \par\nobreak\vspace{0.55em}%
+                \ChapterLinkColumnIndex=1
+            \else
+                \advance\ChapterLinkColumnIndex by 1
+            \fi
+        \fi
+        \advance\ChapterLinkIndex by 1
+        \ifnum\ChapterLinkIndex<\numexpr#1+1\relax
+    \repeat
+    \ChapterLinkFillRow
+}
+\newcommand{\ChapterLinkArray}{%
+    \par\nobreak\medskip
+    \begingroup
+    \raggedright
+    \large
+    \@ifundefined{ChapterLinkList@\CurrentBook}{%
+        \@ifundefined{ChapterLinkRange@\CurrentBook}{}{%
+            \ChapterLinkRange{\csname ChapterLinkRange@\CurrentBook\endcsname}%
+        }%
+    }{%
+        \csname ChapterLinkList@\CurrentBook\endcsname
+    }%
+    \par\nobreak\medskip
+    \endgroup
+}
+\newcommand{\ChapterLinksForBook}[1]{%
+    \begingroup
+    \def\CurrentBook{#1}%
+    \ChapterLinkArray
+    \endgroup
+}
+\newcommand{\BookPartChapterLinks}[1]{%
+    \par\nobreak\medskip
+    {\centering\large\textsc{#1}\par\nobreak\smallskip}%
+    \ChapterLinksForBook{#1}%
+}
+\newcommand{\PlainBookChapterLinkArray}[1]{%
+    \@ifundefined{BookChapterLinkList@#1}{%
+        \ChapterLinksForBook{#1}%
+    }{%
+        \csname BookChapterLinkList@#1\endcsname
+    }%
+}
+\newcommand{\ChapterSummaryLinkText}[1]{%
+    \ifConfigOutputModeMobile
+        {\color{ContentsLinkColor}\underLine{#1}}%
+    \else
+        {\color{ContentsLinkColor}#1}%
+    \fi
+}
+\newcommand{\ChapterSummaryUpperAlt}[1]{%
+    \mbox{\smash{\raisebox{0.12\baselineskip}{#1}}}%
+}
+\newcommand{\ChapterSummaryLowerAlt}[1]{%
+    \mbox{\smash{\raisebox{-0.12\baselineskip}{#1}}}%
+}
+\newcommand{\IsaacBoundBurnedSummary}{%
+    Isaac b\ChapterSummaryUpperAlt{o}u\ChapterSummaryLowerAlt{r}n\ChapterSummaryLowerAlt{e}d%
+}
+\newcommand{\ChapterSummaryLink}[4]{%
+    \par\noindent
+    \hyperlink{chapter.#1.#2}{\ChapterSummaryLinkText{#2.\ #4}}%
+}
+\newcommand{\ChapterSummaryLinksForBook}[1]{%
+    \begingroup
+    \def\CurrentBook{#1}%
+    \@ifundefined{BookChapterSummaryLinkList@#1}{%
+        \ChapterLinksForBook{#1}%
+    }{%
+        \csname BookChapterSummaryLinkList@#1\endcsname
+    }%
+    \endgroup
+}
+\newcommand{\BookPartChapterSummaryLinks}[1]{%
+    \par\nobreak\medskip
+    {\centering\small\textsc{#1}\par\nobreak\smallskip}%
+    \ChapterSummaryLinksForBook{#1}%
+}
+\newcommand{\FancyBookChapterLinkArray}[1]{%
+    \par\nobreak\medskip
+    \begingroup
+    \RaggedRight
+    \footnotesize
+    \setlength{\parskip}{0.18em}%
+    \setlength{\columnsep}{0.9em}%
+    \noindent\makebox[\linewidth][c]{%
+    \begin{minipage}{\dimexpr\linewidth-0.5in\relax}
+    \begin{multicols}{2}
+    \@ifundefined{BookChapterSummaryLinkList@#1}{%
+        \ChapterSummaryLinksForBook{#1}%
+    }{%
+        \csname BookChapterSummaryLinkList@#1\endcsname
+    }%
+    \end{multicols}
+    \end{minipage}%
+    }%
+    \par\nobreak\medskip
+    \endgroup
+}
+\newcommand{\BookChapterLinkArray}[1]{%
+    \ifIndividualBookTitlePageStyleFancy
+        \FancyBookChapterLinkArray{#1}%
+    \else
+        \PlainBookChapterLinkArray{#1}%
+        \BookExtraLinkArray{#1}%
+    \fi
+}
+\newcommand{\BookExtraLinkText}[1]{%
+    \ifConfigOutputModeMobile
+        {\color{ContentsLinkColor}\underLine{#1}}%
+    \else
+        {\color{ContentsLinkColor}#1}%
+    \fi
+}
+\newcommand{\BookLink}[2]{%
+    \hyperlink{book.#1}{\makebox[0.95\linewidth][c]{\BookExtraLinkText{\strut #2}}}%
+}
+\newcommand{\BookExtraLinkArray}[1]{%
+    \@ifundefined{BookExtraLinkList@#1}{}{%
+        \par\nobreak\medskip
+        \begingroup
+        \centering
+        \large
+        \csname BookExtraLinkList@#1\endcsname
+        \par\nobreak\medskip
+        \endgroup
+    }%
+}
+\DeclareChapterLinkRange{Genesis}{50}
+\DeclareChapterLinkRange{Exodus}{40}
+\DeclareChapterLinkRange{Leviticus}{27}
+\DeclareChapterLinkRange{Numbers}{36}
+\DeclareChapterLinkRange{Deuteronomy}{34}
+\DeclareChapterLinkRange{Joshua}{24}
+\DeclareChapterLinkRange{Judges}{21}
+\DeclareChapterLinkRange{I Samuel}{31}
+\DeclareChapterLinkRange{II Samuel}{24}
+\DeclareChapterLinkRange{I Kings}{22}
+\DeclareChapterLinkRange{II Kings}{25}
+\DeclareChapterLinkRange{Ezra}{10}
+\DeclareChapterLinkRange{Nehemiah}{13}
+\DeclareChapterLinkRange{On the Lamb}{1}
+\DeclareChapterLinkRange{Esther}{10}
+\DeclareBookExtraLinkList{Genesis}{%
+    \ifConfigApocryphaOn
+        \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%
+    \fi
+}
+\DeclareBookChapterLinkList{Samuel}{%
+    \BookPartChapterLinks{I Samuel}%
+    \BookPartChapterLinks{II Samuel}%
+}
+\DeclareBookChapterLinkList{Kings}{%
+    \BookPartChapterLinks{I Kings}%
+    \BookPartChapterLinks{II Kings}%
+}
+\DeclareBookChapterLinkList{Dudetheyreontome}{%
+    \BookPartChapterLinks{On the Lamb}%
+    \BookPartChapterLinks{Esther}%
+}
+% Chapter-summary data for fancy individual book title pages.
+\DeclareBookChapterSummaryLinkList{Genesis}{%
+    \ChapterSummaryLink{Genesis}{1}{Genesis}{Creation}%
+    \ChapterSummaryLink{Genesis}{2}{Genesis}{Adam and Eve}%
+    \ChapterSummaryLink{Genesis}{3}{Genesis}{Snake; exile}%
+    \ChapterSummaryLink{Genesis}{4}{Genesis}{Cain and Abel}%
+    \ChapterSummaryLink{Genesis}{5}{Genesis}{Adam's line}%
+    \ChapterSummaryLink{Genesis}{6}{Genesis}{Flood coming}%
+    \ChapterSummaryLink{Genesis}{7}{Genesis}{Flood starts}%
+    \ChapterSummaryLink{Genesis}{8}{Genesis}{Flood ends}%
+    \ChapterSummaryLink{Genesis}{9}{Genesis}{Rainbow; Noah drunk}%
+    \ChapterSummaryLink{Genesis}{10}{Genesis}{Table of Nations}%
+    \ChapterSummaryLink{Genesis}{11}{Genesis}{Babel; Noah's line}%
+    \ChapterSummaryLink{Genesis}{12}{Genesis}{Abram; Egypt fooled}%
+    \ChapterSummaryLink{Genesis}{13}{Genesis}{Abram loses a Lot}%
+    \ChapterSummaryLink{Genesis}{14}{Genesis}{Abram saves a Lot}%
+    \ChapterSummaryLink{Genesis}{15}{Genesis}{Covenant cut}%
+    \ChapterSummaryLink{Genesis}{16}{Genesis}{Sarai maid mess; goes well}%
+    \ChapterSummaryLink{Genesis}{17}{Genesis}{Cut scene; YHWH's comeback}%
+    \ChapterSummaryLink{Genesis}{18}{Genesis}{Three of Him; You laughed}%
+    \ChapterSummaryLink{Genesis}{19}{Genesis}{Sodom c'est fin; sa dame, f'in c'est.}%
+    \ChapterSummaryLink{Genesis}{20}{Genesis}{Abraham entraps Abimelek}%
+    \ChapterSummaryLink{Genesis}{21}{Genesis}{Isaac born}%
+    \ChapterSummaryLink{Genesis}{22}{Genesis}{\IsaacBoundBurnedSummary}%
+    \ChapterSummaryLink{Genesis}{23}{Genesis}{Sarah dies; Machpelah}%
+    \ChapterSummaryLink{Genesis}{24}{Genesis}{Rebekah's well fetching}%
+    \ChapterSummaryLink{Genesis}{25}{Genesis}{Jacob and the Red man}%
+    \ChapterSummaryLink{Genesis}{26}{Genesis}{Isaac entrapment remix}%
+    \ChapterSummaryLink{Genesis}{27}{Genesis}{J's the Goat}%
+    \ChapterSummaryLink{Genesis}{28}{Genesis}{Jacob's ladder}%
+    \ChapterSummaryLink{Genesis}{29}{Genesis}{Accidental sisterwives; White lies}%
+    \ChapterSummaryLink{Genesis}{30}{Genesis}{Sibling rivalry breeds competition}%
+    \ChapterSummaryLink{Genesis}{31}{Genesis}{Outwhiting Laban; Pad \& a Ram}%
+    \ChapterSummaryLink{Genesis}{32}{Genesis}{Night wrestling; Say your name}%
+    \ChapterSummaryLink{Genesis}{33}{Genesis}{Esau returns; Face of God}%
+    \ChapterSummaryLink{Genesis}{34}{Genesis}{Dinah and Shechem}%
+    \ChapterSummaryLink{Genesis}{35}{Genesis}{The road to fertility}%
+    \ChapterSummaryLink{Genesis}{36}{Genesis}{Esau's line}%
+    \ChapterSummaryLink{Genesis}{37}{Genesis}{Joseph sold}%
+    \ChapterSummaryLink{Genesis}{38}{Genesis}{Judah and Tamar}%
+    \ChapterSummaryLink{Genesis}{39}{Genesis}{Joseph jailed}%
+    \ChapterSummaryLink{Genesis}{40}{Genesis}{Joseph prison dreams}%
+    \ChapterSummaryLink{Genesis}{41}{Genesis}{Joseph promoted}%
+    \ChapterSummaryLink{Genesis}{42}{Genesis}{Brothers visit}%
+    \ChapterSummaryLink{Genesis}{43}{Genesis}{Benjamin goes}%
+    \ChapterSummaryLink{Genesis}{44}{Genesis}{Silver cup}%
+    \ChapterSummaryLink{Genesis}{45}{Genesis}{Joseph revealed}%
+    \ChapterSummaryLink{Genesis}{46}{Genesis}{Jacob moves}%
+    \ChapterSummaryLink{Genesis}{47}{Genesis}{Egypt settled}%
+    \ChapterSummaryLink{Genesis}{48}{Genesis}{Ephraim favored}%
+    \ChapterSummaryLink{Genesis}{49}{Genesis}{The blessing of Jacob}%
+    %\ChapterSummaryLink{Genesis}{49}{Genesis}{Jacob's \ruby{\chineseA{死}}{\chineseA{四}}}th Soŋ}%
+    \ChapterSummaryLink{Genesis}{50}{Genesis}{Joseph's old}%
+}
+\DeclareBookChapterSummaryLinkList{Exodus}{%
+    \ChapterSummaryLink{Exodus}{1}{Exodus}{Israel enslaved}%
+    \ChapterSummaryLink{Exodus}{2}{Exodus}{Moses born}%
+    \ChapterSummaryLink{Exodus}{3}{Exodus}{Burning bush}%
+    \ChapterSummaryLink{Exodus}{4}{Exodus}{Signs given}%
+    \ChapterSummaryLink{Exodus}{5}{Exodus}{Work worsens}%
+    \ChapterSummaryLink{Exodus}{6}{Exodus}{Name revealed}%
+    \ChapterSummaryLink{Exodus}{7}{Exodus}{River to blood}%
+    \ChapterSummaryLink{Exodus}{8}{Exodus}{Frogs; gnats; flies}%
+    \ChapterSummaryLink{Exodus}{9}{Exodus}{Livestock; boils; hail}%
+    \ChapterSummaryLink{Exodus}{10}{Exodus}{Locusts; darkness}%
+    \ChapterSummaryLink{Exodus}{11}{Exodus}{Firstborn warned}%
+    \ChapterSummaryLink{Exodus}{12}{Exodus}{Passover; Exodus}%
+    \ChapterSummaryLink{Exodus}{13}{Exodus}{Firstborn; sea}%
+    \ChapterSummaryLink{Exodus}{14}{Exodus}{Sea crossed}%
+    \ChapterSummaryLink{Exodus}{15}{Exodus}{Song of the Sea}%
+    \ChapterSummaryLink{Exodus}{16}{Exodus}{Manna, quail}%
+    \ChapterSummaryLink{Exodus}{17}{Exodus}{Water; Amalek}%
+    \ChapterSummaryLink{Exodus}{18}{Exodus}{Jethro visits}%
+    \ChapterSummaryLink{Exodus}{19}{Exodus}{Sinai reached}%
+    \ChapterSummaryLink{Exodus}{20}{Exodus}{Ten Commandments}%
+    \ChapterSummaryLink{Exodus}{21}{Exodus}{Slave laws}%
+    \ChapterSummaryLink{Exodus}{22}{Exodus}{Property laws}%
+    \ChapterSummaryLink{Exodus}{23}{Exodus}{Justice, festivals}%
+    \ChapterSummaryLink{Exodus}{24}{Exodus}{Covenant sealed}%
+    \ChapterSummaryLink{Exodus}{25}{Exodus}{Ark planned}%
+    \ChapterSummaryLink{Exodus}{26}{Exodus}{Tabernacle planned}%
+    \ChapterSummaryLink{Exodus}{27}{Exodus}{Altar planned}%
+    \ChapterSummaryLink{Exodus}{28}{Exodus}{Priest clothes}%
+    \ChapterSummaryLink{Exodus}{29}{Exodus}{Priests installed}%
+    \ChapterSummaryLink{Exodus}{30}{Exodus}{Incense; census; oil}%
+    \ChapterSummaryLink{Exodus}{31}{Exodus}{Bezalel; Sabbath}%
+    \ChapterSummaryLink{Exodus}{32}{Exodus}{Golden calf}%
+    \ChapterSummaryLink{Exodus}{33}{Exodus}{Tent; God's back}%
+    \ChapterSummaryLink{Exodus}{34}{Exodus}{New tablets}%
+    \ChapterSummaryLink{Exodus}{35}{Exodus}{Work begins}%
+    \ChapterSummaryLink{Exodus}{36}{Exodus}{Tabernacle built}%
+    \ChapterSummaryLink{Exodus}{37}{Exodus}{Ark; furniture made}%
+    \ChapterSummaryLink{Exodus}{38}{Exodus}{Altar; courtyard; inventory}%
+    \ChapterSummaryLink{Exodus}{39}{Exodus}{Priest clothes done}%
+    \ChapterSummaryLink{Exodus}{40}{Exodus}{Tabernacle complete}%
+}
+\DeclareBookChapterSummaryLinkList{Leviticus}{%
+    \ChapterSummaryLink{Leviticus}{1}{Leviticus}{Giving up meat}%
+    \ChapterSummaryLink{Leviticus}{2}{Leviticus}{Rice offering}%
+    \ChapterSummaryLink{Leviticus}{3}{Leviticus}{Burning Fat; Thanksgiving}%
+    \ChapterSummaryLink{Leviticus}{4}{Leviticus}{Paying tickets}%
+    \ChapterSummaryLink{Leviticus}{5}{Leviticus}{Paying damages}%
+    \ChapterSummaryLink{Leviticus}{6}{Leviticus}{Offering rules}%
+    \ChapterSummaryLink{Leviticus}{7}{Leviticus}{Off\chineseA{二}ing rules}%
+    \ChapterSummaryLink{Leviticus}{8}{Leviticus}{Priests installed}%
+    \ChapterSummaryLink{Leviticus}{9}{Leviticus}{Priests begin}%
+    \ChapterSummaryLink{Leviticus}{10}{Leviticus}{Nadab, Abihu die}%
+    \ChapterSummaryLink{Leviticus}{11}{Leviticus}{Clean animals}%
+    \ChapterSummaryLink{Leviticus}{12}{Leviticus}{Childbirth purity}%
+    \ChapterSummaryLink{Leviticus}{13}{Leviticus}{Skin disease}%
+    \ChapterSummaryLink{Leviticus}{14}{Leviticus}{Cleansing disease}%
+    \ChapterSummaryLink{Leviticus}{15}{Leviticus}{Bodily discharges}%
+    \ChapterSummaryLink{Leviticus}{16}{Leviticus}{Day of Atonement}%
+    \ChapterSummaryLink{Leviticus}{17}{Leviticus}{Blood rules}%
+    \ChapterSummaryLink{Leviticus}{18}{Leviticus}{Sex laws}%
+    \ChapterSummaryLink{Leviticus}{19}{Leviticus}{Holiness laws}%
+    \ChapterSummaryLink{Leviticus}{20}{Leviticus}{Penalties}%
+    \ChapterSummaryLink{Leviticus}{21}{Leviticus}{Priest rules}%
+    \ChapterSummaryLink{Leviticus}{22}{Leviticus}{Sacred food}%
+    \ChapterSummaryLink{Leviticus}{23}{Leviticus}{Festivals}%
+    \ChapterSummaryLink{Leviticus}{24}{Leviticus}{Lamps; bread; blasphemer}%
+    \ChapterSummaryLink{Leviticus}{25}{Leviticus}{Sabbath year; Jubilee}%
+    \ChapterSummaryLink{Leviticus}{26}{Leviticus}{Blessings; curses}%
+    \ChapterSummaryLink{Leviticus}{27}{Leviticus}{Vows; valuations}%
+}
+\DeclareBookChapterSummaryLinkList{Numbers}{%
+    \ChapterSummaryLink{Numbers}{1}{Numbers}{Census}%
+    \ChapterSummaryLink{Numbers}{2}{Numbers}{Camp arranged}%
+    \ChapterSummaryLink{Numbers}{3}{Numbers}{Levites counted}%
+    \ChapterSummaryLink{Numbers}{4}{Numbers}{Levite jobs}%
+    \ChapterSummaryLink{Numbers}{5}{Numbers}{Camp purity}%
+    \ChapterSummaryLink{Numbers}{6}{Numbers}{Nazirites; blessing}%
+    \ChapterSummaryLink{Numbers}{7}{Numbers}{Tribal offerings}%
+    \ChapterSummaryLink{Numbers}{8}{Numbers}{Levites installed}%
+    \ChapterSummaryLink{Numbers}{9}{Numbers}{Passover; cloud}%
+    \ChapterSummaryLink{Numbers}{10}{Numbers}{Trumpets; departure}%
+    \ChapterSummaryLink{Numbers}{11}{Numbers}{Complaints; quail}%
+    \ChapterSummaryLink{Numbers}{12}{Numbers}{Miriam; Aaron challenge}%
+    \ChapterSummaryLink{Numbers}{13}{Numbers}{Spies sent}%
+    \ChapterSummaryLink{Numbers}{14}{Numbers}{People refuse}%
+    \ChapterSummaryLink{Numbers}{15}{Numbers}{Offerings; tassels}%
+    \ChapterSummaryLink{Numbers}{16}{Numbers}{Korah rebels}%
+    \ChapterSummaryLink{Numbers}{17}{Numbers}{Aaron's staff}%
+    \ChapterSummaryLink{Numbers}{18}{Numbers}{Priest duties}%
+    \ChapterSummaryLink{Numbers}{19}{Numbers}{Red cow}%
+    \ChapterSummaryLink{Numbers}{20}{Numbers}{Water; Aaron dies}%
+    \ChapterSummaryLink{Numbers}{21}{Numbers}{Bronze snake}%
+    \ChapterSummaryLink{Numbers}{22}{Numbers}{Balaam hired}%
+    \ChapterSummaryLink{Numbers}{23}{Numbers}{Balaam blesses}%
+    \ChapterSummaryLink{Numbers}{24}{Numbers}{Balaam blesses again}%
+    \ChapterSummaryLink{Numbers}{25}{Numbers}{Baal-peor; Phinehas}%
+    \ChapterSummaryLink{Numbers}{26}{Numbers}{Second census}%
+    \ChapterSummaryLink{Numbers}{27}{Numbers}{Zelophehad's daughters}%
+    \ChapterSummaryLink{Numbers}{28}{Numbers}{Daily offerings}%
+    \ChapterSummaryLink{Numbers}{29}{Numbers}{Festival offerings}%
+    \ChapterSummaryLink{Numbers}{30}{Numbers}{Vows}%
+    \ChapterSummaryLink{Numbers}{31}{Numbers}{Midian war}%
+    \ChapterSummaryLink{Numbers}{32}{Numbers}{Eastern tribes}%
+    \ChapterSummaryLink{Numbers}{33}{Numbers}{Journey listed}%
+    \ChapterSummaryLink{Numbers}{34}{Numbers}{Land borders}%
+    \ChapterSummaryLink{Numbers}{35}{Numbers}{Levite cities; refuge}%
+    \ChapterSummaryLink{Numbers}{36}{Numbers}{Heiress marriage rules}%
+}
+\DeclareBookChapterSummaryLinkList{Deuteronomy}{%
+    \ChapterSummaryLink{Deuteronomy}{1}{Deuteronomy}{Journey retold}%
+    \ChapterSummaryLink{Deuteronomy}{2}{Deuteronomy}{Wilderness wars}%
+    \ChapterSummaryLink{Deuteronomy}{3}{Deuteronomy}{Og defeated}%
+    \ChapterSummaryLink{Deuteronomy}{4}{Deuteronomy}{Obey; no idols}%
+    \ChapterSummaryLink{Deuteronomy}{5}{Deuteronomy}{Ten Commandments}%
+    \ChapterSummaryLink{Deuteronomy}{6}{Deuteronomy}{Shema}%
+    \ChapterSummaryLink{Deuteronomy}{7}{Deuteronomy}{Nations banned}%
+    \ChapterSummaryLink{Deuteronomy}{8}{Deuteronomy}{Remember wilderness}%
+    \ChapterSummaryLink{Deuteronomy}{9}{Deuteronomy}{Golden calf retold}%
+    \ChapterSummaryLink{Deuteronomy}{10}{Deuteronomy}{New tablets}%
+    \ChapterSummaryLink{Deuteronomy}{11}{Deuteronomy}{Blessing; curse}%
+    \ChapterSummaryLink{Deuteronomy}{12}{Deuteronomy}{One sanctuary}%
+    \ChapterSummaryLink{Deuteronomy}{13}{Deuteronomy}{False prophets}%
+    \ChapterSummaryLink{Deuteronomy}{14}{Deuteronomy}{Food; tithes}%
+    \ChapterSummaryLink{Deuteronomy}{15}{Deuteronomy}{Debt release}%
+    \ChapterSummaryLink{Deuteronomy}{16}{Deuteronomy}{Festivals; judges}%
+    \ChapterSummaryLink{Deuteronomy}{17}{Deuteronomy}{Courts; king}%
+    \ChapterSummaryLink{Deuteronomy}{18}{Deuteronomy}{Priests; prophets}%
+    \ChapterSummaryLink{Deuteronomy}{19}{Deuteronomy}{Refuge cities}%
+    \ChapterSummaryLink{Deuteronomy}{20}{Deuteronomy}{War rules}%
+    \ChapterSummaryLink{Deuteronomy}{21}{Deuteronomy}{Family; corpse laws}%
+    \ChapterSummaryLink{Deuteronomy}{22}{Deuteronomy}{Mixed laws}%
+    \ChapterSummaryLink{Deuteronomy}{23}{Deuteronomy}{Camp rules}%
+    \ChapterSummaryLink{Deuteronomy}{24}{Deuteronomy}{Divorce; fairness}%
+    \ChapterSummaryLink{Deuteronomy}{25}{Deuteronomy}{Justice; Levirate marriage}%
+    \ChapterSummaryLink{Deuteronomy}{26}{Deuteronomy}{Firstfruits; confession}%
+    \ChapterSummaryLink{Deuteronomy}{27}{Deuteronomy}{Ebal curses}%
+    \ChapterSummaryLink{Deuteronomy}{28}{Deuteronomy}{Blessings; curses}%
+    \ChapterSummaryLink{Deuteronomy}{29}{Deuteronomy}{Covenant renewed}%
+    \ChapterSummaryLink{Deuteronomy}{30}{Deuteronomy}{Life or death}%
+    \ChapterSummaryLink{Deuteronomy}{31}{Deuteronomy}{Joshua succeeds}%
+    \ChapterSummaryLink{Deuteronomy}{32}{Deuteronomy}{Song of Moses}%
+    \ChapterSummaryLink{Deuteronomy}{33}{Deuteronomy}{Blessing of Moses}%
+    \ChapterSummaryLink{Deuteronomy}{34}{Deuteronomy}{Moses dies}%
+}
+\DeclareBookChapterSummaryLinkList{Joshua}{%
+    \ChapterSummaryLink{Joshua}{1}{Joshua}{Joshua commissioned}%
+    \ChapterSummaryLink{Joshua}{2}{Joshua}{Rahab; spies}%
+    \ChapterSummaryLink{Joshua}{3}{Joshua}{Jordan crossed}%
+    \ChapterSummaryLink{Joshua}{4}{Joshua}{Memorial stones}%
+    \ChapterSummaryLink{Joshua}{5}{Joshua}{Circumcision; Passover}%
+    \ChapterSummaryLink{Joshua}{6}{Joshua}{Jericho falls}%
+    \ChapterSummaryLink{Joshua}{7}{Joshua}{Achan}%
+    \ChapterSummaryLink{Joshua}{8}{Joshua}{Ai taken}%
+    \ChapterSummaryLink{Joshua}{9}{Joshua}{Gibeonites}%
+    \ChapterSummaryLink{Joshua}{10}{Joshua}{Sun stands still}%
+    \ChapterSummaryLink{Joshua}{11}{Joshua}{North conquered}%
+    \ChapterSummaryLink{Joshua}{12}{Joshua}{Conquered kings}%
+    \ChapterSummaryLink{Joshua}{13}{Joshua}{Land remaining}%
+    \ChapterSummaryLink{Joshua}{14}{Joshua}{Caleb's land}%
+    \ChapterSummaryLink{Joshua}{15}{Joshua}{Judah's land}%
+    \ChapterSummaryLink{Joshua}{16}{Joshua}{Ephraim's land}%
+    \ChapterSummaryLink{Joshua}{17}{Joshua}{Manasseh's land}%
+    \ChapterSummaryLink{Joshua}{18}{Joshua}{Land divided}%
+    \ChapterSummaryLink{Joshua}{19}{Joshua}{More land divided}%
+    \ChapterSummaryLink{Joshua}{20}{Joshua}{Cities of refuge}%
+    \ChapterSummaryLink{Joshua}{21}{Joshua}{Levite cities}%
+    \ChapterSummaryLink{Joshua}{22}{Joshua}{Eastern altar}%
+    \ChapterSummaryLink{Joshua}{23}{Joshua}{Joshua's farewell}%
+    \ChapterSummaryLink{Joshua}{24}{Joshua}{Covenant renewed}%
+}
+\DeclareBookChapterSummaryLinkList{Judges}{%
+    \ChapterSummaryLink{Judges}{1}{Judges}{Land unfinished}%
+    \ChapterSummaryLink{Judges}{2}{Judges}{Judges cycle}%
+    \ChapterSummaryLink{Judges}{3}{Judges}{Ehud kills Eglon}%
+    \ChapterSummaryLink{Judges}{4}{Judges}{Deborah and Barak}%
+    \ChapterSummaryLink{Judges}{5}{Judges}{Song of Deborah}%
+    \ChapterSummaryLink{Judges}{6}{Judges}{Gideon called}%
+    \ChapterSummaryLink{Judges}{7}{Judges}{Midian defeated}%
+    \ChapterSummaryLink{Judges}{8}{Judges}{Gideon ends}%
+    \ChapterSummaryLink{Judges}{9}{Judges}{Abimelech}%
+    \ChapterSummaryLink{Judges}{10}{Judges}{Tola; Jair}%
+    \ChapterSummaryLink{Judges}{11}{Judges}{Jephthah's vow}%
+    \ChapterSummaryLink{Judges}{12}{Judges}{Shibboleth}%
+    \ChapterSummaryLink{Judges}{13}{Judges}{Samson born}%
+    \ChapterSummaryLink{Judges}{14}{Judges}{Samson's riddle}%
+    \ChapterSummaryLink{Judges}{15}{Judges}{Samson Jawbone}%
+    \ChapterSummaryLink{Judges}{16}{Judges}{Delilah; Samson dies}%
+    \ChapterSummaryLink{Judges}{17}{Judges}{Micah's idol}%
+    \ChapterSummaryLink{Judges}{18}{Judges}{Dan takes idol}%
+    \ChapterSummaryLink{Judges}{19}{Judges}{Levite's concubine}%
+    \ChapterSummaryLink{Judges}{20}{Judges}{Benjamin war}%
+    \ChapterSummaryLink{Judges}{21}{Judges}{Benjamin restored}%
+}
+\DeclareBookChapterSummaryLinkList{I Samuel}{%
+    \ChapterSummaryLink{I Samuel}{1}{I Samuel}{Hannah, Eli, Samuel}%
+    \ChapterSummaryLink{I Samuel}{2}{I Samuel}{Hannah's song}%
+    \ChapterSummaryLink{I Samuel}{3}{I Samuel}{Samuel called}%
+    \ChapterSummaryLink{I Samuel}{4}{I Samuel}{Ark captured}%
+    \ChapterSummaryLink{I Samuel}{5}{I Samuel}{Dagon; Ark Hemorrhoids}%
+    \ChapterSummaryLink{I Samuel}{6}{I Samuel}{Ark returned}%
+    \ChapterSummaryLink{I Samuel}{7}{I Samuel}{Samuel leads}%
+    \ChapterSummaryLink{I Samuel}{8}{I Samuel}{King requested}%
+    \ChapterSummaryLink{I Samuel}{9}{I Samuel}{Saul found}%
+    \ChapterSummaryLink{I Samuel}{10}{I Samuel}{Saul anointed}%
+    \ChapterSummaryLink{I Samuel}{11}{I Samuel}{Jabesh saved}%
+    \ChapterSummaryLink{I Samuel}{12}{I Samuel}{Samuel's farewell}%
+    \ChapterSummaryLink{I Samuel}{13}{I Samuel}{Saul disobeys}%
+    \ChapterSummaryLink{I Samuel}{14}{I Samuel}{Jonathan attacks}%
+    \ChapterSummaryLink{I Samuel}{15}{I Samuel}{Agag spared}%
+    \ChapterSummaryLink{I Samuel}{16}{I Samuel}{David anointed}%
+    \ChapterSummaryLink{I Samuel}{17}{I Samuel}{Goliath}%
+    \ChapterSummaryLink{I Samuel}{18}{I Samuel}{Saul jealous}%
+    \ChapterSummaryLink{I Samuel}{19}{I Samuel}{David escapes}%
+    \ChapterSummaryLink{I Samuel}{20}{I Samuel}{Jonathan warns}%
+    \ChapterSummaryLink{I Samuel}{21}{I Samuel}{Nob}%
+    \ChapterSummaryLink{I Samuel}{22}{I Samuel}{Nob destroyed}%
+    \ChapterSummaryLink{I Samuel}{23}{I Samuel}{Keilah; Ziph}%
+    \ChapterSummaryLink{I Samuel}{24}{I Samuel}{Saul spared}%
+    \ChapterSummaryLink{I Samuel}{25}{I Samuel}{Abigail}%
+    \ChapterSummaryLink{I Samuel}{26}{I Samuel}{Saul spared again}%
+    \ChapterSummaryLink{I Samuel}{27}{I Samuel}{Philistia}%
+    \ChapterSummaryLink{I Samuel}{28}{I Samuel}{Medium of En-dor}%
+    \ChapterSummaryLink{I Samuel}{29}{I Samuel}{David dismissed}%
+    \ChapterSummaryLink{I Samuel}{30}{I Samuel}{Ziklag recovered}%
+    \ChapterSummaryLink{I Samuel}{31}{I Samuel}{Saul dies}%
+}
+\DeclareBookChapterSummaryLinkList{II Samuel}{%
+    \ChapterSummaryLink{II Samuel}{1}{II Samuel}{Saul mourned}%
+    \ChapterSummaryLink{II Samuel}{2}{II Samuel}{David crowned}%
+    \ChapterSummaryLink{II Samuel}{3}{II Samuel}{Abner defects}%
+    \ChapterSummaryLink{II Samuel}{4}{II Samuel}{Ish-bosheth killed}%
+    \ChapterSummaryLink{II Samuel}{5}{II Samuel}{Jerusalem taken}%
+    \ChapterSummaryLink{II Samuel}{6}{II Samuel}{Ark brought}%
+    \ChapterSummaryLink{II Samuel}{7}{II Samuel}{Davidic covenant}%
+    \ChapterSummaryLink{II Samuel}{8}{II Samuel}{David conquers}%
+    \ChapterSummaryLink{II Samuel}{9}{II Samuel}{Mephibosheth}%
+    \ChapterSummaryLink{II Samuel}{10}{II Samuel}{Ammon war}%
+    \ChapterSummaryLink{II Samuel}{11}{II Samuel}{Bathsheba}%
+    \ChapterSummaryLink{II Samuel}{12}{II Samuel}{Nathan rebukes}%
+    \ChapterSummaryLink{II Samuel}{13}{II Samuel}{Amnon; Tamar}%
+    \ChapterSummaryLink{II Samuel}{14}{II Samuel}{Absalom returns}%
+    \ChapterSummaryLink{II Samuel}{15}{II Samuel}{Absalom rebels}%
+    \ChapterSummaryLink{II Samuel}{16}{II Samuel}{Shimei curses}%
+    \ChapterSummaryLink{II Samuel}{17}{II Samuel}{Hushai wins}%
+    \ChapterSummaryLink{II Samuel}{18}{II Samuel}{Absalom dies}%
+    \ChapterSummaryLink{II Samuel}{19}{II Samuel}{David returns}%
+    \ChapterSummaryLink{II Samuel}{20}{II Samuel}{Sheba rebels}%
+    \ChapterSummaryLink{II Samuel}{21}{II Samuel}{Famine; giants}%
+    \ChapterSummaryLink{II Samuel}{22}{II Samuel}{David's song}%
+    \ChapterSummaryLink{II Samuel}{23}{II Samuel}{Last words; mighty men}%
+    \ChapterSummaryLink{II Samuel}{24}{II Samuel}{Census; plague}%
+}
+\DeclareBookChapterSummaryLinkList{I Kings}{%
+    \ChapterSummaryLink{I Kings}{1}{I Kings}{Solomon crowned}%
+    \ChapterSummaryLink{I Kings}{2}{I Kings}{David dies}%
+    \ChapterSummaryLink{I Kings}{3}{I Kings}{Wisdom chosen}%
+    \ChapterSummaryLink{I Kings}{4}{I Kings}{Solomon's court}%
+    \ChapterSummaryLink{I Kings}{5}{I Kings}{Temple planned}%
+    \ChapterSummaryLink{I Kings}{6}{I Kings}{Temple built}%
+    \ChapterSummaryLink{I Kings}{7}{I Kings}{Palace; furnishings}%
+    \ChapterSummaryLink{I Kings}{8}{I Kings}{Temple dedicated}%
+    \ChapterSummaryLink{I Kings}{9}{I Kings}{YHWH appears}%
+    \ChapterSummaryLink{I Kings}{10}{I Kings}{Queen of Sheba}%
+    \ChapterSummaryLink{I Kings}{11}{I Kings}{Solomon strays}%
+    \ChapterSummaryLink{I Kings}{12}{I Kings}{Kingdom split}%
+    \ChapterSummaryLink{I Kings}{13}{I Kings}{Man of God}%
+    \ChapterSummaryLink{I Kings}{14}{I Kings}{Jeroboam judged}%
+    \ChapterSummaryLink{I Kings}{15}{I Kings}{Abijah; Asa}%
+    \ChapterSummaryLink{I Kings}{16}{I Kings}{Baasha; Omri; Ahab}%
+    \ChapterSummaryLink{I Kings}{17}{I Kings}{Elijah; widow}%
+    \ChapterSummaryLink{I Kings}{18}{I Kings}{Mount Carmel}%
+    \ChapterSummaryLink{I Kings}{19}{I Kings}{Horeb}%
+    \ChapterSummaryLink{I Kings}{20}{I Kings}{Ben-hadad}%
+    \ChapterSummaryLink{I Kings}{21}{I Kings}{Naboth's vineyard}%
+    \ChapterSummaryLink{I Kings}{22}{I Kings}{Ahab dies}%
+}
+\DeclareBookChapterSummaryLinkList{II Kings}{%
+    \ChapterSummaryLink{II Kings}{1}{II Kings}{Ahaziah dies}%
+    \ChapterSummaryLink{II Kings}{2}{II Kings}{Elijah taken}%
+    \ChapterSummaryLink{II Kings}{3}{II Kings}{Moab war}%
+    \ChapterSummaryLink{II Kings}{4}{II Kings}{Elisha's miracles}%
+    \ChapterSummaryLink{II Kings}{5}{II Kings}{Naaman healed}%
+    \ChapterSummaryLink{II Kings}{6}{II Kings}{Axe head; siege}%
+    \ChapterSummaryLink{II Kings}{7}{II Kings}{Siege ended}%
+    \ChapterSummaryLink{II Kings}{8}{II Kings}{Hazael rises}%
+    \ChapterSummaryLink{II Kings}{9}{II Kings}{Jehu; Jezebel}%
+    \ChapterSummaryLink{II Kings}{10}{II Kings}{Baal destroyed}%
+    \ChapterSummaryLink{II Kings}{11}{II Kings}{Joash crowned}%
+    \ChapterSummaryLink{II Kings}{12}{II Kings}{Temple repaired}%
+    \ChapterSummaryLink{II Kings}{13}{II Kings}{Elisha dies}%
+    \ChapterSummaryLink{II Kings}{14}{II Kings}{Amaziah; Jeroboam II}%
+    \ChapterSummaryLink{II Kings}{15}{II Kings}{Many kings}%
+    \ChapterSummaryLink{II Kings}{16}{II Kings}{Ahaz}%
+    \ChapterSummaryLink{II Kings}{17}{II Kings}{Samaria falls}%
+    \ChapterSummaryLink{II Kings}{18}{II Kings}{Hezekiah}%
+    \ChapterSummaryLink{II Kings}{19}{II Kings}{Assyria defeated}%
+    \ChapterSummaryLink{II Kings}{20}{II Kings}{Hezekiah healed}%
+    \ChapterSummaryLink{II Kings}{21}{II Kings}{Manasseh}%
+    \ChapterSummaryLink{II Kings}{22}{II Kings}{Law found}%
+    \ChapterSummaryLink{II Kings}{23}{II Kings}{Josiah reforms}%
+    \ChapterSummaryLink{II Kings}{24}{II Kings}{Babylon comes}%
+    \ChapterSummaryLink{II Kings}{25}{II Kings}{Jerusalem falls}%
+}
+\DeclareBookChapterSummaryLinkList{Ezra}{%
+    \ChapterSummaryLink{Ezra}{1}{Ezra}{Return begins}%
+    \ChapterSummaryLink{Ezra}{2}{Ezra}{Returnees listed}%
+    \ChapterSummaryLink{Ezra}{3}{Ezra}{Altar; Temple begun}%
+    \ChapterSummaryLink{Ezra}{4}{Ezra}{Work stopped}%
+    \ChapterSummaryLink{Ezra}{5}{Ezra}{Work resumes}%
+    \ChapterSummaryLink{Ezra}{6}{Ezra}{Temple finished}%
+    \ChapterSummaryLink{Ezra}{7}{Ezra}{Ezra arrives}%
+    \ChapterSummaryLink{Ezra}{8}{Ezra}{Journey made}%
+    \ChapterSummaryLink{Ezra}{9}{Ezra}{Intermarriage mourned}%
+    \ChapterSummaryLink{Ezra}{10}{Ezra}{Foreign wives}%
+}
+\DeclareBookChapterSummaryLinkList{Nehemiah}{%
+    \ChapterSummaryLink{Nehemiah}{1}{Nehemiah}{Nehemiah prays}%
+    \ChapterSummaryLink{Nehemiah}{2}{Nehemiah}{Walls planned}%
+    \ChapterSummaryLink{Nehemiah}{3}{Nehemiah}{Walls assigned}%
+    \ChapterSummaryLink{Nehemiah}{4}{Nehemiah}{Walls defended}%
+    \ChapterSummaryLink{Nehemiah}{5}{Nehemiah}{Debts forgiven}%
+    \ChapterSummaryLink{Nehemiah}{6}{Nehemiah}{Walls finished}%
+    \ChapterSummaryLink{Nehemiah}{7}{Nehemiah}{Returnees listed}%
+    \ChapterSummaryLink{Nehemiah}{8}{Nehemiah}{Law read}%
+    \ChapterSummaryLink{Nehemiah}{9}{Nehemiah}{National confession}%
+    \ChapterSummaryLink{Nehemiah}{10}{Nehemiah}{Covenant signed}%
+    \ChapterSummaryLink{Nehemiah}{11}{Nehemiah}{Jerusalem settled}%
+    \ChapterSummaryLink{Nehemiah}{12}{Nehemiah}{Walls dedicated}%
+    \ChapterSummaryLink{Nehemiah}{13}{Nehemiah}{Reforms restored}%
+}
+\DeclareBookChapterSummaryLinkList{Esther}{%
+    \ChapterSummaryLink{Esther}{1}{Esther}{Vashti deposed}%
+    \ChapterSummaryLink{Esther}{2}{Esther}{Esther crowned}%
+    \ChapterSummaryLink{Esther}{3}{Esther}{Haman plots}%
+    \ChapterSummaryLink{Esther}{4}{Esther}{Esther decides}%
+    \ChapterSummaryLink{Esther}{5}{Esther}{First banquet}%
+    \ChapterSummaryLink{Esther}{6}{Esther}{Mordecai honored}%
+    \ChapterSummaryLink{Esther}{7}{Esther}{Haman hanged}%
+    \ChapterSummaryLink{Esther}{8}{Esther}{New decree}%
+    \ChapterSummaryLink{Esther}{9}{Esther}{Purim}%
+    \ChapterSummaryLink{Esther}{10}{Esther}{Mordecai exalted}%
+}
+\DeclareBookChapterSummaryLinkList{Samuel}{%
+    \BookPartChapterSummaryLinks{I Samuel}%
+    \columnbreak
+    \BookPartChapterSummaryLinks{II Samuel}%
+}
+\DeclareBookChapterSummaryLinkList{Kings}{%
+    \BookPartChapterSummaryLinks{I Kings}%
+    \BookPartChapterSummaryLinks{II Kings}%
+}
+\DeclareBookChapterSummaryLinkList{Dudetheyreontome}{%
+    \BookPartChapterSummaryLinks{Ezra}%
+    \BookPartChapterSummaryLinks{Nehemiah}%
+    \BookPartChapterSummaryLinks{Esther}%
+}
+\makeatother
+
+\DeclareRobustCommand{\TableOfContentsLink}[1]{%
+    \hyperlink{tableofcontents}{#1}%
+}
+
+\DeclareRobustCommand{\BookTitleLink}[1]{%
+    \hyperlink{book.\CurrentTitleBook}{#1}%
+}
+
+\DeclareRobustCommand{\ChapterTitleText}[1]{%
+    \BookTitleLink{\CurrentBook\ #1}%
+}
+
+\DeclareRobustCommand{\ChapterHeaderText}[1]{%
+    \hyperlink{chapter.\CurrentBook.#1}{\CurrentBook\ #1}%
+}
+
+\newcommand{\Book}[1]{%
+    \def\CurrentTitleBook{#1}%
+    \BookHeading{\TableOfContentsLink{#1}}%
+    \phantomsection
+    \hypertarget{book.#1}{}%
+    \def\CurrentBook{#1}%
+    \SetCurrentBookImageDir{#1}%
+    \addcontentsline{toc}{chapter}{#1}%
+    \BookChapterLinkArray{#1}%
+}
+
+\newcommand{\BookPart}[1]{%
+    \def\CurrentBook{#1}%
+    \SetCurrentBookImageDir{#1}%
+}
+
+\iffalse
+\section{nav: chapters}
+\fi
+
+\newcommand{\Chapter}[1]{%
+    \setcounter{footnote}{0}%
+    \hypertarget{chapter.\CurrentBook.#1}{}%
+    \ChapterHeading{\ChapterTitleText{#1}}%
+    \def\CurrentChapter{#1}%
+    \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
+}
+
+% \Apocrypha defines an apocryphal book section.
+% Standalone book builds may opt into a TOC entry; the full book leaves it out.
+\newif\ifGenesisApocryphaTocEntry
+\GenesisApocryphaTocEntryfalse
+\newcommand{\Apocrypha}[1]{%
+    \clearpage
+    \def\CurrentBook{#1 Apocrypha}%
+    \def\CurrentApocryphaHeader{#1 Apocryphon}%
+    \def\CurrentTitleBook{\CurrentBook}%
+    \phantomsection
+    \hypertarget{book.\CurrentBook}{}%
+    \ifConfigApocryphaOn
+        \ifGenesisApocryphaTocEntry
+            \addcontentsline{toc}{chapter}{\CurrentBook}%
+        \fi
+    \fi
+    \markboth{\CurrentApocryphaHeader}{\CurrentApocryphaHeader}%
+    \begingroup
+    \centering
+    \vspace*{1.6em}%
+    {\textdir TRT\DeadSeaScrollsIsaiahFont\large\color{RuleColor}\paleolower\par}%
+    \vspace{0.8em}%
+    {\textdir TLT\EnglishProtoFont\fontsize{34}{38}\selectfont #1\par}%
+    \vspace{0.25em}%
+    {\EnglishFont\Large\scshape Apocrypha\par}%
+    \vspace{0.75em}%
+    \makebox[\linewidth]{\color{RuleColor}\rule{0.62\linewidth}{0.4pt}}%
+    \par
+    \vspace{2.0em}%
+    \endgroup
+}
+
+% \Apocryphon defines an apocryphal text heading.
+\newcommand{\Apocryphon}[1]{%
+    \clearpage
+    \hypertarget{chapter.\CurrentBook.#1}{}%
+    \def\CurrentChapter{#1}%
+    \markboth{\CurrentApocryphaHeader}{\CurrentApocryphaHeader}%
+    \Needspace{8\baselineskip}%
+    \par
+    \vspace{1.6em}%
+    \begingroup
+    \centering
+    \makebox[\linewidth]{\color{RuleColor}\rule{0.38\linewidth}{0.4pt}}%
+    \vspace{0.55em}%
+    \begin{center}
+	\textdir TLT\EnglishProtoFont\LARGE #1\par
+    \end{center}
+
+    %\noindent\begin{minipage}{0.86\linewidth}
+    %    \centering
+    %    \textdir TLT\EnglishProtoFont\LARGE #1\par
+    %\end{minipage}\par
+    \vspace{0.35em}%
+    {\textdir TRT\DeadSeaScrollsIsaiahFont\large\color{RuleColor}\paleoijklower\par}%
+    \vspace{0.55em}%
+    \makebox[\linewidth]{\color{RuleColor}\rule{0.38\linewidth}{0.4pt}}%
+    \par
+    \vspace{1.0em}%
+    \endgroup
+}
+
+\newcommand{\ApocryphonMosesDialogue}[1]{{\MushiteStyle\mdseries #1}}
+\newcommand{\ApocryphonYHWHDialogue}[1]{{\SourceBackground{ApocryphonYHWHDialogueBgcolor}\color{ApocryphonYHWHDialogueColor}\Redactor\mdseries #1}}
+
+\newcommand{\ApocryphonVerse}[4]{%
+    \par
+    \vspace{0.8em}%
+    \Needspace{6\baselineskip}%
+    \VerseRule
+    \vspace{0.25em}%
+    {\centering\large\scshape\hyperlink{chapter.\CurrentBook.\CurrentChapter}{Fragment #1}\par}%
+    \vspace{0.8em}%
+    \VerseRule
+    \vspace{0.8em}%
+    \ifConfigCommentaryOn
+    \begingroup
+    \hbadness=10000
+    \hfuzz=3em
+    #4\par
+    \endgroup
+    \vspace{0.8em}%
+    \fi
+}
+
+% ------------------------------------------------------------
+% Verse layout
+% ------------------------------------------------------------
+\iffalse
+\section{nav: verses}
+\fi
+
+\def\englishsize{\normalsize}
+\def\hebrewsize{\normalsize}
+
+\ifConfigEnglishTranslationDefault
+\else
+\directlua{
+    local translation_file = "\luaescapestring{\ConfigEnglishTranslationLuaFile}"
+    if translation_file == "" then
+        error("ConfigEnglishTranslationLuaFile is required when ConfigEnglishTranslation is not default")
+    end
+    dofile(translation_file)
+}
+\fi
+
+\newif\ifExternalVerseEnglishAvailable
+\newcommand{\SetExternalVerseEnglishAvailable}[1]{%
+    \directlua{%
+        if book_translation_can_lookup("\luaescapestring{\CurrentBook}", "\luaescapestring{\CurrentChapter}", "\luaescapestring{\detokenize{#1}}") then
+            tex.sprint("\\ExternalVerseEnglishAvailabletrue")
+        else
+            tex.sprint("\\ExternalVerseEnglishAvailablefalse")
+        end
+    }%
+}
+\newcommand{\ExternalVerseEnglish}[1]{%
+    \directlua{tex.sprint(book_translation_lookup("\luaescapestring{\CurrentBook}", "\luaescapestring{\CurrentChapter}", "\luaescapestring{\detokenize{#1}}"))}%
+}
+
+% TeX reads a control word through the next nonletter, so use this as
+% `\nl` followed by source whitespace or another delimiter.
+\newcommand{\nl}{%
+    \ifhmode
+        \unskip
+        \newline
+    \fi
+}
+
+\newcommand{\VerseEnglishAtWidth}[2]{%
+    \begin{minipage}[t]{#1}
+        \EnglishFont
+        \englishsize
+        \raggedright
+        #2\par
+    \end{minipage}%
+}
+
+\newcommand{\VerseHebrewAtWidth}[2]{%
+    \hbox to #1{%
+        \hss
+        \vtop{%
+            \hsize=#1
+            \rightskip=0pt plus 2em
+            \parindent=0pt
+            \emergencystretch=3em
+            \tolerance=9999
+            \begin{RTL}
+            \HebrewFont
+            \hebrewsize
+            #2\par
+            \end{RTL}
+        }%
+    }%
+}
+
+\newcommand{\VerseEnglish}[1]{%
+    \VerseEnglishAtWidth{\VerseColWidth}{#1}%
+}
+
+\newcommand{\VerseHebrew}[1]{%
+    \VerseHebrewAtWidth{\VerseColWidth}{#1}%
+}
+
+\newcommand{\VerseColumns}[2]{%
+    \noindent
+    \VerseEnglish{#1}%
+    \hspace{\VerseGap}%
+    {\color{RuleColor}\vrule width \VerseRuleWidth}%
+    \hspace{\VerseGap}%
+    \VerseHebrew{#2}%
+    \par
+}
+
+\newcommand{\VerseVertical}[2]{%
+    \noindent
+    \VerseEnglishAtWidth{\linewidth}{#1}%
+    \par
+    \vspace{\VerseGap}%
+    \noindent
+    \VerseHebrewAtWidth{\linewidth}{#2}%
+    \par
+}
+
+\newcommand{\VerseBody}[2]{%
+    \ifConfigVerseLayoutVertical
+        \VerseVertical{#1}{#2}%
+    \else
+        \VerseColumns{#1}{#2}%
+    \fi
+}
+
+\newcommand{\VerseRule}{%
+    {\color{RuleColor}\hrule}%
+}
+
+\newcommand{\VerseHeader}[1]{%
+    %\Needspace{6\baselineskip}
+    \vspace{0.8em}%
+    \VerseRule
+    \vspace{0.25em}%
+    {\centering \large \hyperlink{chapter.\CurrentBook.\CurrentChapter}{\CurrentBook\ \CurrentChapter:#1}\par}%
+    \vspace{0.8em}%
+    \VerseRule
+    \vspace{0.3em}%
+}
+
+\newcommand{\Verse}[4]{%
+    \par
+    \vspace{0.8em}%
+    \Needspace{6\baselineskip}
+    \VerseRule
+    \vspace{0.25em}%
+    {\centering \large \hyperlink{chapter.\CurrentBook.\CurrentChapter}{\CurrentBook\ \CurrentChapter:#1}\par}%
+    \vspace{0.8em}%
+    \VerseRule
+    \vspace{0.3em}%
+    \begingroup
+    \hbadness=10000
+    \hfuzz=3em
+    \ifConfigEnglishTranslationDefault
+        \VerseBody{#3}{#2}%
+    \else
+        \SetExternalVerseEnglishAvailable{#1}%
+        \ifExternalVerseEnglishAvailable
+            \VerseBody{\ExternalVerseEnglish{#1}}{#2}%
+        \else
+            \VerseBody{#3}{#2}%
+        \fi
+    \fi
+    \endgroup
+    \vspace{0.8em}%
+    \ifConfigCommentaryOn
+    \begingroup
+    \hbadness=10000
+    \hfuzz=3em
+    #4\par
+    \endgroup
+    \vspace{0.8em}%
+    \fi
+}
+
+% ------------------------------------------------------------
+% Keeping chunks together
+%
+% \begin{together}
+% ...
+% \end{together}
+%
+% where:
+%
+% First argument  = minimum remaining lines required before starting
+% Second argument = page-break strength (0–10000)
+%
+% \begin{together}[20]
+% ...
+% \end{together}
+%
+% \begin{together}[][8000]
+% ...
+% \end{together}
+%
+% \begin{together}[20][10000]
+% ...
+% \end{together}
+
+% ------------------------------------------------------------
+\iffalse
+\section{nav: binding}
+\fi
+
+\makeatletter
+
+\NewDocumentEnvironment{together}{ O{10} O{5000} }
+{
+    \par
+
+    % Start a new page if fewer than N lines remain.
+    \Needspace{#1\baselineskip}
+
+    \begingroup
+
+    \hbadness=10000
+    \hfuzz=3em
+
+    % Discourage page breaks within the block.
+    \interlinepenalty=#2\relax
+    \predisplaypenalty=#2\relax
+    \postdisplaypenalty=#2\relax
+    \interdisplaylinepenalty=#2\relax
+    \@beginparpenalty=#2\relax
+    \@endparpenalty=#2\relax
+    \@itempenalty=#2\relax
+}
+{
+    \par
+    \endgroup
+}
+
+\makeatother
+
+% ------------------------------------------------------------
+% Commentary / utterance layer
+%
+% Generic form:
+%   \as{<style macro>}[l|c|r]{text}
+% ------------------------------------------------------------
+\iffalse
+\section{nav: commentary}
+\fi
+
+\def\commentarysize{\normalsize}
+
+\NewDocumentCommand{\as}{ m O{l} +m }{%
+    \begingroup
+    \commentarysize
+    \rmfamily
+    #1{#3}%
+    \endgroup
+}
+
+% ------------------------------------------------------------
+% Speaker shortcuts
+% ------------------------------------------------------------
+
+
+\newcommand{\DeclareSpeakerShortcut}[2]{%
+  \expandafter\NewDocumentCommand\csname a#1\endcsname{ O{l} +m }{\as{#2}[##1]{##2}}%
+}
+
+\DeclareSpeakerShortcut{A}{\cK}
+\DeclareSpeakerShortcut{B}{\cR}
+\DeclareSpeakerShortcut{C}{\cB}
+\ifConfigRedactorCensored
+    \NewDocumentCommand{\aAX}{ O{l} +m }{}
+    \NewDocumentCommand{\aBX}{ O{l} +m }{}
+    \NewDocumentCommand{\aCX}{ O{l} +m }{}
+\else
+    \NewDocumentCommand{\aAX}{ O{l} +m }{\aA[#1]{#2}}
+    \NewDocumentCommand{\aBX}{ O{l} +m }{\aB[#1]{#2}}
+    \NewDocumentCommand{\aCX}{ O{l} +m }{\aC[#1]{#2}}
+\fi
+\DeclareSpeakerShortcut{J}{\eJ}
+\DeclareSpeakerShortcut{E}{\eE}
+\DeclareSpeakerShortcut{P}{\aPEnglish}
+\DeclareSpeakerShortcut{DtrA}{\eDtrA}
+\DeclareSpeakerShortcut{DtrB}{\eDtrB}
+\DeclareSpeakerShortcut{Dtn}{\eDtn}
+\DeclareSpeakerShortcut{Records}{\eBookOfRecords}
+\DeclareSpeakerShortcut{Other}{\eOther}
+
+\NewDocumentCommand{\aR}{ O{l} +m }{\smash{\as{\eR}[#1]{#2}}}
+\NewDocumentCommand{\aRJE}{ O{l} +m }{\smash{\as{\eRJE}[#1]{#2}}}
+
+
+\newcommand{\fA}[1]{%
+	\aA{\footnote{#1}}
+}
+\newcommand{\fB}[1]{%
+	\aB{\footnote{#1}}
+}
+\newcommand{\fC}[1]{%
+	\aC{\footnote{#1}}
+}
+\ifConfigRedactorCensored
+    \newcommand{\fAX}[1]{}
+    \newcommand{\fBX}[1]{}
+    \newcommand{\fCX}[1]{}
+\else
+    \newcommand{\fAX}[1]{\fA{#1}}
+    \newcommand{\fBX}[1]{\fB{#1}}
+    \newcommand{\fCX}[1]{\fC{#1}}
+\fi
+
+
+% ------------------------------------------------------------
+% Alignment sugar
+% ------------------------------------------------------------
+
+\makeatletter
+\newcommand{\DeclareSpeakerTriplet}[1]{%
+    \expandafter\newcommand\csname a#1l\endcsname[1]{%
+		\csname a#1\endcsname[l]{##1}%
+	}%
+    \expandafter\newcommand\csname a#1c\endcsname[1]{%
+		\csname a#1\endcsname[c]{\begin{quote}\centering ##1 \end{quote}}
+	}%
+    \expandafter\newcommand\csname a#1r\endcsname[1]{%
+		\csname a#1\endcsname[l]{\makebox[\linewidth][r]{##1}}%
+    }%
+}
+
+\newcommand{\DeclareSpeakerTripletList}[1]{%
+  \@for\SpeakerName:=#1\do{\expandafter\DeclareSpeakerTriplet\expandafter{\SpeakerName}}%
+}
+\makeatother
+
+\DeclareSpeakerTripletList{A,B,C,J,E,P,DtrA,DtrB,Dtn,R,RJE,Records,Other}
+
+
+\newcommand{\redacted}[1]{%
+  {\setlength{\fboxsep}{0pt}%
+   \colorbox{RedactedColor}{\strut\phantom{#1}}}%
+}
+
+\newcommand{\flipvertical}[1]{%
+	\scalebox{1}[-1]{#1}%
+}
+
+% ------------------------------------------------------------
+% Dynamic words
+% ------------------------------------------------------------
+\iffalse
+\section{nav: words}
+\fi
+
+\makeatletter
+
+\ExplSyntaxOn
+\cs_new_protected:Npn \bookautoInit #1
+  {
+    \text_titlecase_first:n { #1 }
+  }
+\ExplSyntaxOff
+
+\NewDocumentCommand{\setword}{m m m o}{%
+    \expandafter#1\expandafter#2\expandafter{#3}%
+    \expandafter#1%
+    \csname\expandafter\@gobble\string#2Init\endcsname
+    {%
+        \IfNoValueTF{#4}
+            {\bookautoInit{#3}}
+            {#4}%
+    }%
+}
+
+\NewDocumentCommand{\defineword}{m m o}{\setword{\gdef}{#1}{#2}[#3]}
+\NewDocumentCommand{\redefineword}{m m o}{\setword{\def}{#1}{#2}[#3]}
+
+\makeatother
+
+% Rename God to dave dynamically throughout arbitrary
+% subsections of the document, redefining at any point.
+
+% Normal usage
+%
+% \defineword{\God}{dave}
+% \redefineword{\God}{bob}
+
+% For weird wrapped substitutions, for example ones
+% involving colors, use the optional third argument
+% to make sentence initial capitals work right.
+%
+% \defineword{\God}{\cR{dave}}[\cR{Dave}]
+% \redefineword{\God}{\cB{bob}}[\cB{Bob}]
+
+\defineword{\God}{God}
+
+
+% Some other reusable helper defs
+
+\def\cuma{c\eRJE{hildren}}
+\def\cumb{co\eR{venantal heirs, a blessing from }me}
+\def\cum{\cumb}
+\def\pussya{p\eRJE{aternit}y}
+\def\pussyb{p\eRJE{atriarch}y}
+\def\pussyc{pu\eR{rity and blessing through your descendants provided you keep the covenant and be cla}ssy}
+\def\pussyd{pu\eR{rchase over the peoples of the land even if they rebel against you and things get me}ssy}
+\def\pussy{\pussya}
+\def\dick{d\eR{ownstairs, for when I look upon it, I say }ick\eR{, for it is a distasteful thing}}
+\def\penisa{p\eRJE{atriarchy}}
+\def\penisb{p\eRJE{ride and joy}}
+\def\penisc{p\eR{at}e\eR{r}ni\eR{ty, }s\eR{o that your days will be extended in the land}}
+\def\penisd{p\eR{aternity, meaning children, and the meaning of childr}enis}
+\def\penis{\penisc}
+\def\foreskin{\eR{be}fore\eR{skin there is blood, and after blood there i}skin}
+\def\reubenface{\mbox{\aC{。}\aB{\egypt{𓂋}}\aC{〇}}}
+\def\Er{ᗡＡ{\nunavut ᗺ}}
+
+
+% Small, composable tools for egyptian hieroglyph positioning.
+% Each accepts either signs or a cluster made by another tool.
+\newcommand{\egH}[2]{#1\kern.08em#2}
+\newcommand{\egV}[2]{%
+  \raisebox{-.35em}{\shortstack{%
+    \resizebox{!}{.68em}{#1}\\[-.28em]
+    \resizebox{!}{.68em}{#2}}}}
+\newcommand{\egScale}[2]{\scalebox{#1}{#2}}
+\newcommand{\egWide}[2]{\scalebox{#1}[1]{#2}}
+\newcommand{\egTall}[2]{\scalebox{1}[#1]{#2}}
+\newcommand{\egRaise}[2]{\raisebox{#1}{#2}}
+\newcommand{\egMirror}[1]{\reflectbox{#1}}
+\newcommand{\egRotate}[2]{\rotatebox[origin=c]{#1}{#2}}
+\newcommand{\egOverlap}[2]{\makebox[0pt][c]{#1}#2}
+
+\newcommand{\egAbove}[5][1]{%
+	% #1 = scale
+	% #2 = x shift
+	% #3 = y shift
+	% #4 = overlay glyph
+	% #5 = base glyphs
+	\tikz[baseline=(base.base)]{
+		\node[inner sep=0pt] (base) {\egypt{#5}};
+		\node[
+			overlay,
+			anchor=south,
+			xshift=#2,
+			yshift=#3
+		] at (base.north) {
+			\egypt{\scalebox{#1}{#4}}
+		};
+	}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Genesis 48: Jacob and his grandsons hieroglyphs %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ------------------------------------------------------------
+% Genesis 48: Jacob blessing Ephraim and Manasseh
+% ------------------------------------------------------------
+
+\tikzset{
+	egypt person/.style={
+		inner sep=0pt,
+		outer sep=0pt
+	}
+}
+
+% Giant forearm/hand.
+% Cut end on the left, fingers pointing right.
+\newcommand{\JacobBlessingHand}{%
+	\aC{
+		\egypt{
+			\egWide{2.2}{
+				\egMirror{𓂝}
+			}
+		}%
+	}%
+}
+
+% Shared placement of Jacob, Ephraim, Manasseh, and Joseph.
+%
+% Arguments:
+%   #1 = Jacob hieroglyph
+%   #2 = Ephraim hieroglyph
+%   #3 = Manasseh hieroglyph
+%   #4 = Joseph hieroglyph
+%
+\newcommand{\JacobFamilyPeople}[4]{%
+
+	% Jacob
+	\node[
+		egypt person
+	] (jacob) at
+		(.22\linewidth,5em)
+	{
+		\aC{
+			\egypt{
+				\egScale{1.25}{
+					\egMirror{#1}
+				}
+			}
+		}
+	};
+
+	\node[
+		anchor=south,
+		inner sep=0pt,
+		yshift=.10em
+	] at (jacob.north)
+	{
+		\aC{Jacob}
+	};
+
+	% Ephraim
+	\node[
+		egypt person
+	] (ephraim) at
+		(.50\linewidth,7.15em)
+	{
+		\aB{
+			\egypt{
+				\egScale{.90}{#2}
+			}
+		}
+	};
+
+	\node[
+		anchor=south,
+		inner sep=0pt,
+		yshift=.10em
+	] at (ephraim.north)
+	{
+		\aB{Ephraim}
+	};
+
+	% Manasseh
+	\node[
+		egypt person
+	] (manasseh) at
+		(.50\linewidth,2.85em)
+	{
+		\aB{
+			\egypt{
+				\egScale{1.20}{#3}
+			}
+		}
+	};
+
+	\node[
+		anchor=north,
+		inner sep=0pt,
+		yshift=.10em
+	] at (manasseh.south)
+	{
+		\aB{Manasseh}
+	};
+
+	% Joseph
+	\node[
+		egypt person
+	] (joseph) at
+		(.68\linewidth,5em)
+	{
+		\aA{
+			\egypt{
+				\egScale{1.15}{#4}
+			}
+		}
+	};
+
+	\node[
+		anchor=south,
+		inner sep=0pt,
+		yshift=.10em
+	] at (joseph.north)
+	{
+		\aA{Joseph}
+	};
+
+	% --------------------------------------------------------
+	% Jacob's anatomical hand anchors
+	% --------------------------------------------------------
+
+	% DON'T use jacob.east: the staff is part of the glyph.
+	\coordinate (jacob-hand-axis) at
+		($(jacob.west)!0.45!(jacob.east)$);
+
+	\coordinate (jacob-left-root) at
+		([yshift=.43em]jacob-hand-axis);
+
+	\coordinate (jacob-right-root) at
+		([yshift=.04em]jacob-hand-axis);
+
+	% --------------------------------------------------------
+	% Targets on the boys' heads
+	% --------------------------------------------------------
+
+	\coordinate (ephraim-head) at
+		([xshift=-.18em,yshift=-.28em]ephraim.north);
+
+	\coordinate (manasseh-head) at
+		([xshift=-.18em,yshift=-.28em]manasseh.north);
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                             %%%
+%%%                     We                      %%%
+%%%                                             %%%
+%%%                The Nameless                 %%%
+%%%                    H       ש                %%%
+%%%                  h   η   Σ  ϻ               %%%
+%%%               h       n      Ϻ              %%%
+%%%                  н     ш   Ш                %%%
+%%%                       山                    %%%
+%%%                     SH█N                    %%%
+%%%                    N█H█S                    %%%
+%%%                    S█N█H                    %%%
+%%%                    S█N█                     %%%
+%%%                       三                    %%%
+%%%                                             %%%
+%%%                    LꞀ                       %%%
+%%%                                             %%%
+%%%                                             %%%
+%%%                LꞀ        LꞀ                 %%%
+%%%                                             %%%
+%%%                                             %%%
+%%%        ====/=.===================           %%%
+%%%        |   ..                               %%%
+%%%        |...  '                              %%%
+%%%    > If the heavens ever did speak          %%%
+%%%    >   |   what would they say              %%%
+%%%    >   |   who would they say it to         %%%
+%%%    & would we be able to hear it            %%%
+%%%         .. ωη                               %%%
+%N%         .  וה                               %%%
+%H%           𐤅  𐤄                              %%%
+%S%                𐤉                            %%%
+%%%         LꞀ                                  %%%
+%%%      山    三                               %%%
+%%%         曰                                  %%%
+%%%                                             %%%
+%%%                                             %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iffalse
+\section{The Book}
+\fi
+
+\begin{document}
+
+\frontmatter
+\hypersetup{pageanchor=false}
+\pagenumbering{gobble}
+\pagestyle{empty}
+
+\wetitlepage
+\pagestyle{empty}
+
+\AlphabetHistoryPage
+
+\WeContentsPage
+
+\SourceLegendPage
+
+\LDPublicationNoticePage
+
+\mainmatter
+\hypersetup{pageanchor=true}
+\pagestyle{fancy}
+
+\Book{Genesis}
+\include{01-genesis/01}
+\include{01-genesis/02}
+\include{01-genesis/03}
+\include{01-genesis/04}
+\include{01-genesis/05}
+\include{01-genesis/06}
+\include{01-genesis/07}
+\include{01-genesis/08}
+\include{01-genesis/09}
+\include{01-genesis/10}
+\include{01-genesis/11}
+\include{01-genesis/12}
+\include{01-genesis/13}
+\include{01-genesis/14}
+\include{01-genesis/15}
+\include{01-genesis/16}
+\include{01-genesis/17}
+\include{01-genesis/18}
+\include{01-genesis/19}
+\include{01-genesis/20}
+\include{01-genesis/21}
+\include{01-genesis/22}
+\include{01-genesis/23}
+\include{01-genesis/24}
+\include{01-genesis/25}
+\include{01-genesis/26}
+\include{01-genesis/27}
+\include{01-genesis/28}
+\include{01-genesis/29}
+\include{01-genesis/30}
+\include{01-genesis/31}
+\include{01-genesis/32}
+\include{01-genesis/33}
+\include{01-genesis/34}
+\include{01-genesis/35}
+\include{01-genesis/36}
+\include{01-genesis/37}
+\include{01-genesis/38}
+\include{01-genesis/39}
+\include{01-genesis/40}
+\include{01-genesis/41}
+\include{01-genesis/42}
+\include{01-genesis/43}
+\include{01-genesis/44}
+\include{01-genesis/45}
+\include{01-genesis/46}
+\include{01-genesis/47}
+\include{01-genesis/48}
+\include{01-genesis/49}
+\include{01-genesis/50}
+\ifConfigApocryphaOn
+\include{01-genesis/apocrypha}
+\fi
+
+\Book{Exodus}
+\include{02-exodus/01}
+\include{02-exodus/02}
+\include{02-exodus/03}
+\include{02-exodus/04}
+\include{02-exodus/05}
+\include{02-exodus/06}
+\include{02-exodus/07}
+\include{02-exodus/08}
+\include{02-exodus/09}
+\include{02-exodus/10}
+\include{02-exodus/11}
+\include{02-exodus/12}
+\include{02-exodus/13}
+\include{02-exodus/14}
+\include{02-exodus/15}
+\include{02-exodus/16}
+\include{02-exodus/17}
+\include{02-exodus/18}
+\include{02-exodus/19}
+\include{02-exodus/20}
+\include{02-exodus/21}
+\include{02-exodus/22}
+\include{02-exodus/23}
+\include{02-exodus/24}
+\include{02-exodus/25}
+\include{02-exodus/26}
+\include{02-exodus/27}
+\include{02-exodus/28}
+\include{02-exodus/29}
+\include{02-exodus/30}
+\include{02-exodus/31}
+\include{02-exodus/32}
+\include{02-exodus/33}
+\include{02-exodus/34}
+\include{02-exodus/35}
+\include{02-exodus/36}
+\include{02-exodus/37}
+\include{02-exodus/38}
+\include{02-exodus/39}
+\include{02-exodus/40}
+
+\Book{Leviticus}
+\include{03-leviticus/01}
+\include{03-leviticus/02}
+\include{03-leviticus/03}
+\include{03-leviticus/04}
+\include{03-leviticus/05}
+\include{03-leviticus/06}
+\include{03-leviticus/07}
+\include{03-leviticus/08}
+\include{03-leviticus/09}
+\include{03-leviticus/10}
+\include{03-leviticus/11}
+\include{03-leviticus/12}
+\include{03-leviticus/13}
+\include{03-leviticus/14}
+\include{03-leviticus/15}
+\include{03-leviticus/16}
+\include{03-leviticus/17}
+\include{03-leviticus/18}
+\include{03-leviticus/19}
+\include{03-leviticus/20}
+\include{03-leviticus/21}
+\include{03-leviticus/22}
+\include{03-leviticus/23}
+\include{03-leviticus/24}
+\include{03-leviticus/25}
+\include{03-leviticus/26}
+\include{03-leviticus/27}
+
+\Book{Numbers}
+\include{04-numbers/01}
+\include{04-numbers/02}
+\include{04-numbers/03}
+\include{04-numbers/04}
+\include{04-numbers/05}
+\include{04-numbers/06}
+\include{04-numbers/07}
+\include{04-numbers/08}
+\include{04-numbers/09}
+\include{04-numbers/10}
+\include{04-numbers/11}
+\include{04-numbers/12}
+\include{04-numbers/13}
+\include{04-numbers/14}
+\include{04-numbers/15}
+\include{04-numbers/16}
+\include{04-numbers/17}
+\include{04-numbers/18}
+\include{04-numbers/19}
+\include{04-numbers/20}
+\include{04-numbers/21}
+\include{04-numbers/22}
+\include{04-numbers/23}
+\include{04-numbers/24}
+\include{04-numbers/25}
+\include{04-numbers/26}
+\include{04-numbers/27}
+\include{04-numbers/28}
+\include{04-numbers/29}
+\include{04-numbers/30}
+\include{04-numbers/31}
+\include{04-numbers/32}
+\include{04-numbers/33}
+\include{04-numbers/34}
+\include{04-numbers/35}
+\include{04-numbers/36}
+
+\Book{Deuteronomy}
+\include{05-deuteronomy/01}
+\include{05-deuteronomy/02}
+\include{05-deuteronomy/03}
+\include{05-deuteronomy/04}
+\include{05-deuteronomy/05}
+\include{05-deuteronomy/06}
+\include{05-deuteronomy/07}
+\include{05-deuteronomy/08}
+\include{05-deuteronomy/09}
+\include{05-deuteronomy/10}
+\include{05-deuteronomy/11}
+\include{05-deuteronomy/12}
+\include{05-deuteronomy/13}
+\include{05-deuteronomy/14}
+\include{05-deuteronomy/15}
+\include{05-deuteronomy/16}
+\include{05-deuteronomy/17}
+\include{05-deuteronomy/18}
+\include{05-deuteronomy/19}
+\include{05-deuteronomy/20}
+\include{05-deuteronomy/21}
+\include{05-deuteronomy/22}
+\include{05-deuteronomy/23}
+\include{05-deuteronomy/24}
+\include{05-deuteronomy/25}
+\include{05-deuteronomy/26}
+\include{05-deuteronomy/27}
+\include{05-deuteronomy/28}
+\include{05-deuteronomy/29}
+\include{05-deuteronomy/30}
+\include{05-deuteronomy/31}
+\include{05-deuteronomy/32}
+\include{05-deuteronomy/33}
+\include{05-deuteronomy/34}
+
+\Book{Joshua}
+\include{06-joshua/01}
+\include{06-joshua/02}
+\include{06-joshua/03}
+\include{06-joshua/04}
+\include{06-joshua/05}
+\include{06-joshua/06}
+\include{06-joshua/07}
+\include{06-joshua/08}
+\include{06-joshua/09}
+\include{06-joshua/10}
+\include{06-joshua/11}
+\include{06-joshua/12}
+\include{06-joshua/13}
+\include{06-joshua/14}
+\include{06-joshua/15}
+\include{06-joshua/16}
+\include{06-joshua/17}
+\include{06-joshua/18}
+\include{06-joshua/19}
+\include{06-joshua/20}
+\include{06-joshua/21}
+\include{06-joshua/22}
+\include{06-joshua/23}
+\include{06-joshua/24}
+
+\Book{Judges}
+\include{07-judges/01}
+\include{07-judges/02}
+\include{07-judges/03}
+\include{07-judges/04}
+\include{07-judges/05}
+\include{07-judges/06}
+\include{07-judges/07}
+\include{07-judges/08}
+\include{07-judges/09}
+\include{07-judges/10}
+\include{07-judges/11}
+\include{07-judges/12}
+\include{07-judges/13}
+\include{07-judges/14}
+\include{07-judges/15}
+\include{07-judges/16}
+\include{07-judges/17}
+\include{07-judges/18}
+\include{07-judges/19}
+\include{07-judges/20}
+\include{07-judges/21}
+
+\Book{Samuel}
+\BookPart{I Samuel}
+\include{08-samuel/1-01}
+\include{08-samuel/1-02}
+\include{08-samuel/1-03}
+\include{08-samuel/1-04}
+\include{08-samuel/1-05}
+\include{08-samuel/1-06}
+\include{08-samuel/1-07}
+\include{08-samuel/1-08}
+\include{08-samuel/1-09}
+\include{08-samuel/1-10}
+\include{08-samuel/1-11}
+\include{08-samuel/1-12}
+\include{08-samuel/1-13}
+\include{08-samuel/1-14}
+\include{08-samuel/1-15}
+\include{08-samuel/1-16}
+\include{08-samuel/1-17}
+\include{08-samuel/1-18}
+\include{08-samuel/1-19}
+\include{08-samuel/1-20}
+\include{08-samuel/1-21}
+\include{08-samuel/1-22}
+\include{08-samuel/1-23}
+\include{08-samuel/1-24}
+\include{08-samuel/1-25}
+\include{08-samuel/1-26}
+\include{08-samuel/1-27}
+\include{08-samuel/1-28}
+\include{08-samuel/1-29}
+\include{08-samuel/1-30}
+\include{08-samuel/1-31}
+\BookPart{II Samuel}
+\include{08-samuel/2-01}
+\include{08-samuel/2-02}
+\include{08-samuel/2-03}
+\include{08-samuel/2-04}
+\include{08-samuel/2-05}
+\include{08-samuel/2-06}
+\include{08-samuel/2-07}
+\include{08-samuel/2-08}
+\include{08-samuel/2-09}
+\include{08-samuel/2-10}
+\include{08-samuel/2-11}
+\include{08-samuel/2-12}
+\include{08-samuel/2-13}
+\include{08-samuel/2-14}
+\include{08-samuel/2-15}
+\include{08-samuel/2-16}
+\include{08-samuel/2-17}
+\include{08-samuel/2-18}
+\include{08-samuel/2-19}
+\include{08-samuel/2-20}
+\include{08-samuel/2-21}
+\include{08-samuel/2-22}
+\include{08-samuel/2-23}
+\include{08-samuel/2-24}
+
+\Book{Kings}
+\BookPart{I Kings}
+\include{09-kings/1-01}
+\include{09-kings/1-02}
+\include{09-kings/1-03}
+\include{09-kings/1-04}
+\include{09-kings/1-05}
+\include{09-kings/1-06}
+\include{09-kings/1-07}
+\include{09-kings/1-08}
+\include{09-kings/1-09}
+\include{09-kings/1-10}
+\include{09-kings/1-11}
+\include{09-kings/1-12}
+\include{09-kings/1-13}
+\include{09-kings/1-14}
+\include{09-kings/1-15}
+\include{09-kings/1-16}
+\include{09-kings/1-17}
+\include{09-kings/1-18}
+\include{09-kings/1-19}
+\include{09-kings/1-20}
+\include{09-kings/1-21}
+\include{09-kings/1-22}
+\BookPart{II Kings}
+\include{09-kings/2-01}
+\include{09-kings/2-02}
+\include{09-kings/2-03}
+\include{09-kings/2-04}
+\include{09-kings/2-05}
+\include{09-kings/2-06}
+\include{09-kings/2-07}
+\include{09-kings/2-08}
+\include{09-kings/2-09}
+\include{09-kings/2-10}
+\include{09-kings/2-11}
+\include{09-kings/2-12}
+\include{09-kings/2-13}
+\include{09-kings/2-14}
+\include{09-kings/2-15}
+\include{09-kings/2-16}
+\include{09-kings/2-17}
+\include{09-kings/2-18}
+\include{09-kings/2-19}
+\include{09-kings/2-20}
+\include{09-kings/2-21}
+\include{09-kings/2-22}
+\include{09-kings/2-23}
+\include{09-kings/2-24}
+\include{09-kings/2-25}
+
+\Book{Dudetheyreontome}
+
+\BookPart{On the Lamb}
+\include{10-dudetheyreontome/on-the-lamb/01}
+\include{10-dudetheyreontome/title}
+
+\BookPart{Ezra}
+\include{10-dudetheyreontome/ezra/01}
+\include{10-dudetheyreontome/ezra/02}
+\include{10-dudetheyreontome/ezra/03}
+\include{10-dudetheyreontome/ezra/04}
+\include{10-dudetheyreontome/ezra/05}
+\include{10-dudetheyreontome/ezra/06}
+\include{10-dudetheyreontome/ezra/07}
+\include{10-dudetheyreontome/ezra/08}
+\include{10-dudetheyreontome/ezra/09}
+\include{10-dudetheyreontome/ezra/10}
+%
+\BookPart{Nehemiah}
+\include{10-dudetheyreontome/nehemiah/01}
+\include{10-dudetheyreontome/nehemiah/02}
+\include{10-dudetheyreontome/nehemiah/03}
+\include{10-dudetheyreontome/nehemiah/04}
+\include{10-dudetheyreontome/nehemiah/05}
+\include{10-dudetheyreontome/nehemiah/06}
+\include{10-dudetheyreontome/nehemiah/07}
+\include{10-dudetheyreontome/nehemiah/08}
+\include{10-dudetheyreontome/nehemiah/09}
+\include{10-dudetheyreontome/nehemiah/10}
+\include{10-dudetheyreontome/nehemiah/11}
+\include{10-dudetheyreontome/nehemiah/12}
+\include{10-dudetheyreontome/nehemiah/13}
+%
+\BookPart{Esther}
+\include{10-dudetheyreontome/esther/01}
+\include{10-dudetheyreontome/esther/02}
+\include{10-dudetheyreontome/esther/03}
+\include{10-dudetheyreontome/esther/04}
+\include{10-dudetheyreontome/esther/05}
+\include{10-dudetheyreontome/esther/06}
+\include{10-dudetheyreontome/esther/07}
+\include{10-dudetheyreontome/esther/08}
+\include{10-dudetheyreontome/esther/09}
+\include{10-dudetheyreontome/esther/10}
+
+\end{document}
