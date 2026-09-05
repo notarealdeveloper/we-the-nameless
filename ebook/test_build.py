@@ -92,8 +92,14 @@ class ConversionTests(unittest.TestCase):
         rendered = build.tex_to_markdown(r"\aB{Genesis commentary}")
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
         self.assertIn("annotation-b align-start", rendered)
-        self.assertIn(".annotation-b { color: #820000;", stylesheet)
+        self.assertIn(".annotation-b { color: #820000 !important;", stylesheet)
         self.assertIn(".align-start { text-align: left; text-align: start; }", stylesheet)
+
+    def test_compatibility_palette_has_no_css_variable_dependency(self) -> None:
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertNotIn("var(--", stylesheet)
+        self.assertNotIn("prefers-color-scheme", stylesheet)
+        self.assertIn("border-top: 1px solid #6e6e6e !important", stylesheet)
 
     def test_only_explicit_triplet_centers_commentary(self) -> None:
         ordinary = build.tex_to_markdown(r"\aB[c]{optional argument is inert in master.tex}")

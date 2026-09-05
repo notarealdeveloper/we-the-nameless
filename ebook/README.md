@@ -111,11 +111,11 @@ editorial relationships while replacing paper geometry with reflow-safe HTML.
   `\egypt`, Hebrew, Arabic, Syriac, Ugaritic, and cuneiform helpers carry
   language/direction metadata and the matching embedded specialist face.
 
-The light palette uses the literal RGB definitions from `master.tex`. Dark-mode
-overrides follow its dark palette where reading systems support the media query;
-this is an intentional adaptive difference needed for contrast. Ordinary
-English prose remains in the reader-selected serif face, as in the existing
-EPUB policy.
+The palette uses literal RGB definitions from `master.tex` and marks
+source-critical colours as important author styles. This deliberately favors
+reliable source notation in the light theme used by Kindle and phone readers;
+dark and sepia themes may suppress or remap the colours. Ordinary English prose
+and the page background remain reader-controlled.
 
 ## Type and color
 
@@ -125,10 +125,9 @@ or repertoire is editorial information: the project's Hebrew and historical
 Paleo-Hebrew faces plus the display face. Confirm redistribution rights before
 adding any font.
 
-The source palette is centralized with CSS custom properties and conservative
-fallbacks. Hue, weight, and highlight shape jointly encode source identity, so
-the text remains legible under light, sepia, dark, monochrome, and user themes.
-The dark-mode query is progressive enhancement; body colors are not forced.
+The source palette uses conservative, literal CSS 2.1 colours rather than CSS
+custom properties. Hue, weight, and highlight shape jointly encode source
+identity, so the text remains intelligible if a reader suppresses colour.
 
 ## Validation and QA
 
@@ -165,8 +164,9 @@ tables, MathML, semantic note links, and break controls. Amazon specifically
 recommends leaving ordinary body typography reader-controlled and using
 `aside` plus `epub:type` for notes; this renderer follows that policy. See the
 [Kindle reflowable text guidelines](https://kdp.amazon.com/en_US/help/topic/GH4DRT75GWWAGBTU).
-Kindle may still ignore dark-mode queries, columns, custom properties,
-publisher fonts, or overflow.
+Kindle may still ignore columns, publisher fonts, or overflow. Google Play
+Books likewise documents multi-column layout and MathML as unsupported, so
+neither is required for the primary reading flow.
 Fixed/absolute positioning, viewport-dependent normal layout, negative table
 margins, nested tables, and fixed-layout pagination are avoided.
 
