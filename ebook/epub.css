@@ -1,8 +1,3 @@
-@font-face { font-family: "WTN FreeSerif"; src: url("../fonts/FreeSerif.ttf"); font-style: normal; font-weight: 400; }
-@font-face { font-family: "WTN FreeSerif"; src: url("../fonts/FreeSerifBold.ttf"); font-style: normal; font-weight: 700; }
-@font-face { font-family: "WTN FreeSerif"; src: url("../fonts/FreeSerifItalic.ttf"); font-style: italic; font-weight: 400; }
-@font-face { font-family: "WTN FreeSerif"; src: url("../fonts/FreeSerifBoldItalic.ttf"); font-style: italic; font-weight: 700; }
-@font-face { font-family: "WTN Title"; src: url("../fonts/lmroman10-regular.otf"); }
 @font-face { font-family: "WTN Hebrew David"; src: url("../fonts/hebrew-david.ttf"); }
 @font-face { font-family: "WTN Hebrew David"; src: url("../fonts/hebrew-david-bold.ttf"); font-weight: 700; }
 @font-face { font-family: "WTN Hebrew Ezra"; src: url("../fonts/hebrew-ezra.ttf"); }
@@ -12,13 +7,20 @@
 @font-face { font-family: "WTN Paleo Mono"; src: url("../fonts/paleo-hebrew-mono.ttf"); }
 @font-face { font-family: "WTN Primeval"; src: url("../fonts/english-im-fell-english-sc-regular.ttf"); }
 
-:root { color-scheme: light dark; }
-html { background: #fff; color: #000; }
-body { font-family: "WTN FreeSerif", FreeSerif, serif; line-height: 1.5; margin: 5%; widows: 2; orphans: 2; }
-h1, h2, h3 { font-family: "WTN FreeSerif", FreeSerif, serif; }
+:root {
+  color-scheme: light dark;
+  --wtn-j: #087d28; --wtn-e: #9b7100; --wtn-p: #155fa8;
+  --wtn-red: #8a2020; --wtn-blue: #155fa8; --wtn-green: #087d28;
+  --wtn-muted: #686868; --wtn-rule: #b8b8b8;
+  --wtn-r-bg: rgba(21, 95, 168, .13); --wtn-rje-bg: rgba(8, 125, 40, .13);
+  --wtn-record-bg: rgba(104, 104, 104, .13); --wtn-other-bg: rgba(65, 65, 65, .1);
+}
+html { background: transparent; }
+body { line-height: 1.5; margin: 5%; widows: 2; orphans: 2; text-rendering: optimizeLegibility; }
+h1, h2, h3 { font-family: serif; }
 .wtn-title-page { break-before: page; break-after: page; page-break-before: always; page-break-after: always; min-height: 90vh; text-align: center; }
-.title-we { font-family: "WTN Title", serif; font-size: 6.25em; font-variant: small-caps; line-height: 1.2; padding-top: 18vh; }
-.title-nameless { font-family: "WTN Title", serif; font-size: 1.5625em; line-height: 1.2; margin-top: 20vh; }
+.title-we { font-family: "WTN Primeval", serif; font-size: 5.5em; font-variant: small-caps; line-height: 1.2; padding-top: 18%; }
+.title-nameless { font-family: "WTN Primeval", serif; font-size: 1.5625em; line-height: 1.2; margin-top: 30%; }
 .front-heading { break-before: page; page-break-before: always; text-align: center; }
 .alphabet-heading { visibility: hidden; height: 0; margin: 0; }
 .alphabet-page { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; }
@@ -26,37 +28,44 @@ h1, h2, h3 { font-family: "WTN FreeSerif", FreeSerif, serif; }
 .paleo { font-family: "WTN Paleo J", serif; color: #007800; }
 .hebrew-david { font-family: "WTN Hebrew David", serif; }
 .hebrew-ezra { font-family: "WTN Hebrew Ezra", serif; color: #0046aa; }
-.contents-list { font-size: 1.12em; line-height: 1.7; list-style: none; padding: 0; text-align: center; }
+.contents-list { font-size: .95em; line-height: 1.4; }
+.contents-book { break-inside: avoid; margin: 1.5em 0; }
+.contents-book h2 { font-size: 1.35em; margin: 0 0 .4em; text-align: center; }
+.contents-book ol { columns: 2 15em; column-gap: 2em; margin: 0; padding-left: 2.2em; }
+.contents-book li { break-inside: avoid; margin: 0 0 .32em; }
 .contents-list a { color: #0046aa; text-decoration: none; }
 .authors-subtitle, .legend-key { text-align: center; }
 .authors-subtitle span { font-size: 1.5em; }
-.source-legend { display: grid; grid-template-columns: 24% 72%; column-gap: 4%; font-size: .9em; }
+.source-legend { font-size: .9em; }
 .source-legend dt, .source-legend dd { margin: 0 0 1em; }
+.source-legend dt { float: left; clear: left; width: 24%; font-weight: bold; }
+.source-legend dd { margin-left: 28%; }
 .font-legend .hebrew { font-size: 1.75em; margin-bottom: 0; }
 .publication-notice { break-before: page; page-break-before: always; font-family: monospace; font-size: .67em; min-height: 82vh; text-align: center; display: flex; flex-direction: column; justify-content: flex-end; }
 .publication-logo { width: 1in; margin: 2em auto 0; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 .book-title { text-align: center; page-break-before: always; break-before: page; font-size: 3.2em; font-variant: small-caps; }
 .chapter-title { page-break-before: always; break-before: page; text-align: center; }
-.verse { margin: 1.25em 0 1.8em; break-inside: avoid-page; }
+.verse { margin: 1.25em 0 1.8em; break-inside: avoid-page; page-break-inside: avoid; }
 .verse-number { color: #6e6e6e; font-size: .75em; margin: 0 0 .35em; }
 .hebrew-block { direction: rtl; text-align: right; font-size: 1.22em; line-height: 1.65; }
 .hebrew-line, .english-line { display: block; }
 .english-block { margin-top: .45em; }
-.commentary { margin: .8em 0 0 .25em; padding-left: .8em; }
+.commentary { margin: .8em 0 0; padding: .1em 0 .1em .85em; border-left: .14em solid var(--wtn-rule); }
 .aside-a, .aside-b, .aside-c, .aside-p, .aside-r { margin: .6em 0; }
 .aside-a { color: #000; } .aside-b { color: #820000; } .aside-c, .aside-p { color: #0046aa; }
 .aside-r { color: #0046aa; background: #dbe8f7; }
-.source { font-family: "WTN FreeSerif", FreeSerif, serif; }
-.source-j, .source-je, .source-jp, .source-jpp, .source-jm { color: #008700; }
-.source-e, .source-ep, .source-epp { color: #b98c00; font-weight: 700; }
-.source-p, .source-pr { color: #0046aa; font-weight: 700; }
-.source-r { color: #0046aa; background-color: #e0eaf5; }
+.source-j, .source-je, .source-jp, .source-jpp, .source-jm { color: var(--wtn-j); }
+.source-e, .source-ep, .source-epp { color: var(--wtn-e); font-weight: 700; }
+.source-p, .source-pr, .source-pp { color: var(--wtn-p); font-weight: 700; }
+.source-r, .source-diff { color: var(--wtn-p); background-color: var(--wtn-r-bg); }
 .source-rje { color: #006400; background-color: #e1f5e1; }
 .source-dtra, .source-dtrh, .source-dtn { color: #806100; }
 .source-dtrb { color: #995e00; }
-.source-bookofrecords { color: #6e6e6e; background-color: #ebebeb; }
-.source-other, .source-x { color: #414141; background-color: #ededed; }
+.source-bookofrecords, .source-records { color: var(--wtn-muted); background-color: var(--wtn-record-bg); }
+.source-other, .source-x { color: inherit; background-color: var(--wtn-other-bg); }
+.source-red { color: var(--wtn-red); background: rgba(138, 32, 32, .13); }
+.source-reblacktor { color: inherit; background: rgba(128, 128, 128, .18); }
 .source-proto, .source-protoa, .source-protof { color: #878787; font-family: "WTN Primeval", serif; }
 .hebrew { font-family: "WTN Hebrew David", serif; }
 .hebrew.source-j, .source-j.hebrew { font-family: "WTN Paleo J", serif; font-weight: 400; }
@@ -70,7 +79,23 @@ h1, h2, h3 { font-family: "WTN FreeSerif", FreeSerif, serif; }
 .smallcaps { font-variant: small-caps; }
 .redacted { background: currentColor; color: transparent; }
 blockquote { margin: .8em 1em; }
-img { max-width: 100%; height: auto; }
+figure { margin: 1em auto; text-align: center; break-inside: avoid; }
+img, svg { max-width: 100%; height: auto; }
+.definition { border-left: .18em solid currentColor; color: var(--wtn-blue); margin: .8em 0; padding: .2em 0 .2em .8em; }
+.definition dfn { font-style: normal; font-weight: bold; }
+.definition-b { color: var(--wtn-red); } .definition-c { color: var(--wtn-blue); }
+.red { color: var(--wtn-red); } .blue { color: var(--wtn-blue); } .green { color: var(--wtn-green); }
+.yellow { color: var(--wtn-e); } .gray { color: var(--wtn-muted); }
+.highlight-a { background: rgba(90, 90, 90, .13); }
+.highlight-b { background: rgba(138, 32, 32, .13); }
+.highlight-c { background: rgba(21, 95, 168, .13); }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
+table { border-collapse: collapse; font-size: .88em; width: 100%; }
+th, td { border: 1px solid var(--wtn-rule); padding: .4em; text-align: start; vertical-align: top; overflow-wrap: anywhere; }
+th { font-weight: bold; }
+.egyptian { font-family: sans-serif; }
+.cjk { font-family: serif; }
+@media (max-width: 30em) { .contents-book ol { columns: 1; } table { font-size: .78em; } }
 @media (prefers-color-scheme: dark) {
   html { background: #2d353b; color: #e8e2d2; } body { color: #e8e2d2; }
   .verse-number { color: #aab2aa; } .contents-list a, .aside-c, .aside-p { color: #8ec7ff; }

@@ -20,8 +20,8 @@ HERE = Path(__file__).resolve().parent
 MASTER = ROOT / "master.tex"
 OUTPUT = HERE / "we-the-nameless.epub"
 
-# Fonts used by master.tex.  Pandoc embeds these in the EPUB so the design does
-# not depend on whichever fonts happen to be installed on the reading device.
+# Publisher fonts are limited to scripts whose repertoire/design carries
+# meaning. Ordinary prose deliberately remains in the reader's chosen font.
 FONT_FILES = [
     ROOT / "fonts/hebrew-david.ttf",
     ROOT / "fonts/hebrew-david-bold.ttf",
@@ -33,33 +33,17 @@ FONT_FILES = [
     ROOT / "fonts/english-im-fell-english-sc-regular.ttf",
 ]
 
-
-def system_font(command: str, *args: str) -> Path | None:
-    executable = shutil.which(command)
-    if not executable:
-        return None
-    result = subprocess.run([executable, *args], text=True, capture_output=True, check=False)
-    path = Path(result.stdout.splitlines()[0]) if result.stdout.strip() else None
-    return path if path and path.is_file() else None
-
-
-for discovered_font in (
-    system_font("fc-match", "FreeSerif", "-f", "%{file}\n"),
-    system_font("fc-match", "FreeSerif:style=Bold", "-f", "%{file}\n"),
-    system_font("fc-match", "FreeSerif:style=Italic", "-f", "%{file}\n"),
-    system_font("fc-match", "FreeSerif:style=Bold Italic", "-f", "%{file}\n"),
-    system_font("kpsewhich", "lmroman10-regular.otf"),
-):
-    if discovered_font and discovered_font not in FONT_FILES:
-        FONT_FILES.append(discovered_font)
-
 SOURCE_NAMES = {
     "J": "J", "E": "E", "P": "P", "R": "R", "X": "Other",
     "JE": "JE", "JP": "JP", "JM": "JM", "JPP": "JPP", "PR": "PR",
+    "EP": "EP", "EPP": "EPP", "PP": "Paleo P", "Diff": "Textual difference",
+    "Red": "Redactor", "Reblacktor": "Redactor", "Records": "Book of Records",
     "RJE": "RJE", "Dtn": "Dtn", "DtrA": "Dtr A", "DtrB": "Dtr B",
     "DtrH": "Dtr H", "Proto": "Proto", "ProtoA": "Proto A",
     "ProtoF": "Proto F", "Other": "Other", "BookOfRecords": "Book of Records",
 }
+
+SOURCE_ALIASES = {"BookOfRecords": "Records"}
 
 COMMENTARY = {"aA": "aside-a", "aAc": "aside-a", "aB": "aside-b",
               "aBr": "aside-b", "aC": "aside-c", "aP": "aside-p",
@@ -70,6 +54,42 @@ INLINE = {
     "textsl": "em", "textsc": "span", "texttt": "code", "heb": "span",
     "paleo": "span", "Paleo": "span", "Def": "dfn", "redacted": "span",
     "sout": "s", "textsuperscript": "sup", "path": "code", "href": "a",
+}
+
+LANGUAGE_INLINE = {
+    "heb": ("hebrew", "he", "rtl"),
+    "hebniq": ("hebrew hebrew-pointed", "he", "rtl"),
+    "arb": ("arabic", "ar", "rtl"),
+    "syriac": ("syriac", "syr", "rtl"),
+    "ara": ("aramaic", "arc", "rtl"),
+    "phn": ("phoenician", "phn", "rtl"),
+    "uga": ("ugaritic", "uga", "ltr"),
+    "akk": ("cuneiform", "akk", "ltr"),
+    "cun": ("cuneiform", "akk", "ltr"),
+    "egypt": ("egyptian", "egy", "ltr"),
+    "egyptRaw": ("egyptian", "egy", "ltr"),
+    "egyptNew": ("egyptian", "egy", "ltr"),
+    "chinese": ("cjk", "zh-Hant", "ltr"),
+    "chineseA": ("cjk", "zh-Hant", "ltr"),
+    "chineseB": ("cjk", "zh-Hant", "ltr"),
+    "chineseC": ("cjk", "zh-Hant", "ltr"),
+    "chineseD": ("cjk", "zh-Hant", "ltr"),
+    "chineseE": ("cjk", "zh-Hant", "ltr"),
+    "korean": ("cjk", "ko", "ltr"),
+    "telugu": ("telugu", "te", "ltr"),
+}
+
+COLOR_INLINE = {
+    "cK": "ink", "cBlack": "ink", "cR": "red", "cRed": "red",
+    "cB": "blue", "cBlue": "blue", "cG": "green", "cGreen": "green",
+    "cY": "yellow", "cYellow": "yellow", "cGray": "gray", "cGrey": "gray",
+    "hlA": "highlight-a", "hlB": "highlight-b", "hlC": "highlight-c",
+}
+
+MATH_SYMBOLS = {
+    "sim": "∼", "approx": "≈", "times": "×", "cdot": "·",
+    "rightarrow": "→", "infty": "∞", "phi": "φ", "gamma": "γ",
+    "Delta": "Δ", "lambda": "λ", "tau": "τ", "oint": "∮",
 }
 
 HEBREW_ORDER = "אבגדהוזחטיכךלמםנןסעפףצץקרשת"
@@ -118,6 +138,76 @@ def group(text: str, pos: int) -> tuple[str, int] | None:
     return text[start:i - 1], i
 
 
+def optional_group(text: str, pos: int) -> tuple[str, int] | None:
+    """Read a balanced TeX optional argument, if present."""
+    while pos < len(text) and text[pos].isspace():
+        pos += 1
+    if pos >= len(text) or text[pos] != "[":
+        return None
+    depth, start, i = 1, pos + 1, pos + 1
+    while i < len(text) and depth:
+        if text[i] == "\\":
+            i += 2
+            continue
+        if text[i] == "[":
+            depth += 1
+        elif text[i] == "]":
+            depth -= 1
+        i += 1
+    if depth:
+        raise ValueError("unbalanced TeX optional argument")
+    return text[start:i - 1], i
+
+
+def split_tex(text: str, separator: str) -> list[str]:
+    """Split at a TeX separator only at top-level brace depth."""
+    parts: list[str] = []
+    start = depth = i = 0
+    while i < len(text):
+        if text[i] == "\\":
+            if depth == 0 and text.startswith(separator, i):
+                parts.append(text[start:i])
+                i += len(separator)
+                start = i
+                continue
+            i += 2
+            continue
+        if text[i] == "{":
+            depth += 1
+        elif text[i] == "}" and depth:
+            depth -= 1
+        elif depth == 0 and text.startswith(separator, i):
+            parts.append(text[start:i])
+            i += len(separator)
+            start = i
+            continue
+        i += 1
+    parts.append(text[start:])
+    return parts
+
+
+def render_table(body: str) -> str:
+    """Turn the project's \Table rows into a responsive semantic table."""
+    body = re.sub(r"\\(?:hline|toprule|midrule|bottomrule)\b", "", body)
+    rows = [row for row in split_tex(body, r"\\") if row.strip()]
+    rendered_rows: list[str] = []
+    for row_number, row in enumerate(rows):
+        cells = [cell.strip() for cell in split_tex(row, "&")]
+        if not any(cells):
+            continue
+        tag = "th" if row_number == 0 else "td"
+        attrs = ' scope="col"' if tag == "th" else ""
+        rendered = "".join(
+            f"<{tag}{attrs}>{tex_to_markdown(cell).strip()}</{tag}>" for cell in cells
+        )
+        rendered_rows.append(f"<tr>{rendered}</tr>")
+    if not rendered_rows:
+        return ""
+    head, *rest = rendered_rows
+    tbody = f"<tbody>{''.join(rest)}</tbody>" if rest else ""
+    return f'\n\n<div class="table-scroll"><table class="critical-table"><thead>{head}</thead>{tbody}</table></div>\n\n'
+
+
 def command_at(text: str, pos: int) -> tuple[str, int] | None:
     if text[pos] != "\\":
         return None
@@ -128,7 +218,7 @@ def command_at(text: str, pos: int) -> tuple[str, int] | None:
 def source_class(name: str) -> tuple[str, str] | None:
     if len(name) < 2 or name[0] not in "he":
         return None
-    key = name[1:]
+    key = SOURCE_ALIASES.get(name[1:], name[1:])
     if key not in SOURCE_NAMES:
         return None
     return ("hebrew" if name[0] == "h" else "english", key)
@@ -166,6 +256,8 @@ def tex_to_markdown(text: str) -> str:
         if not cmd_data:
             out.append(text[i]); i += 1; continue
         name, after = cmd_data
+        if name in MATH_SYMBOLS:
+            out.append(MATH_SYMBOLS[name]); i = after; continue
         if name in {"nl", "linebreak", "par", "medskip", "newpage", "clearpage", "pagebreak"}:
             out.append("  \n" if name in {"nl", "linebreak"} else "\n\n")
             i = after; continue
@@ -179,12 +271,38 @@ def tex_to_markdown(text: str) -> str:
                     "relax", "leavevmode", "sloppy", "tiny", "scriptsize", "footnotesize",
                     "small", "large", "Large", "bfseries", "ttfamily", "selectfont"}:
             i = after; continue
+        optional = optional_group(text, after)
+        if optional:
+            _, after = optional
         arg = group(text, after)
         if not arg:
             # Preserve common escaped punctuation; discard purely presentational commands.
             out.append({"%": "%", "&": "&", "_": "_", "#": "#", "{": "{", "}": "}"}.get(name, ""))
             i = after; continue
         body, end = arg
+        if name == "Table":
+            table_body = group(text, end)
+            if table_body:
+                body, end = table_body
+                out.append(render_table(body))
+            i = end
+            continue
+        if name in {"Def", "DefA", "DefB", "DefC"}:
+            label = tex_to_markdown(body).strip()
+            second = group(text, end)
+            # \Def has an optional pronunciation between its label and body.
+            if second:
+                definition, end = second
+                cls = {"Def": "definition", "DefA": "definition-a",
+                       "DefB": "definition-b", "DefC": "definition-c"}[name]
+                out.append(
+                    f'\n\n<div class="definition {cls}"><dfn>{label}</dfn>'
+                    f'<div>{tex_to_markdown(definition).strip()}</div></div>\n\n'
+                )
+            else:
+                out.append(f"<dfn>{label}</dfn>")
+            i = end
+            continue
         rendered = tex_to_markdown(body).strip()
         src = source_class(name)
         if name in {"hP", "eP"}:
@@ -199,7 +317,7 @@ def tex_to_markdown(text: str) -> str:
                 rendered = historical_hebrew(rendered, key)
             out.append(f'<span class="source source-{key.lower()} {language}"{attrs} data-source="{label}">{rendered}</span>')
         elif name in COMMENTARY:
-            out.append(f'\n\n::: {{.{COMMENTARY[name]}}}\n{rendered}\n:::\n\n')
+            out.append(f'\n\n:::: {{.{COMMENTARY[name]} role="note"}}\n{rendered}\n::::\n\n')
         elif name == "footnote" or name in {"recursivefootnote", "hangingfootnote"}:
             out.append(f"^[{rendered}]")
         elif name == "href":
@@ -209,6 +327,13 @@ def tex_to_markdown(text: str) -> str:
                 out.append(f"[{tex_to_markdown(label).strip()}]({body})")
             else:
                 out.append(body)
+        elif name in LANGUAGE_INLINE:
+            cls, language, direction = LANGUAGE_INLINE[name]
+            out.append(
+                f'<span class="{cls}" lang="{language}" dir="{direction}">{rendered}</span>'
+            )
+        elif name in COLOR_INLINE:
+            out.append(f'<span class="{COLOR_INLINE[name]}">{rendered}</span>')
         elif name in INLINE:
             tag = INLINE[name]
             attrs = ""
@@ -220,7 +345,13 @@ def tex_to_markdown(text: str) -> str:
         elif name in {"includegraphics", "image"}:
             path = body.strip()
             if (ROOT / path).exists():
-                out.append(f"\n\n![Illustration]({path})\n\n")
+                alt = html.escape(Path(path).stem.replace("-", " ").replace("_", " "))
+                out.append(f'\n\n<figure><img src="{html.escape(path)}" alt="{alt}"/></figure>\n\n')
+        elif name in {"hspace", "vspace", "raisebox", "makebox", "size", "up", "dn"}:
+            second = group(text, end)
+            if second:
+                value, end = second
+                out.append(tex_to_markdown(value).strip())
         elif name in {"Chapter", "Verse", "Book", "BookPart"}:
             out.append(rendered)
         else:
@@ -280,13 +411,46 @@ def master_sequence(selected_book: str | None = None) -> list[tuple[str, str]]:
     return sequence
 
 
-def front_matter(sequence: list[tuple[str, str]]) -> list[str]:
+def chapter_summaries() -> dict[tuple[str, str], str]:
+    """Read the editorial labels used by the print book's own contents page."""
+    source = strip_comments(MASTER.read_text(encoding="utf-8"))
+    summaries: dict[tuple[str, str], str] = {}
+    for match in re.finditer(r"\\ChapterSummaryLink\s*", source):
+        cursor = match.end()
+        args: list[str] = []
+        for _ in range(4):
+            parsed = group(source, cursor)
+            if not parsed:
+                break
+            value, cursor = parsed
+            args.append(value.strip())
+        if len(args) == 4:
+            _, chapter, book, title = args
+            summaries[(book, chapter)] = tex_to_markdown(title).strip()
+    return summaries
+
+
+def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str], str]) -> list[str]:
     """Reproduce the visible front matter from master.tex in reflowable form."""
     books = list(dict.fromkeys(book for book, _ in sequence))
-    contents = "\n".join(
-        f'<li><a href="#{re.sub(r"[^a-z0-9]+", "-", book.lower()).strip("-")}">{html.escape(book)}</a></li>'
-        for book in books
-    )
+    contents_sections: list[str] = []
+    for book in books:
+        chapters: list[str] = []
+        for label, rel in sequence:
+            if label != book:
+                continue
+            source = (ROOT / rel).read_text(encoding="utf-8")
+            found = re.search(r"\\Chapter\s*\{([^}]+)\}", strip_comments(source))
+            chapter = found.group(1).strip() if found else Path(rel).stem
+            anchor = re.sub(r"[^a-z0-9]+", "-", f"{book}-{chapter}".lower()).strip("-")
+            title = summaries.get((book, chapter), f"{book} {chapter}")
+            chapters.append(f'<li><a href="#{anchor}"><span class="toc-number">{html.escape(chapter)}.</span> {html.escape(title)}</a></li>')
+        book_anchor = re.sub(r"[^a-z0-9]+", "-", book.lower()).strip("-")
+        contents_sections.append(
+            f'<section class="contents-book"><h2><a href="#{book_anchor}">{html.escape(book)}</a></h2>'
+            f'<ol>{"".join(chapters)}</ol></section>'
+        )
+    contents = "".join(contents_sections)
     return [
         '<section class="wtn-title-page" epub:type="titlepage">',
         '<div class="title-we">We</div>',
@@ -298,7 +462,7 @@ def front_matter(sequence: list[tuple[str, str]]) -> list[str]:
         '<p class="alphabet hebrew-david">אבגדהוזחטיכלמנסעפצקרשת</p>',
         '<p class="alphabet hebrew-ezra">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p>',
         '</div>', "",
-        '# Contents {.front-heading}', "", f'<ol class="contents-list">{contents}</ol>', "",
+        '# Contents {.front-heading}', "", f'<div class="contents-list">{contents}</div>', "",
         '# The Authors {.front-heading}', "",
         '<p class="authors-subtitle"><em>or</em><br/><span>We: The Nameless</span></p>',
         '<p class="legend-key"><span class="source source-j">J</span> &nbsp; '
@@ -326,7 +490,8 @@ def front_matter(sequence: list[tuple[str, str]]) -> list[str]:
 
 def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, int]:
     sequence = master_sequence(selected_book)
-    lines = ["---", "lang: en-US", "---", ""] + front_matter(sequence)
+    summaries = chapter_summaries()
+    lines = ["---", "lang: en-US", "---", ""] + front_matter(sequence, summaries)
     last_book = None
     chapter_count = verse_count = 0
     for book, rel in sequence:
@@ -337,18 +502,20 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
             lines += [f"# {book} {{.book-title}}", ""]
             last_book = book
         anchor = re.sub(r"[^a-z0-9]+", "-", f"{book}-{chapter}".lower()).strip("-")
-        lines += [f"## {book} {chapter} {{#{anchor} .chapter-title}}", ""]
+        summary = summaries.get((book, chapter), "")
+        heading = f"{chapter}. {summary}" if summary else f"{book} {chapter}"
+        lines += [f"## {heading} {{#{anchor} .chapter-title}}", ""]
         chapter_count += 1
         for number, hebrew, english, commentary in parse_verses(source):
             verse_count += 1
             verse_anchor = f"{anchor}-{re.sub(r'[^a-zA-Z0-9]+', '-', number).strip('-')}"
-            lines += [f'::: {{.verse #{verse_anchor}}}', f'### {number} {{.verse-number}}',
-                      '::: {.hebrew-block lang="he" dir="rtl"}', tex_to_markdown(hebrew), ":::",
-                      "::: {.english-block}", tex_to_markdown(english), ":::"]
+            lines += [f':::::: {{.verse #{verse_anchor} epub:type="z3998:verse"}}', f'### {number} {{.verse-number}}',
+                      '::::: {.hebrew-block lang="he" dir="rtl"}', tex_to_markdown(hebrew), ":::::",
+                      "::::: {.english-block}", tex_to_markdown(english), ":::::"]
             rendered_commentary = tex_to_markdown(commentary)
             if rendered_commentary:
-                lines += ["::: {.commentary}", rendered_commentary, ":::"]
-            lines += [":::", ""]
+                lines += ["::::: {.commentary}", rendered_commentary, ":::::"]
+            lines += ["::::::", ""]
     path.write_text("\n".join(lines), encoding="utf-8")
     return chapter_count, verse_count
 
@@ -388,7 +555,7 @@ def main() -> int:
             kept_manuscript = HERE / "manuscript.generated.md"
             shutil.copy2(manuscript, kept_manuscript)
             log(f"Saved generated Markdown: {kept_manuscript}")
-        cmd = ["pandoc", str(manuscript), "--from=markdown+fenced_divs+footnotes",
+        cmd = ["pandoc", str(manuscript), "--from=markdown+fenced_divs+footnotes+raw_html+markdown_in_html_blocks",
                "--to=epub3", "--output", str(args.output), "--standalone",
                "--toc", "--toc-depth=2", "--split-level=2", "--css", str(HERE / "epub.css"),
                "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]
@@ -401,7 +568,23 @@ def main() -> int:
         else:
             log(f"Cover image not found; building without it: {cover}")
         log("Running Pandoc to package EPUB 3...")
-        subprocess.run(cmd, cwd=ROOT, check=True)
+        result = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, check=False)
+        if result.stdout:
+            print(result.stdout, end="")
+        if result.stderr:
+            print(result.stderr, file=sys.stderr, end="")
+        if result.returncode:
+            return result.returncode
+        if "[WARNING]" in result.stderr:
+            log("Pandoc emitted warnings; refusing a potentially damaged EPUB")
+            return 2
+        validator = HERE / "validate.py"
+        log("Running EPUB package and link validation...")
+        validation = subprocess.run(
+            [sys.executable, str(validator), str(args.output)], cwd=ROOT, check=False
+        )
+        if validation.returncode:
+            return validation.returncode
     output_size = args.output.stat().st_size
     elapsed = time.monotonic() - started
     log(
