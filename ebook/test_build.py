@@ -111,7 +111,10 @@ class ConversionTests(unittest.TestCase):
     def test_chapter_summaries_are_toc_only(self) -> None:
         self.assertEqual(build.chapter_heading("Genesis", "46"), "Genesis 46")
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
-        self.assertIn(".chapter-title", stylesheet)
+        self.assertIn("h1.book-title", stylesheet)
+        self.assertIn("h2.chapter-title", stylesheet)
+        self.assertNotIn("\n.book-title {", stylesheet)
+        self.assertNotIn("\n.chapter-title {", stylesheet)
         self.assertIn("font-family: serif", stylesheet)
         self.assertIn("font-size: 2.2em", stylesheet)
 
