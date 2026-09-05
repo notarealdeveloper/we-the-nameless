@@ -29,6 +29,15 @@ make -C ebook validate-genesis
 ```
 
 Outputs are written to `ebook/we-the-nameless.epub` and `ebook/<book>.epub`.
+
+Each independently publishable edition has a deterministic `urn:uuid` package
+identifier. The complete edition and each single-book edition use different
+identifiers, but rebuilding the same edition preserves its identity. This is
+required when a store such as Google Play Books receives a new content file as
+an update to an existing listing. Do not replace these identifiers for routine
+releases; changing one creates a new publication in distributors' catalogs.
+Single-book packages also carry their book name in `dc:title`, so stores and
+Kindle libraries do not display every volume under an indistinguishable title.
 A build requires Pandoc 3. `--keep-markdown` on `build.py` preserves
 `manuscript.generated.md` for debugging; otherwise it is temporary.
 
@@ -153,9 +162,13 @@ sepia, and dark themes. Kindle Previewer is not installed in this environment.
 
 The baseline is semantic XHTML, document-order reflow, HTML bidi attributes,
 simple tables, relative sizing, legacy and modern break properties, and real
-note links. Enhancements include CSS variables, columns on the visible contents
-page, `prefers-color-scheme`, and horizontal table overflow. Their absence does
-not remove meaning.
+note links. Enhancements include columns on the visible contents page and
+horizontal table overflow. Their absence does not remove meaning.
+
+Title, alphabet, and publication-notice pages use percentage padding rather
+than viewport-height or flexbox-based vertical positioning. This keeps their
+reading order and spacing predictable through Kindle conversion while
+remaining reflowable at large reader font sizes.
 
 EPUB 3.3 permits modern CSS but prohibits CSS `direction` and `unicode-bidi`,
 so direction lives in markup. See the [EPUB 3.3 CSS requirements](https://www.w3.org/TR/epub-33/#sec-css).

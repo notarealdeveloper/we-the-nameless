@@ -13,6 +13,7 @@ import tempfile
 import textwrap
 import time
 import unicodedata
+import uuid
 import zipfile
 from pathlib import Path
 
@@ -21,6 +22,24 @@ ROOT = Path(__file__).resolve().parents[1]
 HERE = Path(__file__).resolve().parent
 MASTER = ROOT / "master.tex"
 OUTPUT = HERE / "we-the-nameless.epub"
+
+# Publication identity must survive rebuilds.  Pandoc otherwise invents a new
+# UUID each time, which makes stores (notably Google Play Books) treat an
+# updated file as an unrelated book.  Keep a private UUID namespace and derive
+# one identifier for each independently publishable edition.
+PUBLICATION_NAMESPACE = uuid.UUID("9857bfad-f269-55a1-a839-fae7375e68b6")
+PUBLICATION_KEY = "we-the-nameless"
+
+
+def publication_metadata(selected_book: str | None) -> dict[str, str]:
+    """Return stable store-facing metadata for a complete or single-book EPUB."""
+    edition = selected_book or "complete"
+    identity = f"{PUBLICATION_KEY}:{edition.casefold()}"
+    return {
+        "identifier": f"urn:uuid:{uuid.uuid5(PUBLICATION_NAMESPACE, identity)}",
+        "title": "We The Nameless" if selected_book is None else f"We The Nameless: {selected_book}",
+        "publisher": "LD LLC",
+    }
 
 # Publisher fonts are limited to scripts whose repertoire/design carries
 # meaning. Ordinary prose deliberately remains in the reader's chosen font.
@@ -1224,6 +1243,8 @@ def main() -> int:
                "--to=epub3", "--output", str(args.output), "--standalone",
                "--toc", "--toc-depth=2", "--split-level=1", "--css", str(HERE / "epub.css"),
                "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]
+        for key, value in publication_metadata(args.book).items():
+            cmd += [f"--metadata={key}:{value}"]
         for font in FONT_FILES:
             cmd += ["--epub-embed-font", str(font)]
         # The reflowable title page above is the cover. Keep it typographically

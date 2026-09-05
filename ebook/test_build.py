@@ -10,6 +10,16 @@ import build
 
 
 class ConversionTests(unittest.TestCase):
+    def test_publication_identity_is_stable_and_scoped_per_edition(self) -> None:
+        complete = build.publication_metadata(None)
+        genesis = build.publication_metadata("Genesis")
+        self.assertEqual(complete, build.publication_metadata(None))
+        self.assertTrue(complete["identifier"].startswith("urn:uuid:"))
+        self.assertNotEqual(complete["identifier"], genesis["identifier"])
+        self.assertEqual(complete["title"], "We The Nameless")
+        self.assertEqual(genesis["title"], "We The Nameless: Genesis")
+        self.assertEqual(complete["publisher"], "LD LLC")
+
     def test_wrapped_image_inside_footnote_stays_inline_and_clean(self) -> None:
         source = (
             r"\footnote{Before \begin{wrapfigure}{r}{0.40\linewidth}"

@@ -7,6 +7,7 @@ import argparse
 import posixpath
 import re
 import sys
+import uuid
 import zipfile
 from pathlib import PurePosixPath
 from urllib.parse import unquote, urlsplit
@@ -54,6 +55,23 @@ def main() -> int:
             unique = package.attrib.get("unique-identifier")
             if not unique or not any(item.attrib.get("id") == unique for item in identifiers):
                 fail(errors, "package unique-identifier does not resolve")
+            if len(identifiers) != 1 or not (identifiers[0].text or "").strip():
+                fail(errors, "package must contain exactly one non-empty publication identifier")
+            else:
+                identifier = (identifiers[0].text or "").strip()
+                if not identifier.startswith("urn:uuid:"):
+                    fail(errors, "publication identifier must be a stable urn:uuid")
+                else:
+                    try:
+                        uuid.UUID(identifier.removeprefix("urn:uuid:"))
+                    except ValueError:
+                        fail(errors, "publication identifier contains an invalid UUID")
+            titles = package.findall(".//{http://purl.org/dc/elements/1.1/}title")
+            languages = package.findall(".//{http://purl.org/dc/elements/1.1/}language")
+            if not any((item.text or "").strip() for item in titles):
+                fail(errors, "package has no title")
+            if not any((item.text or "").strip() for item in languages):
+                fail(errors, "package has no language")
             for item in package.findall(".//opf:manifest/opf:item", NS):
                 href = unquote(item.attrib.get("href", ""))
                 resolved = posixpath.normpath(posixpath.join(opf_dir, href))

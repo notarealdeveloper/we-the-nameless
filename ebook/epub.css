@@ -30,14 +30,14 @@ body { margin: 5%; widows: 2; orphans: 2; text-rendering: optimizeLegibility; fo
  */
 body, body * { font-variant: normal; font-variant-caps: normal; }
 h1, h2, h3 { font-family: sans-serif; }
-.wtn-title-page { break-before: page; break-after: page; page-break-before: always; page-break-after: always; min-height: 90vh; padding-top: 16%; text-align: center; }
+.wtn-title-page { break-before: page; break-after: page; page-break-before: always; page-break-after: always; padding: 16% 0 30%; text-align: center; }
 .title-we, .title-nameless, .title-book { font-family: sans-serif; line-height: 1.08; }
 .title-we { color: #000 !important; font-size: 4.8em; font-variant: small-caps; font-weight: 700; letter-spacing: .04em; }
 .title-nameless { color: #820000 !important; font-size: 2.15em; margin-top: .7em; }
 .title-book { color: #0046aa !important; font-size: 2.65em; font-variant: small-caps; font-weight: 700; margin-top: 2.6em; }
 .front-heading { break-before: page; page-break-before: always; font-size: 2.2em; text-align: center; }
 .alphabet-heading { visibility: hidden; height: 0; margin: 0; }
-.alphabet-page { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; }
+.alphabet-page { padding: 25% 0; text-align: center; }
 .alphabet { font-size: 2.1em; line-height: 1.8; margin: .35em 0; text-align: justify; }
 .paleo { font-family: "WTN Paleo J", serif; color: #007800 !important; }
 .hebrew-david { font-family: "WTN Hebrew David", serif; }
@@ -56,7 +56,7 @@ h1, h2, h3 { font-family: sans-serif; }
 .source-legend dt, .source-legend dd { margin: 0 0 1em; text-align: left; }
 .source-legend dt { font-weight: bold; }
 .font-legend .hebrew { font-size: 1.75em; margin-bottom: 0; }
-.publication-notice { break-before: page; page-break-before: always; font-family: monospace; font-size: .78em; line-height: 1.4; min-height: 82vh; text-align: center; display: flex; flex-direction: column; justify-content: flex-end; }
+.publication-notice { break-before: page; page-break-before: always; font-family: monospace; font-size: .78em; line-height: 1.4; padding-top: 35%; text-align: center; }
 .publication-logo { width: 1in; margin: 2em auto 0; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 .book-title { text-align: center; page-break-before: always; break-before: page; font-size: 3.2em; font-variant: small-caps; }
