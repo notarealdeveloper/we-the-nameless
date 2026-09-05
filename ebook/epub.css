@@ -68,6 +68,8 @@ h1, h2, h3 { font-family: serif; }
 .verse-translation { margin: 0; text-align: left; }
 .verse-commentary { font-size: var(--commentary-size); margin: var(--space-md) 0 0; }
 .annotation { margin: var(--space-sm) 0; }
+.annotation-paragraph { display: block; margin: 0 0 var(--space-sm); }
+.annotation-paragraph:last-child { margin-bottom: 0; }
 .annotation-a { color: var(--annotation-a); } .annotation-b { color: var(--annotation-b); }
 .annotation-c, .annotation-p { color: var(--annotation-c); }
 .annotation-r { color: var(--source-p); background: var(--source-r-bg); }

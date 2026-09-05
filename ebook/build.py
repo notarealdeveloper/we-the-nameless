@@ -235,6 +235,7 @@ def render_table(body: str, column_spec: str, custom_setup: bool = False) -> str
                 ) + "</span>",
                 content,
             )
+            content = re.sub(r"\s*\n\s*", " ", content)
             alignment = alignments[column] if column < len(alignments) else "start"
             rendered_cells.append(f'<{tag}{attrs} class="align-{alignment}">{content}</{tag}>')
         rendered = "".join(rendered_cells)
@@ -254,6 +255,16 @@ def render_table(body: str, column_spec: str, custom_setup: bool = False) -> str
     if custom_setup:
         classes.append("wtn-table-custom")
     return f'\n\n<div class="table-scroll"><table class="{" ".join(classes)}">{contents}</table></div>\n\n'
+
+
+def annotation_block(content: str, classes: str, alignment: str) -> str:
+    """Keep multi-paragraph annotations valid inside Markdown fenced divs."""
+    blocks = []
+    for part in re.split(r"\n\s*\n", content.strip()):
+        part = re.sub(r"\s*\n\s*", " ", part).strip()
+        if part:
+            blocks.append(f'<span class="annotation-paragraph">{part}</span>')
+    return f'<span class="annotation {classes} align-{alignment}" role="note">{"".join(blocks)}</span>'
 
 
 def command_at(text: str, pos: int) -> tuple[str, int] | None:
@@ -276,7 +287,6 @@ def tex_to_markdown(text: str) -> str:
     """Conservatively retain prose while translating semantic TeX markup."""
     text = textwrap.dedent(strip_comments(text)).replace("~", "\u00a0")
     text = text.replace("``", "“").replace("''", "”")
-    text = text.replace("\\\\", "<br/>")
     math_runs: list[str] = []
 
     def protect_math(match: re.Match[str]) -> str:
@@ -285,7 +295,12 @@ def tex_to_markdown(text: str) -> str:
         math_runs.append(math)
         return token
 
-    text = re.sub(r"(?<!\\)\$\$.*?(?<!\\)\$\$|(?<!\\)\$[^$\n]+(?<!\\)\$", protect_math, text, flags=re.DOTALL)
+    text = re.sub(
+        r"(?<!\\)\$\$.*?(?<!\\)\$\$|(?<!\\)\$(?![\d,])[^$\n]+(?<!\\)\$",
+        protect_math,
+        text,
+        flags=re.DOTALL,
+    )
     out: list[str] = []
     i = 0
     while i < len(text):
@@ -333,6 +348,8 @@ def tex_to_markdown(text: str) -> str:
             out.append("—"); i = after; continue
         if name in {"ndash", "textendash"}:
             out.append("–"); i = after; continue
+        if name == "\\":
+            out.append("<br/>"); i = after; continue
         if name in {"hfill", "noindent", "centering", "raggedbottom", "RaggedRight",
                     "relax", "leavevmode", "sloppy", "tiny", "scriptsize", "footnotesize",
                     "small", "large", "Large", "bfseries", "ttfamily", "selectfont"}:
@@ -405,7 +422,7 @@ def tex_to_markdown(text: str) -> str:
             if any(marker in rendered for marker in ("<div ", "<table")):
                 out.append(rendered)
             elif "\n\n" in rendered:
-                out.append(f'<div class="annotation {cls} align-{alignment}" role="note">{rendered}</div>')
+                out.append(annotation_block(rendered, cls, alignment))
             else:
                 note = re.sub(r"\s*\n\s*", " ", rendered)
                 out.append(f'<span class="annotation {cls} align-{alignment}" role="note">{note}</span>')

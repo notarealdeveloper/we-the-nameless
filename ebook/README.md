@@ -55,6 +55,54 @@ A build requires Pandoc 3. `--keep-markdown` on `build.py` preserves
 - Language helpers carry explicit `lang` and `dir` attributes. Base bidi
   direction is never established with CSS.
 
+## LaTeX → EPUB component mapping
+
+`master.tex` is the authority for these components. The renderer keeps their
+editorial relationships while replacing paper geometry with reflow-safe HTML.
+
+- `\Verse{number}{Hebrew}{English}{commentary}` maps to `.verse`, containing a
+  ruled, centered `.verse-reference`, followed by `.verse-translation`,
+  `.verse-source`, and (when nonempty) `.verse-commentary`. This is the exact
+  document order of `\VerseVertical`: ragged-left English first, a medium gap,
+  then right-aligned RTL Hebrew. The commentary follows after another medium
+  gap. EPUB always uses this vertical mode; it does not reproduce
+  `\VerseColumns` or its paper-only center rule.
+- `\Table[setup]{columns}{rows}` maps to `.wtn-table` with semantic `thead`,
+  `tbody`, `th`, and `td` elements. It preserves the print component's blue
+  definition color, compact default scale and cell padding, centered table box,
+  column alignment, and only the rules explicitly requested by the TeX column
+  preamble or `\hline`. On narrow screens cells wrap; horizontal overflow is a
+  fallback. A custom setup is represented by `.wtn-table-custom`, which inherits
+  the surrounding type size because arbitrary TeX setup cannot be portable CSS.
+- `\Def{term}[qualifier]{body}` maps to `.definition`, with a
+  `.definition-heading`, semantic `dfn`, optional parenthesized
+  `.definition-qualifier`, terminal period, and `.definition-body`. Like
+  `\DefBlock`, the whole unit is blue, normal roman text, indented by two em;
+  the term alone is bold and the body starts on the following line. There is no
+  decorative border or background because the LaTeX component has neither.
+  `\DefA`, `\DefB`, and `\DefC` retain black, red, and blue voice colors.
+- `\aA`, `\aB`, and `\aC` map to `.annotation-a`, `.annotation-b`, and
+  `.annotation-c`: normal-size roman commentary in black, red, and blue.
+  The generated `l/c/r` shortcut forms retain their intentional alignment;
+  ordinary commentary is not centered or artificially indented.
+- `\fA`, `\fB`, and `\fC` become EPUB noterefs and footnote asides whose note
+  content retains the corresponding annotation voice. This mirrors the LaTeX
+  definition: each is a colored commentary wrapper around `\footnote`.
+- `\eJ`/`\hJ` and the other `e*`/`h*` source-profile pairs map to shared
+  `.source-*` identities applied independently to English and Hebrew spans.
+  Hue, weight, highlight background, source-specific face, and consonantal
+  conversion follow the profile bundles in `master.tex`; Hebrew spans also
+  carry `lang="he" dir="rtl"` in markup.
+- `\paleo` and historical source profiles use embedded Paleo-Hebrew faces;
+  `\egypt`, Hebrew, Arabic, Syriac, Ugaritic, and cuneiform helpers carry
+  language/direction metadata and the matching embedded specialist face.
+
+The light palette uses the literal RGB definitions from `master.tex`. Dark-mode
+overrides follow its dark palette where reading systems support the media query;
+this is an intentional adaptive difference needed for contrast. Ordinary
+English prose remains in the reader-selected serif face, as in the existing
+EPUB policy.
+
 ## Type and color
 
 Normal prose uses the reading system's book face, size, line spacing, and
