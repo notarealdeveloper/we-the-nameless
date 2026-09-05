@@ -70,7 +70,7 @@ class ConversionTests(unittest.TestCase):
         self.assertNotIn('font-family: "Noto Sans"', stylesheet)
         self.assertNotIn('font-family: "WTN Noto Sans"', stylesheet)
         self.assertIn("body {", stylesheet)
-        self.assertIn("font-family: serif; font-size: 87.5%;", stylesheet)
+        self.assertIn("font-family: serif; font-size: 100%;", stylesheet)
         self.assertIn("body, body * { font-variant: normal; font-variant-caps: normal; }", stylesheet)
 
     def test_only_textsc_generates_smallcaps(self) -> None:
@@ -98,10 +98,25 @@ class ConversionTests(unittest.TestCase):
         self.assertNotIn("<annotation", rendered)
 
     def test_front_matter_contains_named_alphabet_history_page(self) -> None:
-        matter = "\n".join(build.front_matter([], {}))
+        matter = "\n".join(build.front_matter([], {}, "Genesis"))
         self.assertIn("# The History of the Alphabet", matter)
         self.assertIn('class="alphabet-page"', matter)
+        self.assertIn('<div class="title-book">Genesis</div>', matter)
         self.assertNotIn("we-cover-2.png", Path(build.__file__).read_text())
+
+    def test_definition_list_has_markdown_block_boundaries(self) -> None:
+        rendered = build.tex_to_markdown(
+            r"\Def{term}[name]{\begin{enumerate}\item First.\item Second.\end{enumerate}}"
+        )
+        self.assertIn('<div class="definition-body">\n\n-  First.', rendered)
+        self.assertIn('Second.\n\n</div>\n\n</section>', rendered)
+
+    def test_recursive_footnote_is_inlined_inside_parent_note(self) -> None:
+        rendered = build.tex_to_markdown(
+            r"Text\footnote{Outer\recursivefootnote{Inner}}"
+        )
+        self.assertEqual(rendered.count("^["), 1)
+        self.assertIn('<span class="nested-footnote">[Inner]</span>', rendered)
 
     def test_raw_tabular_is_semantic_table(self) -> None:
         rendered = build.tex_to_markdown(r"\begin{tabular}{lcr}a&b&c\\d&e&f\end{tabular}")

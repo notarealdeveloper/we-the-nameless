@@ -766,10 +766,11 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                         + tex_to_markdown(qualifier_value).strip() + ")</span>"
                     )
                 out.append(
-                    f'\n\n<section class="definition {cls}">'
-                    f'<p class="definition-heading"><dfn>{label}</dfn>{qualifier}.</p>'
-                    f'<div class="definition-body">{tex_to_markdown(definition).strip()}</div>'
-                    f'</section>\n\n'
+                    f'\n\n<section class="definition {cls}">\n\n'
+                    f'<p class="definition-heading"><dfn>{label}</dfn>{qualifier}.</p>\n\n'
+                    f'<div class="definition-body">\n\n'
+                    f'{tex_to_markdown(definition).strip()}\n\n'
+                    f'</div>\n\n</section>\n\n'
                 )
             else:
                 out.append(f"<dfn>{label}</dfn>")
@@ -852,6 +853,12 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 if out:
                     out[-1] = out[-1].rstrip()
                 out.append(f'^[<span class="footnote-voice annotation-{voice.lower()}">{rendered}</span>]')
+        elif name == "recursivefootnote" and compact:
+            # EPUB/HTML footnotes cannot contain another noteref/aside pair.
+            # Preserve a recursive print note in place inside its parent note
+            # instead of letting Pandoc generate a self-referential duplicate
+            # fnref id.
+            out.append(f'<span class="nested-footnote">[{rendered}]</span>')
         elif name == "footnote" or name in {"recursivefootnote", "hangingfootnote"}:
             if "annotation-paragraph" in rendered:
                 rendered = re.sub(r"</?span(?:\s[^>]*)?>", "", rendered)
@@ -1008,7 +1015,11 @@ def chapter_summaries() -> dict[tuple[str, str], str]:
     return summaries
 
 
-def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str], str]) -> list[str]:
+def front_matter(
+    sequence: list[tuple[str, str]],
+    summaries: dict[tuple[str, str], str],
+    edition_title: str = "Complete Edition",
+) -> list[str]:
     """Reproduce the visible front matter from master.tex in reflowable form."""
     books = list(dict.fromkeys(book for book, _ in sequence))
     contents_sections: list[str] = [":::: {.contents-list}"]
@@ -1030,6 +1041,7 @@ def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str
         '<section class="wtn-title-page" epub:type="titlepage">',
         '<div class="title-we">We</div>',
         '<div class="title-nameless">The Nameless</div>',
+        f'<div class="title-book">{html.escape(edition_title)}</div>',
         '</section>', "",
         '# The History of the Alphabet {.front-heading .alphabet-heading}', "",
         '<div class="alphabet-page" dir="rtl" epub:type="frontmatter">',
@@ -1066,7 +1078,10 @@ def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str
 def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, int]:
     sequence = master_sequence(selected_book)
     summaries = chapter_summaries()
-    lines = ["---", "lang: en-US", "---", ""] + front_matter(sequence, summaries)
+    edition_title = selected_book or "Complete Edition"
+    lines = ["---", "lang: en-US", "---", ""] + front_matter(
+        sequence, summaries, edition_title
+    )
     last_book = None
     chapter_count = verse_count = 0
     for book, rel in sequence:
