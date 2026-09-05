@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import unicodedata
 from pathlib import Path
 
 
@@ -18,6 +19,39 @@ ROOT = Path(__file__).resolve().parents[1]
 HERE = Path(__file__).resolve().parent
 MASTER = ROOT / "master.tex"
 OUTPUT = HERE / "we-the-nameless.epub"
+
+# Fonts used by master.tex.  Pandoc embeds these in the EPUB so the design does
+# not depend on whichever fonts happen to be installed on the reading device.
+FONT_FILES = [
+    ROOT / "fonts/hebrew-david.ttf",
+    ROOT / "fonts/hebrew-david-bold.ttf",
+    ROOT / "fonts/hebrew-ezra.ttf",
+    ROOT / "fonts/paleo-hebrew-phoenician.ttf",
+    ROOT / "fonts/paleo-hebrew.ttf",
+    ROOT / "fonts/paleo-hebrew-siloam.ttf",
+    ROOT / "fonts/paleo-hebrew-mono.ttf",
+    ROOT / "fonts/english-im-fell-english-sc-regular.ttf",
+]
+
+
+def system_font(command: str, *args: str) -> Path | None:
+    executable = shutil.which(command)
+    if not executable:
+        return None
+    result = subprocess.run([executable, *args], text=True, capture_output=True, check=False)
+    path = Path(result.stdout.splitlines()[0]) if result.stdout.strip() else None
+    return path if path and path.is_file() else None
+
+
+for discovered_font in (
+    system_font("fc-match", "FreeSerif", "-f", "%{file}\n"),
+    system_font("fc-match", "FreeSerif:style=Bold", "-f", "%{file}\n"),
+    system_font("fc-match", "FreeSerif:style=Italic", "-f", "%{file}\n"),
+    system_font("fc-match", "FreeSerif:style=Bold Italic", "-f", "%{file}\n"),
+    system_font("kpsewhich", "lmroman10-regular.otf"),
+):
+    if discovered_font and discovered_font not in FONT_FILES:
+        FONT_FILES.append(discovered_font)
 
 SOURCE_NAMES = {
     "J": "J", "E": "E", "P": "P", "R": "R", "X": "Other",
@@ -37,6 +71,22 @@ INLINE = {
     "paleo": "span", "Paleo": "span", "Def": "dfn", "redacted": "span",
     "sout": "s", "textsuperscript": "sup", "path": "code", "href": "a",
 }
+
+HEBREW_ORDER = "אבגדהוזחטיכךלמםנןסעפףצץקרשת"
+PALEO_ASCII = "ABGDHWZXJYKKLMMNNS]PPC CQRVT".replace(" ", "")
+PHOENICIAN = "𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤊𐤋𐤌𐤌𐤍𐤍𐤎𐤏𐤐𐤐𐤑𐤑𐤒𐤓𐤔𐤕"
+PALEO_ASCII_TABLE = str.maketrans(HEBREW_ORDER, PALEO_ASCII)
+PHOENICIAN_TABLE = str.maketrans(HEBREW_ORDER, PHOENICIAN)
+
+
+def historical_hebrew(text: str, key: str) -> str:
+    """Apply the same broad Hebrew encodings as master.tex's source profiles."""
+    text = "".join(char for char in text if not unicodedata.combining(char))
+    if key == "J":
+        return text.translate(PHOENICIAN_TABLE)
+    if key in {"E", "JE", "RJE", "BookOfRecords", "Other"} or key.startswith("Proto"):
+        return text.translate(PALEO_ASCII_TABLE)
+    return text
 
 
 def log(message: str) -> None:
@@ -145,6 +195,8 @@ def tex_to_markdown(text: str) -> str:
             language, key = src
             attrs = ' lang="he" dir="rtl"' if language == "hebrew" else ""
             label = html.escape(SOURCE_NAMES[key])
+            if language == "hebrew":
+                rendered = historical_hebrew(rendered, key)
             out.append(f'<span class="source source-{key.lower()} {language}"{attrs} data-source="{label}">{rendered}</span>')
         elif name in COMMENTARY:
             out.append(f'\n\n::: {{.{COMMENTARY[name]}}}\n{rendered}\n:::\n\n')
@@ -228,12 +280,56 @@ def master_sequence(selected_book: str | None = None) -> list[tuple[str, str]]:
     return sequence
 
 
+def front_matter(sequence: list[tuple[str, str]]) -> list[str]:
+    """Reproduce the visible front matter from master.tex in reflowable form."""
+    books = list(dict.fromkeys(book for book, _ in sequence))
+    contents = "\n".join(
+        f'<li><a href="#{re.sub(r"[^a-z0-9]+", "-", book.lower()).strip("-")}">{html.escape(book)}</a></li>'
+        for book in books
+    )
+    return [
+        '<section class="wtn-title-page" epub:type="titlepage">',
+        '<div class="title-we">We</div>',
+        '<div class="title-nameless">The Nameless</div>',
+        '</section>', "",
+        '# The Alphabet {.front-heading .alphabet-heading}', "",
+        '<div class="alphabet-page" dir="rtl">',
+        '<p class="alphabet paleo">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p>',
+        '<p class="alphabet hebrew-david">אבגדהוזחטיכלמנסעפצקרשת</p>',
+        '<p class="alphabet hebrew-ezra">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p>',
+        '</div>', "",
+        '# Contents {.front-heading}', "", f'<ol class="contents-list">{contents}</ol>', "",
+        '# The Authors {.front-heading}', "",
+        '<p class="authors-subtitle"><em>or</em><br/><span>We: The Nameless</span></p>',
+        '<p class="legend-key"><span class="source source-j">J</span> &nbsp; '
+        '<span class="source source-e">E</span> &nbsp; '
+        '<span class="source source-p">P</span> &nbsp; '
+        '<span class="source source-r">R</span></p>',
+        '<dl class="source-legend">',
+        '<dt class="source source-j">Green</dt><dd class="source source-j">J. The first author of the bible. The first author of prose in history. The author of the most widely known bible stories. The author of the bible with the best sense of human nature. We have little knowledge of the author’s identity beyond this.</dd>',
+        '<dt class="source source-e">Yellow</dt><dd class="source source-e">Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. The first author in this group is commonly known as the Elohist, or E.</dd>',
+        '<dt class="source source-p">Blue</dt><dd class="source source-p">Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in Jerusalem. The first author in this group is known as the Priestly source, or P.</dd>',
+        '<dt class="source source-dtrb">Orange</dt><dd class="source source-dtrb">Deuteronomists. The later Mushite tradition, associated with king Josiah, the Shiloh and Anathoth priesthood, and the prophet Jeremiah.</dd>',
+        '<dt class="source source-r">Highlights</dt><dd class="source source-r">Editors. Called Redactors in bible circles, since E was already taken. Redactors mostly insert glue prose when combining sources.</dd>',
+        '<dt class="source source-bookofrecords">Record Grey</dt><dd class="source source-bookofrecords">Records. Begat lists, genealogies, and miscellaneous documents.</dd>',
+        '</dl>', "",
+        '# The Source Fonts {.front-heading}', "",
+        '<div class="font-legend"><p class="source source-j hebrew" dir="rtl">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
+        '<p class="source source-e hebrew" dir="rtl">ABGDHWZXJYKLMNS]PCQRVT</p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
+        '<p class="source source-p hebrew" dir="rtl">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p><p class="source source-p">P is rendered in the modern Hebrew square script with niqqud.</p>',
+        '<p class="source source-r hebrew" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</p><p class="source source-r">R uses the Ezra variant of the Hebrew square script with no niqqud.</p></div>', "",
+        '# Publication Notice {.front-heading .visually-hidden}', "",
+        '<div class="publication-notice"><p><span class="aside-a">LD LLC makes no claim to have written the book that follows.<br/>We could not find a published edition of it, and thought one<br/>ought to exist. LD undertook the preparation of the text for<br/>publication, including its editing, typesetting, design, and</span><br/><span class="aside-b">production and is responsible for the volume presented here,<br/>but we make no claim to know the identity of the individuals<br/>who wrote the original text, nor do we make any claim to the<br/>effect that the original authors did not incorporate in that</span><br/><span class="aside-c">volume any earlier sources either verbatim or in paraphrase.<br/>In summary, it’s a bible, and all rules of that genre apply.<br/>If your work has been incorporated into the resulting volume<br/>and you would like to be removed from the bible, let us know</span></p>',
+        '<img class="publication-logo" src="img/ld-book-light.png" alt="LD"/></div>', "",
+    ]
+
+
 def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, int]:
-    lines = ["---", 'title: "We The Nameless"', "lang: en-US", "---", "",
-             '# We The Nameless {.title-page}', "", "*The bible is weirder than you remember.*", ""]
+    sequence = master_sequence(selected_book)
+    lines = ["---", "lang: en-US", "---", ""] + front_matter(sequence)
     last_book = None
     chapter_count = verse_count = 0
-    for book, rel in master_sequence(selected_book):
+    for book, rel in sequence:
         source = (ROOT / rel).read_text(encoding="utf-8")
         chapter_match = re.search(r"\\Chapter\s*\{([^}]+)\}", strip_comments(source))
         chapter = chapter_match.group(1).strip() if chapter_match else Path(rel).stem
@@ -295,7 +391,9 @@ def main() -> int:
         cmd = ["pandoc", str(manuscript), "--from=markdown+fenced_divs+footnotes",
                "--to=epub3", "--output", str(args.output), "--standalone",
                "--toc", "--toc-depth=2", "--split-level=2", "--css", str(HERE / "epub.css"),
-               "--metadata-file", str(HERE / "metadata.yaml")]
+               "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]
+        for font in FONT_FILES:
+            cmd += ["--epub-embed-font", str(font)]
         cover = ROOT / "img/covers/we-cover-2.png"
         if cover.exists():
             cmd += ["--epub-cover-image", str(cover)]

@@ -3,6 +3,10 @@
 `we-the-nameless.epub` is a reflowable EPUB 3 suitable for Kindle Previewer,
 Kindle Create, KDP upload, or Send to Kindle. It preserves right-to-left Hebrew,
 English translation, source-layer classes, commentary, footnotes, and navigation.
+Its embedded FreeSerif, Latin Modern, Hebrew, and Paleo-Hebrew fonts; source
+colors and highlights; title page; and front matter mirror `master.tex`. The
+light palette is the publication default, with the matching Everforest dark
+palette available on readers that honor `prefers-color-scheme`.
 
 Build it with:
 

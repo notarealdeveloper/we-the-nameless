@@ -1,0 +1,779 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+You are working in the **We the Nameless** book repository.
+
+There is already an `ebook/` directory containing a **bare-bones, barely working EPUB build** and **book-specific Make targets**. Your job is not to replace that with an unrelated ebook pipeline. Your job is to **take over, understand, repair, extend, and substantially improve the existing ebook system** until it produces a genuinely beautiful reflowable EPUB that reproduces as much of the visual and semantic design of the print book as can reasonably be expressed in modern EPUB.
+
+## Goal
+
+Turn the current ebook build into a first-class renderer for the book.
+
+The print/PDF version remains the reference for the book's **visual language, hierarchy, typography, source coloring, commentary structure, footnotes, special scripts, tables, quotations, verse layout, marginal-ish material, section divisions, and other editorial devices**.
+
+The ebook should not attempt to imitate literal paper geometry where that conflicts with reflow. Instead:
+
+> Preserve the **design intent and information architecture** of the print book, and translate it intelligently into the most sophisticated reflowable EPUB representation that current EPUB reading systems can handle.
+
+The result should feel like **the same book designed natively for an ebook reader**, not like a stripped-down HTML export of the print version.
+
+## First: understand the repository
+
+Before making architectural changes:
+
+1. Inspect the root `Makefile` and all relevant included makefiles.
+2. Inspect `ebook/` completely.
+3. Find the existing book-specific ebook Make targets and determine exactly how they work.
+4. Determine what source files the print build consumes and what transformations/macros/styles produce the print output.
+5. Inspect the generated print/PDF version of at least one representative book if one exists locally.
+6. Identify the book's recurring visual constructs and their corresponding source representation/macros.
+7. Build the current ebook before changing it so you know the existing baseline and failure modes.
+
+Do not rewrite working infrastructure merely because you would have designed it differently.
+
+Preserve useful existing interfaces, especially commands of the form:
+
+```sh
+make <book-specific-ebook-target>
+```
+
+or whatever equivalent already exists.
+
+The final workflow should remain easy enough that ebook generation is an ordinary build target, not a manual publishing procedure.
+
+## Treat EPUB as a real web-document format
+
+Target **EPUB 3.x**, preferably valid EPUB 3.3-compatible markup unless compatibility requires something more conservative.
+
+Use:
+
+* semantic XHTML5
+* CSS
+* SVG where useful
+* embedded fonts
+* proper EPUB navigation
+* EPUB semantic vocabulary / `epub:type`
+* proper bidirectional markup
+* real Unicode
+* real tables where the material is tabular
+* real links and notes
+* MathML where actual mathematical notation occurs and it is advantageous
+* accessible semantic structures rather than rasterized facsimiles
+
+Do **not** think of EPUB as “PDF but worse.”
+
+Think of it as:
+
+> a packaged semantic website specifically designed to be read as a book.
+
+Take advantage of that.
+
+## Use advanced CSS — intelligently
+
+Research what **current EPUB 3.x** reading systems support, rather than assuming EPUB means 2008-era CSS.
+
+Use modern CSS when it materially improves the book, including where appropriate:
+
+* `@font-face`
+* relative units
+* `em`, `rem`, `%`
+* `calc()`
+* CSS custom properties, where compatible
+* selectors and pseudo-elements
+* `::before` / `::after`
+* `:lang()`
+* `:dir()` if reading-system compatibility is adequate
+* `font-feature-settings`
+* `font-variant-*`
+* OpenType features
+* kerning
+* ligatures
+* proper small caps
+* letter spacing
+* line-height tuning
+* text decoration
+* border treatments
+* background treatments
+* rounded boxes if appropriate
+* gradients if useful and safely degradable
+* flexbox or grid **only where reading-system testing shows they degrade acceptably**
+* `break-before`
+* `break-after`
+* `break-inside`
+* legacy `page-break-*` fallbacks where necessary
+* `orphans`
+* `widows`
+* responsive sizing
+* `max-width`
+* viewport-relative features only where they behave safely under ebook pagination
+* media queries where genuinely supported and useful
+* color-scheme-aware presentation where supported
+* graceful fallback declarations for less capable readers
+
+However, do not use advanced CSS merely because it exists.
+
+The hierarchy is:
+
+1. semantic correctness
+2. readable reflow
+3. graceful degradation
+4. preservation of the book's visual grammar
+5. fancy CSS
+
+Avoid brittle hacks based on fixed screen dimensions.
+
+Avoid `position: absolute` and fixed positioning for normal ebook layout.
+
+## Kindle matters, but EPUB is the source format
+
+The generated artifact should be a proper EPUB, but **Amazon Kindle/KDP is an important target reading system**.
+
+Therefore distinguish between:
+
+### A. Things valid EPUB 3 readers can do
+
+and
+
+### B. Things Amazon's current Kindle conversion/rendering pipeline reliably preserves.
+
+Where Kindle supports a somewhat smaller subset, design graceful fallbacks.
+
+Do not cripple the entire EPUB to the oldest possible Kindle implementation unless necessary.
+
+Instead use progressive enhancement:
+
+```css
+/* robust baseline */
+...
+
+/* nicer representation when supported */
+...
+```
+
+The baseline must remain readable.
+
+Keep the ebook **reflowable** unless a very specific component truly requires another treatment. Do not turn the book into a fixed-layout ebook merely to preserve print geometry.
+
+## Reproduce the book's visual language
+
+Inspect the actual book rather than guessing.
+
+Build a reusable EPUB stylesheet/component system corresponding to the constructs that actually appear in the source.
+
+Likely examples include, but are not limited to:
+
+* biblical verse blocks
+* original-language lines
+* modern-English translation lines
+* commentary
+* source-critical J/E/P/D/etc. coloring
+* bold source colors
+* special red/blue/green/gold text
+* definitions
+* alternate definitions
+* lexical notes
+* footnotes
+* quotations
+* nested quotations
+* sidenote-like material
+* section headers
+* chapter headers
+* tables
+* genealogies
+* lists
+* poetry
+* dialogue
+* special asides
+* jokes/editorial interruptions
+* cross references
+* proper names
+* linguistic examples
+* Hebrew
+* Paleo-Hebrew
+* Greek
+* Syriac
+* Egyptian hieroglyphs
+* transliterations
+* IPA
+* mathematical notation
+* diagrams/images where present
+
+Do not collapse all of these into generic `<p>` tags with a few `<br>` elements.
+
+Give recurring semantic structures proper classes/elements and central styles.
+
+For example, prefer a conceptual structure like:
+
+```html
+<section class="verse" id="gen-1-1">
+  <div class="verse-number">1</div>
+
+  <div class="verse-original" lang="he" dir="rtl">
+    ...
+  </div>
+
+  <div class="verse-translation">
+    ...
+  </div>
+
+  <div class="commentary">
+    ...
+  </div>
+</section>
+```
+
+over an undifferentiated sequence of paragraphs.
+
+That example is illustrative; derive the actual component model from the repository.
+
+## Preserve source coloring
+
+The color system is editorial information, not decoration.
+
+Find the actual source colors used by the project and reproduce them intelligently in the ebook.
+
+Requirements:
+
+* preserve distinctions among source colors;
+* preserve bold/non-bold distinctions where meaningful;
+* colors must remain distinguishable against light, sepia, dark, and other reader themes;
+* do not unnecessarily force ordinary body text to black;
+* allow the reading system to control normal foreground/background colors where appropriate;
+* take advantage of Kindle's dynamic contrast behavior rather than fighting it;
+* test source colors on Kindle dark mode;
+* if necessary, choose ebook-specific variants of print colors that preserve hue identity and contrast better on multiple backgrounds.
+
+Keep these colors centralized in CSS variables or another single palette definition where practical, rather than scattering literal hex codes through generated XHTML.
+
+## Fonts
+
+Use embedded fonts aggressively **where the typography or character repertoire actually requires them**.
+
+The ebook may need fonts for things such as:
+
+* Paleo-Hebrew
+* Hebrew
+* Syriac
+* Egyptian hieroglyphs
+* specialist Unicode characters
+* distinctive display typography
+
+Inspect which fonts the print project uses and which licenses permit EPUB embedding.
+
+Do not blindly embed every font in the repository.
+
+Subset fonts where practical if this significantly reduces ebook size without breaking the build.
+
+Use `@font-face` cleanly.
+
+Example conceptual pattern:
+
+```css
+@font-face {
+    font-family: "WTN Paleo";
+    src: url("../fonts/paleo.otf");
+    font-style: normal;
+    font-weight: 400;
+}
+
+.paleo {
+    font-family: "WTN Paleo", serif;
+}
+```
+
+Do not convert text into images merely to retain a font unless there is no viable textual representation.
+
+Normal English prose should generally remain compatible with the reader's chosen book font unless a particular piece of typography genuinely needs publisher-font control.
+
+## RTL and mixed-direction text
+
+This project contains substantial RTL and bidirectional material.
+
+Handle it correctly and semantically.
+
+Use XHTML's:
+
+```html
+dir="rtl"
+dir="ltr"
+<bdi>
+<bdo>
+```
+
+and language attributes such as:
+
+```html
+lang="he"
+```
+
+where appropriate.
+
+Do **not** depend on CSS `direction` or `unicode-bidi` as the primary way of establishing base directionality; EPUB's own specification expects HTML directionality markup for this.
+
+Pay particular attention to:
+
+* Hebrew followed by punctuation
+* verse numbers next to Hebrew
+* Hebrew embedded inside English commentary
+* English embedded inside RTL runs
+* punctuation around inline Hebrew
+* footnote markers
+* parentheses
+* slash-separated forms
+* tables containing mixed LTR/RTL material
+
+Use actual Unicode bidi behavior deliberately rather than accumulating invisible control characters blindly.
+
+## Footnotes
+
+Make ebook footnotes genuinely good.
+
+Convert print footnotes into real EPUB note structures with bidirectional links.
+
+Use appropriate EPUB semantics such as:
+
+```html
+<a epub:type="noteref" ...>
+```
+
+and note bodies such as:
+
+```html
+<aside epub:type="footnote" ...>
+```
+
+where supported by the surrounding architecture.
+
+A reader should be able to:
+
+1. tap the note marker,
+2. read the note,
+3. return naturally to the exact source location.
+
+Preserve the project's different semantic categories of notes if they have meaningful distinctions.
+
+Do not merely append hundreds of footnotes to the chapter as ordinary paragraphs without navigation.
+
+## Tables
+
+Preserve genuine tables as semantic HTML tables whenever practical.
+
+Make them responsive enough for phone-sized reading.
+
+Use:
+
+* `<table>`
+* `<thead>`
+* `<tbody>`
+* `<th>`
+* `<td>`
+* captions where appropriate
+
+Allow Kindle's enhanced table handling to work.
+
+For very complicated print tables, intelligently adapt them rather than shrinking them into unreadability.
+
+Possible adaptations include:
+
+* fewer columns at once;
+* vertical/key-value transformations;
+* wrapping cells;
+* repeated labels;
+* strategically splitting one huge table into several semantic tables.
+
+Do not rasterize tables unless absolutely necessary.
+
+## Images, diagrams, SVG
+
+Use SVG where suitable for diagrams, line art, simple maps, glyph-like visual material, or things that benefit from resolution independence.
+
+Use raster images for actual raster artwork/photography.
+
+Make image sizing responsive.
+
+Preserve captions and associations between figures and captions.
+
+Do not encode ordinary text into images.
+
+If an existing print visual cannot sensibly survive reflow, design an ebook-specific equivalent rather than simply deleting it.
+
+## Math
+
+Where the book contains true mathematical notation, evaluate use of **MathML** rather than raster images or mangled Unicode approximations.
+
+Maintain an acceptable fallback if required.
+
+## Accessibility and semantics
+
+The ebook should remain understandable to a reading system, not merely look correct.
+
+Use:
+
+* document headings in logical order;
+* landmarks;
+* semantic sections;
+* language annotations;
+* alt text for meaningful images;
+* sensible link text;
+* real lists;
+* real blockquotes;
+* real tables;
+* proper note references;
+* logical reading order.
+
+Visual arrangement must not destroy reading order.
+
+## Navigation
+
+Produce a polished navigation structure.
+
+At minimum:
+
+* EPUB navigation document
+* table of contents
+* chapter navigation
+* meaningful section destinations
+* stable IDs for verses where useful
+
+If appropriate, every biblical verse should have a predictable link target, e.g. conceptually:
+
+```text
+gen-1-1
+gen-1-2
+...
+```
+
+Use the project's actual naming convention if one already exists.
+
+Internal cross references should become clickable whenever feasible.
+
+## Reflow does NOT mean featureless
+
+Do not respond to layout difficulties by deleting formatting.
+
+Instead ask:
+
+> What was the print layout trying to communicate, and what is the best native ebook mechanism for communicating the same thing?
+
+Examples:
+
+A print margin note might become:
+
+* a styled inline aside,
+* a compact block,
+* a linked note,
+
+depending on its purpose.
+
+A two-column print construction might become:
+
+* stacked labeled regions on small readers,
+* a table when the relationship is genuinely tabular,
+* a flex/grid enhancement on capable readers with a stacked fallback.
+
+A visual separator might become:
+
+* CSS spacing,
+* border,
+* ornament,
+* SVG,
+* semantic section break.
+
+Preserve the *function*, not arbitrary coordinates.
+
+## Generate, don't hand-maintain
+
+Where the print source already contains structured information, write transformations that generate EPUB structures from it.
+
+Do not create a parallel giant hand-edited ebook manuscript if the source of truth already exists.
+
+Prefer:
+
+```text
+book source
+   ↓
+parser / transformer
+   ↓
+semantic intermediate representation if useful
+   ↓
+XHTML + CSS + OPF + nav
+   ↓
+EPUB
+```
+
+If the current ebook pipeline already has a useful intermediate representation, extend it.
+
+If it is currently based on brittle regexes and those regexes are preventing reliable transformation, replace the brittle portions with an actual parser/state machine/structured transformation where justified.
+
+But do this incrementally enough that the build keeps working.
+
+## Architecture
+
+Try to end with something approximately like:
+
+```text
+ebook/
+    Makefile or included make rules
+    src/ or scripts/
+        parser/converter logic
+        components/templates
+    css/
+        base.css
+        typography.css
+        components.css
+        book-specific overrides if necessary
+    fonts/
+        only fonts intended for embedding
+    templates/
+        package.opf
+        nav.xhtml
+        chapter.xhtml
+    build/
+        generated temporary files
+    dist/
+        final .epub files
+```
+
+Do not force this exact tree if the repository already has a sensible architecture.
+
+The important thing is separation between:
+
+* source parsing
+* semantic structure
+* visual styling
+* packaging
+* generated artifacts
+
+## Book-specific builds
+
+The repository has multiple books and book-specific Make targets.
+
+Retain that model.
+
+Common ebook rendering logic should be shared.
+
+Book-specific differences should be data/configuration whenever possible, not copied rendering engines.
+
+A new book should require something roughly equivalent to:
+
+```make
+make ebook-genesis
+make ebook-exodus
+```
+
+or whatever convention the repository already uses.
+
+Do not create fifteen slightly divergent CSS pipelines.
+
+## Validation
+
+Add automated validation to the build.
+
+Use `epubcheck` if available or straightforward to install/use in the repository environment.
+
+The EPUB build should fail on meaningful structural/package validation errors.
+
+Also add lightweight automated checks for things such as:
+
+* broken internal links
+* duplicate IDs
+* missing referenced assets
+* missing manifest resources
+* invalid XHTML
+* missing nav targets
+* missing font files
+* accidental absolute filesystem paths
+
+If a tool is unavailable, do not silently pretend validation happened.
+
+## Visual QA
+
+Automated validation is not enough.
+
+Use representative torture-test material from the actual book.
+
+Find examples containing as many of these as possible:
+
+* normal English
+* colored J/E/P text
+* Hebrew RTL
+* mixed Hebrew/English
+* Paleo-Hebrew
+* Egyptian hieroglyphs
+* footnotes
+* nested notes or complex commentary
+* table
+* image
+* section heading
+* unusual typography
+* poetry/dialogue
+* very long paragraph
+* very short paragraph
+* source-color transitions within a verse
+
+Generate a test EPUB early and repeatedly.
+
+If Kindle Previewer is installed locally, use it.
+
+If other EPUB readers/renderers are locally available, use those too.
+
+Do not assume “valid EPUB” means “looks good.”
+
+## Device/theme resilience
+
+The book should remain attractive at:
+
+* small phone width
+* typical Kindle width
+* tablet width
+* small text
+* very large accessibility text
+* light background
+* dark background
+* sepia-like background
+
+Do not design only for one screenshot width.
+
+User-controlled font size and line spacing are fundamental ebook features.
+
+Avoid anything whose meaning disappears when those settings change.
+
+## Compatibility policy
+
+For each fancy feature, decide among:
+
+### 1. Safe baseline
+
+Works broadly and is required for meaning.
+
+### 2. Progressive enhancement
+
+Improves appearance on capable readers but can disappear/degrade harmlessly.
+
+### 3. Too fragile
+
+Looks nice in one engine but breaks pagination, reading order, accessibility, Kindle conversion, or large-font rendering.
+
+Use category 1 heavily.
+
+Use category 2 enthusiastically.
+
+Do not use category 3.
+
+Document any important compatibility decisions in `ebook/README.md`.
+
+## README
+
+Expand or create `ebook/README.md`.
+
+Explain:
+
+* how the ebook build works;
+* how to build each book;
+* where generated EPUBs go;
+* how source constructs map to ebook constructs;
+* how fonts are handled;
+* how colors are handled;
+* how notes are handled;
+* how RTL is handled;
+* what validators/test tools are used;
+* known Kindle limitations;
+* intentional differences between print and ebook rendering.
+
+Keep it useful to the next person who modifies the system.
+
+## Important: inspect before simplifying
+
+This book intentionally contains unusual typography and layout.
+
+Do not see something weird and conclude it is accidental.
+
+Before removing or flattening any construct:
+
+1. inspect how it appears in the print book;
+2. determine what semantic/editorial purpose it serves;
+3. reproduce that purpose using an ebook-native mechanism.
+
+When uncertain, preserve more information rather than less.
+
+## Important: don't blindly convert LaTeX
+
+If the main source is LaTeX or LaTeX-like, do not assume that generic LaTeX → HTML conversion will produce the desired result.
+
+The project's custom macros encode a lot of semantic information.
+
+Exploit that information.
+
+For example, if a macro means “definition,” “source J,” “footnote type B,” “Egyptian,” “Paleo-Hebrew,” “verse,” etc., map that macro intentionally to a corresponding XHTML component/class.
+
+A purpose-built transformer for this project is preferable to a generic converter that loses the semantics and then tries to reconstruct them from visual output.
+
+## Preserve the print build
+
+Do not break or significantly alter the existing print/PDF build while implementing the ebook build.
+
+Changes to shared source macros must remain backward compatible unless there is a compelling reason otherwise.
+
+Prefer adding ebook-side interpretation to changing authoring syntax.
+
+## Work autonomously
+
+Do not stop after producing an architectural proposal.
+
+Actually modify the repository.
+
+Build the EPUB.
+
+Inspect failures.
+
+Fix them.
+
+Validate it.
+
+Open/inspect generated XHTML/CSS/package files.
+
+Iterate on representative material.
+
+Continue until the ebook is materially better than the current bare-bones implementation.
+
+When you encounter a design choice, infer the intended behavior from:
+
+1. the existing print output;
+2. existing source macros;
+3. patterns elsewhere in the repository;
+4. existing ebook code;
+5. EPUB and Kindle specifications.
+
+Ask me only when the source genuinely leaves an editorial choice unknowable.
+
+## Definition of done
+
+This task is done when:
+
+* the existing book-specific ebook Make targets work, or improved equivalents preserve their interface;
+* they produce valid EPUBs;
+* the EPUB is genuinely reflowable;
+* the result has a coherent, deliberate visual design;
+* the ebook clearly looks like **this book**, not generic exported HTML;
+* source colors survive appropriately;
+* special scripts render as actual text wherever feasible;
+* embedded fonts work;
+* RTL works;
+* footnotes work as ebook notes;
+* navigation works;
+* tables are readable;
+* images/diagrams are handled intelligently;
+* large-font rendering remains usable;
+* dark/light themes remain usable;
+* the renderer is shared across books rather than duplicated;
+* validation is automated;
+* `ebook/README.md` documents the system;
+* the print build still works.
+
+Most importantly:
+
+> **Do not optimize for making the EPUB resemble individual PDF pages. Optimize for making it feel as though the original book designer had designed the same book specifically for a modern ebook reader.**
+
+Be ambitious. EPUB 3 is much closer to a modern web platform than to an old stripped-down ebook format. Use that capability, while maintaining fallbacks for the real reading systems we care about.
+
+EOF
