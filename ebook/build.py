@@ -25,7 +25,6 @@ OUTPUT = HERE / "we-the-nameless.epub"
 # Publisher fonts are limited to scripts whose repertoire/design carries
 # meaning. Ordinary prose deliberately remains in the reader's chosen font.
 FONT_FILES = [
-    ROOT / "fonts/noto-sans-regular.ttf",
     ROOT / "fonts/hebrew-david.ttf",
     ROOT / "fonts/hebrew-david-bold.ttf",
     ROOT / "fonts/hebrew-ezra.ttf",
