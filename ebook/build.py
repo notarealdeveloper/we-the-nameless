@@ -202,9 +202,21 @@ def render_table(body: str) -> str:
             continue
         tag = "th" if row_number == 0 else "td"
         attrs = ' scope="col"' if tag == "th" else ""
-        rendered = "".join(
-            f"<{tag}{attrs}>{tex_to_markdown(cell).strip()}</{tag}>" for cell in cells
-        )
+        rendered_cells: list[str] = []
+        for cell in cells:
+            content = tex_to_markdown(cell).strip()
+            # Inline dollar math inside raw HTML tables can be paired across
+            # cell boundaries by Markdown parsers. Keep simple table math
+            # textual and local; display equations elsewhere still use MathML.
+            content = re.sub(
+                r"\$([^$]+)\$",
+                lambda match: '<span class="math">' + html.escape(
+                    match.group(1).replace(r"\sim", "∼").replace(r"\approx", "≈")
+                ) + "</span>",
+                content,
+            )
+            rendered_cells.append(f"<{tag}{attrs}>{content}</{tag}>")
+        rendered = "".join(rendered_cells)
         rendered_rows.append(f"<tr>{rendered}</tr>")
     if not rendered_rows:
         return ""
@@ -538,13 +550,13 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
         heading = f"{chapter}. {summary}" if summary else f"{book} {chapter}"
         lines += [f"## {heading} {{#{anchor} .chapter-title}}", ""]
         chapter_count += 1
+        verse_occurrences: dict[str, int] = {}
         for number, hebrew, english, commentary in parse_verses(source):
             verse_count += 1
             number_slug = re.sub(r'[^a-zA-Z0-9]+', '-', number).strip('-')
             base_verse_anchor = f"{anchor}-{number_slug}"
-            duplicate_count = sum(
-                1 for line in lines if f"#{base_verse_anchor}" in line and ".verse " in line
-            )
+            duplicate_count = verse_occurrences.get(base_verse_anchor, 0)
+            verse_occurrences[base_verse_anchor] = duplicate_count + 1
             verse_anchor = base_verse_anchor if not duplicate_count else f"{base_verse_anchor}-alternate-{duplicate_count + 1}"
             lines += [f':::::: {{.verse #{verse_anchor}}}', f'### {number} {{#{verse_anchor}-number .verse-number}}',
                       '::::: {.hebrew-block lang="he" dir="rtl"}', tex_to_markdown(hebrew), ":::::",
