@@ -205,7 +205,7 @@ def parse_verses(text: str) -> list[tuple[str, str, str, str]]:
     return verses
 
 
-def master_sequence() -> list[tuple[str, str]]:
+def master_sequence(selected_book: str | None = None) -> list[tuple[str, str]]:
     body = MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1]
     sequence: list[tuple[str, str]] = []
     current_book = ""
@@ -222,18 +222,18 @@ def master_sequence() -> list[tuple[str, str]]:
         m = re.match(r"\\include\{([^}]+)\}", line)
         if m:
             path = ROOT / f"{m.group(1)}.tex"
-            if path.exists() and path.name != "apocrypha.tex":
+            if (selected_book is None or current_book == selected_book) and path.exists() and path.name != "apocrypha.tex":
                 label = current_part or current_book
                 sequence.append((label, str(path.relative_to(ROOT))))
     return sequence
 
 
-def make_markdown(path: Path) -> tuple[int, int]:
+def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, int]:
     lines = ["---", 'title: "We The Nameless"', "lang: en-US", "---", "",
              '# We The Nameless {.title-page}', "", "*The bible is weirder than you remember.*", ""]
     last_book = None
     chapter_count = verse_count = 0
-    for book, rel in master_sequence():
+    for book, rel in master_sequence(selected_book):
         source = (ROOT / rel).read_text(encoding="utf-8")
         chapter_match = re.search(r"\\Chapter\s*\{([^}]+)\}", strip_comments(source))
         chapter = chapter_match.group(1).strip() if chapter_match else Path(rel).stem
@@ -260,6 +260,7 @@ def make_markdown(path: Path) -> tuple[int, int]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=OUTPUT)
+    parser.add_argument("--book", help="build only the named top-level \\Book from master.tex")
     parser.add_argument("--keep-markdown", action="store_true")
     args = parser.parse_args()
     if not shutil.which("pandoc"):
@@ -272,9 +273,12 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="wtn-ebook-") as temp:
         manuscript = Path(temp) / "manuscript.md"
-        source_count = len(master_sequence())
+        sequence = master_sequence(args.book)
+        if args.book and not sequence:
+            parser.error(f"book not found or contains no source files: {args.book}")
+        source_count = len(sequence)
         log(f"Generating Markdown from {source_count} included TeX files...")
-        chapters, verses = make_markdown(manuscript)
+        chapters, verses = make_markdown(manuscript, args.book)
         manuscript_size = manuscript.stat().st_size
         log(
             f"Generated {manuscript_size:,}-byte manuscript "
