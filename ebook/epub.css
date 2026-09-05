@@ -1,4 +1,4 @@
-@font-face { font-family: "WTN English"; src: url("../fonts/noto-sans-regular.ttf"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Noto Sans"; src: url("../fonts/noto-sans-regular.ttf"); font-weight: 400; font-style: normal; }
 @font-face { font-family: "WTN Hebrew David"; src: url("../fonts/hebrew-david.ttf"); }
 @font-face { font-family: "WTN Hebrew David"; src: url("../fonts/hebrew-david-bold.ttf"); font-weight: 700; }
 @font-face { font-family: "WTN Hebrew Ezra"; src: url("../fonts/hebrew-ezra.ttf"); }
@@ -22,11 +22,11 @@
  * adaptation is left to reading systems that can preserve author colours.
  */
 html { background: transparent; }
-body { margin: 5%; widows: 2; orphans: 2; text-rendering: optimizeLegibility; font-family: "WTN English", sans-serif; font-size: 87.5%; font-variant: normal; }
-h1, h2, h3 { font-family: "WTN English", sans-serif; }
+body { margin: 5%; widows: 2; orphans: 2; text-rendering: optimizeLegibility; font-family: "Noto Sans", sans-serif; font-size: 87.5%; font-variant: normal; }
+h1, h2, h3 { font-family: "Noto Sans", sans-serif; }
 .wtn-title-page { break-before: page; break-after: page; page-break-before: always; page-break-after: always; min-height: 90vh; text-align: center; }
-.title-we { font-family: "WTN English", sans-serif; font-size: 5.5em; font-variant: small-caps; line-height: 1.2; padding-top: 18%; }
-.title-nameless { font-family: "WTN English", sans-serif; font-size: 1.5625em; line-height: 1.2; margin-top: 30%; }
+.title-we { font-family: "Noto Sans", sans-serif; font-size: 5.5em; font-variant: small-caps; line-height: 1.2; padding-top: 18%; }
+.title-nameless { font-family: "Noto Sans", sans-serif; font-size: 1.5625em; line-height: 1.2; margin-top: 30%; }
 .front-heading { break-before: page; page-break-before: always; text-align: center; }
 .alphabet-heading { visibility: hidden; height: 0; margin: 0; }
 .alphabet-page { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; }
