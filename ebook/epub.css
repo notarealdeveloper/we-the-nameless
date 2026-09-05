@@ -45,10 +45,9 @@ h1, h2, h3 { font-family: serif; }
 .contents-list a { color: #0046aa; text-decoration: none; }
 .authors-subtitle, .legend-key { text-align: center; }
 .authors-subtitle span { font-size: 1.5em; }
-.source-legend { font-size: .9em; }
-.source-legend dt, .source-legend dd { margin: 0 0 1em; }
-.source-legend dt { float: left; clear: left; width: 24%; font-weight: bold; }
-.source-legend dd { margin-left: 28%; }
+.source-legend { display: grid; grid-template-columns: 24% 72%; column-gap: 4%; font-size: .9em; }
+.source-legend dt, .source-legend dd { margin: 0 0 1em; text-align: left; }
+.source-legend dt { font-weight: bold; }
 .font-legend .hebrew { font-size: 1.75em; margin-bottom: 0; }
 .publication-notice { break-before: page; page-break-before: always; font-family: monospace; font-size: .67em; min-height: 82vh; text-align: center; display: flex; flex-direction: column; justify-content: flex-end; }
 .publication-logo { width: 1in; margin: 2em auto 0; }
@@ -112,7 +111,7 @@ h1, h2, h3 { font-family: serif; }
 .stacked-reading > span { display: block; white-space: nowrap; }
 .indent-2, .indent-4, .indent-6 { display: inline-block; }
 .indent-2 { width: 2em; } .indent-4 { width: 4em; } .indent-6 { width: 6em; }
-.redacted { background: currentColor; color: transparent; }
+.redacted { background: #0046aa; color: transparent; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 blockquote { margin: .8em 1em; }
 .quotation, .embedded-note {
   display: block; margin: .65em 1em; text-align: left;
@@ -126,8 +125,12 @@ img, svg { max-width: 100%; height: auto; }
 .family-grandsons { display: flex; justify-content: space-around; gap: 2em; }
 .family-hands { font-size: 1.5em; line-height: 1; }
 .family-diagram figcaption { font-size: .8em; font-style: italic; margin-top: .5em; }
-.glyph-overlap { display: inline-grid; place-items: center; }
+.glyph-overlap { display: inline-grid; place-items: center; vertical-align: middle; line-height: 1; }
 .glyph-overlap > span { grid-area: 1 / 1; }
+.glyph-mirror { display: inline-block; transform: scaleX(-1); }
+.centered-block { display: block; margin: .65em auto; }
+.wtn-ruby { ruby-align: center; }
+.ruby-below { ruby-position: under; }
 .definition { color: #0046aa; color: var(--definition-color); margin: .5em 0 .5em 2em; margin: var(--space-sm) 0 var(--space-sm) 2em; text-align: left; }
 .definition-heading { margin: 0; }
 .definition dfn { font-style: normal; font-weight: bold; }
@@ -146,8 +149,14 @@ img, svg { max-width: 100%; height: auto; }
 .wtn-table-custom { font-size: inherit; }
 .wtn-table th, .wtn-table td { border: 0; padding: .2em .35em; vertical-align: top; overflow-wrap: anywhere; }
 .wtn-table .rule-above > th, .wtn-table .rule-above > td { border-top: 1px solid var(--rule-color); }
+.wtn-table tbody tr:last-child > th, .wtn-table tbody tr:last-child > td { border-bottom: 1px solid var(--rule-color); }
+.wtn-table .table-scroll { margin: .35em 0; overflow: visible; }
+.wtn-table .wtn-table { width: 100%; }
 .wtn-table-vertical-rules th, .wtn-table-vertical-rules td { border-left: 1px solid var(--rule-color); border-right: 1px solid var(--rule-color); }
 th { font-weight: bold; }
+.footnote-ref, .footnote-back { color: inherit; text-decoration: none; }
+.footnote-ref { font-size: .72em; line-height: 0; vertical-align: super; margin: 0; padding: 0; }
+.footnote-voice { color: inherit; }
 .egyptian { font-family: "WTN Egyptian", sans-serif; font-size: 1.9em; }
 .arabic { font-family: "WTN Arabic", serif; font-size: 1.15em; }
 .syriac { font-family: "WTN Syriac", sans-serif; font-size: 1.15em; }

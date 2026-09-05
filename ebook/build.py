@@ -122,7 +122,10 @@ _MATHML_CACHE: dict[str, str] = {}
 
 def historical_hebrew(text: str, key: str) -> str:
     """Apply the same broad Hebrew encodings as master.tex's source profiles."""
-    text = "".join(char for char in text if not unicodedata.combining(char))
+    # P is explicitly printed in pointed square Hebrew.  Only the historical
+    # alphabets discard niqqud before their glyph conversion.
+    if key != "P":
+        text = "".join(char for char in text if not unicodedata.combining(char))
     if key == "J":
         return text.translate(PHOENICIAN_TABLE)
     if key in {"E", "JE", "RJE", "BookOfRecords", "Other"} or key.startswith("Proto"):
@@ -299,6 +302,33 @@ def annotation_block(content: str, classes: str, alignment: str) -> str:
     return f'<span class="annotation {classes} align-{alignment}" role="note">{"".join(blocks)}</span>'
 
 
+def color_footnote_tokens(content: str, classes: str) -> str:
+    """Apply a TeX speaker scope inside each detached Markdown footnote."""
+    out: list[str] = []
+    cursor = 0
+    while True:
+        start = content.find("^[", cursor)
+        if start < 0:
+            out.append(content[cursor:])
+            break
+        out.append(content[cursor:start])
+        depth = 1
+        end = start + 2
+        while end < len(content) and depth:
+            if content[end] == "[":
+                depth += 1
+            elif content[end] == "]":
+                depth -= 1
+            end += 1
+        if depth:
+            out.append(content[start:])
+            break
+        inner = content[start + 2:end - 1]
+        out.append(f'^[<span class="footnote-voice {classes}">{inner}</span>]')
+        cursor = end
+    return "".join(out)
+
+
 def render_tikz_fallback(body: str) -> str:
     """Translate the recurring Jacob-family TikZ scene into reflowable HTML."""
     match = re.search(r"\\JacobFamilyPeople\s*", body)
@@ -352,6 +382,12 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
     """Conservatively retain prose while translating semantic TeX markup."""
     text = textwrap.dedent(strip_comments(text)).replace("~", "\u00a0")
     text = text.replace("``", "“").replace("''", "”")
+    # A centered quote in TeX is a centered block, not a blockquote whose
+    # contents should subsequently fall back to normal paragraph alignment.
+    text = re.sub(
+        r"\\begin\{quote\}\s*\\centering(.*?)\\end\{quote\}",
+        r"\\begin{center}\1\\end{center}", text, flags=re.DOTALL,
+    )
     tikz_runs: list[str] = []
     tikz_start = r"\begin{tikzpicture}"
     tikz_end = r"\end{tikzpicture}"
@@ -395,6 +431,30 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
         table_runs.append(render_table(row_body, column_spec, setup_value is not None))
         text = text[:start] + token + text[end:]
         table_pos = start + len(token)
+    # Convert ordinary tabular environments too.  Processing the innermost
+    # environment first also preserves the three-column comparison layout in
+    # Genesis 2; its already-protected child \Table tokens become nested tables.
+    while True:
+        end_match = re.search(r"\\end\{tabularx?\}", text)
+        if not end_match:
+            break
+        starts = list(re.finditer(r"\\begin\{(tabularx?)\}", text[:end_match.start()]))
+        if not starts:
+            break
+        start_match = starts[-1]
+        cursor = start_match.end()
+        if start_match.group(1) == "tabularx":
+            width = group(text, cursor)
+            if width:
+                _, cursor = width
+        columns = group(text, cursor)
+        if not columns:
+            break
+        column_spec, body_start = columns
+        body = text[body_start:end_match.start()]
+        token = f"WTNTABLERUN{len(table_runs)}TOKEN"
+        table_runs.append(render_table(body, column_spec, True))
+        text = text[:start_match.start()] + token + text[end_match.end():]
     math_runs: list[str] = []
 
     def protect_math(match: re.Match[str]) -> str:
@@ -420,8 +480,13 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                     # content argument of raisebox/size while dropping their
                     # print-only measurements.
                     readings.append(tex_to_markdown(value).strip())
+                rtl_paleo = any(re.search(r"[\u0590-\u05ff]", value) for value in readings)
+                if rtl_paleo:
+                    readings = [historical_hebrew(value, "J") for value in readings]
+                stack_class = "stacked-reading paleo" if rtl_paleo else "stacked-reading"
+                direction = ' lang="he" dir="rtl"' if rtl_paleo else ""
                 rendered = (
-                    '<span class="stacked-reading" role="group" '
+                    f'<span class="{stack_class}"{direction} role="group" '
                     'aria-label="alternate readings: '
                     + html.escape("; ".join(re.sub(r"<[^>]+>", "", item) for item in readings), quote=True)
                     + '"><span>' + readings[0] + '</span><span>' + readings[1] + '</span></span>'
@@ -467,6 +532,11 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                     width = group(text, i)
                     if width:
                         _, i = width
+                elif name == "together":
+                    for _ in range(2):
+                        setting = optional_group(text, i)
+                        if setting:
+                            _, i = setting
                 elif name in {"tabular", "tabularx"}:
                     width = group(text, i) if name == "tabularx" else None
                     if width:
@@ -492,7 +562,11 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                     out.append('<span class="quotation">' if compact else "\n\n> ")
                 elif name in {"enumerate", "itemize"}:
                     out.append("\n\n")
-                elif name in {"center", "flushleft", "flushright", "table", "tabular", "tabularx"}:
+                elif name in {"center", "flushleft", "flushright"}:
+                    alignment = {"center": "center", "flushleft": "start", "flushright": "end"}[name]
+                    tag = "span" if compact else "div"
+                    out.append(f'<{tag} class="centered-block align-{alignment}">')
+                elif name in {"table", "tabular", "tabularx"}:
                     # Layout environments have no ebook analogue; keep their text.
                     out.append("\n\n")
                 continue
@@ -502,12 +576,20 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 name, i = env
                 if name == "wrapfigure":
                     out.append("</span>")
+                elif name in {"center", "flushleft", "flushright"}:
+                    out.append("</span>" if compact else "</div>")
                 elif name in {"quote", "quotation"} and compact:
                     out.append("</span>")
                 else:
                     out.append("\n\n")
                 continue
         if text[i] != "\\":
+            if text[i] == "{":
+                raw_group = group(text, i)
+                if raw_group:
+                    value, i = raw_group
+                    out.append(tex_to_markdown(value, compact=compact))
+                    continue
             if text[i] == "&":
                 # An unescaped ampersand is TeX table scaffolding. Literal
                 # prose ampersands are authored as \& and handled below.
@@ -534,6 +616,10 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
         if name in ZERO_ARGUMENT_TEXT:
             out.append(ZERO_ARGUMENT_TEXT[name]); i = after; continue
         if name in {"nl", "linebreak", "par", "medskip", "newpage", "clearpage", "pagebreak"}:
+            if name == "pagebreak":
+                setting = optional_group(text, after)
+                if setting:
+                    _, after = setting
             out.append("<br/>" if name in {"nl", "linebreak"} else "\n\n")
             i = after; continue
         if name == "item":
@@ -597,12 +683,11 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             if label_group and base_group:
                 label = tex_to_markdown(label_group[0], compact=compact).strip()
                 base = tex_to_markdown(base_group[0], compact=compact).strip()
-                top, bottom = (label, base) if name == "Above" else (base, label)
                 plain = re.sub(r"<[^>]+>", "", f"{label} {base}")
                 out.append(
-                    '<span class="stacked-reading" role="group" '
-                    f'aria-label="{html.escape(plain, quote=True)}">'
-                    f'<span>{top}</span><span>{bottom}</span></span>'
+                    f'<ruby class="wtn-ruby ruby-{name.lower()}" '
+                    f'aria-label="{html.escape(plain, quote=True)}">{base}'
+                    f'<rp>(</rp><rt>{label}</rt><rp>)</rp></ruby>'
                 )
                 end = base_group[1]
             i = end
@@ -625,6 +710,28 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 )
             else:
                 out.append(first_rendered)
+            i = end
+            continue
+        if name == "egMirror":
+            out.append(f'<span class="glyph-mirror">{rendered}</span>')
+            i = end
+            continue
+        if name == "tikz":
+            glyphs: list[str] = []
+            cursor = 0
+            while True:
+                found = re.search(r"\\egyptNew\s*", body[cursor:])
+                if not found:
+                    break
+                arg_at = cursor + found.end()
+                parsed = group(body, arg_at)
+                if not parsed:
+                    break
+                value, cursor = parsed
+                glyphs.append(tex_to_markdown(value, compact=True).strip())
+            if glyphs:
+                layers = "".join(f"<span>{glyph}</span>" for glyph in glyphs)
+                out.append(f'<span class="glyph-overlap egyptian" role="img">{layers}</span>')
             i = end
             continue
         if name in {"Def", "DefA", "DefB", "DefC"}:
@@ -662,6 +769,19 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             body, compact=compact or name in {"footnote", "recursivefootnote", "hangingfootnote",
                                               "fA", "fB", "fC", "fAX", "fBX", "fCX"}
         ).strip()
+        if name == "ruby":
+            reading = group(text, end)
+            if reading:
+                reading_value, end = reading
+                out.append(
+                    '<ruby class="wtn-ruby">' + rendered
+                    + '<rp>(</rp><rt>' + tex_to_markdown(reading_value, compact=True).strip()
+                    + '</rt><rp>)</rp></ruby>'
+                )
+            else:
+                out.append(rendered)
+            i = end
+            continue
         src = source_class(name)
         if src:
             language, key = src
@@ -689,7 +809,10 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 # A display annotation around a footnote is a TeX color scope,
                 # not part of the note's content model. Wrapping Pandoc's note
                 # token in HTML would move unmatched tags into the footnote.
-                out.append(rendered)
+                # Carry the enclosing speaker colour into Pandoc's detached
+                # footnote aside. The surrounding verse gets the same colour
+                # class in make_markdown when this wrapper owns the whole note.
+                out.append(color_footnote_tokens(rendered, cls))
             elif any(marker in rendered for marker in ("<div ", "<table", "WTNTABLERUN")):
                 out.append(rendered)
             elif "\n\n" in rendered:
@@ -705,12 +828,18 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 # Pandoc's inline-note syntax cannot legally contain a span
                 # wrapped around block HTML. The blocks retain their own source
                 # classes; keeping valid note structure takes precedence.
+                if out:
+                    out[-1] = out[-1].rstrip()
                 out.append(f"^[{rendered}]")
             else:
+                if out:
+                    out[-1] = out[-1].rstrip()
                 out.append(f'^[<span class="footnote-voice annotation-{voice.lower()}">{rendered}</span>]')
         elif name == "footnote" or name in {"recursivefootnote", "hangingfootnote"}:
             if "annotation-paragraph" in rendered:
                 rendered = re.sub(r"</?span(?:\s[^>]*)?>", "", rendered)
+            if out:
+                out[-1] = out[-1].rstrip()
             out.append(f"^[{rendered}]")
         elif name == "href":
             second = group(text, end)
@@ -772,11 +901,17 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
     result = re.sub(r"\n[ \t]+", "\n", result)
     result = re.sub(r"[ \t]+\n", "\n", result)
     result = re.sub(r"\n{4,}", "\n\n\n", result)
+    # TeX's `%` commonly suppresses whitespace before a footnote marker. The
+    # comment is gone by this stage, so enforce the same attachment directly.
+    result = re.sub(r"[ \t\r\n]+\^\[", "^[", result)
     if compact:
         result = re.sub(r"\s*\n\s*", " ", result)
     for number, math in enumerate(math_runs):
         result = result.replace(f"WTNMATHRUN{number}TOKEN", math)
-    for number, table in enumerate(table_runs):
+    # Containers are appended after their child tables and can therefore
+    # introduce earlier tokens when restored. Expand parents first.
+    for number in range(len(table_runs) - 1, -1, -1):
+        table = table_runs[number]
         result = result.replace(f"WTNTABLERUN{number}TOKEN", table)
     for number, diagram in enumerate(tikz_runs):
         result = result.replace(f"WTNTIKZRUN{number}TOKEN", diagram)
@@ -890,7 +1025,7 @@ def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str
         '<dt class="source source-e">Yellow</dt><dd class="source source-e">Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. The first author in this group is commonly known as the Elohist, or E.</dd>',
         '<dt class="source source-p">Blue</dt><dd class="source source-p">Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in Jerusalem. The first author in this group is known as the Priestly source, or P.</dd>',
         '<dt class="source source-dtrb">Orange</dt><dd class="source source-dtrb">Deuteronomists. The later Mushite tradition, associated with king Josiah, the Shiloh and Anathoth priesthood, and the prophet Jeremiah.</dd>',
-        '<dt class="source source-r">Highlights</dt><dd class="source source-r">Editors. Called Redactors in bible circles, since E was already taken. Redactors mostly insert glue prose when combining sources.</dd>',
+        '<dt><span class="source source-r">Highlights</span></dt><dd><span class="source source-r">Editors. Called Redactors in bible circles, since E was already taken. Redactors mostly insert glue prose when combining sources.</span></dd>',
         '<dt class="source source-bookofrecords">Record Grey</dt><dd class="source source-bookofrecords">Records. Begat lists, genealogies, and miscellaneous documents.</dd>',
         '</dl>', "",
         '# The Source Fonts {.front-heading}', "",
@@ -932,15 +1067,22 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
             verse_anchor = base_verse_anchor if not duplicate_count else f"{base_verse_anchor}-alternate-{duplicate_count + 1}"
             # master.tex: \Verse -> \VerseBody -> \VerseVertical.  Preserve its
             # reference/rule header, then English-before-Hebrew document order.
+            rendered_english = tex_to_markdown(english)
+            rendered_hebrew = tex_to_markdown(hebrew)
+            if book == "Genesis" and chapter == "3" and number.strip() == "6":
+                rendered_english = re.sub(r"\s*<br\s*/?>\s*", " ", rendered_english)
+                rendered_hebrew = re.sub(r"\s*<br\s*/?>\s*", " ", rendered_hebrew)
             lines += [
                 f':::::: {{.verse #{verse_anchor}}}',
                 f'<p id="{verse_anchor}-number" class="verse-reference">{book} {chapter}:{number}</p>',
-                "::::: {.verse-translation}", tex_to_markdown(english), ":::::",
-                '::::: {.verse-source lang="he" dir="rtl"}', tex_to_markdown(hebrew), ":::::",
+                "::::: {.verse-translation}", rendered_english, ":::::",
+                '::::: {.verse-source lang="he" dir="rtl"}', rendered_hebrew, ":::::",
             ]
             rendered_commentary = tex_to_markdown(commentary)
             if rendered_commentary:
-                lines += ["::::: {.verse-commentary}", rendered_commentary, ":::::"]
+                whole_voice = re.fullmatch(r"\s*\\a([ABC])\s*\{.*\}\s*", strip_comments(commentary), re.DOTALL)
+                voice_class = f" .annotation-{whole_voice.group(1).lower()}" if whole_voice else ""
+                lines += [f"::::: {{.verse-commentary{voice_class}}}", rendered_commentary, ":::::"]
             lines += ["::::::", ""]
     path.write_text("\n".join(lines), encoding="utf-8")
     return chapter_count, verse_count
@@ -983,7 +1125,7 @@ def main() -> int:
             log(f"Saved generated Markdown: {kept_manuscript}")
         cmd = ["pandoc", str(manuscript), "--from=markdown+fenced_divs+footnotes+raw_html+markdown_in_html_blocks",
                "--to=epub3", "--output", str(args.output), "--standalone",
-               "--toc", "--toc-depth=2", "--split-level=2", "--css", str(HERE / "epub.css"),
+               "--toc", "--toc-depth=2", "--split-level=1", "--css", str(HERE / "epub.css"),
                "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]
         for font in FONT_FILES:
             cmd += ["--epub-embed-font", str(font)]

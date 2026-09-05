@@ -25,10 +25,29 @@ class ConversionTests(unittest.TestCase):
         rendered = build.tex_to_markdown(
             r"\Above{3pt}{wo}{\chineseB{我}} \Below{3pt}{men}{\chineseB{們}}"
         )
-        self.assertEqual(rendered.count('class="stacked-reading"'), 2)
+        self.assertEqual(rendered.count('<ruby class="wtn-ruby'), 2)
         self.assertIn("wo", rendered)
         self.assertIn("我", rendered)
+        self.assertIn('class="wtn-ruby ruby-below"', rendered)
         self.assertNotIn("3pt", rendered)
+
+    def test_ruby_command_uses_html5_ruby(self) -> None:
+        rendered = build.tex_to_markdown(r"\ruby{字}{reading}")
+        self.assertIn('<ruby class="wtn-ruby">字', rendered)
+        self.assertIn("<rt>reading</rt>", rendered)
+
+    def test_p_hebrew_keeps_niqqud(self) -> None:
+        rendered = build.tex_to_markdown(r"\hP{בְּרֵאשִׁית}")
+        self.assertIn("בְּרֵאשִׁית", rendered)
+
+    def test_raw_tabular_is_semantic_table(self) -> None:
+        rendered = build.tex_to_markdown(r"\begin{tabular}{lcr}a&b&c\\d&e&f\end{tabular}")
+        self.assertIn('<table class="wtn-table wtn-table-custom">', rendered)
+        self.assertEqual(rendered.count("<td"), 6)
+
+    def test_together_options_do_not_leak(self) -> None:
+        rendered = build.tex_to_markdown(r"\begin{together}[8][5000]Praise the Lord!\end{together}")
+        self.assertEqual(rendered, "Praise the Lord!")
 
     def test_left_alignment_is_the_default(self) -> None:
         rendered = build.tex_to_markdown(r"\aA{ordinary commentary}")
