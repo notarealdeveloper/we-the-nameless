@@ -62,7 +62,7 @@ class ConversionTests(unittest.TestCase):
         self.assertIn(".hebrew.source-records", stylesheet)
         self.assertIn('font-family: "WTN Paleo Mono"', stylesheet)
 
-    def test_english_uses_reader_font_without_global_smallcaps(self) -> None:
+    def test_english_defaults_to_serif_without_global_smallcaps(self) -> None:
         self.assertFalse(any("english-im-fell-english-sc" in str(font) for font in build.FONT_FILES))
         self.assertFalse(any("noto-sans-regular.ttf" in str(font) for font in build.FONT_FILES))
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
@@ -70,8 +70,8 @@ class ConversionTests(unittest.TestCase):
         self.assertNotIn('font-family: "Noto Sans"', stylesheet)
         self.assertNotIn('font-family: "WTN Noto Sans"', stylesheet)
         self.assertIn("body {", stylesheet)
-        self.assertIn("font-family: sans-serif; font-size: 87.5%; font-variant: normal;", stylesheet)
-        self.assertIn(".english, .annotation, .footnote-voice { font-variant: normal; }", stylesheet)
+        self.assertIn("font-family: serif; font-size: 87.5%;", stylesheet)
+        self.assertIn("body, body * { font-variant: normal; font-variant-caps: normal; }", stylesheet)
 
     def test_only_textsc_generates_smallcaps(self) -> None:
         rendered = build.tex_to_markdown(
