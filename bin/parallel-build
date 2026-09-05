@@ -261,10 +261,9 @@ def stream_lualatex(book, master_path, output_dir, texmfvar, event_queue, pass_n
     ]
     env = os.environ.copy()
     env["TEXMFVAR"] = str(texmfvar)
-    # Keep file-open messages aligned with the regular Makefile build.  At
-    # the 79-column default, two Deuteronomy aux paths exactly fill a line
-    # and LuaTeX splits the following closing parenthesis across lines.
-    env["max_print_line"] = "80"
+    # Keep every aux-file marker on its own line without splitting any of the
+    # Pentateuch paths themselves, matching the regular Makefile build.
+    env["max_print_line"] = "60"
 
     event_queue.put(("started-pass", book["index"], pass_number, " ".join(cmd)))
     process = subprocess.Popen(

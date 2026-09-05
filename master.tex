@@ -204,6 +204,10 @@
     ]{geometry}
 \fi
 \usepackage[no-math]{fontspec}
+% The alphabet-history page deliberately uses a custom size ladder.  Permit
+% Computer Modern's legacy text and math fonts at those exact sizes instead
+% of substituting the nearest traditional design size.
+\usepackage{fix-cm}
 \usepackage{amsmath}
 \usepackage{titlesec}
 \usepackage{tocloft}
@@ -3691,6 +3695,16 @@
 \newcommand{\Chapter}[1]{%
     \setcounter{footnote}{0}%
     \hypertarget{chapter.\CurrentBook.#1}{}%
+    \ChapterHeading{\ChapterTitleText{#1}}%
+    \def\CurrentChapter{#1}%
+    \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%
+}
+
+% A second textual witness may repeat a chapter heading on the same PDF page
+% sequence.  It gets the same heading and running head, but not a duplicate
+% navigation destination.
+\newcommand{\RepeatedChapter}[1]{%
+    \setcounter{footnote}{0}%
     \ChapterHeading{\ChapterTitleText{#1}}%
     \def\CurrentChapter{#1}%
     \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%

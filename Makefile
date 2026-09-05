@@ -33,10 +33,9 @@ EBOOK_BOOKS := genesis exodus leviticus numbers deuteronomy joshua judges samuel
 EBOOK_TARGETS := $(addprefix ebook-,$(EBOOK_BOOKS))
 
 export TEXMFVAR = $(CACHE)
-# Two Deuteronomy aux-file markers occupy exactly TeX's default 79-column
-# print width.  Leave room for their separator so LuaTeX does not wrap a
-# closing parenthesis onto the next build-output line.
-export max_print_line = 80
+# Keep every aux-file marker on its own line without splitting any of the
+# Pentateuch paths themselves.
+export max_print_line = 60
 
 .PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
