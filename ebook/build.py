@@ -30,9 +30,10 @@ FONT_FILES = [
     ROOT / "fonts/hebrew-ezra.ttf",
     ROOT / "fonts/paleo-hebrew-phoenician.ttf",
     ROOT / "fonts/paleo-hebrew.ttf",
+    ROOT / "fonts/08-bc10c-paleo-hebrew-tel-zayit.ttf",
+    ROOT / "fonts/paleo-hebrew-moabite.ttf",
     ROOT / "fonts/paleo-hebrew-siloam.ttf",
     ROOT / "fonts/paleo-hebrew-mono.ttf",
-    ROOT / "fonts/english-im-fell-english-sc-regular.ttf",
     ROOT / "fonts/egyptian-hieroglyphs-regular-noto-sans.ttf",
     ROOT / "fonts/arabic-amiri-regular.ttf",
     ROOT / "fonts/noto-sans-syriac.ttf",
@@ -117,6 +118,8 @@ HEBREW_ORDER = "אבגדהוזחטיכךלמםנןסעפףצץקרשת"
 PALEO_ASCII = "ABGDHWZXJYKKLMMNNS]PPC CQRVT".replace(" ", "")
 PHOENICIAN = "𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤊𐤋𐤌𐤌𐤍𐤍𐤎𐤏𐤐𐤐𐤑𐤑𐤒𐤓𐤔𐤕"
 PALEO_ASCII_TABLE = str.maketrans(HEBREW_ORDER, PALEO_ASCII)
+TEL_ZAYIT_ASCII = "ABGDHWZXTYKKLMMNNSOPPC CQRst".replace(" ", "")
+TEL_ZAYIT_ASCII_TABLE = str.maketrans(HEBREW_ORDER, TEL_ZAYIT_ASCII)
 PHOENICIAN_TABLE = str.maketrans(HEBREW_ORDER, PHOENICIAN)
 _MATHML_CACHE: dict[str, str] = {}
 
@@ -129,8 +132,15 @@ def historical_hebrew(text: str, key: str) -> str:
         text = "".join(char for char in text if not unicodedata.combining(char))
     if key == "J":
         return text.translate(PHOENICIAN_TABLE)
-    if key in {"E", "JE", "RJE", "BookOfRecords", "Other"} or key.startswith("Proto"):
+    # master.tex's generic Proto profile (used for the Blessing of Jacob and
+    # Genesis 14:1) selects the ASCII-slotted Tel Zayit hand. Its tet, ayin,
+    # shin, and tav slots deliberately differ from the generic paleo map.
+    if key == "Proto":
+        return text.translate(TEL_ZAYIT_ASCII_TABLE)
+    if key in {"E", "JE", "RJE", "Other"} or key.startswith("Proto"):
         return text.translate(PALEO_ASCII_TABLE)
+    # The Book of Records font used in Genesis 5 stores glyphs at Hebrew
+    # codepoints. It needs stripped Hebrew, not the ASCII paleo encoding.
     return text
 
 
@@ -1008,8 +1018,8 @@ def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str
         '<div class="title-we">We</div>',
         '<div class="title-nameless">The Nameless</div>',
         '</section>', "",
-        '# The Alphabet {.front-heading .alphabet-heading}', "",
-        '<div class="alphabet-page" dir="rtl">',
+        '# The History of the Alphabet {.front-heading .alphabet-heading}', "",
+        '<div class="alphabet-page" dir="rtl" epub:type="frontmatter">',
         '<p class="alphabet paleo">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p>',
         '<p class="alphabet hebrew-david">אבגדהוזחטיכלמנסעפצקרשת</p>',
         '<p class="alphabet hebrew-ezra">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p>',
@@ -1033,7 +1043,7 @@ def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str
         '<div class="font-legend"><p class="source source-j hebrew" dir="rtl">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
         '<p class="source source-e hebrew" dir="rtl">ABGDHWZXJYKLMNS]PCQRVT</p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
         '<p class="source source-p hebrew" dir="rtl">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p><p class="source source-p">P is rendered in the modern Hebrew square script with niqqud.</p>',
-        '<p class="source source-r hebrew" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</p><p class="source source-r">R uses the Ezra variant of the Hebrew square script with no niqqud.</p></div>', "",
+        '<p><span class="source source-r hebrew" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</span></p><p><span class="source source-r">R uses the Ezra variant of the Hebrew square script with no niqqud.</span></p></div>', "",
         '# Publication Notice {.front-heading .visually-hidden}', "",
         '<div class="publication-notice"><p><span class="aside-a">LD LLC makes no claim to have written the book that follows.<br/>We could not find a published edition of it, and thought one<br/>ought to exist. LD undertook the preparation of the text for<br/>publication, including its editing, typesetting, design, and</span><br/><span class="aside-b">production and is responsible for the volume presented here,<br/>but we make no claim to know the identity of the individuals<br/>who wrote the original text, nor do we make any claim to the<br/>effect that the original authors did not incorporate in that</span><br/><span class="aside-c">volume any earlier sources either verbatim or in paraphrase.<br/>In summary, it’s a bible, and all rules of that genre apply.<br/>If your work has been incorporated into the resulting volume<br/>and you would like to be removed from the bible, let us know</span></p>',
         '<img class="publication-logo" src="img/ld-book-light.png" alt="LD"/></div>', "",
@@ -1175,12 +1185,9 @@ def main() -> int:
                "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]
         for font in FONT_FILES:
             cmd += ["--epub-embed-font", str(font)]
-        cover = ROOT / "img/covers/we-cover-2.png"
-        if cover.exists():
-            cmd += ["--epub-cover-image", str(cover)]
-            log(f"Using cover image: {cover}")
-        else:
-            log(f"Cover image not found; building without it: {cover}")
+        # The reflowable title page above is the cover. Keep it typographically
+        # aligned with master.tex instead of substituting a numbered raster.
+        log("Using the master-style XHTML title page as the cover")
         log("Running Pandoc to package EPUB 3...")
         result = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, check=False)
         if result.stdout:

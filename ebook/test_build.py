@@ -40,6 +40,40 @@ class ConversionTests(unittest.TestCase):
         rendered = build.tex_to_markdown(r"\hP{בְּרֵאשִׁית}")
         self.assertIn("בְּרֵאשִׁית", rendered)
 
+    def test_genesis_49_proto_uses_tel_zayit_encoding(self) -> None:
+        rendered = build.tex_to_markdown(r"\hProto{טעשׁת}")
+        self.assertIn(">TOst</span>", rendered)
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn(".hebrew.source-proto", stylesheet)
+        self.assertIn('font-family: "WTN Paleo Tel Zayit"', stylesheet)
+
+    def test_genesis_14_other_uses_ascii_moabite_font(self) -> None:
+        rendered = build.tex_to_markdown(r"\hOther{אבגד}")
+        self.assertIn(">ABGD</span>", rendered)
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn(".hebrew.source-other", stylesheet)
+        self.assertIn('font-family: "WTN Paleo Moabite"', stylesheet)
+
+    def test_genesis_5_records_keeps_hebrew_codepoints_for_block_font(self) -> None:
+        rendered = build.tex_to_markdown(r"\hBookOfRecords{אָבג}")
+        self.assertIn(">אבג</span>", rendered)
+        self.assertNotIn(">ABG</span>", rendered)
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn(".hebrew.source-records", stylesheet)
+        self.assertIn('font-family: "WTN Paleo Mono"', stylesheet)
+
+    def test_smallcaps_font_is_not_exposed_as_the_only_embedded_latin_face(self) -> None:
+        self.assertFalse(any("english-im-fell-english-sc" in str(font) for font in build.FONT_FILES))
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn("body {", stylesheet)
+        self.assertIn("font-family: serif; font-variant: normal;", stylesheet)
+
+    def test_front_matter_contains_named_alphabet_history_page(self) -> None:
+        matter = "\n".join(build.front_matter([], {}))
+        self.assertIn("# The History of the Alphabet", matter)
+        self.assertIn('class="alphabet-page"', matter)
+        self.assertNotIn("we-cover-2.png", Path(build.__file__).read_text())
+
     def test_raw_tabular_is_semantic_table(self) -> None:
         rendered = build.tex_to_markdown(r"\begin{tabular}{lcr}a&b&c\\d&e&f\end{tabular}")
         self.assertIn('<table class="wtn-table wtn-table-custom">', rendered)
