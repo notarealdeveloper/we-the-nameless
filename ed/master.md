@@ -5,12 +5,12 @@
 
 % choices: light, dark
 \ifdefined\ConfigTheme\else
-    \def\ConfigTheme{dark}
+    \def\ConfigTheme{light}
 \fi
 
 % choices: book, mobile
 \ifdefined\ConfigOutputMode\else
-    \def\ConfigOutputMode{mobile}
+    \def\ConfigOutputMode{book}
 \fi
 
 % choices: horizontal, vertical
