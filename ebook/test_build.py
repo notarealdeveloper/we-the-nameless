@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 
 import build
 
@@ -33,6 +34,19 @@ class ConversionTests(unittest.TestCase):
         rendered = build.tex_to_markdown(r"\aA{ordinary commentary}")
         self.assertIn("align-start", rendered)
         self.assertNotIn("align-center", rendered)
+
+    def test_red_commentary_is_red_and_left_aligned_without_css_variables(self) -> None:
+        rendered = build.tex_to_markdown(r"\aB{Genesis commentary}")
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn("annotation-b align-start", rendered)
+        self.assertIn(".annotation-b { color: #820000;", stylesheet)
+        self.assertIn(".align-start { text-align: left; text-align: start; }", stylesheet)
+
+    def test_only_explicit_triplet_centers_commentary(self) -> None:
+        ordinary = build.tex_to_markdown(r"\aB[c]{optional argument is inert in master.tex}")
+        explicit = build.tex_to_markdown(r"\aBc{explicit centering shortcut}")
+        self.assertIn("annotation-b align-start", ordinary)
+        self.assertIn("annotation-b align-center", explicit)
 
 
 if __name__ == "__main__":
