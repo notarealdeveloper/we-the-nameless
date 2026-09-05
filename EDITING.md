@@ -25,3 +25,4 @@ Gen 22. Find a way to remove the duplicate copy.
 Agents: Do all the items below except the ones marked as MANUAL. If there are no MANUAL ones, do them all.
 
 Move lines 3 and 4 of the alphabet history page above line. So it goes 1, 3, 4, 2 in terms of the current ordering of the lines.
+
