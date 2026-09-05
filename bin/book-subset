@@ -982,11 +982,11 @@ def build_title_logo_override(target):
         # Standalone book volumes echo the roman title face used by
         # "The Nameless", at a subtly smaller size.
         body = rf"{{\fontsize{{23}}{{28}}\fontfamily{{lmr}}\selectfont\textrm{{{target.title_logo}}}\par}}"
-        # Raise "We" while leaving "The Nameless" near the page's midpoint.
-        # The flexible fill below it keeps the individual book title fixed.
+        # Raise "We" and give the gaps on either side of "The Nameless"
+        # equal stretch, placing it midway between "We" and the book title.
         position_overrides = [
             r"\renewcommand{\WeTitlePageTopSpace}{\vspace*{0.08\textheight}}",
-            r"\renewcommand{\WeTitlePageMiddleSpace}{\vspace*{0.28\textheight}}",
+            r"\renewcommand{\WeTitlePageMiddleSpace}{\vspace*{\fill}}",
         ]
     else:
         body = rf"{{\fontsize{{42}}{{50}}\fontfamily{{lmr}}\selectfont {target.title_logo}\par}}"
