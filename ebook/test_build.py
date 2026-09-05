@@ -105,6 +105,7 @@ class ConversionTests(unittest.TestCase):
     def test_paleo_sources_are_left_to_right(self) -> None:
         self.assertIn('lang="he" dir="ltr"', build.tex_to_markdown(r"\hJ{אבג}"))
         self.assertIn('lang="he" dir="ltr"', build.tex_to_markdown(r"\hE{אבג}"))
+        self.assertIn(">GBA</span>", build.tex_to_markdown(r"\hE{אבג}"))
         self.assertIn('class="paleo" lang="he" dir="ltr"', build.tex_to_markdown(r"\paleo{אבג}"))
         self.assertIn('lang="he" dir="rtl"', build.tex_to_markdown(r"\hP{אָבג}"))
 
@@ -138,7 +139,16 @@ class ConversionTests(unittest.TestCase):
         self.assertIn('<div class="title-book">Genesis</div>', matter)
         self.assertIn('class="alphabet paleo" dir="ltr"', matter)
         self.assertIn('class="source source-j hebrew" dir="ltr"', matter)
-        self.assertNotIn("we-cover-2.png", Path(build.__file__).read_text())
+        self.assertIn('dir="ltr">TVRQCP]SNMLKYJXZWHDGBA</p>', matter)
+        self.assertIn("img/covers/we-cover-3.png", Path(build.__file__).read_text())
+
+    def test_front_matter_prose_matches_body_scale(self) -> None:
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn(".verse { font-size: .82em", stylesheet)
+        self.assertIn(".contents-list { font-size: .82em", stylesheet)
+        self.assertIn(".source-legend {", stylesheet)
+        self.assertIn("font-size: .82em;", stylesheet)
+        self.assertIn(".font-legend { font-size: .82em; }", stylesheet)
 
     def test_definition_list_has_markdown_block_boundaries(self) -> None:
         rendered = build.tex_to_markdown(

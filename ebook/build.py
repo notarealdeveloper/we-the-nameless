@@ -161,7 +161,13 @@ def historical_hebrew(text: str, key: str) -> str:
     if key == "Proto":
         return text.translate(TEL_ZAYIT_ASCII_TABLE)
     if key in {"E", "JE", "RJE", "Other"} or key.startswith("Proto"):
-        return text.translate(PALEO_ASCII_TABLE)
+        encoded = text.translate(PALEO_ASCII_TABLE)
+        # E's legacy font maps Latin codepoints to Paleo-Hebrew glyphs. Unlike
+        # Unicode Phoenician or square Hebrew, those Latin characters retain
+        # LTR bidi behaviour in reading systems, so put E in visual order
+        # before emitting it. (The other legacy profiles have their own
+        # source-specific handling and are intentionally unchanged.)
+        return encoded[::-1] if key == "E" else encoded
     # The Book of Records font used in Genesis 5 stores glyphs at Hebrew
     # codepoints. It needs stripped Hebrew, not the ASCII paleo encoding.
     return text
@@ -1053,6 +1059,7 @@ def front_matter(
     edition_title: str = "Complete Edition",
 ) -> list[str]:
     """Reproduce the visible front matter from master.tex in reflowable form."""
+    e_alphabet = historical_hebrew("אבגדהוזחטיכלמנסעפצקרשת", "E")
     books = list(dict.fromkeys(book for book, _ in sequence))
     contents_sections: list[str] = [":::: {.contents-list}"]
     for book in books:
@@ -1098,7 +1105,7 @@ def front_matter(
         '</dl>', "",
         '# The Source Fonts {.front-heading}', "",
         '<div class="font-legend"><p class="source source-j hebrew" dir="ltr">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
-        '<p class="source source-e hebrew" dir="ltr">ABGDHWZXJYKLMNS]PCQRVT</p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
+        f'<p class="source source-e hebrew" dir="ltr">{e_alphabet}</p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
         '<p class="source source-p hebrew" dir="rtl">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p><p class="source source-p">P is rendered in the modern Hebrew square script with niqqud.</p>',
         '<p><span class="source source-r hebrew" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</span></p><p><span class="source source-r">R uses the Ezra variant of the Hebrew square script with no niqqud.</span></p></div>', "",
         '# Publication Notice {.front-heading .visually-hidden}', "",
@@ -1251,17 +1258,17 @@ def main() -> int:
             kept_manuscript = HERE / "manuscript.generated.md"
             shutil.copy2(manuscript, kept_manuscript)
             log(f"Saved generated Markdown: {kept_manuscript}")
+        cover = ROOT / "img/covers/we-cover-3.png"
         cmd = ["pandoc", str(manuscript), "--from=markdown+fenced_divs+footnotes+raw_html+markdown_in_html_blocks",
                "--to=epub3", "--output", str(args.output), "--standalone",
                "--toc", "--toc-depth=2", "--split-level=1", "--css", str(HERE / "epub.css"),
-               "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]
+               "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false",
+               "--epub-cover-image", str(cover)]
         for key, value in publication_metadata(args.book).items():
             cmd += [f"--metadata={key}:{value}"]
         for font in FONT_FILES:
             cmd += ["--epub-embed-font", str(font)]
-        # The reflowable title page above is the cover. Keep it typographically
-        # aligned with master.tex instead of substituting a numbered raster.
-        log("Using the master-style XHTML title page as the cover")
+        log(f"Using cover image: {cover}")
         log("Running Pandoc to package EPUB 3...")
         result = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, check=False)
         if result.stdout:

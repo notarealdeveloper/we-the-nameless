@@ -42,7 +42,7 @@ h1, h2, h3 { font-family: sans-serif; }
 .paleo { font-family: "WTN Paleo J", serif; color: #007800 !important; }
 .hebrew-david { font-family: "WTN Hebrew David", serif; }
 .hebrew-ezra { font-family: "WTN Hebrew Ezra", serif; color: #0046aa !important; }
-.contents-list { font-size: 1.05em; line-height: 1.45; }
+.contents-list { font-size: .82em; line-height: 1.45; }
 .contents-book { break-inside: avoid; margin: 1.5em 0; }
 .contents-book h2 { font-size: 1.35em; margin: 0 0 .4em; text-align: center; }
 .contents-book ol { columns: 2 15em; column-gap: 2em; margin: 0; padding: 0; list-style: none; counter-reset: chapter; }
@@ -50,13 +50,14 @@ h1, h2, h3 { font-family: sans-serif; }
 .contents-book li::before { content: counter(chapter) "."; text-align: right; }
 .contents-book li a { text-align: left; }
 .contents-list a { color: #0046aa !important; text-decoration: none; }
-.authors-subtitle, .legend-key { text-align: center; }
+.authors-subtitle, .legend-key { font-size: .82em; text-align: center; }
 .authors-subtitle span { font-size: 1.5em; }
-.source-legend { display: grid; grid-template-columns: 24% 72%; column-gap: 4%; font-size: 1em; }
+.source-legend { display: grid; grid-template-columns: 24% 72%; column-gap: 4%; font-size: .82em; }
 .source-legend dt, .source-legend dd { margin: 0 0 1em; text-align: left; }
 .source-legend dt { font-weight: bold; }
+.font-legend { font-size: .82em; }
 .font-legend .hebrew { font-size: 1.75em; margin-bottom: 0; }
-.publication-notice { break-before: page; page-break-before: always; font-family: monospace; font-size: .78em; line-height: 1.4; padding-top: 35%; text-align: center; }
+.publication-notice { break-before: page; page-break-before: always; font-family: monospace; font-size: .82em; line-height: 1.4; padding-top: 35%; text-align: center; }
 .publication-logo { width: 1in; margin: 2em auto 0; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 /*
