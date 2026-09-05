@@ -977,6 +977,10 @@ def build_title_logo_override(target):
         body = r"{\fontsize{24}{30}\fontfamily{lmr}\selectfont\textrm{The Court History}\par}"
     elif target.name == "r":
         body = r"{\fontsize{32}{38}\fontfamily{lmr}\selectfont\textsc{Torah}\par}"
+    elif target.toc_chapters and target.full_frontmatter:
+        # Standalone book volumes echo the roman title face used by
+        # "The Nameless", at a subtly smaller size.
+        body = rf"{{\fontsize{{23}}{{28}}\fontfamily{{lmr}}\selectfont\textrm{{{target.title_logo}}}\par}}"
     else:
         body = rf"{{\fontsize{{42}}{{50}}\fontfamily{{lmr}}\selectfont {target.title_logo}\par}}"
     return "\n".join(
