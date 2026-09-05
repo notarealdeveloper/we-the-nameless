@@ -166,6 +166,12 @@ def render_complex_math(math: str) -> str | None:
     if not found:
         return None
     fragment = found.group(0)
+    # This fragment is subsequently embedded in a raw HTML commentary block.
+    # With markdown_in_html_blocks enabled, Pandoc reparses underscores in the
+    # optional TeX source annotation as emphasis and emits invalid MathML
+    # (<em> is not permitted inside <annotation>).  The rendered mrow is the
+    # accessible mathematical content; discard only the redundant source form.
+    fragment = re.sub(r"<annotation\b[^>]*>.*?</annotation>", "", fragment, flags=re.DOTALL)
     _MATHML_CACHE[math] = fragment
     return fragment
 
@@ -1099,12 +1105,25 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
     return chapter_count, verse_count
 
 
-def colorize_epub_footnotes(path: Path) -> None:
-    """Copy A/B/C voice classes from detached notes onto their links."""
+def postprocess_epub(path: Path) -> None:
+    """Apply fixes that require access to Pandoc's packaged EPUB."""
     with zipfile.ZipFile(path, "r") as source:
         entries = [(info, source.read(info.filename)) for info in source.infolist()]
     rewritten: list[tuple[zipfile.ZipInfo, bytes]] = []
     for info, payload in entries:
+        if info.filename.endswith("content.opf"):
+            package = payload.decode("utf-8")
+            invalid_ids = {
+                value: "wtn-" + re.sub(r"[^A-Za-z0-9_.-]", "-", value)
+                for value in re.findall(r'\bid="([^"]+)"', package)
+                if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_.-]*", value)
+            }
+            for old, new in invalid_ids.items():
+                package = package.replace(f'id="{old}"', f'id="{new}"')
+                for attribute in ("idref", "fallback", "media-overlay", "unique-identifier"):
+                    package = package.replace(f'{attribute}="{old}"', f'{attribute}="{new}"')
+            rewritten.append((info, package.encode("utf-8")))
+            continue
         if not info.filename.endswith((".xhtml", ".html")):
             rewritten.append((info, payload))
             continue
@@ -1200,7 +1219,7 @@ def main() -> int:
         if any(marker in result.stderr for marker in fatal_warnings):
             log("Pandoc emitted structural warnings; refusing a potentially damaged EPUB")
             return 2
-        colorize_epub_footnotes(args.output)
+        postprocess_epub(args.output)
         validator = HERE / "validate.py"
         log("Running EPUB package and link validation...")
         validation = subprocess.run(

@@ -68,6 +68,12 @@ class ConversionTests(unittest.TestCase):
         self.assertIn("body {", stylesheet)
         self.assertIn("font-family: serif; font-variant: normal;", stylesheet)
 
+    def test_preconverted_math_omits_reparsed_tex_annotation(self) -> None:
+        rendered = build.render_complex_math(r"$$\Delta_t = \text{gap}.$$ ")
+        self.assertIsNotNone(rendered)
+        self.assertIn("<math", rendered)
+        self.assertNotIn("<annotation", rendered)
+
     def test_front_matter_contains_named_alphabet_history_page(self) -> None:
         matter = "\n".join(build.front_matter([], {}))
         self.assertIn("# The History of the Alphabet", matter)
