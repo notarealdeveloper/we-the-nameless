@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import textwrap
 import time
 import unicodedata
 from pathlib import Path
@@ -90,6 +91,10 @@ MATH_SYMBOLS = {
     "sim": "∼", "approx": "≈", "times": "×", "cdot": "·",
     "rightarrow": "→", "infty": "∞", "phi": "φ", "gamma": "γ",
     "Delta": "Δ", "lambda": "λ", "tau": "τ", "oint": "∮",
+}
+
+ZERO_ARGUMENT_TEXT = {
+    "IsaacBoundBurnedSummary": "Isaac bourned",
 }
 
 HEBREW_ORDER = "אבגדהוזחטיכךלמםנןסעפףצץקרשת"
@@ -187,7 +192,7 @@ def split_tex(text: str, separator: str) -> list[str]:
 
 
 def render_table(body: str) -> str:
-    """Turn the project's \Table rows into a responsive semantic table."""
+    r"""Turn the project's \Table rows into a responsive semantic table."""
     body = re.sub(r"\\(?:hline|toprule|midrule|bottomrule)\b", "", body)
     rows = [row for row in split_tex(body, r"\\") if row.strip()]
     rendered_rows: list[str] = []
@@ -226,7 +231,18 @@ def source_class(name: str) -> tuple[str, str] | None:
 
 def tex_to_markdown(text: str) -> str:
     """Conservatively retain prose while translating semantic TeX markup."""
-    text = strip_comments(text).replace("~", "\u00a0")
+    text = textwrap.dedent(strip_comments(text)).replace("~", "\u00a0")
+    text = text.replace("``", "“").replace("''", "”")
+    text = text.replace("\\\\", "<br/>")
+    math_runs: list[str] = []
+
+    def protect_math(match: re.Match[str]) -> str:
+        math = re.sub(r"\\(?:paleo|Paleo)\{([^{}]*)\}", r"\1", match.group(0))
+        token = f"WTNMATHRUN{len(math_runs)}TOKEN"
+        math_runs.append(math)
+        return token
+
+    text = re.sub(r"(?<!\\)\$\$.*?(?<!\\)\$\$|(?<!\\)\$[^$\n]+(?<!\\)\$", protect_math, text, flags=re.DOTALL)
     out: list[str] = []
     i = 0
     while i < len(text):
@@ -249,17 +265,24 @@ def tex_to_markdown(text: str) -> str:
                 out.append("\n\n")
                 continue
         if text[i] != "\\":
-            out.append(text[i])
+            if text[i] == "$":
+                out.append("&#36;")
+            else:
+                out.append(html.escape(text[i]) if text[i] in "&<>" else text[i])
             i += 1
             continue
         cmd_data = command_at(text, i)
         if not cmd_data:
-            out.append(text[i]); i += 1; continue
+            # A few source reconstructions use a trailing backslash as a
+            # visual line-end marker. It has no content of its own.
+            i += 1; continue
         name, after = cmd_data
         if name in MATH_SYMBOLS:
             out.append(MATH_SYMBOLS[name]); i = after; continue
+        if name in ZERO_ARGUMENT_TEXT:
+            out.append(ZERO_ARGUMENT_TEXT[name]); i = after; continue
         if name in {"nl", "linebreak", "par", "medskip", "newpage", "clearpage", "pagebreak"}:
-            out.append("  \n" if name in {"nl", "linebreak"} else "\n\n")
+            out.append("<br/>" if name in {"nl", "linebreak"} else "\n\n")
             i = after; continue
         if name == "item":
             out.append("\n- "); i = after; continue
@@ -277,7 +300,7 @@ def tex_to_markdown(text: str) -> str:
         arg = group(text, after)
         if not arg:
             # Preserve common escaped punctuation; discard purely presentational commands.
-            out.append({"%": "%", "&": "&", "_": "_", "#": "#", "{": "{", "}": "}"}.get(name, ""))
+            out.append({"%": "%", "&": "&amp;", "_": "_", "#": "#", "$": "&#36;", "{": "{", "}": "}"}.get(name, ""))
             i = after; continue
         body, end = arg
         if name == "Table":
@@ -305,19 +328,27 @@ def tex_to_markdown(text: str) -> str:
             continue
         rendered = tex_to_markdown(body).strip()
         src = source_class(name)
-        if name in {"hP", "eP"}:
-            lang = ' lang="he" dir="rtl"' if name == "hP" else ""
-            cls = "hebrew-line" if name == "hP" else "english-line"
-            out.append(f'\n\n<span class="{cls}"{lang}>{rendered}</span>\n\n')
-        elif src:
+        if src:
             language, key = src
             attrs = ' lang="he" dir="rtl"' if language == "hebrew" else ""
             label = html.escape(SOURCE_NAMES[key])
             if language == "hebrew":
                 rendered = historical_hebrew(rendered, key)
-            out.append(f'<span class="source source-{key.lower()} {language}"{attrs} data-source="{label}">{rendered}</span>')
+            is_block = any(marker in rendered for marker in ("<div ", "<table"))
+            if is_block:
+                # HTML tables/divs cannot legally be children of an inline
+                # source span. Their cells retain their own semantic markup.
+                out.append(rendered)
+            else:
+                rendered = re.sub(r"\s*\n\s*", " ", rendered)
+                out.append(f'<span class="source source-{key.lower()} {language}"{attrs} data-source="{label}">{rendered}</span>')
         elif name in COMMENTARY:
-            out.append(f'\n\n:::: {{.{COMMENTARY[name]} role="note"}}\n{rendered}\n::::\n\n')
+            is_block = any(marker in rendered for marker in ("<div ", "<table", "\n\n"))
+            if any(marker in rendered for marker in ("<div ", "<table")):
+                out.append(rendered)
+            else:
+                note = re.sub(r"\s*\n\s*", " ", rendered)
+                out.append(f'<span class="comment {COMMENTARY[name]}" role="note">{note}</span>')
         elif name == "footnote" or name in {"recursivefootnote", "hangingfootnote"}:
             out.append(f"^[{rendered}]")
         elif name == "href":
@@ -359,8 +390,12 @@ def tex_to_markdown(text: str) -> str:
             out.append(rendered)
         i = end
     result = "".join(out)
+    # TeX source indentation is never a Markdown code block.
+    result = re.sub(r"\n[ \t]+", "\n", result)
     result = re.sub(r"[ \t]+\n", "\n", result)
     result = re.sub(r"\n{4,}", "\n\n\n", result)
+    for number, math in enumerate(math_runs):
+        result = result.replace(f"WTNMATHRUN{number}TOKEN", math)
     return result.strip()
 
 
@@ -433,7 +468,7 @@ def chapter_summaries() -> dict[tuple[str, str], str]:
 def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str], str]) -> list[str]:
     """Reproduce the visible front matter from master.tex in reflowable form."""
     books = list(dict.fromkeys(book for book, _ in sequence))
-    contents_sections: list[str] = []
+    contents_sections: list[str] = [":::: {.contents-list}"]
     for book in books:
         chapters: list[str] = []
         for label, rel in sequence:
@@ -444,13 +479,10 @@ def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str
             chapter = found.group(1).strip() if found else Path(rel).stem
             anchor = re.sub(r"[^a-z0-9]+", "-", f"{book}-{chapter}".lower()).strip("-")
             title = summaries.get((book, chapter), f"{book} {chapter}")
-            chapters.append(f'<li><a href="#{anchor}"><span class="toc-number">{html.escape(chapter)}.</span> {html.escape(title)}</a></li>')
+            chapters.append(f'{chapter}. [{title}](#{anchor})')
         book_anchor = re.sub(r"[^a-z0-9]+", "-", book.lower()).strip("-")
-        contents_sections.append(
-            f'<section class="contents-book"><h2><a href="#{book_anchor}">{html.escape(book)}</a></h2>'
-            f'<ol>{"".join(chapters)}</ol></section>'
-        )
-    contents = "".join(contents_sections)
+        contents_sections += [f'### [{book}](#{book_anchor}) {{#contents-{book_anchor} .contents-book-title}}', "", *chapters, ""]
+    contents_sections.append("::::")
     return [
         '<section class="wtn-title-page" epub:type="titlepage">',
         '<div class="title-we">We</div>',
@@ -462,7 +494,7 @@ def front_matter(sequence: list[tuple[str, str]], summaries: dict[tuple[str, str
         '<p class="alphabet hebrew-david">אבגדהוזחטיכלמנסעפצקרשת</p>',
         '<p class="alphabet hebrew-ezra">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p>',
         '</div>', "",
-        '# Contents {.front-heading}', "", f'<div class="contents-list">{contents}</div>', "",
+        '# Contents {.front-heading}', "", *contents_sections, "",
         '# The Authors {.front-heading}', "",
         '<p class="authors-subtitle"><em>or</em><br/><span>We: The Nameless</span></p>',
         '<p class="legend-key"><span class="source source-j">J</span> &nbsp; '
@@ -508,8 +540,13 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
         chapter_count += 1
         for number, hebrew, english, commentary in parse_verses(source):
             verse_count += 1
-            verse_anchor = f"{anchor}-{re.sub(r'[^a-zA-Z0-9]+', '-', number).strip('-')}"
-            lines += [f':::::: {{.verse #{verse_anchor} epub:type="z3998:verse"}}', f'### {number} {{.verse-number}}',
+            number_slug = re.sub(r'[^a-zA-Z0-9]+', '-', number).strip('-')
+            base_verse_anchor = f"{anchor}-{number_slug}"
+            duplicate_count = sum(
+                1 for line in lines if f"#{base_verse_anchor}" in line and ".verse " in line
+            )
+            verse_anchor = base_verse_anchor if not duplicate_count else f"{base_verse_anchor}-alternate-{duplicate_count + 1}"
+            lines += [f':::::: {{.verse #{verse_anchor}}}', f'### {number} {{#{verse_anchor}-number .verse-number}}',
                       '::::: {.hebrew-block lang="he" dir="rtl"}', tex_to_markdown(hebrew), ":::::",
                       "::::: {.english-block}", tex_to_markdown(english), ":::::"]
             rendered_commentary = tex_to_markdown(commentary)
@@ -575,8 +612,9 @@ def main() -> int:
             print(result.stderr, file=sys.stderr, end="")
         if result.returncode:
             return result.returncode
-        if "[WARNING]" in result.stderr:
-            log("Pandoc emitted warnings; refusing a potentially damaged EPUB")
+        fatal_warnings = ("Duplicate identifier", " unclosed at ")
+        if any(marker in result.stderr for marker in fatal_warnings):
+            log("Pandoc emitted structural warnings; refusing a potentially damaged EPUB")
             return 2
         validator = HERE / "validate.py"
         log("Running EPUB package and link validation...")

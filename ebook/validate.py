@@ -68,6 +68,7 @@ def main() -> int:
                 if name not in manifest_paths and name != opf_path:
                     fail(errors, f"unmanifested publication resource: {name}")
         document_ids: dict[str, set[str]] = {}
+        document_roots: dict[str, ET.Element] = {}
         xhtml_paths = sorted(path for path in manifest_paths if path.endswith((".xhtml", ".html")))
         for path in xhtml_paths:
             try:
@@ -75,6 +76,7 @@ def main() -> int:
             except ET.ParseError as exc:
                 fail(errors, f"invalid XHTML {path}: {exc}")
                 continue
+            document_roots[path] = root
             ids: set[str] = set()
             for element in root.iter():
                 element_id = element.attrib.get("id")
@@ -83,8 +85,7 @@ def main() -> int:
                         fail(errors, f"duplicate id {element_id!r} in {path}")
                     ids.add(element_id)
             document_ids[path] = ids
-        for path in xhtml_paths:
-            root = ET.fromstring(archive.read(path))
+        for path, root in document_roots.items():
             base = posixpath.dirname(path)
             for element in root.iter():
                 for attribute in ("href", "src"):

@@ -16,7 +16,7 @@
   --wtn-record-bg: rgba(104, 104, 104, .13); --wtn-other-bg: rgba(65, 65, 65, .1);
 }
 html { background: transparent; }
-body { line-height: 1.5; margin: 5%; widows: 2; orphans: 2; text-rendering: optimizeLegibility; }
+body { margin: 5%; widows: 2; orphans: 2; text-rendering: optimizeLegibility; }
 h1, h2, h3 { font-family: serif; }
 .wtn-title-page { break-before: page; break-after: page; page-break-before: always; page-break-after: always; min-height: 90vh; text-align: center; }
 .title-we { font-family: "WTN Primeval", serif; font-size: 5.5em; font-variant: small-caps; line-height: 1.2; padding-top: 18%; }
@@ -48,7 +48,7 @@ h1, h2, h3 { font-family: serif; }
 .chapter-title { page-break-before: always; break-before: page; text-align: center; }
 .verse { margin: 1.25em 0 1.8em; break-inside: avoid-page; page-break-inside: avoid; }
 .verse-number { color: #6e6e6e; font-size: .75em; margin: 0 0 .35em; }
-.hebrew-block { direction: rtl; text-align: right; font-size: 1.22em; line-height: 1.65; }
+.hebrew-block { text-align: right; font-size: 1.22em; line-height: 1.65; }
 .hebrew-line, .english-line { display: block; }
 .english-block { margin-top: .45em; }
 .commentary { margin: .8em 0 0; padding: .1em 0 .1em .85em; border-left: .14em solid var(--wtn-rule); }

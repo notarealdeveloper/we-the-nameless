@@ -1,0 +1,599 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Now do a second pass focused specifically on **mirroring the visual and semantic primitives defined in `master.tex`**.
+
+The EPUB renderer should not merely preserve the text content. It should understand the **design system encoded by the LaTeX macros** and reproduce that design system in semantic XHTML + CSS as faithfully as makes sense in a reflowable ebook.
+
+## Read `master.tex` first
+
+Before changing the ebook styling further, carefully inspect `master.tex`.
+
+Do not skim it only for obvious font definitions.
+
+Find and understand the definitions of the major authoring/layout primitives, especially:
+
+```tex
+\Verse
+\Table
+\Def
+```
+
+and all related macros used by those primitives.
+
+Also inspect things such as:
+
+```tex
+\aA
+\aB
+\aC
+
+\fA
+\fB
+\fC
+
+\eJ
+\hJ
+\paleo
+\egypt
+```
+
+and any other custom commands/environments that materially affect the book's appearance or semantic structure.
+
+Search recursively for helper macros called by these primitives.
+
+The goal is to understand not merely what their arguments contain, but **what visual relationship the LaTeX implementation is trying to create**.
+
+For each major primitive, answer internally:
+
+* What does this construct mean?
+* What arguments does it take?
+* Which arguments are content versus styling/layout control?
+* How does it arrange those arguments?
+* Which fonts does it use?
+* Which colors?
+* Which borders?
+* Which spacing?
+* Which alignment?
+* Which text size?
+* Which directionality?
+* Which material is visually primary?
+* Which material is commentary or annotation?
+* Which elements are intentionally aligned with one another?
+* How does it behave in narrow or alternate layouts?
+* Are there already notions of horizontal versus vertical layout?
+
+Then implement the corresponding EPUB component.
+
+## `\Verse{}` is especially important
+
+Treat `\Verse{}` as one of the core layout primitives of the ebook.
+
+Read its **actual definition in `master.tex`**, including every helper it calls.
+
+Do not infer its design from its name.
+
+Understand how it represents the relationship among:
+
+* verse number
+* original-language text
+* translation
+* commentary
+* source coloring
+* footnotes
+* annotations
+* any alternate readings or special material
+
+The EPUB version should default to the **vertical mode** of the verse design.
+
+There is already a vertical-mode concept or implementation in `master.tex`; inspect that definition for the exact intended visual relationship.
+
+Use that as the conceptual basis for the ebook layout.
+
+In other words, for EPUB, prefer something conceptually like:
+
+```text
+VERSE NUMBER
+
+ORIGINAL TEXT
+
+TRANSLATION
+
+COMMENTARY
+```
+
+rather than trying to preserve a wide paper-oriented side-by-side layout.
+
+But do not implement that crude sketch literally without first reading the real LaTeX definition.
+
+The actual vertical-mode implementation in `master.tex` is the specification.
+
+Translate its design into CSS.
+
+The EPUB version may simplify paper-specific geometry, but it should preserve:
+
+* hierarchy;
+* spacing relationships;
+* font distinctions;
+* source coloring;
+* alignment logic;
+* indentation;
+* borders/backgrounds if present;
+* transitions between verse text and commentary;
+* treatment of verse numbers;
+* treatment of footnotes;
+* RTL/LTR behavior.
+
+If `\Verse{}` has multiple layout modes, the ebook should generally choose the one closest to the LaTeX **vertical mode**, because that maps naturally onto narrow reflowable screens.
+
+## Build an EPUB component corresponding to `\Verse`
+
+Do not generate ad hoc inline styles for every verse.
+
+Create a reusable semantic structure and centralized CSS.
+
+For example, the resulting XHTML might conceptually have classes such as:
+
+```html
+<section class="verse">
+    <div class="verse-number">...</div>
+
+    <div class="verse-source">
+        ...
+    </div>
+
+    <div class="verse-translation">
+        ...
+    </div>
+
+    <div class="verse-commentary">
+        ...
+    </div>
+</section>
+```
+
+This is illustrative.
+
+Derive the final component hierarchy from what `\Verse{}` actually does.
+
+If the LaTeX implementation has meaningful nested regions, preserve them as nested semantic elements rather than flattening them.
+
+## Mirror `\Table{}`
+
+Read the full definition of:
+
+```tex
+\Table{...}{...}
+```
+
+including any helpers it calls.
+
+Determine what stylistic conventions distinguish a `\Table` from an ordinary LaTeX `tabular`.
+
+Things to inspect include:
+
+* header typography;
+* horizontal rules;
+* vertical rules;
+* row spacing;
+* cell padding;
+* text alignment;
+* numeric alignment;
+* alternating treatments, if any;
+* font size;
+* color;
+* captions;
+* wrapping behavior;
+* special handling of RTL content;
+* surrounding vertical spacing.
+
+Reproduce the **design language** of `\Table` in HTML tables and CSS.
+
+Use semantic HTML:
+
+```html
+<table class="wtn-table">
+    ...
+</table>
+```
+
+with:
+
+```html
+<thead>
+<tbody>
+<tr>
+<th>
+<td>
+```
+
+where appropriate.
+
+Do not merely emit a browser-default table.
+
+The EPUB table should visually look recognizably like the print `\Table`, adjusted for small screens and reflow.
+
+Where a print table is too wide, preserve its semantics using wrapping or an ebook-specific stacked adaptation rather than making the text microscopic.
+
+## Mirror `\Def{}`
+
+Read the actual definition of:
+
+```tex
+\Def
+```
+
+and every helper it uses.
+
+Determine exactly how definitions are visually presented.
+
+Look for:
+
+* the treatment of the defined term;
+* typography of the headword;
+* indentation;
+* spacing;
+* borders or rules;
+* background;
+* line spacing;
+* examples;
+* nested `\aA`, `\aB`, `\aC`, etc.;
+* language-specific fonts;
+* lexical annotations;
+* pronunciation/transliteration;
+* footnotes.
+
+Create a reusable EPUB definition component, e.g. conceptually:
+
+```html
+<section class="definition">
+    <div class="definition-term">...</div>
+    <div class="definition-body">...</div>
+</section>
+```
+
+Again, derive the actual structure from `master.tex`.
+
+The ebook result should feel like the same `\Def` component rendered in a different medium.
+
+## Mirror the whole macro design system
+
+Do this not only for the three named primitives.
+
+Search `master.tex` for custom commands that establish recurring visual patterns.
+
+Build a mapping such as:
+
+```text
+LaTeX primitive
+    ↓
+semantic EPUB component
+    ↓
+CSS class/system
+```
+
+Examples might end up like:
+
+```text
+\Verse        → .verse
+\Table        → .wtn-table
+\Def          → .definition
+\aA           → .annotation-a
+\aB           → .annotation-b
+\aC           → .annotation-c
+\fA           → EPUB footnote class/type A
+\fB           → EPUB footnote class/type B
+\fC           → EPUB footnote class/type C
+\hJ           → Hebrew/source-language component
+\eJ           → translation component
+\paleo        → Paleo-Hebrew span
+\egypt        → Egyptian hieroglyph span
+```
+
+But do not assume those semantics until you read their definitions.
+
+Some macros may primarily exist for visual styling; others may encode actual editorial semantics.
+
+Preserve that distinction.
+
+## CSS should mirror LaTeX relationships, not literal dimensions
+
+Do not mechanically convert:
+
+```tex
+\vspace{4mm}
+```
+
+into:
+
+```css
+margin-top: 4mm;
+```
+
+That is not the goal.
+
+Instead determine what the spacing means.
+
+For example:
+
+* “small separation within a unit”
+* “large separation between units”
+* “headword hangs above body”
+* “commentary is subordinate to translation”
+* “verse blocks need visible breathing room”
+
+Then express those relationships using robust relative CSS units:
+
+```css
+em
+rem
+%
+```
+
+and reusable spacing variables where practical.
+
+Likewise, do not blindly translate TeX dimensions designed for a 7-inch printed page into fixed ebook dimensions.
+
+## Preserve typography
+
+Inspect all font definitions associated with these macros.
+
+Where the print book intentionally distinguishes:
+
+* serif versus sans;
+* bold versus normal;
+* actual small caps;
+* italic;
+* condensed or display fonts;
+* Hebrew;
+* Paleo-Hebrew;
+* Egyptian;
+* Syriac;
+* IPA;
+* special symbols;
+
+attempt to preserve those distinctions.
+
+If the font should be embedded, embed it.
+
+If ordinary English prose should remain reader-selectable, preserve the distinction through relative styling rather than unnecessarily locking the entire book into a publisher font.
+
+## Preserve color semantics
+
+Read the actual color definitions in `master.tex`.
+
+Do not guess based on screenshots if the exact color values are already defined in source.
+
+Map meaningful book colors into centralized EPUB CSS variables where possible, such as conceptually:
+
+```css
+:root {
+    --source-j: ...;
+    --source-e: ...;
+    --source-p: ...;
+    --annotation-a: ...;
+    --annotation-b: ...;
+    --annotation-c: ...;
+}
+```
+
+Adapt colors only where necessary for ebook contrast or Kindle dark mode.
+
+If you change an ebook color from the print value, document why.
+
+## Use the LaTeX source as the visual specification
+
+Where there is ambiguity between:
+
+* the current crude EPUB output;
+* generic ebook conventions;
+* and `master.tex`;
+
+prefer `master.tex`.
+
+The existing ebook is only a starting implementation.
+
+The mature LaTeX renderer represents years of accumulated design decisions and should be treated as the **authoritative specification for the visual grammar of the book**.
+
+The EPUB implementation is a translation of that grammar into another medium.
+
+## Do not imitate TeX internals unnecessarily
+
+You do not need to recreate:
+
+* TeX boxes;
+* glue;
+* penalties;
+* exact baseline calculations;
+* absolute paper geometry;
+* fixed page breaks;
+
+unless their effect encodes an important visual relationship.
+
+Translate the **visible intent**, not the implementation mechanism.
+
+For example:
+
+```text
+TeX minipage
+```
+
+does not necessarily mean:
+
+```text
+HTML fixed-width box
+```
+
+It may simply mean:
+
+```text
+visually grouped semantic region
+```
+
+Likewise, a TeX table used purely to align two conceptual regions might be better represented by ordinary block layout in the EPUB.
+
+## Make the mapping maintainable
+
+Do not scatter knowledge of LaTeX primitives across unrelated scripts.
+
+Create a coherent translation layer.
+
+Ideally there should be an obvious place in the ebook code where one can understand:
+
+```text
+\Verse → verse renderer
+\Def   → definition renderer
+\Table → table renderer
+...
+```
+
+If practical, add comments referencing the relevant macro definitions in `master.tex`.
+
+Do not duplicate the LaTeX implementation line-for-line.
+
+Instead document the semantic relationship.
+
+## Create a CSS design system
+
+After studying `master.tex`, reorganize the EPUB CSS so it has a recognizable design system.
+
+For example, where appropriate:
+
+```css
+:root {
+    --space-xs: ...;
+    --space-sm: ...;
+    --space-md: ...;
+    --space-lg: ...;
+
+    --verse-number-size: ...;
+    --commentary-size: ...;
+
+    --source-j: ...;
+    --source-e: ...;
+    --source-p: ...;
+}
+```
+
+Use classes representing book concepts, not incidental visual properties.
+
+Prefer:
+
+```css
+.verse-commentary
+```
+
+over:
+
+```css
+.small-gray-block
+```
+
+Prefer:
+
+```css
+.definition-term
+```
+
+over:
+
+```css
+.bold-heading-2
+```
+
+## Compare actual output
+
+After implementing the mapping, pick representative examples from the book containing:
+
+* a simple `\Verse`;
+* a complicated `\Verse`;
+* a verse with Hebrew;
+* a verse with several source colors;
+* a verse with multiple footnotes;
+* a verse with a long commentary;
+* a `\Def`;
+* a complicated `\Def`;
+* a small `\Table`;
+* a wide `\Table`;
+* mixed-script content;
+* nested annotations.
+
+Compare the print rendering to the EPUB rendering.
+
+Do not require identical geometry.
+
+Ask instead:
+
+> Does the ebook immediately communicate the same hierarchy and editorial structure?
+
+If not, keep adjusting the CSS/component structure.
+
+## Document the primitive mapping
+
+Add a section to `ebook/README.md` called something like:
+
+```text
+LaTeX → EPUB component mapping
+```
+
+Document the important mappings and any intentional differences.
+
+For example:
+
+```text
+\Verse
+Print:
+    May use horizontal or vertical layouts depending on context.
+
+EPUB:
+    Always uses the vertical-style representation, based on the
+    vertical implementation in master.tex, because it is robust
+    under narrow reflow.
+
+\Table
+Print:
+    ...
+
+EPUB:
+    ...
+```
+
+Do this for the most important primitives.
+
+## Final principle
+
+`master.tex` is not merely a print stylesheet.
+
+It contains the project's **design vocabulary**.
+
+Treat constructs like:
+
+```tex
+\Verse
+\Table
+\Def
+```
+
+the same way a web application would treat reusable UI components.
+
+Your job is to build their EPUB/CSS equivalents.
+
+The desired relationship is:
+
+```text
+same source concept
+        ↓
+LaTeX renderer      EPUB renderer
+        ↓                 ↓
+print-native       ebook-native
+presentation       presentation
+```
+
+The two outputs should not have identical geometry.
+
+They **should clearly have the same designer**.
+
+For `\Verse`, specifically, use the **vertical mode as the default ebook interpretation**, and read the implementation in `master.tex` carefully before deciding what that means.
+
+Also, don't center the text! Attempt to make it like the latex.
+EOF
