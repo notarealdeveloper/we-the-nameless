@@ -623,6 +623,14 @@ def main() -> int:
         )
         if validation.returncode:
             return validation.returncode
+        epubcheck = shutil.which("epubcheck")
+        if epubcheck:
+            log(f"Running EPUBCheck: {epubcheck}")
+            checked = subprocess.run([epubcheck, str(args.output)], check=False)
+            if checked.returncode:
+                return checked.returncode
+        else:
+            log("EPUBCheck is not installed; dependency-free structural validation completed")
     output_size = args.output.stat().st_size
     elapsed = time.monotonic() - started
     log(

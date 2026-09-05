@@ -29,6 +29,8 @@ BOOK_TARGETS := $(shell bin/book-subset --make-book-targets)
 CHAPTER_TARGETS := $(shell bin/book-subset --make-chapter-targets)
 COMMENT_BOOK_TARGETS := $(addprefix comment-,$(BOOK_TARGETS))
 UNCOMMENT_BOOK_TARGETS := $(addprefix uncomment-,$(BOOK_TARGETS))
+EBOOK_BOOKS := genesis exodus leviticus numbers deuteronomy joshua judges samuel kings dudetheyreontome
+EBOOK_TARGETS := $(addprefix ebook-,$(EBOOK_BOOKS))
 
 export TEXMFVAR = $(CACHE)
 # Two Deuteronomy aux-file markers occupy exactly TeX's default 79-column
@@ -36,7 +38,7 @@ export TEXMFVAR = $(CACHE)
 # closing parenthesis onto the next build-output line.
 export max_print_line = 80
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 all: $(PDF) open
 
@@ -77,12 +79,24 @@ help:
 		'  make genesis-1    Build only Genesis 1 as test-genesis-1.pdf and open it.' \
 		'  make 1-samuel-1   Build only 1 Samuel 1; chapter targets share build/test/.' \
 		'  make samuel       Build 08-samuel.pdf; use 1-samuel or 2-samuel for the individual books.' \
+		'  make ebook        Build ebook/we-the-nameless.epub.' \
+		'  make ebook-genesis  Build ebook/genesis.epub; equivalent targets exist for each book.' \
+		'  make ebook-validate  Validate the complete EPUB (building it first if needed).' \
 		'  make kings        Build 09-kings.pdf; use 1-kings or 2-kings for the individual books.' \
 		'  make clean        Remove transient TeX aux files.' \
 		'  make distclean    Remove build outputs and master.pdf.'
 
 list:
 	bin/book-subset --list
+
+ebook:
+	$(MAKE) -C ebook all
+
+ebook-validate:
+	$(MAKE) -C ebook validate
+
+$(EBOOK_TARGETS):
+	$(MAKE) -C ebook "$(@:ebook-%=%)"
 
 pdf: build-pdf
 
