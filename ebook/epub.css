@@ -1,0 +1,23 @@
+:root { color-scheme: light dark; }
+body { font-family: serif; line-height: 1.42; widows: 2; orphans: 2; }
+h1, h2, h3 { font-family: sans-serif; }
+.title-page, .book-title { text-align: center; page-break-before: always; }
+.chapter-title { page-break-before: always; }
+.verse { margin: 1.25em 0 1.8em; break-inside: avoid-page; }
+.verse-number { color: #777; font-size: .75em; margin: 0 0 .35em; }
+.hebrew-block { direction: rtl; text-align: right; font-size: 1.18em; line-height: 1.65; }
+.hebrew-line, .english-line { display: block; }
+.english-block { margin-top: .45em; }
+.commentary { border-left: .18em solid #999; margin: .8em 0 0 .25em; padding-left: .8em; }
+.aside-a, .aside-b, .aside-c, .aside-p, .aside-r { margin: .6em 0; }
+.source { text-decoration-thickness: .08em; text-underline-offset: .13em; }
+.source-j { text-decoration-line: underline; }
+.source-e { text-decoration-line: underline; text-decoration-style: double; }
+.source-p { text-decoration-line: underline; text-decoration-style: dotted; }
+.source-r, .source-rje { text-decoration-line: underline; text-decoration-style: dashed; }
+.source-dtn, .source-dtra, .source-dtrb, .source-dtrh { font-variant: small-caps; }
+.smallcaps { font-variant: small-caps; }
+.redacted { background: currentColor; color: transparent; }
+blockquote { margin: .8em 1em; }
+img { max-width: 100%; height: auto; }
+@media (prefers-color-scheme: dark) { .verse-number { color: #aaa; } }
