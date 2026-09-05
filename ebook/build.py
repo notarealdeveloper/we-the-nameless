@@ -348,7 +348,7 @@ def source_class(name: str) -> tuple[str, str] | None:
     return ("hebrew" if name[0] == "h" else "english", key)
 
 
-def tex_to_markdown(text: str) -> str:
+def tex_to_markdown(text: str, *, compact: bool = False) -> str:
     """Conservatively retain prose while translating semantic TeX markup."""
     text = textwrap.dedent(strip_comments(text)).replace("~", "\u00a0")
     text = text.replace("``", "“").replace("''", "”")
@@ -474,8 +474,22 @@ def tex_to_markdown(text: str) -> str:
                     preamble = group(text, i)
                     if preamble:
                         _, i = preamble
+                elif name == "wrapfigure":
+                    # A wrapped print sidebar is still part of the surrounding
+                    # note in reflow. Consume its paper-only placement/width so
+                    # strings such as ``{r}{.4\\linewidth}`` never leak.
+                    placement = group(text, i)
+                    if placement:
+                        _, i = placement
+                    width = group(text, i)
+                    if width:
+                        _, i = width
+                    out.append('<span class="embedded-note">')
                 if name in {"quote", "quotation"}:
-                    out.append("\n\n> ")
+                    # Raw blockquotes cannot be nested safely in Pandoc's
+                    # inline footnote syntax. In compact contexts retain the
+                    # quotation relationship as a block-like span.
+                    out.append('<span class="quotation">' if compact else "\n\n> ")
                 elif name in {"enumerate", "itemize"}:
                     out.append("\n\n")
                 elif name in {"center", "flushleft", "flushright", "table", "tabular", "tabularx"}:
@@ -485,8 +499,13 @@ def tex_to_markdown(text: str) -> str:
         if text.startswith("\\end{", i):
             env = group(text, i + 4)
             if env:
-                _, i = env
-                out.append("\n\n")
+                name, i = env
+                if name == "wrapfigure":
+                    out.append("</span>")
+                elif name in {"quote", "quotation"} and compact:
+                    out.append("</span>")
+                else:
+                    out.append("\n\n")
                 continue
         if text[i] != "\\":
             if text[i] == "&":
@@ -572,6 +591,22 @@ def tex_to_markdown(text: str) -> str:
                 end = cursor
             i = end
             continue
+        if name in {"Above", "Below"}:
+            label_group = group(text, end)
+            base_group = group(text, label_group[1]) if label_group else None
+            if label_group and base_group:
+                label = tex_to_markdown(label_group[0], compact=compact).strip()
+                base = tex_to_markdown(base_group[0], compact=compact).strip()
+                top, bottom = (label, base) if name == "Above" else (base, label)
+                plain = re.sub(r"<[^>]+>", "", f"{label} {base}")
+                out.append(
+                    '<span class="stacked-reading" role="group" '
+                    f'aria-label="{html.escape(plain, quote=True)}">'
+                    f'<span>{top}</span><span>{bottom}</span></span>'
+                )
+                end = base_group[1]
+            i = end
+            continue
         if name in {"egScale", "egRaise"}:
             content = group(text, end)
             if content:
@@ -620,7 +655,13 @@ def tex_to_markdown(text: str) -> str:
                 out.append(f"<dfn>{label}</dfn>")
             i = end
             continue
-        rendered = tex_to_markdown(body).strip()
+        # Footnotes are an inline Markdown construct until Pandoc turns them
+        # into EPUB asides. Compact conversion keeps nested print environments
+        # from interrupting and visibly exposing that syntax.
+        rendered = tex_to_markdown(
+            body, compact=compact or name in {"footnote", "recursivefootnote", "hangingfootnote",
+                                              "fA", "fB", "fC", "fAX", "fBX", "fCX"}
+        ).strip()
         src = source_class(name)
         if src:
             language, key = src
@@ -697,7 +738,12 @@ def tex_to_markdown(text: str) -> str:
             path = body.strip()
             if (ROOT / path).exists():
                 alt = html.escape(Path(path).stem.replace("-", " ").replace("_", " "))
-                out.append(f'\n\n<figure><img src="{html.escape(path)}" alt="{alt}"/></figure>\n\n')
+                if compact:
+                    out.append(
+                        f'<img class="embedded-note-image" src="{html.escape(path)}" alt="{alt}"/>'
+                    )
+                else:
+                    out.append(f'\n\n<figure><img src="{html.escape(path)}" alt="{alt}"/></figure>\n\n')
         elif name == "hspace":
             # A handful of flush-left rhetorical diagrams use positive em
             # indentation to show logical nesting. Preserve that information
@@ -726,6 +772,8 @@ def tex_to_markdown(text: str) -> str:
     result = re.sub(r"\n[ \t]+", "\n", result)
     result = re.sub(r"[ \t]+\n", "\n", result)
     result = re.sub(r"\n{4,}", "\n\n\n", result)
+    if compact:
+        result = re.sub(r"\s*\n\s*", " ", result)
     for number, math in enumerate(math_runs):
         result = result.replace(f"WTNMATHRUN{number}TOKEN", math)
     for number, table in enumerate(table_runs):

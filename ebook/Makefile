@@ -3,7 +3,7 @@ TEX_SOURCES := $(shell find .. -path '../.git' -prune -o -path '../build' -prune
 EBOOK_ASSETS := $(shell find ../fonts ../img -type f 2>/dev/null)
 RENDERER_SOURCES := build.py validate.py epub.css metadata.yaml $(TEX_SOURCES) $(EBOOK_ASSETS)
 
-.PHONY: all clean validate validate-% $(BOOKS)
+.PHONY: all clean test validate validate-% $(BOOKS)
 
 all: we-the-nameless.epub
 
@@ -33,6 +33,9 @@ validate-%: %.epub
 	./validate.py $<
 	@command -v epubcheck >/dev/null 2>&1 && epubcheck $< || \
 		{ printf '%s\n' 'epubcheck is not installed; internal validation passed.'; }
+
+test:
+	python3 -m unittest -v test_build.py
 
 clean:
 	rm -f we-the-nameless.epub $(BOOKS:%=%.epub) manuscript.generated.md

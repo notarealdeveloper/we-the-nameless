@@ -112,6 +112,11 @@ h1, h2, h3 { font-family: serif; }
 .indent-2 { width: 2em; } .indent-4 { width: 4em; } .indent-6 { width: 6em; }
 .redacted { background: currentColor; color: transparent; }
 blockquote { margin: .8em 1em; }
+.quotation, .embedded-note {
+  display: block; margin: .65em 1em; text-align: left;
+}
+.embedded-note { font-size: .9em; }
+.embedded-note-image { display: block; max-height: 10em; width: auto; margin: .5em auto; }
 figure { margin: 1em auto; text-align: center; break-inside: avoid; }
 img, svg { max-width: 100%; height: auto; }
 .ebook-diagram { max-width: 22em; padding: .75em; border: 1px solid var(--rule-color); }

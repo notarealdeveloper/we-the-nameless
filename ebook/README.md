@@ -16,6 +16,7 @@ make ebook
 make ebook-genesis
 make ebook-samuel
 make ebook-validate
+make -C ebook test
 ```
 
 The original interfaces remain available:
@@ -46,7 +47,10 @@ A build requires Pandoc 3. `--keep-markdown` on `build.py` preserves
   indentation becomes spacing and voice color rather than fake margins; no
   border is added because `\Verse` adds none around commentary.
 - Footnote macros become EPUB noteref links and `epub:type="footnote"` asides
-  with backlinks.
+  with backlinks. Print-only material nested inside a note is reflowed in note
+  order: wrapped figures become bounded block images and nested quotations
+  become indented, left-aligned quotation regions instead of leaking TeX
+  placement arguments into the text.
 - `\Table` becomes a genuine table with header/body cells, wrapping, and a
   horizontally scrollable last-resort container. Tables are not rasterized.
 - Quotes and lists use native structures; source images become responsive
@@ -131,7 +135,10 @@ The dark-mode query is progressive enhancement; body colors are not forced.
 Every build runs `validate.py`. It verifies EPUB ZIP ordering/mimetype,
 container and package XML, unique identifiers, manifest completeness,
 well-formed XHTML, duplicate IDs, local links/fragments, nav presence, missing
-assets, leaked filesystem paths, and visible TeX/layout debris. Pandoc
+assets, leaked filesystem paths, and visible TeX/Markdown/layout debris.
+`make -C ebook test` also runs focused conversion regressions, including nested
+footnotes, stacked multilingual readings, and the left-aligned commentary
+default. Pandoc
 structural warnings also fail the build. If `epubcheck` is on `PATH`, it runs
 and errors fail the build; otherwise the build explicitly reports that it was
 unavailable. Install EPUBCheck before release publication.

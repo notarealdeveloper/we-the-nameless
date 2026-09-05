@@ -87,7 +87,9 @@ def main() -> int:
             debris = re.search(
                 r"\\(?:begin|end|boxed|frac|genfrac|hbox|raisebox|setlength)\b|"
                 r"@p\{|\{[+-]?[0-9.]+(?:em|ex|pt)\}|"
-                r"\bon background layer\b|\bnode\[",
+                r"\bon background layer\b|\bnode\[|"
+                r"\^\[|\{[lcr]\}\{[0-9.]+(?:\\linewidth)?\}|"
+                r"\b[0-9.]+pt\{",
                 visible_source,
             )
             if debris:
