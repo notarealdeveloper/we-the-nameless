@@ -921,6 +921,13 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
     # TeX's `%` commonly suppresses whitespace before a footnote marker. The
     # comment is gone by this stage, so enforce the same attachment directly.
     result = re.sub(r"[ \t\r\n]+\^\[", "^[", result)
+    # Source files commonly put adjacent source wrappers on separate lines for
+    # readability. A source change is not itself a word space or line break;
+    # preserve spaces authored on one line, but discard formatting newlines
+    # between consecutive source spans.
+    result = re.sub(
+        r'(</span>)[ \t]*\r?\n[ \t]*(?=<span class="source\b)', r"\1", result,
+    )
     if compact:
         result = re.sub(r"\s*\n\s*", " ", result)
     for number, math in enumerate(math_runs):

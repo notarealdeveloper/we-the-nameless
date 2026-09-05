@@ -68,7 +68,26 @@ class ConversionTests(unittest.TestCase):
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
         self.assertNotIn('font-family: "WTN Noto Sans"', stylesheet)
         self.assertIn("body {", stylesheet)
-        self.assertIn("font-family: sans-serif; font-variant: normal;", stylesheet)
+        self.assertIn("font-family: sans-serif; font-size: 87.5%; font-variant: normal;", stylesheet)
+        self.assertIn(".english, .annotation, .footnote-voice { font-variant: normal; }", stylesheet)
+
+    def test_only_textsc_generates_smallcaps(self) -> None:
+        rendered = build.tex_to_markdown(
+            r"\eJ{Ordinary English}\fC{Ordinary note and \textsc{Small Caps}}"
+        )
+        self.assertEqual(rendered.count('class="smallcaps"'), 1)
+        self.assertIn('<span class="smallcaps">Small Caps</span>', rendered)
+
+    def test_source_transition_does_not_create_whitespace(self) -> None:
+        rendered = build.tex_to_markdown("\\eJ{first}\n    \\eE{second}")
+        self.assertIn("first</span><span", rendered)
+
+    def test_footnote_marker_is_attached_to_preceding_annotation(self) -> None:
+        rendered = build.tex_to_markdown(r"\aB{Blah.}\fC{Footnote}")
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn("Blah.</span>^[", rendered)
+        self.assertNotIn("Blah.</span> ^[", rendered)
+        self.assertNotIn(".verse-commentary > p > .annotation { display: block; }", stylesheet)
 
     def test_preconverted_math_omits_reparsed_tex_annotation(self) -> None:
         rendered = build.render_complex_math(r"$$\Delta_t = \text{gap}.$$ ")
