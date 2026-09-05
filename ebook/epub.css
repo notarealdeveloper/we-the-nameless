@@ -99,10 +99,24 @@ h1, h2, h3 { font-family: serif; }
 .hebrew.source-rje, .source-rje.hebrew { font-family: "WTN Paleo RJE", serif; }
 .hebrew.source-bookofrecords, .source-bookofrecords.hebrew { font-family: "WTN Paleo Mono", monospace; }
 .smallcaps { font-variant: small-caps; }
+.stacked-reading {
+  display: inline-block; vertical-align: middle; line-height: 1;
+  text-align: center; font-size: .78em; margin: 0 .12em;
+}
+.stacked-reading > span { display: block; white-space: nowrap; }
+.indent-2, .indent-4, .indent-6 { display: inline-block; }
+.indent-2 { width: 2em; } .indent-4 { width: 4em; } .indent-6 { width: 6em; }
 .redacted { background: currentColor; color: transparent; }
 blockquote { margin: .8em 1em; }
 figure { margin: 1em auto; text-align: center; break-inside: avoid; }
 img, svg { max-width: 100%; height: auto; }
+.ebook-diagram { max-width: 22em; padding: .75em; border: 1px solid var(--rule-color); }
+.family-diagram > div { text-align: center; }
+.family-grandsons { display: flex; justify-content: space-around; gap: 2em; }
+.family-hands { font-size: 1.5em; line-height: 1; }
+.family-diagram figcaption { font-size: .8em; font-style: italic; margin-top: .5em; }
+.glyph-overlap { display: inline-grid; place-items: center; }
+.glyph-overlap > span { grid-area: 1 / 1; }
 .definition { color: var(--definition-color); margin: var(--space-sm) 0 var(--space-sm) 2em; }
 .definition-heading { margin: 0; }
 .definition dfn { font-style: normal; font-weight: bold; }

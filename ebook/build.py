@@ -107,6 +107,7 @@ PALEO_ASCII = "ABGDHWZXJYKKLMMNNS]PPC CQRVT".replace(" ", "")
 PHOENICIAN = "𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤊𐤋𐤌𐤌𐤍𐤍𐤎𐤏𐤐𐤐𐤑𐤑𐤒𐤓𐤔𐤕"
 PALEO_ASCII_TABLE = str.maketrans(HEBREW_ORDER, PALEO_ASCII)
 PHOENICIAN_TABLE = str.maketrans(HEBREW_ORDER, PHOENICIAN)
+_MATHML_CACHE: dict[str, str] = {}
 
 
 def historical_hebrew(text: str, key: str) -> str:
@@ -122,6 +123,27 @@ def historical_hebrew(text: str, key: str) -> str:
 def log(message: str) -> None:
     """Print a build status message immediately."""
     print(f"[ebook] {message}", flush=True)
+
+
+def render_complex_math(math: str) -> str | None:
+    """Convert a self-contained formula before raw commentary HTML encloses it."""
+    if math in _MATHML_CACHE:
+        return _MATHML_CACHE[math]
+    pandoc = shutil.which("pandoc")
+    if not pandoc:
+        return None
+    converted = subprocess.run(
+        [pandoc, "--from=markdown", "--to=html", "--mathml"],
+        input=math, text=True, capture_output=True, check=False,
+    )
+    if converted.returncode:
+        return None
+    found = re.search(r"<math\b.*?</math>", converted.stdout, flags=re.DOTALL)
+    if not found:
+        return None
+    fragment = found.group(0)
+    _MATHML_CACHE[math] = fragment
+    return fragment
 
 
 def strip_comments(text: str) -> str:
@@ -267,6 +289,39 @@ def annotation_block(content: str, classes: str, alignment: str) -> str:
     return f'<span class="annotation {classes} align-{alignment}" role="note">{"".join(blocks)}</span>'
 
 
+def render_tikz_fallback(body: str) -> str:
+    """Translate the recurring Jacob-family TikZ scene into reflowable HTML."""
+    match = re.search(r"\\JacobFamilyPeople\s*", body)
+    people: list[str] = []
+    if match:
+        cursor = match.end()
+        for _ in range(4):
+            parsed = group(body, cursor)
+            if not parsed:
+                break
+            value, cursor = parsed
+            people.append(tex_to_markdown(value).strip())
+    if len(people) != 4:
+        return '<figure class="ebook-diagram"><figcaption>Diagram from the print edition.</figcaption></figure>'
+    crossed = r"\JacobBlessingHand" in body
+    hands = (
+        '<div class="family-hands" aria-label="Jacob crosses his hands">↘ × ↙</div>'
+        if crossed else ""
+    )
+    caption = (
+        "Jacob crosses his hands toward Ephraim and Manasseh."
+        if crossed else "Jacob, Ephraim, Manasseh, and Joseph."
+    )
+    return (
+        '<figure class="ebook-diagram family-diagram" role="group">'
+        f'<div class="family-jacob egyptian" lang="egy">{people[0]}</div>'
+        f'{hands}<div class="family-grandsons egyptian" lang="egy">'
+        f'<span>{people[1]}</span><span>{people[2]}</span></div>'
+        f'<div class="family-joseph egyptian" lang="egy">{people[3]}</div>'
+        f'<figcaption>{caption}</figcaption></figure>'
+    )
+
+
 def command_at(text: str, pos: int) -> tuple[str, int] | None:
     if text[pos] != "\\":
         return None
@@ -287,6 +342,21 @@ def tex_to_markdown(text: str) -> str:
     """Conservatively retain prose while translating semantic TeX markup."""
     text = textwrap.dedent(strip_comments(text)).replace("~", "\u00a0")
     text = text.replace("``", "“").replace("''", "”")
+    tikz_runs: list[str] = []
+    tikz_start = r"\begin{tikzpicture}"
+    tikz_end = r"\end{tikzpicture}"
+    search_from = 0
+    while True:
+        start = text.find(tikz_start, search_from)
+        if start < 0:
+            break
+        end = text.find(tikz_end, start + len(tikz_start))
+        if end < 0:
+            break
+        token = f"WTNTIKZRUN{len(tikz_runs)}TOKEN"
+        tikz_runs.append(render_tikz_fallback(text[start + len(tikz_start):end]))
+        text = text[:start] + token + text[end + len(tikz_end):]
+        search_from = start + len(token)
     # Tables may contain currency dollars. Render them before scanning TeX math
     # so a price in one cell can never pair with a later price as an equation.
     table_runs: list[str] = []
@@ -319,8 +389,52 @@ def tex_to_markdown(text: str) -> str:
 
     def protect_math(match: re.Match[str]) -> str:
         math = re.sub(r"\\(?:paleo|Paleo)\{([^{}]*)\}", r"\1", match.group(0))
+        # The print book occasionally stacks two readings with TeX's low-level
+        # \genfrac primitive. Pandoc cannot parse the surrounding \hbox,
+        # \raisebox and custom \size commands, so express the same editorial
+        # relationship as an accessible, reflow-safe inline stack.
+        if r"\genfrac" in math:
+            start = math.find(r"\genfrac") + len(r"\genfrac")
+            arguments: list[str] = []
+            cursor = start
+            for _ in range(6):
+                parsed = group(math, cursor)
+                if not parsed:
+                    break
+                value, cursor = parsed
+                arguments.append(value)
+            if len(arguments) == 6:
+                readings = []
+                for value in arguments[-2:]:
+                    # The generic converter unwraps hbox and preserves the
+                    # content argument of raisebox/size while dropping their
+                    # print-only measurements.
+                    readings.append(tex_to_markdown(value).strip())
+                rendered = (
+                    '<span class="stacked-reading" role="group" '
+                    'aria-label="alternate readings: '
+                    + html.escape("; ".join(re.sub(r"<[^>]+>", "", item) for item in readings), quote=True)
+                    + '"><span>' + readings[0] + '</span><span>' + readings[1] + '</span></span>'
+                )
+                token = f"WTNMATHRUN{len(math_runs)}TOKEN"
+                math_runs.append(rendered)
+                return token
+        # Protected runs are restored after TeX indentation has been removed;
+        # normalize them now so indented display math does not become a code
+        # block (which causes Pandoc to leave raw TeX in the EPUB).
+        delimiter = "$$" if math.startswith("$$") else "$"
+        inner = math[len(delimiter):-len(delimiter)]
+        inner = textwrap.dedent(inner).strip()
+        # A single line is accepted both in normal Markdown and inside the raw
+        # HTML note containers used for complex commentary.
+        inner = " ".join(line.strip() for line in inner.splitlines())
+        math = f"{delimiter}{inner}{delimiter}"
         token = f"WTNMATHRUN{len(math_runs)}TOKEN"
-        math_runs.append(math)
+        # Pandoc parses ordinary formulas correctly in the final document.
+        # Complex display formulas nested in raw commentary spans need to be
+        # converted before those spans are created or some writers retain TeX.
+        preconverted = render_complex_math(math) if delimiter == "$$" and re.search(r"\\(?:boxed|frac|sqrt|text)\b", inner) else None
+        math_runs.append(preconverted or math)
         return token
 
     text = re.sub(
@@ -336,6 +450,20 @@ def tex_to_markdown(text: str) -> str:
             env = group(text, i + 6)
             if env:
                 name, i = env
+                if name == "minipage":
+                    placement = optional_group(text, i)
+                    if placement:
+                        _, i = placement
+                    width = group(text, i)
+                    if width:
+                        _, i = width
+                elif name in {"tabular", "tabularx"}:
+                    width = group(text, i) if name == "tabularx" else None
+                    if width:
+                        _, i = width
+                    preamble = group(text, i)
+                    if preamble:
+                        _, i = preamble
                 if name in {"quote", "quotation"}:
                     out.append("\n\n> ")
                 elif name in {"enumerate", "itemize"}:
@@ -351,7 +479,11 @@ def tex_to_markdown(text: str) -> str:
                 out.append("\n\n")
                 continue
         if text[i] != "\\":
-            if text[i] == "$":
+            if text[i] == "&":
+                # An unescaped ampersand is TeX table scaffolding. Literal
+                # prose ampersands are authored as \& and handled below.
+                out.append("\n\n")
+            elif text[i] == "$":
                 out.append("&#36;")
             else:
                 out.append(html.escape(text[i]) if text[i] in "&<>" else text[i])
@@ -363,6 +495,11 @@ def tex_to_markdown(text: str) -> str:
             # visual line-end marker. It has no content of its own.
             i += 1; continue
         name, after = cmd_data
+        # Starred layout commands have the same argument structure here. If
+        # the star is left behind Markdown interprets it as emphasis and emits
+        # visible strings such as "{2em}".
+        if after < len(text) and text[after] == "*":
+            after += 1
         if name in MATH_SYMBOLS:
             out.append(MATH_SYMBOLS[name]); i = after; continue
         if name in ZERO_ARGUMENT_TEXT:
@@ -380,7 +517,8 @@ def tex_to_markdown(text: str) -> str:
             out.append("<br/>"); i = after; continue
         if name in {"hfill", "noindent", "centering", "raggedbottom", "RaggedRight",
                     "relax", "leavevmode", "sloppy", "tiny", "scriptsize", "footnotesize",
-                    "small", "large", "Large", "bfseries", "ttfamily", "selectfont"}:
+                    "small", "large", "Large", "bfseries", "ttfamily", "selectfont",
+                    "begingroup", "endgroup", "BookModeTextSizes"}:
             i = after; continue
         optional = optional_group(text, after)
         optional_value = None
@@ -392,11 +530,56 @@ def tex_to_markdown(text: str) -> str:
             out.append({"%": "%", "&": "&amp;", "_": "_", "#": "#", "$": "&#36;", "{": "{", "}": "}"}.get(name, ""))
             i = after; continue
         body, end = arg
+        if name in {"setlength", "addtolength", "renewcommand", "newcommand"}:
+            # Both arguments are print setup, never book content.
+            second = group(text, end)
+            i = second[1] if second else end
+            continue
         if name == "Table":
             table_body = group(text, end)
             if table_body:
                 table_body_value, end = table_body
                 out.append(render_table(table_body_value, body, optional_value is not None))
+            i = end
+            continue
+        if name == "egAbove":
+            arguments = [body]
+            cursor = end
+            for _ in range(3):
+                parsed = group(text, cursor)
+                if not parsed:
+                    break
+                value, cursor = parsed
+                arguments.append(value)
+            if len(arguments) == 4:
+                upper = tex_to_markdown(arguments[2]).strip()
+                lower = tex_to_markdown(arguments[3]).strip()
+                out.append(
+                    '<span class="stacked-reading egyptian" lang="egy" role="group" '
+                    f'aria-label="{html.escape(re.sub(r"<[^>]+>", "", upper + " " + lower), quote=True)}">'
+                    f'<span>{upper}</span><span>{lower}</span></span>'
+                )
+                end = cursor
+            i = end
+            continue
+        if name in {"egScale", "egRaise"}:
+            content = group(text, end)
+            if content:
+                value, end = content
+                out.append(tex_to_markdown(value).strip())
+            i = end
+            continue
+        if name == "egOverlap":
+            first_rendered = tex_to_markdown(body).strip()
+            second = group(text, end)
+            if second:
+                value, end = second
+                out.append(
+                    '<span class="glyph-overlap" role="img">'
+                    f'<span>{first_rendered}</span><span>{tex_to_markdown(value).strip()}</span></span>'
+                )
+            else:
+                out.append(first_rendered)
             i = end
             continue
         if name in {"Def", "DefA", "DefB", "DefC"}:
@@ -492,7 +675,7 @@ def tex_to_markdown(text: str) -> str:
             tag = INLINE[name]
             attrs = ""
             if name == "heb": attrs = ' class="hebrew" lang="he" dir="rtl"'
-            elif name == "paleo" or name == "Paleo": attrs = ' class="paleo" dir="rtl"'
+            elif name == "paleo" or name == "Paleo": attrs = ' class="paleo" lang="he" dir="rtl"'
             elif name == "textsc": attrs = ' class="smallcaps"'
             elif name == "redacted": attrs = ' class="redacted"'
             out.append(f"<{tag}{attrs}>{rendered}</{tag}>")
@@ -501,7 +684,19 @@ def tex_to_markdown(text: str) -> str:
             if (ROOT / path).exists():
                 alt = html.escape(Path(path).stem.replace("-", " ").replace("_", " "))
                 out.append(f'\n\n<figure><img src="{html.escape(path)}" alt="{alt}"/></figure>\n\n')
-        elif name in {"hspace", "vspace", "raisebox", "makebox", "size", "up", "dn"}:
+        elif name == "hspace":
+            # A handful of flush-left rhetorical diagrams use positive em
+            # indentation to show logical nesting. Preserve that information
+            # with bounded relative spacing; discard all other paper geometry.
+            indent = re.fullmatch(r"\+?([246])(?:\.0)?em", body.strip())
+            if indent:
+                out.append(f'<span class="indent-{indent.group(1)}" aria-hidden="true"></span>')
+            i = end
+            continue
+        elif name == "vspace":
+            i = end
+            continue
+        elif name in {"raisebox", "makebox", "rotatebox", "size", "up", "dn"}:
             second = group(text, end)
             if second:
                 value, end = second
@@ -521,6 +716,8 @@ def tex_to_markdown(text: str) -> str:
         result = result.replace(f"WTNMATHRUN{number}TOKEN", math)
     for number, table in enumerate(table_runs):
         result = result.replace(f"WTNTABLERUN{number}TOKEN", table)
+    for number, diagram in enumerate(tikz_runs):
+        result = result.replace(f"WTNTIKZRUN{number}TOKEN", diagram)
     return result.strip()
 
 

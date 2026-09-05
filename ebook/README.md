@@ -51,7 +51,15 @@ A build requires Pandoc 3. `--keep-markdown` on `build.py` preserves
   horizontally scrollable last-resort container. Tables are not rasterized.
 - Quotes and lists use native structures; source images become responsive
   figures. TeX math Pandoc understands becomes MathML. Unusual stacked
-  editorial glyph constructions degrade to text rather than a bitmap.
+  editorial readings become accessible stacked text rather than a bitmap.
+- Print-only `tabular`/`minipage` scaffolding around multiple semantic tables
+  is removed while the inner tables remain in reading order. Positive 2/4/6-em
+  indentation in rhetorical diagrams is retained as bounded relative spacing;
+  it never changes the paragraph's left alignment.
+- The recurring Jacob-family TikZ scene in Genesis 48 becomes a compact,
+  reflowable Egyptian-glyph figure. Its people, crossed-hands state, caption,
+  and reading order survive without exposing TikZ commands or freezing a PDF
+  page into an image.
 - Language helpers carry explicit `lang` and `dir` attributes. Base bidi
   direction is never established with CSS.
 
@@ -121,10 +129,10 @@ The dark-mode query is progressive enhancement; body colors are not forced.
 Every build runs `validate.py`. It verifies EPUB ZIP ordering/mimetype,
 container and package XML, unique identifiers, manifest completeness,
 well-formed XHTML, duplicate IDs, local links/fragments, nav presence, missing
-assets, and leaked filesystem paths. Pandoc structural warnings also fail the
-build. If `epubcheck` is on `PATH`, it runs and errors fail the build; otherwise
-the build explicitly reports that it was unavailable. Install EPUBCheck before
-release publication.
+assets, leaked filesystem paths, and visible TeX/layout debris. Pandoc
+structural warnings also fail the build. If `epubcheck` is on `PATH`, it runs
+and errors fail the build; otherwise the build explicitly reports that it was
+unavailable. Install EPUBCheck before release publication.
 
 Genesis is the torture test: mixed sources, pointed/unpointed Hebrew,
 Paleo-Hebrew and primeval scripts, nested commentary, hundreds of notes, large
@@ -142,9 +150,14 @@ page, `prefers-color-scheme`, and horizontal table overflow. Their absence does
 not remove meaning.
 
 EPUB 3.3 permits modern CSS but prohibits CSS `direction` and `unicode-bidi`,
-so direction lives in markup. Kindle accepts EPUB and supports embedded OTF/TTF
-fonts, HTML tables, MathML, note links, and break controls, but may ignore
-dark-mode queries, columns, custom properties, publisher fonts, or overflow.
+so direction lives in markup. See the [EPUB 3.3 CSS requirements](https://www.w3.org/TR/epub-33/#sec-css).
+Kindle accepts EPUB and its Enhanced Typesetting supports embedded fonts, HTML
+tables, MathML, semantic note links, and break controls. Amazon specifically
+recommends leaving ordinary body typography reader-controlled and using
+`aside` plus `epub:type` for notes; this renderer follows that policy. See the
+[Kindle reflowable text guidelines](https://kdp.amazon.com/en_US/help/topic/GH4DRT75GWWAGBTU).
+Kindle may still ignore dark-mode queries, columns, custom properties,
+publisher fonts, or overflow.
 Fixed/absolute positioning, viewport-dependent normal layout, negative table
 margins, nested tables, and fixed-layout pagination are avoided.
 

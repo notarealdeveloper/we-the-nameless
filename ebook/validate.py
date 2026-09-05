@@ -72,10 +72,26 @@ def main() -> int:
         xhtml_paths = sorted(path for path in manifest_paths if path.endswith((".xhtml", ".html")))
         for path in xhtml_paths:
             try:
-                root = ET.fromstring(archive.read(path))
+                raw_document = archive.read(path).decode("utf-8")
+                root = ET.fromstring(raw_document)
             except ET.ParseError as exc:
                 fail(errors, f"invalid XHTML {path}: {exc}")
                 continue
+            # MathML intentionally retains its TeX source annotation. Outside
+            # that fallback, TeX commands and layout preambles are conversion
+            # debris that readers would expose as ordinary text.
+            visible_source = re.sub(
+                r"<annotation\b[^>]*encoding=[\"']application/x-tex[\"'][^>]*>.*?</annotation>",
+                "", raw_document, flags=re.DOTALL,
+            )
+            debris = re.search(
+                r"\\(?:begin|end|boxed|frac|genfrac|hbox|raisebox|setlength)\b|"
+                r"@p\{|\{[+-]?[0-9.]+(?:em|ex|pt)\}|"
+                r"\bon background layer\b|\bnode\[",
+                visible_source,
+            )
+            if debris:
+                fail(errors, f"visible TeX/layout debris in {path}: {debris.group(0)!r}")
             document_roots[path] = root
             ids: set[str] = set()
             for element in root.iter():

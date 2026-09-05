@@ -774,6 +774,6 @@ Most importantly:
 
 Be ambitious. EPUB 3 is much closer to a modern web platform than to an old stripped-down ebook format. Use that capability, while maintaining fallbacks for the real reading systems we care about.
 
-Finally, make sure the index in the ebook matches the book's ToC, it's currently quite wrong.
+Finally, make the text left aligned whenever the tex is left aligned, the centering looks ugly and doesn't work.
 
 EOF
