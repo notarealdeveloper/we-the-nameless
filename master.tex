@@ -3,14 +3,14 @@
 %%%     The Nameless     %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% choices: light, dark
+% choices: lite, dark
 \ifdefined\ConfigTheme\else
-    \def\ConfigTheme{light}
+    \def\ConfigTheme{lite}
 \fi
 
-% choices: book, mobile
+% choices: print, phone
 \ifdefined\ConfigOutputMode\else
-    \def\ConfigOutputMode{book}
+    \def\ConfigOutputMode{print}
 \fi
 
 % choices: horizontal, vertical
@@ -64,11 +64,15 @@
 \def\ConfigTrue{true}
 \def\ConfigRedactorCensored{censored}
 \def\ConfigThemeDark{dark}
+\def\ConfigThemeAssetSuffix{light}
+\ifx\ConfigTheme\ConfigThemeDark
+    \def\ConfigThemeAssetSuffix{dark}
+\fi
 \def\ConfigColorsLighter{lighter}
 \def\ConfigVerseLayoutHorizontal{horizontal}
 \def\ConfigVerseLayoutVertical{vertical}
-\def\ConfigOutputModeBook{book}
-\def\ConfigOutputModeMobile{mobile}
+\def\ConfigOutputModePrint{print}
+\def\ConfigOutputModePhone{phone}
 \def\ConfigApocryphaApocryphal{apocryphal}
 \def\ConfigApocryphaCanonical{canonical}
 \def\ConfigEnglishTranslationDefault{default}
@@ -77,7 +81,7 @@
 \newif\ifConfigCommentaryOn
 \newif\ifConfigRedactorCensored
 \newif\ifConfigVerseLayoutVertical
-\newif\ifConfigOutputModeMobile
+\newif\ifConfigOutputModePhone
 \newif\ifConfigApocryphaOn
 \newif\ifConfigEnglishTranslationDefault
 \newif\ifIndividualBookTitlePageStyleFancy
@@ -97,10 +101,10 @@
 \else
     \ConfigVerseLayoutVerticalfalse
 \fi
-\ifx\ConfigOutputMode\ConfigOutputModeMobile
-    \ConfigOutputModeMobiletrue
+\ifx\ConfigOutputMode\ConfigOutputModePhone
+    \ConfigOutputModePhonetrue
 \else
-    \ConfigOutputModeMobilefalse
+    \ConfigOutputModePhonefalse
 \fi
 \ifx\ConfigApocrypha\ConfigApocryphaApocryphal
     \ConfigApocryphaOntrue
@@ -125,7 +129,7 @@
     \renewcommand#1{\@setfontsize#1{#2}{#3}}%
 }
 
-\newcommand{\BookModeTextSizes}{%
+\newcommand{\PrintModeTextSizes}{%
     \DeclareConfiguredTextSize{\tiny}{6pt}{7pt}%
     \DeclareConfiguredTextSize{\scriptsize}{8pt}{9.5pt}%
     \DeclareConfiguredTextSize{\footnotesize}{9pt}{11pt}%
@@ -138,7 +142,7 @@
     \DeclareConfiguredTextSize{\Huge}{24.88pt}{30pt}%
 }
 
-\newcommand{\MobileModeTextSizes}{%
+\newcommand{\PhoneModeTextSizes}{%
     \DeclareConfiguredTextSize{\tiny}{8pt}{9.33pt}%
     \DeclareConfiguredTextSize{\scriptsize}{10.67pt}{12.67pt}%
     \DeclareConfiguredTextSize{\footnotesize}{12pt}{14.67pt}%
@@ -165,10 +169,10 @@
 }
 \makeatother
 
-\ifConfigOutputModeMobile
-% Mobile keeps the same typographic ladder as 11pt book mode, scaled together.
+\ifConfigOutputModePhone
+% Phone keeps the same typographic ladder as 11pt print mode, scaled together.
 % This preserves source/font relationships while making phone reading practical.
-\MobileModeTextSizes
+\PhoneModeTextSizes
 \DeclareMathSizes{10.67}{10.67}{7}{5}
 \normalsize
 \fi
@@ -180,7 +184,7 @@
 \section{nav: the creations of man}
 \fi
 
-\ifConfigOutputModeMobile
+\ifConfigOutputModePhone
     % Keep the existing 7in width; expand height to match a 3.07 x 6.44 phone ratio.
     \usepackage[
         paperwidth=7in,
@@ -269,15 +273,15 @@
 
 \newcommand{\ImageNotFound}[1]{%
     \PackageError{WeTheNameless}{Image not found: #1}{%
-        Looked under \CurrentBookImageDir/include for #1-\ConfigTheme and #1, with jpg/png extensions.%
+        Looked under \CurrentBookImageDir/include for #1-\ConfigThemeAssetSuffix and #1, with jpg/png extensions.%
     }%
 }
 \newcommand{\image}[2][width=0.9\linewidth]{%
-    \IfFileExists{\CurrentBookImageDir/include/#2-\ConfigTheme.jpg}{%
-        \includegraphics[#1]{\CurrentBookImageDir/include/#2-\ConfigTheme.jpg}%
+    \IfFileExists{\CurrentBookImageDir/include/#2-\ConfigThemeAssetSuffix.jpg}{%
+        \includegraphics[#1]{\CurrentBookImageDir/include/#2-\ConfigThemeAssetSuffix.jpg}%
     }{%
-        \IfFileExists{\CurrentBookImageDir/include/#2-\ConfigTheme.png}{%
-            \includegraphics[#1]{\CurrentBookImageDir/include/#2-\ConfigTheme.png}%
+        \IfFileExists{\CurrentBookImageDir/include/#2-\ConfigThemeAssetSuffix.png}{%
+            \includegraphics[#1]{\CurrentBookImageDir/include/#2-\ConfigThemeAssetSuffix.png}%
         }{%
             \IfFileExists{\CurrentBookImageDir/include/#2.jpg}{%
                 \includegraphics[#1]{\CurrentBookImageDir/include/#2.jpg}%
@@ -913,7 +917,7 @@
 
 \definecolor{OtherColor}{RGB}{80,80,80}
 % The lighter-looking English face needs a slightly darker ink value to
-% visually match the Hebrew face in the light theme.
+% visually match the Hebrew face in the lite theme.
 \definecolor{EnglishOtherColor}{RGB}{65,65,65}
 \colorlet{Otherbgcolor}{OtherColor!12!white}
 %\definecolor{OtherColor}{RGB}{0,120,0}
@@ -936,7 +940,7 @@
 
 \definecolor{DefColor}{RGB}{0,70,170}
 \definecolor{RedactedColor}{RGB}{0,70,170}
-\definecolor{MobileLinkColor}{HTML}{8ec7ff}
+\definecolor{PhoneLinkColor}{HTML}{8ec7ff}
 \colorlet{HLAbgcolor}{Kcolor!12!white}
 \colorlet{HLBbgcolor}{Redcolor!12!white}
 \colorlet{HLCbgcolor}{Bluecolor!12!white}
@@ -1040,9 +1044,9 @@
 \newcommand{\TocFont}{\EnglishFont\color{TextColor}}
 \ifx\ConfigTheme\ConfigThemeDark
     % Preserve the existing, brighter link blue against the dark background.
-    \colorlet{ContentsLinkColor}{MobileLinkColor}
+    \colorlet{ContentsLinkColor}{PhoneLinkColor}
 \else
-    % Match \aC text exactly in light mode.
+    % Match \aC text exactly in lite mode.
     \colorlet{ContentsLinkColor}{Bluecolor}
 \fi
 \newcommand{\TocLinkFont}{\EnglishFont\color{ContentsLinkColor}}
@@ -2348,13 +2352,13 @@
     \vspace{\LegendRowSep}%
 }
 
-\newcount\SourceFontLineBreakMobilePenalty
-\SourceFontLineBreakMobilePenalty=3000
+\newcount\SourceFontLineBreakPhonePenalty
+\SourceFontLineBreakPhonePenalty=3000
 \newcommand{\SourceFontLineBreak}{%
-    \ifConfigOutputModeMobile
+    \ifConfigOutputModePhone
         \ifhmode
             \unskip
-            \penalty\SourceFontLineBreakMobilePenalty
+            \penalty\SourceFontLineBreakPhonePenalty
             \hskip 0.333em plus 0.167em minus 0.111em\relax
         \fi
     \else
@@ -2394,11 +2398,11 @@
 \NewDocumentCommand{\ManualFrontMatterPage}{ +m }{%
     \clearpage
     \thispagestyle{empty}
-    \ifConfigOutputModeMobile
+    \ifConfigOutputModePhone
         \vspace*{\fill}%
     \fi
     #1%
-    \ifConfigOutputModeMobile
+    \ifConfigOutputModePhone
         \vspace*{\fill}%
     \fi
 }
@@ -2817,8 +2821,8 @@
     \begingroup
     \centering
     \vspace*{\fill}
-    {\ifConfigOutputModeMobile
-        \BookModeTextSizes
+    {\ifConfigOutputModePhone
+        \PrintModeTextSizes
         \tiny
     \else
         \tiny
@@ -2927,10 +2931,10 @@
 \def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
 
 \newcommand{\AlphabetHistoryTextSizes}{%
-    % Use one fixed canvas in both output modes.  At the ordinary book-mode
+    % Use one fixed canvas in both output modes.  At the ordinary print-mode
     % text size, the samples fall below \linewidth and expose their manually
     % tuned, uneven widths; this size makes the existing fit-to-linewidth rule
-    % produce the same clean alignment that mobile mode has.
+    % produce the same clean alignment that phone mode has.
     \AlphabetHistoryPageTextSizes
     \normalsize
 }
@@ -3049,7 +3053,7 @@
     \expandafter\def\csname BookExtraLinkList@#1\endcsname{#2}%
 }
 \newcommand{\ChapterLinkText}[1]{%
-    \ifConfigOutputModeMobile
+    \ifConfigOutputModePhone
         {\color{ContentsLinkColor}\underLine{#1}}%
     \else
         {\color{ContentsLinkColor}#1}%
@@ -3127,7 +3131,7 @@
     }%
 }
 \newcommand{\ChapterSummaryLinkText}[1]{%
-    \ifConfigOutputModeMobile
+    \ifConfigOutputModePhone
         {\color{ContentsLinkColor}\underLine{#1}}%
     \else
         {\color{ContentsLinkColor}#1}%
@@ -3191,7 +3195,7 @@
     \fi
 }
 \newcommand{\BookExtraLinkText}[1]{%
-    \ifConfigOutputModeMobile
+    \ifConfigOutputModePhone
         {\color{ContentsLinkColor}\underLine{#1}}%
     \else
         {\color{ContentsLinkColor}#1}%
