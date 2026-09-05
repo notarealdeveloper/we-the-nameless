@@ -32,6 +32,11 @@ FONT_FILES = [
     ROOT / "fonts/paleo-hebrew-siloam.ttf",
     ROOT / "fonts/paleo-hebrew-mono.ttf",
     ROOT / "fonts/english-im-fell-english-sc-regular.ttf",
+    ROOT / "fonts/egyptian-hieroglyphs-regular-noto-sans.ttf",
+    ROOT / "fonts/arabic-amiri-regular.ttf",
+    ROOT / "fonts/noto-sans-syriac.ttf",
+    ROOT / "fonts/noto-sans-cuneiform-regular.ttf",
+    ROOT / "fonts/noto-sans-ugaritic-regular.ttf",
 ]
 
 SOURCE_NAMES = {
@@ -46,9 +51,9 @@ SOURCE_NAMES = {
 
 SOURCE_ALIASES = {"BookOfRecords": "Records"}
 
-COMMENTARY = {"aA": "aside-a", "aAc": "aside-a", "aB": "aside-b",
-              "aBr": "aside-b", "aC": "aside-c", "aP": "aside-p",
-              "aR": "aside-r", "cB": "aside-b", "cR": "aside-r"}
+COMMENTARY = {"aA": "annotation-a", "aB": "annotation-b",
+              "aC": "annotation-c", "aP": "annotation-p",
+              "aR": "annotation-r", "aRJE": "annotation-rje"}
 
 INLINE = {
     "textbf": "strong", "bf": "strong", "emph": "em", "textit": "em",
@@ -191,19 +196,34 @@ def split_tex(text: str, separator: str) -> list[str]:
     return parts
 
 
-def render_table(body: str) -> str:
-    r"""Turn the project's \Table rows into a responsive semantic table."""
-    body = re.sub(r"\\(?:hline|toprule|midrule|bottomrule)\b", "", body)
+def table_alignments(column_spec: str) -> list[str]:
+    """Extract conceptual l/c/r alignment from a TeX tabular preamble."""
+    spec = re.sub(r"@\{(?:[^{}]|\{[^{}]*\})*\}", "", column_spec)
+    return [
+        {"l": "start", "c": "center", "r": "end", "p": "start"}[token]
+        for token in re.findall(r"[lcr]|p(?=\{)", spec)
+    ]
+
+
+def render_table(body: str, column_spec: str, custom_setup: bool = False) -> str:
+    r"""Render \Table's centered blue, compact tabular as semantic HTML."""
+    alignments = table_alignments(column_spec)
+    has_vertical_rules = "|" in column_spec
     rows = [row for row in split_tex(body, r"\\") if row.strip()]
     rendered_rows: list[str] = []
-    for row_number, row in enumerate(rows):
+    for row_number, raw_row in enumerate(rows):
+        rule_above = bool(re.match(r"\s*\\(?:hline|toprule|midrule|bottomrule)\b", raw_row))
+        row = re.sub(r"\\(?:hline|toprule|midrule|bottomrule)\b", "", raw_row).strip()
+        if not row:
+            continue
         cells = [cell.strip() for cell in split_tex(row, "&")]
         if not any(cells):
             continue
-        tag = "th" if row_number == 0 else "td"
+        is_header = row_number == 0 and any(re.search(r"\\(?:textbf|bf)\b", cell) for cell in cells)
+        tag = "th" if is_header else "td"
         attrs = ' scope="col"' if tag == "th" else ""
         rendered_cells: list[str] = []
-        for cell in cells:
+        for column, cell in enumerate(cells):
             content = tex_to_markdown(cell).strip()
             # Inline dollar math inside raw HTML tables can be paired across
             # cell boundaries by Markdown parsers. Keep simple table math
@@ -215,14 +235,25 @@ def render_table(body: str) -> str:
                 ) + "</span>",
                 content,
             )
-            rendered_cells.append(f"<{tag}{attrs}>{content}</{tag}>")
+            alignment = alignments[column] if column < len(alignments) else "start"
+            rendered_cells.append(f'<{tag}{attrs} class="align-{alignment}">{content}</{tag}>')
         rendered = "".join(rendered_cells)
-        rendered_rows.append(f"<tr>{rendered}</tr>")
+        row_class = ' class="rule-above"' if rule_above else ""
+        rendered_rows.append(f"<tr{row_class}>{rendered}</tr>")
     if not rendered_rows:
         return ""
-    head, *rest = rendered_rows
-    tbody = f"<tbody>{''.join(rest)}</tbody>" if rest else ""
-    return f'\n\n<div class="table-scroll"><table class="critical-table"><thead>{head}</thead>{tbody}</table></div>\n\n'
+    first_is_header = rendered_rows[0].find("<th") >= 0
+    if first_is_header:
+        head, *rest = rendered_rows
+        contents = f"<thead>{head}</thead><tbody>{''.join(rest)}</tbody>"
+    else:
+        contents = f"<tbody>{''.join(rendered_rows)}</tbody>"
+    classes = ["wtn-table"]
+    if has_vertical_rules:
+        classes.append("wtn-table-vertical-rules")
+    if custom_setup:
+        classes.append("wtn-table-custom")
+    return f'\n\n<div class="table-scroll"><table class="{" ".join(classes)}">{contents}</table></div>\n\n'
 
 
 def command_at(text: str, pos: int) -> tuple[str, int] | None:
@@ -307,8 +338,9 @@ def tex_to_markdown(text: str) -> str:
                     "small", "large", "Large", "bfseries", "ttfamily", "selectfont"}:
             i = after; continue
         optional = optional_group(text, after)
+        optional_value = None
         if optional:
-            _, after = optional
+            optional_value, after = optional
         arg = group(text, after)
         if not arg:
             # Preserve common escaped punctuation; discard purely presentational commands.
@@ -318,21 +350,33 @@ def tex_to_markdown(text: str) -> str:
         if name == "Table":
             table_body = group(text, end)
             if table_body:
-                body, end = table_body
-                out.append(render_table(body))
+                table_body_value, end = table_body
+                out.append(render_table(table_body_value, body, optional_value is not None))
             i = end
             continue
         if name in {"Def", "DefA", "DefB", "DefC"}:
             label = tex_to_markdown(body).strip()
+            qualifier_value = None
+            if name == "Def":
+                qualifier = optional_group(text, end)
+                if qualifier:
+                    qualifier_value, end = qualifier
             second = group(text, end)
-            # \Def has an optional pronunciation between its label and body.
             if second:
                 definition, end = second
                 cls = {"Def": "definition", "DefA": "definition-a",
                        "DefB": "definition-b", "DefC": "definition-c"}[name]
+                qualifier = ""
+                if name == "Def" and qualifier_value:
+                    qualifier = (
+                        '<span class="definition-qualifier">('
+                        + tex_to_markdown(qualifier_value).strip() + ")</span>"
+                    )
                 out.append(
-                    f'\n\n<div class="definition {cls}"><dfn>{label}</dfn>'
-                    f'<div>{tex_to_markdown(definition).strip()}</div></div>\n\n'
+                    f'\n\n<section class="definition {cls}">'
+                    f'<p class="definition-heading"><dfn>{label}</dfn>{qualifier}.</p>'
+                    f'<div class="definition-body">{tex_to_markdown(definition).strip()}</div>'
+                    f'</section>\n\n'
                 )
             else:
                 out.append(f"<dfn>{label}</dfn>")
@@ -354,13 +398,20 @@ def tex_to_markdown(text: str) -> str:
             else:
                 rendered = re.sub(r"\s*\n\s*", " ", rendered)
                 out.append(f'<span class="source source-{key.lower()} {language}"{attrs} data-source="{label}">{rendered}</span>')
-        elif name in COMMENTARY:
-            is_block = any(marker in rendered for marker in ("<div ", "<table", "\n\n"))
+        elif name in COMMENTARY or re.fullmatch(r"a(?:A|B|C|J|E|P|DtrA|DtrB|Dtn|R|RJE|Records|Other)[lcr]", name):
+            base_name = name[:-1] if name not in COMMENTARY else name
+            cls = COMMENTARY.get(base_name, "annotation")
+            alignment = {"l": "start", "c": "center", "r": "end"}.get(name[-1], "start")
             if any(marker in rendered for marker in ("<div ", "<table")):
                 out.append(rendered)
+            elif "\n\n" in rendered:
+                out.append(f'<div class="annotation {cls} align-{alignment}" role="note">{rendered}</div>')
             else:
                 note = re.sub(r"\s*\n\s*", " ", rendered)
-                out.append(f'<span class="comment {COMMENTARY[name]}" role="note">{note}</span>')
+                out.append(f'<span class="annotation {cls} align-{alignment}" role="note">{note}</span>')
+        elif name in {"fA", "fB", "fC", "fAX", "fBX", "fCX"}:
+            voice = name[1]
+            out.append(f'^[<span class="footnote-voice annotation-{voice.lower()}">{rendered}</span>]')
         elif name == "footnote" or name in {"recursivefootnote", "hangingfootnote"}:
             out.append(f"^[{rendered}]")
         elif name == "href":
@@ -558,12 +609,17 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
             duplicate_count = verse_occurrences.get(base_verse_anchor, 0)
             verse_occurrences[base_verse_anchor] = duplicate_count + 1
             verse_anchor = base_verse_anchor if not duplicate_count else f"{base_verse_anchor}-alternate-{duplicate_count + 1}"
-            lines += [f':::::: {{.verse #{verse_anchor}}}', f'### {number} {{#{verse_anchor}-number .verse-number}}',
-                      '::::: {.hebrew-block lang="he" dir="rtl"}', tex_to_markdown(hebrew), ":::::",
-                      "::::: {.english-block}", tex_to_markdown(english), ":::::"]
+            # master.tex: \Verse -> \VerseBody -> \VerseVertical.  Preserve its
+            # reference/rule header, then English-before-Hebrew document order.
+            lines += [
+                f':::::: {{.verse #{verse_anchor}}}',
+                f'### {book} {chapter}:{number} {{#{verse_anchor}-number .verse-reference}}',
+                "::::: {.verse-translation}", tex_to_markdown(english), ":::::",
+                '::::: {.verse-source lang="he" dir="rtl"}', tex_to_markdown(hebrew), ":::::",
+            ]
             rendered_commentary = tex_to_markdown(commentary)
             if rendered_commentary:
-                lines += ["::::: {.commentary}", rendered_commentary, ":::::"]
+                lines += ["::::: {.verse-commentary}", rendered_commentary, ":::::"]
             lines += ["::::::", ""]
     path.write_text("\n".join(lines), encoding="utf-8")
     return chapter_count, verse_count

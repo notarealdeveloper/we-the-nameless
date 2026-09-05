@@ -6,14 +6,25 @@
 @font-face { font-family: "WTN Paleo RJE"; src: url("../fonts/paleo-hebrew-siloam.ttf"); }
 @font-face { font-family: "WTN Paleo Mono"; src: url("../fonts/paleo-hebrew-mono.ttf"); }
 @font-face { font-family: "WTN Primeval"; src: url("../fonts/english-im-fell-english-sc-regular.ttf"); }
+@font-face { font-family: "WTN Egyptian"; src: url("../fonts/egyptian-hieroglyphs-regular-noto-sans.ttf"); }
+@font-face { font-family: "WTN Arabic"; src: url("../fonts/arabic-amiri-regular.ttf"); }
+@font-face { font-family: "WTN Syriac"; src: url("../fonts/noto-sans-syriac.ttf"); }
+@font-face { font-family: "WTN Cuneiform"; src: url("../fonts/noto-sans-cuneiform-regular.ttf"); }
+@font-face { font-family: "WTN Ugaritic"; src: url("../fonts/noto-sans-ugaritic-regular.ttf"); }
 
 :root {
   color-scheme: light dark;
-  --wtn-j: #087d28; --wtn-e: #9b7100; --wtn-p: #155fa8;
-  --wtn-red: #8a2020; --wtn-blue: #155fa8; --wtn-green: #087d28;
-  --wtn-muted: #686868; --wtn-rule: #b8b8b8;
-  --wtn-r-bg: rgba(21, 95, 168, .13); --wtn-rje-bg: rgba(8, 125, 40, .13);
-  --wtn-record-bg: rgba(104, 104, 104, .13); --wtn-other-bg: rgba(65, 65, 65, .1);
+  /* Light-theme values are the RGB/color-mix relationships in master.tex. */
+  --source-j: #008700; --source-e: #b98c00; --source-p: #0046aa;
+  --annotation-a: #000; --annotation-b: #820000; --annotation-c: #0046aa;
+  --source-red: #aa0000; --source-record: #6e6e6e; --source-other: #505050;
+  --definition-color: #0046aa; --rule-color: currentColor;
+  --source-j-bg: #e0f1e0; --source-e-bg: #f4edd6; --source-p-bg: #dbe5f3;
+  --source-r-bg: #e0e8f5; --source-rje-bg: #e1f5e1;
+  --source-record-bg: #e9e9e9; --source-other-bg: #e7e7e7;
+  --space-xs: .25em; --space-sm: .5em; --space-md: .75em;
+  --space-lg: 1em; --space-xl: 1.6em;
+  --verse-number-size: 1.1em; --commentary-size: 1em;
 }
 html { background: transparent; }
 body { margin: 5%; widows: 2; orphans: 2; text-rendering: optimizeLegibility; }
@@ -46,25 +57,34 @@ h1, h2, h3 { font-family: serif; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 .book-title { text-align: center; page-break-before: always; break-before: page; font-size: 3.2em; font-variant: small-caps; }
 .chapter-title { page-break-before: always; break-before: page; text-align: center; }
-.verse { margin: 1.25em 0 1.8em; break-inside: avoid-page; page-break-inside: avoid; }
-.verse-number { color: #6e6e6e; font-size: .75em; margin: 0 0 .35em; }
-.hebrew-block { text-align: right; font-size: 1.22em; line-height: 1.65; }
+.verse { margin: var(--space-md) 0 var(--space-xl); break-inside: avoid-page; page-break-inside: avoid; }
+.verse-reference {
+  border-top: 1px solid var(--rule-color); border-bottom: 1px solid var(--rule-color);
+  font-size: var(--verse-number-size); font-weight: normal; text-align: center;
+  margin: 0 0 var(--space-xs); padding: var(--space-xs) 0 var(--space-md);
+}
+.verse-source { margin-top: var(--space-md); text-align: right; font-size: 1em; line-height: 1.5; }
 .hebrew-line, .english-line { display: block; }
-.english-block { margin-top: .45em; }
-.commentary { margin: .8em 0 0; padding: .1em 0 .1em .85em; border-left: .14em solid var(--wtn-rule); }
-.aside-a, .aside-b, .aside-c, .aside-p, .aside-r { margin: .6em 0; }
-.aside-a { color: #000; } .aside-b { color: #820000; } .aside-c, .aside-p { color: #0046aa; }
-.aside-r { color: #0046aa; background: #dbe8f7; }
-.source-j, .source-je, .source-jp, .source-jpp, .source-jm { color: var(--wtn-j); }
-.source-e, .source-ep, .source-epp { color: var(--wtn-e); font-weight: 700; }
-.source-p, .source-pr, .source-pp { color: var(--wtn-p); font-weight: 700; }
-.source-r, .source-diff { color: var(--wtn-p); background-color: var(--wtn-r-bg); }
-.source-rje { color: #006400; background-color: #e1f5e1; }
+.verse-translation { margin: 0; text-align: left; }
+.verse-commentary { font-size: var(--commentary-size); margin: var(--space-md) 0 0; }
+.annotation { margin: var(--space-sm) 0; }
+.annotation-a { color: var(--annotation-a); } .annotation-b { color: var(--annotation-b); }
+.annotation-c, .annotation-p { color: var(--annotation-c); }
+.annotation-r { color: var(--source-p); background: var(--source-r-bg); }
+.align-start { text-align: start; } .align-center { text-align: center; } .align-end { text-align: end; }
+.source-j, .source-je, .source-jp, .source-jpp, .source-jm { color: var(--source-j); }
+.source-e, .source-ep, .source-epp { color: var(--source-e); font-weight: 700; }
+.source-p, .source-pr, .source-pp { color: var(--source-p); font-weight: 700; }
+.source-j { background-color: var(--source-j-bg); }
+.source-e { background-color: var(--source-e-bg); }
+.source-p { background-color: var(--source-p-bg); }
+.source-r, .source-diff { color: var(--source-p); background-color: var(--source-r-bg); }
+.source-rje { color: #006400; background-color: var(--source-rje-bg); }
 .source-dtra, .source-dtrh, .source-dtn { color: #806100; }
 .source-dtrb { color: #995e00; }
-.source-bookofrecords, .source-records { color: var(--wtn-muted); background-color: var(--wtn-record-bg); }
-.source-other, .source-x { color: inherit; background-color: var(--wtn-other-bg); }
-.source-red { color: var(--wtn-red); background: rgba(138, 32, 32, .13); }
+.source-bookofrecords, .source-records { color: var(--source-record); background-color: var(--source-record-bg); }
+.source-other, .source-x { color: var(--source-other); background-color: var(--source-other-bg); }
+.source-red { color: var(--source-red); background: #f5e0e0; }
 .source-reblacktor { color: inherit; background: rgba(128, 128, 128, .18); }
 .source-proto, .source-protoa, .source-protof { color: #878787; font-family: "WTN Primeval", serif; }
 .hebrew { font-family: "WTN Hebrew David", serif; }
@@ -81,25 +101,37 @@ h1, h2, h3 { font-family: serif; }
 blockquote { margin: .8em 1em; }
 figure { margin: 1em auto; text-align: center; break-inside: avoid; }
 img, svg { max-width: 100%; height: auto; }
-.definition { border-left: .18em solid currentColor; color: var(--wtn-blue); margin: .8em 0; padding: .2em 0 .2em .8em; }
+.definition { color: var(--definition-color); margin: var(--space-sm) 0 var(--space-sm) 2em; }
+.definition-heading { margin: 0; }
 .definition dfn { font-style: normal; font-weight: bold; }
-.definition-b { color: var(--wtn-red); } .definition-c { color: var(--wtn-blue); }
-.red { color: var(--wtn-red); } .blue { color: var(--wtn-blue); } .green { color: var(--wtn-green); }
-.yellow { color: var(--wtn-e); } .gray { color: var(--wtn-muted); }
+.definition-qualifier { font-weight: normal; margin-left: .35em; }
+.definition-body { font-style: normal; font-weight: normal; margin: 0; }
+.definition-body > :first-child { margin-top: 0; }
+.definition-a { color: var(--annotation-a); } .definition-b { color: var(--annotation-b); }
+.definition-c { color: var(--annotation-c); }
+.red { color: var(--annotation-b); } .blue { color: var(--annotation-c); } .green { color: var(--source-j); }
+.yellow { color: var(--source-e); } .gray { color: var(--source-record); }
 .highlight-a { background: rgba(90, 90, 90, .13); }
 .highlight-b { background: rgba(138, 32, 32, .13); }
 .highlight-c { background: rgba(21, 95, 168, .13); }
-.table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
-table { border-collapse: collapse; font-size: .88em; width: 100%; }
-th, td { border: 1px solid var(--wtn-rule); padding: .4em; text-align: start; vertical-align: top; overflow-wrap: anywhere; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: var(--space-lg) 0; }
+.wtn-table { border-collapse: collapse; color: var(--definition-color); font-size: .73em; line-height: 1.35; margin: 0 auto; width: auto; max-width: 100%; }
+.wtn-table-custom { font-size: inherit; }
+.wtn-table th, .wtn-table td { border: 0; padding: .2em .35em; vertical-align: top; overflow-wrap: anywhere; }
+.wtn-table .rule-above > th, .wtn-table .rule-above > td { border-top: 1px solid var(--rule-color); }
+.wtn-table-vertical-rules th, .wtn-table-vertical-rules td { border-left: 1px solid var(--rule-color); border-right: 1px solid var(--rule-color); }
 th { font-weight: bold; }
-.egyptian { font-family: sans-serif; }
+.egyptian { font-family: "WTN Egyptian", sans-serif; font-size: 1.9em; }
+.arabic { font-family: "WTN Arabic", serif; font-size: 1.15em; }
+.syriac { font-family: "WTN Syriac", sans-serif; font-size: 1.15em; }
+.cuneiform { font-family: "WTN Cuneiform", sans-serif; font-size: 1.22em; }
+.ugaritic { font-family: "WTN Ugaritic", sans-serif; font-size: 1.22em; }
 .cjk { font-family: serif; }
-@media (max-width: 30em) { .contents-book ol { columns: 1; } table { font-size: .78em; } }
+@media (max-width: 30em) { .contents-book ol { columns: 1; } .wtn-table { width: 100%; } }
 @media (prefers-color-scheme: dark) {
   html { background: #2d353b; color: #e8e2d2; } body { color: #e8e2d2; }
-  .verse-number { color: #aab2aa; } .contents-list a, .aside-c, .aside-p { color: #8ec7ff; }
-  .aside-a { color: #e8e2d2; } .aside-b { color: #dca5a4; } .aside-r, .source-r { color: #7f9fcf; background: #343f4b; }
+  .contents-list a, .annotation-c, .annotation-p { color: #8ec7ff; }
+  .annotation-a { color: #e8e2d2; } .annotation-b { color: #dca5a4; } .annotation-r, .source-r { color: #7f9fcf; background: #343f4b; }
   .source-j, .source-je, .source-jp, .source-jpp, .source-jm { color: #b0cfae; }
   .source-e, .source-ep, .source-epp { color: #c4ad82; } .source-p, .source-pr { color: #718aaa; }
   .source-rje { color: #b4d0b3; background: #344837; } .source-dtra, .source-dtrh, .source-dtn { color: #917c59; }
