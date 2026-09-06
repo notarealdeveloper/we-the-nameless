@@ -238,6 +238,9 @@ class CoordinationState:
     def __contains__(self, key):
         return str(key) in self._read()
 
+    def __getitem__(self, key):
+        return self._read()[str(key)]
+
     def __setitem__(self, key, value):
         self.update({key: value})
 
