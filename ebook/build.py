@@ -72,9 +72,10 @@ SOURCE_NAMES = {
 
 SOURCE_ALIASES = {"BookOfRecords": "Records"}
 
-# The embedded historical faces are laid out left-to-right, matching their
-# TeX font encodings. Square Hebrew remains right-to-left.
-PALEO_SOURCE_KEYS = {"J", "E", "JE", "RJE", "Records", "Proto", "ProtoA", "ProtoF", "Other"}
+# Historical faces backed by Latin codepoints need a bidi override: their
+# characters are Hebrew even though a reading system sees strong LTR ASCII.
+# Unicode Phoenician and square Hebrew need only an RTL base direction.
+LEGACY_LTR_CODEPOINT_SOURCE_KEYS = {"E", "JE", "RJE", "Proto", "ProtoA", "ProtoF", "Other"}
 
 # master.tex's speaker shortcuts are commentary-sized wrappers around either
 # the A/B/C inks or a complete English source profile.  Keep that distinction:
@@ -147,37 +148,6 @@ PHOENICIAN_TABLE = str.maketrans(HEBREW_ORDER, PHOENICIAN)
 _MATHML_CACHE: dict[str, str] = {}
 
 
-def reverse_html_text(text: str) -> str:
-    """Reverse rendered text while retaining the structure of inline HTML."""
-    tokens = re.findall(r"<[^>]+>|&(?:#\d+|#x[0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]+);|.", text, re.DOTALL)
-    partners: dict[int, int] = {}
-    stack: list[tuple[str, int]] = []
-    for index, token in enumerate(tokens):
-        closing = re.fullmatch(r"</\s*([A-Za-z][\w:-]*)\s*>", token)
-        opening = re.match(r"<\s*([A-Za-z][\w:-]*)\b", token)
-        if closing:
-            name = closing.group(1).casefold()
-            if stack and stack[-1][0] == name:
-                _, start = stack.pop()
-                partners[start] = index
-                partners[index] = start
-        elif opening and not token.rstrip().endswith("/>"):
-            stack.append((opening.group(1).casefold(), index))
-
-    reversed_tokens: list[str] = []
-    for index in range(len(tokens) - 1, -1, -1):
-        token = tokens[index]
-        partner = partners.get(index)
-        if partner is None:
-            reversed_tokens.append(token)
-        elif token.startswith("</"):
-            reversed_tokens.append(tokens[partner])
-        else:
-            name = re.match(r"<\s*([A-Za-z][\w:-]*)", token).group(1)
-            reversed_tokens.append(f"</{name}>")
-    return "".join(reversed_tokens)
-
-
 def historical_hebrew(text: str, key: str) -> str:
     """Apply the same broad Hebrew encodings as master.tex's source profiles."""
     # P is explicitly printed in pointed square Hebrew.  Only the historical
@@ -193,12 +163,7 @@ def historical_hebrew(text: str, key: str) -> str:
         return text.translate(TEL_ZAYIT_ASCII_TABLE)
     if key in {"E", "JE", "RJE", "Other"} or key.startswith("Proto"):
         encoded = text.translate(PALEO_ASCII_TABLE)
-        # E's legacy font maps Latin codepoints to Paleo-Hebrew glyphs. Unlike
-        # Unicode Phoenician or square Hebrew, those Latin characters retain
-        # LTR bidi behaviour in reading systems, so put E in visual order
-        # before emitting it. (The other legacy profiles have their own
-        # source-specific handling and are intentionally unchanged.)
-        return reverse_html_text(encoded) if key == "E" else encoded
+        return encoded
     # The Book of Records font used in Genesis 5 stores glyphs at Hebrew
     # codepoints. It needs stripped Hebrew, not the ASCII paleo encoding.
     return text
@@ -457,6 +422,21 @@ def source_class(name: str) -> tuple[str, str] | None:
     if key not in SOURCE_NAMES:
         return None
     return ("hebrew" if name[0] == "h" else "english", key)
+
+
+def resolve_image_path(authored_path: str) -> Path | None:
+    """Resolve print-style image names to a concrete source asset for EPUB."""
+    direct = ROOT / authored_path
+    if direct.is_file():
+        return direct
+    suffixes = ("",) if Path(authored_path).suffix else (".jpg", ".png")
+    matches = [
+        candidate
+        for suffix in suffixes
+        for candidate in ROOT.glob(f"*/include/{authored_path}{suffix}")
+        if candidate.is_file()
+    ]
+    return matches[0] if len(matches) == 1 else None
 
 
 def tex_to_markdown(text: str, *, compact: bool = False) -> str:
@@ -867,8 +847,7 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
         src = source_class(name)
         if src:
             language, key = src
-            direction = "ltr" if key in PALEO_SOURCE_KEYS else "rtl"
-            attrs = f' lang="he" dir="{direction}"' if language == "hebrew" else ""
+            attrs = ' lang="he" dir="rtl"' if language == "hebrew" else ""
             label = html.escape(SOURCE_NAMES[key])
             if language == "hebrew":
                 rendered = historical_hebrew(rendered, key)
@@ -879,7 +858,8 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 out.append(rendered)
             else:
                 rendered = re.sub(r"\s*\n\s*", " ", rendered)
-                out.append(f'<span class="source source-{key.lower()} {language}"{attrs} data-source="{label}">{rendered}</span>')
+                tag = "bdo" if language == "hebrew" and key in LEGACY_LTR_CODEPOINT_SOURCE_KEYS else "span"
+                out.append(f'<{tag} class="source source-{key.lower()} {language}"{attrs} data-source="{label}">{rendered}</{tag}>')
         elif name in COMMENTARY or re.fullmatch(r"a(?:A|B|C|J|E|P|DtrA|DtrB|Dtn|R|RJE|Records|Other)[lcr]", name):
             has_alignment_suffix = name not in COMMENTARY
             base_name = name[:-1] if has_alignment_suffix else name
@@ -948,20 +928,21 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             tag = INLINE[name]
             attrs = ""
             if name == "heb": attrs = ' class="hebrew" lang="he" dir="rtl"'
-            elif name == "paleo" or name == "Paleo": attrs = ' class="paleo" lang="he" dir="ltr"'
+            elif name == "paleo" or name == "Paleo": attrs = ' class="paleo" lang="he" dir="rtl"'
             elif name == "textsc": attrs = ' class="smallcaps"'
             elif name == "redacted": attrs = ' class="redacted"'
             out.append(f"<{tag}{attrs}>{rendered}</{tag}>")
         elif name in {"includegraphics", "image"}:
-            path = body.strip()
-            if (ROOT / path).exists():
-                alt = html.escape(Path(path).stem.replace("-", " ").replace("_", " "))
+            path = resolve_image_path(body.strip())
+            if path is not None:
+                alt = html.escape(path.stem.replace("-", " ").replace("_", " "))
+                source_path = path.relative_to(ROOT).as_posix()
                 if compact:
                     out.append(
-                        f'<img class="embedded-note-image" src="{html.escape(path)}" alt="{alt}"/>'
+                        f'<img class="embedded-note-image" src="{html.escape(source_path)}" alt="{alt}"/>'
                     )
                 else:
-                    out.append(f'\n\n<figure><img src="{html.escape(path)}" alt="{alt}"/></figure>\n\n')
+                    out.append(f'\n\n<figure><img src="{html.escape(source_path)}" alt="{alt}"/></figure>\n\n')
         elif name == "hspace":
             # A handful of flush-left rhetorical diagrams use positive em
             # indentation to show logical nesting. Preserve that information
@@ -1115,7 +1096,7 @@ def front_matter(
         '</section>', "",
         '# The History of the Alphabet {.front-heading .alphabet-heading}', "",
         '<div class="alphabet-page" dir="rtl" epub:type="frontmatter">',
-        '<p class="alphabet paleo" dir="ltr">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p>',
+        '<p class="alphabet paleo" dir="rtl">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p>',
         '<p class="alphabet hebrew-david">אבגדהוזחטיכלמנסעפצקרשת</p>',
         '<p class="alphabet hebrew-ezra">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p>',
         '</div>', "",
@@ -1135,8 +1116,8 @@ def front_matter(
         '<dt class="source source-bookofrecords">Record Grey</dt><dd class="source source-bookofrecords">Records. Begat lists, genealogies, and miscellaneous documents.</dd>',
         '</dl>', "",
         '# The Source Fonts {.front-heading}', "",
-        '<div class="font-legend"><p class="source source-j hebrew" dir="ltr">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
-        f'<p class="source source-e hebrew" dir="ltr">{e_alphabet}</p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
+        '<div class="font-legend"><p class="source source-j hebrew" dir="rtl">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
+        f'<p><bdo class="source source-e hebrew" lang="he" dir="rtl">{e_alphabet}</bdo></p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
         '<p class="source source-p hebrew" dir="rtl">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p><p class="source source-p">P is rendered in the modern Hebrew square script with niqqud.</p>',
         '<p><span class="source source-r hebrew" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</span></p><p><span class="source source-r">R uses the Ezra variant of the Hebrew square script with no niqqud.</span></p></div>', "",
         '# Publication Notice {.front-heading .visually-hidden}', "",

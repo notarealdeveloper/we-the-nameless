@@ -52,14 +52,14 @@ class ConversionTests(unittest.TestCase):
 
     def test_genesis_49_proto_uses_tel_zayit_encoding(self) -> None:
         rendered = build.tex_to_markdown(r"\hProto{טעשׁת}")
-        self.assertIn(">TOst</span>", rendered)
+        self.assertIn(">TOst</bdo>", rendered)
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
         self.assertIn(".hebrew.source-proto", stylesheet)
         self.assertIn('font-family: "WTN Paleo Tel Zayit"', stylesheet)
 
     def test_genesis_14_other_uses_ascii_moabite_font(self) -> None:
         rendered = build.tex_to_markdown(r"\hOther{אבגד}")
-        self.assertIn(">ABGD</span>", rendered)
+        self.assertIn(">ABGD</bdo>", rendered)
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
         self.assertIn(".hebrew.source-other", stylesheet)
         self.assertIn('font-family: "WTN Paleo Moabite"', stylesheet)
@@ -102,20 +102,40 @@ class ConversionTests(unittest.TestCase):
         rendered = build.tex_to_markdown(r"\eJ{first} \eE{second}")
         self.assertIn("first</span> <span", rendered)
 
-    def test_paleo_sources_are_left_to_right(self) -> None:
-        self.assertIn('lang="he" dir="ltr"', build.tex_to_markdown(r"\hJ{אבג}"))
-        self.assertIn('lang="he" dir="ltr"', build.tex_to_markdown(r"\hE{אבג}"))
-        self.assertIn(">GBA</span>", build.tex_to_markdown(r"\hE{אבג}"))
-        self.assertIn('class="paleo" lang="he" dir="ltr"', build.tex_to_markdown(r"\paleo{אבג}"))
+    def test_j_e_rje_and_generic_paleo_are_right_to_left(self) -> None:
+        self.assertIn('<span class="source source-j hebrew" lang="he" dir="rtl"', build.tex_to_markdown(r"\hJ{אבג}"))
+        self.assertIn('<bdo class="source source-e hebrew" lang="he" dir="rtl"', build.tex_to_markdown(r"\hE{אבג}"))
+        self.assertIn('>ABG</bdo>', build.tex_to_markdown(r"\hE{אבג}"))
+        self.assertIn('<bdo class="source source-rje hebrew" lang="he" dir="rtl"', build.tex_to_markdown(r"\hRJE{אבג}"))
+        self.assertIn('class="paleo" lang="he" dir="rtl"', build.tex_to_markdown(r"\paleo{אבג}"))
         self.assertIn('lang="he" dir="rtl"', build.tex_to_markdown(r"\hP{אָבג}"))
 
-    def test_e_hebrew_reversal_preserves_inline_highlight_markup(self) -> None:
+    def test_e_bidi_override_preserves_logical_order_and_inline_markup(self) -> None:
         rendered = build.tex_to_markdown(r"\hE{אב \hlB{גד} הו}")
         self.assertIn(
-            '>WH <span class="highlight-b">DG</span> BA</span>',
+            '>AB <span class="highlight-b">GD</span> HW</bdo>',
             rendered,
         )
-        self.assertNotIn("&gt;naps", rendered)
+
+    def test_mixed_j_e_rje_sequence_remains_in_authored_order(self) -> None:
+        rendered = build.tex_to_markdown(r"\hJ{אב} \hE{גד} \hRJE{הו}")
+        j = rendered.index('source-j hebrew')
+        e = rendered.index('source-e hebrew')
+        rje = rendered.index('source-rje hebrew')
+        self.assertLess(j, e)
+        self.assertLess(e, rje)
+        self.assertIn('dir="rtl"', rendered[j:e])
+        self.assertIn('dir="rtl"', rendered[e:rje])
+        self.assertIn('dir="rtl"', rendered[rje:])
+
+    def test_genesis_49_proto_forces_rtl_despite_ascii_font_slots(self) -> None:
+        rendered = build.tex_to_markdown(r"\hProto{טעשׁת}")
+        self.assertIn('<bdo class="source source-proto hebrew" lang="he" dir="rtl"', rendered)
+        self.assertIn('>TOst</bdo>', rendered)
+
+    def test_print_style_image_name_resolves_to_book_include_asset(self) -> None:
+        rendered = build.tex_to_markdown(r"\image{seir}")
+        self.assertIn('src="01-genesis/include/seir.jpg"', rendered)
 
     def test_chapter_summaries_are_toc_only(self) -> None:
         self.assertEqual(build.chapter_heading("Genesis", "46"), "Genesis 46")
@@ -145,9 +165,9 @@ class ConversionTests(unittest.TestCase):
         self.assertIn("# The History of the Alphabet", matter)
         self.assertIn('class="alphabet-page"', matter)
         self.assertIn('<div class="title-book">Genesis</div>', matter)
-        self.assertIn('class="alphabet paleo" dir="ltr"', matter)
-        self.assertIn('class="source source-j hebrew" dir="ltr"', matter)
-        self.assertIn('dir="ltr">TVRQCP]SNMLKYJXZWHDGBA</p>', matter)
+        self.assertIn('class="alphabet paleo" dir="rtl"', matter)
+        self.assertIn('class="source source-j hebrew" dir="rtl"', matter)
+        self.assertIn('class="source source-e hebrew" lang="he" dir="rtl"', matter)
         self.assertIn("img/covers/we-cover-3.png", Path(build.__file__).read_text())
 
     def test_front_matter_prose_matches_body_scale(self) -> None:

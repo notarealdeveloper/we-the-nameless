@@ -718,10 +718,10 @@
 }
 {
 	\eJ{
-		And YHWH said to her,\\
-		\textsl{Two nations are in your womb,\\
-		And two peoples will be dispersed from your insides,\\
-		And one people will be mightier than the other people,\\
+		And YHWH said to her,
+		\textsl{Two nations are in your womb,
+		And two peoples will be dispersed from your insides,
+		And one people will be mightier than the other people,
 		And the older the younger will serve.}
 	}
 }
@@ -740,150 +740,8 @@
 		So basically YHWH says ``It's twins. One will be stronger than the other.''
 	}
 
-	\aB{
-		Quick explanation of the odd syntax here.
-
-		In biblical hebrew,
-		for two nouns A and B,
-		and a function past()
-		that takes a verb and
-		conjugates it to the
-		past(-ish) tense:
-
-			{\ttfamily
-
-			past(serve) A B\\
-			= A served B
-
-			A past(serve) B\\
-			= A had served B
-
-			}
-
-		The \texttt{past()} function here is really the perfect tense.
-		
-		It's a way of marking that the action is completed.
-		
-		Thus it should probably be called \texttt{fin()} or \texttt{finished()}, \texttt{not past()}.
-
-		So for unfinished actions, Hebrew usually works like this
-
-			{\ttfamily
-			unfin(serve) A B
-
-			= A will serve B
-
-			(or)
-
-		= A serves B
-		}
-
-		Now, what we have in Gen 23 25 verse of chapter is something different.
-
-		It's more like the following construction:
-
-			{\ttfamily
-			A unfin(serve) B\\
-			= A B will serve (???)
-			}
-	}
-
 	\aC{
-		For two nouns A and B, Biblical Hebrew normally does something like:
-
-		past(serve) A B
-		= A served B
-
-		Or:
-
-		A past(serve) B
-		= A had served B
-
-		The ``past()'' function here isn't really a past tense. It's the perfect form of the verb: roughly, it presents the action as finished or complete. So ``fin()'' would be a better name for it:
-
-		fin(serve) A B
-		= A served B
-
-		A fin(serve) B
-		= A had served B
-
-		That second ordering is useful when A is already what we're talking about and we're filling in something A had done before the next event.
-
-		For unfinished actions, Hebrew normally works more like this:
-
-		unfin(serve) A B
-		= A will serve B
-
-		Or, depending on context:
-
-		unfin(serve) A B
-		= A serves B
-
-		Now, what we have in Gen 25:23 is something different:
-
-		A unfin(serve) B
-
-		Which leaves us with something like:
-
-		A B will serve
-		(???)
-
-		The actual words are basically:
-
-		OLDER unfin(serve) YOUNGER
-
-		And ``OLDER'' and ``YOUNGER'' aren't even nouns. They're adjectives being used as nouns: ``the older one'' and ``the younger one.''
-
-		The usual ``unfin()'' ordering would make this:
-
-		unfin(serve) OLDER YOUNGER
-		= OLDER will serve YOUNGER
-
-		But that's not what the text says. ``OLDER'' has been put in front of the verb.
-
-		The obvious way to parse that is:
-
-		OLDER unfin(serve) YOUNGER
-		= OLDER will serve YOUNGER
-
-		But Hebrew also allows an object to be pulled out of its normal position and put in front:
-
-		unfin(serve) YOUNGER OLDER
-
-		can become:
-
-		OLDER unfin(serve) YOUNGER
-
-		meaning:
-
-		= OLDER, YOUNGER will serve
-		= YOUNGER will serve OLDER
-
-		And that's the problem. The resulting token sequence is identical:
-
-		OLDER unfin(serve) YOUNGER
-
-		There isn't a ``subject='' or ``object='' marker attached to either adjective. Both are masculine singular, so the verb works with either one. And there's no ʾet, the little Hebrew marker that could have explicitly tagged one of them as the direct object.
-
-		So the text gives us something close to:
-
-		OLDER YOUNGER WILL SERVE
-
-		or, in equivalently broken English:
-
-		``The older the younger will serve.''
-
-		And you can parse that either way:
-
-		serve(OLDER, YOUNGER)
-		= The older will serve the younger.
-
-		or:
-
-		serve(YOUNGER, OLDER)
-		= The younger will serve the older.
-
-		The traditional reading picks the first one. But the Hebrew itself has managed to produce a sentence where reversing who serves whom doesn't require changing a single word.
+		Biblical Hebrew normally puts an unfinished verb before its subject and object: ``serve OLDER YOUNGER'' means ``the older will serve the younger.'' Here OLDER comes first: ``OLDER serve YOUNGER.'' That can still make OLDER the subject, but Hebrew can also front an object, making YOUNGER the subject. Both adjectives are masculine singular, and neither is marked as the object, so the words can mean either ``the older will serve the younger'' or ``the younger will serve the older.'' The traditional reading chooses the first; the Hebrew itself does not.
 	}
 
 

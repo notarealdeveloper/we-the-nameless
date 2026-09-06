@@ -116,9 +116,12 @@ editorial relationships while replacing paper geometry with reflow-safe HTML.
   only on profiles that actually invoke `\Redactor` (merely setting a latent
   `\SourceBgColor` does not paint text). Hebrew spans also
   carry `lang="he" dir="rtl"` in markup.
-- `\paleo` and historical source profiles use embedded Paleo-Hebrew faces;
-  `\egypt`, Hebrew, Arabic, Syriac, Ugaritic, and cuneiform helpers carry
-  language/direction metadata and the matching embedded specialist face.
+- `\paleo` and historical source profiles use embedded Paleo-Hebrew faces.
+  Unicode-backed text carries explicit RTL language/direction metadata; legacy
+  ASCII-slotted Paleo fonts use semantic `<bdo dir="rtl">` overrides so both
+  character order and wrapped-line progression remain Hebrew RTL. `\egypt`,
+  Hebrew, Arabic, Syriac, Ugaritic, and cuneiform helpers carry matching
+  language/direction metadata and specialist faces.
 
 The palette uses literal RGB definitions from `master.tex` and marks
 source-critical colours as important author styles. This deliberately favors
