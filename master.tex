@@ -8,9 +8,9 @@
     \def\ConfigTheme{lite}
 \fi
 
-% choices: print, phone
+% choices: book, tech
 \ifdefined\ConfigOutputMode\else
-    \def\ConfigOutputMode{print}
+    \def\ConfigOutputMode{book}
 \fi
 
 % choices: horizontal, vertical
@@ -71,8 +71,8 @@
 \def\ConfigColorsLighter{lighter}
 \def\ConfigVerseLayoutHorizontal{horizontal}
 \def\ConfigVerseLayoutVertical{vertical}
-\def\ConfigOutputModePrint{print}
-\def\ConfigOutputModePhone{phone}
+\def\ConfigOutputModeBook{book}
+\def\ConfigOutputModeTech{tech}
 \def\ConfigApocryphaApocryphal{apocryphal}
 \def\ConfigApocryphaCanonical{canonical}
 \def\ConfigEnglishTranslationDefault{default}
@@ -81,7 +81,7 @@
 \newif\ifConfigCommentaryOn
 \newif\ifConfigRedactorCensored
 \newif\ifConfigVerseLayoutVertical
-\newif\ifConfigOutputModePhone
+\newif\ifConfigOutputModeTech
 \newif\ifConfigApocryphaOn
 \newif\ifConfigEnglishTranslationDefault
 \newif\ifIndividualBookTitlePageStyleFancy
@@ -101,10 +101,10 @@
 \else
     \ConfigVerseLayoutVerticalfalse
 \fi
-\ifx\ConfigOutputMode\ConfigOutputModePhone
-    \ConfigOutputModePhonetrue
+\ifx\ConfigOutputMode\ConfigOutputModeTech
+    \ConfigOutputModeTechtrue
 \else
-    \ConfigOutputModePhonefalse
+    \ConfigOutputModeTechfalse
 \fi
 \ifx\ConfigApocrypha\ConfigApocryphaApocryphal
     \ConfigApocryphaOntrue
@@ -129,7 +129,7 @@
     \renewcommand#1{\@setfontsize#1{#2}{#3}}%
 }
 
-\newcommand{\PrintModeTextSizes}{%
+\newcommand{\BookModeTextSizes}{%
     \DeclareConfiguredTextSize{\tiny}{6pt}{7pt}%
     \DeclareConfiguredTextSize{\scriptsize}{8pt}{9.5pt}%
     \DeclareConfiguredTextSize{\footnotesize}{9pt}{11pt}%
@@ -142,11 +142,7 @@
     \DeclareConfiguredTextSize{\Huge}{24.88pt}{30pt}%
 }
 
-% Older chapter sources use this name when temporarily restoring the compact
-% print-size ladder inside larger-format sections.
-\let\BookModeTextSizes\PrintModeTextSizes
-
-\newcommand{\PhoneModeTextSizes}{%
+\newcommand{\TechModeTextSizes}{%
     \DeclareConfiguredTextSize{\tiny}{8pt}{9.33pt}%
     \DeclareConfiguredTextSize{\scriptsize}{10.67pt}{12.67pt}%
     \DeclareConfiguredTextSize{\footnotesize}{12pt}{14.67pt}%
@@ -173,10 +169,10 @@
 }
 \makeatother
 
-\ifConfigOutputModePhone
-% Phone keeps the same typographic ladder as 11pt print mode, scaled together.
-% This preserves source/font relationships while making phone reading practical.
-\PhoneModeTextSizes
+\ifConfigOutputModeTech
+% Tech keeps the same typographic ladder as 11pt book mode, scaled together.
+% This preserves source/font relationships while making tech reading practical.
+\TechModeTextSizes
 \DeclareMathSizes{10.67}{10.67}{7}{5}
 \normalsize
 \fi
@@ -188,8 +184,8 @@
 \section{nav: the creations of man}
 \fi
 
-\ifConfigOutputModePhone
-    % Keep the existing 7in width; expand height to match a 3.07 x 6.44 phone ratio.
+\ifConfigOutputModeTech
+    % Keep the existing 7in width; expand height to match a 3.07 x 6.44 device ratio.
     \usepackage[
         paperwidth=7in,
         paperheight=14.68in,
@@ -945,7 +941,7 @@
 
 \definecolor{DefColor}{RGB}{0,70,170}
 \definecolor{RedactedColor}{RGB}{0,70,170}
-\definecolor{PhoneLinkColor}{HTML}{8ec7ff}
+\definecolor{TechLinkColor}{HTML}{8ec7ff}
 \colorlet{HLAbgcolor}{Kcolor!12!white}
 \colorlet{HLBbgcolor}{Redcolor!12!white}
 \colorlet{HLCbgcolor}{Bluecolor!12!white}
@@ -1049,7 +1045,7 @@
 \newcommand{\TocFont}{\EnglishFont\color{TextColor}}
 \ifx\ConfigTheme\ConfigThemeDark
     % Preserve the existing, brighter link blue against the dark background.
-    \colorlet{ContentsLinkColor}{PhoneLinkColor}
+    \colorlet{ContentsLinkColor}{TechLinkColor}
 \else
     % Match \aC text exactly in lite mode.
     \colorlet{ContentsLinkColor}{Bluecolor}
@@ -2357,13 +2353,13 @@
     \vspace{\LegendRowSep}%
 }
 
-\newcount\SourceFontLineBreakPhonePenalty
-\SourceFontLineBreakPhonePenalty=3000
+\newcount\SourceFontLineBreakTechPenalty
+\SourceFontLineBreakTechPenalty=3000
 \newcommand{\SourceFontLineBreak}{%
-    \ifConfigOutputModePhone
+    \ifConfigOutputModeTech
         \ifhmode
             \unskip
-            \penalty\SourceFontLineBreakPhonePenalty
+            \penalty\SourceFontLineBreakTechPenalty
             \hskip 0.333em plus 0.167em minus 0.111em\relax
         \fi
     \else
@@ -2403,11 +2399,11 @@
 \NewDocumentCommand{\ManualFrontMatterPage}{ +m }{%
     \clearpage
     \thispagestyle{empty}
-    \ifConfigOutputModePhone
+    \ifConfigOutputModeTech
         \vspace*{\fill}%
     \fi
     #1%
-    \ifConfigOutputModePhone
+    \ifConfigOutputModeTech
         \vspace*{\fill}%
     \fi
 }
@@ -2826,8 +2822,8 @@
     \begingroup
     \centering
     \vspace*{\fill}
-    {\ifConfigOutputModePhone
-        \PrintModeTextSizes
+    {\ifConfigOutputModeTech
+        \BookModeTextSizes
         \tiny
     \else
         \tiny
@@ -2936,10 +2932,10 @@
 \def\healphabet{{אבגדהוזחטיכלמנסעפצקרשת}}
 
 \newcommand{\AlphabetHistoryTextSizes}{%
-    % Use one fixed canvas in both output modes.  At the ordinary print-mode
+    % Use one fixed canvas in both output modes.  At the ordinary book-mode
     % text size, the samples fall below \linewidth and expose their manually
     % tuned, uneven widths; this size makes the existing fit-to-linewidth rule
-    % produce the same clean alignment that phone mode has.
+    % produce the same clean alignment that tech mode has.
     \AlphabetHistoryPageTextSizes
     \normalsize
 }
@@ -3058,7 +3054,7 @@
     \expandafter\def\csname BookExtraLinkList@#1\endcsname{#2}%
 }
 \newcommand{\ChapterLinkText}[1]{%
-    \ifConfigOutputModePhone
+    \ifConfigOutputModeTech
         {\color{ContentsLinkColor}\underLine{#1}}%
     \else
         {\color{ContentsLinkColor}#1}%
@@ -3136,7 +3132,7 @@
     }%
 }
 \newcommand{\ChapterSummaryLinkText}[1]{%
-    \ifConfigOutputModePhone
+    \ifConfigOutputModeTech
         {\color{ContentsLinkColor}\underLine{#1}}%
     \else
         {\color{ContentsLinkColor}#1}%
@@ -3200,7 +3196,7 @@
     \fi
 }
 \newcommand{\BookExtraLinkText}[1]{%
-    \ifConfigOutputModePhone
+    \ifConfigOutputModeTech
         {\color{ContentsLinkColor}\underLine{#1}}%
     \else
         {\color{ContentsLinkColor}#1}%

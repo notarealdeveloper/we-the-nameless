@@ -18,7 +18,7 @@ TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
 LATEX_CONFIG = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigVerseLayout{$(VERSE_LAYOUT)}\def\ConfigCommentary{$(COMMENTARY)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\IndividualBookTitlePageStyle{$(TITLE_PAGE_STYLE)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigRedactor{$(REDACTOR)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}
 LATEX_INPUT = $(LATEX_CONFIG)\input{$(MAIN).tex}
 
-BUILD_MODES := print-lite print-dark phone-lite phone-dark
+BUILD_MODES := book-lite book-dark tech-lite tech-dark
 
 LATEX      := lualatex
 LATEXFLAGS = -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=$(BUILD)
@@ -41,7 +41,7 @@ export max_print_line = 60
 
 define publish-and-open
 	@set -e; \
-	if [ "$(OUTPUT_MODE)-$(THEME)" = "print-lite" ]; then \
+	if [ "$(OUTPUT_MODE)-$(THEME)" = "book-lite" ]; then \
 		published="mistress.pdf"; \
 	else \
 		published="master.pdf"; \
@@ -60,11 +60,11 @@ all: $(BUILD)/$(PDF)
 help:
 	@printf '%s\n' \
 		'Public targets:' \
-		'  make              Build and open master.pdf (phone-dark) or mistress.pdf (print-lite).' \
+		'  make              Build and open master.pdf (tech-dark) or mistress.pdf (book-lite).' \
 		'  make pdf          Build master.pdf without opening it.' \
-		'  make print-lite   Build build/print-lite/master.pdf (also: print-dark, phone-lite, phone-dark).' \
+		'  make book-lite    Build build/book-lite/master.pdf (also: book-dark, tech-lite, tech-dark).' \
 		'  make all-modes    Build all four mode/theme combinations concurrently.' \
-		'  make OUTPUT_MODE=phone THEME=lite pdf  Build one explicit combination.' \
+		'  make OUTPUT_MODE=tech THEME=lite pdf  Build one explicit combination.' \
 		'  make THEME=lite COLORS=lighter pdf  Use the lighter lite-mode palette.' \
 		'  make APOCRYPHA=canonical pdf  Build without apocrypha (default: apocryphal).' \
 		'  make VERSE_LAYOUT=vertical COMMENTARY=false pdf  Override verse layout and commentary.' \
