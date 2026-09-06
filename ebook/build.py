@@ -147,6 +147,37 @@ PHOENICIAN_TABLE = str.maketrans(HEBREW_ORDER, PHOENICIAN)
 _MATHML_CACHE: dict[str, str] = {}
 
 
+def reverse_html_text(text: str) -> str:
+    """Reverse rendered text while retaining the structure of inline HTML."""
+    tokens = re.findall(r"<[^>]+>|&(?:#\d+|#x[0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]+);|.", text, re.DOTALL)
+    partners: dict[int, int] = {}
+    stack: list[tuple[str, int]] = []
+    for index, token in enumerate(tokens):
+        closing = re.fullmatch(r"</\s*([A-Za-z][\w:-]*)\s*>", token)
+        opening = re.match(r"<\s*([A-Za-z][\w:-]*)\b", token)
+        if closing:
+            name = closing.group(1).casefold()
+            if stack and stack[-1][0] == name:
+                _, start = stack.pop()
+                partners[start] = index
+                partners[index] = start
+        elif opening and not token.rstrip().endswith("/>"):
+            stack.append((opening.group(1).casefold(), index))
+
+    reversed_tokens: list[str] = []
+    for index in range(len(tokens) - 1, -1, -1):
+        token = tokens[index]
+        partner = partners.get(index)
+        if partner is None:
+            reversed_tokens.append(token)
+        elif token.startswith("</"):
+            reversed_tokens.append(tokens[partner])
+        else:
+            name = re.match(r"<\s*([A-Za-z][\w:-]*)", token).group(1)
+            reversed_tokens.append(f"</{name}>")
+    return "".join(reversed_tokens)
+
+
 def historical_hebrew(text: str, key: str) -> str:
     """Apply the same broad Hebrew encodings as master.tex's source profiles."""
     # P is explicitly printed in pointed square Hebrew.  Only the historical
@@ -167,7 +198,7 @@ def historical_hebrew(text: str, key: str) -> str:
         # LTR bidi behaviour in reading systems, so put E in visual order
         # before emitting it. (The other legacy profiles have their own
         # source-specific handling and are intentionally unchanged.)
-        return encoded[::-1] if key == "E" else encoded
+        return reverse_html_text(encoded) if key == "E" else encoded
     # The Book of Records font used in Genesis 5 stores glyphs at Hebrew
     # codepoints. It needs stripped Hebrew, not the ASCII paleo encoding.
     return text

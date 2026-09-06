@@ -109,6 +109,14 @@ class ConversionTests(unittest.TestCase):
         self.assertIn('class="paleo" lang="he" dir="ltr"', build.tex_to_markdown(r"\paleo{אבג}"))
         self.assertIn('lang="he" dir="rtl"', build.tex_to_markdown(r"\hP{אָבג}"))
 
+    def test_e_hebrew_reversal_preserves_inline_highlight_markup(self) -> None:
+        rendered = build.tex_to_markdown(r"\hE{אב \hlB{גד} הו}")
+        self.assertIn(
+            '>WH <span class="highlight-b">DG</span> BA</span>',
+            rendered,
+        )
+        self.assertNotIn("&gt;naps", rendered)
+
     def test_chapter_summaries_are_toc_only(self) -> None:
         self.assertEqual(build.chapter_heading("Genesis", "46"), "Genesis 46")
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
