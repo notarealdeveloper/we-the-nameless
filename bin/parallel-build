@@ -75,6 +75,7 @@ FRONT_SLUG = "front-matter"
 FRONT_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}.pdf"
 FRONT_MERGE_PDF = BUILD / FRONT_SLUG / f"{FRONT_SLUG}-merge.pdf"
 DEFAULT_PASSES = 2
+COORDINATION_STATE = BUILD / ".coordination.json"
 
 BOOK_RE = re.compile(r"^\\Book\{([^}]+)\}\s*$", re.MULTILINE)
 INCLUDE_RE = re.compile(r"\\include\{([^}]+)\}")
@@ -200,6 +201,45 @@ def cached_page_starts(books):
     if len(entries) != len(books):
         return None
     return {str(book["index"]): int(page) for book, page in zip(books, entries)}
+
+
+class CoordinationState:
+    """A small, socket-free mapping shared by the coordinator and workers."""
+
+    def __init__(self, path):
+        self.path = path
+
+    @classmethod
+    def create(cls):
+        state = cls(COORDINATION_STATE)
+        state._write({})
+        return state
+
+    def _read(self):
+        try:
+            return json.loads(self.path.read_text())
+        except FileNotFoundError:
+            return {}
+
+    def _write(self, values):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = self.path.with_suffix(f"{self.path.suffix}.{os.getpid()}.tmp")
+        temporary.write_text(json.dumps(values, sort_keys=True) + "\n")
+        temporary.replace(self.path)
+
+    def get(self, key, default=None):
+        return self._read().get(str(key), default)
+
+    def update(self, values):
+        current = self._read()
+        current.update({str(key): value for key, value in values.items()})
+        self._write(current)
+
+    def __contains__(self, key):
+        return str(key) in self._read()
+
+    def __setitem__(self, key, value):
+        self.update({key: value})
 
 
 def write_worker_master(preamble, book, start_page=None):
@@ -659,8 +699,7 @@ class Dashboard:
 def run_curses(books, preamble, front_body, include_front, passes, initial_page_starts=None):
     event_queue = mp.Queue()
     coordinated = include_front and (passes > 1 or initial_page_starts is not None)
-    manager = mp.Manager() if coordinated else None
-    page_starts = manager.dict() if manager else None
+    page_starts = CoordinationState.create() if coordinated else None
     if page_starts is not None and initial_page_starts:
         page_starts.update(initial_page_starts)
         page_starts["ready"] = True
@@ -729,8 +768,6 @@ def run_curses(books, preamble, front_body, include_front, passes, initial_page_
                 process.terminate()
         for process in all_processes:
             process.join()
-        if manager:
-            manager.shutdown()
 
     all_processes = processes + ([front_process] if front_process else [])
     failures = [process.exitcode for process in all_processes if process.exitcode not in (0, None)]
@@ -742,8 +779,7 @@ def run_curses(books, preamble, front_body, include_front, passes, initial_page_
 def run_plain(books, preamble, front_body, include_front, passes, initial_page_starts=None):
     event_queue = mp.Queue()
     coordinated = include_front and (passes > 1 or initial_page_starts is not None)
-    manager = mp.Manager() if coordinated else None
-    page_starts = manager.dict() if manager else None
+    page_starts = CoordinationState.create() if coordinated else None
     if page_starts is not None and initial_page_starts:
         page_starts.update(initial_page_starts)
         page_starts["ready"] = True
@@ -815,8 +851,6 @@ def run_plain(books, preamble, front_body, include_front, passes, initial_page_s
         process.join()
     if front_process:
         front_process.join()
-    if manager:
-        manager.shutdown()
     if failed:
         return 1
     all_processes = processes + ([front_process] if front_process else [])
