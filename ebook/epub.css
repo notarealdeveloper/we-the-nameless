@@ -35,28 +35,27 @@ h1, h2, h3 { font-family: sans-serif; }
 .title-we { color: #000 !important; font-size: 4.8em; font-variant: small-caps; font-weight: 700; letter-spacing: .04em; }
 .title-nameless { color: #820000 !important; font-size: 2.15em; margin-top: .7em; }
 .title-book { color: #0046aa !important; font-size: 2.65em; font-variant: small-caps; font-weight: 700; margin-top: 2.6em; }
-.front-heading { break-before: page; page-break-before: always; font-size: 2.2em; text-align: center; }
+.front-heading { break-before: page; page-break-before: always; font-size: 1.1em; text-align: center; }
 .alphabet-heading { visibility: hidden; height: 0; margin: 0; }
 .alphabet-page { padding: 25% 0; text-align: center; }
-.alphabet { font-size: 2.1em; line-height: 1.8; margin: .35em 0; text-align: justify; }
+.alphabet { font-size: 1em; line-height: 1.45; margin: .35em 0; text-align: justify; }
 .paleo { font-family: "WTN Paleo J", serif; color: #007800 !important; }
 .hebrew-david { font-family: "WTN Hebrew David", serif; }
 .hebrew-ezra { font-family: "WTN Hebrew Ezra", serif; color: #0046aa !important; }
 .contents-list { font-size: .82em; line-height: 1.45; }
 .contents-book { break-inside: avoid; margin: 1.5em 0; }
-.contents-book h2 { font-size: 1.35em; margin: 0 0 .4em; text-align: center; }
-.contents-book ol { columns: 2 15em; column-gap: 2em; margin: 0; padding: 0; list-style: none; counter-reset: chapter; }
-.contents-book li { break-inside: avoid; margin: 0 0 .32em; display: grid; grid-template-columns: max-content 1fr; gap: .35em; text-align: left; counter-increment: chapter; }
-.contents-book li::before { content: counter(chapter) "."; text-align: right; }
+.contents-book h2 { font-size: 1em; margin: 0 0 .4em; text-align: center; }
+.contents-book ol { columns: 2 15em; column-gap: 2em; margin: 0; padding: 0; list-style: none; }
+.contents-book li { break-inside: avoid; margin: 0 0 .32em; text-align: left; }
 .contents-book li a { text-align: left; }
 .contents-list a { color: #0046aa !important; text-decoration: none; }
 .authors-subtitle, .legend-key { font-size: .82em; text-align: center; }
-.authors-subtitle span { font-size: 1.5em; }
+.authors-subtitle span { font-size: 1em; }
 .source-legend { display: grid; grid-template-columns: 24% 72%; column-gap: 4%; font-size: .82em; }
 .source-legend dt, .source-legend dd { margin: 0 0 1em; text-align: left; }
 .source-legend dt { font-weight: bold; }
 .font-legend { font-size: .82em; }
-.font-legend .hebrew { font-size: 1.75em; margin-bottom: 0; }
+.font-legend .hebrew { font-size: 1em; margin-bottom: 0; }
 .publication-notice { break-before: page; page-break-before: always; font-family: monospace; font-size: .82em; line-height: 1.4; padding-top: 35%; text-align: center; }
 .publication-logo { width: 1in; margin: 2em auto 0; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
@@ -71,8 +70,14 @@ h2.chapter-title { page-break-before: always; break-before: page; font-family: s
 .verse-reference {
   border-top: 1px solid #6e6e6e !important; border-bottom: 1px solid #6e6e6e !important;
   font-size: 1.1em; font-weight: normal; text-align: center;
-  margin: 0 0 .25em; padding: .25em 0 .75em;
+  line-height: 1.2; margin: 0 0 .25em; padding: .5em 0;
 }
+.verse-reference a { color: inherit; display: block; text-decoration: none; }
+.book-title a, .chapter-title a, .contents-book h2 a { color: inherit; text-decoration: none; }
+.book-list { font-size: .82em; }
+.book-list ol { list-style: none; margin: 0; padding: 0; text-align: center; }
+.book-list li { margin: .35em 0; }
+.contents-part { font-style: italic; grid-column: 1 / -1; margin-top: .8em !important; text-align: center !important; }
 .verse-source { margin-top: .75em; text-align: right; font-size: 1em; line-height: 1.5; }
 .hebrew-line, .english-line { display: block; }
 .verse-translation { margin: 0; text-align: left; }

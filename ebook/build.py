@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import posixpath
 import re
 import shutil
 import subprocess
@@ -1041,6 +1042,28 @@ def master_sequence(selected_book: str | None = None) -> list[tuple[str, str]]:
     return sequence
 
 
+def top_level_books() -> list[str]:
+    """Return the print contents' books, including unavailable partial-build entries."""
+    body = MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1]
+    return list(dict.fromkeys(re.findall(r"^\\Book\{([^}]+)\}", body, flags=re.MULTILINE)))
+
+
+def include_parent_books() -> dict[str, str]:
+    """Map each included chapter file to its enclosing top-level ``\\Book``."""
+    body = MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1]
+    parents: dict[str, str] = {}
+    parent = ""
+    for line in body.splitlines():
+        book_match = re.match(r"\\Book\{([^}]+)\}", line)
+        if book_match:
+            parent = book_match.group(1)
+            continue
+        include_match = re.match(r"\\include\{([^}]+)\}", line)
+        if include_match and parent:
+            parents[f"{include_match.group(1)}.tex"] = parent
+    return parents
+
+
 def chapter_summaries() -> dict[tuple[str, str], str]:
     """Read the editorial labels used by the print book's own contents page."""
     source = strip_comments(MASTER.read_text(encoding="utf-8"))
@@ -1072,21 +1095,38 @@ def front_matter(
 ) -> list[str]:
     """Reproduce the visible front matter from master.tex in reflowable form."""
     e_alphabet = historical_hebrew("אבגדהוזחטיכלמנסעפצקרשת", "E")
-    books = list(dict.fromkeys(book for book, _ in sequence))
-    contents_sections: list[str] = [":::: {.contents-list}"]
-    for book in books:
+    available_top_books = {edition_title} if edition_title != "Complete Edition" else set(top_level_books())
+    parents = include_parent_books()
+    contents_sections: list[str] = [":::: {.contents-list}", '<nav class="book-list" aria-label="Books"><ol>']
+    for book in top_level_books():
+        book_anchor = re.sub(r"[^a-z0-9]+", "-", book.lower()).strip("-")
+        if book in available_top_books:
+            contents_sections.append(f'<li><a href="#contents-{book_anchor}">{html.escape(book)}</a></li>')
+        else:
+            contents_sections.append(f'<li><span>{html.escape(book)}</span></li>')
+    contents_sections += ["</ol></nav>", ""]
+    for top_book in top_level_books():
+        if top_book not in available_top_books:
+            continue
+        book_entries = [(label, rel) for label, rel in sequence if parents.get(rel) == top_book]
         chapters: list[str] = []
-        for label, rel in sequence:
-            if label != book:
-                continue
+        last_label = None
+        for label, rel in book_entries:
+            if label != top_book and label != last_label:
+                chapters += [f'<li class="contents-part">{html.escape(label)}</li>']
+                last_label = label
             source = (ROOT / rel).read_text(encoding="utf-8")
             found = re.search(r"\\Chapter\s*\{([^}]+)\}", strip_comments(source))
             chapter = found.group(1).strip() if found else Path(rel).stem
-            anchor = re.sub(r"[^a-z0-9]+", "-", f"{book}-{chapter}".lower()).strip("-")
-            title = summaries.get((book, chapter), f"{book} {chapter}")
-            chapters.append(f'{chapter}. [{title}](#{anchor})')
-        book_anchor = re.sub(r"[^a-z0-9]+", "-", book.lower()).strip("-")
-        contents_sections += [f'### [{book}](#{book_anchor}) {{#contents-{book_anchor} .contents-book-title}}', "", *chapters, ""]
+            anchor = re.sub(r"[^a-z0-9]+", "-", f"{label}-{chapter}".lower()).strip("-")
+            title = summaries.get((label, chapter), f"{label} {chapter}")
+            chapters.append(f'<li><a href="#{anchor}">{chapter}. {title}</a></li>')
+        book_anchor = re.sub(r"[^a-z0-9]+", "-", top_book.lower()).strip("-")
+        contents_sections += [
+            f'<section id="contents-{book_anchor}" class="contents-book">',
+            f'<h2><a href="#tableofcontents">{html.escape(top_book)}</a></h2>',
+            '<ol>', *chapters, '</ol></section>', "",
+        ]
     contents_sections.append("::::")
     return [
         '<section class="wtn-title-page" epub:type="titlepage">',
@@ -1100,7 +1140,7 @@ def front_matter(
         '<p class="alphabet hebrew-david">אבגדהוזחטיכלמנסעפצקרשת</p>',
         '<p class="alphabet hebrew-ezra">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p>',
         '</div>', "",
-        '# Contents {.front-heading}', "", *contents_sections, "",
+        '# Contents {#tableofcontents .front-heading}', "", *contents_sections, "",
         '# The Authors {.front-heading}', "",
         '<p class="authors-subtitle"><em>or</em><br/><span>We: The Nameless</span></p>',
         '<p class="legend-key"><span class="source source-j">J</span> &nbsp; '
@@ -1134,17 +1174,21 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
         sequence, summaries, edition_title
     )
     last_book = None
+    parents = include_parent_books()
     chapter_count = verse_count = 0
     for book, rel in sequence:
+        top_book = parents.get(rel, book)
         source = (ROOT / rel).read_text(encoding="utf-8")
         chapter_match = re.search(r"\\Chapter\s*\{([^}]+)\}", strip_comments(source))
         chapter = chapter_match.group(1).strip() if chapter_match else Path(rel).stem
-        if book != last_book:
-            lines += [f"# {book} {{.book-title}}", ""]
-            last_book = book
+        if top_book != last_book:
+            top_anchor = re.sub(r"[^a-z0-9]+", "-", top_book.lower()).strip("-")
+            lines += [f"# [{top_book}](#tableofcontents) {{#book-{top_anchor} .book-title}}", ""]
+            last_book = top_book
         anchor = re.sub(r"[^a-z0-9]+", "-", f"{book}-{chapter}".lower()).strip("-")
         heading = chapter_heading(book, chapter)
-        lines += [f"## {heading} {{#{anchor} .chapter-title}}", ""]
+        top_anchor = re.sub(r"[^a-z0-9]+", "-", top_book.lower()).strip("-")
+        lines += [f"## [{heading}](#contents-{top_anchor}) {{#{anchor} .chapter-title}}", ""]
         chapter_count += 1
         verse_occurrences: dict[str, int] = {}
         for number, hebrew, english, commentary in parse_verses(source):
@@ -1163,7 +1207,7 @@ def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, in
                 rendered_hebrew = re.sub(r"\s*<br\s*/?>\s*", " ", rendered_hebrew)
             lines += [
                 f':::::: {{.verse #{verse_anchor}}}',
-                f'<p id="{verse_anchor}-number" class="verse-reference">{book} {chapter}:{number}</p>',
+                f'<p id="{verse_anchor}-number" class="verse-reference"><a href="#{anchor}">{book} {chapter}:{number}</a></p>',
                 "::::: {.verse-translation}", rendered_english, ":::::",
                 '::::: {.verse-source lang="he" dir="rtl"}', rendered_hebrew, ":::::",
             ]
@@ -1181,6 +1225,12 @@ def postprocess_epub(path: Path) -> None:
     """Apply fixes that require access to Pandoc's packaged EPUB."""
     with zipfile.ZipFile(path, "r") as source:
         entries = [(info, source.read(info.filename)) for info in source.infolist()]
+    fragment_locations: dict[str, str] = {}
+    for info, payload in entries:
+        if info.filename.endswith((".xhtml", ".html")):
+            document = payload.decode("utf-8")
+            for fragment in re.findall(r'\bid="([^"]+)"', document):
+                fragment_locations.setdefault(fragment, info.filename)
     rewritten: list[tuple[zipfile.ZipInfo, bytes]] = []
     for info, payload in entries:
         if info.filename.endswith("content.opf"):
@@ -1200,6 +1250,18 @@ def postprocess_epub(path: Path) -> None:
             rewritten.append((info, payload))
             continue
         document = payload.decode("utf-8")
+        # Pandoc rewrites Markdown links across split EPUB chapters, but leaves
+        # hrefs in our semantic raw-HTML contents lists untouched. Resolve all
+        # fragment-only links against the packaged documents after splitting.
+        local_fragments = set(re.findall(r'\bid="([^"]+)"', document))
+        def resolve_fragment_link(match: re.Match[str]) -> str:
+            fragment = match.group(1)
+            destination = fragment_locations.get(fragment)
+            if fragment in local_fragments or not destination or destination == info.filename:
+                return match.group(0)
+            relative = posixpath.relpath(destination, posixpath.dirname(info.filename))
+            return f'href="{relative}#{fragment}"'
+        document = re.sub(r'href="#([^"]+)"', resolve_fragment_link, document)
         voices: dict[str, str] = {}
         def mark_aside(match: re.Match[str]) -> str:
             opening, note_id, body = match.groups()

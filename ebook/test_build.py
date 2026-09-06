@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import unittest
+import tempfile
 from pathlib import Path
 
 from fontTools.ttLib import TTFont
@@ -192,6 +193,22 @@ class ConversionTests(unittest.TestCase):
         self.assertIn('class="source source-j hebrew" lang="he" dir="rtl"', matter)
         self.assertIn('class="source source-e hebrew" lang="he" dir="rtl"', matter)
         self.assertIn("img/covers/we-cover-3.png", Path(build.__file__).read_text())
+
+    def test_partial_front_matter_keeps_full_book_list_but_links_only_selection(self) -> None:
+        matter = "\n".join(build.front_matter(build.master_sequence("Genesis"), {}, "Genesis"))
+        self.assertIn('<a href="#contents-genesis">Genesis</a>', matter)
+        self.assertIn('<span>Exodus</span>', matter)
+        self.assertNotIn('href="#contents-exodus"', matter)
+        self.assertIn('<h2><a href="#tableofcontents">Genesis</a></h2>', matter)
+
+    def test_body_navigation_mirrors_print_hierarchy(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            manuscript = Path(temp) / "manuscript.md"
+            build.make_markdown(manuscript, "Genesis")
+            rendered = manuscript.read_text(encoding="utf-8")
+        self.assertIn("# [Genesis](#tableofcontents) {#book-genesis .book-title}", rendered)
+        self.assertIn("## [Genesis 1](#contents-genesis) {#genesis-1 .chapter-title}", rendered)
+        self.assertIn('<a href="#genesis-1">Genesis 1:1</a>', rendered)
 
     def test_front_matter_prose_matches_body_scale(self) -> None:
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
