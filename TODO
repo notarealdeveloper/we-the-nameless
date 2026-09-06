@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Weird situation: The Paleo Hebrew of the J source is still backwards in the ebook on *kindle* but not on Linux's apps XReader or Foliate, and also not on Google Play Books' ebook reader.
+
+My suspicion is that this is because J is one of the only fonts in the book that's actually *phoenician*, and Kindle just happens to have weird edge case behavior when it comes to the rendering direction of Phoenician.
+
+So, let's solve that problem like this: Don't modify the J font in place, but make a copy of it in the fonts/ directory and call it babel-[old-filename].
+
+We're going to define an operation called babeling a font. For any given font in the semitic family, whether it places its glyphs in (1) the hebrew region of unicode, (2) the phoenician area of unicode, or (3) some latin transliteration in the ascii area of unicode, regardless, do this:
+
+Make sure that the font's glyphs are in ALL of the following places of Unicode (UTF-8).
+
+1. The Hebrew region of Unicode.
+2. The Phoenician region of Unicode.
+3. The ascii region of Unicode, using the following transliteration.
+
+```
+a    א
+b,v  ב
+g    ג
+d    ד
+e,h  ה
+w    ו
+z    ז
+x,H  ח
+T,0  ט
+i,j,y י
+k  כ
+K  ך
+l  ל
+m  מ
+M  ם
+n  נ
+N  ן
+S  ס
+o,A ע
+p  פ
+P  ף
+c  צ
+C  ץ
+q  ק
+r  ר
+s  ש
+t  ת
+```
+
+Each Hebrew and Phoenician font should have exactly the same behavior it did before within its original range. Copy bounding boxes of letters exactly from the source glyphs, don't trust the target glyphs (a giml is not a g after we copy it to g.) However, each babeled font should have a proper superset of abilities: strictly more, never less. For fonts that originally stored glyphs in the ascii range, we may need to change their encoders in master.tex, so don't do that YET. We'll do that eventually, but not now.
+
+Do that for J's font, and then look into the ebook in ebook/ and fix up whatever you need to fix up so that the J font will be a Phoenician glyph set over Hebrew unicode characters when I rerun 'make ebook-genesis'
+
+Do that now, and work until you're satisfied with the result. Change anything you need to change in master.tex
+EOF
