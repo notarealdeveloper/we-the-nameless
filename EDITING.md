@@ -20,32 +20,11 @@ Gen 24:66. Do a playful censorship thing.
 ## Stuff to do now
 
 ATTENTION! EBOOK PROBLEMS TO FIX!
-- [x] In the ebook/ the E source is currently Right to Left BUT it's rendering Down to Up! If there are two lines of E, the beginning of E's paleo Hebrew is currently the BOTTOM RIGHT! Fix that in the ebook, globally, and write a test in the ebook directory that somehow assesses this.
-- [x] RJE is backwards: currently rendering left to right.
-- [x] J is usually left to right, but there's insane examples like Gen 22:21 where it starts on the top left, goes to the top right for ONE LETTER, then picks up on the second character of the top left. This should just always be RTL. Fix the ebook globally and add a test for J, E, and RJE. P and R are currently rendering right to left, as intended.
-- [x] The Paleo source profile in Gen 49 is also rendering left to right in the ebook, fix that.
 
-Look at the pictures below _with your eyes_ and compare each verse to the standard masoretic Hebrew to see what I mean and to see what things you need to fix in the ebook.
+The TeX macro in 01-genesis/16.tex Verse 1 isn't rendering in the ebook. This is odd, because it's \eRJE{}, and RJE is rendering in the ebook just fine (e.g., in Genesis 22)
 
-1. J is left to right and the sequencing with other sources is wrong in the ebook.
+Genesis 17:1. In the ebook, the i in Putting an \`i' appears as a backtick and not as a proper unicode type quote. In the main pdf book build, it looks fine. Fix this in the ebook, for all latex quotes of this form.
 
-![[ebook-bugs-1.jpg]]
+Genesis 17:6. In the ebook, things like "c\eR{hildren }o\eR{h my oh }me " are getting rendered as "c\eR{hildren}o\eR{h my oh}me " (note the missing spaces at the end of the redactor block.) Fix this in the ebook, for all such examples in all source profiles. The behavior of whitespace in the ebook is _almost_ exactly following TeX's behavior, so don't change much about the behavior of whitespace in the ebook. Just try to fix examples like that, which will usually occur inside commentary blocks where the redactor interleaves his text with the pre-existing commentary in order to censor or somewhat hide some word in the original text.
 
-2. E is bottom right to top left.
-
-![[ebook-bugs-2.jpg]]
-
-3. Paleo is left to right.
-
-![[ebook-bugs-3.jpg]]
-
-4. This one is just insane.
-
-![[ebook-bugs-4.jpg]]
-
-Also rename the above images to ebook-bugs-${n}.jpg for n in 1 to 4, both in the cwd and in this file. [DONE]
-
-Gen 25:23.
-- [x] Remove manual line breaks in the eng and HEB.
-- [x] Delete the red commentary, and massively condense blue.
-- [x] Also the image of the map is missing in the Kindle version, fix that in ebook/
+Genesis 17:7. Another example of the `{\pussyc}` macro not rendering in the ebook.
