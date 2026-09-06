@@ -1,5 +1,5 @@
 
-Resume editing in Gen 23.
+Resume editing in Gen 25.
 
 ---
 
@@ -18,7 +18,7 @@ Gen 24:66. Do a playful censorship thing.
 ## Stuff to do now
 
 Gen 25:23.
-- Remove manual line breaks or properly format it like an oracle with indents on even lines.
-- Then simplify the commentary here it's too much.
-- Also the Paleo of ADM after "Also Edom is" is backwards.
-- Also the image of the map is missing.
+- Remove manual line breaks in the eng and HEB.
+- Delete the red commentary, and massively condense blue.
+- The Paleo of ADM after "Also Edom is" is backwards in the Kindle version, fix that in ebook/
+- Also the image of the map is missing in the Kindle version, fix that in ebook/
