@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+"""Add Hebrew, Phoenician, and Paleo-Hebrew transliteration aliases to a font.
+
+The new cmap entries point at the source glyphs themselves.  No outline,
+advance, side bearing, or bounding-box data is copied from an unrelated glyph.
+"""
+
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+
+from fontTools.ttLib import TTFont
+from fontTools.ttLib.tables.O_S_2f_2 import intersectUnicodeRanges
+
+
+HEBREW = "אבגדהוזחטיכלמנסעפצקרשת"
+PHOENICIAN = "𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕"
+ASCII_PRIMARY = "abgdewzxTiklm nSopcqrs t".replace(" ", "")
+ASCII_ALIASES = (
+    "a", "bv", "g", "d", "eh", "w", "z", "xH", "T0", "ijy", "k", "l",
+    "m", "n", "S", "oA", "p", "c", "q", "r", "s", "t",
+)
+HEBREW_FINALS = {"ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ"}
+ASCII_FINALS = {"K": "כ", "M": "מ", "N": "נ", "P": "פ", "C": "צ"}
+
+
+def choose_source(cmap: dict[int, str]) -> tuple[str, str]:
+    candidates = (("Hebrew", HEBREW), ("Phoenician", PHOENICIAN), ("ASCII", ASCII_PRIMARY))
+    available = [(label, chars) for label, chars in candidates if all(ord(c) in cmap for c in chars)]
+    if not available:
+        counts = ", ".join(f"{label}={sum(ord(c) in cmap for c in chars)}/22" for label, chars in candidates)
+        raise SystemExit(f"font has no complete Semitic source alphabet ({counts})")
+    # A Unicode script range is less ambiguous than ordinary Latin letters.
+    return available[0]
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("source", type=Path)
+    parser.add_argument("output", type=Path, nargs="?")
+    args = parser.parse_args()
+    output = args.output or args.source.with_name("babel-" + args.source.name)
+    if output.resolve() == args.source.resolve():
+        raise SystemExit("refusing to modify the source font in place")
+
+    font = TTFont(args.source)
+    best = font.getBestCmap() or {}
+    source_label, source_chars = choose_source(best)
+    source_glyphs = {hebrew: best[ord(source)] for hebrew, source in zip(HEBREW, source_chars)}
+
+    aliases: dict[int, str] = {}
+    for hebrew, phoenician, ascii_chars in zip(HEBREW, PHOENICIAN, ASCII_ALIASES):
+        glyph = source_glyphs[hebrew]
+        aliases[ord(hebrew)] = glyph
+        aliases[ord(phoenician)] = glyph
+        aliases.update({ord(char): glyph for char in ascii_chars})
+    for final, base in HEBREW_FINALS.items():
+        aliases[ord(final)] = source_glyphs[base]
+    for final, base in ASCII_FINALS.items():
+        aliases[ord(final)] = source_glyphs[base]
+
+    unicode_tables = [table for table in font["cmap"].tables if table.isUnicode()]
+    if not unicode_tables:
+        raise SystemExit("font has no Unicode cmap table")
+    for table in unicode_tables:
+        table.cmap.update({cp: glyph for cp, glyph in aliases.items() if table.format >= 12 or cp <= 0xFFFF})
+
+    # Preserve existing declarations and add any Unicode-range bits made true
+    # by the aliases. This helps strict reading systems select the face.
+    if "OS/2" in font:
+        os2 = font["OS/2"]
+        bits = intersectUnicodeRanges(set(best) | set(aliases))
+        values = [os2.ulUnicodeRange1, os2.ulUnicodeRange2, os2.ulUnicodeRange3, os2.ulUnicodeRange4]
+        for bit in bits:
+            values[bit // 32] |= 1 << (bit % 32)
+        os2.ulUnicodeRange1, os2.ulUnicodeRange2, os2.ulUnicodeRange3, os2.ulUnicodeRange4 = values
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    font.save(output)
+    print(f"Babeled {args.source} from its {source_label} range -> {output}")
+
+
+if __name__ == "__main__":
+    main()

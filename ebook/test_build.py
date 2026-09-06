@@ -6,10 +6,30 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from fontTools.ttLib import TTFont
+
 import build
 
 
 class ConversionTests(unittest.TestCase):
+    def test_babeled_j_font_aliases_original_phoenician_glyphs(self) -> None:
+        original = TTFont(Path(build.ROOT) / "fonts/paleo-hebrew-phoenician.ttf")
+        babeled_path = Path(build.ROOT) / "fonts/babel-paleo-hebrew-phoenician.ttf"
+        babeled = TTFont(babeled_path)
+        original_cmap = original.getBestCmap()
+        cmap = babeled.getBestCmap()
+        for hebrew, phoenician, ascii_aliases in zip(
+            "אבגדהוזחטיכלמנסעפצקרשת",
+            "𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕",
+            ("a", "bv", "g", "d", "eh", "w", "z", "xH", "T0", "ijy", "k", "l", "m", "n", "S", "oA", "p", "c", "q", "r", "s", "t"),
+        ):
+            source_glyph = original_cmap[ord(phoenician)]
+            self.assertEqual(cmap[ord(phoenician)], source_glyph)
+            self.assertEqual(cmap[ord(hebrew)], source_glyph)
+            for alias in ascii_aliases:
+                self.assertEqual(cmap[ord(alias)], source_glyph)
+            self.assertEqual(babeled["hmtx"][source_glyph], original["hmtx"][source_glyph])
+
     def test_publication_identity_is_stable_and_scoped_per_edition(self) -> None:
         complete = build.publication_metadata(None)
         genesis = build.publication_metadata("Genesis")
@@ -103,7 +123,10 @@ class ConversionTests(unittest.TestCase):
         self.assertIn("first</span> <span", rendered)
 
     def test_j_e_rje_and_generic_paleo_are_right_to_left(self) -> None:
-        self.assertIn('<span class="source source-j hebrew" lang="he" dir="rtl"', build.tex_to_markdown(r"\hJ{אבג}"))
+        j = build.tex_to_markdown(r"\hJ{אבג}")
+        self.assertIn('<span class="source source-j hebrew" lang="he" dir="rtl"', j)
+        self.assertIn('>אבג</span>', j)
+        self.assertNotRegex(j, r"[𐤀-𐤟]")
         self.assertIn('<bdo class="source source-e hebrew" lang="he" dir="rtl"', build.tex_to_markdown(r"\hE{אבג}"))
         self.assertIn('>ABG</bdo>', build.tex_to_markdown(r"\hE{אבג}"))
         self.assertIn('<bdo class="source source-rje hebrew" lang="he" dir="rtl"', build.tex_to_markdown(r"\hRJE{אבג}"))
@@ -165,8 +188,8 @@ class ConversionTests(unittest.TestCase):
         self.assertIn("# The History of the Alphabet", matter)
         self.assertIn('class="alphabet-page"', matter)
         self.assertIn('<div class="title-book">Genesis</div>', matter)
-        self.assertIn('class="alphabet paleo" dir="rtl"', matter)
-        self.assertIn('class="source source-j hebrew" dir="rtl"', matter)
+        self.assertIn('class="alphabet paleo" lang="he" dir="rtl"', matter)
+        self.assertIn('class="source source-j hebrew" lang="he" dir="rtl"', matter)
         self.assertIn('class="source source-e hebrew" lang="he" dir="rtl"', matter)
         self.assertIn("img/covers/we-cover-3.png", Path(build.__file__).read_text())
 

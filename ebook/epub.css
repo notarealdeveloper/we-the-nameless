@@ -1,7 +1,7 @@
 @font-face { font-family: "WTN Hebrew David"; src: url("../fonts/hebrew-david.ttf"); }
 @font-face { font-family: "WTN Hebrew David"; src: url("../fonts/hebrew-david-bold.ttf"); font-weight: 700; }
 @font-face { font-family: "WTN Hebrew Ezra"; src: url("../fonts/hebrew-ezra.ttf"); }
-@font-face { font-family: "WTN Paleo J"; src: url("../fonts/paleo-hebrew-phoenician.ttf"); }
+@font-face { font-family: "WTN Paleo J"; src: url("../fonts/babel-paleo-hebrew-phoenician.ttf"); }
 @font-face { font-family: "WTN Paleo E"; src: url("../fonts/paleo-hebrew.ttf"); }
 @font-face { font-family: "WTN Paleo Tel Zayit"; src: url("../fonts/08-bc10c-paleo-hebrew-tel-zayit.ttf"); }
 @font-face { font-family: "WTN Paleo Moabite"; src: url("../fonts/paleo-hebrew-moabite.ttf"); }

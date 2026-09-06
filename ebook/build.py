@@ -47,7 +47,7 @@ FONT_FILES = [
     ROOT / "fonts/hebrew-david.ttf",
     ROOT / "fonts/hebrew-david-bold.ttf",
     ROOT / "fonts/hebrew-ezra.ttf",
-    ROOT / "fonts/paleo-hebrew-phoenician.ttf",
+    ROOT / "fonts/babel-paleo-hebrew-phoenician.ttf",
     ROOT / "fonts/paleo-hebrew.ttf",
     ROOT / "fonts/08-bc10c-paleo-hebrew-tel-zayit.ttf",
     ROOT / "fonts/paleo-hebrew-moabite.ttf",
@@ -140,11 +140,9 @@ ZERO_ARGUMENT_TEXT = {
 
 HEBREW_ORDER = "אבגדהוזחטיכךלמםנןסעפףצץקרשת"
 PALEO_ASCII = "ABGDHWZXJYKKLMMNNS]PPC CQRVT".replace(" ", "")
-PHOENICIAN = "𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤊𐤋𐤌𐤌𐤍𐤍𐤎𐤏𐤐𐤐𐤑𐤑𐤒𐤓𐤔𐤕"
 PALEO_ASCII_TABLE = str.maketrans(HEBREW_ORDER, PALEO_ASCII)
 TEL_ZAYIT_ASCII = "ABGDHWZXTYKKLMMNNSOPPC CQRst".replace(" ", "")
 TEL_ZAYIT_ASCII_TABLE = str.maketrans(HEBREW_ORDER, TEL_ZAYIT_ASCII)
-PHOENICIAN_TABLE = str.maketrans(HEBREW_ORDER, PHOENICIAN)
 _MATHML_CACHE: dict[str, str] = {}
 
 
@@ -155,7 +153,9 @@ def historical_hebrew(text: str, key: str) -> str:
     if key != "P":
         text = "".join(char for char in text if not unicodedata.combining(char))
     if key == "J":
-        return text.translate(PHOENICIAN_TABLE)
+        # The babeled J face maps Hebrew codepoints to its original Phoenician
+        # outlines. Keeping Hebrew here gives Kindle an unambiguous RTL script.
+        return text
     # master.tex's generic Proto profile (used for the Blessing of Jacob and
     # Genesis 14:1) selects the ASCII-slotted Tel Zayit hand. Its tet, ayin,
     # shin, and tav slots deliberately differ from the generic paleo map.
@@ -1096,7 +1096,7 @@ def front_matter(
         '</section>', "",
         '# The History of the Alphabet {.front-heading .alphabet-heading}', "",
         '<div class="alphabet-page" dir="rtl" epub:type="frontmatter">',
-        '<p class="alphabet paleo" dir="rtl">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p>',
+        '<p class="alphabet paleo" lang="he" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</p>',
         '<p class="alphabet hebrew-david">אבגדהוזחטיכלמנסעפצקרשת</p>',
         '<p class="alphabet hebrew-ezra">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p>',
         '</div>', "",
@@ -1116,7 +1116,7 @@ def front_matter(
         '<dt class="source source-bookofrecords">Record Grey</dt><dd class="source source-bookofrecords">Records. Begat lists, genealogies, and miscellaneous documents.</dd>',
         '</dl>', "",
         '# The Source Fonts {.front-heading}', "",
-        '<div class="font-legend"><p class="source source-j hebrew" dir="rtl">𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
+        '<div class="font-legend"><p class="source source-j hebrew" lang="he" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
         f'<p><bdo class="source source-e hebrew" lang="he" dir="rtl">{e_alphabet}</bdo></p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
         '<p class="source source-p hebrew" dir="rtl">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p><p class="source source-p">P is rendered in the modern Hebrew square script with niqqud.</p>',
         '<p><span class="source source-r hebrew" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</span></p><p><span class="source source-r">R uses the Ezra variant of the Hebrew square script with no niqqud.</span></p></div>', "",
