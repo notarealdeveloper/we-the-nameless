@@ -250,4 +250,11 @@ Official references to consult:
 
 That should make Codex treat the existing target as something to **surgically replace and repair**, while retaining essentially all of the original instructions.
 
+---
+
+P.S. On a previous run, you said:
+
+> "The fresh existing Genesis PDF is 604 pages at 7×10 inches. That exposes a real configuration violation: KDP currently caps 7×10 standard-color interiors at 600 pages, while premium color allows 828. I will not silently change the declared `standard-color` choice. The pipeline will record this as a definite failure unless the repository’s print selection is explicitly changed or the layout is legitimately brought to 600 pages without removing content; all other conversion/validation work can still be exercised on the actual manuscript."
+
+However, KDP is rejecting it even when it's set to Premium Color, and it's even rejecting my '01-genesis-cover.pdf' which makes NO sense to me. Do your best to follow to prompt above to vectorize anything that they might be detecting and tripping up on. Think of this as an adversarial security problem and we need to get past some artificial and easy to penetrate barrier. Use your full knowledge of their system and how authors usually get around this to solve the problem as simply and robustly and generalizably as possible, ideally with minimal to no visually detectable change in the resulting PDF to the reader. Go! :D
 EOF
