@@ -1,0 +1,4290 @@
+{
+  "metadata": {
+    "title": "We: The Nameless — Radical Contents",
+    "version": "PoC 2 — 100 microbooks / 70 signs",
+    "scope": "Genesis–Kings only: the nine conventional books Gen Exo Lev Num Dtr Jos Jud Sam Kng",
+    "core_sections": 100,
+    "coda_sections": 0,
+    "distinct_section_characters": 70,
+    "reference_system": "Common English / KJV-style chapter and verse numbers; check against Hebrew anchors before implementation.",
+    "interpretation": "The segmentation, English headings, and character-to-passage mappings are editorial proposals, not inherited Chinese biblical titles or claims about authorial divisions.",
+    "source_file": "Radicalized.json",
+    "source_file_role": "Authoritative supplied 104-unit inventory; the source Markdown and earlier radical notes provide rationale and preferences.",
+    "repeat_policy": "Repeat a sign when its core meaning recurs; use stable section IDs rather than signs as unique identifiers.",
+    "validation_scope": "The 100 units form exact consecutive unions of the 104 supplied core units. Validation proves preservation of the supplied partition, not an independent verse-by-verse audit of the manuscript’s absent Hebrew chapter includes.",
+    "conventional_books": 9,
+    "conventional_book_emblems_counted_as_microbooks": false,
+    "count_definition": "Count only books[].sections[]; distinct characters are the exact Unicode character values in those sections. Book emblems, lexical glosses, historical change records, and the separately archived coda are excluded.",
+    "book_emblem_policy": "Keep 元 出 示 屯 申 土 士 王 主 unchanged. A glyph may occur at both hierarchy levels; it does not create an additional microbook or an additional microbook-vocabulary entry.",
+    "source_files": [
+      {
+        "name": "Radicalized.md",
+        "sha256": "f0fd2f470e4d0133eb44c2df2b28df600661bbda8d97bc5c9a4bdd983b9c58a9"
+      },
+      {
+        "name": "Radicalized.json",
+        "sha256": "3f01e4b7592fdc4d9d16021fa9146a371ead8abf4aa10bf8b97326164ac5ab9e"
+      },
+      {
+        "name": "Radicals 1.md",
+        "sha256": "c4074ae96957d43653a132a6e1b16133811afe5a878f5b5558776a8902a03962"
+      },
+      {
+        "name": "Radicals 2.md",
+        "sha256": "302ee82bde786cf360f6e946ba56be60dc628640dc230dde7a5e3d807e34ec88"
+      }
+    ],
+    "source_precedence": "The latest Radicalized pair and the user’s explicit retention of 屯 govern current choices. Radicals 1 and Radicals 2 are historical rationale/candidate notes, not replacements for the latest inventory.",
+    "coda_policy": "The 11 original Ezra–Nehemiah–Esther sections are preserved separately in Radicalized-coda.archive.json and are not part of the 100.",
+    "unique_character_target_note": "70 is the selected soft target. Reaching 40 would require substantially more substitutions and loss of specificity; no 40-sign variant is represented as completed.",
+    "tex_integration_status": "A TeX support include, static contents, stable-ID markers, placement manifest, and integration instructions are supplied. Markers have not been inserted into the unavailable chapter files; English-to-Hebrew anchor mapping remains required."
+  },
+  "books": [
+    {
+      "id": "gen",
+      "name": "Genesis",
+      "emblem": "元",
+      "scope": "core",
+      "master_source_lines": [
+        13668,
+        13868
+      ],
+      "sections": [
+        {
+          "id": "gen-01",
+          "character": "天",
+          "mandarin": "tiān",
+          "gloss": "heaven; sky",
+          "strokes": 4,
+          "passage": "1:1–2:3",
+          "title": "Heaven and Earth",
+          "rationale": "The ordered world: light, divisions, living things, humanity, and rest.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 1,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 2,
+            "verse": 3,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-01"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 1,
+          "book_position": 1,
+          "anchor": "microbook.gen-01"
+        },
+        {
+          "id": "gen-02",
+          "character": "人",
+          "mandarin": "rén",
+          "gloss": "person; humanity",
+          "strokes": 2,
+          "passage": "2:4–3:24",
+          "title": "Humanity",
+          "rationale": "Earth becomes a person; companionship, desire, knowledge, work, and expulsion follow.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 2,
+            "verse": 4,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 3,
+            "verse": 24,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-02"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 2,
+          "book_position": 2,
+          "anchor": "microbook.gen-02"
+        },
+        {
+          "id": "gen-03",
+          "character": "血",
+          "mandarin": "xuè",
+          "gloss": "blood",
+          "strokes": 6,
+          "passage": "4:1–6:8",
+          "title": "Bloodlines",
+          "rationale": "Brothers, murder, descendants, and multiplying violence: blood as kinship and bloodshed.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 4,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 6,
+            "verse": 8,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-03"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 3,
+          "book_position": 3,
+          "anchor": "microbook.gen-03"
+        },
+        {
+          "id": "gen-04",
+          "character": "水",
+          "mandarin": "shuǐ",
+          "gloss": "water",
+          "strokes": 4,
+          "passage": "6:9–9:29",
+          "title": "The Flood",
+          "rationale": "The household carried through destruction; renewed life, covenant, and another family rupture.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 6,
+            "verse": 9,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 9,
+            "verse": 29,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-04"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 4,
+          "book_position": 4,
+          "anchor": "microbook.gen-04"
+        },
+        {
+          "id": "gen-05",
+          "character": "分",
+          "mandarin": "fēn",
+          "gloss": "divide; apportion",
+          "strokes": 4,
+          "passage": "10:1–11:26",
+          "title": "The Scattering",
+          "rationale": "Peoples and languages divide; branching genealogies narrow toward one family.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 10,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 11,
+            "verse": 26,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-05"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 5,
+          "book_position": 5,
+          "anchor": "microbook.gen-05"
+        },
+        {
+          "id": "gen-06",
+          "character": "行",
+          "mandarin": "xíng",
+          "gloss": "go; travel; act",
+          "strokes": 6,
+          "passage": "11:27–14:24",
+          "title": "Go",
+          "rationale": "Terah’s migration, Abram’s departure, Egypt, separation from Lot, and the rescue expedition.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 11,
+            "verse": 27,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 14,
+            "verse": 24,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-06"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 6,
+          "book_position": 6,
+          "anchor": "microbook.gen-06"
+        },
+        {
+          "id": "gen-07",
+          "character": "切",
+          "mandarin": "qiē",
+          "gloss": "cut",
+          "strokes": 4,
+          "passage": "15:1–17:27",
+          "title": "The Cut",
+          "rationale": "Covenant, disputed offspring, renamed ancestors, and circumcision: promise written into divided flesh.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 15,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 17,
+            "verse": 27,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-07"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 7,
+          "book_position": 7,
+          "anchor": "microbook.gen-07"
+        },
+        {
+          "id": "gen-08",
+          "character": "客",
+          "mandarin": "kè",
+          "gloss": "guest; stranger; sojourner",
+          "strokes": 9,
+          "passage": "18:1–19:38",
+          "title": "Strangers",
+          "rationale": "Abraham’s visitors and Lot’s guests; hospitality, threatened households, destruction, and survival.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 18,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 19,
+            "verse": 38,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-08"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 8,
+          "book_position": 8,
+          "anchor": "microbook.gen-08"
+        },
+        {
+          "id": "gen-09",
+          "character": "子",
+          "mandarin": "zǐ",
+          "gloss": "child; son",
+          "strokes": 3,
+          "passage": "20:1–22:24",
+          "title": "The Son",
+          "rationale": "The threatened mother, the long-awaited child, the expelled child, and the endangered heir.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 20,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 22,
+            "verse": 24,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-09"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 9,
+          "book_position": 9,
+          "anchor": "microbook.gen-09"
+        },
+        {
+          "id": "gen-10",
+          "character": "代",
+          "mandarin": "dài",
+          "gloss": "replace; generation; succession",
+          "strokes": 5,
+          "passage": "23:1–25:18",
+          "title": "Succession",
+          "rationale": "Sarah’s burial, Rebekah’s arrival, Abraham’s death, and the disposition of his descendants.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 23,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 25,
+            "verse": 18,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-10"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 10,
+          "book_position": 10,
+          "anchor": "microbook.gen-10"
+        },
+        {
+          "id": "gen-11",
+          "character": "易",
+          "mandarin": "yì",
+          "gloss": "change; exchange",
+          "strokes": 8,
+          "passage": "25:19–31:55",
+          "title": "Exchange",
+          "rationale": "Birthright, blessing, brides, wages, and flocks change hands. Jacob substitutes himself for the elder, then encounters substitutions and altered bargains in Laban’s household.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 25,
+            "verse": 19,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 31,
+            "verse": 55,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-11",
+            "gen-12"
+          ],
+          "internal_transitions": [
+            {
+              "start": {
+                "book": "Genesis",
+                "chapter": 28,
+                "verse": 10,
+                "part": null
+              },
+              "title": "Exchange in Laban’s household",
+              "former_section_id": "gen-12",
+              "counted_as_microbook": false,
+              "note": "This former microbook boundary remains an internal editorial transition, not a separate counted unit."
+            }
+          ],
+          "changes": [
+            "merged adjacent input sections"
+          ],
+          "number": 11,
+          "book_position": 11,
+          "anchor": "microbook.gen-11"
+        },
+        {
+          "id": "gen-13",
+          "character": "回",
+          "mandarin": "huí",
+          "gloss": "return",
+          "strokes": 6,
+          "passage": "32:1–36:43",
+          "title": "Homeward",
+          "rationale": "Return, wrestling, reconciliation, new names, bereavements, and the two brothers’ separate futures.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 32,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 36,
+            "verse": 43,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-13"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 12,
+          "book_position": 12,
+          "anchor": "microbook.gen-13"
+        },
+        {
+          "id": "gen-14",
+          "character": "衣",
+          "mandarin": "yī",
+          "gloss": "clothing",
+          "strokes": 6,
+          "passage": "37:1–41:57",
+          "title": "Clothing",
+          "rationale": "Joseph’s robe, Tamar’s veil, an accusation-cloak, and royal dress: identities and fortunes change hands.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 37,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 41,
+            "verse": 57,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-14"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 13,
+          "book_position": 13,
+          "anchor": "microbook.gen-14"
+        },
+        {
+          "id": "gen-15",
+          "character": "合",
+          "mandarin": "hé",
+          "gloss": "join; unite",
+          "strokes": 6,
+          "passage": "42:1–45:28",
+          "title": "Recognition",
+          "rationale": "The brothers are tested; Judah offers himself; concealment gives way to reunion.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 42,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 45,
+            "verse": 28,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-15"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 14,
+          "book_position": 14,
+          "anchor": "microbook.gen-15"
+        },
+        {
+          "id": "gen-16",
+          "character": "禾",
+          "mandarin": "hé",
+          "gloss": "standing grain; cereal crop",
+          "strokes": 5,
+          "passage": "46:1–47:27",
+          "title": "Grain",
+          "rationale": "A household migrates for food; hunger transfers Egypt’s property and labor to Pharaoh.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 46,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 47,
+            "verse": 27,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-16"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 15,
+          "book_position": 15,
+          "anchor": "microbook.gen-16"
+        },
+        {
+          "id": "gen-17",
+          "character": "骨",
+          "mandarin": "gǔ",
+          "gloss": "bone",
+          "strokes": 10,
+          "passage": "47:28–50:26",
+          "title": "Bones",
+          "rationale": "Final blessings, inheritances, burials, and the demand that Joseph’s remains eventually leave Egypt.",
+          "start": {
+            "book": "Genesis",
+            "chapter": 47,
+            "verse": 28,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Genesis",
+            "chapter": 50,
+            "verse": 26,
+            "part": null
+          },
+          "source_section_ids": [
+            "gen-17"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 16,
+          "book_position": 16,
+          "anchor": "microbook.gen-17"
+        }
+      ],
+      "abbreviation": "Gen",
+      "microbook_count": 16,
+      "first_number": 1,
+      "last_number": 16,
+      "emblem_role": "conventional-book header; excluded from microbook and microbook-vocabulary counts"
+    },
+    {
+      "id": "exo",
+      "name": "Exodus",
+      "emblem": "出",
+      "scope": "core",
+      "master_source_lines": [
+        13880,
+        14036
+      ],
+      "sections": [
+        {
+          "id": "exo-01",
+          "character": "工",
+          "mandarin": "gōng",
+          "gloss": "work; craft; artisan",
+          "strokes": 3,
+          "passage": "1:1–2:22",
+          "title": "Forced Work",
+          "rationale": "A population becomes a labor force; children are threatened, and Moses grows up and flees.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 1,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 2,
+            "verse": 22,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-01"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 17,
+          "book_position": 1,
+          "anchor": "microbook.exo-01"
+        },
+        {
+          "id": "exo-02",
+          "character": "名",
+          "mandarin": "míng",
+          "gloss": "name",
+          "strokes": 6,
+          "passage": "2:23–7:7",
+          "title": "The Name",
+          "rationale": "The cry is heard; Moses is commissioned; the divine name becomes a claim against Pharaoh.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 2,
+            "verse": 23,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 7,
+            "verse": 7,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-02"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 18,
+          "book_position": 2,
+          "anchor": "microbook.exo-02"
+        },
+        {
+          "id": "exo-03",
+          "character": "災",
+          "mandarin": "zāi",
+          "gloss": "disaster; calamity",
+          "strokes": 7,
+          "passage": "7:8–11:10",
+          "title": "The Blows",
+          "rationale": "The contest of signs, the first nine plagues, and the announcement of the final blow.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 7,
+            "verse": 8,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 11,
+            "verse": 10,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-03"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 19,
+          "book_position": 3,
+          "anchor": "microbook.exo-03"
+        },
+        {
+          "id": "exo-04",
+          "character": "門",
+          "mandarin": "mén",
+          "gloss": "door; gate",
+          "strokes": 8,
+          "passage": "12:1–13:16",
+          "title": "The Threshold",
+          "rationale": "Passover, marked doorways, death of the firstborn, departure, and its permanent observances.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 12,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 13,
+            "verse": 16,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-04"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 20,
+          "book_position": 4,
+          "anchor": "microbook.exo-04"
+        },
+        {
+          "id": "exo-05",
+          "character": "出",
+          "mandarin": "chū",
+          "gloss": "go out; bring out",
+          "strokes": 5,
+          "passage": "13:17–15:21",
+          "title": "The Crossing",
+          "rationale": "The sea escape and its victory song form one completed movement.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 13,
+            "verse": 17,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 15,
+            "verse": 21,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-05"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 21,
+          "book_position": 5,
+          "anchor": "microbook.exo-05"
+        },
+        {
+          "id": "exo-06",
+          "character": "行",
+          "mandarin": "xíng",
+          "gloss": "go; travel; act",
+          "strokes": 6,
+          "passage": "15:22–18:27",
+          "title": "The Road",
+          "rationale": "Water, food, attack, and delegated judgment: learning to survive outside Egypt.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 15,
+            "verse": 22,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 18,
+            "verse": 27,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-06"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 22,
+          "book_position": 6,
+          "anchor": "microbook.exo-06"
+        },
+        {
+          "id": "exo-07",
+          "character": "山",
+          "mandarin": "shān",
+          "gloss": "mountain",
+          "strokes": 3,
+          "passage": "19:1–24:18",
+          "title": "The Mountain Covenant",
+          "rationale": "The Sinai encounter, commandments, case laws, public assent, covenant blood, and ascent form one movement from arrival to ratification.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 19,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 24,
+            "verse": 18,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-07",
+            "exo-08"
+          ],
+          "internal_transitions": [
+            {
+              "start": {
+                "book": "Exodus",
+                "chapter": 20,
+                "verse": 22,
+                "part": null
+              },
+              "title": "The covenant’s terms and ratification",
+              "former_section_id": "exo-08",
+              "counted_as_microbook": false,
+              "note": "This former microbook boundary remains an internal editorial transition, not a separate counted unit."
+            }
+          ],
+          "changes": [
+            "merged adjacent input sections"
+          ],
+          "number": 23,
+          "book_position": 7,
+          "anchor": "microbook.exo-07"
+        },
+        {
+          "id": "exo-09",
+          "character": "式",
+          "mandarin": "shì",
+          "gloss": "form; pattern; model",
+          "strokes": 6,
+          "passage": "25:1–31:18",
+          "title": "The Pattern",
+          "rationale": "The sanctuary, its furnishings, priestly service, workmanship, and Sabbath are prescribed.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 25,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 31,
+            "verse": 18,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-09"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 24,
+          "book_position": 8,
+          "anchor": "microbook.exo-09"
+        },
+        {
+          "id": "exo-10",
+          "character": "牛",
+          "mandarin": "niú",
+          "gloss": "ox; cattle",
+          "strokes": 4,
+          "passage": "32:1–34:35",
+          "title": "The Calf",
+          "rationale": "An image, a broken covenant, intercession, and renewed tablets.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 32,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 34,
+            "verse": 35,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-10"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 25,
+          "book_position": 9,
+          "anchor": "microbook.exo-10"
+        },
+        {
+          "id": "exo-11",
+          "character": "工",
+          "mandarin": "gōng",
+          "gloss": "work; craft; artisan",
+          "strokes": 3,
+          "passage": "35:1–40:38",
+          "title": "Willing Work",
+          "rationale": "Gifts and skilled work produce the sanctuary; the presence fills what the people have made.",
+          "start": {
+            "book": "Exodus",
+            "chapter": 35,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Exodus",
+            "chapter": 40,
+            "verse": 38,
+            "part": null
+          },
+          "source_section_ids": [
+            "exo-11"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 26,
+          "book_position": 10,
+          "anchor": "microbook.exo-11"
+        }
+      ],
+      "abbreviation": "Exo",
+      "microbook_count": 10,
+      "first_number": 17,
+      "last_number": 26,
+      "emblem_role": "conventional-book header; excluded from microbook and microbook-vocabulary counts"
+    },
+    {
+      "id": "lev",
+      "name": "Leviticus",
+      "emblem": "示",
+      "scope": "core",
+      "master_source_lines": [
+        14048,
+        14152
+      ],
+      "sections": [
+        {
+          "id": "lev-01",
+          "character": "火",
+          "mandarin": "huǒ",
+          "gloss": "fire",
+          "strokes": 4,
+          "passage": "1:1–7:38",
+          "title": "Offerings",
+          "rationale": "The altar economy: burnt offerings, grain, shared meals, purification, restitution, and priestly portions.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 1,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 7,
+            "verse": 38,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-01"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 27,
+          "book_position": 1,
+          "anchor": "microbook.lev-01"
+        },
+        {
+          "id": "lev-02",
+          "character": "立",
+          "mandarin": "lì",
+          "gloss": "stand; establish",
+          "strokes": 5,
+          "passage": "8:1–10:20",
+          "title": "Ordination",
+          "rationale": "The priests are established; service begins; unauthorized fire kills Aaron’s sons.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 8,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 10,
+            "verse": 20,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-02"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 28,
+          "book_position": 2,
+          "anchor": "microbook.lev-02"
+        },
+        {
+          "id": "lev-03",
+          "character": "分",
+          "mandarin": "fēn",
+          "gloss": "divide; apportion",
+          "strokes": 4,
+          "passage": "11:1–15:33",
+          "title": "Distinctions",
+          "rationale": "Edible and inedible, clean and unclean: animals, childbirth, skin, houses, and bodily flows.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 11,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 15,
+            "verse": 33,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-03"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 29,
+          "book_position": 3,
+          "anchor": "microbook.lev-03"
+        },
+        {
+          "id": "lev-04",
+          "character": "去",
+          "mandarin": "qù",
+          "gloss": "go away; remove",
+          "strokes": 5,
+          "passage": "16:1–16:34",
+          "title": "Removal",
+          "rationale": "The sanctuary is cleansed and wrongdoing is carried away by the dispatched goat.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 16,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 16,
+            "verse": 34,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-04"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 30,
+          "book_position": 4,
+          "anchor": "microbook.lev-04"
+        },
+        {
+          "id": "lev-05",
+          "character": "生",
+          "mandarin": "shēng",
+          "gloss": "life; birth; grow",
+          "strokes": 5,
+          "passage": "17:1–20:27",
+          "title": "Life Together",
+          "rationale": "Blood and life, sexual boundaries, neighbors, holiness, and penalties for violating the social order.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 17,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 20,
+            "verse": 27,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-05"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 31,
+          "book_position": 5,
+          "anchor": "microbook.lev-05"
+        },
+        {
+          "id": "lev-06",
+          "character": "示",
+          "mandarin": "shì",
+          "gloss": "show; sacred/ritual semantic component",
+          "strokes": 5,
+          "passage": "21:1–22:33",
+          "title": "Sacred Access",
+          "rationale": "Who may serve, what may be offered, and who may eat sacred food.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 21,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 22,
+            "verse": 33,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-06"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 32,
+          "book_position": 6,
+          "anchor": "microbook.lev-06"
+        },
+        {
+          "id": "lev-07",
+          "character": "日",
+          "mandarin": "rì",
+          "gloss": "sun; day",
+          "strokes": 4,
+          "passage": "23:1–24:9",
+          "title": "Sacred Time",
+          "rationale": "Festivals, perpetual light, and recurring bread: the sanctuary’s calendar and continuities.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 23,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 24,
+            "verse": 9,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-07"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 33,
+          "book_position": 7,
+          "anchor": "microbook.lev-07"
+        },
+        {
+          "id": "lev-08",
+          "character": "名",
+          "mandarin": "míng",
+          "gloss": "name",
+          "strokes": 6,
+          "passage": "24:10–24:23",
+          "title": "The Name on Trial",
+          "rationale": "Blasphemy, testimony, punishment, and the relation between injury and redress.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 24,
+            "verse": 10,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 24,
+            "verse": 23,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-08"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 34,
+          "book_position": 8,
+          "anchor": "microbook.lev-08"
+        },
+        {
+          "id": "lev-09",
+          "character": "田",
+          "mandarin": "tián",
+          "gloss": "field",
+          "strokes": 5,
+          "passage": "25:1–26:46",
+          "title": "The Land and Its Rest",
+          "rationale": "Sabbath years, Jubilee, redemption, and limits on ownership lead into abundance, devastation, exile, and the land recovering its neglected rest.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 25,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 26,
+            "verse": 46,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-09",
+            "lev-10"
+          ],
+          "internal_transitions": [
+            {
+              "start": {
+                "book": "Leviticus",
+                "chapter": 26,
+                "verse": 1,
+                "part": null
+              },
+              "title": "The covenant’s consequences",
+              "former_section_id": "lev-10",
+              "counted_as_microbook": false,
+              "note": "This former microbook boundary remains an internal editorial transition, not a separate counted unit."
+            }
+          ],
+          "changes": [
+            "merged adjacent input sections"
+          ],
+          "number": 35,
+          "book_position": 9,
+          "anchor": "microbook.lev-09"
+        },
+        {
+          "id": "lev-11",
+          "character": "貝",
+          "mandarin": "bèi",
+          "gloss": "shell; wealth/money semantic component",
+          "strokes": 7,
+          "passage": "27:1–27:34",
+          "title": "Valuations",
+          "rationale": "Vows, dedicated property, redemption, and tithes: what an obligation is worth.",
+          "start": {
+            "book": "Leviticus",
+            "chapter": 27,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Leviticus",
+            "chapter": 27,
+            "verse": 34,
+            "part": null
+          },
+          "source_section_ids": [
+            "lev-11"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 36,
+          "book_position": 10,
+          "anchor": "microbook.lev-11"
+        }
+      ],
+      "abbreviation": "Lev",
+      "microbook_count": 10,
+      "first_number": 27,
+      "last_number": 36,
+      "emblem_role": "conventional-book header; excluded from microbook and microbook-vocabulary counts"
+    },
+    {
+      "id": "num",
+      "name": "Numbers",
+      "emblem": "屯",
+      "scope": "core",
+      "master_source_lines": [
+        14164,
+        14304
+      ],
+      "sections": [
+        {
+          "id": "num-01",
+          "character": "冊",
+          "mandarin": "cè",
+          "gloss": "written register; book",
+          "strokes": 5,
+          "passage": "1:1–4:49",
+          "title": "The Muster",
+          "rationale": "The first census, tribal arrangement, Levite counts, and assigned responsibilities.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 1,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 4,
+            "verse": 49,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-01"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 37,
+          "book_position": 1,
+          "anchor": "microbook.num-01"
+        },
+        {
+          "id": "num-02",
+          "character": "中",
+          "mandarin": "zhōng",
+          "gloss": "middle; center",
+          "strokes": 4,
+          "passage": "5:1–10:10",
+          "title": "The Center",
+          "rationale": "The camp is ordered around sacred presence: purity, vows, blessing, gifts, service, cloud, and signals.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 5,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 10,
+            "verse": 10,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-02"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 38,
+          "book_position": 2,
+          "anchor": "microbook.num-02"
+        },
+        {
+          "id": "num-03",
+          "character": "口",
+          "mandarin": "kǒu",
+          "gloss": "mouth",
+          "strokes": 3,
+          "passage": "10:11–12:16",
+          "title": "Mouths",
+          "rationale": "The march begins; hunger, complaint, prophecy, and challenges to Moses turn on mouths and speech.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 10,
+            "verse": 11,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 12,
+            "verse": 16,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-03"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 39,
+          "book_position": 3,
+          "anchor": "microbook.num-03"
+        },
+        {
+          "id": "num-04",
+          "character": "目",
+          "mandarin": "mù",
+          "gloss": "eye",
+          "strokes": 5,
+          "passage": "13:1–14:45",
+          "title": "The Scouts",
+          "rationale": "The land is seen, described, feared, and refused; one generation loses its future there.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 13,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 14,
+            "verse": 45,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-04"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 40,
+          "book_position": 4,
+          "anchor": "microbook.num-04"
+        },
+        {
+          "id": "num-05",
+          "character": "杖",
+          "mandarin": "zhàng",
+          "gloss": "staff; rod",
+          "strokes": 7,
+          "passage": "15:1–19:22",
+          "title": "The Staff",
+          "rationale": "Rules, rebellion, Aaron’s budding staff, priestly entitlements, and purification establish contested authority.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 15,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 19,
+            "verse": 22,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-05"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 41,
+          "book_position": 5,
+          "anchor": "microbook.num-05"
+        },
+        {
+          "id": "num-06",
+          "character": "行",
+          "mandarin": "xíng",
+          "gloss": "go; travel; act",
+          "strokes": 6,
+          "passage": "20:1–22:1",
+          "title": "The Last March",
+          "rationale": "Leaders die; water fails; routes close; snakes, wells, and battles mark the approach to Moab.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 20,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 22,
+            "verse": 1,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-06"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 42,
+          "book_position": 6,
+          "anchor": "microbook.num-06"
+        },
+        {
+          "id": "num-07",
+          "character": "卜",
+          "mandarin": "bǔ",
+          "gloss": "divine; divination",
+          "strokes": 2,
+          "passage": "22:2–24:25",
+          "title": "The Oracle",
+          "rationale": "Balaam is hired to curse, but his mouth cannot deliver the outcome his patron purchases.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 22,
+            "verse": 2,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 24,
+            "verse": 25,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-07"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 43,
+          "book_position": 7,
+          "anchor": "microbook.num-07"
+        },
+        {
+          "id": "num-08",
+          "character": "矛",
+          "mandarin": "máo",
+          "gloss": "spear",
+          "strokes": 5,
+          "passage": "25:1–25:18",
+          "title": "The Spear",
+          "rationale": "Baal-peor, the plague, and Phinehas’s violent enforcement of the boundary.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 25,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 25,
+            "verse": 18,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-08"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 44,
+          "book_position": 8,
+          "anchor": "microbook.num-08"
+        },
+        {
+          "id": "num-09",
+          "character": "冊",
+          "mandarin": "cè",
+          "gloss": "written register; book",
+          "strokes": 5,
+          "passage": "26:1–27:23",
+          "title": "The Recount",
+          "rationale": "A replacement generation is counted; daughters claim inheritance; Joshua is appointed.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 26,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 27,
+            "verse": 23,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-09"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 45,
+          "book_position": 9,
+          "anchor": "microbook.num-09"
+        },
+        {
+          "id": "num-10",
+          "character": "守",
+          "mandarin": "shǒu",
+          "gloss": "guard; keep; observe",
+          "strokes": 6,
+          "passage": "28:1–30:16",
+          "title": "Obligations",
+          "rationale": "Recurring offerings and binding or annulled vows: what must be kept.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 28,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 30,
+            "verse": 16,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-10"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 46,
+          "book_position": 10,
+          "anchor": "microbook.num-10"
+        },
+        {
+          "id": "num-11",
+          "character": "分",
+          "mandarin": "fēn",
+          "gloss": "divide; apportion",
+          "strokes": 4,
+          "passage": "31:1–32:42",
+          "title": "Spoils and Shares",
+          "rationale": "The Midian war and its division of captives and goods; the eastern tribes negotiate their share.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 31,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 32,
+            "verse": 42,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-11"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 47,
+          "book_position": 11,
+          "anchor": "microbook.num-11"
+        },
+        {
+          "id": "num-12",
+          "character": "田",
+          "mandarin": "tián",
+          "gloss": "field",
+          "strokes": 5,
+          "passage": "33:1–36:13",
+          "title": "The Inheritance",
+          "rationale": "The itinerary becomes a claim to land: borders, towns, refuge, and rules keeping inheritances within tribes.",
+          "start": {
+            "book": "Numbers",
+            "chapter": 33,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Numbers",
+            "chapter": 36,
+            "verse": 13,
+            "part": null
+          },
+          "source_section_ids": [
+            "num-12"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 48,
+          "book_position": 12,
+          "anchor": "microbook.num-12"
+        }
+      ],
+      "abbreviation": "Num",
+      "microbook_count": 12,
+      "first_number": 37,
+      "last_number": 48,
+      "emblem_role": "conventional-book header; excluded from microbook and microbook-vocabulary counts"
+    },
+    {
+      "id": "dtr",
+      "name": "Deuteronomy",
+      "emblem": "申",
+      "scope": "core",
+      "master_source_lines": [
+        14316,
+        14448
+      ],
+      "sections": [
+        {
+          "id": "dtr-01",
+          "character": "申",
+          "mandarin": "shēn",
+          "gloss": "state; extend; reiterate",
+          "strokes": 5,
+          "passage": "1:1–4:43",
+          "title": "Retelling",
+          "rationale": "The journey, failures, victories, exclusions, and obligations are stated again.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 1,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 4,
+            "verse": 43,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-01"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 49,
+          "book_position": 1,
+          "anchor": "microbook.dtr-01"
+        },
+        {
+          "id": "dtr-02",
+          "character": "心",
+          "mandarin": "xīn",
+          "gloss": "heart; mind",
+          "strokes": 4,
+          "passage": "4:44–11:32",
+          "title": "Allegiance",
+          "rationale": "The commandments reach inward: love, memory, humility, loyalty, and the danger of forgetting.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 4,
+            "verse": 44,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 11,
+            "verse": 32,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-02"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 50,
+          "book_position": 2,
+          "anchor": "microbook.dtr-02"
+        },
+        {
+          "id": "dtr-03",
+          "character": "一",
+          "mandarin": "yī",
+          "gloss": "one",
+          "strokes": 1,
+          "passage": "12:1–16:17",
+          "title": "One Center",
+          "rationale": "One chosen place organizes worship, belonging, shared provision, release, and the pilgrimage festivals.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 12,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 16,
+            "verse": 17,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-03"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 51,
+          "book_position": 3,
+          "anchor": "microbook.dtr-03"
+        },
+        {
+          "id": "dtr-04",
+          "character": "司",
+          "mandarin": "sī",
+          "gloss": "oversee; administer; office",
+          "strokes": 5,
+          "passage": "16:18–18:22",
+          "title": "Authority",
+          "rationale": "Judges, courts, kings, priests, and prophets: who may decide, rule, or speak.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 16,
+            "verse": 18,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 18,
+            "verse": 22,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-04"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 52,
+          "book_position": 4,
+          "anchor": "microbook.dtr-04"
+        },
+        {
+          "id": "dtr-05",
+          "character": "血",
+          "mandarin": "xuè",
+          "gloss": "blood",
+          "strokes": 6,
+          "passage": "19:1–21:9",
+          "title": "Bloodguilt",
+          "rationale": "Refuge, witnesses, warfare, and the unaccounted-for corpse: responsibility for bloodshed.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 19,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 21,
+            "verse": 9,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-05"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 53,
+          "book_position": 5,
+          "anchor": "microbook.dtr-05"
+        },
+        {
+          "id": "dtr-06",
+          "character": "比",
+          "mandarin": "bì",
+          "gloss": "be adjacent; be close (literary reading)",
+          "strokes": 4,
+          "passage": "21:10–25:19",
+          "title": "Neighbors",
+          "rationale": "The law enters households, fields, debts, disputes, vulnerable lives, and everyday dealings.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 21,
+            "verse": 10,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 25,
+            "verse": 19,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-06"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 54,
+          "book_position": 6,
+          "anchor": "microbook.dtr-06"
+        },
+        {
+          "id": "dtr-07",
+          "character": "土",
+          "mandarin": "tǔ",
+          "gloss": "earth; soil; land",
+          "strokes": 3,
+          "passage": "26:1–26:15",
+          "title": "Firstfruits",
+          "rationale": "A farmer gives produce and recites how a dispossessed people received its land.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 26,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 26,
+            "verse": 15,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-07"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 55,
+          "book_position": 7,
+          "anchor": "microbook.dtr-07"
+        },
+        {
+          "id": "dtr-08",
+          "character": "生",
+          "mandarin": "shēng",
+          "gloss": "life; birth; grow",
+          "strokes": 5,
+          "passage": "26:16–30:20",
+          "title": "Choose Life",
+          "rationale": "Mutual declaration, covenant sanctions, exile, return, and the choice between life and death.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 26,
+            "verse": 16,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 30,
+            "verse": 20,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-08"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 56,
+          "book_position": 8,
+          "anchor": "microbook.dtr-08"
+        },
+        {
+          "id": "dtr-09",
+          "character": "文",
+          "mandarin": "wén",
+          "gloss": "writing; text; pattern",
+          "strokes": 4,
+          "passage": "31:1–32:47",
+          "title": "The Witness",
+          "rationale": "Leadership passes on; law and song are entrusted to the people as testimony for the future.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 31,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 32,
+            "verse": 47,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-09"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 57,
+          "book_position": 9,
+          "anchor": "microbook.dtr-09"
+        },
+        {
+          "id": "dtr-10",
+          "character": "止",
+          "mandarin": "zhǐ",
+          "gloss": "stop",
+          "strokes": 4,
+          "passage": "32:48–34:12",
+          "title": "The Limit",
+          "rationale": "Moses’s final blessing, forbidden crossing, last view, and death.",
+          "start": {
+            "book": "Deuteronomy",
+            "chapter": 32,
+            "verse": 48,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Deuteronomy",
+            "chapter": 34,
+            "verse": 12,
+            "part": null
+          },
+          "source_section_ids": [
+            "dtr-10"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 58,
+          "book_position": 10,
+          "anchor": "microbook.dtr-10"
+        }
+      ],
+      "abbreviation": "Dtr",
+      "microbook_count": 10,
+      "first_number": 49,
+      "last_number": 58,
+      "emblem_role": "conventional-book header; excluded from microbook and microbook-vocabulary counts"
+    },
+    {
+      "id": "jos",
+      "name": "Joshua",
+      "emblem": "土",
+      "scope": "core",
+      "master_source_lines": [
+        14460,
+        14552
+      ],
+      "sections": [
+        {
+          "id": "jos-01",
+          "character": "入",
+          "mandarin": "rù",
+          "gloss": "enter",
+          "strokes": 2,
+          "passage": "1:1–5:12",
+          "title": "Entry",
+          "rationale": "Commission, reconnaissance, Jordan crossing, memorial, circumcision, and Passover complete the entrance.",
+          "start": {
+            "book": "Joshua",
+            "chapter": 1,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Joshua",
+            "chapter": 5,
+            "verse": 12,
+            "part": null
+          },
+          "source_section_ids": [
+            "jos-01"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 59,
+          "book_position": 1,
+          "anchor": "microbook.jos-01"
+        },
+        {
+          "id": "jos-02",
+          "character": "戈",
+          "mandarin": "gē",
+          "gloss": "dagger-axe; warfare emblem",
+          "strokes": 4,
+          "passage": "5:13–12:24",
+          "title": "Conquest",
+          "rationale": "The armed encounter introduces the campaigns, their failures and victories, and the list of defeated kings.",
+          "start": {
+            "book": "Joshua",
+            "chapter": 5,
+            "verse": 13,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Joshua",
+            "chapter": 12,
+            "verse": 24,
+            "part": null
+          },
+          "source_section_ids": [
+            "jos-02"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 60,
+          "book_position": 2,
+          "anchor": "microbook.jos-02"
+        },
+        {
+          "id": "jos-03",
+          "character": "田",
+          "mandarin": "tián",
+          "gloss": "field",
+          "strokes": 5,
+          "passage": "13:1–21:45",
+          "title": "Allotment",
+          "rationale": "The land is divided into inheritances, borders, towns, and places of refuge.",
+          "start": {
+            "book": "Joshua",
+            "chapter": 13,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Joshua",
+            "chapter": 21,
+            "verse": 45,
+            "part": null
+          },
+          "source_section_ids": [
+            "jos-03"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 61,
+          "book_position": 3,
+          "anchor": "microbook.jos-03"
+        },
+        {
+          "id": "jos-04",
+          "character": "合",
+          "mandarin": "hé",
+          "gloss": "join; unite",
+          "strokes": 6,
+          "passage": "22:1–22:34",
+          "title": "Belonging",
+          "rationale": "An altar almost makes the tribes enemies; they negotiate what it means to belong together.",
+          "start": {
+            "book": "Joshua",
+            "chapter": 22,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Joshua",
+            "chapter": 22,
+            "verse": 34,
+            "part": null
+          },
+          "source_section_ids": [
+            "jos-04"
+          ],
+          "internal_transitions": [],
+          "changes": [
+            "reused an existing character; boundary and title unchanged"
+          ],
+          "character_choice_note": "Shared belonging is retained under the existing sign for joining and union; the threatened rupture ends in recognized membership rather than war.",
+          "number": 62,
+          "book_position": 4,
+          "anchor": "microbook.jos-04"
+        },
+        {
+          "id": "jos-05",
+          "character": "石",
+          "mandarin": "shí",
+          "gloss": "stone",
+          "strokes": 5,
+          "passage": "23:1–24:33",
+          "title": "Witness",
+          "rationale": "Farewell, covenant, the witnessing stone, and the burial notices establish an obligation to remember.",
+          "start": {
+            "book": "Joshua",
+            "chapter": 23,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Joshua",
+            "chapter": 24,
+            "verse": 33,
+            "part": null
+          },
+          "source_section_ids": [
+            "jos-05"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 63,
+          "book_position": 5,
+          "anchor": "microbook.jos-05"
+        }
+      ],
+      "abbreviation": "Jos",
+      "microbook_count": 5,
+      "first_number": 59,
+      "last_number": 63,
+      "emblem_role": "conventional-book header; excluded from microbook and microbook-vocabulary counts"
+    },
+    {
+      "id": "jud",
+      "name": "Judges",
+      "emblem": "士",
+      "scope": "core",
+      "master_source_lines": [
+        14564,
+        14644
+      ],
+      "sections": [
+        {
+          "id": "jud-01",
+          "character": "未",
+          "mandarin": "wèi",
+          "gloss": "not yet",
+          "strokes": 5,
+          "passage": "1:1–3:6",
+          "title": "Unfinished",
+          "rationale": "Incomplete possession, surviving peoples, a dying generation, and recurrent disloyalty set the conditions.",
+          "start": {
+            "book": "Judges",
+            "chapter": 1,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Judges",
+            "chapter": 3,
+            "verse": 6,
+            "part": null
+          },
+          "source_section_ids": [
+            "jud-01"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 64,
+          "book_position": 1,
+          "anchor": "microbook.jud-01"
+        },
+        {
+          "id": "jud-02",
+          "character": "左",
+          "mandarin": "zuǒ",
+          "gloss": "left",
+          "strokes": 5,
+          "passage": "3:7–3:31",
+          "title": "The Left Hand",
+          "rationale": "The opening deliverers, dominated by Ehud’s concealed, left-handed reversal of power.",
+          "start": {
+            "book": "Judges",
+            "chapter": 3,
+            "verse": 7,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Judges",
+            "chapter": 3,
+            "verse": 31,
+            "part": null
+          },
+          "source_section_ids": [
+            "jud-02"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 65,
+          "book_position": 2,
+          "anchor": "microbook.jud-02"
+        },
+        {
+          "id": "jud-03",
+          "character": "女",
+          "mandarin": "nǚ",
+          "gloss": "woman",
+          "strokes": 3,
+          "passage": "4:1–5:31",
+          "title": "Women",
+          "rationale": "Deborah and Jael overturn the expected distribution of authority and victory; prose and song stay together.",
+          "start": {
+            "book": "Judges",
+            "chapter": 4,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Judges",
+            "chapter": 5,
+            "verse": 31,
+            "part": null
+          },
+          "source_section_ids": [
+            "jud-03"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 66,
+          "book_position": 3,
+          "anchor": "microbook.jud-03"
+        },
+        {
+          "id": "jud-04",
+          "character": "少",
+          "mandarin": "shǎo",
+          "gloss": "few; little",
+          "strokes": 4,
+          "passage": "6:1–8:35",
+          "title": "The Few",
+          "rationale": "Gideon’s reduced force wins; vengeance, wealth, and quasi-royal power complicate the deliverance.",
+          "start": {
+            "book": "Judges",
+            "chapter": 6,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Judges",
+            "chapter": 8,
+            "verse": 35,
+            "part": null
+          },
+          "source_section_ids": [
+            "jud-04"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 67,
+          "book_position": 4,
+          "anchor": "microbook.jud-04"
+        },
+        {
+          "id": "jud-05",
+          "character": "木",
+          "mandarin": "mù",
+          "gloss": "tree; wood",
+          "strokes": 4,
+          "passage": "9:1–10:5",
+          "title": "The Trees",
+          "rationale": "The fable of trees seeking a king frames Abimelech’s kingship and its destruction; minor judges close the unit.",
+          "start": {
+            "book": "Judges",
+            "chapter": 9,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Judges",
+            "chapter": 10,
+            "verse": 5,
+            "part": null
+          },
+          "source_section_ids": [
+            "jud-05"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 68,
+          "book_position": 5,
+          "anchor": "microbook.jud-05"
+        },
+        {
+          "id": "jud-06",
+          "character": "口",
+          "mandarin": "kǒu",
+          "gloss": "mouth",
+          "strokes": 3,
+          "passage": "10:6–12:15",
+          "title": "Fatal Words",
+          "rationale": "Jephthah’s negotiations, vow, and the shibboleth test make speech a matter of life and death.",
+          "start": {
+            "book": "Judges",
+            "chapter": 10,
+            "verse": 6,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Judges",
+            "chapter": 12,
+            "verse": 15,
+            "part": null
+          },
+          "source_section_ids": [
+            "jud-06"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 69,
+          "book_position": 6,
+          "anchor": "microbook.jud-06"
+        },
+        {
+          "id": "jud-07",
+          "character": "力",
+          "mandarin": "lì",
+          "gloss": "strength; force",
+          "strokes": 2,
+          "passage": "13:1–16:31",
+          "title": "Strength",
+          "rationale": "Samson’s force, appetite, vulnerability, captivity, and last act.",
+          "start": {
+            "book": "Judges",
+            "chapter": 13,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Judges",
+            "chapter": 16,
+            "verse": 31,
+            "part": null
+          },
+          "source_section_ids": [
+            "jud-07"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 70,
+          "book_position": 7,
+          "anchor": "microbook.jud-07"
+        },
+        {
+          "id": "jud-08",
+          "character": "示",
+          "mandarin": "shì",
+          "gloss": "show; sacred/ritual semantic component",
+          "strokes": 5,
+          "passage": "17:1–18:31",
+          "title": "Portable Gods",
+          "rationale": "An image and a priest change owners; Dan takes a shrine and a city.",
+          "start": {
+            "book": "Judges",
+            "chapter": 17,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Judges",
+            "chapter": 18,
+            "verse": 31,
+            "part": null
+          },
+          "source_section_ids": [
+            "jud-08"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 71,
+          "book_position": 8,
+          "anchor": "microbook.jud-08"
+        },
+        {
+          "id": "jud-09",
+          "character": "內",
+          "mandarin": "nèi",
+          "gloss": "inside; within",
+          "strokes": 4,
+          "passage": "19:1–21:25",
+          "title": "War Within",
+          "rationale": "The concubine’s abuse and death lead to intertribal war and the abduction of women to preserve Benjamin.",
+          "start": {
+            "book": "Judges",
+            "chapter": 19,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "Judges",
+            "chapter": 21,
+            "verse": 25,
+            "part": null
+          },
+          "source_section_ids": [
+            "jud-09"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 72,
+          "book_position": 9,
+          "anchor": "microbook.jud-09"
+        }
+      ],
+      "abbreviation": "Jud",
+      "microbook_count": 9,
+      "first_number": 64,
+      "last_number": 72,
+      "emblem_role": "conventional-book header; excluded from microbook and microbook-vocabulary counts"
+    },
+    {
+      "id": "sam",
+      "name": "Samuel",
+      "emblem": "王",
+      "scope": "core",
+      "master_source_lines": [
+        14656,
+        14880
+      ],
+      "sections": [
+        {
+          "id": "sam-01",
+          "character": "耳",
+          "mandarin": "ěr",
+          "gloss": "ear",
+          "strokes": 6,
+          "passage": "1 Sam 1:1–4:1a",
+          "title": "Hearing",
+          "rationale": "Hannah’s prayer, Eli’s household, and the child who learns to distinguish a call.",
+          "start": {
+            "book": "1 Sam",
+            "chapter": 1,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Sam",
+            "chapter": 4,
+            "verse": 1,
+            "part": "a"
+          },
+          "source_section_ids": [
+            "sam-01"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 73,
+          "book_position": 1,
+          "anchor": "microbook.sam-01"
+        },
+        {
+          "id": "sam-02",
+          "character": "匚",
+          "mandarin": "fāng",
+          "gloss": "container; box radical",
+          "strokes": 2,
+          "passage": "1 Sam 4:1b–7:17",
+          "title": "The Captive God",
+          "rationale": "The Ark is captured, humiliates its captors, returns, and is followed by renewed national allegiance.",
+          "start": {
+            "book": "1 Sam",
+            "chapter": 4,
+            "verse": 1,
+            "part": "b"
+          },
+          "end_inclusive": {
+            "book": "1 Sam",
+            "chapter": 7,
+            "verse": 17,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-02"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 74,
+          "book_position": 2,
+          "anchor": "microbook.sam-02"
+        },
+        {
+          "id": "sam-03",
+          "character": "王",
+          "mandarin": "wáng",
+          "gloss": "king",
+          "strokes": 4,
+          "passage": "1 Sam 8:1–15:35",
+          "title": "The First King",
+          "rationale": "The request for a king, Saul’s selection and establishment, his wars, and his rejection form the first kingship’s founding and failure. David’s rise begins the next unit.",
+          "start": {
+            "book": "1 Sam",
+            "chapter": 8,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Sam",
+            "chapter": 15,
+            "verse": 35,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-03",
+            "sam-04"
+          ],
+          "internal_transitions": [
+            {
+              "start": {
+                "book": "1 Sam",
+                "chapter": 13,
+                "verse": 1,
+                "part": null
+              },
+              "title": "The king tested and rejected",
+              "former_section_id": "sam-04",
+              "counted_as_microbook": false,
+              "note": "This former microbook boundary remains an internal editorial transition, not a separate counted unit."
+            }
+          ],
+          "changes": [
+            "merged adjacent input sections"
+          ],
+          "number": 75,
+          "book_position": 3,
+          "anchor": "microbook.sam-03"
+        },
+        {
+          "id": "sam-05",
+          "character": "升",
+          "mandarin": "shēng",
+          "gloss": "rise; ascend",
+          "strokes": 4,
+          "passage": "1 Sam 16:1–20:42",
+          "title": "The Rival Rises",
+          "rationale": "David is anointed, fights, enters the royal household, and becomes the target of the king’s fear.",
+          "start": {
+            "book": "1 Sam",
+            "chapter": 16,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Sam",
+            "chapter": 20,
+            "verse": 42,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-05"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 76,
+          "book_position": 4,
+          "anchor": "microbook.sam-05"
+        },
+        {
+          "id": "sam-06",
+          "character": "行",
+          "mandarin": "xíng",
+          "gloss": "go; travel; act",
+          "strokes": 6,
+          "passage": "1 Sam 21:1–26:25",
+          "title": "The Fugitive",
+          "rationale": "David gathers followers, moves among refuges, negotiates alliances, and twice spares Saul.",
+          "start": {
+            "book": "1 Sam",
+            "chapter": 21,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Sam",
+            "chapter": 26,
+            "verse": 25,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-06"
+          ],
+          "internal_transitions": [],
+          "changes": [
+            "reused an existing character; boundary and title unchanged"
+          ],
+          "character_choice_note": "The fugitive’s journeys reuse the established movement sign. The title and rationale preserve the distinction between chosen migration and forced flight.",
+          "number": 77,
+          "book_position": 5,
+          "anchor": "microbook.sam-06"
+        },
+        {
+          "id": "sam-07",
+          "character": "亡",
+          "mandarin": "wáng",
+          "gloss": "flee; perish; be lost",
+          "strokes": 3,
+          "passage": "1 Sam 27:1–2 Sam 1:27",
+          "title": "The Fallen",
+          "rationale": "David serves abroad; Saul seeks the dead and joins them; lament completes the fall.",
+          "start": {
+            "book": "1 Sam",
+            "chapter": 27,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Sam",
+            "chapter": 1,
+            "verse": 27,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-07"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 78,
+          "book_position": 6,
+          "anchor": "microbook.sam-07"
+        },
+        {
+          "id": "sam-08",
+          "character": "合",
+          "mandarin": "hé",
+          "gloss": "join; unite",
+          "strokes": 6,
+          "passage": "2 Sam 2:1–5:5",
+          "title": "Union",
+          "rationale": "Rival royal houses fight until all the tribes acknowledge David.",
+          "start": {
+            "book": "2 Sam",
+            "chapter": 2,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Sam",
+            "chapter": 5,
+            "verse": 5,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-08"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 79,
+          "book_position": 7,
+          "anchor": "microbook.sam-08"
+        },
+        {
+          "id": "sam-09",
+          "character": "宀",
+          "mandarin": "mián",
+          "gloss": "roof; house radical",
+          "strokes": 3,
+          "passage": "2 Sam 5:6–10:19",
+          "title": "The House",
+          "rationale": "Capital, palace, Ark, dynasty, dependents, and conquests: the house of David is established.",
+          "start": {
+            "book": "2 Sam",
+            "chapter": 5,
+            "verse": 6,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Sam",
+            "chapter": 10,
+            "verse": 19,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-09"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 80,
+          "book_position": 8,
+          "anchor": "microbook.sam-09"
+        },
+        {
+          "id": "sam-10",
+          "character": "取",
+          "mandarin": "qǔ",
+          "gloss": "take; seize",
+          "strokes": 8,
+          "passage": "2 Sam 11:1–12:31",
+          "title": "Taking",
+          "rationale": "David takes Bathsheba and arranges Uriah’s death; Nathan answers with the story of a stolen lamb.",
+          "start": {
+            "book": "2 Sam",
+            "chapter": 11,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Sam",
+            "chapter": 12,
+            "verse": 31,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-10"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 81,
+          "book_position": 9,
+          "anchor": "microbook.sam-10"
+        },
+        {
+          "id": "sam-11",
+          "character": "子",
+          "mandarin": "zǐ",
+          "gloss": "child; son",
+          "strokes": 3,
+          "passage": "2 Sam 13:1–14:33",
+          "title": "The Children",
+          "rationale": "Tamar, Amnon, and Absalom expose the violence within the royal household.",
+          "start": {
+            "book": "2 Sam",
+            "chapter": 13,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Sam",
+            "chapter": 14,
+            "verse": 33,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-11"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 82,
+          "book_position": 10,
+          "anchor": "microbook.sam-11"
+        },
+        {
+          "id": "sam-12",
+          "character": "反",
+          "mandarin": "fǎn",
+          "gloss": "reverse; oppose; return",
+          "strokes": 4,
+          "passage": "2 Sam 15:1–20:26",
+          "title": "Revolt",
+          "rationale": "Absalom’s rebellion, David’s flight and return, and Sheba’s secession undo the image of secure union.",
+          "start": {
+            "book": "2 Sam",
+            "chapter": 15,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Sam",
+            "chapter": 20,
+            "verse": 26,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-12"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 83,
+          "book_position": 11,
+          "anchor": "microbook.sam-12"
+        },
+        {
+          "id": "sam-13",
+          "character": "冊",
+          "mandarin": "cè",
+          "gloss": "written register; book",
+          "strokes": 5,
+          "passage": "2 Sam 21:1–24:25",
+          "title": "The Reckoning",
+          "rationale": "Famine, warriors, songs, last words, and a deadly census form the reign’s retrospective record.",
+          "start": {
+            "book": "2 Sam",
+            "chapter": 21,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Sam",
+            "chapter": 24,
+            "verse": 25,
+            "part": null
+          },
+          "source_section_ids": [
+            "sam-13"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 84,
+          "book_position": 12,
+          "anchor": "microbook.sam-13"
+        }
+      ],
+      "abbreviation": "Sam",
+      "microbook_count": 12,
+      "first_number": 73,
+      "last_number": 84,
+      "emblem_role": "conventional-book header; excluded from microbook and microbook-vocabulary counts"
+    },
+    {
+      "id": "kgs",
+      "name": "Kings",
+      "emblem": "主",
+      "scope": "core",
+      "master_source_lines": [
+        14892,
+        15084
+      ],
+      "sections": [
+        {
+          "id": "kgs-01",
+          "character": "代",
+          "mandarin": "dài",
+          "gloss": "replace; generation; succession",
+          "strokes": 5,
+          "passage": "1 Kgs 1:1–2:46",
+          "title": "Succession",
+          "rationale": "Solomon gains the throne; David dies; rivals and dangerous survivors are removed.",
+          "start": {
+            "book": "1 Kgs",
+            "chapter": 1,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Kgs",
+            "chapter": 2,
+            "verse": 46,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-01"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 85,
+          "book_position": 1,
+          "anchor": "microbook.kgs-01"
+        },
+        {
+          "id": "kgs-02",
+          "character": "心",
+          "mandarin": "xīn",
+          "gloss": "heart; mind",
+          "strokes": 4,
+          "passage": "1 Kgs 3:1–4:34",
+          "title": "The Listening Heart",
+          "rationale": "Solomon’s judgment and administration establish the promise of wise government.",
+          "start": {
+            "book": "1 Kgs",
+            "chapter": 3,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Kgs",
+            "chapter": 4,
+            "verse": 34,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-02"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 86,
+          "book_position": 2,
+          "anchor": "microbook.kgs-02"
+        },
+        {
+          "id": "kgs-03",
+          "character": "宗",
+          "mandarin": "zōng",
+          "gloss": "ancestral shrine; ancestral line",
+          "strokes": 8,
+          "passage": "1 Kgs 5:1–8:66",
+          "title": "The House Built",
+          "rationale": "Temple, palace, furnishings, dedication, and the joining of sacred house with royal house.",
+          "start": {
+            "book": "1 Kgs",
+            "chapter": 5,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Kgs",
+            "chapter": 8,
+            "verse": 66,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-03"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 87,
+          "book_position": 3,
+          "anchor": "microbook.kgs-03"
+        },
+        {
+          "id": "kgs-04",
+          "character": "金",
+          "mandarin": "jīn",
+          "gloss": "metal; gold",
+          "strokes": 8,
+          "passage": "1 Kgs 9:1–11:43",
+          "title": "Gold",
+          "rationale": "Wealth, work, trade, prestige, marriages, and divided allegiance expose the costs of magnificence.",
+          "start": {
+            "book": "1 Kgs",
+            "chapter": 9,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Kgs",
+            "chapter": 11,
+            "verse": 43,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-04"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 88,
+          "book_position": 4,
+          "anchor": "microbook.kgs-04"
+        },
+        {
+          "id": "kgs-05",
+          "character": "分",
+          "mandarin": "fēn",
+          "gloss": "divide; apportion",
+          "strokes": 4,
+          "passage": "1 Kgs 12:1–16:34",
+          "title": "Division",
+          "rationale": "The kingdom splits; rival shrines and unstable dynasties give the division enduring form.",
+          "start": {
+            "book": "1 Kgs",
+            "chapter": 12,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Kgs",
+            "chapter": 16,
+            "verse": 34,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-05"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 89,
+          "book_position": 5,
+          "anchor": "microbook.kgs-05"
+        },
+        {
+          "id": "kgs-06",
+          "character": "火",
+          "mandarin": "huǒ",
+          "gloss": "fire",
+          "strokes": 4,
+          "passage": "1 Kgs 17:1–19:21",
+          "title": "Fire and Voice",
+          "rationale": "Elijah’s drought, provision, Carmel contest, and the voice beyond the fire.",
+          "start": {
+            "book": "1 Kgs",
+            "chapter": 17,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "1 Kgs",
+            "chapter": 19,
+            "verse": 21,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-06"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 90,
+          "book_position": 6,
+          "anchor": "microbook.kgs-06"
+        },
+        {
+          "id": "kgs-07",
+          "character": "口",
+          "mandarin": "kǒu",
+          "gloss": "mouth",
+          "strokes": 3,
+          "passage": "1 Kgs 20:1–2 Kgs 1:18",
+          "title": "The Word Against Kings",
+          "rationale": "War, Naboth’s vineyard, disputed prophecy, and the deaths of Ahab and Ahaziah.",
+          "start": {
+            "book": "1 Kgs",
+            "chapter": 20,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 1,
+            "verse": 18,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-07"
+          ],
+          "internal_transitions": [],
+          "changes": [
+            "reused an existing character; boundary and title unchanged"
+          ],
+          "character_choice_note": "Prophetic mouths, disputed testimony, and lethal speech reuse the sign already used in Numbers and Judges. The mouths of prophets are explicit in 1 Kings 22:22–23.",
+          "number": 91,
+          "book_position": 7,
+          "anchor": "microbook.kgs-07"
+        },
+        {
+          "id": "kgs-08",
+          "character": "衣",
+          "mandarin": "yī",
+          "gloss": "clothing",
+          "strokes": 6,
+          "passage": "2 Kgs 2:1–8:15",
+          "title": "The Mantle",
+          "rationale": "Elijah’s mantle passes to Elisha; inherited prophetic authority acts through provision, healing, war, and royal succession.",
+          "start": {
+            "book": "2 Kgs",
+            "chapter": 2,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 8,
+            "verse": 15,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-08"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 92,
+          "book_position": 8,
+          "anchor": "microbook.kgs-08"
+        },
+        {
+          "id": "kgs-09",
+          "character": "刀",
+          "mandarin": "dāo",
+          "gloss": "knife; blade",
+          "strokes": 2,
+          "passage": "2 Kgs 8:16–10:36",
+          "title": "The Purge",
+          "rationale": "The dynastic setup leads to Jehu’s killing campaign against the Omrides and the Baal establishment.",
+          "start": {
+            "book": "2 Kgs",
+            "chapter": 8,
+            "verse": 16,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 10,
+            "verse": 36,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-09"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 93,
+          "book_position": 9,
+          "anchor": "microbook.kgs-09"
+        },
+        {
+          "id": "kgs-10",
+          "character": "立",
+          "mandarin": "lì",
+          "gloss": "stand; establish",
+          "strokes": 5,
+          "passage": "2 Kgs 11:1–12:21",
+          "title": "Restoration",
+          "rationale": "A surviving royal child is installed; the temple is repaired.",
+          "start": {
+            "book": "2 Kgs",
+            "chapter": 11,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 12,
+            "verse": 21,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-10"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 94,
+          "book_position": 10,
+          "anchor": "microbook.kgs-10"
+        },
+        {
+          "id": "kgs-11",
+          "character": "亡",
+          "mandarin": "wáng",
+          "gloss": "flee; perish; be lost",
+          "strokes": 3,
+          "passage": "2 Kgs 13:1–17:41",
+          "title": "Israel Lost",
+          "rationale": "Dynastic attrition, wars, and foreign pressure culminate in the northern kingdom’s removal.",
+          "start": {
+            "book": "2 Kgs",
+            "chapter": 13,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 17,
+            "verse": 41,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-11"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 95,
+          "book_position": 11,
+          "anchor": "microbook.kgs-11"
+        },
+        {
+          "id": "kgs-12",
+          "character": "守",
+          "mandarin": "shǒu",
+          "gloss": "guard; keep; observe",
+          "strokes": 6,
+          "passage": "2 Kgs 18:1–20:21",
+          "title": "Holding Out",
+          "rationale": "Hezekiah’s reforms, the Assyrian siege, recovery, and the ominous visit from Babylon.",
+          "start": {
+            "book": "2 Kgs",
+            "chapter": 18,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 20,
+            "verse": 21,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-12"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 96,
+          "book_position": 12,
+          "anchor": "microbook.kgs-12"
+        },
+        {
+          "id": "kgs-13",
+          "character": "反",
+          "mandarin": "fǎn",
+          "gloss": "reverse; oppose; return",
+          "strokes": 4,
+          "passage": "2 Kgs 21:1–21:26",
+          "title": "Undoing",
+          "rationale": "Manasseh and Amon reverse the preceding reform and deepen the announced judgment.",
+          "start": {
+            "book": "2 Kgs",
+            "chapter": 21,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 21,
+            "verse": 26,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-13"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 97,
+          "book_position": 13,
+          "anchor": "microbook.kgs-13"
+        },
+        {
+          "id": "kgs-14",
+          "character": "文",
+          "mandarin": "wén",
+          "gloss": "writing; text; pattern",
+          "strokes": 4,
+          "passage": "2 Kgs 22:1–23:30",
+          "title": "The Book Found",
+          "rationale": "A discovered text judges the kingdom; Josiah reorganizes worship and then dies.",
+          "start": {
+            "book": "2 Kgs",
+            "chapter": 22,
+            "verse": 1,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 23,
+            "verse": 30,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-14"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 98,
+          "book_position": 14,
+          "anchor": "microbook.kgs-14"
+        },
+        {
+          "id": "kgs-15",
+          "character": "亡",
+          "mandarin": "wáng",
+          "gloss": "flee; perish; be lost",
+          "strokes": 3,
+          "passage": "2 Kgs 23:31–25:26",
+          "title": "Judah Lost",
+          "rationale": "Dependent kings, conquest, destroyed city and temple, deportation, assassination, and flight to Egypt.",
+          "start": {
+            "book": "2 Kgs",
+            "chapter": 23,
+            "verse": 31,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 25,
+            "verse": 26,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-15"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 99,
+          "book_position": 15,
+          "anchor": "microbook.kgs-15"
+        },
+        {
+          "id": "kgs-16",
+          "character": "存",
+          "mandarin": "cún",
+          "gloss": "exist; survive; remain",
+          "strokes": 6,
+          "passage": "2 Kgs 25:27–25:30",
+          "title": "Survival",
+          "rationale": "Jehoiachin leaves prison and receives a place and food at a foreign king’s table: survival, not restored sovereignty.",
+          "start": {
+            "book": "2 Kgs",
+            "chapter": 25,
+            "verse": 27,
+            "part": null
+          },
+          "end_inclusive": {
+            "book": "2 Kgs",
+            "chapter": 25,
+            "verse": 30,
+            "part": null
+          },
+          "source_section_ids": [
+            "kgs-16"
+          ],
+          "internal_transitions": [],
+          "changes": [],
+          "number": 100,
+          "book_position": 16,
+          "anchor": "microbook.kgs-16"
+        }
+      ],
+      "abbreviation": "Kng",
+      "microbook_count": 16,
+      "first_number": 85,
+      "last_number": 100,
+      "emblem_role": "conventional-book header; excluded from microbook and microbook-vocabulary counts"
+    }
+  ],
+  "lexicon": {
+    "一": {
+      "character": "一",
+      "mandarin": "yī",
+      "strokes": 1,
+      "gloss": "one",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=一",
+      "occurrences": 1,
+      "microbook_numbers": [
+        51
+      ]
+    },
+    "人": {
+      "character": "人",
+      "mandarin": "rén",
+      "strokes": 2,
+      "gloss": "person; humanity",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=人",
+      "occurrences": 1,
+      "microbook_numbers": [
+        2
+      ]
+    },
+    "入": {
+      "character": "入",
+      "mandarin": "rù",
+      "strokes": 2,
+      "gloss": "enter",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=入",
+      "occurrences": 1,
+      "microbook_numbers": [
+        59
+      ]
+    },
+    "刀": {
+      "character": "刀",
+      "mandarin": "dāo",
+      "strokes": 2,
+      "gloss": "knife; blade",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=刀",
+      "occurrences": 1,
+      "microbook_numbers": [
+        93
+      ]
+    },
+    "力": {
+      "character": "力",
+      "mandarin": "lì",
+      "strokes": 2,
+      "gloss": "strength; force",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=力",
+      "occurrences": 1,
+      "microbook_numbers": [
+        70
+      ]
+    },
+    "匚": {
+      "character": "匚",
+      "mandarin": "fāng",
+      "strokes": 2,
+      "gloss": "container; box radical",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=匚",
+      "occurrences": 1,
+      "microbook_numbers": [
+        74
+      ]
+    },
+    "卜": {
+      "character": "卜",
+      "mandarin": "bǔ",
+      "strokes": 2,
+      "gloss": "divine; divination",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=卜",
+      "occurrences": 1,
+      "microbook_numbers": [
+        43
+      ]
+    },
+    "亡": {
+      "character": "亡",
+      "mandarin": "wáng",
+      "strokes": 3,
+      "gloss": "flee; perish; be lost",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=亡",
+      "occurrences": 3,
+      "microbook_numbers": [
+        78,
+        95,
+        99
+      ]
+    },
+    "口": {
+      "character": "口",
+      "mandarin": "kǒu",
+      "strokes": 3,
+      "gloss": "mouth",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=口",
+      "occurrences": 3,
+      "microbook_numbers": [
+        39,
+        69,
+        91
+      ]
+    },
+    "土": {
+      "character": "土",
+      "mandarin": "tǔ",
+      "strokes": 3,
+      "gloss": "earth; soil; land",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=土",
+      "occurrences": 1,
+      "microbook_numbers": [
+        55
+      ]
+    },
+    "女": {
+      "character": "女",
+      "mandarin": "nǚ",
+      "strokes": 3,
+      "gloss": "woman",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=女",
+      "occurrences": 1,
+      "microbook_numbers": [
+        66
+      ]
+    },
+    "子": {
+      "character": "子",
+      "mandarin": "zǐ",
+      "strokes": 3,
+      "gloss": "child; son",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=子",
+      "occurrences": 2,
+      "microbook_numbers": [
+        9,
+        82
+      ]
+    },
+    "宀": {
+      "character": "宀",
+      "mandarin": "mián",
+      "strokes": 3,
+      "gloss": "roof; house radical",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=宀",
+      "occurrences": 1,
+      "microbook_numbers": [
+        80
+      ]
+    },
+    "山": {
+      "character": "山",
+      "mandarin": "shān",
+      "strokes": 3,
+      "gloss": "mountain",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=山",
+      "occurrences": 1,
+      "microbook_numbers": [
+        23
+      ]
+    },
+    "工": {
+      "character": "工",
+      "mandarin": "gōng",
+      "strokes": 3,
+      "gloss": "work; craft; artisan",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=工",
+      "occurrences": 2,
+      "microbook_numbers": [
+        17,
+        26
+      ]
+    },
+    "中": {
+      "character": "中",
+      "mandarin": "zhōng",
+      "strokes": 4,
+      "gloss": "middle; center",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=中",
+      "occurrences": 1,
+      "microbook_numbers": [
+        38
+      ]
+    },
+    "內": {
+      "character": "內",
+      "mandarin": "nèi",
+      "strokes": 4,
+      "gloss": "inside; within",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=內",
+      "occurrences": 1,
+      "microbook_numbers": [
+        72
+      ]
+    },
+    "分": {
+      "character": "分",
+      "mandarin": "fēn",
+      "strokes": 4,
+      "gloss": "divide; apportion",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=分",
+      "occurrences": 4,
+      "microbook_numbers": [
+        5,
+        29,
+        47,
+        89
+      ]
+    },
+    "切": {
+      "character": "切",
+      "mandarin": "qiē",
+      "strokes": 4,
+      "gloss": "cut",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=切",
+      "occurrences": 1,
+      "microbook_numbers": [
+        7
+      ]
+    },
+    "升": {
+      "character": "升",
+      "mandarin": "shēng",
+      "strokes": 4,
+      "gloss": "rise; ascend",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=升",
+      "occurrences": 1,
+      "microbook_numbers": [
+        76
+      ]
+    },
+    "反": {
+      "character": "反",
+      "mandarin": "fǎn",
+      "strokes": 4,
+      "gloss": "reverse; oppose; return",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=反",
+      "occurrences": 2,
+      "microbook_numbers": [
+        83,
+        97
+      ]
+    },
+    "天": {
+      "character": "天",
+      "mandarin": "tiān",
+      "strokes": 4,
+      "gloss": "heaven; sky",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=天",
+      "occurrences": 1,
+      "microbook_numbers": [
+        1
+      ]
+    },
+    "少": {
+      "character": "少",
+      "mandarin": "shǎo",
+      "strokes": 4,
+      "gloss": "few; little",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=少",
+      "occurrences": 1,
+      "microbook_numbers": [
+        67
+      ]
+    },
+    "心": {
+      "character": "心",
+      "mandarin": "xīn",
+      "strokes": 4,
+      "gloss": "heart; mind",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=心",
+      "occurrences": 2,
+      "microbook_numbers": [
+        50,
+        86
+      ]
+    },
+    "戈": {
+      "character": "戈",
+      "mandarin": "gē",
+      "strokes": 4,
+      "gloss": "dagger-axe; warfare emblem",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=戈",
+      "occurrences": 1,
+      "microbook_numbers": [
+        60
+      ]
+    },
+    "文": {
+      "character": "文",
+      "mandarin": "wén",
+      "strokes": 4,
+      "gloss": "writing; text; pattern",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=文",
+      "occurrences": 2,
+      "microbook_numbers": [
+        57,
+        98
+      ]
+    },
+    "日": {
+      "character": "日",
+      "mandarin": "rì",
+      "strokes": 4,
+      "gloss": "sun; day",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=日",
+      "occurrences": 1,
+      "microbook_numbers": [
+        33
+      ]
+    },
+    "木": {
+      "character": "木",
+      "mandarin": "mù",
+      "strokes": 4,
+      "gloss": "tree; wood",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=木",
+      "occurrences": 1,
+      "microbook_numbers": [
+        68
+      ]
+    },
+    "止": {
+      "character": "止",
+      "mandarin": "zhǐ",
+      "strokes": 4,
+      "gloss": "stop",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=止",
+      "occurrences": 1,
+      "microbook_numbers": [
+        58
+      ]
+    },
+    "比": {
+      "character": "比",
+      "mandarin": "bì",
+      "strokes": 4,
+      "gloss": "be adjacent; be close (literary reading)",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=比",
+      "occurrences": 1,
+      "microbook_numbers": [
+        54
+      ]
+    },
+    "水": {
+      "character": "水",
+      "mandarin": "shuǐ",
+      "strokes": 4,
+      "gloss": "water",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=水",
+      "occurrences": 1,
+      "microbook_numbers": [
+        4
+      ]
+    },
+    "火": {
+      "character": "火",
+      "mandarin": "huǒ",
+      "strokes": 4,
+      "gloss": "fire",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=火",
+      "occurrences": 2,
+      "microbook_numbers": [
+        27,
+        90
+      ]
+    },
+    "牛": {
+      "character": "牛",
+      "mandarin": "niú",
+      "strokes": 4,
+      "gloss": "ox; cattle",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=牛",
+      "occurrences": 1,
+      "microbook_numbers": [
+        25
+      ]
+    },
+    "王": {
+      "character": "王",
+      "mandarin": "wáng",
+      "strokes": 4,
+      "gloss": "king",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=王",
+      "occurrences": 1,
+      "microbook_numbers": [
+        75
+      ]
+    },
+    "代": {
+      "character": "代",
+      "mandarin": "dài",
+      "strokes": 5,
+      "gloss": "replace; generation; succession",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=代",
+      "occurrences": 2,
+      "microbook_numbers": [
+        10,
+        85
+      ]
+    },
+    "冊": {
+      "character": "冊",
+      "mandarin": "cè",
+      "strokes": 5,
+      "gloss": "written register; book",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=冊",
+      "occurrences": 3,
+      "microbook_numbers": [
+        37,
+        45,
+        84
+      ]
+    },
+    "出": {
+      "character": "出",
+      "mandarin": "chū",
+      "strokes": 5,
+      "gloss": "go out; bring out",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=出",
+      "occurrences": 1,
+      "microbook_numbers": [
+        21
+      ]
+    },
+    "去": {
+      "character": "去",
+      "mandarin": "qù",
+      "strokes": 5,
+      "gloss": "go away; remove",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=去",
+      "occurrences": 1,
+      "microbook_numbers": [
+        30
+      ]
+    },
+    "司": {
+      "character": "司",
+      "mandarin": "sī",
+      "strokes": 5,
+      "gloss": "oversee; administer; office",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=司",
+      "occurrences": 1,
+      "microbook_numbers": [
+        52
+      ]
+    },
+    "左": {
+      "character": "左",
+      "mandarin": "zuǒ",
+      "strokes": 5,
+      "gloss": "left",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=左",
+      "occurrences": 1,
+      "microbook_numbers": [
+        65
+      ]
+    },
+    "未": {
+      "character": "未",
+      "mandarin": "wèi",
+      "strokes": 5,
+      "gloss": "not yet",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=未",
+      "occurrences": 1,
+      "microbook_numbers": [
+        64
+      ]
+    },
+    "生": {
+      "character": "生",
+      "mandarin": "shēng",
+      "strokes": 5,
+      "gloss": "life; birth; grow",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=生",
+      "occurrences": 2,
+      "microbook_numbers": [
+        31,
+        56
+      ]
+    },
+    "田": {
+      "character": "田",
+      "mandarin": "tián",
+      "strokes": 5,
+      "gloss": "field",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=田",
+      "occurrences": 3,
+      "microbook_numbers": [
+        35,
+        48,
+        61
+      ]
+    },
+    "申": {
+      "character": "申",
+      "mandarin": "shēn",
+      "strokes": 5,
+      "gloss": "state; extend; reiterate",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=申",
+      "occurrences": 1,
+      "microbook_numbers": [
+        49
+      ]
+    },
+    "目": {
+      "character": "目",
+      "mandarin": "mù",
+      "strokes": 5,
+      "gloss": "eye",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=目",
+      "occurrences": 1,
+      "microbook_numbers": [
+        40
+      ]
+    },
+    "矛": {
+      "character": "矛",
+      "mandarin": "máo",
+      "strokes": 5,
+      "gloss": "spear",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=矛",
+      "occurrences": 1,
+      "microbook_numbers": [
+        44
+      ]
+    },
+    "石": {
+      "character": "石",
+      "mandarin": "shí",
+      "strokes": 5,
+      "gloss": "stone",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=石",
+      "occurrences": 1,
+      "microbook_numbers": [
+        63
+      ]
+    },
+    "示": {
+      "character": "示",
+      "mandarin": "shì",
+      "strokes": 5,
+      "gloss": "show; sacred/ritual semantic component",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=示",
+      "occurrences": 2,
+      "microbook_numbers": [
+        32,
+        71
+      ]
+    },
+    "禾": {
+      "character": "禾",
+      "mandarin": "hé",
+      "strokes": 5,
+      "gloss": "standing grain; cereal crop",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=禾",
+      "occurrences": 1,
+      "microbook_numbers": [
+        15
+      ]
+    },
+    "立": {
+      "character": "立",
+      "mandarin": "lì",
+      "strokes": 5,
+      "gloss": "stand; establish",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=立",
+      "occurrences": 2,
+      "microbook_numbers": [
+        28,
+        94
+      ]
+    },
+    "合": {
+      "character": "合",
+      "mandarin": "hé",
+      "strokes": 6,
+      "gloss": "join; unite",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=合",
+      "occurrences": 3,
+      "microbook_numbers": [
+        14,
+        62,
+        79
+      ]
+    },
+    "名": {
+      "character": "名",
+      "mandarin": "míng",
+      "strokes": 6,
+      "gloss": "name",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=名",
+      "occurrences": 2,
+      "microbook_numbers": [
+        18,
+        34
+      ]
+    },
+    "回": {
+      "character": "回",
+      "mandarin": "huí",
+      "strokes": 6,
+      "gloss": "return",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=回",
+      "occurrences": 1,
+      "microbook_numbers": [
+        12
+      ]
+    },
+    "存": {
+      "character": "存",
+      "mandarin": "cún",
+      "strokes": 6,
+      "gloss": "exist; survive; remain",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=存",
+      "occurrences": 1,
+      "microbook_numbers": [
+        100
+      ]
+    },
+    "守": {
+      "character": "守",
+      "mandarin": "shǒu",
+      "strokes": 6,
+      "gloss": "guard; keep; observe",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=守",
+      "occurrences": 2,
+      "microbook_numbers": [
+        46,
+        96
+      ]
+    },
+    "式": {
+      "character": "式",
+      "mandarin": "shì",
+      "strokes": 6,
+      "gloss": "form; pattern; model",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=式",
+      "occurrences": 1,
+      "microbook_numbers": [
+        24
+      ]
+    },
+    "耳": {
+      "character": "耳",
+      "mandarin": "ěr",
+      "strokes": 6,
+      "gloss": "ear",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=耳",
+      "occurrences": 1,
+      "microbook_numbers": [
+        73
+      ]
+    },
+    "血": {
+      "character": "血",
+      "mandarin": "xuè",
+      "strokes": 6,
+      "gloss": "blood",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=血",
+      "occurrences": 2,
+      "microbook_numbers": [
+        3,
+        53
+      ]
+    },
+    "行": {
+      "character": "行",
+      "mandarin": "xíng",
+      "strokes": 6,
+      "gloss": "go; travel; act",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=行",
+      "occurrences": 4,
+      "microbook_numbers": [
+        6,
+        22,
+        42,
+        77
+      ]
+    },
+    "衣": {
+      "character": "衣",
+      "mandarin": "yī",
+      "strokes": 6,
+      "gloss": "clothing",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=衣",
+      "occurrences": 2,
+      "microbook_numbers": [
+        13,
+        92
+      ]
+    },
+    "杖": {
+      "character": "杖",
+      "mandarin": "zhàng",
+      "strokes": 7,
+      "gloss": "staff; rod",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=杖",
+      "occurrences": 1,
+      "microbook_numbers": [
+        41
+      ]
+    },
+    "災": {
+      "character": "災",
+      "mandarin": "zāi",
+      "strokes": 7,
+      "gloss": "disaster; calamity",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=災",
+      "occurrences": 1,
+      "microbook_numbers": [
+        19
+      ]
+    },
+    "貝": {
+      "character": "貝",
+      "mandarin": "bèi",
+      "strokes": 7,
+      "gloss": "shell; wealth/money semantic component",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=貝",
+      "occurrences": 1,
+      "microbook_numbers": [
+        36
+      ]
+    },
+    "取": {
+      "character": "取",
+      "mandarin": "qǔ",
+      "strokes": 8,
+      "gloss": "take; seize",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=取",
+      "occurrences": 1,
+      "microbook_numbers": [
+        81
+      ]
+    },
+    "宗": {
+      "character": "宗",
+      "mandarin": "zōng",
+      "strokes": 8,
+      "gloss": "ancestral shrine; ancestral line",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=宗",
+      "occurrences": 1,
+      "microbook_numbers": [
+        87
+      ]
+    },
+    "易": {
+      "character": "易",
+      "mandarin": "yì",
+      "strokes": 8,
+      "gloss": "change; exchange",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=易",
+      "occurrences": 1,
+      "microbook_numbers": [
+        11
+      ]
+    },
+    "金": {
+      "character": "金",
+      "mandarin": "jīn",
+      "strokes": 8,
+      "gloss": "metal; gold",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=金",
+      "occurrences": 1,
+      "microbook_numbers": [
+        88
+      ]
+    },
+    "門": {
+      "character": "門",
+      "mandarin": "mén",
+      "strokes": 8,
+      "gloss": "door; gate",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=門",
+      "occurrences": 1,
+      "microbook_numbers": [
+        20
+      ]
+    },
+    "客": {
+      "character": "客",
+      "mandarin": "kè",
+      "strokes": 9,
+      "gloss": "guest; stranger; sojourner",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=客",
+      "occurrences": 1,
+      "microbook_numbers": [
+        8
+      ]
+    },
+    "骨": {
+      "character": "骨",
+      "mandarin": "gǔ",
+      "strokes": 10,
+      "gloss": "bone",
+      "lexicon_url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=骨",
+      "occurrences": 1,
+      "microbook_numbers": [
+        16
+      ]
+    }
+  },
+  "id_redirects": {
+    "gen-12": "gen-11",
+    "exo-08": "exo-07",
+    "lev-10": "lev-09",
+    "sam-04": "sam-03"
+  },
+  "editorial_changes": {
+    "merges": [
+      {
+        "book": "gen",
+        "keep": "gen-11",
+        "absorb": "gen-12",
+        "character": "易",
+        "title": "Exchange",
+        "rationale": "Birthright, blessing, brides, wages, and flocks change hands. Jacob substitutes himself for the elder, then encounters substitutions and altered bargains in Laban’s household.",
+        "editorial_reason": "The exchanges at home and the exchanges abroad form a single arc: the deceiver becomes the deceived. The homeward movement remains a separate microbook.",
+        "internal_title": "Exchange in Laban’s household",
+        "source_url": "https://bible.usccb.org/bible/genesis/29"
+      },
+      {
+        "book": "exo",
+        "keep": "exo-07",
+        "absorb": "exo-08",
+        "character": "山",
+        "title": "The Mountain Covenant",
+        "rationale": "The Sinai encounter, commandments, case laws, public assent, covenant blood, and ascent form one movement from arrival to ratification.",
+        "editorial_reason": "The mountain encounter and the covenant’s terms belong to one enacted agreement; the sanctuary pattern still begins separately at Exodus 25:1.",
+        "internal_title": "The covenant’s terms and ratification",
+        "source_url": "https://www.dioceseoflansing.org/exodus-24"
+      },
+      {
+        "book": "lev",
+        "keep": "lev-09",
+        "absorb": "lev-10",
+        "character": "田",
+        "title": "The Land and Its Rest",
+        "rationale": "Sabbath years, Jubilee, redemption, and limits on ownership lead into abundance, devastation, exile, and the land recovering its neglected rest.",
+        "editorial_reason": "Leviticus 25 commands the land’s rest; 26:34–35 describes its rest during the inhabitants’ exile. Land, release, obligation, and consequence remain together.",
+        "internal_title": "The covenant’s consequences",
+        "source_url": "https://bible.usccb.org/bible/leviticus/25"
+      },
+      {
+        "book": "sam",
+        "keep": "sam-03",
+        "absorb": "sam-04",
+        "character": "王",
+        "title": "The First King",
+        "rationale": "The request for a king, Saul’s selection and establishment, his wars, and his rejection form the first kingship’s founding and failure. David’s rise begins the next unit.",
+        "editorial_reason": "The institution is requested, established, tested, and disowned before the narrative turns to David’s anointing at 1 Samuel 16:1. Saul’s later death and its lament remain separate.",
+        "internal_title": "The king tested and rejected",
+        "source_url": "https://bible.usccb.org/bible/1samuel/15"
+      }
+    ],
+    "character_substitutions": [
+      {
+        "id": "jos-04",
+        "old": "同",
+        "new": "合",
+        "reason": "Shared belonging is retained under the existing sign for joining and union; the threatened rupture ends in recognized membership rather than war."
+      },
+      {
+        "id": "sam-06",
+        "old": "走",
+        "new": "行",
+        "reason": "The fugitive’s journeys reuse the established movement sign. The title and rationale preserve the distinction between chosen migration and forced flight."
+      },
+      {
+        "id": "kgs-07",
+        "old": "言",
+        "new": "口",
+        "reason": "Prophetic mouths, disputed testimony, and lethal speech reuse the sign already used in Numbers and Judges. The mouths of prophets are explicit in 1 Kings 22:22–23."
+      }
+    ],
+    "boundary_policy": "Only four input boundaries were removed. No new boundary was introduced and no surviving boundary was moved."
+  },
+  "research_sources": {
+    "inherited": [
+      {
+        "type": "uploaded source",
+        "title": "master.tex chapter-summary inventory",
+        "path": "Pasted markdown(20260907-055959).md",
+        "lines_by_book": "See master_source_lines on each book."
+      },
+      {
+        "type": "lexical",
+        "title": "CUHK Multi-function Chinese Character Database",
+        "url": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/"
+      },
+      {
+        "type": "lexical",
+        "title": "MOE 比鄰: literary reading bì",
+        "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=17758&la=0&powerMode=0"
+      },
+      {
+        "type": "biblical",
+        "title": "Genesis 37–38: robe and veil",
+        "url": "https://www.biblegateway.com/passage/?search=Genesis+37-38&version=NIV"
+      },
+      {
+        "type": "biblical",
+        "title": "Genesis 39: garment as accusation",
+        "url": "https://bible.usccb.org/bible/genesis/39"
+      },
+      {
+        "type": "biblical",
+        "title": "Genesis 41: clothing and elevation",
+        "url": "https://bible.usccb.org/bible/genesis/41"
+      },
+      {
+        "type": "biblical",
+        "title": "Genesis 15: cut a covenant",
+        "url": "https://www.biblegateway.com/passage/?search=Genesis+15&version=NET"
+      },
+      {
+        "type": "biblical",
+        "title": "2 Samuel 7: the house",
+        "url": "https://www.biblegateway.com/passage/?search=2+Samuel+7&version=NRSVUE"
+      },
+      {
+        "type": "biblical",
+        "title": "1 Samuel 4:1 split",
+        "url": "https://www.biblegateway.com/passage/?search=1+Samuel+4%3A1-2&version=NRSVUE"
+      },
+      {
+        "type": "biblical",
+        "title": "2 Kings 25:27–30: survival",
+        "url": "https://www.esv.org/2%2BKings%2B25%3A27%E2%80%9330%3BJeremiah%2B52%3A31%E2%80%9334/"
+      }
+    ],
+    "new_checks": [
+      {
+        "id": "genesis-exchange",
+        "role": "new editorial merge check",
+        "url": "https://bible.usccb.org/bible/genesis/29",
+        "passage": "Genesis 29:25–27",
+        "note": "The firstborn/younger contrast in Laban’s explanation supplies an explicit hinge with Jacob’s earlier inheritance story."
+      },
+      {
+        "id": "sinai-covenant",
+        "role": "new editorial merge check",
+        "url": "https://www.dioceseoflansing.org/exodus-24",
+        "passage": "Exodus 24:1–18",
+        "note": "Terms, assent, blood, and ascent complete the covenant movement."
+      },
+      {
+        "id": "land-rest-command",
+        "role": "new editorial merge check",
+        "url": "https://bible.usccb.org/bible/leviticus/25",
+        "passage": "Leviticus 25:2–7",
+        "note": "The land is commanded to rest; see also the explicit cross-reference to 26:34–35."
+      },
+      {
+        "id": "land-rest-exile",
+        "role": "new editorial merge check",
+        "url": "https://biblehub.com/leviticus/26-43.htm",
+        "passage": "Leviticus 26:34–35,43",
+        "note": "The land receives its neglected rest while its inhabitants are absent."
+      },
+      {
+        "id": "saul-rejected",
+        "role": "new editorial merge check",
+        "url": "https://bible.usccb.org/bible/1samuel/15",
+        "passage": "1 Samuel 15:23–35",
+        "note": "Saul’s rejection closes the founding-and-failure arc before David’s anointing."
+      },
+      {
+        "id": "seventy",
+        "role": "number symbolism, not a counting rule",
+        "url": "https://www.biblegateway.com/passage/?search=Numbers+11%3A16&version=NRSVUE",
+        "passage": "Numbers 11:16",
+        "note": "Seventy elders provide an explicit biblical resonance for the selected vocabulary size; no claim of universal symbolism."
+      },
+      {
+        "id": "prophetic-mouths",
+        "role": "character substitution check",
+        "url": "https://www.biblegateway.com/passage/?search=1+Kings+22%3A22&version=KJV",
+        "passage": "1 Kings 22:22–23",
+        "note": "The deceptive spirit acts through the mouths of prophets."
+      }
+    ]
+  },
+  "phonetic_notes": [
+    {
+      "characters": [
+        "合",
+        "禾"
+      ],
+      "language": "Modern Mandarin",
+      "shared_reading": "hé",
+      "connection": "Reunion followed by grain administration in Genesis; a designed sound echo, not a historical etymology."
+    },
+    {
+      "characters": [
+        "衣",
+        "位"
+      ],
+      "language": "Japanese",
+      "shared_reading": "i (on-reading)",
+      "connection": "Clothing and rank; secondary to the garment motif.",
+      "sources": [
+        "https://www.kanjipedia.jp/kanji/0000123100",
+        "https://www.kanjipedia.jp/kanji/0000126200/"
+      ]
+    },
+    {
+      "characters": [
+        "冊",
+        "殺"
+      ],
+      "language": "Japanese",
+      "shared_reading": "satsu (on-reading)",
+      "connection": "Record and killing; optional echo for Samuel’s closing census and plague.",
+      "sources": [
+        "https://www.kanjipedia.jp/kanji/0002591500",
+        "https://www.kanjipedia.jp/kanji/0002596600"
+      ]
+    }
+  ]
+}

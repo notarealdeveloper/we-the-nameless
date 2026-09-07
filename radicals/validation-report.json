@@ -1,0 +1,322 @@
+{
+  "status": "PASS",
+  "core_microbooks": 100,
+  "unique_microbook_characters": 70,
+  "conventional_books": 9,
+  "book_emblems_in_microbook_count": false,
+  "original_core_sections_accounted_for_once": 104,
+  "adjacent_merges": 4,
+  "unmerged_character_substitutions": 3,
+  "surviving_boundaries_moved": 0,
+  "new_boundaries_introduced": 0,
+  "every_output_range_is_an_exact_union_of_consecutive_input_ranges": true,
+  "every_microbook_has_one_character": true,
+  "ids_and_aliases": "PASS",
+  "markdown_json_tex_consistency": "PASS",
+  "five_strokes_or_fewer": 71,
+  "six_strokes_or_fewer": 90,
+  "mean_strokes_per_occurrence": 4.73,
+  "input_vocabulary": 77,
+  "output_vocabulary": 70,
+  "retired_core_signs": [
+    "兄",
+    "法",
+    "果",
+    "同",
+    "失",
+    "走",
+    "言"
+  ],
+  "section_character_frequencies": {
+    "天": 1,
+    "人": 1,
+    "血": 2,
+    "水": 1,
+    "分": 4,
+    "行": 4,
+    "切": 1,
+    "客": 1,
+    "子": 2,
+    "代": 2,
+    "易": 1,
+    "回": 1,
+    "衣": 2,
+    "合": 3,
+    "禾": 1,
+    "骨": 1,
+    "工": 2,
+    "名": 2,
+    "災": 1,
+    "門": 1,
+    "出": 1,
+    "山": 1,
+    "式": 1,
+    "牛": 1,
+    "火": 2,
+    "立": 2,
+    "去": 1,
+    "生": 2,
+    "示": 2,
+    "日": 1,
+    "田": 3,
+    "貝": 1,
+    "冊": 3,
+    "中": 1,
+    "口": 3,
+    "目": 1,
+    "杖": 1,
+    "卜": 1,
+    "矛": 1,
+    "守": 2,
+    "申": 1,
+    "心": 2,
+    "一": 1,
+    "司": 1,
+    "比": 1,
+    "土": 1,
+    "文": 2,
+    "止": 1,
+    "入": 1,
+    "戈": 1,
+    "石": 1,
+    "未": 1,
+    "左": 1,
+    "女": 1,
+    "少": 1,
+    "木": 1,
+    "力": 1,
+    "內": 1,
+    "耳": 1,
+    "匚": 1,
+    "王": 1,
+    "升": 1,
+    "亡": 3,
+    "宀": 1,
+    "取": 1,
+    "反": 2,
+    "宗": 1,
+    "金": 1,
+    "刀": 1,
+    "存": 1
+  },
+  "books": [
+    {
+      "book": "Genesis",
+      "emblem": "元",
+      "microbooks": 16,
+      "numbers": [
+        1,
+        16
+      ],
+      "coverage_of_input_partition": "pass",
+      "start": {
+        "book": "Genesis",
+        "chapter": 1,
+        "verse": 1,
+        "part": null
+      },
+      "end_inclusive": {
+        "book": "Genesis",
+        "chapter": 50,
+        "verse": 26,
+        "part": null
+      }
+    },
+    {
+      "book": "Exodus",
+      "emblem": "出",
+      "microbooks": 10,
+      "numbers": [
+        17,
+        26
+      ],
+      "coverage_of_input_partition": "pass",
+      "start": {
+        "book": "Exodus",
+        "chapter": 1,
+        "verse": 1,
+        "part": null
+      },
+      "end_inclusive": {
+        "book": "Exodus",
+        "chapter": 40,
+        "verse": 38,
+        "part": null
+      }
+    },
+    {
+      "book": "Leviticus",
+      "emblem": "示",
+      "microbooks": 10,
+      "numbers": [
+        27,
+        36
+      ],
+      "coverage_of_input_partition": "pass",
+      "start": {
+        "book": "Leviticus",
+        "chapter": 1,
+        "verse": 1,
+        "part": null
+      },
+      "end_inclusive": {
+        "book": "Leviticus",
+        "chapter": 27,
+        "verse": 34,
+        "part": null
+      }
+    },
+    {
+      "book": "Numbers",
+      "emblem": "屯",
+      "microbooks": 12,
+      "numbers": [
+        37,
+        48
+      ],
+      "coverage_of_input_partition": "pass",
+      "start": {
+        "book": "Numbers",
+        "chapter": 1,
+        "verse": 1,
+        "part": null
+      },
+      "end_inclusive": {
+        "book": "Numbers",
+        "chapter": 36,
+        "verse": 13,
+        "part": null
+      }
+    },
+    {
+      "book": "Deuteronomy",
+      "emblem": "申",
+      "microbooks": 10,
+      "numbers": [
+        49,
+        58
+      ],
+      "coverage_of_input_partition": "pass",
+      "start": {
+        "book": "Deuteronomy",
+        "chapter": 1,
+        "verse": 1,
+        "part": null
+      },
+      "end_inclusive": {
+        "book": "Deuteronomy",
+        "chapter": 34,
+        "verse": 12,
+        "part": null
+      }
+    },
+    {
+      "book": "Joshua",
+      "emblem": "土",
+      "microbooks": 5,
+      "numbers": [
+        59,
+        63
+      ],
+      "coverage_of_input_partition": "pass",
+      "start": {
+        "book": "Joshua",
+        "chapter": 1,
+        "verse": 1,
+        "part": null
+      },
+      "end_inclusive": {
+        "book": "Joshua",
+        "chapter": 24,
+        "verse": 33,
+        "part": null
+      }
+    },
+    {
+      "book": "Judges",
+      "emblem": "士",
+      "microbooks": 9,
+      "numbers": [
+        64,
+        72
+      ],
+      "coverage_of_input_partition": "pass",
+      "start": {
+        "book": "Judges",
+        "chapter": 1,
+        "verse": 1,
+        "part": null
+      },
+      "end_inclusive": {
+        "book": "Judges",
+        "chapter": 21,
+        "verse": 25,
+        "part": null
+      }
+    },
+    {
+      "book": "Samuel",
+      "emblem": "王",
+      "microbooks": 12,
+      "numbers": [
+        73,
+        84
+      ],
+      "coverage_of_input_partition": "pass",
+      "start": {
+        "book": "1 Sam",
+        "chapter": 1,
+        "verse": 1,
+        "part": null
+      },
+      "end_inclusive": {
+        "book": "2 Sam",
+        "chapter": 24,
+        "verse": 25,
+        "part": null
+      }
+    },
+    {
+      "book": "Kings",
+      "emblem": "主",
+      "microbooks": 16,
+      "numbers": [
+        85,
+        100
+      ],
+      "coverage_of_input_partition": "pass",
+      "start": {
+        "book": "1 Kgs",
+        "chapter": 1,
+        "verse": 1,
+        "part": null
+      },
+      "end_inclusive": {
+        "book": "2 Kgs",
+        "chapter": 25,
+        "verse": 30,
+        "part": null
+      }
+    }
+  ],
+  "scope_limitation": "Checks preserve the supplied English-reference partition. No independent verse-by-verse manuscript audit, Hebrew-versification mapping, or chapter-source insertion is claimed.",
+  "negative_tests": {
+    "bad_total": "rejected: Book allocation changed",
+    "moved_start": "rejected: Start moved: gen-01",
+    "duplicate_baseline_unit": "rejected: Baseline units were omitted, repeated, reordered, or crossed between books",
+    "stale_vocabulary_count": "rejected: Stale vocabulary metadata"
+  },
+  "isolated_tex_smoke_test": {
+    "status": "PASS",
+    "engine": "LuaHBTeX 1.18.0 (TeX Live 2025/dev/Debian)",
+    "mode": "Two isolated LuaLaTeX draft-mode runs; no rendered PDF was produced or visually reviewed.",
+    "font": "System-installed Noto Serif CJK TC, using HarfBuzz; font not distributed.",
+    "all_100_markers": "compiled",
+    "unique_microbook_labels": 100,
+    "four_alias_rows": "compiled",
+    "missing_character_warnings": false,
+    "full_project_build": false,
+    "actual_chapter_files_modified": false,
+    "limitation": "Synthetic text only. Does not validate the manuscript’s source placement, visual layout, Hebrew versification, or external translations."
+  }
+}
