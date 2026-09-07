@@ -18,10 +18,5 @@ magick img/genesis-33-map.png -filter Lanczos -resize 105% "$output/genesis-33-m
 for number in 1 2 3 4; do
     source="img/comics/the-twelve-tribes-of-israel-comic-$number.png"
     destination="$output/the-twelve-tribes-of-israel-comic-$number.png"
-    if [[ "$number" == 3 ]]; then
-        resize=113%
-    else
-        resize=138%
-    fi
-    magick "$source" -filter Lanczos -resize "$resize" "$destination"
+    magick "$source" -filter Lanczos -resize 138% "$destination"
 done
