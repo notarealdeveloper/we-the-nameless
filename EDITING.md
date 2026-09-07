@@ -17,6 +17,8 @@ Gen 22. Find a way to remove the duplicate copy.
 
 Gen 24:66. Do a playful censorship thing.
 
+In E, Abe finally has infinity kids AFTER the sacrifice of Isaac! And he has Midian who's the father of the Midianites where Moses is from in the E source and E is a goddamn Mushite! This is his origin story, it's human sacrifice. And he's the good Levite! This needs to be assimilated and integrated into the narrative somehow. Research this more!
+
 ## Stuff to do now
 
 None.
