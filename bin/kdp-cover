@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+interior=${1:-01-genesis.pdf}
+paper=${2:-standard-color}
+output=${3:-genesis-cover.pdf}
+build_dir=${4:-build/cover}
+
+if [[ ! -f "$interior" ]]; then
+    printf 'Interior PDF not found: %s\nBuild it separately, or set COVER_INTERIOR to an existing PDF.\n' "$interior" >&2
+    exit 1
+fi
+
+case "$paper" in
+    white|standard-color) sheet_thickness=0.002252 ;;
+    cream)                sheet_thickness=0.0025 ;;
+    premium-color)        sheet_thickness=0.002347 ;;
+    *)
+        printf 'Unsupported COVER_PAPER: %s\nUse white, cream, standard-color, or premium-color.\n' "$paper" >&2
+        exit 1
+        ;;
+esac
+
+info=$(pdfinfo "$interior")
+pages=$(awk '/^Pages:/ {print $2}' <<<"$info")
+read -r width_points height_points < <(awk '/^Page size:/ {print $3, $5; exit}' <<<"$info")
+
+if [[ -z "$pages" || -z "$width_points" || -z "$height_points" ]]; then
+    printf 'Could not read page count and trim size from %s.\n' "$interior" >&2
+    exit 1
+fi
+if (( pages < 79 )); then
+    printf 'KDP permits spine text only for books of at least 79 pages; %s has %s.\n' "$interior" "$pages" >&2
+    exit 1
+fi
+
+trim_width=$(awk -v points="$width_points" 'BEGIN {printf "%.6f", points / 72}')
+trim_height=$(awk -v points="$height_points" 'BEGIN {printf "%.6f", points / 72}')
+spine_width=$(awk -v pages="$pages" -v thickness="$sheet_thickness" 'BEGIN {printf "%.6f", pages * thickness}')
+
+mkdir -p "$build_dir"
+TEXMFVAR="$build_dir/texmf-var" lualatex \
+    -interaction=nonstopmode -halt-on-error -file-line-error \
+    -output-directory="$build_dir" \
+    "\\def\\CoverTrimWidth{$trim_width in}\\def\\CoverTrimHeight{$trim_height in}\\def\\CoverSpineWidth{$spine_width in}\\input{cover.tex}" \
+    >/dev/null
+cp "$build_dir/cover.pdf" "$output"
+printf 'Built %s: %s pages, %sx%s in trim, %s in spine (%s).\n' \
+    "$output" "$pages" "$trim_width" "$trim_height" "$spine_width" "$paper"

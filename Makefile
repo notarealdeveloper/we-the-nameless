@@ -32,13 +32,17 @@ COMMENT_BOOK_TARGETS := $(addprefix comment-,$(BOOK_TARGETS))
 UNCOMMENT_BOOK_TARGETS := $(addprefix uncomment-,$(BOOK_TARGETS))
 EBOOK_BOOKS := genesis exodus leviticus numbers deuteronomy joshua judges samuel kings dudetheyreontome
 EBOOK_TARGETS := $(addprefix ebook-,$(EBOOK_BOOKS))
+COVER_INTERIOR ?= 01-genesis.pdf
+COVER_PAPER ?= standard-color
+COVER_OUTPUT ?= genesis-cover.pdf
+COVER_BUILD ?= build/cover
 
 export TEXMFVAR = $(CACHE)
 # Keep every aux-file marker on its own line without splitting any of the
 # Pentateuch paths themselves.
 export max_print_line = 60
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 define publish-and-open
 	@set -e; \
@@ -99,6 +103,8 @@ help:
 		'  make ebook        Build ebook/we-the-nameless.epub.' \
 		'  make ebook-genesis  Build ebook/genesis.epub; equivalent targets exist for each book.' \
 		'  make ebook-validate  Validate the complete EPUB (building it first if needed).' \
+		'  make cover        Build a KDP paperback wrap as genesis-cover.pdf from 01-genesis.pdf.' \
+		'                    Override with COVER_INTERIOR=..., COVER_PAPER=white|cream|standard-color|premium-color.' \
 		'  make kings        Build 09-kings.pdf; use 1-kings or 2-kings for the individual books.' \
 		'  make clean        Remove transient TeX aux files.' \
 		'  make distclean    Remove build outputs and master.pdf.'
@@ -111,6 +117,9 @@ ebook:
 
 ebook-validate:
 	$(MAKE) -C ebook validate
+
+cover:
+	@bin/kdp-cover "$(COVER_INTERIOR)" "$(COVER_PAPER)" "$(COVER_OUTPUT)" "$(COVER_BUILD)"
 
 $(EBOOK_TARGETS):
 	$(MAKE) -C ebook "$(@:ebook-%=%)"
