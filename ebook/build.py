@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HERE = Path(__file__).resolve().parent
 MASTER = ROOT / "master.tex"
 OUTPUT = HERE / "we-the-nameless.epub"
+COVERS = ROOT / "img/covers"
 
 # Publication identity must survive rebuilds.  Pandoc otherwise invents a new
 # UUID each time, which makes stores (notably Google Play Books) treat an
@@ -41,6 +42,18 @@ def publication_metadata(selected_book: str | None) -> dict[str, str]:
         "title": "We The Nameless" if selected_book is None else f"We The Nameless: {selected_book}",
         "publisher": "LD LLC",
     }
+
+
+def cover_path(name: str) -> Path | None:
+    """Resolve a configured cover basename within img/covers."""
+    if name == "none":
+        return None
+    if not name or Path(name).name != name:
+        raise ValueError("cover must be 'none' or an image basename in img/covers")
+    matches = [path for path in COVERS.glob(f"{name}.*") if path.is_file()]
+    if len(matches) != 1:
+        raise ValueError(f"cover {name!r} must identify exactly one image in {COVERS}")
+    return matches[0]
 
 # Publisher fonts are limited to scripts whose repertoire/design carries
 # meaning. Ordinary prose deliberately remains in the reader's chosen font.
@@ -1301,8 +1314,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=OUTPUT)
     parser.add_argument("--book", help="build only the named top-level \\Book from master.tex")
+    parser.add_argument(
+        "--cover", default="none",
+        help="image basename in img/covers, or 'none' (default: none)",
+    )
     parser.add_argument("--keep-markdown", action="store_true")
     args = parser.parse_args()
+    try:
+        cover = cover_path(args.cover)
+    except ValueError as error:
+        parser.error(str(error))
     # Pandoc runs from the repository root so source-relative images resolve.
     # Resolve the requested destination first so a relative --output remains
     # relative to the caller instead of being written into ROOT.
@@ -1332,17 +1353,17 @@ def main() -> int:
             kept_manuscript = HERE / "manuscript.generated.md"
             shutil.copy2(manuscript, kept_manuscript)
             log(f"Saved generated Markdown: {kept_manuscript}")
-        cover = ROOT / "img/covers/we-cover-3.png"
         cmd = ["pandoc", str(manuscript), "--from=markdown+fenced_divs+footnotes+raw_html+markdown_in_html_blocks",
                "--to=epub3", "--output", str(args.output), "--standalone",
                "--toc", "--toc-depth=2", "--split-level=1", "--css", str(HERE / "epub.css"),
-               "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false",
-               "--epub-cover-image", str(cover)]
+               "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]
+        if cover is not None:
+            cmd += ["--epub-cover-image", str(cover)]
         for key, value in publication_metadata(args.book).items():
             cmd += [f"--metadata={key}:{value}"]
         for font in FONT_FILES:
             cmd += ["--epub-embed-font", str(font)]
-        log(f"Using cover image: {cover}")
+        log(f"Using cover image: {cover}" if cover else "Building without a cover image")
         log("Running Pandoc to package EPUB 3...")
         result = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, check=False)
         if result.stdout:

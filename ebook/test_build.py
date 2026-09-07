@@ -192,7 +192,14 @@ class ConversionTests(unittest.TestCase):
         self.assertIn('class="alphabet paleo" lang="he" dir="rtl"', matter)
         self.assertIn('class="source source-j hebrew" lang="he" dir="rtl"', matter)
         self.assertIn('class="source source-e hebrew" lang="he" dir="rtl"', matter)
-        self.assertIn("img/covers/we-cover-3.png", Path(build.__file__).read_text())
+        self.assertEqual(build.cover_path("none"), None)
+        self.assertEqual(build.cover_path("we-cover-8"), build.COVERS / "we-cover-8.png")
+
+    def test_cover_rejects_paths_and_unknown_basenames(self) -> None:
+        with self.assertRaises(ValueError):
+            build.cover_path("../we-cover-8")
+        with self.assertRaises(ValueError):
+            build.cover_path("not-a-cover")
 
     def test_partial_front_matter_keeps_full_book_list_but_links_only_selection(self) -> None:
         matter = "\n".join(build.front_matter(build.master_sequence("Genesis"), {}, "Genesis"))

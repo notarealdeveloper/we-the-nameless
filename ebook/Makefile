@@ -1,4 +1,5 @@
 BOOKS := genesis exodus leviticus numbers deuteronomy joshua judges samuel kings dudetheyreontome
+COVER ?= we-cover-8
 TEX_SOURCES := $(shell find .. -path '../.git' -prune -o -path '../build' -prune -o -path '../ebook' -prune -o -name '*.tex' -print)
 EBOOK_ASSETS := $(shell find ../fonts ../img -type f 2>/dev/null)
 RENDERER_SOURCES := build.py validate.py epub.css metadata.yaml $(TEX_SOURCES) $(EBOOK_ASSETS)
@@ -8,7 +9,7 @@ RENDERER_SOURCES := build.py validate.py epub.css metadata.yaml $(TEX_SOURCES) $
 all: we-the-nameless.epub
 
 we-the-nameless.epub: $(RENDERER_SOURCES)
-	./build.py
+	./build.py --cover "$(COVER)"
 
 genesis: BOOK := Genesis
 exodus: BOOK := Exodus
@@ -22,7 +23,7 @@ kings: BOOK := Kings
 dudetheyreontome: BOOK := Dudetheyreontome
 
 $(BOOKS): $(RENDERER_SOURCES)
-	./build.py --book "$(BOOK)" --output "$@.epub"
+	./build.py --book "$(BOOK)" --cover "$(COVER)" --output "$@.epub"
 
 validate: we-the-nameless.epub
 	./validate.py $<
