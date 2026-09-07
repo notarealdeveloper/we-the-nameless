@@ -11,3 +11,17 @@ magick img/brick.png -background white -alpha remove -alpha off "$output/brick.p
 magick 01-genesis/include/seir-light.jpg -filter Lanczos -resize 155% -quality 95 "$output/seir-light.jpg"
 magick 01-genesis/include/mandrake.png -filter Lanczos -resize 145% "$output/mandrake.png"
 magick img/genesis-33-map.png -filter Lanczos -resize 105% "$output/genesis-33-map.png"
+
+# The Genesis apocrypha places these almost full-page.  Keep KDP-only
+# derivatives large enough for their effective resolution to reach 300 PPI;
+# the ordinary book continues to use the original files unchanged.
+for number in 1 2 3 4; do
+    source="img/comics/the-twelve-tribes-of-israel-comic-$number.png"
+    destination="$output/the-twelve-tribes-of-israel-comic-$number.png"
+    if [[ "$number" == 3 ]]; then
+        resize=113%
+    else
+        resize=138%
+    fi
+    magick "$source" -filter Lanczos -resize "$resize" "$destination"
+done

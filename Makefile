@@ -142,11 +142,18 @@ kdp-preflight:
 	@bin/kdp-preflight "$(KDP_INPUT)"
 
 $(KDP_TARGETS): %-kdp:
-	@bin/kdp-assets
-	@$(MAKE) "$*" LATEX_CONFIG='$(KDP_LATEX_CONFIG)'
-	@$(MAKE) "$*-cover"
+	@printf '%s\n' '[KDP 1/4] Preparing print-safe image assets'
+	@bin/kdp-assets || { status=$$?; printf '%s\n' 'KDP build failed while preparing image assets.' >&2; exit $$status; }
+	@printf '%s\n' '[KDP 2/4] Building the KDP-aware interior'
+	@$(MAKE) "$*" LATEX_CONFIG='$(KDP_LATEX_CONFIG)' || { status=$$?; printf '%s\n' 'KDP build failed while building the interior.' >&2; exit $$status; }
+	@printf '%s\n' '[KDP 3/4] Normalizing and preflighting the interior'
 	@basename="$$(bin/book-subset --output-name "$*")"; \
-	bin/kdp-pdf "$$basename.pdf" "$$basename-kdp.pdf"
+	bin/kdp-pdf "$$basename.pdf" "$$basename-kdp.pdf" || { status=$$?; printf 'KDP build failed while processing %s.pdf. See the preflight failures above.\n' "$$basename" >&2; exit $$status; }
+	@printf '%s\n' '[KDP 4/4] Building the cover from the final interior'
+	@basename="$$(bin/book-subset --output-name "$*")"; \
+	$(MAKE) "$*-cover" COVER_INTERIOR="$$basename-kdp.pdf" || { status=$$?; printf 'KDP build failed while building the cover for %s-kdp.pdf.\n' "$$basename" >&2; exit $$status; }
+	@basename="$$(bin/book-subset --output-name "$*")"; \
+	printf 'KDP build complete: %s-kdp.pdf and %s-cover.pdf\n' "$$basename" "$$basename"
 
 $(COVER_TARGETS): %-cover:
 	@set -e; \

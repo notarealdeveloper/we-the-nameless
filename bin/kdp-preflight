@@ -11,10 +11,11 @@ def run(*args, check=True):
     return subprocess.run(args, check=check, text=True, capture_output=True)
 
 
-if len(sys.argv) != 2:
-    raise SystemExit(f"usage: {sys.argv[0]} FILE.pdf")
+if len(sys.argv) not in (2, 3):
+    raise SystemExit(f"usage: {sys.argv[0]} FILE.pdf [DISPLAY-NAME]")
 
 pdf = sys.argv[1]
+display_name = sys.argv[2] if len(sys.argv) == 3 else pdf
 for tool in ("pdfinfo", "pdffonts", "pdfimages", "qpdf"):
     if run("sh", "-c", f"command -v {tool}", check=False).returncode:
         raise SystemExit(f"missing required tool: {tool}")
@@ -53,7 +54,29 @@ for line in images:
             low_dpi.append((cols[0], xppi, yppi))
 
 size = os.path.getsize(pdf)
-print(f"file: {pdf}")
+failures = []
+if not exact_trim:
+    failures.append("not every page is exactly 7 x 10 in")
+if size > 650 * 1024 * 1024:
+    failures.append("file exceeds KDP's 650 MiB limit")
+if encrypted != "no":
+    failures.append("PDF is encrypted")
+if not fonts_embedded:
+    failures.append("one or more fonts are not embedded")
+if not qpdf_ok:
+    failures.append("qpdf structural check failed")
+if annotations:
+    failures.append(f"PDF contains {annotations} annotation entr{'y' if annotations == 1 else 'ies'}")
+if bookmarks:
+    failures.append("PDF contains bookmarks/outlines")
+if layers:
+    failures.append("PDF contains optional-content layers")
+if transparency:
+    failures.append("PDF contains live transparency")
+if low_dpi:
+    failures.append(f"{len(low_dpi)} image{' is' if len(low_dpi) == 1 else 's are'} below 300 PPI")
+
+print(f"file: {display_name}")
 print(f"pages: {pages}")
 print(f"page size: {'7 x 10 in on every page' if exact_trim else '; '.join(sorted(sizes))}")
 print(f"file size: {size} bytes ({size / 1024 / 1024:.1f} MiB)")
@@ -64,11 +87,8 @@ print(f"annotations/bookmarks/layers: {annotations}/{'yes' if bookmarks else 'no
 print(f"transparency: {'yes' if transparency else 'no'}")
 if low_dpi:
     details = ", ".join(f"page {p}: {x}x{y} PPI" for p, x, y in low_dpi)
-    print(f"image resolution warning: {details}")
-
-failed = (
-    not exact_trim or size > 650 * 1024 * 1024 or encrypted != "no" or
-    not fonts_embedded or not qpdf_ok or annotations or bookmarks or layers or
-    transparency or low_dpi
-)
-raise SystemExit(1 if failed else 0)
+    print(f"images below 300 PPI: {details}")
+print(f"preflight result: {'FAIL' if failures else 'PASS'}")
+for failure in failures:
+    print(f"  FAIL: {failure}")
+raise SystemExit(bool(failures))

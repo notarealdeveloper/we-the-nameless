@@ -41,6 +41,10 @@ qpdf --empty --pages "$build_dir/rendered.pdf" 1-z -- \
     --remove-structure \
     --object-streams=disable \
     --force-version=1.3 \
-    "$output"
+    "$build_dir/preflight.pdf"
 
-bin/kdp-preflight "$output"
+if ! bin/kdp-preflight "$build_dir/preflight.pdf" "$output"; then
+    printf 'KDP PDF was not written because preflight failed; any existing %s was left untouched.\n' "$output" >&2
+    exit 1
+fi
+mv -f -- "$build_dir/preflight.pdf" "$output"
