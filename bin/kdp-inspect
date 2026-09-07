@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""Record geometry, fonts, images, and PDF features as JSON."""
+import hashlib, json, re, subprocess, sys
+from pathlib import Path
+
+def run(*args):
+    p = subprocess.run(args, text=True, capture_output=True)
+    if p.returncode:
+        raise RuntimeError(f"{' '.join(args)} failed:\n{p.stderr}")
+    return p.stdout
+
+pdf, output = Path(sys.argv[1]), Path(sys.argv[2])
+pages = int(run("qpdf", "--show-npages", str(pdf)))
+raw_pages = run("pdfinfo", "-f", "1", "-l", str(pages), "-box", str(pdf))
+geometry = []
+for n in range(1, pages + 1):
+    size = re.search(rf"^Page\s+{n}\s+size:\s+([\d.]+) x ([\d.]+)", raw_pages, re.M)
+    def box(name, fallback=None):
+        found = re.search(rf"^Page\s+{n}\s+{name}:\s+([\d. -]+)", raw_pages, re.M)
+        return [float(x) for x in found.group(1).split()] if found else fallback
+    media = box("MediaBox")
+    crop = box("CropBox", media)
+    rot = re.search(rf"^Page\s+{n}\s+rot:\s+(\d+)", raw_pages, re.M)
+    geometry.append({"page": n, "size": [float(size.group(1)), float(size.group(2))],
+        "MediaBox": media, "CropBox": crop, "TrimBox": box("TrimBox", crop),
+        "BleedBox": box("BleedBox", crop), "rotation": int(rot.group(1)) if rot else 0,
+        "UserUnit": 1.0})
+font_rows = [x for x in run("pdffonts", str(pdf)).splitlines()[2:] if x.strip()]
+images = []
+for line in run("pdfimages", "-list", str(pdf)).splitlines()[2:]:
+    c = line.split()
+    if len(c) >= 14 and c[2] == "image":
+        images.append({"page": int(c[0]), "num": int(c[1]), "width": int(c[3]),
+            "height": int(c[4]), "xppi": int(c[12]), "yppi": int(c[13])})
+objects = json.loads(run("qpdf", "--json=1", "--json-key=objects", str(pdf)))
+serial = json.dumps(objects)
+data = {"file": str(pdf), "sha256": hashlib.sha256(pdf.read_bytes()).hexdigest(),
+    "bytes": pdf.stat().st_size, "pages": pages, "page_geometry": geometry,
+    "font_count": len(font_rows), "fonts_raw": font_rows, "images": images,
+    "low_resolution_images": [i for i in images if min(i["xppi"], i["yppi"]) < 300],
+    "features": {"annotations": serial.count('\"/Annots\"'),
+        "outlines": '\"/Outlines\"' in serial,
+        "layers": any(x in serial for x in ('\"/OCProperties\"', '\"/OCG\"')),
+        "transparency": any(x in serial for x in ('\"/SMask\"', '\"/ca\"', '\"/CA\"', '\"/BM\"')),
+        "actions": any(x in serial for x in ('\"/OpenAction\"', '\"/AA\"', '\"/JavaScript\"')),
+        "attachments": '\"/EmbeddedFiles\"' in serial}}
+output.parent.mkdir(parents=True, exist_ok=True)
+output.write_text(json.dumps(data, indent=2) + "\n")
+print(f"{pdf}: {pages} pages, {data['bytes']} bytes, {len(font_rows)} fonts, {len(images)} raster placements")

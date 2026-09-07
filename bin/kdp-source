@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+"""Create the deliberately reduced, KDP-only Genesis source overlay."""
+from pathlib import Path
+import re, shutil, sys
+
+root = Path(__file__).resolve().parents[1]
+out = Path(sys.argv[1])
+if out.exists():
+    shutil.rmtree(out)
+(out / "01-genesis").mkdir(parents=True)
+chapter = (root / "01-genesis/22.tex").read_text()
+marker = "\\begin{quote}\nEditor's Note: The original manuscript contains here a separate copy of Genesis 22"
+start = chapter.find(marker)
+if start < 0:
+    raise SystemExit("could not locate the second Genesis 22")
+repeated = chapter[start:]
+
+def balanced_command(text, pos):
+    brace = text.find("{", pos)
+    depth = 0
+    for i in range(brace, len(text)):
+        if text[i] == "{" and (i == 0 or text[i-1] != "\\"):
+            depth += 1
+        elif text[i] == "}" and (i == 0 or text[i-1] != "\\"):
+            depth -= 1
+            if depth == 0:
+                return text[pos:i+1]
+    raise ValueError("unbalanced dialogue command")
+
+dialogue = []
+for match in re.finditer(r"\\a(?:A|B|Ac)\{", repeated):
+    dialogue.append(balanced_command(repeated, match.start()))
+if not dialogue:
+    raise SystemExit("no A/B dialogue found in repeated Genesis 22")
+
+(out / "01-genesis/22.tex").write_text(chapter[:start].rstrip() + "\n")
+apoc = (root / "01-genesis/apocrypha.tex").read_text().rstrip()
+addition = "\n\n\\Apocryphon{Genesis 22 Apocryphon\\\\The Son of J}\n\n" + "\n\n".join(dialogue) + "\n"
+(out / "01-genesis/apocrypha.tex").write_text(apoc + addition)
+print(f"KDP source overlay: removed second Genesis 22; retained {len(dialogue)} A/B/narrator lines in The Son of J")

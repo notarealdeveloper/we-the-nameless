@@ -39,6 +39,9 @@ KDP_TARGETS := $(addsuffix -kdp,$(SUBSET_TARGETS))
 COVER_TARGETS := $(addsuffix -cover,$(SUBSET_TARGETS))
 COVER_INTERIOR ?= 01-genesis.pdf
 COVER_PAPER ?= standard-color
+KDP_PAPER ?= premium-color
+KDP_INK ?= premium-color
+KDP_BLEED ?= no-bleed
 COVER_VOLUME ?=
 COVER_OUTPUT ?= 01-genesis-cover.pdf
 COVER_BUILD ?= build/cover
@@ -50,7 +53,7 @@ export TEXMFVAR = $(CACHE)
 # Pentateuch paths themselves.
 export max_print_line = 60
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover kdp kdp-preflight $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover kdp kdp-preflight genesis-kdp genesis-kdp-soft genesis-kdp-medium genesis-kdp-hard check-genesis-kdp check-kdp-validator $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 define publish-and-open
 	@set -e; \
@@ -105,7 +108,9 @@ help:
 		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
 		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
 		'  make genesis      Build 01-genesis.pdf; numbered book targets also accept 1-genesis and 01-genesis forms.' \
-		'  make genesis-kdp  Build 01-genesis-kdp.pdf and its 01-genesis-cover.pdf wrap.' \
+		'  make genesis-kdp  Build and fully validate the outlined Genesis KDP interior.' \
+		'  make genesis-kdp-soft|medium|hard  Build diagnostic PDF-encoding variants.' \
+		'  make check-genesis-kdp  Revalidate the recorded Genesis KDP artifact.' \
 		'  make genesis-cover  Build the matching wrap from an existing 01-genesis.pdf.' \
 		'  make kdp KDP_INPUT=file.pdf KDP_OUTPUT=file-kdp.pdf  Preflight any existing interior PDF.' \
 		'  make kdp-preflight KDP_INPUT=file.pdf  Report without changing the PDF.' \
@@ -141,7 +146,18 @@ kdp-preflight:
 	@test -n "$(KDP_INPUT)" || { echo 'KDP_INPUT is required' >&2; exit 2; }
 	@bin/kdp-preflight "$(KDP_INPUT)"
 
-$(KDP_TARGETS): %-kdp:
+genesis-kdp: genesis-kdp-soft
+
+genesis-kdp-soft genesis-kdp-medium genesis-kdp-hard:
+	@bin/genesis-kdp "$(@:genesis-kdp-%=%)" "$(KDP_PAPER)" "$(KDP_INK)" "$(KDP_BLEED)"
+
+check-genesis-kdp:
+	@bin/genesis-kdp --check soft "$(KDP_PAPER)" "$(KDP_INK)" "$(KDP_BLEED)"
+
+check-kdp-validator:
+	@python3 bin/kdp-visual-compare --self-test
+
+$(filter-out genesis-kdp,$(KDP_TARGETS)): %-kdp:
 	@printf '%s\n' '[KDP 1/4] Preparing print-safe image assets'
 	@bin/kdp-assets || { status=$$?; printf '%s\n' 'KDP build failed while preparing image assets.' >&2; exit $$status; }
 	@printf '%s\n' '[KDP 2/4] Building the KDP-aware interior'

@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+check=false
+if [[ ${1:-} == --check ]]; then check=true; shift; fi
+variant=${1:-soft}; paper=${2:-premium-color}; ink=${3:-premium-color}; bleed=${4:-no-bleed}
+case "$variant" in soft|medium|hard) ;; *) echo "variant must be soft, medium, or hard" >&2; exit 2;; esac
+[[ $paper == premium-color && $ink == premium-color ]] || { echo "Genesis KDP is explicitly configured for premium-color ink on white paper" >&2; exit 2; }
+[[ $bleed == no-bleed ]] || { echo "Genesis KDP is explicitly configured for no bleed" >&2; exit 2; }
+
+root=$(cd "$(dirname "$0")/.." && pwd)
+cd "$root"
+work="build/kdp/genesis/work/$variant"
+report="build/kdp/genesis/report/$variant"
+artifact="build/kdp/genesis/we-the-nameless-genesis-interior${variant:+-$variant}.pdf"
+[[ $variant == soft ]] && artifact="build/kdp/genesis/we-the-nameless-genesis-interior.pdf"
+reference="$work/reference.pdf"
+candidate="$work/final.candidate.pdf"
+
+for tool in gs qpdf pdfinfo pdffonts pdftotext pdfimages mutool pdftoppm python3 lualatex; do
+  command -v "$tool" >/dev/null || { echo "missing required tool: $tool" >&2; exit 2; }
+done
+
+source_digest() {
+  find Makefile master.tex bin 01-genesis cover img fonts -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum | awk '{print $1}'
+}
+
+if $check; then
+  [[ -f "$artifact" && -f "$reference" && -f "$work/source.sha256" ]] || { echo "no recorded $variant artifact/reference" >&2; exit 1; }
+  [[ $(source_digest) == $(<"$work/source.sha256") ]] || { echo "KDP artifact is stale: source/configuration/tooling changed" >&2; exit 1; }
+  bin/kdp-inspect "$reference" "$work/reference-inspection.json"
+  bin/kdp-inspect "$artifact" "$work/final-inspection.json"
+  bin/kdp-validate "$reference" "$artifact" "$report/structural-report.json" "$work/reference-inspection.json" "$work/final-inspection.json"
+  python3 bin/kdp-visual-compare "$reference" "$artifact" "$report/visual"
+  exit
+fi
+
+mkdir -p "$work/build" "$work/source" "$report" "$work/texmf-var"
+bin/kdp-source "$work/source"
+bin/kdp-assets "$work/assets"
+bin/book-subset --build-dir "$work/build" genesis
+
+config='\def\ConfigOutputMode{book}\def\ConfigTheme{lite}\def\ConfigVerseLayout{horizontal}\def\ConfigCommentary{true}\def\ConfigEnglishTranslation{default}\def\IndividualBookTitlePageStyle{fancy}\def\ConfigColors{default}\def\ConfigApocrypha{apocryphal}\def\ConfigRedactor{uncensored}\def\ConfigCover{none}\def\ConfigKDP{true}'
+config="$config\\def\\KDPAssetDir{$work/assets}"
+: >"$work/lualatex.log"
+for pass in 1 2 3; do
+  printf '[native] LuaLaTeX pass %s/3\n' "$pass"
+  TEXINPUTS="$work/source//:" TEXMFVAR="$work/texmf-var" lualatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory="$work/build" "$config\input{$work/build/01-genesis.tex}" >>"$work/lualatex.log" 2>&1
+done
+cp "$work/build/01-genesis.pdf" "$reference"
+bin/kdp-inspect "$reference" "$work/reference-inspection.json" | tee "$work/reference-inspection.log"
+
+compat=1.7
+[[ $variant == hard ]] && compat=1.4
+printf '[outline] Ghostscript %s / %s\n' "$(gs --version)" "$variant"
+gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dCompatibilityLevel="$compat" \
+  -dNoOutputFonts -dAutoRotatePages=/None -sColorConversionStrategy=LeaveColorUnchanged \
+  -dDownsampleColorImages=false -dDownsampleGrayImages=false -dDownsampleMonoImages=false \
+  -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode \
+  -dAutoFilterGrayImages=false -dGrayImageFilter=/FlateEncode \
+  -dPassThroughJPEGImages=true -dPassThroughJPXImages=true \
+  -dPreserveOverprintSettings=true -dPreserveAnnots=false \
+  -sOutputFile="$work/outlined.pdf" "$reference" >"$work/ghostscript.log" 2>&1
+
+qopts=(--remove-info --remove-metadata --remove-page-labels --remove-structure --stream-data=preserve)
+case "$variant" in
+ soft) qopts+=(--object-streams=generate) ;;
+ medium) qopts+=(--object-streams=disable --normalize-content=n) ;;
+ hard) qopts+=(--object-streams=disable --normalize-content=y --linearize) ;;
+esac
+qpdf --empty --pages "$work/outlined.pdf" 1-z -- "${qopts[@]}" "$candidate" >"$work/qpdf.log" 2>&1
+bin/kdp-inspect "$candidate" "$work/final-inspection.json" | tee "$work/final-inspection.log"
+
+python3 bin/kdp-visual-compare --self-test
+bin/kdp-validate "$reference" "$candidate" "$report/structural-report.json" "$work/reference-inspection.json" "$work/final-inspection.json"
+python3 bin/kdp-visual-compare "$reference" "$candidate" "$report/visual"
+
+mkdir -p "$(dirname "$artifact")"
+mv -f "$candidate" "$artifact"
+source_digest >"$work/source.sha256"
+{
+  printf 'variant=%s\npaper=%s\nink=%s\nbleed=%s\n' "$variant" "$paper" "$ink" "$bleed"
+  gs --version | sed 's/^/ghostscript=/'
+  qpdf --version | head -1 | sed 's/^/qpdf=/'
+  mutool -v 2>&1 | head -1 | sed 's/^/mupdf=/'
+  pdftoppm -v 2>&1 | head -1 | sed 's/^/poppler=/'
+  python3 -c 'import PIL,numpy; print("pillow="+PIL.__version__); print("numpy="+numpy.__version__)'
+} >"$work/tool-versions.txt"
+printf 'Validated upload candidate: %s\nReport: %s/visual/index.html\n' "$artifact" "$report"

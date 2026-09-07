@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""Incremental 300-DPI, tile-sensitive visual comparison with two renderers."""
+import html, json, shutil, subprocess, sys, tempfile
+from pathlib import Path
+import numpy as np
+from PIL import Image, ImageChops, ImageDraw
+
+DPI=300; TILE=128; DELTA=36; MAX_TILE_FRACTION=.08; MAX_TILE_MAE=7.0; MAX_PAGE_FOREGROUND=.004; MAX_TILE_LOST_INK=.02
+
+def render(engine,pdf,page,out,dpi=DPI):
+    if engine=="mupdf": cmd=["mutool","draw","-q","-r",str(dpi),"-c","rgb","-A","8","-o",str(out),str(pdf),str(page)]
+    else: cmd=["pdftoppm","-f",str(page),"-l",str(page),"-singlefile","-r",str(dpi),"-png",str(pdf),str(out.with_suffix(""))]
+    subprocess.run(cmd,check=True,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
+
+def metrics(a,b):
+    aa=np.asarray(Image.open(a).convert("RGB"),dtype=np.int16); bb=np.asarray(Image.open(b).convert("RGB"),dtype=np.int16)
+    if aa.shape != bb.shape: return {"shape_mismatch":True,"a":aa.shape,"b":bb.shape,"failed":True}
+    d=np.max(np.abs(aa-bb),axis=2); h,w=d.shape; worst={"fraction":0,"mae":0,"lost_ink":0,"box":[0,0,0,0]}
+    for y in range(0,h,TILE):
+      for x in range(0,w,TILE):
+        yy,xx=min(y+TILE,h),min(x+TILE,w); z=d[y:yy,x:xx]; f=float(np.mean(z>DELTA)); m=float(np.mean(z))
+        ink=np.min(aa[y:yy,x:xx],axis=2)<180; lost=float(np.sum(ink & (np.min(bb[y:yy,x:xx],axis=2)>230))/max(1,np.sum(ink)))
+        if f>worst["fraction"] or lost>worst["lost_ink"] or m>worst["mae"]: worst={"fraction":f,"mae":m,"lost_ink":lost,"box":[x,y,xx,yy]}
+    fg=np.min(aa,axis=2)<245; foreground=float(np.mean((d>DELTA)&fg))
+    failed=worst["mae"]>MAX_TILE_MAE or worst["lost_ink"]>MAX_TILE_LOST_INK or foreground>MAX_PAGE_FOREGROUND
+    return {"shape_mismatch":False,"worst_tile":worst,"foreground_changed_fraction":foreground,"failed":failed}
+
+def compare(ref,final,outdir):
+    pages=int(subprocess.check_output(["qpdf","--show-npages",str(ref)],text=True)); outdir.mkdir(parents=True,exist_ok=True)
+    results=[]
+    with tempfile.TemporaryDirectory(prefix="wtn-visual-") as td:
+      td=Path(td)
+      for engine in ("mupdf","poppler"):
+        for page in range(1,pages+1):
+          a,b=td/"a.png",td/"b.png"; render(engine,ref,page,a); render(engine,final,page,b)
+          m=metrics(a,b); m.update(engine=engine,page=page); results.append(m)
+          if m["failed"]:
+            box=m.get("worst_tile",{}).get("box",[0,0,512,512]); pad=64; im1=Image.open(a); im2=Image.open(b)
+            crop=(max(0,box[0]-pad),max(0,box[1]-pad),min(im1.width,box[2]+pad),min(im1.height,box[3]+pad))
+            im1.crop(crop).save(outdir/f"{engine}-{page:04d}-before.png"); im2.crop(crop).save(outdir/f"{engine}-{page:04d}-after.png")
+            ImageChops.difference(im1.crop(crop),im2.crop(crop)).save(outdir/f"{engine}-{page:04d}-diff.png")
+          a.unlink(missing_ok=True); b.unlink(missing_ok=True)
+          if page%25==0: print(f"visual {engine}: {page}/{pages}",flush=True)
+    failures=[x for x in results if x["failed"]]
+    summary={"settings":{"dpi":DPI,"tile_pixels":TILE,"pixel_delta":DELTA,"max_tile_fraction":MAX_TILE_FRACTION,"max_tile_mae":MAX_TILE_MAE,"max_foreground_fraction":MAX_PAGE_FOREGROUND,"max_tile_lost_ink":MAX_TILE_LOST_INK},"pages":pages,"results":results,"failures":len(failures),"note":"Reference and output were compared within each renderer without alignment, shifting, or scaling. Rendering is evidence, not proof, of equivalence."}
+    (outdir/"visual-report.json").write_text(json.dumps(summary,indent=2)+"\n")
+    rows="\n".join(f"<tr><td>{r['engine']}</td><td>{r['page']}</td><td>{html.escape(str(r.get('worst_tile')))}</td><td>{r.get('foreground_changed_fraction','')}</td><td>{'FAIL' if r['failed'] else 'pass'}</td></tr>" for r in results)
+    (outdir/"index.html").write_text(f"<!doctype html><meta charset=utf-8><title>KDP visual regression</title><h1>KDP visual regression</h1><p>{html.escape(summary['note'])}</p><pre>{html.escape(json.dumps(summary['settings'],indent=2))}</pre><table><tr><th>renderer</th><th>page</th><th>worst tile</th><th>foreground</th><th>result</th></tr>{rows}</table>")
+    print(f"visual comparison: {2*pages} engine/pages, {len(failures)} failures")
+    return not failures
+
+def self_test():
+    a=Image.new("RGB",(1000,1000),"white"); d=ImageDraw.Draw(a); d.text((100,100),"A test glyph with a diacritic: é",fill="black"); d.rectangle((100,200,700,500),fill=(20,80,160));
+    with tempfile.TemporaryDirectory() as td:
+      td=Path(td); a.save(td/"a.png")
+      tests=[]
+      for name,edit in [("glyph",lambda x: ImageDraw.Draw(x).rectangle((100,100,112,116),fill="white")),("shift",lambda x: x.transform(x.size,Image.Transform.AFFINE,(1,0,-8,0,1,0),fillcolor="white")),("color",lambda x: ImageDraw.Draw(x).rectangle((100,200,700,500),fill=(25,90,170))),("clip",lambda x: ImageDraw.Draw(x).rectangle((100,98,300,104),fill="white"))]:
+        b=a.copy(); changed=edit(b); b=changed if changed is not None else b; b.save(td/"b.png"); tests.append((name,metrics(td/"a.png",td/"b.png")["failed"]))
+      if not all(v for _,v in tests): raise SystemExit(f"validator self-test failed: {tests}")
+      print(f"validator self-test passed: {tests}; page-drop is enforced structurally")
+
+if sys.argv[1:]==["--self-test"]: self_test()
+elif len(sys.argv)==4: raise SystemExit(not compare(Path(sys.argv[1]),Path(sys.argv[2]),Path(sys.argv[3])))
+else: raise SystemExit(f"usage: {sys.argv[0]} REFERENCE FINAL REPORT_DIR | --self-test")
