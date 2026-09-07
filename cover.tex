@@ -52,19 +52,18 @@
         ([xshift=\CoverFrontCenterX,yshift=\CoverTitleBottomY]frontSW)
         {\fontsize{23}{28}\selectfont Genesis};
 
-    % Keep the series and volume names horizontal, with the title reading
-    % bottom-to-top between them. The 0.0625-inch KDP fold allowance remains
-    % clear on both sides of the spine text.
+    % A 600-page edition has enough spine width to keep both labels horizontal
+    % and comfortably legible. Place the series name in the upper-middle and
+    % the volume name in the lower-middle, leaving the center calm. The
+    % 0.0625-inch KDP fold allowance remains clear on both sides of the text.
     \coordinate (spineCenter) at
         ([xshift=\CoverSpineCenterX,yshift=\CoverSpineCenterY]current page.south west);
-    \node[CoverForeground,rotate=90,anchor=center] at (spineCenter)
-        {\fontsize{16}{19}\selectfont The Nameless};
     \node[CoverForeground,anchor=center] at
-        ([yshift=-1.05in]spineCenter)
-        {\fontsize{16}{19}\selectfont\textsc{We}};
+        ([yshift=1.8in]spineCenter)
+        {\fontsize{26}{31}\selectfont\textsc{We}};
     \node[CoverForeground,anchor=center] at
-        ([yshift=1.05in]spineCenter)
-        {\fontsize{9}{11}\selectfont Genesis};
+        ([yshift=-1.8in]spineCenter)
+        {\fontsize{18}{22}\selectfont Genesis};
 \end{tikzpicture}
 \null
 \end{document}
