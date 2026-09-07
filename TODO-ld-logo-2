@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Here’s a Codex prompt tuned to the actual problem in the screenshot:
+
+```text
+Please fix the `\LD` logo used throughout the TeX project so that it visually matches the attached/reference `ld-book-light.png` logo much more closely.
+
+Right now the implementation in `master.tex` constructs the logo from two actual sans-serif `L` glyphs:
+
+    \newcommand{\LD}[1][1em]{...}
+
+This is producing the tiny, widely separated `L` / rotated-`L` appearance visible on the current Genesis spine. The reference logo is much more compact and geometric: essentially two heavy, uniform-width, square-cornered opposing L-shaped brackets forming an almost-square mark.
+
+Do NOT try to improve this by fiddling with font glyph spacing. Instead, make `\LD` a genuinely geometric TikZ logo.
+
+Reference geometry to reproduce:
+
+- Overall mark is approximately square.
+- Two identical L shapes:
+  - lower-left L: vertical stroke on left + horizontal stroke along bottom
+  - upper-right L: exactly the same shape rotated 180 degrees
+- Stroke thickness is approximately 13–15% of the total logo width/height.
+- Arms extend roughly 65–70% of the total dimension.
+- The nearest ends of the two Ls should be separated by roughly one stroke thickness, perhaps very slightly more.
+- Square/butt ends, sharp 90° corners, no rounded caps.
+- The two pieces should visually interlock closely like the PNG, NOT float far apart as they do now.
+- Keep a small amount of breathing room around the exterior, comparable to the PNG.
+- It should look good even when very small on a paperback spine.
+
+Make the macro arbitrarily scalable:
+
+    \LD
+    \LD[1em]
+    \LD[2em]
+    etc.
+
+The optional argument should represent the approximate overall size of the square logo, rather than the font size of an `L`.
+
+IMPORTANT COLOR BEHAVIOR:
+`\LD` must NOT hard-code black, white, CoverForeground, TextColor, etc. It must simply inherit the currently active TeX/TikZ foreground/text color. Thus these should naturally work:
+
+    {\color{TextColor}\LD[1in]}
+    \node[CoverForeground] {...\LD...};
+
+and the same macro should work in light mode, dark mode, and on the KDP cover.
+
+Use TikZ paths/rectangles, preferably normalized to a 1×1 coordinate system, with all stroke widths and coordinates proportional to the optional size argument. Avoid dependence on font metrics entirely.
+
+A good conceptual starting point is something along the lines of:
+
+- overall nominal box: 1 × 1
+- stroke thickness around 0.13–0.15
+- lower-left L occupying the left and bottom edges
+- upper-right L occupying the top and right edges
+- inner terminal-to-stroke gaps around 0.13–0.16
+
+But visually tune the coordinates against `ld-book-light.png`; don't blindly use those numbers if another nearby ratio matches better.
+
+Also inspect `cover.tex`. It currently has its own duplicate `\LD` implementation. Make sure the cover and `master.tex` use EXACTLY the same logo geometry, so the LD mark does not differ between interior pages and generated KDP covers. If there is a clean way to put the implementation in one small shared TeX file and input it from both places without disturbing the build architecture, do that. Otherwise keep the two definitions synchronized and clearly comment that they must remain identical.
+
+Do not replace the existing PNG logo usages unless there is a good reason. The immediate goal is specifically to make every use of the `\LD` macro match the PNG logo.
+
+After changing it, rebuild the Genesis KDP cover / relevant target and inspect the spine. The spine mark should look like a miniature version of `ld-book-light.png`: a compact square pair of thick opposing Ls, rather than the current two tiny disconnected glyphs.
+
+Do not otherwise alter the cover typography, dimensions, spine positioning, colors, title layout, or book layout.
+```
+
+The key thing I’d push Codex toward is **drawing the two Ls as geometry rather than typesetting the character `L` at all**. Your current implementation is indeed based on font glyph metrics, which is why scaling the TikZ coordinate system and scaling the glyphs are fighting each other. 
+
+EOF
