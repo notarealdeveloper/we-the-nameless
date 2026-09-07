@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export WINEPREFIX="$HOME/.wine-kindle"
+unset WINEARCH
+
+mkdir -p "$HOME/.cache/kindle-wine"
+
+INSTALLER="$HOME/.cache/kindle-wine/KindleForPC.exe"
+
+curl -fL \
+  "https://kindleforpc.s3.amazonaws.com/71006/KindleForPC-installer-2.9.71006.exe" \
+  -o "$INSTALLER"
+
+file "$INSTALLER"
+
+wine "$INSTALLER"
+
+echo
+echo "=== Installed Kindle executables ==="
+find "$WINEPREFIX/drive_c" -type f \
+  \( -iname 'Kindle.exe' -o -iname 'KindleForPC.exe' \) \
+  -print

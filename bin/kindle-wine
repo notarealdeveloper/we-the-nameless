@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+export WINEPREFIX="$HOME/.wine-kindle"
+wine "$HOME/.cache/kindle-wine/KindleForPC.exe"

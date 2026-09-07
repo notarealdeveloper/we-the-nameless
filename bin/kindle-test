@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export WINEPREFIX="$HOME/.wine-kindle-test"
+unset WINEARCH
+
+echo "=== Wine version ==="
+wine --version
+
+echo
+echo "=== Wine executables ==="
+which wine
+which wineboot
+which wineserver
+which winetricks
+
+echo
+echo "=== Actual Wine binary ==="
+readlink -f "$(which wine)"
+
+echo
+echo "=== Killing existing Wine processes ==="
+wineserver -k 2>/dev/null || true
+
+echo
+echo "=== Removing old test prefix ==="
+rm -rf "$WINEPREFIX"
+
+echo
+echo "=== Creating fresh WoW64 prefix ==="
+wineboot -u
+
+echo
+echo "=== Testing winecfg ==="
+winecfg
+
+echo
+echo "=== Testing a built-in Windows program ==="
+wine notepad
+
+echo
+echo "=== SUCCESS ==="
+echo "Wine itself appears to be working."
+echo "Test prefix: $WINEPREFIX"
+
