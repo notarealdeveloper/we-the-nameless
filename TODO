@@ -1,7 +1,146 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Add me a make target 'make cover' that creates a super minimal exterior front+spine+back with the default simple title page from dark mode here: Back can be blank. Spine should say whatever you think looks good, with Genesis small, probably written so that it's horizontal when the book is on the shelf.
+Give Codex this:
 
-It's for Kindle Direct Publishing, and should produce the format they want.
+> Make the existing Genesis/KDP interior build as Amazon-KDP-compatible as possible **without materially changing the visual layout or typography**.
+>
+> Start by inspecting the current Makefile, `master.tex`, subset build logic, and the exact PDF produced by `make genesis`. Do not redesign the book. Preserve the current 7×10 page geometry, margins, line breaks, source colors, unusual scripts/fonts, images, and overall pagination unless a change is actually required for KDP compatibility.
+>
+> Add a reusable KDP/preflight path, ideally something like `make genesis-kdp` or a generic mechanism that composes with the subset targets. The resulting PDF should satisfy KDP’s current interior requirements: single pages, exact 7×10 trim for a no-bleed interior, <=650 MB, no encryption, all fonts/images embedded, no crop/trim marks, bookmarks, annotations, comments, placeholder objects, or unnecessary metadata, and avoid PDF transparency/layers where possible. KDP specifically recommends fully embedded fonts rather than font subsets and flattened transparent objects/layers. ([Amazon Kindle Direct Publishing][1])
+>
+> Before changing TeX, diagnose the current output with tools available on NixOS/Linux, including at least:
+>
+> ```sh
+> pdfinfo ...
+> pdffonts ...
+> qpdf --check ...
+> ```
+>
+> and inspect whether every page is exactly 7×10, whether any font shows `emb=no`, whether the PDF is encrypted/malformed, whether it contains annotations/bookmarks/forms/layers, and its file size.
+>
+> Then make the **smallest possible fixes**. Prefer post-processing the already-correct PDF when that can preserve appearance exactly. If Ghostscript/qpdf or another tool is used, choose settings suitable for professional color printing and do not rasterize normal text or vector glyphs unnecessarily. Do not flatten the entire book to page images unless there is no viable alternative. Preserve 300+ DPI source images; KDP requires at least 300 DPI for images. ([Amazon Kindle Direct Publishing][1])
+>
+> Pay particular attention to the many custom fonts used by this project—Paleo-Hebrew, Proto-Sinaitic, Egyptian, CJK, Ugaritic, etc. Determine which ones LuaLaTeX is embedding and whether any font’s embedding permissions prevent KDP-compatible embedding. If a problematic font exists, identify it explicitly and solve that one font with the least visually disruptive approach rather than replacing fonts globally. KDP can reject fonts that cannot be embedded/used in production. ([Amazon Kindle Direct Publishing][2])
+>
+> Also make sure the KDP build does not accidentally include the exterior cover as page 1 of the interior.
+>
+> At the end, print a concise preflight report showing:
+>
+> ```text
+> file
+> pages
+> page size
+> file size
+> encrypted yes/no
+> fonts embedded yes/no
+> qpdf check result
+> annotations/bookmarks/layers if any
+> ```
+>
+> and clearly state what, if anything, had to change from the ordinary Genesis build.
+>
+> The goal is: **same book, same layout, boring Amazon-compatible PDF.**
+
+[1]: https://kdp.amazon.com/en_US/help/topic/G201857950?utm_source=chatgpt.com "Paperback Submission Guidelines"
+[2]: https://kdp.amazon.com/en_US/help/topic/G202145450?utm_source=chatgpt.com "Paperback Fonts"
+
+================== AMAZON PAGE ======================
+
+Yep. Your Ctrl+A grabbed the entire KDP Help page. The part you actually care about is basically this:
+
+## KDP interior PDF requirements
+
+### File itself
+
+* **PDF required for Hebrew**.
+* **Maximum 650 MB**.
+* **Single pages**, not spreads/2-up.
+* **Do not encrypt/lock** the PDF.
+* Page dimensions must exactly match the selected **trim size + bleed, if any**.  
+
+### Strip this stuff out
+
+KDP says the submitted PDF should not contain:
+
+* crop marks
+* trim marks
+* bookmarks
+* comments
+* annotations
+* invisible objects
+* placeholder text
+* unnecessary metadata
+* printer's marks 
+
+### Fonts
+
+* **Embed every font.**
+* Amazon recommends **fully embedded**, rather than subset-embedded fonts. 
+
+This is one of the things I'd investigate hardest with our insane collection of fonts.
+
+### Images / graphics
+
+* Embed all images.
+* Images should be **≥300 DPI**.
+* Flatten transparent objects and layers.
+* Don't downsample images when making the print PDF.  
+
+### PDF flavor
+
+Amazon recommends:
+
+> **PDF/X; PDF/X-1a preferred.**
+
+Also optimize the PDF, but **don't reduce image resolution**. 
+
+This is probably the most useful new information from your Ctrl+A. **Having Codex generate a clean PDF/X-1a KDP artifact from our LuaLaTeX output is a very sensible target.**
+
+### Layout things relevant to us
+
+* Lines should be at least **0.75 pt / 0.01"** thick.
+* All pages should have the same orientation.
+* Text should generally be at least **7 pt**.
+* Nothing should overlap or be cut off.
+* No more than **4 consecutive blank pages** at the beginning/middle or **10 at the end**.  
+
+**⚠️ That 0.75 pt line requirement is relevant.** Your `master.tex` currently has things like `\VerseRuleWidth = 0.2pt`, so Codex should probably preflight thin rules rather than blindly converting the PDF.
+
+### Cover, separately
+
+For the exterior:
+
+* background extends **0.125" beyond trim**
+* spine text needs **0.0625" clearance on each side**
+* spine text requires at least **79 pages**  
+
+### The checklist I'd give Codex
+
+```text
+KDP PREFLIGHT
+
+[ ] PDF/X-1a if practical
+[ ] <= 650 MB
+[ ] exact 7 x 10" pages (no bleed)
+[ ] single pages
+[ ] no encryption
+[ ] all fonts embedded
+[ ] preferably fonts fully embedded, not subset
+[ ] all images embedded
+[ ] images >= 300 DPI
+[ ] transparency/layers flattened
+[ ] no downsampling
+[ ] no bookmarks
+[ ] no annotations/comments
+[ ] no crop/trim/printer marks
+[ ] remove unnecessary metadata/invisible objects
+[ ] check rules < 0.75 pt
+[ ] check text < 7 pt
+[ ] qpdf --check passes
+[ ] cover NOT included in interior
+```
+
+**The three things I'd investigate first for your failed upload are fonts, PDF structure/PDF-X conversion, and transparency/layers.** The actual 7×10 layout is much less suspicious.
+
 EOF
