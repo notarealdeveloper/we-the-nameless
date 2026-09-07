@@ -123,6 +123,24 @@ class ConversionTests(unittest.TestCase):
         rendered = build.tex_to_markdown(r"\eJ{first} \eE{second}")
         self.assertIn("first</span> <span", rendered)
 
+    def test_source_span_preserves_trailing_space_inside_its_argument(self) -> None:
+        rendered = build.tex_to_markdown(r"c\eR{hildren }o\eR{h my oh }me")
+        self.assertIn(">hildren </span>o", rendered)
+        self.assertIn(">h my oh </span>me", rendered)
+
+    def test_tex_single_quotes_become_unicode_typographic_quotes(self) -> None:
+        rendered = build.tex_to_markdown(r"Putting an `i' at the end.")
+        self.assertEqual(rendered, "Putting an ‘i’ at the end.")
+
+    def test_reusable_zero_argument_tex_macros_are_expanded(self) -> None:
+        rje = build.tex_to_markdown(r"infinite {\pussyb}")
+        redactor = build.tex_to_markdown(r"infinite {\pussyc}")
+        self.assertIn('class="source source-rje english"', rje)
+        self.assertIn(">atriarch</span>y", rje)
+        self.assertIn('class="source source-r english"', redactor)
+        self.assertIn(">rity and blessing", redactor)
+        self.assertTrue(redactor.endswith("ssy"))
+
     def test_j_e_rje_and_generic_paleo_are_right_to_left(self) -> None:
         j = build.tex_to_markdown(r"\hJ{אבג}")
         self.assertIn('<span class="source source-j hebrew" lang="he" dir="rtl"', j)

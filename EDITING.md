@@ -19,20 +19,5 @@ Gen 24:66. Do a playful censorship thing.
 
 ## Stuff to do now
 
-ATTENTION! PROBLEMS TO FIX!
-
-Genesis 16:1. The TeX macro in 01-genesis/16.tex Verse 1 isn't rendering in the ebook. This is odd, because it's \eRJE{}, and RJE is rendering in the ebook just fine (e.g., in Genesis 22)
-
-Genesis 17:1. In the ebook, the i in Putting an \`i' appears as a backtick and not as a proper unicode type quote. In the main pdf book build, it looks fine. Fix this in the ebook, for all latex quotes of this form.
-
-Genesis 17:6. In the ebook, things like "c\eR{hildren }o\eR{h my oh }me " are getting rendered as "c\eR{hildren}o\eR{h my oh}me " (note the missing spaces at the end of the redactor block.) Fix this in the ebook, for all such examples in all source profiles. The behavior of whitespace in the ebook is _almost_ exactly following TeX's behavior, so don't change much about the behavior of whitespace in the ebook. Just try to fix examples like that, which will usually occur inside commentary blocks where the redactor interleaves his text with the pre-existing commentary in order to censor or somewhat hide some word in the original text.
-
-Genesis 17:7. Another example of the `{\pussyc}` macro not rendering in the ebook.
-
-Genesis 41:16. Joseph’s give him --> Joseph gives him
-
-Genesis 40:13. Change to "Three branchings"
-
-Genesis 40:15. Change to "Four shadowings"
-
+None.
 

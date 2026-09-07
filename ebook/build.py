@@ -152,6 +152,28 @@ ZERO_ARGUMENT_TEXT = {
     "IsaacBoundBurnedSummary": "Isaac bourned",
 }
 
+# Reusable manuscript substitutions defined with ``\def`` in master.tex.
+# Unlike ZERO_ARGUMENT_TEXT, these deliberately retain TeX markup so their
+# source-profile spans receive the same semantic EPUB treatment as authored
+# inline markup.
+ZERO_ARGUMENT_TEX = {
+    "cuma": r"c\eRJE{hildren}",
+    "cumb": r"co\eR{venantal heirs, a blessing from }me",
+    "cum": r"\cumb",
+    "pussya": r"p\eRJE{aternit}y",
+    "pussyb": r"p\eRJE{atriarch}y",
+    "pussyc": r"pu\eR{rity and blessing through your descendants provided you keep the covenant and be cla}ssy",
+    "pussyd": r"pu\eR{rchase over the peoples of the land even if they rebel against you and things get me}ssy",
+    "pussy": r"\pussya",
+    "dick": r"d\eR{ownstairs, for when I look upon it, I say }ick\eR{, for it is a distasteful thing}",
+    "penisa": r"p\eRJE{atriarchy}",
+    "penisb": r"p\eRJE{ride and joy}",
+    "penisc": r"p\eR{at}e\eR{r}ni\eR{ty, }s\eR{o that your days will be extended in the land}",
+    "penisd": r"p\eR{aternity, meaning children, and the meaning of childr}enis",
+    "penis": r"\penisc",
+    "foreskin": r"\eR{be}fore\eR{skin there is blood, and after blood there i}skin",
+}
+
 HEBREW_ORDER = "אבגדהוזחטיכךלמםנןסעפףצץקרשת"
 PALEO_ASCII = "ABGDHWZXJYKKLMMNNS]PPC CQRVT".replace(" ", "")
 PALEO_ASCII_TABLE = str.maketrans(HEBREW_ORDER, PALEO_ASCII)
@@ -457,6 +479,10 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
     """Conservatively retain prose while translating semantic TeX markup."""
     text = textwrap.dedent(strip_comments(text)).replace("~", "\u00a0")
     text = text.replace("``", "“").replace("''", "”")
+    # TeX's single-quote convention uses a grave accent to open and an
+    # apostrophe to close. Convert it before Markdown can expose the grave
+    # accent as a literal character in EPUB output.
+    text = re.sub(r"`([^`'\n]+)'", r"‘\1’", text)
     # A centered quote in TeX is a centered block, not a blockquote whose
     # contents should subsequently fall back to normal paragraph alignment.
     text = re.sub(
@@ -690,6 +716,8 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             out.append(MATH_SYMBOLS[name]); i = after; continue
         if name in ZERO_ARGUMENT_TEXT:
             out.append(ZERO_ARGUMENT_TEXT[name]); i = after; continue
+        if name in ZERO_ARGUMENT_TEX:
+            out.append(tex_to_markdown(ZERO_ARGUMENT_TEX[name], compact=compact)); i = after; continue
         if name in {"nl", "linebreak", "par", "medskip", "newpage", "clearpage", "pagebreak"}:
             if name == "pagebreak":
                 setting = optional_group(text, after)
@@ -865,6 +893,12 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             label = html.escape(SOURCE_NAMES[key])
             if language == "hebrew":
                 rendered = historical_hebrew(rendered, key)
+            # ``str.strip`` above is normally desirable for macro arguments,
+            # but an authored horizontal space immediately before the closing
+            # brace is meaningful when a redactor span censors the middle of a
+            # word or phrase (for example ``\eR{hildren }o``).
+            if re.search(r"[ \t]$", body) and not rendered.endswith((" ", "\n")):
+                rendered += " "
             is_block = any(marker in rendered for marker in ("<div ", "<table", "WTNTABLERUN"))
             if is_block:
                 # HTML tables/divs cannot legally be children of an inline
