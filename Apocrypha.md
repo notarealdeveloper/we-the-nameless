@@ -2,7 +2,7 @@
 
 Have an introduction by the publishers explaining that ever since the discovery of the documents that have come to be called We The Nameless, various opinions have formed surrounding the issue of what constitutes a proper translation and compilation of the materials collected here.
 
-Explain LD (We the undersigned), Comet (Typo Fundamentalists), and NSH (Orthography Fundamentalists, letter shapes) as being among the groups.
+Explain LD, Comet (Cult Of The Minor Error: believe all errors in We are intentional), and NHS (orthography fundamentalists focused on orthography and grapheme similarity as an untranslateable attribute of an author's possible set of intended visual puns) as being among the groups.
 
 Some insist the title of the the book is We, and its authors are a group that calls itself The Nameless.
 
