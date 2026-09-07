@@ -28,7 +28,9 @@
 \def\CoverSpineLD{ld}
 \newcommand{\SpineName}{%
   \ifx\CoverSpine\CoverSpineLD
-    \SpineLabel{22}{\LD}%
+    % Keep the mark about as tall as the front-cover "The Nameless", but use
+    % the taller 50:64 proportions requested for the spine.
+    \SpineLabel{22}{\LD[1em][0.78em]}%
   \else
     \SpineLabel{15}{\shortstack{The\\Nameless}}%
   \fi
