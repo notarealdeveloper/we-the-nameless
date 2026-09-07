@@ -142,7 +142,8 @@ kdp-preflight:
 	@bin/kdp-preflight "$(KDP_INPUT)"
 
 $(KDP_TARGETS): %-kdp:
-	@$(MAKE) "$*"
+	@bin/kdp-assets
+	@$(MAKE) "$*" LATEX_CONFIG='$(KDP_LATEX_CONFIG)'
 	@$(MAKE) "$*-cover"
 	@basename="$$(bin/book-subset --output-name "$*")"; \
 	bin/kdp-pdf "$$basename.pdf" "$$basename-kdp.pdf"
