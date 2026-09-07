@@ -12,10 +12,11 @@ TITLE_PAGE_STYLE ?= $(call read-config,IndividualBookTitlePageStyle)
 COLORS ?= $(call read-config,ConfigColors)
 APOCRYPHA ?= $(call read-config,ConfigApocrypha)
 REDACTOR ?= $(call read-config,ConfigRedactor)
+COVER ?= $(call read-config,ConfigCover)
 BUILD ?= build/$(OUTPUT_MODE)-$(THEME)
 CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
-LATEX_CONFIG = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigVerseLayout{$(VERSE_LAYOUT)}\def\ConfigCommentary{$(COMMENTARY)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\IndividualBookTitlePageStyle{$(TITLE_PAGE_STYLE)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigRedactor{$(REDACTOR)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}
+LATEX_CONFIG = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigVerseLayout{$(VERSE_LAYOUT)}\def\ConfigCommentary{$(COMMENTARY)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\IndividualBookTitlePageStyle{$(TITLE_PAGE_STYLE)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigRedactor{$(REDACTOR)}\def\ConfigCover{$(COVER)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}
 LATEX_INPUT = $(LATEX_CONFIG)\input{$(MAIN).tex}
 
 BUILD_MODES := book-lite book-dark tech-lite tech-dark
@@ -69,6 +70,7 @@ help:
 		'  make APOCRYPHA=canonical pdf  Build without apocrypha (default: apocryphal).' \
 		'  make VERSE_LAYOUT=vertical COMMENTARY=false pdf  Override verse layout and commentary.' \
 		'  make TITLE_PAGE_STYLE=plain REDACTOR=censored pdf  Override title pages and redaction.' \
+		'  make COVER=none pdf  Build without the configured cover image.' \
 		'  make TRANSLATION=kjv pdf  Build with translations/kjv instead of inline English.' \
 		'  make parallel     Build the book with the parallel chapter workflow.' \
 		'  make progress     Open master.tex.' \
@@ -226,7 +228,7 @@ progress:
 
 parallel:
 	@$(MAKE) BUILD="$(BUILD)/parallel" TRANSLATION="$(TRANSLATION)" build-translation
-	WTN_BUILD_DIR="$(BUILD)/parallel" WTN_OUTPUT_MODE="$(OUTPUT_MODE)" WTN_THEME="$(THEME)" WTN_VERSE_LAYOUT="$(VERSE_LAYOUT)" WTN_COMMENTARY="$(COMMENTARY)" WTN_TRANSLATION="$(TRANSLATION)" WTN_TRANSLATION_LUA="$(BUILD)/parallel/translation-$(TRANSLATION).lua" WTN_TITLE_PAGE_STYLE="$(TITLE_PAGE_STYLE)" WTN_COLORS="$(COLORS)" WTN_APOCRYPHA="$(APOCRYPHA)" WTN_REDACTOR="$(REDACTOR)" bin/parallel-build
+	WTN_BUILD_DIR="$(BUILD)/parallel" WTN_OUTPUT_MODE="$(OUTPUT_MODE)" WTN_THEME="$(THEME)" WTN_VERSE_LAYOUT="$(VERSE_LAYOUT)" WTN_COMMENTARY="$(COMMENTARY)" WTN_TRANSLATION="$(TRANSLATION)" WTN_TRANSLATION_LUA="$(BUILD)/parallel/translation-$(TRANSLATION).lua" WTN_TITLE_PAGE_STYLE="$(TITLE_PAGE_STYLE)" WTN_COLORS="$(COLORS)" WTN_APOCRYPHA="$(APOCRYPHA)" WTN_REDACTOR="$(REDACTOR)" WTN_COVER="$(COVER)" bin/parallel-build
 	$(call publish-and-open,$(BUILD)/parallel/$(PDF))
 
 $(SUBSET_TARGETS): BUILD = build/$@

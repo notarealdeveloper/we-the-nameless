@@ -48,6 +48,11 @@
     \def\ConfigRedactor{uncensored}
 \fi
 
+% choices: none, or the basename of an image in img/covers/
+\ifdefined\ConfigCover\else
+    \def\ConfigCover{we-cover-10}
+\fi
+
 %%%%%%%%%%%%%%%%%%
 %%% master.tex %%%
 %%%%%%%%%%%%%%%%%%
@@ -77,6 +82,7 @@
 \def\ConfigApocryphaCanonical{canonical}
 \def\ConfigEnglishTranslationDefault{default}
 \def\IndividualBookTitlePageStyleFancy{fancy}
+\def\ConfigCoverNone{none}
 
 \newif\ifConfigCommentaryOn
 \newif\ifConfigRedactorCensored
@@ -2816,6 +2822,23 @@
     \pagestyle{fancy}
 }
 
+% The image is centered and scaled to fill the physical page; any excess is
+% cropped at the page edge.  ConfigCover=none suppresses the page entirely.
+\newcommand{\WeCoverPage}{%
+    \ifx\ConfigCover\ConfigCoverNone
+    \else
+        \clearpage
+        \thispagestyle{empty}%
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[inner sep=0pt] at (current page.center) {%
+                \includegraphics[width=\paperwidth]{img/covers/\ConfigCover}%
+            };
+        \end{tikzpicture}%
+        \null
+        \clearpage
+    \fi
+}
+
 \newcommand{\LDPublicationNoticePage}{%
     \clearpage
     \thispagestyle{empty}
@@ -4435,6 +4458,7 @@
 \pagenumbering{gobble}
 \pagestyle{empty}
 
+\WeCoverPage
 \wetitlepage
 \pagestyle{empty}
 

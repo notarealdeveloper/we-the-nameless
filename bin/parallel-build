@@ -43,6 +43,7 @@ CONFIG_ENV = {
     "ConfigColors": "WTN_COLORS",
     "ConfigApocrypha": "WTN_APOCRYPHA",
     "ConfigRedactor": "WTN_REDACTOR",
+    "ConfigCover": "WTN_COVER",
 }
 CONFIG = {
     name: os.environ.get(env_name) or read_master_config(name)

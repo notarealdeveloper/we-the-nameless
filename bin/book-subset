@@ -1136,6 +1136,7 @@ def write_entrypoint(target, preamble, books, build_root):
         r"\hypersetup{pageanchor=false}",
         r"\pagenumbering{gobble}",
         r"\pagestyle{empty}",
+        r"\WeCoverPage",
         r"\wetitlepage",
     ]
     if target.full_frontmatter:
