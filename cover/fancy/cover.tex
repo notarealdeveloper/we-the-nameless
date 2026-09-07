@@ -10,10 +10,15 @@
 
 \definecolor{SpineBackground}{cmyk}{0.63,0.40,0.35,0.84}
 \definecolor{SpineForeground}{cmyk}{0.00,0.20,0.62,0.30}
+\newlength{\CoverFrontCenterX}
+\setlength{\CoverFrontCenterX}{3.5625in}
 \newlength{\CoverWeY}
-\setlength{\CoverWeY}{7.325in}
+% These are the centers of the two titles embedded in the front artwork after
+% it is scaled and cropped below.  The volume title is typeset on the front,
+% so the same three coordinates can also place the corresponding spine text.
+\setlength{\CoverWeY}{5.725in}
 \newlength{\CoverNamelessY}
-\setlength{\CoverNamelessY}{4.725in}
+\setlength{\CoverNamelessY}{4.425in}
 \newlength{\CoverVolumeY}
 \setlength{\CoverVolumeY}{1.425in}
 \newcommand{\SpineLabel}[2]{%
@@ -35,6 +40,9 @@
       rectangle (current page.north east);
     \node[anchor=center,inner sep=0pt] at ([xshift=-3.5625in]current page.east)
       {\includegraphics[width=7.125in]{img/covers/we-cover-10.png}};
+    \node[SpineForeground] at
+      ([xshift=-\CoverFrontCenterX,yshift=\CoverVolumeY]current page.south east)
+      {\fontsize{23}{28}\selectfont \CoverVolume};
   \end{scope}
 
   \fill[SpineBackground]

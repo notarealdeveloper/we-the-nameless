@@ -51,12 +51,16 @@ if [[ "$paper" == standard-color && ( "$trim_width" != 7.000000 || "$trim_height
 fi
 
 mkdir -p "$build_dir"
-TEXMFVAR="$build_dir/texmf-var" lualatex \
-    -interaction=nonstopmode -halt-on-error -file-line-error \
-    -output-directory="$build_dir" \
-    -jobname=cover \
-    "\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}" \
-    >/dev/null
+# The templates use TikZ's remembered page anchors.  The first pass records
+# those positions; the second pass is what places the panels and labels there.
+for pass in 1 2; do
+    TEXMFVAR="$build_dir/texmf-var" lualatex \
+        -interaction=nonstopmode -halt-on-error -file-line-error \
+        -output-directory="$build_dir" \
+        -jobname=cover \
+        "\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}" \
+        >/dev/null
+done
 cp "$build_dir/cover.pdf" "$output"
 printf 'Built %s: %s pages, %sx%s in trim, %s in spine (%s).\n' \
     "$output" "$pages" "$trim_width" "$trim_height" "$spine_width" "$paper/$style"
