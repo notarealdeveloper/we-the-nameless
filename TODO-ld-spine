@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Put this somewhere it belongs in master.tex.
+
+```tex
+\usepackage{tikz}
+
+\newcommand{\LD}[1][1em]{%
+  \tikz[baseline=-0.15ex, x=#1, y=#1]{%
+    \def\LDscale{0.82}
+    \def\LDgap{0.16}
+
+    \node[
+      anchor=south west,
+      inner sep=0pt,
+      outer sep=0pt,
+      scale=\LDscale
+    ] at (0,0) {\sffamily\bfseries L};
+
+    \node[
+      anchor=south west,
+      inner sep=0pt,
+      outer sep=0pt,
+      rotate=180,
+      scale=\LDscale
+    ] at (1+\LDgap,1+\LDgap) {\sffamily\bfseries L};
+  }%
+}
+```
+
+Then add a config option to the top of master.tex saying whether the cover is 'simple' or 'fancy' (unrelated to the above, but do it).
+Then add a config option to the top of master.tex saying whether the spine is 'nameless' or 'ld' (that's more related to the above).
+
+If set to ld, use the macro above to replace 'The Nameless' on the book spine with the ld logo.
+EOF
