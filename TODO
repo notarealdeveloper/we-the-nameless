@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Add me a make target 'make cover' that creates a super minimal exterior front+spine+back with the default simple title page from dark mode here: Back can be blank. Spine should say whatever you think looks good, with Genesis small, probably written so that it's horizontal when the book is on the shelf.
+
+It's for Kindle Direct Publishing, and should produce the format they want.
+EOF
