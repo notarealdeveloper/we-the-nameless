@@ -24,4 +24,6 @@ The `0.25"` is the required `0.125"` cover bleed on each outside edge. Generate 
 ---
 
 Add make targets to the top level Makefile called 'make genesis-kdp' etc that will run 'make genesis' and then 'make genesis-cover' and then leave 01-genesis-kdp.pdf and 01-genesis-cover.pdf in the root of the repo, similarly for the other subset builds like exodus through kings and dudetheyreontome and also for the subset builds like J, E, P, and so on.
+
+Also rename all the ebook make targets from 'make ebook-genesis' to 'make genesis-ebook' and so on.
 EOF
