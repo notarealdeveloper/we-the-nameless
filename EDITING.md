@@ -23,3 +23,4 @@ In E, Abe finally has infinity kids AFTER the sacrifice of Isaac! And he has Mid
 
 None.
 
+Gen 32:26. In the ebook, the final footnote has literal html in it in and around the word watteqa.

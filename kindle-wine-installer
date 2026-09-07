@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -e
+
+export WINEPREFIX="$HOME/.wine-kindle"
+
+export WINEARCH=win64
+
+mkdir -p "$WINEPREFIX"
+
+wineboot -u
+
+winetricks -q win11
+
+winetricks -q corefonts
+
+winetricks -q fontsmooth=rgb
+
+winetricks -q d3dcompiler_47
+
+winetricks -q vcrun2022
+
+winetricks -q winhttp
+
+winetricks -q wininet
+
+mkdir -p "$HOME/.cache/kindle-wine"
+
+curl -L "https://kindleforpc.s3.us-east-1.amazonaws.com/71006/KindleForPC-installer-2.9.71006.exe" -o "$HOME/.cache/kindle-wine/KindleForPC-installer-2.9.71006.exe"
+
+echo '8e3bff714de9a8e3cad0f8072e3150df0d419e4a08b54f9ef91bcded7c2ef4ef  '"$HOME"'/.cache/kindle-wine/KindleForPC-installer-2.9.71006.exe' | sha256sum -c -
+
+wine "$HOME/.cache/kindle-wine/KindleForPC-installer-2.9.71006.exe"
+
+wineboot -u
+
+find "$WINEPREFIX/drive_c" -iname 'Kindle.exe' -o -iname 'KindleForPC.exe'
+
+KINDLE_EXE="$(find "$WINEPREFIX/drive_c" \( -iname 'Kindle.exe' -o -iname 'KindleForPC.exe' \) -type f | head -n1)"
+
+echo "$KINDLE_EXE"
+
+wine "$KINDLE_EXE"

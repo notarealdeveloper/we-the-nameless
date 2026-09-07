@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+WINEPREFIX="$HOME/.wine-kindle" wine "$(find "$HOME/.wine-kindle/drive_c" \( -iname Kindle.exe -o -iname KindleForPC.exe \) -type f | head -n1)"
+

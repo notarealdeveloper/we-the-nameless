@@ -1,11 +1,11 @@
 ## Genesis
 
-First error free upload to KDP was on 2026-09-07 around noon.
+First known manuscript of We The Nameless Genesis dates to 2026-09-07 around noon.
 %% Exactly 10 years since the first day with M. %%
 
-Its final numbered page is 586, and final page is 587, the two years cited (equally often) as the beginning of the Babylonion[^1] Exile.
+Its final numbered page is 586, and final page is 587, the two years cited as the beginning of the Babylonion[^1] / Chaldean Exile (BCE) in 58(6/7) BC.
 
-The config was Standard Color, No Bleed, Matte Cover, with a printing cost of $24.96 per book on Amazon.
+The manuscript was written by a scribe in Standard Color, No Bleed, Matte Cover, with a printing cost of 1.01 shekels of silver (~11.3–11.5 g), or about $24.96 USD given the price of silver on that day.
 
 The time was 1:14pm.
 
