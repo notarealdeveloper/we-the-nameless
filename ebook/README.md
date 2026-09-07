@@ -13,8 +13,8 @@ From the repository root:
 
 ```sh
 make ebook
-make ebook-genesis
-make ebook-samuel
+make genesis-ebook
+make samuel-ebook
 make ebook-validate
 make -C ebook test
 ```

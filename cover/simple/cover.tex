@@ -1,0 +1,64 @@
+% Restrained KDP paperback wrap. bin/kdp-cover supplies dimensions from the
+% finished interior PDF, so pagination changes cannot stale the spine.
+\documentclass{article}
+\usepackage[
+    paperwidth=\dimexpr 14.25in+\CoverSpineWidth\relax,
+    paperheight=10.25in,
+    margin=0pt
+]{geometry}
+\usepackage[cmyk]{xcolor}
+\usepackage{tikz}
+\usepackage{fontspec}
+\usepackage{adjustbox}
+\pagestyle{empty}
+
+\definecolor{CoverBackground}{cmyk}{0.23,0.10,0.00,0.77}
+\definecolor{CoverForeground}{cmyk}{0.00,0.03,0.09,0.09}
+
+\newlength{\CoverBleed}
+\setlength{\CoverBleed}{0.125in}
+\newlength{\CoverFrontLeft}
+\setlength{\CoverFrontLeft}{\dimexpr 7.125in+\CoverSpineWidth\relax}
+\newlength{\CoverSpineCenterX}
+\setlength{\CoverSpineCenterX}{\dimexpr 7.125in+\CoverSpineWidth/2\relax}
+\newlength{\CoverSpineCenterY}
+\setlength{\CoverSpineCenterY}{5.125in}
+\newlength{\CoverFrontCenterX}
+\setlength{\CoverFrontCenterX}{3.5in}
+\newlength{\CoverWeY}
+\setlength{\CoverWeY}{7.325in}
+\newlength{\CoverNamelessY}
+\setlength{\CoverNamelessY}{4.725in}
+\newlength{\CoverVolumeY}
+\setlength{\CoverVolumeY}{1.425in}
+
+% KDP requires every spine-text edge to stay 0.0625 in inside the folds.
+\newcommand{\SpineLabel}[2]{%
+  \adjustbox{max width=\dimexpr\CoverSpineWidth-0.125in\relax}{\fontsize{#1}{#1}\selectfont #2}%
+}
+
+\begin{document}
+\begin{tikzpicture}[remember picture,overlay,x=1in,y=1in]
+  \fill[CoverBackground] (current page.south west) rectangle (current page.north east);
+
+  \coordinate (frontSW) at
+    ([xshift=\CoverFrontLeft,yshift=\CoverBleed]current page.south west);
+  \node[CoverForeground] at ([xshift=\CoverFrontCenterX,yshift=\dimexpr\CoverWeY-\CoverBleed\relax]frontSW)
+    {\fontsize{100}{120}\selectfont\textsc{We}};
+  \node[CoverForeground] at ([xshift=\CoverFrontCenterX,yshift=\dimexpr\CoverNamelessY-\CoverBleed\relax]frontSW)
+    {\fontsize{25}{30}\selectfont The Nameless};
+  \node[CoverForeground] at ([xshift=\CoverFrontCenterX,yshift=\dimexpr\CoverVolumeY-\CoverBleed\relax]frontSW)
+    {\fontsize{23}{28}\selectfont \CoverVolume};
+
+  \node[CoverForeground] at
+    ([xshift=\CoverSpineCenterX,yshift=\CoverWeY]current page.south west)
+    {\SpineLabel{26}{\textsc{We}}};
+  \node[CoverForeground,align=center] at
+    ([xshift=\CoverSpineCenterX,yshift=\CoverNamelessY]current page.south west)
+    {\SpineLabel{15}{\shortstack{The\\Nameless}}};
+  \node[CoverForeground] at
+    ([xshift=\CoverSpineCenterX,yshift=\CoverVolumeY]current page.south west)
+    {\SpineLabel{18}{\CoverVolume}};
+\end{tikzpicture}
+\null
+\end{document}

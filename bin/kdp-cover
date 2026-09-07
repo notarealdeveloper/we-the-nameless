@@ -5,10 +5,17 @@ interior=${1:-01-genesis.pdf}
 paper=${2:-standard-color}
 output=${3:-genesis-cover.pdf}
 build_dir=${4:-build/cover}
+style=${5:-simple}
+volume=${6:-Genesis}
+project_dir="cover/$style"
 
 if [[ ! -f "$interior" ]]; then
     printf 'Interior PDF not found: %s\nBuild it separately, or set COVER_INTERIOR to an existing PDF.\n' "$interior" >&2
     exit 1
+fi
+if [[ ! -f "$project_dir/cover.tex" ]]; then
+    printf 'Unknown cover style: %s\nExpected %s/cover.tex.\n' "$style" "$project_dir" >&2
+    exit 2
 fi
 
 case "$paper" in
@@ -38,12 +45,18 @@ trim_width=$(awk -v points="$width_points" 'BEGIN {printf "%.6f", points / 72}')
 trim_height=$(awk -v points="$height_points" 'BEGIN {printf "%.6f", points / 72}')
 spine_width=$(awk -v pages="$pages" -v thickness="$sheet_thickness" 'BEGIN {printf "%.6f", pages * thickness}')
 
+if [[ "$paper" == standard-color && ( "$trim_width" != 7.000000 || "$trim_height" != 10.000000 ) ]]; then
+    printf 'Standard Color covers require the current 7x10 in interior; got %sx%s in.\n' "$trim_width" "$trim_height" >&2
+    exit 1
+fi
+
 mkdir -p "$build_dir"
 TEXMFVAR="$build_dir/texmf-var" lualatex \
     -interaction=nonstopmode -halt-on-error -file-line-error \
     -output-directory="$build_dir" \
-    "\\def\\CoverTrimWidth{$trim_width in}\\def\\CoverTrimHeight{$trim_height in}\\def\\CoverSpineWidth{$spine_width in}\\input{cover.tex}" \
+    -jobname=cover \
+    "\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}" \
     >/dev/null
 cp "$build_dir/cover.pdf" "$output"
 printf 'Built %s: %s pages, %sx%s in trim, %s in spine (%s).\n' \
-    "$output" "$pages" "$trim_width" "$trim_height" "$spine_width" "$paper"
+    "$output" "$pages" "$trim_width" "$trim_height" "$spine_width" "$paper/$style"

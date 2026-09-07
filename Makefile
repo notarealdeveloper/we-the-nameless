@@ -32,10 +32,14 @@ CHAPTER_TARGETS := $(shell bin/book-subset --make-chapter-targets)
 COMMENT_BOOK_TARGETS := $(addprefix comment-,$(BOOK_TARGETS))
 UNCOMMENT_BOOK_TARGETS := $(addprefix uncomment-,$(BOOK_TARGETS))
 EBOOK_BOOKS := genesis exodus leviticus numbers deuteronomy joshua judges samuel kings dudetheyreontome
-EBOOK_TARGETS := $(addprefix ebook-,$(EBOOK_BOOKS))
+EBOOK_TARGETS := $(addsuffix -ebook,$(EBOOK_BOOKS))
+KDP_TARGETS := $(addsuffix -kdp,$(SUBSET_TARGETS))
+COVER_TARGETS := $(addsuffix -cover,$(SUBSET_TARGETS))
 COVER_INTERIOR ?= 01-genesis.pdf
 COVER_PAPER ?= standard-color
-COVER_OUTPUT ?= genesis-cover.pdf
+COVER_STYLE ?= simple
+COVER_VOLUME ?=
+COVER_OUTPUT ?= 01-genesis-cover.pdf
 COVER_BUILD ?= build/cover
 KDP_INPUT ?=
 KDP_OUTPUT ?=
@@ -45,7 +49,7 @@ export TEXMFVAR = $(CACHE)
 # Pentateuch paths themselves.
 export max_print_line = 60
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover kdp kdp-preflight $(addsuffix -kdp,$(SUBSET_TARGETS)) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover kdp kdp-preflight $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 define publish-and-open
 	@set -e; \
@@ -100,17 +104,18 @@ help:
 		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
 		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
 		'  make genesis      Build 01-genesis.pdf; numbered book targets also accept 1-genesis and 01-genesis forms.' \
-		'  make genesis-kdp  Build and preflight 01-genesis-kdp.pdf for a KDP no-bleed interior.' \
+		'  make genesis-kdp  Build 01-genesis-kdp.pdf and its 01-genesis-cover.pdf wrap.' \
+		'  make genesis-cover  Build the matching wrap from an existing 01-genesis.pdf.' \
 		'  make kdp KDP_INPUT=file.pdf KDP_OUTPUT=file-kdp.pdf  Preflight any existing interior PDF.' \
 		'  make kdp-preflight KDP_INPUT=file.pdf  Report without changing the PDF.' \
 		'  make genesis-1    Build only Genesis 1 as test-genesis-1.pdf and open it.' \
 		'  make 1-samuel-1   Build only 1 Samuel 1; chapter targets share build/test/.' \
 		'  make samuel       Build 08-samuel.pdf; use 1-samuel or 2-samuel for the individual books.' \
 		'  make ebook        Build ebook/we-the-nameless.epub.' \
-		'  make ebook-genesis  Build ebook/genesis.epub; equivalent targets exist for each book.' \
+		'  make genesis-ebook  Build ebook/genesis.epub; equivalent targets exist for each book.' \
 		'  make ebook-validate  Validate the complete EPUB (building it first if needed).' \
-		'  make cover        Build a KDP paperback wrap as genesis-cover.pdf from 01-genesis.pdf.' \
-		'                    Override with COVER_INTERIOR=..., COVER_PAPER=white|cream|standard-color|premium-color.' \
+		'  make cover        Build a KDP paperback wrap as 01-genesis-cover.pdf from 01-genesis.pdf.' \
+		'                    Set COVER_STYLE=simple|fancy; COVER_PAPER defaults to standard-color.' \
 		'  make kings        Build 09-kings.pdf; use 1-kings or 2-kings for the individual books.' \
 		'  make clean        Remove transient TeX aux files.' \
 		'  make distclean    Remove build outputs and master.pdf.'
@@ -125,7 +130,7 @@ ebook-validate:
 	$(MAKE) -C ebook validate
 
 cover:
-	@bin/kdp-cover "$(COVER_INTERIOR)" "$(COVER_PAPER)" "$(COVER_OUTPUT)" "$(COVER_BUILD)"
+	@bin/kdp-cover "$(COVER_INTERIOR)" "$(COVER_PAPER)" "$(COVER_OUTPUT)" "$(COVER_BUILD)" "$(COVER_STYLE)" "$(COVER_VOLUME)"
 
 kdp:
 	@test -n "$(KDP_INPUT)" || { echo 'KDP_INPUT is required' >&2; exit 2; }
@@ -135,19 +140,22 @@ kdp-preflight:
 	@test -n "$(KDP_INPUT)" || { echo 'KDP_INPUT is required' >&2; exit 2; }
 	@bin/kdp-preflight "$(KDP_INPUT)"
 
-$(addsuffix -kdp,$(SUBSET_TARGETS)): BUILD = build/$@
-$(addsuffix -kdp,$(SUBSET_TARGETS)): %-kdp:
-	@$(MAKE) BUILD="$(BUILD)" TRANSLATION="$(TRANSLATION)" build-translation
-	@bin/kdp-assets build/kdp-assets
+$(KDP_TARGETS): %-kdp:
+	@$(MAKE) "$*"
+	@$(MAKE) "$*-cover"
+	@basename="$$(bin/book-subset --output-name "$*")"; \
+	bin/kdp-pdf "$$basename.pdf" "$$basename-kdp.pdf"
+
+$(COVER_TARGETS): %-cover:
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$*")"; \
-	bin/book-subset --build-dir "$(BUILD)" "$*"; \
-	$(LATEX) $(LATEXFLAGS) "$(KDP_LATEX_CONFIG)\input{$(BUILD)/$$basename.tex}"; \
-	bin/kdp-pdf "$(BUILD)/$$basename.pdf" "$$basename-kdp.pdf"
-	@$(MAKE) clean-stray-aux
+	title="$$(printf '%s\n' "$${basename#??-}" | awk -F- '{ for (i=1; i<=NF; i++) { if ($$i ~ /^[a-z]/) $$i=toupper(substr($$i,1,1)) substr($$i,2); printf "%s%s", (i > 1 ? " " : ""), $$i } }')"; \
+	interior="$(if $(filter command line environment override,$(origin COVER_INTERIOR)),$(COVER_INTERIOR),)"; \
+	output="$(if $(filter command line environment override,$(origin COVER_OUTPUT)),$(COVER_OUTPUT),)"; \
+	bin/kdp-cover "$${interior:-$$basename.pdf}" "$(COVER_PAPER)" "$${output:-$$basename-cover.pdf}" "$(COVER_BUILD)/$$basename/$(COVER_STYLE)" "$(COVER_STYLE)" "$(if $(COVER_VOLUME),$(COVER_VOLUME),$${title})"
 
 $(EBOOK_TARGETS):
-	$(MAKE) -C ebook "$(@:ebook-%=%)"
+	$(MAKE) -C ebook "$(@:%-ebook=%)"
 
 pdf: build-pdf
 
