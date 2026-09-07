@@ -1073,24 +1073,36 @@ def build_navigation_overrides(target, books):
 def build_toc_overrides(target, books):
     if not target.toc_chapters:
         return ""
+    included_book_destinations = {
+        book.get("master_title", book["title"]): book["title"] for book in books
+    }
     lines = [
+        r"\newcommand{\SubsetContentsBook}[1]{%",
+        r"    \par\nobreak\medskip",
+        r"    \noindent\makebox[0.95\linewidth][c]{\strut #1}%",
+        r"}",
         r"\renewcommand{\WeContentsPage}{%",
         r"    \clearpage",
         r"    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}",
         r"    \phantomsection",
         r"    \hypertarget{tableofcontents}{}%",
         r"    \BookHeading{Contents}%",
+        r"    \begingroup",
+        r"    \centering",
+        r"    \large",
     ]
-    for book in books:
+    for book in master_books():
         title = book["title"]
-        lines.extend(
-            [
-                rf"    \FancyBookChapterLinkArray{{{title}}}%",
-                rf"    \BookExtraLinkArray{{{title}}}%",
-            ]
-        )
+        destination = included_book_destinations.get(title)
+        if destination is None:
+            entry = title
+        else:
+            entry = rf"\BookLink{{{destination}}}{{{title}}}"
+        lines.append(rf"    \SubsetContentsBook{{{entry}}}%")
     lines.extend(
         [
+            r"    \par\nobreak\medskip",
+            r"    \endgroup",
             r"    \WeContentsPageBottomMark",
             r"    \restoregeometry",
             r"}",
@@ -1279,6 +1291,7 @@ def build_target(target_name, build_root):
                 total_verses += verse_count
         if generated:
             included_book = dict(book)
+            included_book["master_title"] = book["title"]
             if target.book_title_override is not None:
                 included_book["title"] = target.book_title_override
                 included_book["items"] = [
