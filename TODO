@@ -1,0 +1,253 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Yep — same prompt, just reframed around **replacing/fixing the existing `make genesis-kdp` pipeline**, not adding a new one.
+
+Rewrite the existing `make genesis-kdp` target so that it generates a reliable, reproducible KDP paperback-interior PDF for **We The Nameless: Genesis**.
+
+The existing `make genesis-kdp` output is being rejected by KDP and is therefore not useful as currently implemented. Replace/fix its implementation rather than adding a competing KDP target.
+
+Do the implementation and test it on the actual Genesis manuscript. Do not stop at a proposal, a shell-command example, or a small test PDF.
+
+## Goal
+
+Rewrite:
+
+```
+make genesis-kdp
+```
+
+so that it builds Genesis using the appropriate existing print configuration, converts ALL PDF text to vector outlines, performs conservative print-file cleanup, and verifies that the resulting book preserves the reference PDF's visible content.
+
+This is a print-only derivative. Preserve the original searchable PDF and leave the normal book, ebook, and other subset builds working as before.
+
+The purpose is to remove dependence on PDF fonts, font encodings, Unicode mappings, and text shaping during downstream printing. Do not claim that this guarantees Amazon acceptance or fixes an identified language-detection bug: the cause of the current silent upload failure is unknown.
+
+Prefer a small, maintainable pipeline built from established tools over writing a custom PDF font-to-path converter.
+
+## 1. Inspect and rewrite the existing KDP build
+
+Read the existing `genesis-kdp` Make target and everything it invokes, as well as the rest of the Makefile, `master.tex`, relevant included configuration, Genesis selection logic, existing KDP scripts, cover-generation code, and Nix environment before changing anything.
+
+Understand what the current `make genesis-kdp` pipeline is trying to do and replace or repair the parts responsible for producing the rejected manuscript. Reuse useful existing infrastructure rather than creating another independent implementation of the book's layout or chapter selection.
+
+Determine which existing configuration is intended for paperback printing. Do not accidentally use a screen-reading PDF with unsuitable page dimensions.
+
+Preserve all Genesis content, commentary, front matter, title pages, illustrations, tables, footnotes, colors, historical scripts, and deliberate glyph transformations. The exterior front/spine/back cover must remain a SEPARATE PDF; do not prepend it to the interior.
+
+Keep the rewritten `genesis-kdp` implementation isolated from ordinary builds. Use separate intermediate directories so parallel builds cannot overwrite each other's TeX auxiliary files or PDFs.
+
+Declare the required tools in the repository's existing Nix environment: Ghostscript, qpdf, Poppler, MuPDF, and only the Python packages actually needed for inspection and comparison. Use pinned dependencies and record their versions. Avoid global pip installations and unpinned downloads.
+
+## 2. Establish the print reference
+
+As part of `make genesis-kdp`, build a fresh Genesis PDF through the existing LuaLaTeX pipeline. Complete all necessary TeX reruns, and save this PDF as the visual reference before applying the KDP-specific transformations.
+
+Before outlining, inspect and record:
+
+* Page count and all pages' effective dimensions and page boxes.
+* Rotation and UserUnit, including inherited/default values.
+* Fonts, embedding status, and evidence of missing glyphs or substitution.
+* Raster-image dimensions and effective resolution at their placed size.
+* Actual use of transparency, soft masks, blend modes, and optional layers.
+* The selected trim size, bleed setting, ink, and paper configuration.
+
+Use the repository's established KDP selections. Make genuinely missing selections explicit configuration variables; do not silently invent them or switch paper/ink options to get around a page-count limit.
+
+Validate the selected print configuration against current official KDP requirements. These include supported trim/paper/ink combinations, page-count limits, margins/gutter, bleed, minimum type size, and image resolution. Inspect typography BEFORE outlining, while font-size and text-placement information are still available.
+
+Preserve an already valid layout. If a KDP-only layout adjustment is necessary, make the narrowest configuration-level change and document it. Do not silently shrink whole pages, crop content, remove material, or switch to grayscale. Rebuild and recheck any page-count-dependent settings.
+
+Clearly distinguish:
+
+1. Necessary print-layout adjustments, if any.
+2. The subsequent outline/cleanup conversion, which must not reflow or reposition the approved print reference.
+
+Do not hide a conversion defect by modifying the reference to match it.
+
+## 3. Outline every font using Ghostscript
+
+Rewrite the `genesis-kdp` pipeline to use Ghostscript's supported `pdfwrite -dNoOutputFonts` facility.
+
+Start with the following conversion settings, adapting file paths and confirming behavior with the pinned Ghostscript version:
+
+```
+gs \
+  -dSAFER -dBATCH -dNOPAUSE \
+  -sDEVICE=pdfwrite \
+  -dCompatibilityLevel=1.7 \
+  -dNoOutputFonts \
+  -dAutoRotatePages=/None \
+  -sColorConversionStrategy=LeaveColorUnchanged \
+  -dDownsampleColorImages=false \
+  -dDownsampleGrayImages=false \
+  -dDownsampleMonoImages=false \
+  -dAutoFilterColorImages=false \
+  -dColorImageFilter=/FlateEncode \
+  -dAutoFilterGrayImages=false \
+  -dGrayImageFilter=/FlateEncode \
+  -dPassThroughJPEGImages=true \
+  -dPassThroughJPXImages=true \
+  -dPreserveOverprintSettings=true \
+  -dPreserveAnnots=false \
+  -sOutputFile="$OUTLINED_TMP" \
+  "$PREPARED_REFERENCE"
+```
+
+Capture complete logs and propagate command failures through pipelines.
+
+Do not use generic `/screen`, `/ebook`, `/printer`, or `/prepress` PDFSETTINGS presets. Do not introduce new lossy image compression or downsampling.
+
+Do not pass fit-to-page, fixed-media, paper-size, or automatic-cropping options. Preserve the reference's coordinate system and page geometry.
+
+Outline ALL fonts, including English, Hebrew, Paleo-Hebrew/Phoenician, Egyptian, CJK, mathematical symbols, and fonts inside included PDF figures. Do not maintain a guessed list of exotic font names.
+
+Do not implement outlining by deleting fonts, removing ToUnicode tables, remapping text to ASCII, hiding text, or replacing text with OCR.
+
+Existing raster illustrations should remain raster illustrations; do not trace/vectorize them. However, do not accept newly rasterized book text as a successful vector-outline conversion. Inspect for bitmap-font cases and unexpected rasterization.
+
+## 4. Handle transparency and non-printing features carefully
+
+KDP asks for flattened transparent objects and layers. Outlining fonts is NOT itself transparency flattening.
+
+Do NOT force PDF 1.3 or round-trip through PostScript as an automatic flattening method: this can turn entire transparent pages into bitmaps.
+
+Instead, eliminate actual transparency at the source/asset level where possible while retaining book typography as vectors. Examples include compositing an image against its actual intended background or replacing simple opacity on a uniform background with an equivalent opaque color.
+
+Any such operation must pass visual comparison. Do not flatten against white when the actual background is another color.
+
+Do not blindly delete soft masks, transparency groups, opacity settings, or optional-content dictionaries. That can change or reveal content. Resolve the intended print visibility before removing layer machinery.
+
+Allow localized illustration flattening only when needed, at suitable resolution, without rasterizing surrounding book typography. Preserve original assets and document every changed asset.
+
+Report unresolved transparency precisely. Do not describe the file as having passed the requested preflight if required flattening remains unresolved.
+
+Use a PDF-aware library such as pikepdf for necessary structural cleanup; never edit binary PDFs with regexes.
+
+Remove non-printing navigation and interactive features from the print derivative: bookmarks, actions, JavaScript, attachments, unnecessary metadata, and annotation/form machinery.
+
+Preserve intentional visible annotation appearances by flattening them BEFORE the outlining stage, rather than deleting visible content. Printed link text and its appearance must survive removal of link actions.
+
+Do not indiscriminately delete color profiles or other rendering resources under the heading of "metadata."
+
+Save a fresh, non-encrypted PDF with garbage collection and lossless stream compression. Never overwrite the reference.
+
+Do not assert PDF/X compliance merely because of a filename, metadata entry, PDF version, or Ghostscript switch. PDF/X-1a is preferred by KDP, but a genuine conversion has additional requirements. Do not sacrifice the book's visual fidelity merely to attach that label.
+
+## 5. Require structural and print preflight
+
+Implement automated validation of the ACTUAL FINAL FILE produced by `make genesis-kdp`, after all conversion and cleanup stages.
+
+Required checks:
+
+A. `qpdf --check` succeeds without unexplained warnings. Also render every page successfully; qpdf's structural check is not a visual validator.
+
+B. Page count and page order match the reference. No omitted, duplicated, reordered, or newly blank pages.
+
+C. Every page retains the reference's effective MediaBox, CropBox, TrimBox, BleedBox, rotation, and UserUnit, allowing only negligible numeric rounding, such as 0.01 PDF point. Handle missing/default boxes correctly. Do not "fix" a mismatch by blindly copying box dictionaries.
+
+D. `pdffonts` reports no fonts, and `pdftotext` produces no non-whitespace text. Also inspect reachable page/Form XObject/pattern resources and content streams for remaining font use or text-showing operations. Use proper PDF parsing, not a grep of compressed bytes.
+
+E. Verify that the absence of fonts was achieved by rendering their outlines, not by dropping their content or turning text pages into images. Compare raster-image use before and after, including placement. Fail on unexpected page-sized raster replacements or new glyph bitmaps.
+
+F. Confirm no encryption or unwanted interactive/non-printing features remain, and report transparency/layer status accurately.
+
+G. Enforce the KDP file-size limit using a conservative ceiling of 650,000,000 bytes. Report exact bytes and size growth. Do not get under the limit by silently degrading images or rasterizing typography.
+
+H. Confirm the final dimensions, bleed, page count, and chosen print options still agree. Do not hardcode the manuscript's page count.
+
+Do not assume all pre-existing raster images meet print requirements. Report inadequate effective resolution with page/asset references rather than simply upsampling and claiming the problem is solved.
+
+Distinguish automated passes, definite violations, and checks requiring human review. Do not turn uncertainty into a green checkmark.
+
+## 6. Perform full-book visual regression testing
+
+Visual preservation is an acceptance criterion for `make genesis-kdp`, not an optional extra.
+
+Render BOTH reference and final PDFs page-by-page with the SAME renderer, DPI, color-management settings, page-box selection, and background.
+
+Compare every page at 300 DPI or higher. Use MuPDF as one renderer and Poppler as an independent cross-check. Compare reference-versus-output WITHIN each engine; do not demand pixel equality between different engines.
+
+Use bounded memory and temporary disk space. Process pages incrementally rather than keeping hundreds of full-resolution pages in memory.
+
+Do not require bit-identical pixels: text hinting and path antialiasing can differ after outlining. However, do not use a single page-average similarity score that could hide a missing Hebrew letter.
+
+Use explicit, documented, conservative tolerances, with localized tile/region comparisons and foreground-sensitive checks. Do not automatically align, shift, or rescale images to conceal displacement.
+
+Recheck suspicious pages/regions at higher resolution, such as 600 DPI. Include detailed checks of the smallest typography, rotated/mirrored glyphs, clipping, ligatures, tables, and mixed-script illustrations.
+
+Generate a human-readable comparison report with:
+
+* Per-page results and worst localized differences.
+* Before/after crops and difference images for suspicious regions.
+* Representative first/last pages and examples covering the fonts and transformations present in the reference.
+* Clearly identified failures and unresolved differences.
+
+Test the validator itself using deliberately damaged fixtures: remove a small glyph, clip a diacritic, shift text, alter a color, and drop a page. Those changes must be detected. Do not loosen thresholds simply to make the real manuscript pass.
+
+Automated rendering comparisons are evidence of preservation, not a proof of perfect equivalence. Say exactly what was checked.
+
+## 7. `genesis-kdp` behavior, outputs, and completion
+
+Rewrite `make genesis-kdp` so that it orchestrates the complete pipeline:
+
+```
+native Genesis print build
+  -> reference and preflight
+  -> necessary preparation
+  -> all-font outlining
+  -> conservative cleanup
+  -> final structural/print/visual verification
+  -> validated upload artifact
+```
+
+Use a clear final path, preferably:
+
+```
+build/kdp/genesis/we-the-nameless-genesis-interior.pdf
+```
+
+Keep the searchable reference, logs, JSON inspection results, and visual report in a separate work/report location so the upload artifact is unambiguous.
+
+Write output candidates to temporary paths and promote them atomically only after validation passes. A failed `make genesis-kdp` must not leave an unchecked candidate at the upload path or print an old successful artifact as if it were newly validated.
+
+Make reruns reliable. Track source/configuration/tool changes correctly. Cache expensive successful comparisons only when reference/output hashes, tool versions, settings, and validator code match.
+
+Provide or rewrite the corresponding verification target, preferably:
+
+```
+make check-genesis-kdp
+```
+
+It should revalidate the existing output against its recorded reference and detect stale inputs.
+
+Keep the existing cover workflow working. Any spine calculation must remain tied to the actual final interior page count and selected paper, including KDP's even-page rounding when applicable. Do not merge the cover with the interior.
+
+Run the actual full `make genesis-kdp` build and all verification gates. Inspect the visual report. Fix defects found without weakening the requirements. Do not stop after testing only a sample of pages.
+
+Finish by reporting:
+
+* Files changed and the exact command to run.
+* Exact final PDF and report paths.
+* Page count, dimensions, file size, and final font count.
+* The print selections that must match the KDP upload form.
+* Which checks actually passed, any limitations, and any blockers.
+* Any necessary visible/layout changes made for print compliance.
+* What the old `genesis-kdp` implementation did and what was replaced or changed.
+
+State that final KDP acceptance still requires upload and Print Previewer review, and that a physical proof is needed to assess printed appearance.
+
+Do not upload, publish, or change the KDP account as part of this task.
+
+Official references to consult:
+[https://kdp.amazon.com/help/topic/G202145450](https://kdp.amazon.com/help/topic/G202145450)
+[https://kdp.amazon.com/help/topic/G201857950](https://kdp.amazon.com/help/topic/G201857950)
+[https://kdp.amazon.com/help/topic/G202145060](https://kdp.amazon.com/help/topic/G202145060)
+[https://kdp.amazon.com/help/topic/GVBQ3CMEQW3W2VL6](https://kdp.amazon.com/help/topic/GVBQ3CMEQW3W2VL6)
+[https://kdp.amazon.com/help/topic/G201834180](https://kdp.amazon.com/help/topic/G201834180)
+[https://ghostscript.readthedocs.io/en/latest/VectorDevices.html](https://ghostscript.readthedocs.io/en/latest/VectorDevices.html)
+[https://qpdf.readthedocs.io/en/stable/cli.html](https://qpdf.readthedocs.io/en/stable/cli.html)
+
+That should make Codex treat the existing target as something to **surgically replace and repair**, while retaining essentially all of the original instructions.
+
+EOF
