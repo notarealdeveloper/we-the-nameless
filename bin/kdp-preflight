@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+import json
+import os
+import re
+import subprocess
+import sys
+import tempfile
+
+
+def run(*args, check=True):
+    return subprocess.run(args, check=check, text=True, capture_output=True)
+
+
+if len(sys.argv) != 2:
+    raise SystemExit(f"usage: {sys.argv[0]} FILE.pdf")
+
+pdf = sys.argv[1]
+for tool in ("pdfinfo", "pdffonts", "pdfimages", "qpdf"):
+    if run("sh", "-c", f"command -v {tool}", check=False).returncode:
+        raise SystemExit(f"missing required tool: {tool}")
+
+info = run("pdfinfo", "-box", pdf).stdout
+pages = int(re.search(r"^Pages:\s+(\d+)", info, re.M).group(1))
+encrypted = re.search(r"^Encrypted:\s+(\S+)", info, re.M).group(1)
+all_pages = run("pdfinfo", "-f", "1", "-l", str(pages), "-box", pdf).stdout
+sizes = set(re.findall(r"^Page\s+\d+ size:\s+([^\n]+)", all_pages, re.M))
+if not sizes:
+    sizes = {re.search(r"^Page size:\s+([^\n]+)", info, re.M).group(1)}
+exact_trim = all(re.match(r"504(?:\.0+)? x 720(?:\.0+)? pts", s) for s in sizes)
+
+font_lines = run("pdffonts", pdf).stdout.splitlines()[2:]
+font_rows = [line.split() for line in font_lines if line.strip()]
+fonts_embedded = bool(font_rows) and all(row[-5] == "yes" for row in font_rows)
+fully_embedded = sum(row[-4] == "no" for row in font_rows)
+
+check = run("qpdf", "--check", pdf, check=False)
+qpdf_ok = check.returncode == 0
+objects = run("qpdf", "--json=1", "--json-key=objects", pdf).stdout
+data = json.loads(objects)
+serialized = json.dumps(data)
+annotations = serialized.count('"/Annots"')
+bookmarks = any(key in serialized for key in ('"/Outlines"', '"/PageMode": "/UseOutlines"'))
+layers = any(key in serialized for key in ('"/OCProperties"', '"/OCG"'))
+transparency = any(key in serialized for key in ('"/SMask"', '"/ca"', '"/CA"'))
+
+images = run("pdfimages", "-list", pdf).stdout.splitlines()[2:]
+low_dpi = []
+for line in images:
+    cols = line.split()
+    if len(cols) >= 14 and cols[2] == "image":
+        xppi, yppi = int(cols[12]), int(cols[13])
+        if min(xppi, yppi) < 300:
+            low_dpi.append((cols[0], xppi, yppi))
+
+size = os.path.getsize(pdf)
+print(f"file: {pdf}")
+print(f"pages: {pages}")
+print(f"page size: {'7 x 10 in on every page' if exact_trim else '; '.join(sorted(sizes))}")
+print(f"file size: {size} bytes ({size / 1024 / 1024:.1f} MiB)")
+print(f"encrypted: {encrypted}")
+print(f"fonts embedded: {'yes' if fonts_embedded else 'no'} ({len(font_rows)} font instances; {fully_embedded} full, {len(font_rows) - fully_embedded} subset)")
+print(f"qpdf check result: {'pass' if qpdf_ok else 'FAIL'}")
+print(f"annotations/bookmarks/layers: {annotations}/{'yes' if bookmarks else 'no'}/{'yes' if layers else 'no'}")
+print(f"transparency: {'yes' if transparency else 'no'}")
+if low_dpi:
+    details = ", ".join(f"page {p}: {x}x{y} PPI" for p, x, y in low_dpi)
+    print(f"image resolution warning: {details}")
+
+failed = (
+    not exact_trim or size > 650 * 1024 * 1024 or encrypted != "no" or
+    not fonts_embedded or not qpdf_ok or annotations or bookmarks or layers or
+    transparency or low_dpi
+)
+raise SystemExit(1 if failed else 0)

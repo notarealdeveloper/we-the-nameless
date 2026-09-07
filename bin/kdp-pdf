@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if (( $# != 2 )); then
+    echo "usage: $0 INPUT.pdf OUTPUT.pdf" >&2
+    exit 2
+fi
+
+input=$1
+output=$2
+build_dir=$(mktemp -d "${TMPDIR:-/tmp}/wtn-kdp.XXXXXXXX")
+trap 'rm -rf -- "$build_dir"' EXIT
+
+for tool in gs qpdf; do
+    command -v "$tool" >/dev/null || { echo "missing required tool: $tool" >&2; exit 2; }
+done
+
+# PDF 1.3 has no live transparency or optional-content layers.  The prepress
+# settings retain vector text/glyphs and explicitly disable image downsampling.
+gs -q -dSAFER -dBATCH -dNOPAUSE \
+    -sDEVICE=pdfwrite \
+    -dCompatibilityLevel=1.3 \
+    -dAutoRotatePages=/None \
+    -dPreserveAnnots=false \
+    -dDetectDuplicateImages=false \
+    -dDownsampleColorImages=false \
+    -dDownsampleGrayImages=false \
+    -dDownsampleMonoImages=false \
+    -dCompressFonts=true \
+    -dSubsetFonts=true \
+    -sOutputFile="$build_dir/rendered.pdf" \
+    "$input"
+
+# Taking only the pages intentionally drops outlines, named destinations,
+# open actions, page labels, and other document-level navigation.  qpdf also
+# removes the Info/XMP metadata and rewrites a compact, unencrypted file.
+qpdf --empty --pages "$build_dir/rendered.pdf" 1-z -- \
+    --remove-info \
+    --remove-metadata \
+    --remove-page-labels \
+    --remove-structure \
+    --object-streams=disable \
+    --force-version=1.3 \
+    "$output"
+
+bin/kdp-preflight "$output"

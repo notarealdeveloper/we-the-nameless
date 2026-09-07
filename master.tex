@@ -53,6 +53,12 @@
 %    \def\ConfigCover{we-cover-10}
 %\fi
 \def\ConfigCover{none}
+\ifdefined\ConfigKDP\else
+    \def\ConfigKDP{false}
+\fi
+\ifdefined\KDPAssetDir\else
+    \def\KDPAssetDir{build/kdp-assets}
+\fi
 
 %%%%%%%%%%%%%%%%%%
 %%% master.tex %%%
@@ -84,6 +90,7 @@
 \def\ConfigEnglishTranslationDefault{default}
 \def\IndividualBookTitlePageStyleFancy{fancy}
 \def\ConfigCoverNone{none}
+\def\ConfigKDPTrue{true}
 
 \newif\ifConfigCommentaryOn
 \newif\ifConfigRedactorCensored
@@ -92,6 +99,7 @@
 \newif\ifConfigApocryphaOn
 \newif\ifConfigEnglishTranslationDefault
 \newif\ifIndividualBookTitlePageStyleFancy
+\newif\ifConfigKDPOn
 
 \ifx\ConfigCommentary\ConfigTrue
     \ConfigCommentaryOntrue
@@ -127,6 +135,11 @@
     \IndividualBookTitlePageStyleFancytrue
 \else
     \IndividualBookTitlePageStyleFancyfalse
+\fi
+\ifx\ConfigKDP\ConfigKDPTrue
+    \ConfigKDPOntrue
+\else
+    \ConfigKDPOnfalse
 \fi
 
 \documentclass[11pt]{book}
@@ -284,7 +297,7 @@
         Looked under \CurrentBookImageDir/include for #1-\ConfigThemeAssetSuffix and #1, with jpg/png extensions.%
     }%
 }
-\newcommand{\image}[2][width=0.9\linewidth]{%
+\newcommand{\imageordinary}[2][width=0.9\linewidth]{%
     \IfFileExists{\CurrentBookImageDir/include/#2-\ConfigThemeAssetSuffix.jpg}{%
         \includegraphics[#1]{\CurrentBookImageDir/include/#2-\ConfigThemeAssetSuffix.jpg}%
     }{%
@@ -302,6 +315,19 @@
             }%
         }%
     }%
+}
+\newcommand{\image}[2][width=0.9\linewidth]{%
+    \ifConfigKDPOn
+        \IfFileExists{\KDPAssetDir/#2-\ConfigThemeAssetSuffix.jpg}{%
+            \includegraphics[#1]{\KDPAssetDir/#2-\ConfigThemeAssetSuffix.jpg}%
+        }{%
+            \IfFileExists{\KDPAssetDir/#2.png}{%
+                \includegraphics[#1]{\KDPAssetDir/#2.png}%
+            }{\imageordinary[#1]{#2}}%
+        }%
+    \else
+        \imageordinary[#1]{#2}%
+    \fi
 }
 
 % ------------------------------------------------------------
@@ -865,6 +891,10 @@
 
 \setlength{\VerseGap}{0.75em}
 \setlength{\VerseRuleWidth}{0.2pt}
+\ifConfigKDPOn
+    % KDP asks graphic/table rules to be at least 0.75 pt.
+    \setlength{\VerseRuleWidth}{0.75pt}
+\fi
 \setlength{\VerseColWidth}{\dimexpr(\textwidth-\VerseGap-\VerseRuleWidth-\VerseGap)/2\relax}
 
 % ------------------------------------------------------------
@@ -3765,7 +3795,7 @@
     \vspace{0.25em}%
     {\EnglishFont\Large\scshape Apocrypha\par}%
     \vspace{0.75em}%
-    \makebox[\linewidth]{\color{RuleColor}\rule{0.62\linewidth}{0.4pt}}%
+    \makebox[\linewidth]{\color{RuleColor}\rule{0.62\linewidth}{\ifConfigKDPOn0.75pt\else0.4pt\fi}}%
     \par
     \vspace{2.0em}%
     \endgroup
@@ -3782,7 +3812,7 @@
     \vspace{1.6em}%
     \begingroup
     \centering
-    \makebox[\linewidth]{\color{RuleColor}\rule{0.38\linewidth}{0.4pt}}%
+    \makebox[\linewidth]{\color{RuleColor}\rule{0.38\linewidth}{\ifConfigKDPOn0.75pt\else0.4pt\fi}}%
     \vspace{0.55em}%
     \begin{center}
 	\textdir TLT\EnglishProtoFont\LARGE #1\par
@@ -3795,7 +3825,7 @@
     \vspace{0.35em}%
     {\textdir TRT\DeadSeaScrollsIsaiahFont\large\color{RuleColor}\paleoijklower\par}%
     \vspace{0.55em}%
-    \makebox[\linewidth]{\color{RuleColor}\rule{0.38\linewidth}{0.4pt}}%
+    \makebox[\linewidth]{\color{RuleColor}\rule{0.38\linewidth}{\ifConfigKDPOn0.75pt\else0.4pt\fi}}%
     \par
     \vspace{1.0em}%
     \endgroup

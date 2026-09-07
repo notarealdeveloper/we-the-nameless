@@ -17,6 +17,7 @@ BUILD ?= build/$(OUTPUT_MODE)-$(THEME)
 CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
 LATEX_CONFIG = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigVerseLayout{$(VERSE_LAYOUT)}\def\ConfigCommentary{$(COMMENTARY)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\IndividualBookTitlePageStyle{$(TITLE_PAGE_STYLE)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigRedactor{$(REDACTOR)}\def\ConfigCover{$(COVER)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}
+KDP_LATEX_CONFIG = $(LATEX_CONFIG)\def\ConfigKDP{true}\def\KDPAssetDir{build/kdp-assets}
 LATEX_INPUT = $(LATEX_CONFIG)\input{$(MAIN).tex}
 
 BUILD_MODES := book-lite book-dark tech-lite tech-dark
@@ -36,13 +37,15 @@ COVER_INTERIOR ?= 01-genesis.pdf
 COVER_PAPER ?= standard-color
 COVER_OUTPUT ?= genesis-cover.pdf
 COVER_BUILD ?= build/cover
+KDP_INPUT ?=
+KDP_OUTPUT ?=
 
 export TEXMFVAR = $(CACHE)
 # Keep every aux-file marker on its own line without splitting any of the
 # Pentateuch paths themselves.
 export max_print_line = 60
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover kdp kdp-preflight $(addsuffix -kdp,$(SUBSET_TARGETS)) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 define publish-and-open
 	@set -e; \
@@ -97,6 +100,9 @@ help:
 		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
 		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
 		'  make genesis      Build 01-genesis.pdf; numbered book targets also accept 1-genesis and 01-genesis forms.' \
+		'  make genesis-kdp  Build and preflight 01-genesis-kdp.pdf for a KDP no-bleed interior.' \
+		'  make kdp KDP_INPUT=file.pdf KDP_OUTPUT=file-kdp.pdf  Preflight any existing interior PDF.' \
+		'  make kdp-preflight KDP_INPUT=file.pdf  Report without changing the PDF.' \
 		'  make genesis-1    Build only Genesis 1 as test-genesis-1.pdf and open it.' \
 		'  make 1-samuel-1   Build only 1 Samuel 1; chapter targets share build/test/.' \
 		'  make samuel       Build 08-samuel.pdf; use 1-samuel or 2-samuel for the individual books.' \
@@ -120,6 +126,25 @@ ebook-validate:
 
 cover:
 	@bin/kdp-cover "$(COVER_INTERIOR)" "$(COVER_PAPER)" "$(COVER_OUTPUT)" "$(COVER_BUILD)"
+
+kdp:
+	@test -n "$(KDP_INPUT)" || { echo 'KDP_INPUT is required' >&2; exit 2; }
+	@bin/kdp-pdf "$(KDP_INPUT)" "$(if $(KDP_OUTPUT),$(KDP_OUTPUT),$(basename $(KDP_INPUT))-kdp.pdf)"
+
+kdp-preflight:
+	@test -n "$(KDP_INPUT)" || { echo 'KDP_INPUT is required' >&2; exit 2; }
+	@bin/kdp-preflight "$(KDP_INPUT)"
+
+$(addsuffix -kdp,$(SUBSET_TARGETS)): BUILD = build/$@
+$(addsuffix -kdp,$(SUBSET_TARGETS)): %-kdp:
+	@$(MAKE) BUILD="$(BUILD)" TRANSLATION="$(TRANSLATION)" build-translation
+	@bin/kdp-assets build/kdp-assets
+	@set -e; \
+	basename="$$(bin/book-subset --output-name "$*")"; \
+	bin/book-subset --build-dir "$(BUILD)" "$*"; \
+	$(LATEX) $(LATEXFLAGS) "$(KDP_LATEX_CONFIG)\input{$(BUILD)/$$basename.tex}"; \
+	bin/kdp-pdf "$(BUILD)/$$basename.pdf" "$$basename-kdp.pdf"
+	@$(MAKE) clean-stray-aux
 
 $(EBOOK_TARGETS):
 	$(MAKE) -C ebook "$(@:ebook-%=%)"

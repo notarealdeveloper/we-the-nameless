@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+output=${1:-build/kdp-assets}
+mkdir -p "$output"
+command -v magick >/dev/null || { echo "missing required tool: magick" >&2; exit 2; }
+
+# Same physical TeX dimensions; these print-only derivatives flatten alpha and
+# bring low-effective-resolution placements just above 300 PPI.
+magick img/brick.png -background white -alpha remove -alpha off "$output/brick.png"
+magick 01-genesis/include/seir-light.jpg -filter Lanczos -resize 155% -quality 95 "$output/seir-light.jpg"
+magick 01-genesis/include/mandrake.png -filter Lanczos -resize 145% "$output/mandrake.png"
+magick img/genesis-33-map.png -filter Lanczos -resize 105% "$output/genesis-33-map.png"
