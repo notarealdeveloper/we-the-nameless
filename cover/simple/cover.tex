@@ -36,15 +36,7 @@
 \newcommand{\SpineLabel}[2]{%
   \adjustbox{max width=\dimexpr\CoverSpineWidth-0.125in\relax}{\fontsize{#1}{#1}\selectfont #2}%
 }
-\newcommand{\LD}[1][1em]{%
-  \tikz[baseline=-0.15ex,x=#1,y=#1]{%
-    \def\LDscale{0.82}\def\LDgap{0.16}
-    \node[anchor=south west,inner sep=0pt,outer sep=0pt,scale=\LDscale]
-      at (0,0) {\sffamily\bfseries L};
-    \node[anchor=south west,inner sep=0pt,outer sep=0pt,rotate=180,scale=\LDscale]
-      at (1+\LDgap,1+\LDgap) {\sffamily\bfseries L};
-  }%
-}
+\input{ld-logo.tex}
 \def\CoverSpineLD{ld}
 \newcommand{\SpineName}{%
   \ifx\CoverSpine\CoverSpineLD

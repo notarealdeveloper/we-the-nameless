@@ -261,27 +261,7 @@
 \usepackage{tikz}
 \usetikzlibrary{calc,backgrounds,positioning}
 
-\newcommand{\LD}[1][1em]{%
-  \tikz[baseline=-0.15ex, x=#1, y=#1]{%
-    \def\LDscale{0.82}
-    \def\LDgap{0.16}
-
-    \node[
-      anchor=south west,
-      inner sep=0pt,
-      outer sep=0pt,
-      scale=\LDscale
-    ] at (0,0) {\sffamily\bfseries L};
-
-    \node[
-      anchor=south west,
-      inner sep=0pt,
-      outer sep=0pt,
-      rotate=180,
-      scale=\LDscale
-    ] at (1+\LDgap,1+\LDgap) {\sffamily\bfseries L};
-  }%
-}
+\input{ld-logo.tex}
 
 % Short, explicit dash commands for prose whose dash length matters.
 \newcommand{\ndash}{\textendash}
