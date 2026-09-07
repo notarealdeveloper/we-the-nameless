@@ -13,7 +13,11 @@ cd "$root"
 work="build/kdp/genesis/work/$variant"
 report="build/kdp/genesis/report/$variant"
 artifact="build/kdp/genesis/we-the-nameless-genesis-interior${variant:+-$variant}.pdf"
-[[ $variant == soft ]] && artifact="build/kdp/genesis/we-the-nameless-genesis-interior.pdf"
+cover_artifact="build/kdp/genesis/we-the-nameless-genesis-cover-$variant.pdf"
+if [[ $variant == soft ]]; then
+  artifact="build/kdp/genesis/we-the-nameless-genesis-interior.pdf"
+  cover_artifact="build/kdp/genesis/we-the-nameless-genesis-cover.pdf"
+fi
 reference="$work/reference.pdf"
 candidate="$work/final.candidate.pdf"
 
@@ -22,7 +26,7 @@ for tool in gs qpdf pdfinfo pdffonts pdftotext pdfimages mutool pdftoppm python3
 done
 
 source_digest() {
-  find Makefile master.tex bin 01-genesis cover img fonts -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum | awk '{print $1}'
+  find Makefile master.tex bin 01-genesis cover img fonts -type f -print0 | sort -z | xargs -0 -n1 sha256sum | sha256sum /dev/stdin | awk '{print $1}'
 }
 
 if $check; then
@@ -31,21 +35,21 @@ if $check; then
   bin/kdp-inspect "$reference" "$work/reference-inspection.json"
   bin/kdp-inspect "$artifact" "$work/final-inspection.json"
   bin/kdp-validate "$reference" "$artifact" "$report/structural-report.json" "$work/reference-inspection.json" "$work/final-inspection.json"
-  python3 bin/kdp-visual-compare "$reference" "$artifact" "$report/visual"
+  python3 bin/kdp-visual-compare --check-cache "$reference" "$artifact" "$report/visual" || python3 bin/kdp-visual-compare "$reference" "$artifact" "$report/visual"
   exit
 fi
 
 mkdir -p "$work/build" "$work/source" "$report" "$work/texmf-var"
-bin/kdp-source "$work/source"
 bin/kdp-assets "$work/assets"
 bin/book-subset --build-dir "$work/build" genesis
+bin/kdp-source "$work/source" "$work/build/01-genesis.tex"
 
 config='\def\ConfigOutputMode{book}\def\ConfigTheme{lite}\def\ConfigVerseLayout{horizontal}\def\ConfigCommentary{true}\def\ConfigEnglishTranslation{default}\def\IndividualBookTitlePageStyle{fancy}\def\ConfigColors{default}\def\ConfigApocrypha{apocryphal}\def\ConfigRedactor{uncensored}\def\ConfigCover{none}\def\ConfigKDP{true}'
 config="$config\\def\\KDPAssetDir{$work/assets}"
 : >"$work/lualatex.log"
 for pass in 1 2 3; do
   printf '[native] LuaLaTeX pass %s/3\n' "$pass"
-  TEXINPUTS="$work/source//:" TEXMFVAR="$work/texmf-var" lualatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory="$work/build" "$config\input{$work/build/01-genesis.tex}" >>"$work/lualatex.log" 2>&1
+  TEXMFVAR="$work/texmf-var" lualatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory="$work/build" "$config\input{$work/build/01-genesis.tex}" >>"$work/lualatex.log" 2>&1
 done
 cp "$work/build/01-genesis.pdf" "$reference"
 bin/kdp-inspect "$reference" "$work/reference-inspection.json" | tee "$work/reference-inspection.log"
@@ -76,7 +80,22 @@ bin/kdp-validate "$reference" "$candidate" "$report/structural-report.json" "$wo
 python3 bin/kdp-visual-compare "$reference" "$candidate" "$report/visual"
 
 mkdir -p "$(dirname "$artifact")"
+
+# The wrap remains a separate PDF, but receives the same font-independent
+# treatment because KDP ingests the cover through a separate validator.
+mkdir -p "$work/cover/build" "$report/cover-visual"
+bin/kdp-cover "$candidate" "$paper" "$work/cover-reference.pdf" "$work/cover/build" simple Genesis ld
+gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dCompatibilityLevel="$compat" \
+  -dNoOutputFonts -dAutoRotatePages=/None -sColorConversionStrategy=LeaveColorUnchanged \
+  -dDownsampleColorImages=false -dDownsampleGrayImages=false -dDownsampleMonoImages=false \
+  -dPreserveAnnots=false -sOutputFile="$work/cover-outlined.pdf" "$work/cover-reference.pdf" >"$work/cover-ghostscript.log" 2>&1
+qpdf --empty --pages "$work/cover-outlined.pdf" 1-z -- "${qopts[@]}" "$work/cover-candidate.pdf"
+qpdf --check "$work/cover-candidate.pdf"
+[[ -z $(pdftotext "$work/cover-candidate.pdf" - | tr -d '[:space:]') ]] || { echo "outlined cover still contains text" >&2; exit 1; }
+[[ $(pdffonts "$work/cover-candidate.pdf" | wc -l) -eq 2 ]] || { echo "outlined cover still contains fonts" >&2; exit 1; }
+python3 bin/kdp-visual-compare "$work/cover-reference.pdf" "$work/cover-candidate.pdf" "$report/cover-visual"
 mv -f "$candidate" "$artifact"
+mv -f "$work/cover-candidate.pdf" "$cover_artifact"
 source_digest >"$work/source.sha256"
 {
   printf 'variant=%s\npaper=%s\nink=%s\nbleed=%s\n' "$variant" "$paper" "$ink" "$bleed"
@@ -86,4 +105,4 @@ source_digest >"$work/source.sha256"
   pdftoppm -v 2>&1 | head -1 | sed 's/^/poppler=/'
   python3 -c 'import PIL,numpy; print("pillow="+PIL.__version__); print("numpy="+numpy.__version__)'
 } >"$work/tool-versions.txt"
-printf 'Validated upload candidate: %s\nReport: %s/visual/index.html\n' "$artifact" "$report"
+printf 'Validated interior: %s\nValidated separate cover: %s\nReport: %s/visual/index.html\n' "$artifact" "$cover_artifact" "$report"

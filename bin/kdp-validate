@@ -40,10 +40,11 @@ def outside_strings(raw):
             j=raw.find(b"\n",i); i=len(raw) if j<0 else j+1; continue
         out.append(c); i+=1
     return bytes(out)
-for obj in sorted(stream_ids | form_ids, key=int):
-    p=subprocess.run(["qpdf",f"--show-object={obj}","--filtered-stream-data",str(final_path)],capture_output=True)
+ids=sorted(stream_ids | form_ids, key=int)
+if ids:
+    p=subprocess.run(["mutool","show",str(final_path),*ids],capture_output=True)
     if p.returncode or re.search(rb'(?<![A-Za-z])(BT|Tf|Tj|TJ)(?=\s|\[)', outside_strings(p.stdout)):
-        fail.append(f"content stream {obj} contains text operators or could not be decoded"); break
+        fail.append("reachable page/Form content contains text operators or could not be decoded")
 for key, value in final["features"].items():
     if value and key != "transparency": fail.append(f"unwanted feature remains: {key}")
 if final["features"]["transparency"]: review.append("live transparency detected; source-level review required")

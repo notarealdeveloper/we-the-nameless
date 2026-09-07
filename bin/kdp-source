@@ -37,4 +37,9 @@ if not dialogue:
 apoc = (root / "01-genesis/apocrypha.tex").read_text().rstrip()
 addition = "\n\n\\Apocryphon{Genesis 22 Apocryphon\\\\The Son of J}\n\n" + "\n\n".join(dialogue) + "\n"
 (out / "01-genesis/apocrypha.tex").write_text(apoc + addition)
+if len(sys.argv) == 3:
+    generated = Path(sys.argv[2])
+    chapter_dir = generated.parent / "chapters/01-genesis"
+    shutil.copy2(out / "01-genesis/22.tex", chapter_dir / "22.tex")
+    shutil.copy2(out / "01-genesis/apocrypha.tex", chapter_dir / "apocrypha.tex")
 print(f"KDP source overlay: removed second Genesis 22; retained {len(dialogue)} A/B/narrator lines in The Son of J")
