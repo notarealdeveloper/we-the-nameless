@@ -49,10 +49,9 @@
 \fi
 
 % choices: none, or the basename of an image in img/covers/
-%\ifdefined\ConfigCover\else
-%    \def\ConfigCover{we-cover-10}
-%\fi
-\def\ConfigCover{none}
+\ifdefined\ConfigCover\else
+    \def\ConfigCover{none}
+\fi
 
 % choices: simple, fancy
 \ifdefined\ConfigCoverStyle\else
@@ -61,7 +60,7 @@
 
 % choices: nameless, ld
 \ifdefined\ConfigSpine\else
-    \def\ConfigSpine{nameless}
+    \def\ConfigSpine{ld}
 \fi
 
 \ifdefined\ConfigKDP\else
