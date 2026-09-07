@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+export WINEPREFIX="$HOME/.wine-kindle"
+unset WINEARCH
+
+INSTALLER="$HOME/.cache/kindle-wine/KindleForPC.exe"
+LOG="$HOME/kindle-wine.log"
+
+echo "=== Wine ==="
+wine --version
+
+echo
+echo "=== Installer ==="
+ls -lh "$INSTALLER"
+file "$INSTALLER"
+
+echo
+echo "=== Starting installer with Wine debug logging ==="
+echo "Log: $LOG"
+echo
+
+WINEDEBUG=+timestamp,+pid,+tid,+seh,+process,+loaddll \
+  wine "$INSTALLER" 2>&1 | tee "$LOG"
+
+STATUS=${PIPESTATUS[0]}
+
+echo
+echo "======================================"
+echo "wine exit status: $STATUS"
+echo "======================================"
+
+echo
+echo "=== Waiting for child Wine processes ==="
+wineserver -w
+
+echo
+echo "=== EXEs installed/modified recently ==="
+find "$WINEPREFIX/drive_c" -type f -iname '*.exe' -printf '%T@ %p\n' \
+  | sort -nr \
+  | head -50 \
+  | cut -d' ' -f2-
+
+echo
+echo "=== Anything named Kindle/Amazon ==="
+find "$WINEPREFIX/drive_c" \
+  \( -iname '*kindle*' -o -iname '*amazon*' \) \
+  -print
+
+echo
+echo "=== Likely installer logs ==="
+find "$WINEPREFIX/drive_c/users/$USER" "$WINEPREFIX/drive_c/windows/temp" \
+  -type f \( -iname '*.log' -o -iname '*.txt' \) \
+  -printf '%T@ %p\n' 2>/dev/null \
+  | sort -nr \
+  | head -30 \
+  | cut -d' ' -f2-
+
+echo
+echo "=== Interesting Wine errors ==="
+grep -Ei 'err:|exception|failed|failure|fatal|unhandled' "$LOG" | tail -100 || true
+
+echo
+echo "FULL LOG: $LOG"

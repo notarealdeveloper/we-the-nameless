@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+INSTALLER="$HOME/.cache/kindle-wine/KindleForPC.exe"
+INSTALLER_URL="https://kindleforpc.s3.amazonaws.com/71006/KindleForPC-installer-2.9.71006.exe"
+
+mkdir -p "$HOME/.cache/kindle-wine"
+
+if [[ ! -f "$INSTALLER" ]]; then
+    echo "=== Downloading Kindle installer ==="
+    curl -fL "$INSTALLER_URL" -o "$INSTALLER" || exit 1
+fi
+
+test_wine() {
+    NAME="$1"
+    NIXPKGS="$2"
+    PREFIX="$3"
+    LOG="$HOME/kindle-$NAME.log"
+
+    echo
+    echo "============================================================"
+    echo " TESTING $NAME"
+    echo " nixpkgs: $NIXPKGS"
+    echo " prefix:  $PREFIX"
+    echo "============================================================"
+    echo
+
+    rm -rf "$PREFIX"
+
+    nix shell "$NIXPKGS#wineWowPackages.stable" --command bash -c '
+        set -e
+
+        export WINEPREFIX="$1"
+        unset WINEARCH
+
+        echo "=== Wine version ==="
+        wine --version
+
+        echo
+        echo "=== Creating fresh prefix ==="
+        wineboot -u
+
+        echo
+        echo "=== Installing Kindle ==="
+        wine "$2"
+
+        wineserver -w || true
+
+        echo
+        echo "=== Looking for Kindle.exe ==="
+        KINDLE="$WINEPREFIX/drive_c/Program Files (x86)/Amazon/Kindle/Kindle.exe"
+
+        if [[ ! -f "$KINDLE" ]]; then
+            echo "ERROR: Kindle.exe was not installed."
+            find "$WINEPREFIX/drive_c" -iname "*kindle*.exe" -print || true
+            exit 20
+        fi
+
+        echo "Found: $KINDLE"
+
+        echo
+        echo "=== Testing Kindle for 15 seconds ==="
+
+        rm -f "$3"
+
+        set +e
+        timeout 15s env WINEDEBUG=+seh wine "$KINDLE" >"$3" 2>&1
+        STATUS=$?
+        set -e
+
+        echo "Test exit status: $STATUS"
+
+        if grep -q "Got unexpected trap 0" "$3"; then
+            echo
+            echo "FAIL: Kindle hit Wine '\''Got unexpected trap 0'\''."
+            exit 30
+        fi
+
+        if [[ $STATUS -eq 124 ]]; then
+            echo
+            echo "SUCCESS: Kindle remained alive for the full 15-second test."
+            wineserver -k 2>/dev/null || true
+            exit 0
+        fi
+
+        if [[ $STATUS -eq 0 ]]; then
+            echo
+            echo "Kindle exited cleanly before 15 seconds."
+            echo "Treating this as suspicious rather than success."
+            exit 31
+        fi
+
+        echo
+        echo "FAIL: Kindle exited with status $STATUS."
+        exit 32
+    ' bash "$PREFIX" "$INSTALLER" "$LOG"
+
+    RESULT=$?
+
+    echo
+    echo "=== $NAME result: $RESULT ==="
+    echo "Log: $LOG"
+
+    return "$RESULT"
+}
+
+WINE9_PREFIX="$HOME/.wine-kindle-wine9"
+WINE8_PREFIX="$HOME/.wine-kindle-wine8"
+
+if test_wine \
+    "wine9" \
+    "github:NixOS/nixpkgs/nixos-24.05" \
+    "$WINE9_PREFIX"
+then
+    WINNER="wine9"
+    WINNER_NIXPKGS="github:NixOS/nixpkgs/nixos-24.05"
+    WINNER_PREFIX="$WINE9_PREFIX"
+else
+    echo
+    echo "Wine 9 failed. Falling back to Wine 8..."
+    echo
+
+    if test_wine \
+        "wine8" \
+        "github:NixOS/nixpkgs/nixos-23.11" \
+        "$WINE8_PREFIX"
+    then
+        WINNER="wine8"
+        WINNER_NIXPKGS="github:NixOS/nixpkgs/nixos-23.11"
+        WINNER_PREFIX="$WINE8_PREFIX"
+    else
+        echo
+        echo "============================================================"
+        echo " BOTH WINE 9 AND WINE 8 FAILED"
+        echo "============================================================"
+        echo
+        echo "Wine 9 log: $HOME/kindle-wine9.log"
+        echo "Wine 8 log: $HOME/kindle-wine8.log"
+        exit 1
+    fi
+fi
+
+echo
+echo "============================================================"
+echo " WINNER: $WINNER"
+echo "============================================================"
+echo
+echo "Prefix:"
+echo "  $WINNER_PREFIX"
+echo
+echo "Launching Kindle normally now..."
+echo
+
+exec nix shell "$WINNER_NIXPKGS#wineWowPackages.stable" --command bash -c '
+    export WINEPREFIX="$1"
+    unset WINEARCH
+    exec wine "$WINEPREFIX/drive_c/Program Files (x86)/Amazon/Kindle/Kindle.exe"
+' bash "$WINNER_PREFIX"
