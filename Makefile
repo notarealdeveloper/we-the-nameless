@@ -13,6 +13,8 @@ COLORS ?= $(call read-config,ConfigColors)
 APOCRYPHA ?= $(call read-config,ConfigApocrypha)
 REDACTOR ?= $(call read-config,ConfigRedactor)
 COVER ?= $(call read-config,ConfigCover)
+COVER_STYLE ?= $(call read-config,ConfigCoverStyle)
+SPINE ?= $(call read-config,ConfigSpine)
 BUILD ?= build/$(OUTPUT_MODE)-$(THEME)
 CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
@@ -37,7 +39,6 @@ KDP_TARGETS := $(addsuffix -kdp,$(SUBSET_TARGETS))
 COVER_TARGETS := $(addsuffix -cover,$(SUBSET_TARGETS))
 COVER_INTERIOR ?= 01-genesis.pdf
 COVER_PAPER ?= standard-color
-COVER_STYLE ?= simple
 COVER_VOLUME ?=
 COVER_OUTPUT ?= 01-genesis-cover.pdf
 COVER_BUILD ?= build/cover
@@ -130,7 +131,7 @@ ebook-validate:
 	$(MAKE) -C ebook validate
 
 cover:
-	@bin/kdp-cover "$(COVER_INTERIOR)" "$(COVER_PAPER)" "$(COVER_OUTPUT)" "$(COVER_BUILD)" "$(COVER_STYLE)" "$(COVER_VOLUME)"
+	@bin/kdp-cover "$(COVER_INTERIOR)" "$(COVER_PAPER)" "$(COVER_OUTPUT)" "$(COVER_BUILD)" "$(COVER_STYLE)" "$(COVER_VOLUME)" "$(SPINE)"
 
 kdp:
 	@test -n "$(KDP_INPUT)" || { echo 'KDP_INPUT is required' >&2; exit 2; }
@@ -152,7 +153,7 @@ $(COVER_TARGETS): %-cover:
 	title="$$(printf '%s\n' "$${basename#??-}" | awk -F- '{ for (i=1; i<=NF; i++) { if ($$i ~ /^[a-z]/) $$i=toupper(substr($$i,1,1)) substr($$i,2); printf "%s%s", (i > 1 ? " " : ""), $$i } }')"; \
 	interior="$(if $(filter command line environment override,$(origin COVER_INTERIOR)),$(COVER_INTERIOR),)"; \
 	output="$(if $(filter command line environment override,$(origin COVER_OUTPUT)),$(COVER_OUTPUT),)"; \
-	bin/kdp-cover "$${interior:-$$basename.pdf}" "$(COVER_PAPER)" "$${output:-$$basename-cover.pdf}" "$(COVER_BUILD)/$$basename/$(COVER_STYLE)" "$(COVER_STYLE)" "$(if $(COVER_VOLUME),$(COVER_VOLUME),$${title})"
+	bin/kdp-cover "$${interior:-$$basename.pdf}" "$(COVER_PAPER)" "$${output:-$$basename-cover.pdf}" "$(COVER_BUILD)/$$basename/$(COVER_STYLE)" "$(COVER_STYLE)" "$(if $(COVER_VOLUME),$(COVER_VOLUME),$${title})" "$(SPINE)"
 
 $(EBOOK_TARGETS):
 	$(MAKE) -C ebook "$(@:%-ebook=%)"

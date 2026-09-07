@@ -7,6 +7,7 @@ output=${3:-genesis-cover.pdf}
 build_dir=${4:-build/cover}
 style=${5:-simple}
 volume=${6:-Genesis}
+spine=${7:-nameless}
 project_dir="cover/$style"
 
 if [[ ! -f "$interior" ]]; then
@@ -15,6 +16,10 @@ if [[ ! -f "$interior" ]]; then
 fi
 if [[ ! -f "$project_dir/cover.tex" ]]; then
     printf 'Unknown cover style: %s\nExpected %s/cover.tex.\n' "$style" "$project_dir" >&2
+    exit 2
+fi
+if [[ "$spine" != nameless && "$spine" != ld ]]; then
+    printf 'Unsupported spine style: %s\nUse nameless or ld.\n' "$spine" >&2
     exit 2
 fi
 
@@ -58,7 +63,7 @@ for pass in 1 2; do
         -interaction=nonstopmode -halt-on-error -file-line-error \
         -output-directory="$build_dir" \
         -jobname=cover \
-        "\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}" \
+        "\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverSpine{$spine}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}" \
         >/dev/null
 done
 cp "$build_dir/cover.pdf" "$output"
