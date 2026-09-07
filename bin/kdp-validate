@@ -19,10 +19,31 @@ for a, b in zip(ref["page_geometry"], final["page_geometry"]):
 fonts = run("pdffonts", str(final_path)).stdout.splitlines()[2:]
 if any(x.strip() for x in fonts): fail.append("pdffonts reports remaining fonts")
 if run("pdftotext", str(final_path), "-").stdout.strip(): fail.append("pdftotext found remaining text")
-objects = run("qpdf", "--json=1", "--json-key=objects", "--json-stream-data=inline", str(final_path)).stdout
+objects = run("qpdf", "--json=1", "--json-key=objects", str(final_path)).stdout
 if re.search(r'"/Font"\s*:', objects): fail.append("reachable object dictionaries contain /Font resources")
-# Content is decoded by qpdf; these operators outside strings are a defense-in-depth check.
-if re.search(r'(?<![A-Za-z])(BT|Tf|Tj|TJ|\'|\")(?=\s|\[)', objects): fail.append("content streams contain text operators")
+# Ask qpdf to decode only page/Form content streams, then lex outside PDF strings.
+stream_ids = set(re.findall(r"^\s+(?:content: )?(\d+) 0 R$", run("qpdf", "--show-pages", str(final_path)).stdout, re.M))
+form_ids = set(re.findall(r'"obj:(\d+) 0 R"\s*:\s*\{.*?"/Subtype"\s*:\s*"/Form"', objects, re.S))
+def outside_strings(raw):
+    out=[]; i=0; depth=0
+    while i < len(raw):
+        c=raw[i]
+        if depth:
+            if c==92: i+=2; continue
+            if c==40: depth+=1
+            elif c==41: depth-=1
+            i+=1; continue
+        if c==40: depth=1; i+=1; continue
+        if c==60 and i+1<len(raw) and raw[i+1]!=60:
+            i=raw.find(b">",i+1)+1 or len(raw); continue
+        if c==37:
+            j=raw.find(b"\n",i); i=len(raw) if j<0 else j+1; continue
+        out.append(c); i+=1
+    return bytes(out)
+for obj in sorted(stream_ids | form_ids, key=int):
+    p=subprocess.run(["qpdf",f"--show-object={obj}","--filtered-stream-data",str(final_path)],capture_output=True)
+    if p.returncode or re.search(rb'(?<![A-Za-z])(BT|Tf|Tj|TJ)(?=\s|\[)', outside_strings(p.stdout)):
+        fail.append(f"content stream {obj} contains text operators or could not be decoded"); break
 for key, value in final["features"].items():
     if value and key != "transparency": fail.append(f"unwanted feature remains: {key}")
 if final["features"]["transparency"]: review.append("live transparency detected; source-level review required")
