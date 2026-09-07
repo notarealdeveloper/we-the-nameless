@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Turn Apocrypha.md into a publisher's introduction to 01-genesis/apocrypha.tex right below the apocrypha title on the title page (filling in details when you can infer what they are, cleaning up wording a bit, adding my parentheticals as footnotes in complete sentences that flesh out in clear direct simple language what the 'sects' of We The Nameless interpretation are, LD is just the publisher, and claims to be non-ideological and claims not to be the authors. Also add to the end of the apocrypha the four comics in 'img/comics/*[1234]*'. If you're not sure what to do with any section in Apocrypha.tex, add it to the file as a TeX comment.
+EOF
