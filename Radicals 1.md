@@ -1,16 +1,22 @@
-| Book | Character | Mandarin | 6 letters | 5 letters | 4 letters |
-| ---- | :-------: | -------- | --------- | --------- | --------- |
-| Gen. |     根     | gēn      | Origin    | Roots     | Seed      |
-| Exo. |     出     | chū      | Wander    | Leave     | Exit      |
-| Lev. |     示     | shì      | Priest    | Rules     | Laws      |
-| Num. |     屯     | tún      | Desert    | March     | Wild      |
-| Dtr. |     言     | shēn     | Speech    | Moses     | Word      |
-| Jos. |     土     | tǔ       | Occupy    | Claim     | Land      |
-| Jud. |     士     | shì      | Judges    | Tribe     | Clan      |
-| Sam. |     王     | wáng     | United    | David     | Saul      |
-| Kgs. |     亡     | wáng     | Rulers    | Kings     | Fall      |
-| Dud. |     曰     | yuē      | Speech    | Logos     | Word      |
+| Book | Character | Mandarin | 6 letters         | 5 letters | 4 letters |
+| ---- | :-------: | -------- | ----------------- | --------- | --------- |
+| Gen. |     根     | gēn      | Origin            | Roots     | Seed      |
+| Exo. |     出     | chū      | Wander            | Leave     | Exit      |
+| Lev. |     示     | shì      | Priest            | Rules     | Laws      |
+| Num. |     干     | tún      | Desert            | March     | Wild      |
+| Dtr. |     申     | shēn     | Speech            | Again     | Drew      |
+| Jos. |     土     | tǔ       | Occupy            | Claim     | Land      |
+| Jud. |     士     | shì      | Judges            | Tribe     | Clan      |
+| Sam. |     王     | wáng     | United            | David     | Saul      |
+| Kgs. |     亡     | wáng     | Rulers            | Kings     | Fall      |
+| Dud. |     曰     | yuē      | e6 97 a5 e6 9c 88 | Logos     | Word      |
 
+1. Exodus is good. Means leaving. Looks like two mountains. Sinai/Horeb.
+2. Can we use 主 somewhere? Maybe Kings? Means lord, and Zhu sounds like "Jew." Would work well for Kings.
+3. We need something better for Numbers. Something simple that connotes as many of the following as possible: war, wandering, wilderness, rebellion, complaining, census, numbers, spies, desert, cloud, fire. PROGRESS: 干 looks good!
+
+(10). Dude. `chr(ord('日') ^ ord('月')) = ˭`
+- `˭`. A symbol for overtly indicating lack of aspiration.
 
 ## Why these characters
 
@@ -26,21 +32,25 @@ This is my strongest replacement for 法. 示 is being used as the religious/sac
 Num. — 屯: gathering, encampment—and difficulty.  
 This is a substantial improvement over merely depicting the desert. At the reading tún, 屯 covers gathering, assembling, and stationing troops; it can also denote a camp. At its other reading, zhūn, it means difficulty, including in the _I Ching_. That gives you an unusually good double reading: an encamped community undergoing hardship. I’d use it to connect the censuses and preparations with the stalled journey, rather than reducing the book to its scenery. ([Humanum](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=%E5%B1%AF "漢語多功能字庫"))
 
-Dtr. — 申: stating, explaining, reiterating.  
-This compresses the two ideas in your original Second / Word row better than 言 alone. 申 has senses of stating or explaining, and also “again” or repetition. The classical phrase 申命, reiterating commands, appears in the _I Ching_. So the character can suggest not just words, but the injunction delivered again. ([Revised Mandarin Dictionary](https://dict.revised.moe.edu.tw/dictView.jsp?ID=8983&la=0&powerMode=0&utm_source=chatgpt.com "< 申: ㄕㄣ>辭典檢視- 教育部《重編國語辭典修訂本》2021"))
+Dtr. — 申: stating, explaining, reiterating, "to draw out." (Moses' name etymology)
+This compresses the two ideas in your original Second / Word row better than 言 alone. 申 has senses of stating or explaining, and also “again” or repetition. The classical phrase 申命, reiterating commands, appears in the _I Ching_. So the character can suggest not just words, but the injunction delivered again. ([Revised Mandarin Dictionary](https://dict.revised.moe.edu.tw/dictView.jsp?ID=8983&la=0&powerMode=0&utm_source=chatgpt.com "< 申: ㄕㄣ>辭典檢視- 教育部《重編國語辭典修訂本》2021")). “to extend; to state; to request; to announce; again.” From [引](https://en.wiktionary.org/wiki/%E5%BC%95#Chinese "引") (_[OC](https://en.wikipedia.org/wiki/Old_Chinese "w:Old Chinese") *linʔ, *lins_, “to pull; to draw”) + devoicing causative or iterative.
 
 There’s also a lovely compositional bonus: 示/礻 + 申 → 神, “deity.” Your Leviticus and Deuteronomy emblems supply its two components. That is a visual joke, not an etymology claiming that 神 means “ritual plus repetition.” ([Humanum](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=%E7%94%B3 "漢語多功能字庫"))
 
 Jos. — 土: land, territory, possession.  
-I prefer this to 戰 because Joshua is not only about fighting: it is about taking possession of land and distributing it. 土 gives you the object of the fighting, the promised inheritance, and the territorial organization afterward—all in three strokes. ([Humanum](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=%E5%9C%9F "漢語多功能字庫"))
-
-The strongest alternative is 入, “enter.” That would make Exodus and Joshua 出 → 入, _going out → going in_. I slightly prefer 土 here because of the sequence it creates with the following books. ([Humanum](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=%E5%85%A5 "漢語多功能字庫"))
+I prefer this to 戰 because Joshua is not only about fighting: it is about taking possession of land and distributing it. 土 gives you the object of the fighting, the promised inheritance, and the territorial organization afterward—all in three strokes. ([Humanum](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=%E5%9C%9F "漢語多功能字庫")). The strongest alternative is 入, “enter.” That would make Exodus and Joshua 出 → 入, _going out → going in_. I slightly prefer 土 here because of the sequence it creates with the following books. ([Humanum](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=%E5%85%A5 "漢語多功能字庫"))
 
 Jud. — 士: warrior, officer, man of standing.  
 This is much better than the courtroom associations of 判. 士 has an old martial sense, while the book’s “judges” are leaders and deliverers rather than simply specialized judicial officials. Feuds then supplies the darker side of that leadership: the narrative ultimately reaches intertribal warfare and political disorder. ([Humanum](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=%E5%A3%AB "漢語多功能字庫"))
 
 Sam. / Kgs. — 王 → 亡: kingship made, kingship lost.  
 This is the best sound pun in the set. In modern Mandarin, 王, “king,” and 亡, “perish / be lost,” are both wáng. ([Chinese Text Project](https://ctext.org/dictionary.pl?char=%E6%B6%87%E7%8E%8B&if=en&utm_source=chatgpt.com "涇王"))
+
+Kgs. 亡.
+1. to [destroy](https://en.wiktionary.org/wiki/destroy#English "destroy")
+2. to [fall](https://en.wiktionary.org/wiki/fall#English "fall"), to [collapse](https://en.wiktionary.org/wiki/collapse#English "collapse")
+3. to not [exist](https://en.wiktionary.org/wiki/exist#English "exist"), [nonexistent](https://en.wiktionary.org/wiki/nonexistent#English "nonexistent")
+4. to [run](https://en.wiktionary.org/wiki/run#English "run") away
 
 I’d use that to frame Samuel as the making and contesting of kingship, and Kings as its eventual unmaking. The narrative moves from the transition to monarchy under Samuel, Saul, and David to the division and eventual downfall of both kingdoms. Throne / Crown / Rise against Rulers / Ruins / Fall makes that contrast explicit. Using 亡 for Kings is deliberately interpretive, rather than a neutral abbreviation—but that is what makes it interesting. ([USCCB](https://bible.usccb.org/bible/1kings/0 "1 Kings, THE BOOKS OF KINGS | USCCB"))
 
