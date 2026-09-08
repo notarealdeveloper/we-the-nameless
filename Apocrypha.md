@@ -30,15 +30,3 @@ The group then made yet another leap of logic, assuming that this string was in 
 
 ---
 
-Je𓈖
-
-Another group:
-
-Spelled with a letter the group refers to as "tripleyou."
-
-Often parsed: Jwvɴиᴧ
-
-Namely: Juvenile.
-
-... The primary function of this group appears to be distributing what they claim to be copies of the manuscript sanctioned by other more respectable groups, with no modifications to any serious issues of theology or translation, preferring instead to insert minor nearly unnoticeable rewordings of a word here and there such that the result spells something like "tits" when read vertically.
-
