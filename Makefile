@@ -187,7 +187,7 @@ pdf: build-pdf
 ci: build-pdf
 
 again:
-	@if [ -f $(PDF) ]; then mv $(PDF) mister.pdf; fi
+	@if [ -f $(BUILD)/$(PDF) ]; then mv -v $(BUILD)/$(PDF) mister.pdf; fi
 	$(MAKE) all
 
 build-prepare:
