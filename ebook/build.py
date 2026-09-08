@@ -995,7 +995,7 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             # A handful of flush-left rhetorical diagrams use positive em
             # indentation to show logical nesting. Preserve that information
             # with bounded relative spacing; discard all other paper geometry.
-            indent = re.fullmatch(r"\+?([246])(?:\.0)?em", body.strip())
+            indent = re.fullmatch(r"\+?([1-6])(?:\.0)?em", body.strip())
             if indent:
                 out.append(f'<span class="indent-{indent.group(1)}" aria-hidden="true"></span>')
             i = end

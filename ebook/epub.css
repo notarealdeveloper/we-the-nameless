@@ -129,8 +129,9 @@ h2.chapter-title { page-break-before: always; break-before: page; font-family: s
   text-align: center; font-size: .78em; margin: 0 .12em;
 }
 .stacked-reading > span { display: block; white-space: nowrap; }
-.indent-2, .indent-4, .indent-6 { display: inline-block; }
-.indent-2 { width: 2em; } .indent-4 { width: 4em; } .indent-6 { width: 6em; }
+.indent-1, .indent-2, .indent-3, .indent-4, .indent-5, .indent-6 { display: inline-block; }
+.indent-1 { width: 1em; } .indent-2 { width: 2em; } .indent-3 { width: 3em; }
+.indent-4 { width: 4em; } .indent-5 { width: 5em; } .indent-6 { width: 6em; }
 .redacted { background: #0046aa; color: transparent; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 blockquote { margin: .8em 1em; }
 .quotation, .embedded-note {

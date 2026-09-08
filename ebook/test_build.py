@@ -128,6 +128,21 @@ class ConversionTests(unittest.TestCase):
         self.assertIn(">hildren </span>o", rendered)
         self.assertIn(">h my oh </span>me", rendered)
 
+    def test_commentary_indentation_preserves_each_authored_level(self) -> None:
+        rendered = build.tex_to_markdown(
+            r"\hspace{1em}one \hspace{2em}two \hspace{3em}three"
+        )
+        self.assertIn('class="indent-1"', rendered)
+        self.assertIn('class="indent-2"', rendered)
+        self.assertIn('class="indent-3"', rendered)
+        stylesheet = (Path(build.HERE) / "epub.css").read_text()
+        self.assertIn(".indent-1 { width: 1em; }", stylesheet)
+        self.assertIn(".indent-3 { width: 3em; }", stylesheet)
+
+    def test_multiline_annotation_keeps_paragraphs_without_footnotes(self) -> None:
+        rendered = build.tex_to_markdown("\\aB{First.\n\nSecond.\n\nThird.}")
+        self.assertEqual(rendered.count('class="annotation-paragraph"'), 3)
+
     def test_tex_single_quotes_become_unicode_typographic_quotes(self) -> None:
         rendered = build.tex_to_markdown(r"Putting an `i' at the end.")
         self.assertEqual(rendered, "Putting an ‘i’ at the end.")
