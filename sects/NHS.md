@@ -3,6 +3,12 @@
 > Trees are the roots of the underground.
 > -Nth Stair Handbook
 
+Also known as
+
+1. HH
+2. NN
+3. SS
+
 Often described as the organized crime wing of the Nameless.
 
 Aside from the now defunct Nth Stair Houses, there is no concrete evidence of this assertion.
@@ -11,7 +17,8 @@ Said to use nonprofits, drug and alcohol recovery facilities, halfway houses, an
 
 The nature of said activities is largely unknown, but believed to be related in some way to education.
 
-Often stereotyped as living in the basements of businesses in a sort of obscene harem of a teacher and many students, though these assertions are unsubstantiated.
+Their version of the text includes writings not present in others, most notably a document of unclear genre known as _Radicalize._
 
-Their version of We The Nameless includes writings not present in others, most notably a document of unclear genre known as _Radicalize._
+### Apocrypha
 
+1. Radicalize.

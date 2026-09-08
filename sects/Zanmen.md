@@ -6,12 +6,23 @@ Also known as
 2. 我們
 3. Women
 4. 咱a們men
+5. Inclusive We
+6. Babel _(disputed; possibly a distinct sect)_
 
 Beliefs unclear.
 
 Appears to be a mystic sect.
 
 Often compared to Kaballah, and their writings to the Zophar.
+
+### Apocrypha
+
+In addition to the main text, this group's version of the We The Nameless includes the following apocryphal and pseudepigraphic texts.
+
+1. Zanmen. (A virtually unintelligible set of documents, not generally recognized as a "corpus" per se, but as a tradition dating back, the sect asserts, to the Authors of _We._)
+2. All other apocrypha, apparently.
+3. RFC Ω.
+4. All other pseudepigrapha too, apparently.
 
 ### Sample of writings
 
@@ -60,3 +71,4 @@ _(Editor's Note: The manuscript abruptly ends here.)_
 [^11]: Lit. Farmacia n' /ˈiːdəm/.
 
 [^12]: Lit. /ˈiːdəmˌpoʊtəns/.
+
