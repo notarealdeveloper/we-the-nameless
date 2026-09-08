@@ -7,18 +7,18 @@ My preferred version for your **whole-set visual brief** is:
 
 Every character is now **three to five strokes**. More importantly, the set increasingly looks like transformations of a shared alphabet rather than ten independently selected illustrations.
 
-|Book|Character|Strokes|Mandarin|6 letters|5 letters|4 letters|
-|---|:-:|:-:|---|---|---|---|
-|Gen.|**元**|4|yuán|Origin|Roots|Seed|
-|Exo.|**出**|5|chū|Wander|Leave|Exit|
-|Lev.|**示**|5|shì|Priest|**Rites**|Laws|
-|Num.|**干**|3|gān|Desert|March|Wild|
-|Dtr.|**申**|5|shēn|Speech|Moses|Word|
-|Jos.|**土**|3|tǔ|Occupy|Claim|Land|
-|Jud.|**士**|3|shì|Judges|Tribe|Clan|
-|Sam.|**王**|4|wáng|United|David|Saul|
-|Kgs.|**主**|5|zhǔ|Rulers|Kings|Fall|
-|Dud.|**曰**|4|yuē|Speech|Logos|Word|
+| Book | Character | Strokes | Mandarin | 6 letters | 5 letters | 4 letters |
+| ---- | :-------: | :-----: | -------- | --------- | --------- | --------- |
+| Gen. |   **元**   |    4    | yuán     | Origin    | Roots     | Seed      |
+| Exo. |   **出**   |    5    | chū      | Wander    | Leave     | Exit      |
+| Lev. |   **示**   |    5    | shì      | Priest    | **Rites** | Laws      |
+| Num. |   **干**   |    3    | gān      | Desert    | March     | Wild      |
+| Dtr. |   **申**   |    5    | shēn     | Speech    | Moses     | Word      |
+| Jos. |   **土**   |    3    | tǔ       | Occupy    | Claim     | Land      |
+| Jud. |   **士**   |    3    | shì      | Judges    | Tribe     | Clan      |
+| Sam. |   **王**   |    4    | wáng     | United    | David     | Saul      |
+| Kgs. |   **主**   |    5    | zhǔ      | Rulers    | Kings     | Fall      |
+| Dud. |   **曰**   |    4    | yuē      | Speech    | Logos     | Word      |
 
 The English columns remain thematic labels, not literal translations. **亡 is still a serious alternative to 主**: the choice is between a stronger graphic/ritual network and a stronger tragic ending.
 

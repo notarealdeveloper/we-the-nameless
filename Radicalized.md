@@ -37,80 +37,80 @@ The supplied master.tex chapter summaries are the coverage checklist. The full c
 
 Source inventory: supplied master.tex, lines 13668–13868. The ranges and titles below are the proposed resegmentation.
 
-| Sign | Reading | Microbook | Passage | What holds it together |
-|:---:|---|---|---|---|
-| 天 | tiān | Heaven and Earth | 1:1–2:3 | The ordered world: light, divisions, living things, humanity, and rest. |
-| 人 | rén | Humanity | 2:4–3:24 | Earth becomes a person; companionship, desire, knowledge, work, and expulsion follow. |
-| 血 | xuè | Bloodlines | 4:1–6:8 | Brothers, murder, descendants, and multiplying violence: blood as kinship and bloodshed. |
-| 水 | shuǐ | The Flood | 6:9–9:29 | The household carried through destruction; renewed life, covenant, and another family rupture. |
-| 分 | fēn | The Scattering | 10:1–11:26 | Peoples and languages divide; branching genealogies narrow toward one family. |
-| 行 | xíng | Go | 11:27–14:24 | Terah’s migration, Abram’s departure, Egypt, separation from Lot, and the rescue expedition. |
-| 切 | qiē | The Cut | 15:1–17:27 | Covenant, disputed offspring, renamed ancestors, and circumcision: promise written into divided flesh. |
-| 客 | kè | Strangers | 18:1–19:38 | Abraham’s visitors and Lot’s guests; hospitality, threatened households, destruction, and survival. |
-| 子 | zǐ | The Son | 20:1–22:24 | The threatened mother, the long-awaited child, the expelled child, and the endangered heir. |
-| 代 | dài | Succession | 23:1–25:18 | Sarah’s burial, Rebekah’s arrival, Abraham’s death, and the disposition of his descendants. |
-| 兄 | xiōng | Birthright | 25:19–28:9 | Twins, paternal promises, contested inheritance, and the stolen blessing. |
-| 易 | yì | Exchange | 28:10–31:55 | Jacob encounters altered terms: brides, wages, flocks, loyalties, and finally a negotiated departure. |
-| 回 | huí | Homeward | 32:1–36:43 | Return, wrestling, reconciliation, new names, bereavements, and the two brothers’ separate futures. |
-| 衣 | yī | Clothing | 37:1–41:57 | Joseph’s robe, Tamar’s veil, an accusation-cloak, and royal dress: identities and fortunes change hands. |
-| 合 | hé | Recognition | 42:1–45:28 | The brothers are tested; Judah offers himself; concealment gives way to reunion. |
-| 禾 | hé | Grain | 46:1–47:27 | A household migrates for food; hunger transfers Egypt’s property and labor to Pharaoh. |
-| 骨 | gǔ | Bones | 47:28–50:26 | Final blessings, inheritances, burials, and the demand that Joseph’s remains eventually leave Egypt. |
+| Sign | Reading | Microbook        | Passage     | What holds it together                                                                                   |
+| :--: | ------- | ---------------- | ----------- | -------------------------------------------------------------------------------------------------------- |
+|  天   | tiān    | Heaven and Earth | 1:1–2:3     | The ordered world: light, divisions, living things, humanity, and rest.                                  |
+|  人   | rén     | Humanity         | 2:4–3:24    | Earth becomes a person; companionship, desire, knowledge, work, and expulsion follow.                    |
+|  血   | xuè     | Bloodlines       | 4:1–6:8     | Brothers, murder, descendants, and multiplying violence: blood as kinship and bloodshed.                 |
+|  水   | shuǐ    | The Flood        | 6:9–9:29    | The household carried through destruction; renewed life, covenant, and another family rupture.           |
+|  分   | fēn     | The Scattering   | 10:1–11:26  | Peoples and languages divide; branching genealogies narrow toward one family.                            |
+|  行   | xíng    | Go               | 11:27–14:24 | Terah’s migration, Abram’s departure, Egypt, separation from Lot, and the rescue expedition.             |
+|  刀   | dāo     | The Cut          | 15:1–17:27  | Covenant, disputed offspring, renamed ancestors, and circumcision: promise written into divided flesh.   |
+|  客   | kè      | Guests           | 18:1–19:38  | Abraham’s visitors and Lot’s guests; hospitality, threatened households, destruction, and survival.      |
+|  子   | zǐ      | The Son          | 20:1–22:24  | The threatened mother, the long-awaited child, the expelled child, and the endangered heir.              |
+|  代   | dài     | Succession       | 23:1–25:18  | Sarah’s death and burial, Rebekah’s arrival, Abraham’s death, and the disposition of his descendants.    |
+|  兄   | xiōng   | Birthright       | 25:19–28:9  | Twins, paternal promises, contested inheritance, and the stolen blessing.                                |
+|  易   | yì      | Exchange         | 28:10–31:55 | Jacob encounters altered terms: brides, wages, flocks, loyalties, and finally a negotiated departure.    |
+|  回   | huí     | Homeward         | 32:1–36:43  | Return, wrestling, reconciliation, new names, bereavements, and the two brothers’ separate futures.      |
+|  衣   | yī      | Clothing         | 37:1–41:57  | Joseph’s robe, Tamar’s veil, an accusation-cloak, and royal dress: identities and fortunes change hands. |
+|  合   | hé      | Recognition      | 42:1–45:28  | The brothers are tested; Judah offers himself; concealment gives way to reunion.                         |
+|  禾   | hé      | Grain            | 46:1–47:27  | A household migrates for food; hunger transfers Egypt’s property and labor to Pharaoh.                   |
+|  骨   | gǔ      | Bones            | 47:28–50:26 | Final blessings, inheritances, burials, and the demand that Joseph’s remains eventually leave Egypt.     |
 
 ## 出 Exodus
 
 Source inventory: supplied master.tex, lines 13880–14036. The ranges and titles below are the proposed resegmentation.
 
-| Sign | Reading | Microbook | Passage | What holds it together |
-|:---:|---|---|---|---|
-| 工 | gōng | Forced Work | 1:1–2:22 | A population becomes a labor force; children are threatened, and Moses grows up and flees. |
-| 名 | míng | The Name | 2:23–7:7 | The cry is heard; Moses is commissioned; the divine name becomes a claim against Pharaoh. |
-| 災 | zāi | The Blows | 7:8–11:10 | The contest of signs, the first nine plagues, and the announcement of the final blow. |
-| 門 | mén | The Threshold | 12:1–13:16 | Passover, marked doorways, death of the firstborn, departure, and its permanent observances. |
-| 出 | chū | The Crossing | 13:17–15:21 | The sea escape and its victory song form one completed movement. |
-| 行 | xíng | The Road | 15:22–18:27 | Water, food, attack, and delegated judgment: learning to survive outside Egypt. |
-| 山 | shān | The Mountain | 19:1–20:21 | The encounter at Sinai, the commandments, and the people’s fear of direct speech. |
-| 法 | fǎ | The Covenant | 20:22–24:18 | Case laws and obligations culminate in public assent, blood, and the ascent of Moses. |
-| 式 | shì | The Pattern | 25:1–31:18 | The sanctuary, its furnishings, priestly service, workmanship, and Sabbath are prescribed. |
-| 牛 | niú | The Calf | 32:1–34:35 | An image, a broken covenant, intercession, and renewed tablets. |
-| 工 | gōng | Willing Work | 35:1–40:38 | Gifts and skilled work produce the sanctuary; the presence fills what the people have made. |
+| Sign | Reading | Microbook     | Passage     | What holds it together                                                                       |
+| :--: | ------- | ------------- | ----------- | -------------------------------------------------------------------------------------------- |
+|  工   | gōng    | Forced Work   | 1:1–2:22    | A population becomes a labor force; children are threatened, and Moses grows up and flees.   |
+|  名   | míng    | The Name      | 2:23–7:7    | The cry is heard; Moses is commissioned; the divine name becomes a claim against Pharaoh.    |
+|  災   | zāi     | The Blows     | 7:8–11:10   | The contest of signs, the first nine plagues, and the announcement of the final blow.        |
+|  門   | mén     | The Threshold | 12:1–13:16  | Passover, marked doorways, death of the firstborn, departure, and its permanent observances. |
+|  出   | chū     | The Crossing  | 13:17–15:21 | The sea escape and its victory song form one completed movement.                             |
+|  行   | xíng    | The Road      | 15:22–18:27 | Water, food, attack, and delegated judgment: learning to survive outside Egypt.              |
+|  山   | shān    | The Mountain  | 19:1–20:21  | The encounter at Sinai, the commandments, and the people’s fear of direct speech.            |
+|  法   | fǎ      | The Covenant  | 20:22–24:18 | Case laws and obligations culminate in public assent, blood, and the ascent of Moses.        |
+|  式   | shì     | The Pattern   | 25:1–31:18  | The sanctuary, its furnishings, priestly service, workmanship, and Sabbath are prescribed.   |
+|  牛   | niú     | The Calf      | 32:1–34:35  | An image, a broken covenant, intercession, and renewed tablets.                              |
+|  工   | gōng    | Willing Work  | 35:1–40:38  | Gifts and skilled work produce the sanctuary; the presence fills what the people have made.  |
 
 ## 示 Leviticus
 
 Source inventory: supplied master.tex, lines 14048–14152. The ranges and titles below are the proposed resegmentation.
 
-| Sign | Reading | Microbook | Passage | What holds it together |
-|:---:|---|---|---|---|
-| 火 | huǒ | Offerings | 1:1–7:38 | The altar economy: burnt offerings, grain, shared meals, purification, restitution, and priestly portions. |
-| 立 | lì | Ordination | 8:1–10:20 | The priests are established; service begins; unauthorized fire kills Aaron’s sons. |
-| 分 | fēn | Distinctions | 11:1–15:33 | Edible and inedible, clean and unclean: animals, childbirth, skin, houses, and bodily flows. |
-| 去 | qù | Removal | 16:1–16:34 | The sanctuary is cleansed and wrongdoing is carried away by the dispatched goat. |
-| 生 | shēng | Life Together | 17:1–20:27 | Blood and life, sexual boundaries, neighbors, holiness, and penalties for violating the social order. |
-| 示 | shì | Sacred Access | 21:1–22:33 | Who may serve, what may be offered, and who may eat sacred food. |
-| 日 | rì | Sacred Time | 23:1–24:9 | Festivals, perpetual light, and recurring bread: the sanctuary’s calendar and continuities. |
-| 名 | míng | The Name on Trial | 24:10–24:23 | Blasphemy, testimony, punishment, and the relation between injury and redress. |
-| 田 | tián | The Land Released | 25:1–25:55 | Sabbath years, Jubilee, redemption, and limits on permanent ownership and servitude. |
-| 果 | guǒ | Consequences | 26:1–26:46 | The covenant bears its fruit: abundance or devastation, exile, and remembered obligation. |
-| 貝 | bèi | Valuations | 27:1–27:34 | Vows, dedicated property, redemption, and tithes: what an obligation is worth. |
+| Sign | Reading | Microbook         | Passage     | What holds it together                                                                                     |
+| :--: | ------- | ----------------- | ----------- | ---------------------------------------------------------------------------------------------------------- |
+|  火   | huǒ     | Offerings         | 1:1–7:38    | The altar economy: burnt offerings, grain, shared meals, purification, restitution, and priestly portions. |
+|  立   | lì      | Ordination        | 8:1–10:20   | The priests are established; service begins; unauthorized fire kills Aaron’s sons.                         |
+|  分   | fēn     | Distinctions      | 11:1–15:33  | Edible and inedible, clean and unclean: animals, childbirth, skin, houses, and bodily flows.               |
+|  去   | qù      | Removal           | 16:1–16:34  | The sanctuary is cleansed and wrongdoing is carried away by the dispatched goat.                           |
+|  生   | shēng   | Life Together     | 17:1–20:27  | Blood and life, sexual boundaries, neighbors, holiness, and penalties for violating the social order.      |
+|  示   | shì     | Sacred Access     | 21:1–22:33  | Who may serve, what may be offered, and who may eat sacred food.                                           |
+|  日   | rì      | Sacred Time       | 23:1–24:9   | Festivals, perpetual light, and recurring bread: the sanctuary’s calendar and continuities.                |
+|  名   | míng    | The Name on Trial | 24:10–24:23 | Blasphemy, testimony, punishment, and the relation between injury and redress.                             |
+|  田   | tián    | The Land Released | 25:1–25:55  | Sabbath years, Jubilee, redemption, and limits on permanent ownership and servitude.                       |
+|  果   | guǒ     | Consequences      | 26:1–26:46  | The covenant bears its fruit: abundance or devastation, exile, and remembered obligation.                  |
+|  貝   | bèi     | Valuations        | 27:1–27:34  | Vows, dedicated property, redemption, and tithes: what an obligation is worth.                             |
 
 ## 屯 Numbers
 
 Source inventory: supplied master.tex, lines 14164–14304. The ranges and titles below are the proposed resegmentation.
 
-| Sign | Reading | Microbook | Passage | What holds it together |
-|:---:|---|---|---|---|
-| 冊 | cè | The Muster | 1:1–4:49 | The first census, tribal arrangement, Levite counts, and assigned responsibilities. |
-| 中 | zhōng | The Center | 5:1–10:10 | The camp is ordered around sacred presence: purity, vows, blessing, gifts, service, cloud, and signals. |
-| 口 | kǒu | Mouths | 10:11–12:16 | The march begins; hunger, complaint, prophecy, and challenges to Moses turn on mouths and speech. |
-| 目 | mù | The Scouts | 13:1–14:45 | The land is seen, described, feared, and refused; one generation loses its future there. |
-| 杖 | zhàng | The Staff | 15:1–19:22 | Rules, rebellion, Aaron’s budding staff, priestly entitlements, and purification establish contested authority. |
-| 行 | xíng | The Last March | 20:1–22:1 | Leaders die; water fails; routes close; snakes, wells, and battles mark the approach to Moab. |
-| 卜 | bǔ | The Oracle | 22:2–24:25 | Balaam is hired to curse, but his mouth cannot deliver the outcome his patron purchases. |
-| 矛 | máo | The Spear | 25:1–25:18 | Baal-peor, the plague, and Phinehas’s violent enforcement of the boundary. |
-| 冊 | cè | The Recount | 26:1–27:23 | A replacement generation is counted; daughters claim inheritance; Joshua is appointed. |
-| 守 | shǒu | Obligations | 28:1–30:16 | Recurring offerings and binding or annulled vows: what must be kept. |
-| 分 | fēn | Spoils and Shares | 31:1–32:42 | The Midian war and its division of captives and goods; the eastern tribes negotiate their share. |
-| 田 | tián | The Inheritance | 33:1–36:13 | The itinerary becomes a claim to land: borders, towns, refuge, and rules keeping inheritances within tribes. |
+| Sign | Reading | Microbook         | Passage     | What holds it together                                                                                          |
+| :--: | ------- | ----------------- | ----------- | --------------------------------------------------------------------------------------------------------------- |
+|  冊   | cè      | The Muster        | 1:1–4:49    | The first census, tribal arrangement, Levite counts, and assigned responsibilities.                             |
+|  中   | zhōng   | The Center        | 5:1–10:10   | The camp is ordered around sacred presence: purity, vows, blessing, gifts, service, cloud, and signals.         |
+|  口   | kǒu     | Mouths            | 10:11–12:16 | The march begins; hunger, complaint, prophecy, and challenges to Moses turn on mouths and speech.               |
+|  目   | mù      | The Scouts        | 13:1–14:45  | The land is seen, described, feared, and refused; one generation loses its future there.                        |
+|  杖   | zhàng   | The Staff         | 15:1–19:22  | Rules, rebellion, Aaron’s budding staff, priestly entitlements, and purification establish contested authority. |
+|  行   | xíng    | The Last March    | 20:1–22:1   | Leaders die; water fails; routes close; snakes, wells, and battles mark the approach to Moab.                   |
+|  卜   | bǔ      | The Oracle        | 22:2–24:25  | Balaam is hired to curse, but his mouth cannot deliver the outcome his patron purchases.                        |
+|  矛   | máo     | The Spear         | 25:1–25:18  | Baal-peor, the plague, and Phinehas’s violent enforcement of the boundary.                                      |
+|  冊   | cè      | The Recount       | 26:1–27:23  | A replacement generation is counted; daughters claim inheritance; Joshua is appointed.                          |
+|  守   | shǒu    | Obligations       | 28:1–30:16  | Recurring offerings and binding or annulled vows: what must be kept.                                            |
+|  分   | fēn     | Spoils and Shares | 31:1–32:42  | The Midian war and its division of captives and goods; the eastern tribes negotiate their share.                |
+|  田   | tián    | The Inheritance   | 33:1–36:13  | The itinerary becomes a claim to land: borders, towns, refuge, and rules keeping inheritances within tribes.    |
 
 ## 申 Deuteronomy
 
@@ -161,44 +161,44 @@ Source inventory: supplied master.tex, lines 14564–14644. The ranges and title
 
 Source inventory: supplied master.tex, lines 14656–14880. The ranges and titles below are the proposed resegmentation.
 
-| Sign | Reading | Microbook | Passage | What holds it together |
-|:---:|---|---|---|---|
-| 耳 | ěr | Hearing | 1 Sam 1:1–4:1a | Hannah’s prayer, Eli’s household, and the child who learns to distinguish a call. |
-| 匚 | fāng | The Captive God | 1 Sam 4:1b–7:17 | The Ark is captured, humiliates its captors, returns, and is followed by renewed national allegiance. |
-| 王 | wáng | A King | 1 Sam 8:1–12:25 | A request, a warning, a search, an anointing, a rescue, and public establishment of monarchy. |
-| 失 | shī | Rejection | 1 Sam 13:1–15:35 | Saul’s wars and failures culminate in the withdrawal of his dynastic future. |
-| 升 | shēng | The Rival Rises | 1 Sam 16:1–20:42 | David is anointed, fights, enters the royal household, and becomes the target of the king’s fear. |
-| 走 | zǒu | The Fugitive | 1 Sam 21:1–26:25 | David gathers followers, moves among refuges, negotiates alliances, and twice spares Saul. |
-| 亡 | wáng | The Fallen | 1 Sam 27:1–2 Sam 1:27 | David serves abroad; Saul seeks the dead and joins them; lament completes the fall. |
-| 合 | hé | Union | 2 Sam 2:1–5:5 | Rival royal houses fight until all the tribes acknowledge David. |
-| 宀 | mián | The House | 2 Sam 5:6–10:19 | Capital, palace, Ark, dynasty, dependents, and conquests: the house of David is established. |
-| 取 | qǔ | Taking | 2 Sam 11:1–12:31 | David takes Bathsheba and arranges Uriah’s death; Nathan answers with the story of a stolen lamb. |
-| 子 | zǐ | The Children | 2 Sam 13:1–14:33 | Tamar, Amnon, and Absalom expose the violence within the royal household. |
-| 反 | fǎn | Revolt | 2 Sam 15:1–20:26 | Absalom’s rebellion, David’s flight and return, and Sheba’s secession undo the image of secure union. |
-| 冊 | cè | The Reckoning | 2 Sam 21:1–24:25 | Famine, warriors, songs, last words, and a deadly census form the reign’s retrospective record. |
+| Sign | Reading | Microbook       | Passage               | What holds it together                                                                                |
+| :--: | ------- | --------------- | --------------------- | ----------------------------------------------------------------------------------------------------- |
+|  口   | kǒu     | Hearing         | 1 Sam 1:1–4:1a        | Hannah’s prayer, Eli’s household, and the child who learns to distinguish a call.                     |
+|  匚   | fāng    | The Captive God | 1 Sam 4:1b–7:17       | The Ark is captured, humiliates its captors, returns, and is followed by renewed national allegiance. |
+|  王   | wáng    | A King          | 1 Sam 8:1–12:25       | A request, a warning, a search, an anointing, a rescue, and public establishment of monarchy.         |
+|  失   | shī     | Rejection       | 1 Sam 13:1–15:35      | Saul’s wars and failures culminate in the withdrawal of his dynastic future.                          |
+|  升   | shēng   | The Rival Rises | 1 Sam 16:1–20:42      | David is anointed, fights, enters the royal household, and becomes the target of the king’s fear.     |
+|  走   | zǒu     | The Fugitive    | 1 Sam 21:1–26:25      | David gathers followers, moves among refuges, negotiates alliances, and twice spares Saul.            |
+|  亡   | wáng    | The Fallen      | 1 Sam 27:1–2 Sam 1:27 | David serves abroad; Saul seeks the dead and joins them; lament completes the fall.                   |
+|  合   | hé      | Union           | 2 Sam 2:1–5:5         | Rival royal houses fight until all the tribes acknowledge David.                                      |
+|  宀   | mián    | The House       | 2 Sam 5:6–10:19       | Capital, palace, Ark, dynasty, dependents, and conquests: the house of David is established.          |
+|  取   | qǔ      | Taking          | 2 Sam 11:1–12:31      | David takes Bathsheba and arranges Uriah’s death; Nathan answers with the story of a stolen lamb.     |
+|  恥   | Chǐ     | The Children    | 2 Sam 13:1–14:33      | Tamar, Amnon, and Absalom expose the violence within the royal household.                             |
+|  反   | fǎn     | Revolt          | 2 Sam 15:1–20:26      | Absalom’s rebellion, David’s flight and return, and Sheba’s secession undo the image of secure union. |
+|  冊   | cè      | The Reckoning   | 2 Sam 21:1–24:25      | Famine, warriors, songs, last words, and a deadly census form the reign’s retrospective record.       |
 
 ## 主 Kings
 
 Source inventory: supplied master.tex, lines 14892–15084. The ranges and titles below are the proposed resegmentation.
 
-| Sign | Reading | Microbook | Passage | What holds it together |
-|:---:|---|---|---|---|
-| 代 | dài | Succession | 1 Kgs 1:1–2:46 | Solomon gains the throne; David dies; rivals and dangerous survivors are removed. |
-| 心 | xīn | The Listening Heart | 1 Kgs 3:1–4:34 | Solomon’s judgment and administration establish the promise of wise government. |
-| 宗 | zōng | The House Built | 1 Kgs 5:1–8:66 | Temple, palace, furnishings, dedication, and the joining of sacred house with royal house. |
-| 金 | jīn | Gold | 1 Kgs 9:1–11:43 | Wealth, work, trade, prestige, marriages, and divided allegiance expose the costs of magnificence. |
-| 分 | fēn | Division | 1 Kgs 12:1–16:34 | The kingdom splits; rival shrines and unstable dynasties give the division enduring form. |
-| 火 | huǒ | Fire and Voice | 1 Kgs 17:1–19:21 | Elijah’s drought, provision, Carmel contest, and the voice beyond the fire. |
-| 言 | yán | The Word Against Kings | 1 Kgs 20:1–2 Kgs 1:18 | War, Naboth’s vineyard, disputed prophecy, and the deaths of Ahab and Ahaziah. |
-| 衣 | yī | The Mantle | 2 Kgs 2:1–8:15 | Elijah’s mantle passes to Elisha; inherited prophetic authority acts through provision, healing, war, and royal succession. |
-| 刀 | dāo | The Purge | 2 Kgs 8:16–10:36 | The dynastic setup leads to Jehu’s killing campaign against the Omrides and the Baal establishment. |
-| 立 | lì | Restoration | 2 Kgs 11:1–12:21 | A surviving royal child is installed; the temple is repaired. |
-| 亡 | wáng | Israel Lost | 2 Kgs 13:1–17:41 | Dynastic attrition, wars, and foreign pressure culminate in the northern kingdom’s removal. |
-| 守 | shǒu | Holding Out | 2 Kgs 18:1–20:21 | Hezekiah’s reforms, the Assyrian siege, recovery, and the ominous visit from Babylon. |
-| 反 | fǎn | Undoing | 2 Kgs 21:1–21:26 | Manasseh and Amon reverse the preceding reform and deepen the announced judgment. |
-| 文 | wén | The Book Found | 2 Kgs 22:1–23:30 | A discovered text judges the kingdom; Josiah reorganizes worship and then dies. |
-| 亡 | wáng | Judah Lost | 2 Kgs 23:31–25:26 | Dependent kings, conquest, destroyed city and temple, deportation, assassination, and flight to Egypt. |
-| 存 | cún | Survival | 2 Kgs 25:27–25:30 | Jehoiachin leaves prison and receives a place and food at a foreign king’s table: survival, not restored sovereignty. |
+| Sign | Reading | Microbook              | Passage               | What holds it together                                                                                                      |
+| :--: | ------- | ---------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+|  代   | dài     | Succession             | 1 Kgs 1:1–2:46        | Solomon gains the throne; David dies; rivals and dangerous survivors are removed.                                           |
+|  心   | xīn     | The Listening Heart    | 1 Kgs 3:1–4:34        | Solomon’s judgment and administration establish the promise of wise government.                                             |
+|  宗   | zōng    | The House Built        | 1 Kgs 5:1–8:66        | Temple, palace, furnishings, dedication, and the joining of sacred house with royal house.                                  |
+|  金   | jīn     | Gold                   | 1 Kgs 9:1–11:43       | Wealth, work, trade, prestige, marriages, and divided allegiance expose the costs of magnificence.                          |
+|  分   | fēn     | Division               | 1 Kgs 12:1–16:34      | The kingdom splits; rival shrines and unstable dynasties give the division enduring form.                                   |
+|  火   | huǒ     | Fire and Voice         | 1 Kgs 17:1–19:21      | Elijah’s drought, provision, Carmel contest, and the voice beyond the fire.                                                 |
+|  言   | yán     | The Word Against Kings | 1 Kgs 20:1–2 Kgs 1:18 | War, Naboth’s vineyard, disputed prophecy, and the deaths of Ahab and Ahaziah.                                              |
+|  衣   | yī      | The Mantle             | 2 Kgs 2:1–8:15        | Elijah’s mantle passes to Elisha; inherited prophetic authority acts through provision, healing, war, and royal succession. |
+|  刀   | dāo     | The Purge              | 2 Kgs 8:16–10:36      | The dynastic setup leads to Jehu’s killing campaign against the Omrides and the Baal establishment.                         |
+|  立   | lì      | Restoration            | 2 Kgs 11:1–12:21      | A surviving royal child is installed; the temple is repaired.                                                               |
+|  亡   | wáng    | Israel Lost            | 2 Kgs 13:1–17:41      | Dynastic attrition, wars, and foreign pressure culminate in the northern kingdom’s removal.                                 |
+|  守   | shǒu    | Holding Out            | 2 Kgs 18:1–20:21      | Hezekiah’s reforms, the Assyrian siege, recovery, and the ominous visit from Babylon.                                       |
+|  反   | fǎn     | Undoing                | 2 Kgs 21:1–21:26      | Manasseh and Amon reverse the preceding reform and deepen the announced judgment.                                           |
+|  文   | wén     | The Book Found         | 2 Kgs 22:1–23:30      | A discovered text judges the kingdom; Josiah reorganizes worship and then dies.                                             |
+|  亡   | wáng    | Judah Lost             | 2 Kgs 23:31–25:26     | Dependent kings, conquest, destroyed city and temple, deportation, assassination, and flight to Egypt.                      |
+|  存   | cún     | Survival               | 2 Kgs 25:27–25:30     | Jehoiachin leaves prison and receives a place and food at a foreign king’s table: survival, not restored sovereignty.       |
 
 ## 曰 Ezra
 
