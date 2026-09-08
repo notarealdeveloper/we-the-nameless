@@ -1,0 +1,22 @@
+## 山三
+
+Also known as
+
+1. The Third Mountain™
+2. ☀️日⛰️    曰    🏔️月🌕
+3. The Trinitarians
+4. The но но ноs
+5. The San Tas
+6. The 三祂s
+7. The 三 Visitors
+8. The 364||s
+9. The χLD人
+10. Shan San
+11. SHNSN
+12. 曰
+
+Founders of Shower Shoes (少兒書), a publisher of children's books and assorted Nameless related religious materials for χLD人 (children, in their rendering, in greek latin and mandarin as the sequence: chi ld ren).
+
+Frequently recieves visits from local and federal police.
+
+Legally, the group has an astonishingly clean slate, with no charges or convictions of any crime among its supposed leadership qua leadership.

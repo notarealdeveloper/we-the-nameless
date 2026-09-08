@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 lord --verbose << "EOF"
-Yep — same prompt, just reframed around **replacing/fixing the existing `make genesis-kdp` pipeline**, not adding a new one.
-
 Rewrite the existing `make genesis-kdp` target so that it generates a reliable, reproducible KDP paperback-interior PDF for **We The Nameless: Genesis**.
 
 The existing `make genesis-kdp` output is being rejected by KDP and is therefore not useful as currently implemented. Replace/fix its implementation rather than adding a competing KDP target.
