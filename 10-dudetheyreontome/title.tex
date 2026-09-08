@@ -4,6 +4,10 @@
 \colorlet{DudePosterBlack}{Kcolor}
 \colorlet{DudePosterRed}{Redcolor}
 \colorlet{DudePosterBlue}{Bluecolor}
+\ifx\ConfigTheme\ConfigThemeDark
+    \colorlet{DudePosterRed}{ObsRed!78!bg}
+    \colorlet{DudePosterBlue}{ObsBlue!78!bg}
+\fi
 \thispagestyle{empty}
 \makeatletter
 \@ifundefined{DudePosterWideWidth}{\newlength{\DudePosterWideWidth}}{}
