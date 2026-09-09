@@ -3295,7 +3295,7 @@
 \DeclareChapterLinkRange{II Kings}{25}
 \DeclareChapterLinkRange{Ezra}{10}
 \DeclareChapterLinkRange{Nehemiah}{13}
-\DeclareChapterLinkRange{On the Lamb}{1}
+\DeclareChapterLinkRange{On the Lamb}{6}
 \DeclareChapterLinkRange{Esther}{10}
 \DeclareBookExtraLinkList{Genesis}{%
     \ifConfigApocryphaOn
@@ -3312,6 +3312,8 @@
 }
 \DeclareBookChapterLinkList{Dudetheyreontome}{%
     \BookPartChapterLinks{On the Lamb}%
+    \BookPartChapterLinks{Ezra}%
+    \BookPartChapterLinks{Nehemiah}%
     \BookPartChapterLinks{Esther}%
 }
 % Chapter-summary data for fancy individual book title pages.
@@ -3710,6 +3712,14 @@
     \ChapterSummaryLink{Esther}{8}{Esther}{New decree}%
     \ChapterSummaryLink{Esther}{9}{Esther}{Purim}%
     \ChapterSummaryLink{Esther}{10}{Esther}{Mordecai exalted}%
+}
+\DeclareBookChapterSummaryLinkList{On the Lamb}{%
+    \ChapterSummaryLink{On the Lamb}{1}{On the Lamb}{Forewɑrd}%
+    \ChapterSummaryLink{On the Lamb}{2}{On the Lamb}{In the Wilderness}%
+    \ChapterSummaryLink{On the Lamb}{3}{On the Lamb}{Edom, Strange gods}%
+    \ChapterSummaryLink{On the Lamb}{4}{On the Lamb}{R\heb{ח} Foɾ tʰ Ez ᴅɾɐɣs}%
+    \ChapterSummaryLink{On the Lamb}{5}{On the Lamb}{You Seir}%
+    \ChapterSummaryLink{On the Lamb}{6}{On the Lamb}{The Most High}%
 }
 \DeclareBookChapterSummaryLinkList{Samuel}{%
     \BookPartChapterSummaryLinks{I Samuel}%
@@ -4877,10 +4887,16 @@
 \include{09-kings/2-24}
 \include{09-kings/2-25}
 
+\input{10-dudetheyreontome/title}
 \Book{Dudetheyreontome}
 
 \BookPart{On the Lamb}
 \include{10-dudetheyreontome/on-the-lamb/01}
+\include{10-dudetheyreontome/on-the-lamb/02}
+\include{10-dudetheyreontome/on-the-lamb/03}
+\include{10-dudetheyreontome/on-the-lamb/04}
+\include{10-dudetheyreontome/on-the-lamb/05}
+\include{10-dudetheyreontome/on-the-lamb/06}
 
 \BookPart{Ezra}
 \include{10-dudetheyreontome/ezra/01}
