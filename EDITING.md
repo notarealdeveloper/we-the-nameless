@@ -15,15 +15,10 @@ Catch R up on Gen 44-48.
 
 Work more on the fancy cover for the KDP release, Ramya said she likes the fancier cover.
 
-Make the plain cover a bit darker in KDP book mode.
-
 ## Stuff to do manually
 
 
 ## Stuff to do now
-
-Figure out where the "Nobody knows why forty." line is in Genesis and add this nearby, it's in a sequence of like 3 or 4 footnotes in the same verse:
-\fC{\heb{אַרְבָּעִים} “forty” is strikingly similar to \heb{רַבִּים} “many”: \heb{ארבעים} vs.\ \heb{רבים}. They are normally derived from distinct roots, \heb{רבע} “four” and \heb{רבב} “be many/great,” but the resemblance readily invites wordplay or folk association—especially where “forty” itself functions as a conventional large or round number.}
 
 Gen 5:27. Make it "d\eR{espot}ic\eR{ tyrant }k\eR{ing}" so you can use the d and ic and k.
 
