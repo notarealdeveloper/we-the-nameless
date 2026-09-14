@@ -8,7 +8,7 @@ build_dir=${4:-build/cover}
 style=${5:-simple}
 volume=${6:-Genesis}
 spine=${7:-nameless}
-project_dir="cover/$style"
+project_dir="pub/cover/$style"
 
 if [[ ! -f "$interior" ]]; then
     printf 'Interior PDF not found: %s\nBuild it separately, or set COVER_INTERIOR to an existing PDF.\n' "$interior" >&2
