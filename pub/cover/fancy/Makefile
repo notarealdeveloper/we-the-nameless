@@ -6,7 +6,7 @@ PAPER ?= standard-color
 VOLUME ?= Genesis
 BUILD ?= $(PROJECT_ROOT)/build/cover/fancy
 
-REQUIRED_ARTIFACTS := assets/front.png assets/back.png
+REQUIRED_ARTIFACTS := assets/back.png
 
 .PHONY: all
 all:

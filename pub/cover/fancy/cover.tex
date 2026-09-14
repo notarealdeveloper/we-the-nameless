@@ -8,17 +8,14 @@
 \usepackage{adjustbox}
 \pagestyle{empty}
 
-\definecolor{SpineBackground}{cmyk}{0.63,0.40,0.35,0.84}
 \definecolor{SpineForeground}{cmyk}{0.00,0.20,0.62,0.30}
 \newlength{\CoverFrontCenterX}
 \setlength{\CoverFrontCenterX}{3.5625in}
 \newlength{\CoverWeY}
-% These are the centers of the two titles embedded in the front artwork after
-% it is scaled and cropped below.  The volume title is typeset on the front,
-% so the same three coordinates can also place the corresponding spine text.
-\setlength{\CoverWeY}{5.725in}
+% Match the simple cover: front and spine labels share vertical centers.
+\setlength{\CoverWeY}{7.325in}
 \newlength{\CoverNamelessY}
-\setlength{\CoverNamelessY}{4.425in}
+\setlength{\CoverNamelessY}{4.725in}
 \newlength{\CoverVolumeY}
 \setlength{\CoverVolumeY}{1.425in}
 \newcommand{\SpineLabel}[2]{%
@@ -52,16 +49,33 @@
     \clip ([xshift=\dimexpr 7.125in+\CoverSpineWidth\relax]current page.south west)
       rectangle (current page.north east);
     \node[anchor=center,inner sep=0pt] at ([xshift=-3.5625in]current page.east)
-      {\includegraphics[width=7.125in]{\CoverProjectDir/assets/front.png}};
+      {\includegraphics[width=7.125in]{\CoverProjectDir/assets/back.png}};
+    % Use the text-free artwork so all three titles can be positioned exactly.
+    \node[SpineForeground] at
+      ([xshift=-\CoverFrontCenterX,yshift=\CoverWeY]current page.south east)
+      {\fontsize{100}{120}\selectfont\textsc{We}};
+    \node[SpineForeground] at
+      ([xshift=-\CoverFrontCenterX,yshift=\CoverNamelessY]current page.south east)
+      {\fontsize{25}{30}\selectfont The Nameless};
     \node[SpineForeground] at
       ([xshift=-\CoverFrontCenterX,yshift=\CoverVolumeY]current page.south east)
       {\fontsize{23}{28}\selectfont \CoverVolume};
   \end{scope}
 
-  \fill[SpineBackground]
-    ([xshift=7.125in]current page.south west)
-    rectangle
-    ([xshift=\dimexpr 7.125in+\CoverSpineWidth\relax]current page.north west);
+  % Continue the celestial engraving onto the spine at the same scale as
+  % the panels. Clip its central strip rather than squeezing the artwork.
+  \begin{scope}
+    \clip ([xshift=7.125in]current page.south west)
+      rectangle ([xshift=\dimexpr 7.125in+\CoverSpineWidth\relax]current page.north west);
+    \node[anchor=center,inner sep=0pt] at
+      ([xshift=\dimexpr 7.125in+\CoverSpineWidth/2\relax]current page.west)
+      {\includegraphics[width=7.125in]{\CoverProjectDir/assets/back.png}};
+    \foreach \edge in {7.165in,\dimexpr 7.085in+\CoverSpineWidth\relax} {
+      \draw[SpineForeground,line width=0.3pt]
+        ([xshift=\edge]current page.south west) --
+        ([xshift=\edge]current page.north west);
+    }
+  \end{scope}
   \ifx\CoverShowSpine\CoverShowSpineTrue
   \node[SpineForeground] at
     ([xshift=\dimexpr 7.125in+\CoverSpineWidth/2\relax,yshift=\CoverWeY]current page.south west)

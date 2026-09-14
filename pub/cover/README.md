@@ -1,8 +1,10 @@
 # Paperback covers
 
-`simple/` contains the original restrained TeX cover. `fancy/` uses
-`fancy/assets/front.png` and `fancy/assets/back.png` for the illustrated
-front and back.
+`simple/` contains the original restrained TeX cover. `fancy/` uses the
+text-free `fancy/assets/back.png` artwork for both panels and a central crop
+on the spine, framed by fine gold rules. Front and spine text share the
+simple cover’s vertical positions; the front also uses its font sizes.
+`fancy/assets/front.png` is the original artwork with embedded titles.
 
 From the repository root:
 
