@@ -2125,18 +2125,25 @@
 	{\HebrewEzraRaw}			{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Scale=1.40}\mdseries}
 	% Don't change this font scale!
 
+% Currently identical to R, but kept as a separate profile so redactor C can
+% diverge without changing R.
+\DeclareSourceProfile{RC}
+	{\EnglishFont}				{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
+	{\HebrewEzraRaw}			{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Scale=1.40}\mdseries}
+	% Don't change this font scale!
+
 % Textual differences in commentary tables: preserve the surrounding inline
 % Hebrew typography while using the blue redactor background.
 \DeclareSourceProfile{Diff}
 	{\EnglishFont}				{\SourceBackground{Rbgcolor}\Redactor}
 	{\HebrewDavidRaw}			{\SourceBackground{Rbgcolor}\Redactor}
 
-\DeclareSourceProfile{Red}
+\DeclareSourceProfile{RB}
 	{\EnglishFont}				{\SourceBackground{RedSourcebgcolor}\color{RedSourcecolor}\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
 	{\HebrewEzraRaw}			{\SourceBackground{RedSourcebgcolor}\color{RedSourcecolor}\Redactor\addfontfeatures{Ligatures=TeX,Scale=1.40}\mdseries}
 	% Don't change this font scale!
 
-\DeclareSourceProfile{Reblacktor}
+\DeclareSourceProfile{RA}
 	{\EnglishFont}				{\SourceBackground{Reblacktorbgcolor}\color{Reblacktorcolor}\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
 	{\HebrewEzraRaw}			{\SourceBackground{Reblacktorbgcolor}\color{Reblacktorcolor}\Redactor\addfontfeatures{Scale=1.40}\mdseries}
 	% Don't change this font scale!
@@ -2215,17 +2222,20 @@
 \newcommand{\DtrBLabel}{\eDtrB{Dtr2}}
 \newcommand{\DtnLabel}{\eDtn{Dtn}}
 \newcommand{\eR}[1]{\ApplyEnglishSourceProfile{\estyleR}{#1}}
-\newcommand{\eRed}[1]{\ApplyEnglishSourceProfile{\estyleRed}{#1}}
-\newcommand{\eReblacktor}[1]{\ApplyEnglishSourceProfile{\estyleReblacktor}{#1}}
+\newcommand{\eRA}[1]{\ApplyEnglishSourceProfile{\estyleRA}{#1}}
+\newcommand{\eRB}[1]{\ApplyEnglishSourceProfile{\estyleRB}{#1}}
+\newcommand{\eRC}[1]{\ApplyEnglishSourceProfile{\estyleRC}{#1}}
 \newcommand{\eRJE}[1]{\ApplyEnglishSourceProfile{\estyleRJE}{#1}}
 \newcommand{\hDtr}[2]{\ifcase#1\or\hDtrA{#2}\or\hDtrB{#2}\fi}
 \newcommand{\hR}[1]{\hRRenderer{\hstyleR}{#1}}
-\newcommand{\hRed}[1]{\hRedRenderer{\hstyleRed}{#1}}
-\newcommand{\hReblacktor}[1]{\hReblacktorRenderer{\hstyleReblacktor}{#1}}
+\newcommand{\hRA}[1]{\hRARenderer{\hstyleRA}{#1}}
+\newcommand{\hRB}[1]{\hRBRenderer{\hstyleRB}{#1}}
+\newcommand{\hRC}[1]{\hRCRenderer{\hstyleRC}{#1}}
 \newcommand{\hRJE}[1]{\hRJERenderer{\hstyleRJE}{#1}}
 \newcommand{\sR}[1]{\ApplyEnglishSourceProfile{\estyleR}{#1}}
-\newcommand{\sRed}[1]{\ApplyEnglishSourceProfile{\estyleRed}{#1}}
-\newcommand{\sReblacktor}[1]{\ApplyEnglishSourceProfile{\estyleReblacktor}{#1}}
+\newcommand{\sRA}[1]{\ApplyEnglishSourceProfile{\estyleRA}{#1}}
+\newcommand{\sRB}[1]{\ApplyEnglishSourceProfile{\estyleRB}{#1}}
+\newcommand{\sRC}[1]{\ApplyEnglishSourceProfile{\estyleRC}{#1}}
 \newcommand{\sRJE}[1]{\ApplyEnglishSourceProfile{\estyleRJE}{#1}}
 \newcommand{\eBookOfRecords}[1]{{\estyleRecords #1}}
 \newcommand{\hBookOfRecords}[1]{\hRecordsRenderer{\hstyleRecords}{#1}}
