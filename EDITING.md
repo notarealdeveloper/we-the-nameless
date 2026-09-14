@@ -7,13 +7,15 @@ Agents: Do all the items below except the ones marked as MANUAL. If there are no
 
 ## Invariants to preserve manually
 
-Gen 19:38. Currently this is on page 187. Make this an invariant to check before all subsequent publications.
+Gen 1:14. The big footnotes should each be on their own page, unbroken.
+
+Gen 19:38. Name him laughter should be on page 187.
 
 ## Stuff to do with Ramya manually
 
 Catch R up on Gen 44-48.
 
-Work more on the fancy cover for the KDP release, Ramya said she likes the fancier cover.
+Make a better fancy cover for the KDP release.
 
 ## Stuff to do manually
 
