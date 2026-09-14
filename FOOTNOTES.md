@@ -40,7 +40,7 @@ number unclear.
 CHANGE TO:
 
 ```tex
-
+\aB{Laban's either talking about ``God'' singular or ``gods'' plural here, we can't tell.}
 ```
 
 ## 2. `01-genesis/38.tex` — verse 1
@@ -70,7 +70,7 @@ emphasizing their contrasting freedom and powerlessness.
 CHANGE TO:
 
 ```tex
-
+Judah's the only one of the kids besides Joseph to have a whole story about him.
 ```
 
 ## 3. `01-genesis/41.tex` — verse 40
@@ -97,6 +97,8 @@ it.}
 CHANGE TO:
 
 ```tex
+The verb here means “to kiss.” We don't know why he's saying that.%
+\fB{Maybe the magic stick is making him say it.}
 
 ```
 
@@ -126,7 +128,7 @@ brothers' deception with its later repayment.
 CHANGE TO:
 
 ```tex
-
+\aB{Count how many silver. There's a thing.}
 ```
 
 ## 5. `01-genesis/47.tex` — verse 3
@@ -165,8 +167,9 @@ instead and offers them work managing cattle anyway.
 CHANGE TO:
 
 ```tex
-
 ```
+
+(Just remove this footnote.)
 
 ## 6. `01-genesis/47.tex` — verse 5
 
@@ -189,6 +192,7 @@ Goshen, and the Septuagint's differing text further complicates the passage.
 CHANGE TO:
 
 ```tex
+REF: This section, 47:5–12, comes in the middle of a J text. But Jacob says here that he is 130 years old and that Abraham and Isaac lived longer, while in J YHWH has decreed that no human will live more than 120 years. It is in P that ages are given and that Abraham and Isaac live longer. Moreover, this section has other characteristics of P: The phrases “the days of the years” and “the years of your life” occur only in P. The terms “residences” and “possession” occur only in P. The phrase “as he commanded” occurs fifty-three other times in Genesis–Numbers, and fifty-two are in P. And it is in P that the people live in Rameses. Nonetheless, we should recognize that it is possible that the Redactor combined some material from J or E with P to form this section. The reference to Goshen (v. 6) may be in conflict with the reference to Rameses, and P never mentions Goshen elsewhere. The words “Let them live in Goshen” may have originally read “they lived in Goshen,” which would look the same in the consonantal text. And Goshen is what the brothers requested in the J text (v. 4). Further, this matter is complicated by the fact that the Septuagint text is different, which may be related to the recurrence of the words “let them live in the land of Goshen” in vv. 4 and 6.
 
 ```
 
@@ -222,6 +226,8 @@ CHANGE TO:
 
 ```
 
+Remove the footnote. Keep the commented out REF one.
+
 ## 8. `01-genesis/48.tex` — verse 7
 
 OLD FOOTNOTE:
@@ -240,10 +246,10 @@ P, contrasting Rachel's roadside grave with Jacob's request for the ancestral to
 (49:29–33). Its attribution remains uncertain.
 ```
 
-CHANGE TO:
+CHANGE TO: Keep the REF footnote, uncommented.
 
 ```tex
-
+REF: This section, 47:5–12, comes in the middle of a J text. But Jacob says here that he is 130 years old and that Abraham and Isaac lived longer, while in J YHWH has decreed that no human will live more than 120 years. It is in P that ages are given and that Abraham and Isaac live longer. Moreover, this section has other characteristics of P: The phrases “the days of the years” and “the years of your life” occur only in P. The terms “residences” and “possession” occur only in P. The phrase “as he commanded” occurs fifty-three other times in Genesis–Numbers, and fifty-two are in P. And it is in P that the people live in Rameses. Nonetheless, we should recognize that it is possible that the Redactor combined some material from J or E with P to form this section. The reference to Goshen (v. 6) may be in conflict with the reference to Rameses, and P never mentions Goshen elsewhere. The words “Let them live in Goshen” may have originally read “they lived in Goshen,” which would look the same in the consonantal text. And Goshen is what the brothers requested in the J text (v. 4). Further, this matter is complicated by the fact that the Septuagint text is different, which may be related to the recurrence of the words “let them live in the land of Goshen” in vv. 4 and 6.
 ```
 
 ## 9. `01-genesis/48.tex` — verse 8
@@ -261,7 +267,7 @@ In P's verse 5, Jacob adopts Ephraim and Manasseh as his own sons; in E's verse 
 asks who they are. Combining the two accounts creates the contradiction.
 ```
 
-CHANGE TO:
+CHANGE TO: Keep the REF: footnote, uncommented.
 
 ```tex
 
@@ -290,7 +296,7 @@ brother.
 CHANGE TO:
 
 ```tex
-
+Jacob always pulls a fast one in these death bed blessing things, even his own.
 ```
 
 ## 11. `01-genesis/48.tex` — verse 22
@@ -314,10 +320,10 @@ brother. The Hebrew also puns on Shechem, a city in Manasseh's territory that la
 becomes Israel's capital.
 ```
 
-CHANGE TO:
+CHANGE TO: The following, as a \fC{} footnote. Make sure the {d,tr} displays properly in the TeX, since { and } are special in TeX.
 
 ```tex
-
+Shechem means shoulder. It's also the future capital of the Northern kingdom of Israel, and the past capital of dirty {d,tr}icks.
 ```
 
 ## 12. `01-genesis/49.tex` — verse 20
@@ -337,7 +343,7 @@ The MT's “from Asher” appears to misplace the letter mem: it belongs at the 
 preceding word, where it makes “heel” into “their heel.”
 ```
 
-CHANGE TO:
+CHANGE TO: Keep the REF footnote, uncommented. Delete the current one.
 
 ```tex
 
@@ -372,7 +378,7 @@ narrative as an independent novella obscures their shared symbols, ironies, and
 relationships.
 ```
 
-CHANGE TO:
+CHANGE TO: No changes.
 
 ```tex
 
@@ -407,7 +413,7 @@ responsible (1 Kings 5:27–28; 12:18). Such state control over their bodies cla
 a national identity grounded in escape from slavery.
 ```
 
-CHANGE TO:
+CHANGE TO: No changes.
 
 ```tex
 
@@ -431,7 +437,7 @@ CURRENT FOOTNOTE:
 babies suggests testicles.
 ```
 
-CHANGE TO:
+CHANGE TO: Keep the REF footnote, uncommented.
 
 ```tex
 
@@ -458,11 +464,15 @@ Bible. “They're animals” may instead be the midwives' disparaging cover stor
 disobeying Pharaoh.
 ```
 
-CHANGE TO:
+CHANGE TO: Keep the REF footnote, uncommented.
 
 ```tex
 
 ```
+
+###############
+No more changes after this.
+###############
 
 ## 17. `02-exodus/14.tex` — verse 21
 
