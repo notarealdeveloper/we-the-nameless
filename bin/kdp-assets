@@ -1,22 +1,52 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env python3
+"""Materialize only referenced print derivatives, sharing a content-addressed cache."""
+import hashlib
+import json
+import os
+import re
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
 
-output=${1:-build/kdp-assets}
-mkdir -p "$output"
-command -v magick >/dev/null || { echo "missing required tool: magick" >&2; exit 2; }
+ROOT = Path(__file__).resolve().parents[1]
+# Match the generated subset, not its name: filtered source subsets can cross books.
+ASSETS = [
+    ('brick.png', 'img/brick.png', 'brick.png', ['-background', 'white', '-alpha', 'remove', '-alpha', 'off']),
+    ('seir-light.jpg', '01-genesis/include/seir-light.jpg', r'\\image(?:\[[^]]*\])?\{seir\}', ['-filter', 'Lanczos', '-resize', '155%', '-quality', '95']),
+    ('mandrake.png', '01-genesis/include/mandrake.png', r'\\image(?:\[[^]]*\])?\{mandrake\}', ['-filter', 'Lanczos', '-resize', '145%']),
+    ('genesis-33-map.png', 'img/genesis-33-map.png', 'genesis-33-map.png', ['-filter', 'Lanczos', '-resize', '105%']),
+    *[(f'the-twelve-tribes-of-israel-comic-{n}.png', f'img/comics/the-twelve-tribes-of-israel-comic-{n}.png',
+       f'the-twelve-tribes-of-israel-comic-{n}.png', ['-filter', 'Lanczos', '-resize', '138%']) for n in range(1, 5)],
+]
 
-# Same physical TeX dimensions; these print-only derivatives flatten alpha and
-# bring low-effective-resolution placements just above 300 PPI.
-magick img/brick.png -background white -alpha remove -alpha off "$output/brick.png"
-magick 01-genesis/include/seir-light.jpg -filter Lanczos -resize 155% -quality 95 "$output/seir-light.jpg"
-magick 01-genesis/include/mandrake.png -filter Lanczos -resize 145% "$output/mandrake.png"
-magick img/genesis-33-map.png -filter Lanczos -resize 105% "$output/genesis-33-map.png"
 
-# The Genesis apocrypha places these almost full-page.  Keep KDP-only
-# derivatives large enough for their effective resolution to reach 300 PPI;
-# the ordinary book continues to use the original files unchanged.
-for number in 1 2 3 4; do
-    source="img/comics/the-twelve-tribes-of-israel-comic-$number.png"
-    destination="$output/the-twelve-tribes-of-israel-comic-$number.png"
-    magick "$source" -filter Lanczos -resize 138% "$destination"
-done
+def main():
+    output = Path(sys.argv[1] if len(sys.argv) > 1 else 'build/kdp-assets')
+    subset = Path(sys.argv[2]) if len(sys.argv) > 2 else None
+    text = '\n'.join(p.read_text() for p in subset.rglob('*.tex')) if subset else None
+    output.mkdir(parents=True, exist_ok=True)
+    cache = ROOT / 'build/kdp/assets'; cache.mkdir(parents=True, exist_ok=True)
+    version = subprocess.check_output(['magick', '-version'])
+    records = []
+    for name, source, marker, options in ASSETS:
+        if text is not None and not re.search(marker, text): continue
+        src = ROOT / source
+        key = hashlib.sha256(src.read_bytes() + version + json.dumps(options).encode()).hexdigest()
+        cached = cache / (key + Path(name).suffix)
+        if not cached.exists():
+            with tempfile.TemporaryDirectory(dir=cache) as td:
+                temp = Path(td) / name
+                subprocess.run(['magick', str(src), *options, str(temp)], check=True)
+                os.replace(temp, cached)
+        destination = output / name
+        destination.unlink(missing_ok=True)
+        destination.symlink_to(cached)
+        records.append(dict(source=source, output=str(destination), cache=str(cached), options=options,
+            sha256=hashlib.sha256(cached.read_bytes()).hexdigest(),
+            note='Upsampling changes effective PPI, not source detail.' if '-resize' in options else 'Alpha flattened on white.'))
+        print(f'print asset: {source} -> {destination}', flush=True)
+    (output / 'assets.json').write_text(json.dumps(records, indent=2) + '\n')
+
+
+if __name__ == '__main__': main()

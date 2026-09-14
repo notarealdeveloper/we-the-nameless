@@ -20,4 +20,17 @@ apocrypha/
 AGENTS.md
 embd/
 zero/
-pub/
+# Publication outputs remain local; cover source and artwork are build inputs.
+pub/*
+!pub/cover/
+pub/cover/*
+!pub/cover/README.md
+!pub/cover/simple/
+!pub/cover/fancy/
+pub/cover/simple/*
+!pub/cover/simple/cover.tex
+!pub/cover/simple/Makefile
+pub/cover/fancy/*
+!pub/cover/fancy/cover.tex
+!pub/cover/fancy/Makefile
+!pub/cover/fancy/assets/

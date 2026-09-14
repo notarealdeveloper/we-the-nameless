@@ -19,7 +19,6 @@ BUILD ?= build/$(OUTPUT_MODE)-$(THEME)
 CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
 LATEX_CONFIG = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigVerseLayout{$(VERSE_LAYOUT)}\def\ConfigCommentary{$(COMMENTARY)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\IndividualBookTitlePageStyle{$(TITLE_PAGE_STYLE)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigRedactor{$(REDACTOR)}\def\ConfigCover{$(COVER)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}
-KDP_LATEX_CONFIG = $(LATEX_CONFIG)\def\ConfigKDP{true}\def\KDPAssetDir{build/kdp-assets}
 LATEX_INPUT = $(LATEX_CONFIG)\input{$(MAIN).tex}
 
 BUILD_MODES := book-lite book-dark tech-lite tech-dark
@@ -35,13 +34,21 @@ COMMENT_BOOK_TARGETS := $(addprefix comment-,$(BOOK_TARGETS))
 UNCOMMENT_BOOK_TARGETS := $(addprefix uncomment-,$(BOOK_TARGETS))
 EBOOK_BOOKS := genesis exodus leviticus numbers deuteronomy joshua judges samuel kings dudetheyreontome
 EBOOK_TARGETS := $(addsuffix -ebook,$(EBOOK_BOOKS))
-KDP_TARGETS := $(addsuffix -kdp,$(SUBSET_TARGETS))
+KDP_SUBSETS := $(SUBSET_TARGETS) $(CHAPTER_TARGETS)
+KDP_TARGETS := $(foreach suffix,kdp kdp-build kdp-vectorize kdp-check,$(addsuffix -$(suffix),$(KDP_SUBSETS)))
 COVER_TARGETS := $(addsuffix -cover,$(SUBSET_TARGETS))
 COVER_INTERIOR ?= 01-genesis.pdf
 COVER_PAPER ?= standard-color
 KDP_PAPER ?= premium-color
 KDP_INK ?= premium-color
 KDP_BLEED ?= no-bleed
+KDP_TRIM ?= 7x10
+KDP_COVER_STYLE ?= simple
+KDP_SPINE ?= ld
+KDP_ARTIFACT ?=
+KDP_REFERENCE ?=
+KDP_OPTIONS = --paper "$(KDP_PAPER)" --ink "$(KDP_INK)" --bleed "$(KDP_BLEED)" --trim "$(KDP_TRIM)" --cover-style "$(KDP_COVER_STYLE)" --spine "$(KDP_SPINE)"
+KDP_CHECK_OPTIONS = $(if $(KDP_ARTIFACT),--artifact "$(KDP_ARTIFACT)") $(if $(KDP_REFERENCE),--reference "$(KDP_REFERENCE)")
 COVER_VOLUME ?=
 COVER_OUTPUT ?= 01-genesis-cover.pdf
 COVER_BUILD ?= build/cover
@@ -53,7 +60,7 @@ export TEXMFVAR = $(CACHE)
 # Pentateuch paths themselves.
 export max_print_line = 60
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover kdp kdp-preflight genesis-kdp genesis-kdp-soft genesis-kdp-medium genesis-kdp-hard check-genesis-kdp check-kdp-validator $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover kdp kdp-preflight genesis-kdp genesis-kdp-soft genesis-kdp-medium genesis-kdp-hard check-genesis-kdp check-kdp-validator check-kdp $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 define publish-and-open
 	@set -e; \
@@ -119,13 +126,17 @@ help:
 		'  make ebook-validate                                    Validate the complete EPUB (building it first if needed).' \
 		'' \
 		'Prepare KDP paperbacks:' \
-		'  make genesis-kdp-build                                 coming soon: build the searchable interior and raw cover.' \
-		'  make genesis-kdp-vectorize                             coming soon: outline, clean, and validate both PDFs.' \
-		'  make genesis-kdp                                       coming soon: run both KDP stages.' \
-		'  make genesis-kdp-check                                 coming soon: revalidate the recorded final artifacts.' \
-		'                                                         Equivalent targets are planned for every book and subset.' \
+		'  make genesis-kdp-build                                 Build searchable print interior and separate raw cover.' \
+		'  make genesis-kdp-vectorize                             Outline, clean, and validate both PDFs; no TeX build.' \
+		'  make genesis-kdp                                       Run both KDP stages; promote both PDFs after validation.' \
+		'  make genesis-kdp-check                                 Reject stale artifacts and revalidate both PDFs; no build.' \
+		'                                                         Equivalent targets exist for every book, chapter, alias, and source subset.' \
+		'  make check-kdp                                         Run inexpensive publishing tests (never builds a book).' \
+		'  Upload files: build/kdp/<canonical>/artifacts/<canonical>-interior.pdf and <canonical>-cover.pdf' \
+		'  Defaults: KDP_PAPER=premium-color KDP_INK=premium-color KDP_BLEED=no-bleed KDP_TRIM=7x10' \
+		'  Set KDP_COVER_STYLE=simple|fancy and KDP_SPINE=ld|nameless. See doc/publishing.md.' \
 		'  make genesis-kdp-soft|medium|hard                      Build legacy diagnostic PDF-encoding variants.' \
-		'  make check-genesis-kdp                                 Revalidate the legacy recorded Genesis KDP artifact.' \
+		'  make check-genesis-kdp                                 Alias for genesis-kdp-check.' \
 		'  make cover                                             Build 01-genesis-cover.pdf from 01-genesis.pdf.' \
 		'  make genesis-cover                                     Build the matching wrap from an existing 01-genesis.pdf.' \
 		'                                                         Set COVER_STYLE=simple|fancy; COVER_PAPER defaults to standard-color.' \
@@ -164,30 +175,31 @@ kdp-preflight:
 	@test -n "$(KDP_INPUT)" || { echo 'KDP_INPUT is required' >&2; exit 2; }
 	@bin/kdp-preflight "$(KDP_INPUT)"
 
-genesis-kdp: genesis-kdp-soft
+# Enumerated static-pattern targets are visible to standard make tab completion.
+$(addsuffix -kdp-build,$(KDP_SUBSETS)): %-kdp-build:
+	@bin/kdp-publish "$*" build $(KDP_OPTIONS)
 
-genesis-kdp-soft genesis-kdp-medium genesis-kdp-hard:
-	@bin/genesis-kdp "$(@:genesis-kdp-%=%)" "$(KDP_PAPER)" "$(KDP_INK)" "$(KDP_BLEED)"
+$(addsuffix -kdp-vectorize,$(KDP_SUBSETS)): %-kdp-vectorize:
+	@bin/kdp-publish "$*" vectorize $(KDP_OPTIONS)
 
-check-genesis-kdp:
-	@bin/genesis-kdp --check soft "$(KDP_PAPER)" "$(KDP_INK)" "$(KDP_BLEED)"
+$(addsuffix -kdp-check,$(KDP_SUBSETS)): %-kdp-check:
+	@bin/kdp-publish "$*" check $(KDP_OPTIONS) $(KDP_CHECK_OPTIONS)
+
+$(addsuffix -kdp,$(KDP_SUBSETS)): %-kdp:
+	@bin/kdp-publish "$*" all $(KDP_OPTIONS)
+
+genesis-kdp-soft: genesis-kdp
+
+genesis-kdp-medium genesis-kdp-hard:
+	@bin/kdp-publish genesis all $(KDP_OPTIONS) --variant "$(@:genesis-kdp-%=%)"
+
+check-genesis-kdp: genesis-kdp-check
 
 check-kdp-validator:
 	@python3 bin/kdp-visual-compare --self-test
 
-$(filter-out genesis-kdp,$(KDP_TARGETS)): %-kdp:
-	@printf '%s\n' '[KDP 1/4] Preparing print-safe image assets'
-	@bin/kdp-assets || { status=$$?; printf '%s\n' 'KDP build failed while preparing image assets.' >&2; exit $$status; }
-	@printf '%s\n' '[KDP 2/4] Building the KDP-aware interior'
-	@$(MAKE) "$*" LATEX_CONFIG='$(KDP_LATEX_CONFIG)' || { status=$$?; printf '%s\n' 'KDP build failed while building the interior.' >&2; exit $$status; }
-	@printf '%s\n' '[KDP 3/4] Normalizing and preflighting the interior'
-	@basename="$$(bin/book-subset --output-name "$*")"; \
-	bin/kdp-pdf "$$basename.pdf" "$$basename-kdp.pdf" || { status=$$?; printf 'KDP build failed while processing %s.pdf. See the preflight failures above.\n' "$$basename" >&2; exit $$status; }
-	@printf '%s\n' '[KDP 4/4] Building the cover from the final interior'
-	@basename="$$(bin/book-subset --output-name "$*")"; \
-	$(MAKE) "$*-cover" COVER_INTERIOR="$$basename-kdp.pdf" || { status=$$?; printf 'KDP build failed while building the cover for %s-kdp.pdf.\n' "$$basename" >&2; exit $$status; }
-	@basename="$$(bin/book-subset --output-name "$*")"; \
-	printf 'KDP build complete: %s-kdp.pdf and %s-cover.pdf\n' "$$basename" "$$basename"
+check-kdp:
+	@python3 -m unittest discover -s tests -p 'test_kdp*.py' -v
 
 $(COVER_TARGETS): %-cover:
 	@set -e; \

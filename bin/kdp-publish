@@ -1,0 +1,323 @@
+#!/usr/bin/env python3
+"""Isolated, transactional KDP builds using the ordinary subset generator."""
+import argparse
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shlex
+import shutil
+import subprocess
+import sys
+import time
+import uuid
+
+ROOT = Path(__file__).resolve().parents[1]
+PRINT_CONFIG = dict(ConfigOutputMode='book', ConfigTheme='lite',
+    ConfigVerseLayout='horizontal', ConfigCommentary='true',
+    ConfigEnglishTranslation='default', IndividualBookTitlePageStyle='fancy',
+    ConfigColors='default', ConfigApocrypha='apocryphal', ConfigRedactor='uncensored',
+    ConfigCover='none', ConfigKDP='true')
+GS_OPTIONS = ['-dSAFER', '-dBATCH', '-dNOPAUSE', '-sDEVICE=pdfwrite',
+    '-dNoOutputFonts', '-dAutoRotatePages=/None', '-sColorConversionStrategy=LeaveColorUnchanged',
+    '-dDownsampleColorImages=false', '-dDownsampleGrayImages=false', '-dDownsampleMonoImages=false',
+    '-dAutoFilterColorImages=false', '-dColorImageFilter=/FlateEncode',
+    '-dAutoFilterGrayImages=false', '-dGrayImageFilter=/FlateEncode',
+    '-dPassThroughJPEGImages=true', '-dPassThroughJPXImages=true',
+    '-dPreserveOverprintSettings=true', '-dPreserveAnnots=false']
+QPDF_OPTIONS = ['--remove-info', '--remove-metadata', '--remove-page-labels',
+    '--remove-structure', '--stream-data=preserve', '--deterministic-id']
+
+
+def digest(path):
+    with open(path, 'rb') as f:
+        return hashlib.file_digest(f, 'sha256').hexdigest()
+
+
+def atomic_json(path, data):
+    temp = path.with_name(path.name + '.tmp')
+    temp.write_text(json.dumps(data, indent=2) + '\n')
+    os.replace(temp, path)
+
+
+def link(path, target):
+    temp = path.with_name(path.name + '.tmp')
+    temp.unlink(missing_ok=True)
+    temp.symlink_to(target)
+    os.replace(temp, path)
+
+
+def sources():
+    # Include ignored/local TeX and assets too: this repository intentionally
+    # ignores Lua files and publication outputs. Never hash generated build trees.
+    selected = {}
+    suffixes = {'.tex', '.sty', '.cls', '.lua', '.py', '.json', '.yaml',
+                '.ttf', '.otf', '.png', '.jpg', '.jpeg', '.svg', '.eps'}
+    for directory, dirs, files in os.walk(ROOT):
+        dirs[:] = sorted(d for d in dirs if d not in
+            {'build', '.git', '__pycache__', '.obsidian', '.codex', '.agents', '.venv', 'node_modules'})
+        for filename in sorted(files):
+            p = Path(directory) / filename
+            relative = p.relative_to(ROOT)
+            if (p.suffix in suffixes or p.name == 'Makefile' or relative.parts[0] in ('bin', 'bin2')
+                    or (p.suffix == '.pdf' and 'include' in relative.parts)):
+                if p.is_file(): selected[str(relative)] = digest(p)
+
+    return selected
+
+
+def versions():
+    commands = {'gs': ['--version'], 'qpdf': ['--version'], 'mutool': ['-v'],
+        'pdftoppm': ['-v'], 'pdfinfo': ['-v'], 'pdffonts': ['-v'],
+        'pdftotext': ['-v'], 'pdfimages': ['-v'], 'lualatex': ['--version'], 'magick': ['-version']}
+    result = {}
+    for tool, args in commands.items():
+        p = subprocess.run([tool, *args], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if p.returncode:
+            raise RuntimeError(f'cannot obtain {tool} version: {p.stdout}')
+        result[tool] = p.stdout.strip()
+    import PIL, numpy
+    result.update(python=sys.version, pillow=PIL.__version__, numpy=numpy.__version__)
+    return result
+
+
+def assert_current(record, config, snapshot, tools, *, uploads=False):
+    if record['config'] != config or record['sources'] != snapshot or record['tools'] != tools:
+        raise RuntimeError('stale manifest: source/configuration/validator tooling changed; run the build stage again')
+    for name, expected in record.get('dependencies', {}).items():
+        if not Path(name).is_file() or digest(name) != expected:
+            raise RuntimeError(f'stale manifest: recorded dependency changed: {name}')
+    for name, info in record['files'].items():
+        if not Path(name).is_file() or digest(name) != info['sha256']:
+            raise RuntimeError(f'stale or damaged recorded artifact: {name}')
+
+    if uploads:
+        for path in record['upload_files'].values():
+            original = str(Path(record['run']) / 'artifacts' / Path(path).name)
+            if digest(path) != record['files'][original]['sha256']:
+                raise RuntimeError(f'published path does not match manifest: {path}')
+
+
+class Pipeline:
+    def __init__(self, book, base):
+        self.book, self.base = book, base
+        self.run_dir = base / 'runs' / (time.strftime('%Y%m%dT%H%M%S') + '-' + uuid.uuid4().hex[:8])
+        self.run_dir.mkdir(parents=True)
+        self.commands = []
+        self.stage, self.operation, self.candidate = '0/6 setup', 'initialize', self.run_dir
+        self.log = self.run_dir / 'logs/setup.log'
+
+    def status(self, state, message):
+        print(f'[KDP {self.book} {self.stage}] {state:5} {message}', flush=True)
+
+    def run(self, stage, operation, command, candidate=None, env=None):
+        self.stage, self.operation = stage, operation
+        self.candidate = candidate or self.run_dir
+        self.log = self.run_dir / 'logs' / (re.sub(r'[^a-zA-Z0-9-]', '-', stage + '-' + operation) + '.log')
+        self.log.parent.mkdir(parents=True, exist_ok=True)
+        args = list(map(str, command))
+        env = {**getattr(self, 'environment', {}), **(env or {})}
+        self.commands.append(dict(stage=stage, operation=operation, argv=args, environment=env or {}, log=str(self.log)))
+        self.status('START', f'{operation}; log: {self.log}')
+        with self.log.open('w') as log:
+            log.write(shlex.join(args) + '\n'); log.flush()
+            with subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                    text=True, errors='replace', bufsize=1,
+                    env={**os.environ, 'PYTHONUNBUFFERED': '1', **env}) as p:
+                try:
+                    for line in p.stdout:
+                        log.write(line); log.flush()
+                        progress = re.match(r'visual (?:mupdf|poppler): (\d+)/(\d+)', line)
+                        if ((progress and (int(progress[1]) % 25 == 0 or progress[1] in ('1', progress[2])))
+                                or line.startswith('Cover LuaLaTeX pass ')):
+                            self.status('RUN', line.strip())
+                    p.wait()
+                except BaseException:
+                    p.kill(); p.wait()
+                    raise
+        if p.returncode:
+            raise subprocess.CalledProcessError(p.returncode, args)
+        self.status('PASS', operation)
+
+    def inspect(self, artifact, pdf, label, stage=5):
+        report = self.run_dir / 'reports' / artifact / (label + '-inspection.json')
+        self.run(f'{stage}/6 {artifact}', label + ' inspection', ['bin/kdp-inspect', pdf, report], pdf)
+        return report
+
+    def validate(self, artifact, reference, candidate):
+        before = self.inspect(artifact, reference, 'reference')
+        after = self.inspect(artifact, candidate, 'final')
+        reports = after.parent
+        self.run(f'5/6 {artifact}', 'structural validation',
+            ['bin/kdp-validate', reference, candidate, reports / 'structural-report.json', before, after], candidate)
+        self.run(f'5/6 {artifact}', '300 DPI MuPDF and Poppler comparison',
+            ['bin/kdp-visual-compare', reference, candidate, reports / 'visual'], candidate)
+        return json.loads(after.read_text())
+
+    def record(self, config, snapshot, tools, files, dependencies=None):
+        return dict(schema=1, book=self.book, config=config, sources=snapshot,
+            source_sha256=hashlib.sha256(json.dumps(snapshot, sort_keys=True).encode()).hexdigest(),
+            config_sha256=hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest(),
+            tools=tools, commands=list(self.commands), dependencies=dependencies or {}, files=files,
+            reports=[str(p) for p in sorted((self.run_dir / 'reports').rglob('*')) if p.is_file()],
+            compatibility_copies=[], run=str(self.run_dir))
+
+    def build(self, args, config, snapshot, tools):
+        work = self.run_dir / 'work/interior'
+        reference = self.run_dir / 'reference'
+        reference.mkdir()
+        (self.run_dir / 'texmf-var').mkdir()
+        self.run('1/6 assets', 'select subset', ['bin/book-subset', '--build-dir', work, args.book])
+        assets = self.run_dir / 'assets'
+        self.run('1/6 assets', 'prepare print assets', ['bin/kdp-assets', assets, work / 'chapters'])
+        tex_config = ''.join('\\def\\' + k + '{' + v + '}' for k, v in PRINT_CONFIG.items())
+        tex_config += '\\def\\KDPAssetDir{' + str(assets) + '}'
+        # book-subset emits project-relative include paths. TeX auxiliary files need
+        # the same directory tree beneath output-directory.
+        entrypoint = work / (self.book + '.tex')
+        for include in re.findall(r'\\include\{([^}]+)\}', entrypoint.read_text()):
+            (work / Path(include).parent).mkdir(parents=True, exist_ok=True)
+        for number in range(1, 4):
+            self.run('2/6 interior', f'LuaLaTeX pass {number}', ['lualatex', '-recorder',
+                '-interaction=nonstopmode', '-halt-on-error', '-file-line-error',
+                '-output-directory=' + str(work), tex_config + '\\input{' + str(entrypoint) + '}'],
+                work / (self.book + '.pdf'), {'TEXMFVAR': str(self.run_dir / 'texmf-var')})
+        shutil.copy2(work / (self.book + '.pdf'), reference / 'interior.pdf')
+        info = json.loads(self.inspect('interior', reference / 'interior.pdf', 'reference', stage=2).read_text())
+        minimum, maximum = (24, 828) if args.paper == 'premium-color' else (72, 600)
+        if not minimum <= info['pages'] <= maximum or info['pages'] % 2:
+            raise RuntimeError(f'{args.paper} requires an even page count in {minimum}..{maximum}; got {info["pages"]}')
+        if any(p['MediaBox'] != [0, 0, 504, 720] or p['rotation'] != 0 or p['UserUnit'] != 1 for p in info['page_geometry']):
+            raise RuntimeError('interior does not match the supported 7x10 no-bleed trim')
+        title = re.sub(r'^\d+-', '', self.book).replace('-', ' ')
+        title = title.title() if len(title) > 1 else title
+        self.run('3/6 cover', 'build separate wrap', ['bin/kdp-cover', reference / 'interior.pdf',
+            args.paper, reference / 'cover.pdf', self.run_dir / 'work/cover', args.cover_style, title, args.spine], reference / 'cover.pdf')
+        files = {str(reference / 'interior.pdf'): info}
+        cover = reference / 'cover.pdf'
+        cover_info = json.loads(self.inspect('cover', cover, 'reference', stage=3).read_text())
+        sheet_width = 72 * (14.25 + info['pages'] * (0.002347 if args.paper == 'premium-color' else 0.002252))
+        if (cover_info['pages'] != 1 or any(
+                any(abs(a-b) > .01 for a, b in zip(p['MediaBox'], [0, 0, sheet_width, 738]))
+                or p['rotation'] != 0 or p['UserUnit'] != 1 for p in cover_info['page_geometry'])):
+            raise RuntimeError('cover sheet does not match interior page count, trim and paper stock')
+        files[str(cover)] = cover_info
+        dependencies = {}
+        for recorder in self.run_dir.rglob('*.fls'):
+            for line in recorder.read_text().splitlines():
+                p = Path(line.removeprefix('INPUT '))
+                if line.startswith('INPUT ') and p.is_file() and not p.resolve().is_relative_to(ROOT / 'build'):
+                    dependencies[str(p.resolve())] = digest(p)
+        if sources() != snapshot:
+            raise RuntimeError('sources changed during build; references were not promoted')
+        record = self.record(config, snapshot, tools, files, dependencies)
+        record['reference'] = str(reference)
+        record['assets'] = json.loads((assets / 'assets.json').read_text())
+        atomic_json(self.run_dir / 'build.json', record)
+        link(self.base / 'reference', reference.relative_to(self.base))
+        atomic_json(self.base / 'build.json', record)
+        return record
+
+    def vectorize(self, record, config, snapshot, tools):
+        assert_current(record, config, snapshot, tools)
+        self.run('4/6 validation', 'visual validator self-test', ['bin/kdp-visual-compare', '--self-test'])
+        artifacts = self.run_dir / 'artifacts'; artifacts.mkdir()
+        files = dict(record['files'])
+        for artifact in ('interior', 'cover'):
+            reference = Path(record['reference']) / (artifact + '.pdf')
+            work = self.run_dir / 'work/vectorize' / artifact; work.mkdir(parents=True)
+            outlined = work / 'outlined.pdf'
+            candidate = artifacts / f'{self.book}-{artifact}.pdf'
+            variant = config['variant']
+            self.run(f'4/6 {artifact}', 'outline all fonts', ['gs', *GS_OPTIONS,
+                '-dCompatibilityLevel=' + ('1.4' if variant == 'hard' else '1.7'),
+                '-sOutputFile=' + str(outlined), reference], outlined)
+            encoding = {'soft': ['--object-streams=generate'],
+                'medium': ['--object-streams=disable', '--normalize-content=n'],
+                'hard': ['--object-streams=disable', '--normalize-content=y', '--linearize']}[variant]
+            self.run(f'4/6 {artifact}', 'qpdf cleanup', ['qpdf', '--empty', '--pages', outlined, '1-z',
+                '--', *QPDF_OPTIONS, *encoding, candidate], candidate)
+            files[str(candidate)] = self.validate(artifact, reference, candidate)
+        manifest = self.record(config, snapshot, tools, files, record['dependencies'])
+        manifest.update(reference=record['reference'], build_record=record,
+            upload_files={a: str(self.base / 'artifacts' / f'{self.book}-{a}.pdf') for a in ('interior', 'cover')})
+        assert_current(manifest, config, sources(), tools)
+        atomic_json(self.run_dir / 'manifest.json', manifest)
+        self.stage = '6/6 promotion'; self.status('START', 'promote validated interior and cover together')
+        # One pointer switches both PDFs and their manifest; failed runs remain inspectable.
+        link(self.base / 'artifacts', Path('current/artifacts'))
+        link(self.base / 'manifest.json', Path('current/manifest.json'))
+        link(self.base / 'current', self.run_dir.relative_to(self.base))
+        self.status('PASS', json.dumps(manifest['upload_files']))
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('book')
+    parser.add_argument('stage', choices=('build', 'vectorize', 'all', 'check'))
+    for name, default in [('paper', 'premium-color'), ('ink', 'premium-color'), ('bleed', 'no-bleed'),
+            ('trim', '7x10'), ('cover-style', 'simple'), ('spine', 'ld'), ('variant', 'soft')]:
+        parser.add_argument('--' + name, default=default)
+    parser.add_argument('--source-date-epoch', type=int, default=os.environ.get('SOURCE_DATE_EPOCH'),
+        help='reproducible PDF timestamp; defaults to the current Git commit timestamp')
+    parser.add_argument('--artifact', type=Path, help='check an explicitly named final PDF; requires --reference')
+    parser.add_argument('--reference', type=Path)
+    args = parser.parse_args()
+    os.chdir(ROOT)
+    pipeline = None
+    try:
+        if (args.paper not in ('premium-color', 'standard-color') or args.ink != args.paper
+                or args.bleed != 'no-bleed' or args.trim != '7x10'):
+            raise ValueError('supported: 7x10, no-bleed, matching premium-color or standard-color paper/ink')
+        if args.cover_style not in ('simple', 'fancy') or args.spine not in ('ld', 'nameless') or args.variant not in ('soft', 'medium', 'hard'):
+            raise ValueError('unsupported cover style, spine, or PDF encoding variant')
+        if bool(args.artifact) != bool(args.reference) or (args.artifact and args.stage != 'check'):
+            raise ValueError('--artifact and --reference must be supplied together for check')
+        book = subprocess.check_output(['bin/book-subset', '--output-name', args.book], text=True).strip()
+        if args.source_date_epoch is None and not args.artifact:
+            args.source_date_epoch = int(subprocess.check_output(['git', 'log', '-1', '--format=%ct'], text=True).strip())
+        if args.source_date_epoch is not None and args.source_date_epoch < 0:
+            raise ValueError('SOURCE_DATE_EPOCH must be nonnegative')
+        config = {k: v for k, v in vars(args).items() if k not in ('book', 'stage', 'artifact', 'reference')}
+        config['print'] = PRINT_CONFIG
+        base = ROOT / 'build/kdp' / book
+        if args.variant != 'soft': base = base / args.variant
+        base.mkdir(parents=True, exist_ok=True)
+        with (base / '.lock').open('w') as lock:
+            try: fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError: raise RuntimeError(f'another KDP operation holds {base}/.lock')
+            pipeline = Pipeline(book, base)
+            pipeline.environment = {} if args.artifact else {
+                'SOURCE_DATE_EPOCH': str(args.source_date_epoch), 'FORCE_SOURCE_DATE': '1'}
+            pipeline.status('START', 'record sources and tool versions')
+            snapshot, tools = (None, None) if args.artifact else (sources(), versions())
+            pipeline.status('PASS', 'setup')
+            if args.artifact:
+                pipeline.run('4/6 validation', 'visual validator self-test', ['bin/kdp-visual-compare', '--self-test'])
+                pipeline.validate('explicit', args.reference.resolve(), args.artifact.resolve())
+            elif args.stage == 'check':
+                record = json.loads((base / 'manifest.json').read_text())
+                assert_current(record, config, snapshot, tools, uploads=True)
+                pipeline.run('4/6 validation', 'visual validator self-test', ['bin/kdp-visual-compare', '--self-test'])
+                for artifact, final in record['upload_files'].items():
+                    pipeline.validate(artifact, Path(record['reference']) / (artifact + '.pdf'), Path(final))
+                assert_current(record, config, sources(), tools, uploads=True)
+            else:
+                record = pipeline.build(args, config, snapshot, tools) if args.stage in ('build', 'all') else json.loads((base / 'build.json').read_text())
+                if args.stage in ('vectorize', 'all'): pipeline.vectorize(record, config, snapshot, tools)
+            pipeline.status('PASS', f'{args.stage} complete; run: {pipeline.run_dir}')
+    except (Exception, KeyboardInterrupt) as error:
+        status = getattr(error, 'returncode', 1) or 1
+        if pipeline:
+            pipeline.log.parent.mkdir(parents=True, exist_ok=True)
+            with pipeline.log.open('a') as log: log.write(f'\nFAIL: {error}\n')
+            pipeline.status('FAIL', f'exit {status}; operation: {pipeline.operation}; command: {getattr(error, "cmd", "internal check")}; candidate: {pipeline.candidate}; log: {pipeline.log}; reports: {pipeline.run_dir}/reports; {error}')
+        else: print(f'[KDP {args.book} 0/6 setup] FAIL exit {status}: {error}', file=sys.stderr, flush=True)
+        return status if status > 0 else 1
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

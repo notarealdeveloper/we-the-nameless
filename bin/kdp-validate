@@ -1,61 +1,19 @@
 #!/usr/bin/env python3
-"""Strict structural validation of the final outlined interior."""
-import json, re, subprocess, sys
+"""Strict structural validation for either an outlined interior or a cover."""
+import json
 from pathlib import Path
+import sys
+from kdp_pdf_lib import inspect, validate
 
-ref_path, final_path, out_path = map(Path, sys.argv[1:4])
-ref = json.loads(Path(sys.argv[4]).read_text()) if len(sys.argv) > 4 else None
-final = json.loads(Path(sys.argv[5]).read_text()) if len(sys.argv) > 5 else None
-fail, review = [], []
-def run(*a): return subprocess.run(a, text=True, capture_output=True)
-if run("qpdf", "--check", str(final_path)).returncode: fail.append("qpdf --check failed")
-if run("qpdf", "--is-encrypted", str(final_path)).returncode == 0: fail.append("PDF is encrypted")
-if ref["pages"] != final["pages"]: fail.append(f"page count differs: {ref['pages']} -> {final['pages']}")
-for a, b in zip(ref["page_geometry"], final["page_geometry"]):
-    for key in ("MediaBox", "CropBox", "TrimBox", "BleedBox"):
-        if any(abs(x-y) > .01 for x,y in zip(a[key], b[key])): fail.append(f"page {a['page']} {key} differs")
-    for key in ("rotation", "UserUnit"):
-        if abs(a[key]-b[key]) > .01: fail.append(f"page {a['page']} {key} differs")
-fonts = run("pdffonts", str(final_path)).stdout.splitlines()[2:]
-if any(x.strip() for x in fonts): fail.append("pdffonts reports remaining fonts")
-if run("pdftotext", str(final_path), "-").stdout.strip(): fail.append("pdftotext found remaining text")
-objects = run("qpdf", "--json=1", "--json-key=objects", str(final_path)).stdout
-if re.search(r'"/Font"\s*:', objects): fail.append("reachable object dictionaries contain /Font resources")
-# Ask qpdf to decode only page/Form content streams, then lex outside PDF strings.
-stream_ids = set(re.findall(r"^\s+(?:content: )?(\d+) 0 R$", run("qpdf", "--show-pages", str(final_path)).stdout, re.M))
-form_ids = set(re.findall(r'"obj:(\d+) 0 R"\s*:\s*\{.*?"/Subtype"\s*:\s*"/Form"', objects, re.S))
-def outside_strings(raw):
-    out=[]; i=0; depth=0
-    while i < len(raw):
-        c=raw[i]
-        if depth:
-            if c==92: i+=2; continue
-            if c==40: depth+=1
-            elif c==41: depth-=1
-            i+=1; continue
-        if c==40: depth=1; i+=1; continue
-        if c==60 and i+1<len(raw) and raw[i+1]!=60:
-            i=raw.find(b">",i+1)+1 or len(raw); continue
-        if c==37:
-            j=raw.find(b"\n",i); i=len(raw) if j<0 else j+1; continue
-        out.append(c); i+=1
-    return bytes(out)
-ids=sorted(stream_ids | form_ids, key=int)
-if ids:
-    p=subprocess.run(["mutool","show",str(final_path),*ids],capture_output=True)
-    if p.returncode or re.search(rb'(?<![A-Za-z])(BT|Tf|Tj|TJ)(?=\s|\[)', outside_strings(p.stdout)):
-        fail.append("reachable page/Form content contains text operators or could not be decoded")
-for key, value in final["features"].items():
-    if value and key != "transparency": fail.append(f"unwanted feature remains: {key}")
-if final["features"]["transparency"]: review.append("live transparency detected; source-level review required")
-if final["bytes"] > 650_000_000: fail.append("file exceeds 650,000,000 bytes")
-before={(i["page"],i["width"],i["height"]) for i in ref["images"]}
-after={(i["page"],i["width"],i["height"]) for i in final["images"]}
-new=sorted(after-before)
-if new: fail.append(f"unexpected raster images after outlining: {new[:20]}")
-if final["low_resolution_images"]: review.append(f"{len(final['low_resolution_images'])} raster placements are below 300 PPI")
-report={"reference":str(ref_path),"final":str(final_path),"passed":not fail,"failures":fail,"human_review":review,
- "page_count":final["pages"],"bytes":final["bytes"],"size_growth":final["bytes"]-ref["bytes"],"font_count":final["font_count"]}
-out_path.write_text(json.dumps(report,indent=2)+"\n")
-print(json.dumps(report,indent=2))
-raise SystemExit(bool(fail))
+if len(sys.argv) not in (4, 6):
+    raise SystemExit('usage: kdp-validate REFERENCE FINAL REPORT.json [REFERENCE-INSPECTION FINAL-INSPECTION]')
+reference, final, output = map(Path, sys.argv[1:4])
+try:
+    before, after = [json.loads(Path(p).read_text()) for p in sys.argv[4:6]] if len(sys.argv) == 6 else [inspect(reference), inspect(final)]
+    report = validate(reference, final, before, after)
+except Exception as error:
+    report = dict(passed=False, failures=[str(error)], human_review=[])
+output.parent.mkdir(parents=True, exist_ok=True)
+output.write_text(json.dumps(report, indent=2) + '\n')
+print(json.dumps(report, indent=2), flush=True)
+raise SystemExit(not report['passed'])

@@ -41,30 +41,30 @@ if [[ -z "$pages" || -z "$width_points" || -z "$height_points" ]]; then
     printf 'Could not read page count and trim size from %s.\n' "$interior" >&2
     exit 1
 fi
-if (( pages < 79 )); then
-    printf 'KDP permits spine text only for books of at least 79 pages; %s has %s.\n' "$interior" "$pages" >&2
-    exit 1
-fi
+# Short interiors get an unlettered spine; the wrap itself remains valid.
+show_spine=true
+if (( pages < 79 )); then show_spine=false; fi
 
 trim_width=$(awk -v points="$width_points" 'BEGIN {printf "%.6f", points / 72}')
 trim_height=$(awk -v points="$height_points" 'BEGIN {printf "%.6f", points / 72}')
 spine_width=$(awk -v pages="$pages" -v thickness="$sheet_thickness" 'BEGIN {printf "%.6f", pages * thickness}')
 
-if [[ "$paper" == standard-color && ( "$trim_width" != 7.000000 || "$trim_height" != 10.000000 ) ]]; then
-    printf 'Standard Color covers require the current 7x10 in interior; got %sx%s in.\n' "$trim_width" "$trim_height" >&2
+if [[ "$trim_width" != 7.000000 || "$trim_height" != 10.000000 ]]; then
+    printf 'The cover templates require a 7x10 in interior; got %sx%s in.\n' "$trim_width" "$trim_height" >&2
     exit 1
 fi
 
-mkdir -p "$build_dir"
+mkdir -p "$build_dir" "$build_dir/texmf-var"
 # The templates use TikZ's remembered page anchors.  The first pass records
 # those positions; the second pass is what places the panels and labels there.
 for pass in 1 2; do
+    printf 'Cover LuaLaTeX pass %s/2 START\n' "$pass"
     TEXMFVAR="$build_dir/texmf-var" lualatex \
-        -interaction=nonstopmode -halt-on-error -file-line-error \
+        -recorder -interaction=nonstopmode -halt-on-error -file-line-error \
         -output-directory="$build_dir" \
         -jobname=cover \
-        "\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverSpine{$spine}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}" \
-        >/dev/null
+        "\\def\\CoverShowSpine{$show_spine}\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverSpine{$spine}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}"
+    printf 'Cover LuaLaTeX pass %s/2 PASS\n' "$pass"
 done
 cp "$build_dir/cover.pdf" "$output"
 printf 'Built %s: %s pages, %sx%s in trim, %s in spine (%s).\n' \
