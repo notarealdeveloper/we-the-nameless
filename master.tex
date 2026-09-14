@@ -392,7 +392,7 @@
     Path=\LocalFontPath,
     Renderer=HarfBuzz,
     Scale=1.9
-]{NewGardiner.ttf}
+]{egyptian-hieroglyphs-new-gardiner.ttf}
 
 % Historical alphabet fonts.  These are normal text-size declarations.
 % The larger, individually calibrated versions used by the alphabet-history
@@ -689,10 +689,20 @@
 
 \newfontfamily\nunavut[
 	Script=Canadian Syllabics
-]{NotoSansCanadianAboriginal.ttf}
+]{noto-sans-canadian-aboriginal.ttf}
+
+% Hitties speak in Anatolian / Luwian hieroglyphs
+\newfontfamily\AnatolianFont[
+    Path=\LocalFontPath,
+    Renderer=HarfBuzz,
+    Scale=1.50
+]{noto-sans-anatolian-hieroglyphs.ttf}
 
 % Reusable font catalog. Source profiles below bind these fonts to J/E/P/etc.
-\newfontfamily\EnglishFont[\NamelessTextFallbackFeature]{FreeSerif}
+\newfontfamily\EnglishFont[
+	\NamelessTextFallbackFeature
+]{FreeSerif}
+
 \newfontfamily\EnglishProtoFont[
 	Path=\LocalFontPath,
 	Scale=1.22,
@@ -1779,7 +1789,10 @@
 
 \newcommand{\hs}[2]{#1{#2}}
 
-
+% hittites
+\newcommand{\anatolian}[1]{%
+    {\leavevmode\textdir TLT\AnatolianFont #1}%
+}
 
 \iffalse
 \section{nav: sources}
