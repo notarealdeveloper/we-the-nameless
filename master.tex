@@ -2226,12 +2226,14 @@
 \newcommand{\eRB}[1]{\ApplyEnglishSourceProfile{\estyleRB}{#1}}
 \newcommand{\eRC}[1]{\ApplyEnglishSourceProfile{\estyleRC}{#1}}
 \newcommand{\eRJE}[1]{\ApplyEnglishSourceProfile{\estyleRJE}{#1}}
+\let\eI\eRJE
 \newcommand{\hDtr}[2]{\ifcase#1\or\hDtrA{#2}\or\hDtrB{#2}\fi}
 \newcommand{\hR}[1]{\hRRenderer{\hstyleR}{#1}}
 \newcommand{\hRA}[1]{\hRARenderer{\hstyleRA}{#1}}
 \newcommand{\hRB}[1]{\hRBRenderer{\hstyleRB}{#1}}
 \newcommand{\hRC}[1]{\hRCRenderer{\hstyleRC}{#1}}
 \newcommand{\hRJE}[1]{\hRJERenderer{\hstyleRJE}{#1}}
+\let\hI\hRJE
 \newcommand{\sR}[1]{\ApplyEnglishSourceProfile{\estyleR}{#1}}
 \newcommand{\sRA}[1]{\ApplyEnglishSourceProfile{\estyleRA}{#1}}
 \newcommand{\sRB}[1]{\ApplyEnglishSourceProfile{\estyleRB}{#1}}

@@ -100,15 +100,17 @@ help:
 		'  make 1-samuel-1                                 Build 1 Samuel 1; chapter targets share build/test/.' \
 		'  make J                                          Build J.pdf: Yahwist text, including records/poems used by J.' \
 		'  make E                                          Build E.pdf: Elohist text only.' \
-		'  make JE                                         Build JE.pdf: J + E + RJE text.' \
+		'  make I                                          Build I.pdf: J + E + RJE text.' \
 		'  make P                                          Build P.pdf: Priestly text only.' \
-		'  make M                                          Build M.pdf: Mushite text, JE plus Deuteronomistic history.' \
-		'  make A                                          Build A.pdf: Aaronid text, P plus selected D material and Ezra-Nehemiah.' \
+		'  make D                                          Build D.pdf: Deuteronomy through 2 Kings.' \
+		'  make R                                          Build R.pdf: Genesis through Nehemiah.' \
 		'  make j                                          Build j.pdf: Torah-only J text.' \
+		'  make e                                          Build e.pdf: Torah-only E text.' \
+		'  make i                                          Build i.pdf: Torah-only J + E + RJE text.' \
 		'  make p                                          Build p.pdf: Torah-only P text.' \
 		'  make r                                          Build r.pdf: full Torah with all sources.' \
-		'  make R                                          Build R.pdf: Genesis through Nehemiah.' \
-		'  make D                                          Build D.pdf: Deuteronomy through 2 Kings.' \
+		'  make M                                          Build M.pdf: Mushite text, I plus Deuteronomistic history.' \
+		'  make A                                          Build A.pdf: Aaronid text, P plus selected D material and Ezra-Nehemiah.' \
 		'  make court                                      Build court.pdf: 1 Samuel through 1 Kings 2.' \
 		'' \
 		'Publish ebooks:' \
