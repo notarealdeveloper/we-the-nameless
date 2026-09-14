@@ -1,0 +1,55 @@
+{
+  "reference_sha256": "95d22c2b1b865ee31bf900a509119e7d0834bfb5988e18c25f9b02fdf9ab77ff",
+  "final_sha256": "a87b4d2cad94c75c591daf4c5e74d53594108a0cc78b29088f4ca562bf22067a",
+  "validator_sha256": "a9cfa2e5f52ce09cb36e10a140e58d6522982f85494b69feaa9bad038acb762b",
+  "settings": {
+    "dpi": 300,
+    "tile_pixels": 128,
+    "pixel_delta": 36,
+    "max_tile_fraction": 0.08,
+    "max_tile_mae": 12.0,
+    "max_foreground_fraction": 0.016,
+    "max_tile_lost_ink": 0.02
+  },
+  "pages": 1,
+  "results": [
+    {
+      "shape_mismatch": false,
+      "worst_tile": {
+        "fraction": 0.0,
+        "mae": 2.177490234375,
+        "lost_ink": 0.0,
+        "box": [
+          2304,
+          768,
+          2432,
+          896
+        ]
+      },
+      "foreground_changed_fraction": 0.0,
+      "failed": false,
+      "engine": "mupdf",
+      "page": 1
+    },
+    {
+      "shape_mismatch": false,
+      "worst_tile": {
+        "fraction": 0.0,
+        "mae": 3.17315673828125,
+        "lost_ink": 0.0,
+        "box": [
+          3712,
+          896,
+          3840,
+          1024
+        ]
+      },
+      "foreground_changed_fraction": 2.9091664718564118e-06,
+      "failed": false,
+      "engine": "poppler",
+      "page": 1
+    }
+  ],
+  "failures": 0,
+  "note": "Reference and output were compared within each renderer without alignment, shifting, or scaling. Rendering is evidence, not proof, of equivalence."
+}

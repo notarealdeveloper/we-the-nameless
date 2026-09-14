@@ -1,0 +1,10 @@
+<!doctype html><meta charset=utf-8><title>KDP visual regression</title><h1>KDP visual regression</h1><p>Reference and output were compared within each renderer without alignment, shifting, or scaling. Rendering is evidence, not proof, of equivalence.</p><pre>{
+  &quot;dpi&quot;: 300,
+  &quot;tile_pixels&quot;: 128,
+  &quot;pixel_delta&quot;: 36,
+  &quot;max_tile_fraction&quot;: 0.08,
+  &quot;max_tile_mae&quot;: 12.0,
+  &quot;max_foreground_fraction&quot;: 0.016,
+  &quot;max_tile_lost_ink&quot;: 0.02
+}</pre><table><tr><th>renderer</th><th>page</th><th>worst tile</th><th>foreground</th><th>result</th></tr><tr><td>mupdf</td><td>1</td><td>{&#x27;fraction&#x27;: 0.0, &#x27;mae&#x27;: 2.177490234375, &#x27;lost_ink&#x27;: 0.0, &#x27;box&#x27;: [2304, 768, 2432, 896]}</td><td>0.0</td><td>pass</td></tr>
+<tr><td>poppler</td><td>1</td><td>{&#x27;fraction&#x27;: 0.0, &#x27;mae&#x27;: 3.17315673828125, &#x27;lost_ink&#x27;: 0.0, &#x27;box&#x27;: [3712, 896, 3840, 1024]}</td><td>2.9091664718564118e-06</td><td>pass</td></tr></table>

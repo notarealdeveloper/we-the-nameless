@@ -1,0 +1,11 @@
+{
+  "reference": "build/kdp/genesis/work/soft/reference.pdf",
+  "final": "build/kdp/genesis/work/soft/final.candidate.pdf",
+  "passed": true,
+  "failures": [],
+  "human_review": [],
+  "page_count": 596,
+  "bytes": 233635005,
+  "size_growth": 209042363,
+  "font_count": 0
+}
