@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+# PREVIOUS PROMPT
+
+1. Search [01][0-9]-*/*.tex, specifically 01-genesis and 02-exodus for footnotes that start with 'REF: '.
+
+2. When you find one, reword the contents of the footnote (briefly, but preserving the gist),
+   *comment out* but do not remove the original footnote's content including the 'REF: ' prefix,
+   and make sure no new semantically meaningful whitespace is introduced between adjacent footnotes
+   or anywhere else as a result. Basically I just want those to be reworded, and I want the original
+   content to still be visible inside the .tex files in a comment block, but not visible in the pdf.
+   Only the reworded text should be visible in the pdf.
+
+# CURRENT PROMPT
+
+Look through the unstaged working tree changes, and make them more like this:
+
+\Verse{X}
+{
+    Blah
+}
+{
+    Blah
+}
+{
+    %\footnote{
+    %    REF: Blah Blah.
+    %}
+    \footnote{
+        New text blah blah.
+    }
+}
+
+Then write a file called FOOTNOTES.md
+containing all the old footnotes, and
+your new footnotes, with an empty block
+for each of your footnotes that says
+
+CHANGE TO: 
+
+And format the file like a prompt
+so that if I add nothing,
+nothing will change, but if I
+add anything to the 'CHANGE TO:' blocks,
+it'll change the footnotes to that
+while preserving the commented out
+REF: originals.
+EOF
