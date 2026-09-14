@@ -75,56 +75,72 @@ all: $(BUILD)/$(PDF)
 
 help:
 	@printf '%s\n' \
-		'Public targets:' \
-		'  make              Build and open master.pdf (tech-dark) or mistress.pdf (book-lite).' \
-		'  make pdf          Build master.pdf without opening it.' \
-		'  make book-lite    Build build/book-lite/master.pdf (also: book-dark, tech-lite, tech-dark).' \
-		'  make all-modes    Build all four mode/theme combinations concurrently.' \
-		'  make OUTPUT_MODE=tech THEME=lite pdf  Build one explicit combination.' \
-		'  make THEME=lite COLORS=lighter pdf  Use the lighter lite-mode palette.' \
-		'  make APOCRYPHA=canonical pdf  Build without apocrypha (default: apocryphal).' \
-		'  make VERSE_LAYOUT=vertical COMMENTARY=false pdf  Override verse layout and commentary.' \
+		'Build the complete book:' \
+		'  make                                            Build and open master.pdf (tech-dark) or mistress.pdf (book-lite).' \
+		'  make pdf                                        Build master.pdf without opening it.' \
+		'  make parallel                                   Build the book with the parallel chapter workflow.' \
+		'  make book-lite                                  Build build/book-lite/master.pdf (also: book-dark, tech-lite, tech-dark).' \
+		'  make all-modes                                  Build all four mode/theme combinations concurrently.' \
+		'' \
+		'Configure a build:' \
+		'  make OUTPUT_MODE=tech THEME=lite pdf             Build one explicit combination.' \
+		'  make THEME=lite COLORS=lighter pdf               Use the lighter lite-mode palette.' \
+		'  make APOCRYPHA=canonical pdf                     Build without apocrypha (default: apocryphal).' \
+		'  make VERSE_LAYOUT=vertical COMMENTARY=false pdf    Override verse layout and commentary.' \
 		'  make TITLE_PAGE_STYLE=plain REDACTOR=censored pdf  Override title pages and redaction.' \
-		'  make COVER=none pdf  Build without the configured cover image.' \
-		'  make TRANSLATION=kjv pdf  Build with translations/kjv instead of inline English.' \
-		'  make parallel     Build the book with the parallel chapter workflow.' \
-		'  make progress     Open master.tex.' \
-		'  make comment      Comment out everything except the progress subset.' \
-		'  make halfcomment  Comment out everything except the broader half-comment subset.' \
-		'  make uncomment    Uncomment book/include lines in master.tex.' \
-		'  make comment-genesis  Comment only Genesis; book aliases work for every book.' \
-		'  make uncomment-genesis  Uncomment only Genesis; leave every other book unchanged.' \
-		'  make list         List dynamic subset builds.' \
-		'  make J            Build J.pdf: Yahwist text only, including records/poems used by J.' \
-		'  make E            Build E.pdf: Elohist text only.' \
-		'  make JE           Build JE.pdf: J + E + RJE text.' \
-		'  make P            Build P.pdf: Priestly text only.' \
-		'  make M            Build M.pdf: Mushite text, JE plus Deuteronomistic history.' \
-		'  make A            Build A.pdf: Aaronid text, P plus selected Deuteronomistic sections and Ezra-Nehemiah.' \
-		'  make j            Build j.pdf: Torah-only J text.' \
-		'  make p            Build p.pdf: Torah-only P text.' \
-		'  make r            Build r.pdf: full Torah with all sources.' \
-		'  make R            Build R.pdf: Genesis through Nehemiah.' \
-		'  make D            Build D.pdf: Deuteronomy through 2 Kings.' \
-		'  make court        Build court.pdf: 1 Samuel through 1 Kings 2.' \
-		'  make genesis      Build 01-genesis.pdf; numbered book targets also accept 1-genesis and 01-genesis forms.' \
-		'  make genesis-kdp  Build and fully validate the outlined Genesis KDP interior.' \
-		'  make genesis-kdp-soft|medium|hard  Build diagnostic PDF-encoding variants.' \
-		'  make check-genesis-kdp  Revalidate the recorded Genesis KDP artifact.' \
-		'  make genesis-cover  Build the matching wrap from an existing 01-genesis.pdf.' \
-		'  make kdp KDP_INPUT=file.pdf KDP_OUTPUT=file-kdp.pdf  Preflight any existing interior PDF.' \
-		'  make kdp-preflight KDP_INPUT=file.pdf  Report without changing the PDF.' \
-		'  make genesis-1    Build only Genesis 1 as test-genesis-1.pdf and open it.' \
-		'  make 1-samuel-1   Build only 1 Samuel 1; chapter targets share build/test/.' \
-		'  make samuel       Build 08-samuel.pdf; use 1-samuel or 2-samuel for the individual books.' \
-		'  make ebook        Build ebook/we-the-nameless.epub.' \
-		'  make genesis-ebook  Build ebook/genesis.epub; equivalent targets exist for each book.' \
-		'  make ebook-validate  Validate the complete EPUB (building it first if needed).' \
-		'  make cover        Build a KDP paperback wrap as 01-genesis-cover.pdf from 01-genesis.pdf.' \
-		'                    Set COVER_STYLE=simple|fancy; COVER_PAPER defaults to standard-color.' \
-		'  make kings        Build 09-kings.pdf; use 1-kings or 2-kings for the individual books.' \
-		'  make clean        Remove transient TeX aux files.' \
-		'  make distclean    Remove build outputs and master.pdf.'
+		'  make COVER=none pdf                              Build without the configured cover image.' \
+		'  make TRANSLATION=kjv pdf                         Build with translations/kjv instead of inline English.' \
+		'' \
+		'Build books, chapters, and source subsets:' \
+		'  make list                                       List dynamic subset builds.' \
+		'  make genesis                                    Build 01-genesis.pdf; numbered aliases include 1-genesis and 01-genesis.' \
+		'  make samuel                                     Build 08-samuel.pdf; use 1-samuel or 2-samuel for individual books.' \
+		'  make kings                                      Build 09-kings.pdf; use 1-kings or 2-kings for individual books.' \
+		'  make genesis-1                                  Build Genesis 1 as test-genesis-1.pdf and open it.' \
+		'  make 1-samuel-1                                 Build 1 Samuel 1; chapter targets share build/test/.' \
+		'  make J                                          Build J.pdf: Yahwist text, including records/poems used by J.' \
+		'  make E                                          Build E.pdf: Elohist text only.' \
+		'  make JE                                         Build JE.pdf: J + E + RJE text.' \
+		'  make P                                          Build P.pdf: Priestly text only.' \
+		'  make M                                          Build M.pdf: Mushite text, JE plus Deuteronomistic history.' \
+		'  make A                                          Build A.pdf: Aaronid text, P plus selected D material and Ezra-Nehemiah.' \
+		'  make j                                          Build j.pdf: Torah-only J text.' \
+		'  make p                                          Build p.pdf: Torah-only P text.' \
+		'  make r                                          Build r.pdf: full Torah with all sources.' \
+		'  make R                                          Build R.pdf: Genesis through Nehemiah.' \
+		'  make D                                          Build D.pdf: Deuteronomy through 2 Kings.' \
+		'  make court                                      Build court.pdf: 1 Samuel through 1 Kings 2.' \
+		'' \
+		'Publish ebooks:' \
+		'  make ebook                                      Build ebook/we-the-nameless.epub.' \
+		'  make genesis-ebook                              Build ebook/genesis.epub; equivalent targets exist for each book.' \
+		'  make ebook-validate                             Validate the complete EPUB (building it first if needed).' \
+		'' \
+		'Prepare KDP paperbacks:' \
+		'  make genesis-kdp-build                          coming soon: build the searchable interior and raw cover.' \
+		'  make genesis-kdp-vectorize                      coming soon: outline, clean, and validate both PDFs.' \
+		'  make genesis-kdp                                coming soon: run both KDP stages.' \
+		'  make genesis-kdp-check                          coming soon: revalidate the recorded final artifacts.' \
+		'                                                   Equivalent targets are planned for every book and subset.' \
+		'  make genesis-kdp-soft|medium|hard               Build legacy diagnostic PDF-encoding variants.' \
+		'  make check-genesis-kdp                          Revalidate the legacy recorded Genesis KDP artifact.' \
+		'  make cover                                      Build 01-genesis-cover.pdf from 01-genesis.pdf.' \
+		'  make genesis-cover                              Build the matching wrap from an existing 01-genesis.pdf.' \
+		'                                                   Set COVER_STYLE=simple|fancy; COVER_PAPER defaults to standard-color.' \
+		'  make kdp KDP_INPUT=file.pdf KDP_OUTPUT=file-kdp.pdf  Preflight an existing interior PDF.' \
+		'  make kdp-preflight KDP_INPUT=file.pdf           Report on an existing PDF without changing it.' \
+		'' \
+		'Edit the active selection:' \
+		'  make progress                                   Open master.tex.' \
+		'  make comment                                    Comment out everything except the progress subset.' \
+		'  make halfcomment                                Comment out everything except the broader half-comment subset.' \
+		'  make uncomment                                  Uncomment book/include lines in master.tex.' \
+		'  make comment-genesis                            Comment only Genesis; book aliases work for every book.' \
+		'  make uncomment-genesis                          Uncomment only Genesis; leave every other book unchanged.' \
+		'' \
+		'Maintenance:' \
+		'  make clean                                      Remove transient TeX aux files.' \
+		'  make distclean                                  Remove build outputs and master.pdf.'
 
 list:
 	bin/book-subset --list
