@@ -13,5 +13,5 @@ Make a better fancy cover for the KDP release.
 
 ## Stuff to do manually
 
-Gen 22:21-24. Add \aB{} one liner comments about the names below each verse's table.
+
 ## Stuff to do now
