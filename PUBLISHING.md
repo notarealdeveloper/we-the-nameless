@@ -12,7 +12,7 @@ requires separate PDFs. Do not alter ordinary `make $book` behavior. Keep every
 KDP build isolated in its own build directory so concurrent or interrupted runs
 cannot mix auxiliary files or silently reuse another book's output.
 
-Design the public interface around predictable targets, ideally:
+Design the public interface around these predictable targets:
 
 ```text
 make genesis-kdp-build            # searchable KDP-aware interior + raw cover
@@ -24,8 +24,7 @@ make genesis-kdp-check            # revalidate recorded final artifacts
 Equivalent aliases must work for every value supported by the dynamic
 `make $book` subset system. Resolve canonical output names through
 `bin/book-subset --output-name`; do not duplicate the book-name table. It is
-fine to choose clearer target names after inspecting the existing Makefile, but
-document them in `make help` and keep existing working aliases compatible.
+Document them in `make help` and keep existing working aliases compatible.
 
 Separate the implementation into two explicit stages:
 
@@ -88,7 +87,7 @@ exit status, command or operation, candidate path, and exact log/report path.
 Never print a success message for stale artifacts. Write a manifest containing
 source/config hashes, exact commands or options, tool versions, input/output
 SHA-256 hashes, artifact sizes, page counts, font counts, and all report paths.
-Make `check-$book-kdp` reject stale artifacts when relevant sources, config, or
+Make `$book-kdp-check` reject stale artifacts when relevant sources, config, or
 validator tooling changed, while allowing an explicitly named artifact to be
 checked without rebuilding.
 
