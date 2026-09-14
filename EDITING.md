@@ -17,5 +17,5 @@ Work more on the fancy cover for the KDP release, Ramya said she likes the fanci
 
 ## Stuff to do manually
 
-
+Gen 22:21-24. Add \aB{} one liner comments about the names below each verse's table.
 ## Stuff to do now
