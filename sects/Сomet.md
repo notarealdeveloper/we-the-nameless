@@ -23,7 +23,7 @@ Believes that all errors are intentional in the text, and all apparent errors in
 
 Values: Inverse marketing, appearing superficially immoral, unprincipled, abusive, mentally unwell, or otherwise negative without explicitly sending any signal to that effect.
 
-Believes that to be judged, criticized, condemned by reflexive responses of others is a form of moral and intellectual superiority. Seeks to be misunderstood without obfuscation, and to he condemned without committing any moral violations.
+Believes that to be judged, criticized, condemned by reflexive responses of others is a form of moral and intellectual superiority. Seeks to be misunderstood without obfuscation, and to be condemned without committing any moral violations.
 
 The Black Hat Red Team of moral philosophy.
 
