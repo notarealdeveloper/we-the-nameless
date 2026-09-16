@@ -9,5 +9,6 @@ If there are no manual ones, do them all.
 
 ## Stuff to do manually
 
+I Samuel 25:22. Restore the proper "pisses against a wall" translation.
 
 ## Stuff to do now
