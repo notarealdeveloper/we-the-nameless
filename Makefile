@@ -99,6 +99,7 @@ help:
 		'  make TRANSLATION=kjv pdf                               Build with translations/kjv instead of inline English.' \
 		'' \
 		'Build books, chapters, and source subsets:' \
+		'  All subset builds open their PDF when finished.' \
 		'  make list                                              List dynamic subset builds.' \
 		'  make genesis                                           Build 01-genesis.pdf; numbered aliases include 1-genesis and 01-genesis.' \
 		'  make samuel                                            Build 08-samuel.pdf; use 1-samuel or 2-samuel for individual books.' \
@@ -336,8 +337,14 @@ $(SUBSET_TARGETS):
 	bin/book-subset --build-dir "$(BUILD)" "$@"; \
 	$(LATEX) $(LATEXFLAGS) "$(LATEX_CONFIG)\input{$(BUILD)/$$basename.tex}"
 	$(MAKE) clean-stray-aux
-	@basename="$$(bin/book-subset --output-name "$@")"; \
-	cp "$(BUILD)/$$basename.pdf" "$$basename.pdf"
+	@set -e; \
+	basename="$$(bin/book-subset --output-name "$@")"; \
+	cp "$(BUILD)/$$basename.pdf" "$$basename.pdf"; \
+	if command -v xdg-open >/dev/null 2>&1; then \
+		xdg-open "$$basename.pdf" >/dev/null 2>&1 & \
+	else \
+		echo "Built $$basename.pdf"; \
+	fi
 
 $(CHAPTER_TARGETS): BUILD = build/test
 $(CHAPTER_TARGETS):
