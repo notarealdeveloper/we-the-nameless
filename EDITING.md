@@ -17,3 +17,5 @@ There are too many tables in Gen 25 and it feels chaotic. Do a series full pass 
 
 II Sam 15:11. Change alone to along
 
+Genesis 14:15. The quotes inside the footnote are rendering literally as TeX backticks and single quotes. Fix this by changing the environment of this source in master.tex, perhaps by adding that magic Ligatures=TeX or whatever the line is that tends to fix this. Change all other source profiles in the same manner that don't yet have it.
+
