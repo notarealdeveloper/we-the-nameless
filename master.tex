@@ -370,8 +370,11 @@
     Scale=0.82
 ]{DejaVu Sans}
 \newfontfamily\CyrillicFont[
-    Renderer=HarfBuzz
-]{DejaVu Sans}
+    Renderer=HarfBuzz,
+    Script=Cyrillic
+]{Noto Sans}
+\let\cyrillicfont\CyrillicFont
+\DeclareTextFontCommand{\cyr}{\cyrillicfont}
 \newunicodechar{н}{\ifmmode\hbox{\CyrillicFont н}\else{\CyrillicFont н}\fi}
 
 % The Ancients
