@@ -2,69 +2,6 @@ Agents: Do all the items below except the ones marked as manual.
 
 If there are no manual ones, do them all.
 
-## Stuff to do manually
-
-I Samuel 25:22. Restore the proper "pisses against a wall" translation and show several translations.
-- So and more also do God unto the enemies of David, if I leave of all that pertain to him by the morning light any that pisseth against the wall.
-- May God deal with David, be it ever so severely, if by morning I leave alive one male of all who belong to him! -NIV
-- God will severely punish David, if I leave alive until morning even one male from all those who belong to him! -NET
-- God do so to David  and more also, if by morning I leave so much as one male of all who belong to him. -NRSV
-- 
-
-Numbers 25:1-5 and Deuteronomy 34:5. These are one continuous section and it's hilarious. YHWH tells Moses to take all the leaders of the people and hang them. Then immediately Moses tells the people to kill all the people who are associated with Baal Peor. Then the next line, in Deuteronomy, is "And Moses, YHWH's servant, died there in the land of Moab by YHWH's mouth." This is too hilarious not to point out. Write the commentary on Numbers 25:1-5 and Deuteronomy 34:5 now.
-
-Gen 28:21. Decide what to do with the 5th out of 5 anomalous uses of the name YHWH here.
-
----
-
-### Rebecca age footnote
-
-(Manually.)
-
-Put this as a footnote in condensed form on the place where it says Isaac was 40.
-
-The minimal verse set for the “Rebekah was three” calculation is:
-
-1. Genesis 17:17 — Sarah is 90 when Isaac's birth is announced:
-
-> “Shall a child be born to a man who is a hundred years old? Shall Sarah, who is ninety years old, bear a child?”
-
-2. Genesis 21:2, 5 — Isaac is born at the appointed time; Abraham is 100. This locks in Sarah at about 90 when Isaac is born.
-
-3. Genesis 22:20–23 — immediately after the Aqedah:
-
-> “After these things Abraham was told…” followed by Nahor's genealogy, ending: “Bethuel fathered Rebekah.”
-
-The traditional calculation treats this as effectively announcing Rebekah's birth at this point.
-
-4. Genesis 23:1 — Sarah dies aged 127. Since she was 90 at Isaac's birth: 127 − 90 = Isaac is 37.
-
-5. Genesis 25:20 — Isaac is 40 when he marries Rebekah:
-
-> “Isaac was forty years old when he took Rebekah … as his wife.”
-
-Therefore, under that harmonizing reading:
-
-\[
-\text{Isaac at Rebekah's birth} = 37
-\]
-
-\[
-\text{Isaac at marriage} = 40
-\]
-
-\[
-\boxed{\text{Rebekah = 3}}
-\]
-
-So the really compact citation chain is:
-
-Gen 17:17 → 21:2,5 → 22:20–23 → 23:1 → 25:20.
-
-And Gen 24:57–58 is the optional punchline, where three-year-old Rebekah is then asked whether she wants to leave with the man, and she's like “I'll go.”
-
----
-
 ## Stuff to do now
 
 Genesis 25:6. Add a footnote by red (B) saying \fB{What's going on with that colon? I know it's not in the original Hebrew but what's that colon doing there? While "he" was still living? Which he?}
@@ -263,38 +200,6 @@ Gen 28:17. So he's --> So now he's
 
 Gen 29:4. Ok so there's some guys by the well. --> So there's some guys by the well. && Remember, he's in Haran. --> Now remember, he's in Haran. && And they’re like "We're from Haran." --> So naturally they're like, "Haran."
 
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
-Gen 29:
-
 II Sam 15:11. Change alone to along
 
 Genesis 14:15. The quotes inside the footnote are rendering literally as TeX backticks and single quotes. Fix this by changing the environment of this source in master.tex, perhaps by adding that magic Ligatures=TeX or whatever the line is that tends to fix this. Change all other source profiles in the same manner that don't yet have it.
@@ -305,6 +210,9 @@ Genesis 6-9. In the flood story, change the word "ark" to "box" even in the engl
 
 > Qere Perpetuum. REF, RTT 48: W.E., 1:50.\fC{There is no scholarly consensus on the meaning of this comment or the manuscript to which it refers.}
 > 
+
+
+Gen 28:21. Decide what to do with the 5th out of 5 anomalous uses of the name YHWH here. See what we did the other times, I think we just wrapped the \aBR{} or \aRB{} redactor macro around both the anomalous name itself and made the accompanying footnote that color too, but check, and then do that.
 
 ---
 
@@ -381,3 +289,53 @@ Joshua 3:1, 6:12, 6:15, 7:16, 8:10 are all "someone got up early in the morning.
 Joshua 5:8-9. End of J's first book: (1) They circumcise everyone. (2) "Today I've rolled the disgrace of Egypt off you." 
 - Footnote: Circumcision is an Egyptian practice. This line may be parody.
 - Footnote: Some scholars have suggested this is the end of J's first book. The second book of J covers all the green content from here to the court history of David in 2 Samuel.
+
+---
+
+### Rebecca age footnote
+
+(Manually.)
+
+Put this as a footnote in condensed form on the place where it says Isaac was 40.
+
+The minimal verse set for the “Rebekah was three” calculation is:
+
+1. Genesis 17:17 — Sarah is 90 when Isaac's birth is announced:
+
+> “Shall a child be born to a man who is a hundred years old? Shall Sarah, who is ninety years old, bear a child?”
+
+2. Genesis 21:2, 5 — Isaac is born at the appointed time; Abraham is 100. This locks in Sarah at about 90 when Isaac is born.
+
+3. Genesis 22:20–23 — immediately after the Aqedah:
+
+> “After these things Abraham was told…” followed by Nahor's genealogy, ending: “Bethuel fathered Rebekah.”
+
+The traditional calculation treats this as effectively announcing Rebekah's birth at this point.
+
+4. Genesis 23:1 — Sarah dies aged 127. Since she was 90 at Isaac's birth: 127 − 90 = Isaac is 37.
+
+5. Genesis 25:20 — Isaac is 40 when he marries Rebekah:
+
+> “Isaac was forty years old when he took Rebekah … as his wife.”
+
+Therefore, under that harmonizing reading:
+
+\[
+\text{Isaac at Rebekah's birth} = 37
+\]
+
+\[
+\text{Isaac at marriage} = 40
+\]
+
+\[
+\boxed{\text{Rebekah = 3}}
+\]
+
+So the really compact citation chain is:
+
+Gen 17:17 → 21:2,5 → 22:20–23 → 23:1 → 25:20.
+
+And Gen 24:57–58 is the optional punchline, where three-year-old Rebekah is then asked whether she wants to leave with the man, and she's like “I'll go.”
+
+---
