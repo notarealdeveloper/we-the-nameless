@@ -24,8 +24,7 @@ def development_part(source: str) -> str:
             [
                 r"\mainmatter",
                 r"\chapter*{Apocrypha}%",
-                r"\Apocrypha{Genesis}",
-                r"\input{01-genesis/apocrypha}",
+                rf"\input{{{path.with_suffix('').as_posix()}}}",
             ]
         )
     else:

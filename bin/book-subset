@@ -71,6 +71,7 @@ PRIMARY_HISTORY_BOOKS = {
 SUBSET_EXCLUDED_INCLUDES = frozenset(
     {
         "01-genesis/apocrypha",
+        "02-exodus/apocrypha",
     }
 )
 
@@ -600,8 +601,8 @@ def numbered_book_target(directory):
         toc_chapters=True,
         full_frontmatter=True,
         passthrough_includes=(
-            frozenset({"01-genesis/apocrypha"})
-            if directory == "01-genesis"
+            frozenset({f"{directory}/apocrypha"})
+            if f"{directory}/apocrypha" in SUBSET_EXCLUDED_INCLUDES
             else frozenset({"10-dudetheyreontome/title"})
             if directory == "10-dudetheyreontome"
             else frozenset()
@@ -1072,12 +1073,17 @@ def build_navigation_overrides(target, books):
     # Remove default extra links, such as Genesis Apocrypha, unless the subset
     # generator explicitly learns how to include those non-verse sections.
     for book in books:
-        if (
-            book["title"] == "Genesis"
-            and "01-genesis/apocrypha" in target.passthrough_includes
+        if any(
+            include in target.passthrough_includes
+            and include in SUBSET_EXCLUDED_INCLUDES
+            for item_type, include in book["items"]
+            if item_type == "include"
         ):
-            lines.append(r"\DeclareBookExtraLinkList{Genesis}{%")
-            lines.append(r"    \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%")
+            title = book["title"]
+            lines.append(rf"\DeclareBookExtraLinkList{{{title}}}{{%")
+            lines.append(r"    \ifConfigApocryphaOn")
+            lines.append(rf"    \BookLink{{{title} Apocrypha}}{{{title} Apocrypha}}%")
+            lines.append(r"    \fi")
             lines.append("}%")
         else:
             lines.append(rf"\DeclareBookExtraLinkList{{{book['title']}}}{{}}%")
@@ -1155,7 +1161,7 @@ def write_entrypoint(target, preamble, books, build_root):
         "",
         (
             r"\GenesisApocryphaTocEntrytrue"
-            if "01-genesis/apocrypha" in target.passthrough_includes
+            if target.passthrough_includes & SUBSET_EXCLUDED_INCLUDES
             else ""
         ),
         "",
@@ -1202,7 +1208,7 @@ def write_entrypoint(target, preamble, books, build_root):
             if generated is None:
                 continue
             if include_path in target.passthrough_includes:
-                if include_path == "01-genesis/apocrypha":
+                if include_path in SUBSET_EXCLUDED_INCLUDES:
                     lines.extend(
                         [
                             r"\ifConfigApocryphaOn",

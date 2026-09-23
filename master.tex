@@ -3331,6 +3331,11 @@
         \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%
     \fi
 }
+\DeclareBookExtraLinkList{Exodus}{%
+    \ifConfigApocryphaOn
+        \BookLink{Exodus Apocrypha}{Exodus Apocrypha}%
+    \fi
+}
 \DeclareBookChapterLinkList{Samuel}{%
     \BookPartChapterLinks{I Samuel}%
     \BookPartChapterLinks{II Samuel}%
@@ -3852,11 +3857,15 @@
     \endgroup
 }
 
-% \Apocryphon defines an apocryphal text heading.
-\newcommand{\Apocryphon}[1]{%
+% The optional plain title keeps display formatting out of navigation targets.
+\newcommand{\Apocryphon}[2][]{%
     \clearpage
-    \hypertarget{chapter.\CurrentBook.#1}{}%
-    \def\CurrentChapter{#1}%
+    \if\relax\detokenize{#1}\relax
+        \def\CurrentChapter{#2}%
+    \else
+        \def\CurrentChapter{#1}%
+    \fi
+    \hypertarget{chapter.\CurrentBook.\CurrentChapter}{}%
     \markboth{\CurrentApocryphaHeader}{\CurrentApocryphaHeader}%
     \Needspace{8\baselineskip}%
     \par
@@ -3866,12 +3875,12 @@
     \makebox[\linewidth]{\color{RuleColor}\rule{0.38\linewidth}{\ifConfigKDPOn0.75pt\else0.4pt\fi}}%
     \vspace{0.55em}%
     \begin{center}
-	\textdir TLT\EnglishProtoFont\LARGE #1\par
+	\textdir TLT\EnglishProtoFont\LARGE #2\par
     \end{center}
 
     %\noindent\begin{minipage}{0.86\linewidth}
     %    \centering
-    %    \textdir TLT\EnglishProtoFont\LARGE #1\par
+    %    \textdir TLT\EnglishProtoFont\LARGE #2\par
     %\end{minipage}\par
     \vspace{0.35em}%
     {\textdir TRT\DeadSeaScrollsIsaiahFont\large\color{RuleColor}\paleoijklower\par}%
@@ -4652,6 +4661,9 @@
 \include{02-exodus/38}
 \include{02-exodus/39}
 \include{02-exodus/40}
+\ifConfigApocryphaOn
+\include{02-exodus/apocrypha}
+\fi
 
 \Book{Leviticus}
 \include{03-leviticus/01}
