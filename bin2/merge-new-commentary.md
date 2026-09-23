@@ -23,7 +23,7 @@ Whenever you find a bit of commentary in com/ that isn't in eng/, I want you to:
 
 6. You should only be editing the following this time around:
 
-    08-samuel/2-1[12345].tex
+    08-samuel/2-*.tex
 
 7. Whenever you find a Friedman footnote in the com/ directory, move it to the tex files, but leave it commented out.
 
