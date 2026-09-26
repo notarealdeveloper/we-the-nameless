@@ -1117,9 +1117,13 @@ def build_navigation_overrides(target, books):
         for part, chapters in parts.items():
             if not chapters:
                 continue
+            # Explicit lists can link to books nested within a collection
+            # (e.g. Sects / Acts -> 1 NHS), with their own titles and anchors.
+            lines.append(rf"\@ifundefined{{ChapterLinkList@{part}}}{{%")
             lines.append(rf"\DeclareChapterLinkList{{{part}}}{{%")
             lines.append(chapter_link_list(chapters))
             lines.append("}%")
+            lines.append("}{}%")
 
     # Remove default extra links, such as Genesis Apocrypha, unless the subset
     # generator explicitly learns how to include those non-verse sections.

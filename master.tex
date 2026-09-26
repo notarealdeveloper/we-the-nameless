@@ -3333,6 +3333,7 @@
 \DeclareChapterLinkRange{2 On The Lamb}{3}
 \DeclareChapterLinkRange{3 On The Lamb}{2}
 \DeclareChapterLinkRange{Esther}{10}
+\DeclareChapterLinkRange{Dudetheyreontome}{1}
 \DeclareChapterLinkRange{1 NHS}{1}
 \DeclareChapterLinkList{Sects / Acts}{%
     \par\noindent\hspace*{1em}%
@@ -3790,7 +3791,9 @@
     \BookPartChapterSummaryLinks{II Kings}%
 }
 \DeclareBookChapterSummaryLinkList{Dudetheyreontome}{%
-    \BookPartChapterSummaryLinks{Dudetheyreontome}%
+    % This part shares the volume's name; use its chapter links to avoid
+    % recursively expanding the volume's summary list.
+    \BookPartChapterLinks{Dudetheyreontome}%
     \BookPartChapterSummaryLinks{1 On The Lamb}%
     \BookPartChapterSummaryLinks{Esther}%
     \BookPartChapterSummaryLinks{2 On The Lamb}%
