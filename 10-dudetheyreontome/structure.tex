@@ -1,0 +1,46 @@
+% One manifest supplies both reading order and volume navigation.
+\newcommand{\HistoryInput}[1]{\input{#1}}
+\newcommand{\HistoryBook}[1]{%
+    \BookHeading{\TableOfContentsLink{#1}}%
+    \phantomsection
+    \hypertarget{book.history.#1}{}%
+    \addcontentsline{toc}{section}{#1}%
+    \def\CurrentTitleBook{history.#1}%
+    \BookPart{#1}%
+}
+% A source switch retains the compiled book and its title destination.
+% It preserves inherited chapter/verse IDs and translation lookup keys.
+\newcommand{\HistorySource}[1]{\BookPart{#1}}
+% Later editorial additions can occur anywhere, even between source verses.
+% Sentence numbering is independent of fixed source verse numbers.
+\newcommand{\HistoryInsertion}[1]{\input{#1}}
+\newcommand{\HistoryPlaceholder}[1]{%
+    \par\medskip\begin{center}\textsl{[#1]}\end{center}\medskip
+}
+\newcommand{\HistoryCollection}[1]{%
+    \BookHeading{\TableOfContentsLink{#1}}%
+    \phantomsection
+    \hypertarget{collection.#1}{}%
+    \addcontentsline{toc}{section}{#1}%
+}
+\newcommand{\HistoryContentsLink}[2]{%
+    \par\noindent\hyperlink{#1}{\BookExtraLinkText{#2}}\par\smallskip
+}
+\newcommand{\HistoryContents}{%
+    \begingroup
+    \renewcommand{\HistoryBook}[1]{\HistoryContentsLink{book.history.##1}{##1}}%
+    \renewcommand{\HistorySource}[1]{}%
+    \renewcommand{\include}[1]{}%
+    \renewcommand{\HistoryCollection}[1]{\HistoryContentsLink{collection.##1}{##1}}%
+    \renewcommand{\IncludeEpistles}[1]{\EpistlesContents}%
+    \input{10-dudetheyreontome/contents}%
+    \endgroup
+}
+\DeclareBookChapterLinkList{Dudetheyreontome}{\HistoryContents}
+\DeclareBookChapterSummaryLinkList{Dudetheyreontome}{\HistoryContents}
+\DeclareChapterLinkList{On The Lamb}{%
+    \hyperlink{chapter.On The Lamb.Foreword}{\ChapterLinkText{Foreword}}%
+}
+\DeclareBookChapterSummaryLinkList{On The Lamb}{\ChapterLinksForBook{On The Lamb}}
+\DeclareBookImageDir{On The Lamb}{10-dudetheyreontome/frontmatter}
+\DeclareBookImageDir{Dudetheyreontome}{10-dudetheyreontome/dudetheyreontome}

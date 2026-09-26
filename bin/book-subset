@@ -553,6 +553,12 @@ def epistle_items(directory):
 
 
 def parse_master_books(body):
+    # History manifests are explicit, ordered composition files, not chapters.
+    body = re.sub(
+        r"\\HistoryInput\{([^}]+)\}",
+        lambda match: (ROOT / f"{match[1]}.tex").read_text(),
+        body,
+    )
     matches = list(BOOK_RE.finditer(body))
     books = []
     for index, match in enumerate(matches):
@@ -562,10 +568,13 @@ def parse_master_books(body):
         block = body[start:end]
         items = []
         for item in re.finditer(
-            r"\\BookPart\{([^}]+)\}|\\include\{([^}]+)\}|\\IncludeEpistles\{([^}]+)\}",
+            r"\\BookPart\{([^}]+)\}|\\include\{([^}]+)\}|\\IncludeEpistles\{([^}]+)\}"
+            r"|\\(HistoryBook|HistorySource|HistoryCollection)\{([^}]+)\}",
             block,
         ):
-            if item.group(1) is not None:
+            if item.group(4) is not None:
+                items.append((item.group(4), item.group(5)))
+            elif item.group(1) is not None:
                 items.append(("part", item.group(1)))
             elif item.group(3) is not None:
                 items.extend(epistle_items(item.group(3)))
@@ -609,7 +618,8 @@ def numbered_book_target(directory):
     if match is None:
         fatal(f"internal error: not a numbered book directory: {directory}")
     number, slug = match.groups()
-    title = book_titles_by_dir().get(directory, title_from_slug(slug))
+    title = ("Dudetheyreontome" if directory == "10-dudetheyreontome"
+             else book_titles_by_dir().get(directory, title_from_slug(slug)))
     aliases = frozenset({slug, f"{int(number)}-{slug}"})
     return Target(
         directory,
@@ -1068,6 +1078,10 @@ def build_navigation_overrides(target, books):
     epistles = []
     for book in books:
         title = book["title"]
+        if any(kind == "HistoryBook" for kind, _ in book["items"]):
+            # The manifest already supplies navigation for the compiled books.
+            epistles.extend(value for kind, value in book["items"] if kind == "epistle")
+            continue
         current_part = None
         current_epistle = None
         for item_type, value in book["items"]:
@@ -1147,7 +1161,7 @@ def build_navigation_overrides(target, books):
 
 
 def build_toc_overrides(target, books):
-    if not target.toc_chapters:
+    if not target.toc_chapters or target.name == "10-dudetheyreontome":
         return ""
     included_book_destinations = {
         book.get("master_title", book["title"]): book["title"] for book in books
@@ -1253,11 +1267,17 @@ def write_entrypoint(target, preamble, books, build_root):
         ]
     )
     for book in books:
+        if book["title"] == "On The Lamb":
+            lines.append(r"\input{10-dudetheyreontome/title}")
         lines.append(rf"\Book{{{book['title']}}}")
+        pending_history = []
         pending_part = None
         pending_epistles = False
         pending_epistle = None
         for item_type, value in book["items"]:
+            if item_type in {"HistoryBook", "HistorySource", "HistoryCollection"}:
+                pending_history.append(rf"\{item_type}{{{value}}}")
+                continue
             if item_type == "epistles":
                 pending_epistles = True
                 pending_part = None
@@ -1272,6 +1292,8 @@ def write_entrypoint(target, preamble, books, build_root):
             generated = book.get("generated", {}).get(include_path)
             if generated is None:
                 continue
+            lines.extend(pending_history)
+            pending_history = []
             if pending_epistle is not None:
                 if pending_epistles:
                     lines.append(r"\EpistlesHeading")
