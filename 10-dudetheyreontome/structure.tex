@@ -1,0 +1,77 @@
+% Assembled books have their own identity. Layers retain source reference IDs.
+\newif\ifHistoryBookActive
+\HistoryBookActivefalse
+\newcommand{\HistoryBook}[2]{%
+    \HistoryBookActivetrue
+    \def\HistoryBookTitle{#2}%
+    \def\CurrentTitleBook{history.#1}%
+    \BookHeading{\TableOfContentsLink{#2}}%
+    \phantomsection
+    \hypertarget{book.history.#1}{}%
+    \addcontentsline{toc}{section}{#2}%
+}
+\newcommand{\HistoryAddition}[1]{%
+    \BookPart{#1}%
+    \def\HistoryLayerLabel{ --- Addition}%
+}
+\newcommand{\HistorySource}[1]{%
+    \BookPart{#1}%
+    \def\HistoryLayerLabel{}%
+}
+\newcommand{\HistoryInterpolation}[1]{\eR{#1}}
+% Collections supply their own headings (Sects / Acts and Epistles).
+\newcommand{\HistoryCollection}[1]{\HistoryBookActivefalse}
+\newcommand{\HistoryPlaceholder}[1]{%
+    \par\medskip
+    {\centering\itshape[#1]\par}%
+    \medskip
+}
+\newcommand{\HistoryRunningTitle}{%
+    \ifHistoryBookActive
+        \HistoryBookTitle\HistoryLayerLabel
+    \else
+        \CurrentBook
+    \fi
+}
+\let\HistoryOriginalChapterTitleText\ChapterTitleText
+\renewcommand{\ChapterTitleText}[1]{%
+    \ifHistoryBookActive
+        \BookTitleLink{\HistoryRunningTitle\ #1}%
+    \else
+        \HistoryOriginalChapterTitleText{#1}%
+    \fi
+}
+\renewcommand{\ChapterHeaderText}[1]{%
+    \hyperlink{chapter.\CurrentBook.#1}{\HistoryRunningTitle\ #1}%
+}
+% Replaying only the assembly declarations keeps both title-page styles in
+% sync with the reading order. No chapter files are read during this pass.
+\newcommand{\HistoryContentsBook}[2]{%
+    \par\noindent
+    \hyperlink{book.history.#1}{\BookExtraLinkText{#2}}\par
+    \smallskip
+}
+\newcommand{\HistoryContentsCollection}[1]{%
+    \par\noindent
+    \hyperlink{collection.#1}{\BookExtraLinkText{#1}}\par
+    \smallskip
+}
+\newcommand{\HistoryContents}{%
+    \begingroup
+    \let\HistoryBook\HistoryContentsBook
+    \let\HistoryCollection\HistoryContentsCollection
+    \renewcommand{\HistoryAddition}[1]{}%
+    \renewcommand{\HistorySource}[1]{}%
+    \renewcommand{\BookPart}[1]{}%
+    \renewcommand{\include}[1]{}%
+    \renewcommand{\IncludeEpistles}[1]{\EpistlesContents}%
+    \input{10-dudetheyreontome/contents}%
+    \endgroup
+}
+\DeclareChapterLinkRange{Dudetheyreontome}{1}
+\DeclareChapterLinkRange{On The Lamb}{1}
+\DeclareBookChapterSummaryLinkList{On The Lamb}{%
+    \ChapterSummaryLink{On The Lamb}{1}{On The Lamb}{Foreword}%
+}
+\DeclareBookChapterLinkList{Dudetheyreontome}{\HistoryContents}
+\DeclareBookChapterSummaryLinkList{Dudetheyreontome}{\HistoryContents}

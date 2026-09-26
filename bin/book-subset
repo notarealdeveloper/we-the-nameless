@@ -8,6 +8,7 @@ import sys
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
+from history_structure import expand_history
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -534,7 +535,7 @@ def read_master():
     if begin < 0 or end < 0:
         fatal("master.tex must contain \\begin{document} and \\end{document}")
     begin += len(BEGIN_DOCUMENT)
-    return text[:begin], text[begin:end]
+    return text[:begin], expand_history(text[begin:end], ROOT)
 
 
 def epistle_items(directory):
@@ -553,6 +554,9 @@ def epistle_items(directory):
 
 
 def parse_master_books(body):
+    body = expand_history(body, ROOT)
+    body = re.sub(r"\\History(Addition|Source)\{([^}]+)\}",
+                  lambda m: r"\BookPart{" + m[2] + "}" + m[0], body)
     matches = list(BOOK_RE.finditer(body))
     books = []
     for index, match in enumerate(matches):
@@ -562,10 +566,12 @@ def parse_master_books(body):
         block = body[start:end]
         items = []
         for item in re.finditer(
-            r"\\BookPart\{([^}]+)\}|\\include\{([^}]+)\}|\\IncludeEpistles\{([^}]+)\}",
+            r"\\BookPart\{([^}]+)\}|\\include\{([^}]+)\}|\\IncludeEpistles\{([^}]+)\}|(\\HistoryBook\{[^}]+\}\{[^}]+\}|\\HistoryCollection\{[^}]+\}|\\History(?:Addition|Source)\{[^}]+\})",
             block,
         ):
-            if item.group(1) is not None:
+            if item.group(4) is not None:
+                items.append(("history", item.group(4)))
+            elif item.group(1) is not None:
                 items.append(("part", item.group(1)))
             elif item.group(3) is not None:
                 items.extend(epistle_items(item.group(3)))
@@ -596,7 +602,10 @@ def book_titles_by_dir():
     for book in master_books():
         for item_type, value in book["items"]:
             if item_type == "include":
-                titles.setdefault(book_dir(value), book["title"])
+                if book["title"] == "Dudetheyreontome":
+                    titles[book_dir(value)] = book["title"]
+                else:
+                    titles.setdefault(book_dir(value), book["title"])
     return titles
 
 
@@ -1016,6 +1025,8 @@ def transform_chapter(source_path, target, include):
             verse_count += 1
         pos = end
     if verse_count == 0:
+        if allowed_sources is None and r"\HistoryPlaceholder{" in text:
+            return text, 0, chapter
         return None, 0, chapter
     return "".join(out).rstrip() + "\n", verse_count, chapter
 
@@ -1071,6 +1082,8 @@ def build_navigation_overrides(target, books):
         current_part = None
         current_epistle = None
         for item_type, value in book["items"]:
+            if item_type == "history":
+                continue
             if item_type == "epistles":
                 continue
             if item_type == "epistle":
@@ -1095,6 +1108,8 @@ def build_navigation_overrides(target, books):
             else:
                 compound_books.setdefault(title, {}).setdefault(current_part, []).append(chapter)
 
+    # The history has semantic book boundaries and owns its navigation.
+    compound_books.pop("Dudetheyreontome", None)
     lines = [r"\makeatletter"]
     lines.append(r"\renewcommand{\EpistleContentsEntries}{%")
     for epistle in epistles:
@@ -1197,7 +1212,7 @@ def build_toc_overrides(target, books):
             r"    \hypertarget{chapter.\CurrentBook.#1}{}%",
             r"    \ChapterHeading{\ChapterTitleText{#1}}%",
             r"    \def\CurrentChapter{#1}%",
-            r"    \markboth{\CurrentBook\ #1}{\CurrentBook\ #1}%",
+            r"    \markboth{\HistoryRunningTitle\ #1}{\HistoryRunningTitle\ #1}%",
             r"}",
         ]
     )
@@ -1257,7 +1272,16 @@ def write_entrypoint(target, preamble, books, build_root):
         pending_part = None
         pending_epistles = False
         pending_epistle = None
+        pending_history = []
         for item_type, value in book["items"]:
+            if item_type == "history":
+                if value.startswith((r"\HistoryBook{", r"\HistoryCollection{")):
+                    pending_history = [value]
+                else:
+                    pending_history = [v for v in pending_history
+                                       if not v.startswith((r"\HistoryAddition{", r"\HistorySource{"))]
+                    pending_history.append(value)
+                continue
             if item_type == "epistles":
                 pending_epistles = True
                 pending_part = None
@@ -1272,9 +1296,12 @@ def write_entrypoint(target, preamble, books, build_root):
             generated = book.get("generated", {}).get(include_path)
             if generated is None:
                 continue
+            if target.book_title_override is None:
+                lines.extend(pending_history)
+            pending_history = []
             if pending_epistle is not None:
                 if pending_epistles:
-                    lines.append(r"\EpistlesHeading")
+                    lines.append(r"\HistoryCollection{Epistles}\EpistlesHeading")
                     pending_epistles = False
                 lines.append(rf"\clearpage\EpistleBook{{{pending_epistle}}}")
                 lines.append(rf"\input{{{generated}}}")

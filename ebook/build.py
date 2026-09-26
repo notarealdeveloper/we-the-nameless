@@ -21,6 +21,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / "bin"))
+from history_structure import expand_history, history_layers_as_parts
+
 MASTER = ROOT / "master.tex"
 OUTPUT = HERE / "we-the-nameless.epub"
 COVERS = ROOT / "img/covers"
@@ -1067,15 +1070,24 @@ def parse_verses(text: str) -> list[tuple[str, str, str, str]]:
 
 
 def master_sequence(selected_book: str | None = None) -> list[tuple[str, str]]:
-    body = MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1]
+    body = history_layers_as_parts(expand_history(
+        MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1], ROOT))
     sequence: list[tuple[str, str]] = []
     current_book = ""
     current_part = ""
+    history_title = ""
     for line in body.splitlines():
         m = re.match(r"\\Book\{([^}]+)\}", line)
         if m:
             current_book, current_part = m.group(1), ""
+            history_title = ""
             continue
+        history = re.match(r"\\HistoryBook\{[^}]+\}\{([^}]+)\}", line)
+        if history:
+            history_title = history[1]
+            continue
+        if line.startswith(r"\HistoryCollection"):
+            history_title = ""
         m = re.match(r"\\BookPart\{([^}]+)\}", line)
         if m:
             current_part = m.group(1)
@@ -1084,20 +1096,24 @@ def master_sequence(selected_book: str | None = None) -> list[tuple[str, str]]:
         if m:
             path = ROOT / f"{m.group(1)}.tex"
             if (selected_book is None or current_book == selected_book) and path.exists() and path.name != "apocrypha.tex":
-                label = current_part or current_book
+                label = history_title or current_part or current_book
+                if history_title and current_part.endswith(" additions"):
+                    label += " — Addition"
                 sequence.append((label, str(path.relative_to(ROOT))))
     return sequence
 
 
 def top_level_books() -> list[str]:
     """Return the print contents' books, including unavailable partial-build entries."""
-    body = MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1]
+    body = history_layers_as_parts(expand_history(
+        MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1], ROOT))
     return list(dict.fromkeys(re.findall(r"^\\Book\{([^}]+)\}", body, flags=re.MULTILINE)))
 
 
 def include_parent_books() -> dict[str, str]:
     """Map each included chapter file to its enclosing top-level ``\\Book``."""
-    body = MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1]
+    body = history_layers_as_parts(expand_history(
+        MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1], ROOT))
     parents: dict[str, str] = {}
     parent = ""
     for line in body.splitlines():
