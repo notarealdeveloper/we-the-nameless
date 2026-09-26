@@ -223,11 +223,7 @@ again:
 
 build-prepare:
 	@mkdir -p "$(BUILD)" "$(CACHE)"
-	@sed -n 's|^[[:space:]]*\\include{\([^}]*\)}.*|\1|p' "$(MAIN).tex" | \
-		while IFS= read -r include; do \
-			dir=$$(dirname -- "$$include"); \
-			mkdir -p "$(BUILD)/$$dir"; \
-		done
+	@python3 bin/history_structure.py "$(MAIN).tex" "$(BUILD)"
 
 build-translation: build-prepare
 	@if [ "$(TRANSLATION)" != "default" ]; then \

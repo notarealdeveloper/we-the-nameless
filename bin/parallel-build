@@ -14,6 +14,8 @@ import tempfile
 import threading
 import time
 
+from history_structure import expand_history
+
 
 ROOT = Path(__file__).resolve().parents[1]
 MASTER = ROOT / "master.tex"
@@ -120,7 +122,7 @@ def read_document_parts():
         start = match.start()
         end = books[index + 1].start() if index + 1 < len(books) else text.index(r"\end{document}", start)
         body = text[start:end].strip()
-        includes = INCLUDE_RE.findall(body)
+        includes = INCLUDE_RE.findall(expand_history(body, ROOT))
         chunks.append(
             {
                 "index": index,
