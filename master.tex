@@ -2111,6 +2111,11 @@
 	{\HebrewEzraRaw}			{\SourceBackground{Pbgcolor}\AaronidStyle\addfontfeatures{Scale=1.40}\mdseries}
 	% Don't change this font scale!
 
+% Json: speaker B's red with the priestly bold weight.
+\DeclareSourceProfile{Json}
+	{\EnglishFont}				{\color{Redcolor}\PriestStyle\addfontfeatures{Ligatures=TeX}}
+	{\HebrewDavidRaw}			{\color{Redcolor}\PriestStyle}
+
 \DeclareSourceProfile{EP}
 	{\EnglishFont}				{\color{EPcolor}\PriestStyle\addfontfeatures{Ligatures=TeX}}
 	{\HebrewEzra}				{\color{EPcolor}\addfontfeatures{Scale=1.40}\mdseries}
@@ -2210,7 +2215,7 @@
 }
 \makeatother
 
-\DeclareSourceCommandList{J,JP,JPP,PR,JE,E,EP,EPP,P,PP,DtrA,DtrB,DtrH,Dtn,Diff,Records,Other,X,Aramaic,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
+\DeclareSourceCommandList{J,JP,JPP,PR,JE,E,EP,EPP,P,PP,Json,DtrA,DtrB,DtrH,Dtn,Diff,Records,Other,X,Aramaic,Proto,ProtoA,ProtoB,ProtoC,ProtoD,ProtoE,ProtoF,ProtoG,Paleo,PaleoA,PaleoB,PaleoC,PaleoD,PaleoE,PaleoF,PaleoG,PaleoH,PaleoI,PaleoJ,PaleoK,PaleoL,PaleoM,PaleoN,PaleoO,PaleoP,PaleoQ,PaleoR,PaleoS,PaleoT,PaleoU,PaleoV,PaleoW,PaleoX,PaleoY}
 
 % P defaults to square Ezra. Use \UsePaleoP for occasional Hezekiah-era Paleo-P,
 % then \UseSquareP to switch P back.
@@ -4162,6 +4167,10 @@
 \DeclareSpeakerShortcut{A}{\cK}
 \DeclareSpeakerShortcut{B}{\cR}
 \DeclareSpeakerShortcut{C}{\cB}
+
+\newenvironment{midrash}
+    {\par\aC{(Begin Midrash)}\par\ignorespaces}
+    {\par\aC{(End Midrash)}\par\ignorespacesafterend}
 \ifConfigRedactorCensored
     \NewDocumentCommand{\aAX}{ O{l} +m }{}
     \NewDocumentCommand{\aBX}{ O{l} +m }{}
