@@ -302,7 +302,7 @@
 \DeclareBookImageDir{Samuel}{08-samuel}
 \DeclareBookImageDir{Kings}{09-kings}
 \DeclareBookImageDir{Dudetheyreontome}{10-dudetheyreontome}
-\DeclareBookImageDir{1 On The Lamb}{10-dudetheyreontome/1-on-the-lamb}
+\DeclareBookImageDir{1 On The Lamb}{10-dudetheyreontome/on-the-lamb/1-on-the-lamb}
 
 \newcommand{\ImageNotFound}[1]{%
     \PackageError{WeTheNameless}{Image not found: #1}{%
@@ -3333,6 +3333,7 @@
 \DeclareChapterLinkRange{2 On The Lamb}{3}
 \DeclareChapterLinkRange{3 On The Lamb}{2}
 \DeclareChapterLinkRange{Esther}{10}
+\DeclareChapterLinkRange{NHS}{1}
 \DeclareBookExtraLinkList{Genesis}{%
     \ifConfigApocryphaOn
         \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%
@@ -3359,6 +3360,7 @@
     \BookPartChapterLinks{Ezra}%
     \BookPartChapterLinks{3 On The Lamb}%
     \BookPartChapterLinks{Nehemiah}%
+    \BookPartChapterLinks{NHS}%
     \EpistlesContents%
 }
 % Chapter-summary data for fancy individual book title pages.
@@ -3771,6 +3773,9 @@
     \ChapterSummaryLink{3 On The Lamb}{1}{3 On The Lamb}{The Plane of Edom}%
     \ChapterSummaryLink{3 On The Lamb}{2}{3 On The Lamb}{AAA; The Two Towers}%
 }
+\DeclareBookChapterSummaryLinkList{NHS}{%
+    \ChapterSummaryLink{NHS}{1}{NHS}{The Nth Stair}%
+}
 \DeclareBookChapterSummaryLinkList{Samuel}{%
     \BookPartChapterSummaryLinks{I Samuel}%
     \columnbreak
@@ -3788,6 +3793,7 @@
     \BookPartChapterSummaryLinks{Ezra}%
     \BookPartChapterSummaryLinks{3 On The Lamb}%
     \BookPartChapterSummaryLinks{Nehemiah}%
+    \BookPartChapterSummaryLinks{NHS}%
     \EpistlesContents%
 }
 \makeatother
@@ -3824,14 +3830,14 @@
     \SetCurrentBookImageDir{#1}%
 }
 
-% Epistles are a collection within Dudetheyreontome; numbered directories other than On The Lamb and Exile are books.
+% Epistles are books in numbered directories within 10-dudetheyreontome/epistles.
 \directlua{epistles = dofile("bin/epistles.lua")}
 \newcommand{\EpistleContentsEntry}[1]{%
     \par\noindent\hspace*{1em}%
     \hyperlink{book.#1}{\BookExtraLinkText{#1}}%
 }
 \newcommand{\EpistleContentsEntries}{%
-    \directlua{epistles.contents("10-dudetheyreontome")}%
+    \directlua{epistles.contents("10-dudetheyreontome/epistles")}%
 }
 \newcommand{\EpistlesContents}{%
     \par\nobreak\medskip
@@ -5003,58 +5009,61 @@
 \include{10-dudetheyreontome/dudetheyreontome/01}
 
 \BookPart{1 On The Lamb}
-\include{10-dudetheyreontome/1-on-the-lamb/01}
-\include{10-dudetheyreontome/1-on-the-lamb/02}
-\include{10-dudetheyreontome/1-on-the-lamb/03}
+\include{10-dudetheyreontome/on-the-lamb/1-on-the-lamb/01}
+\include{10-dudetheyreontome/on-the-lamb/1-on-the-lamb/02}
+\include{10-dudetheyreontome/on-the-lamb/1-on-the-lamb/03}
 
 \BookPart{Esther}
-\include{10-dudetheyreontome/1-exile-esther/01}
-\include{10-dudetheyreontome/1-exile-esther/02}
-\include{10-dudetheyreontome/1-exile-esther/03}
-\include{10-dudetheyreontome/1-exile-esther/04}
-\include{10-dudetheyreontome/1-exile-esther/05}
-\include{10-dudetheyreontome/1-exile-esther/06}
-\include{10-dudetheyreontome/1-exile-esther/07}
-\include{10-dudetheyreontome/1-exile-esther/08}
-\include{10-dudetheyreontome/1-exile-esther/09}
-\include{10-dudetheyreontome/1-exile-esther/10}
+\include{10-dudetheyreontome/exile/esther/01}
+\include{10-dudetheyreontome/exile/esther/02}
+\include{10-dudetheyreontome/exile/esther/03}
+\include{10-dudetheyreontome/exile/esther/04}
+\include{10-dudetheyreontome/exile/esther/05}
+\include{10-dudetheyreontome/exile/esther/06}
+\include{10-dudetheyreontome/exile/esther/07}
+\include{10-dudetheyreontome/exile/esther/08}
+\include{10-dudetheyreontome/exile/esther/09}
+\include{10-dudetheyreontome/exile/esther/10}
 
 \BookPart{2 On The Lamb}
-\include{10-dudetheyreontome/2-on-the-lamb/01}
-\include{10-dudetheyreontome/2-on-the-lamb/02}
-\include{10-dudetheyreontome/2-on-the-lamb/03}
+\include{10-dudetheyreontome/on-the-lamb/2-on-the-lamb/01}
+\include{10-dudetheyreontome/on-the-lamb/2-on-the-lamb/02}
+\include{10-dudetheyreontome/on-the-lamb/2-on-the-lamb/03}
 
 \BookPart{Ezra}
-\include{10-dudetheyreontome/2-exile-ezra/01}
-\include{10-dudetheyreontome/2-exile-ezra/02}
-\include{10-dudetheyreontome/2-exile-ezra/03}
-\include{10-dudetheyreontome/2-exile-ezra/04}
-\include{10-dudetheyreontome/2-exile-ezra/05}
-\include{10-dudetheyreontome/2-exile-ezra/06}
-\include{10-dudetheyreontome/2-exile-ezra/07}
-\include{10-dudetheyreontome/2-exile-ezra/08}
-\include{10-dudetheyreontome/2-exile-ezra/09}
-\include{10-dudetheyreontome/2-exile-ezra/10}
+\include{10-dudetheyreontome/exile/ezra/01}
+\include{10-dudetheyreontome/exile/ezra/02}
+\include{10-dudetheyreontome/exile/ezra/03}
+\include{10-dudetheyreontome/exile/ezra/04}
+\include{10-dudetheyreontome/exile/ezra/05}
+\include{10-dudetheyreontome/exile/ezra/06}
+\include{10-dudetheyreontome/exile/ezra/07}
+\include{10-dudetheyreontome/exile/ezra/08}
+\include{10-dudetheyreontome/exile/ezra/09}
+\include{10-dudetheyreontome/exile/ezra/10}
 
 \BookPart{3 On The Lamb}
-\include{10-dudetheyreontome/3-on-the-lamb/01}
-\include{10-dudetheyreontome/3-on-the-lamb/02}
+\include{10-dudetheyreontome/on-the-lamb/3-on-the-lamb/01}
+\include{10-dudetheyreontome/on-the-lamb/3-on-the-lamb/02}
 
 \BookPart{Nehemiah}
-\include{10-dudetheyreontome/3-exile-nehemiah/01}
-\include{10-dudetheyreontome/3-exile-nehemiah/02}
-\include{10-dudetheyreontome/3-exile-nehemiah/03}
-\include{10-dudetheyreontome/3-exile-nehemiah/04}
-\include{10-dudetheyreontome/3-exile-nehemiah/05}
-\include{10-dudetheyreontome/3-exile-nehemiah/06}
-\include{10-dudetheyreontome/3-exile-nehemiah/07}
-\include{10-dudetheyreontome/3-exile-nehemiah/08}
-\include{10-dudetheyreontome/3-exile-nehemiah/09}
-\include{10-dudetheyreontome/3-exile-nehemiah/10}
-\include{10-dudetheyreontome/3-exile-nehemiah/11}
-\include{10-dudetheyreontome/3-exile-nehemiah/12}
-\include{10-dudetheyreontome/3-exile-nehemiah/13}
+\include{10-dudetheyreontome/exile/nehemiah/01}
+\include{10-dudetheyreontome/exile/nehemiah/02}
+\include{10-dudetheyreontome/exile/nehemiah/03}
+\include{10-dudetheyreontome/exile/nehemiah/04}
+\include{10-dudetheyreontome/exile/nehemiah/05}
+\include{10-dudetheyreontome/exile/nehemiah/06}
+\include{10-dudetheyreontome/exile/nehemiah/07}
+\include{10-dudetheyreontome/exile/nehemiah/08}
+\include{10-dudetheyreontome/exile/nehemiah/09}
+\include{10-dudetheyreontome/exile/nehemiah/10}
+\include{10-dudetheyreontome/exile/nehemiah/11}
+\include{10-dudetheyreontome/exile/nehemiah/12}
+\include{10-dudetheyreontome/exile/nehemiah/13}
 
-\IncludeEpistles{10-dudetheyreontome}
+\BookPart{NHS}
+\include{10-dudetheyreontome/sects-acts/nhs/01}
+
+\IncludeEpistles{10-dudetheyreontome/epistles}
 
 \end{document}
