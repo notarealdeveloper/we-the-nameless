@@ -13,6 +13,7 @@ main.pdf
 *.gz
 *.luc
 *.lua
+!bin/epistles.lua
 *.pdf
 *.egg-info
 .obsidian/workspace.json

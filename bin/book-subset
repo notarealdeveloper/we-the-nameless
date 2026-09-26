@@ -537,6 +537,16 @@ def read_master():
     return text[:begin], text[begin:end]
 
 
+def epistle_items(directory):
+    # Keep filename/title discovery in sync with bin/epistles.lua.
+    items = [("epistles", directory)]
+    for path in sorted((ROOT / directory).glob("*.tex")):
+        if path.is_file() and re.fullmatch(r"[A-Za-z0-9-]+", path.stem):
+            items.append(("epistle", title_from_slug(path.stem)))
+            items.append(("include", f"{directory}/{path.stem}"))
+    return items
+
+
 def parse_master_books(body):
     matches = list(BOOK_RE.finditer(body))
     books = []
@@ -546,9 +556,14 @@ def parse_master_books(body):
         end = matches[index + 1].start() if index + 1 < len(matches) else len(body)
         block = body[start:end]
         items = []
-        for item in re.finditer(r"\\BookPart\{([^}]+)\}|\\include\{([^}]+)\}", block):
+        for item in re.finditer(
+            r"\\BookPart\{([^}]+)\}|\\include\{([^}]+)\}|\\IncludeEpistles\{([^}]+)\}",
+            block,
+        ):
             if item.group(1) is not None:
                 items.append(("part", item.group(1)))
+            elif item.group(3) is not None:
+                items.extend(epistle_items(item.group(3)))
             else:
                 items.append(("include", item.group(2)))
         books.append({"title": title, "items": items})
@@ -1033,15 +1048,27 @@ def chapter_link_list(chapters):
 def build_navigation_overrides(target, books):
     simple_books = {}
     compound_books = {}
+    epistles = []
     for book in books:
         title = book["title"]
         current_part = None
+        current_epistle = None
         for item_type, value in book["items"]:
+            if item_type == "epistles":
+                continue
+            if item_type == "epistle":
+                current_epistle = value
+                continue
             if item_type == "part":
                 current_part = value
+                current_epistle = None
                 continue
             generated = book.get("generated", {}).get(value)
             if generated is None:
+                continue
+            if current_epistle is not None:
+                epistles.append(current_epistle)
+                compound_books.setdefault(title, {}).setdefault("Epistles", [])
                 continue
             chapter = book.get("chapters", {}).get(value)
             if chapter is None:
@@ -1052,6 +1079,10 @@ def build_navigation_overrides(target, books):
                 compound_books.setdefault(title, {}).setdefault(current_part, []).append(chapter)
 
     lines = [r"\makeatletter"]
+    lines.append(r"\renewcommand{\EpistleContentsEntries}{%")
+    for epistle in epistles:
+        lines.append(rf"    \EpistleContentsEntry{{{epistle}}}%")
+    lines.append("}%")
     for title, chapters in simple_books.items():
         lines.append(rf"\DeclareChapterLinkList{{{title}}}{{%")
         lines.append(chapter_link_list(chapters))
@@ -1059,6 +1090,9 @@ def build_navigation_overrides(target, books):
     for title, parts in compound_books.items():
         lines.append(rf"\DeclareBookChapterLinkList{{{title}}}{{%")
         for part, chapters in parts.items():
+            if part == "Epistles":
+                lines.append(r"    \EpistlesContents%")
+                continue
             if not chapters:
                 continue
             lines.append(rf"    \BookPartChapterLinks{{{part}}}%")
@@ -1199,13 +1233,30 @@ def write_entrypoint(target, preamble, books, build_root):
     for book in books:
         lines.append(rf"\Book{{{book['title']}}}")
         pending_part = None
+        pending_epistles = False
+        pending_epistle = None
         for item_type, value in book["items"]:
+            if item_type == "epistles":
+                pending_epistles = True
+                pending_part = None
+                continue
+            if item_type == "epistle":
+                pending_epistle = value
+                continue
             if item_type == "part":
                 pending_part = value
                 continue
             include_path = value
             generated = book.get("generated", {}).get(include_path)
             if generated is None:
+                continue
+            if pending_epistle is not None:
+                if pending_epistles:
+                    lines.append(r"\EpistlesHeading")
+                    pending_epistles = False
+                lines.append(rf"\clearpage\EpistleBook{{{pending_epistle}}}")
+                lines.append(rf"\input{{{generated}}}")
+                pending_epistle = None
                 continue
             if include_path in target.passthrough_includes:
                 if include_path in SUBSET_EXCLUDED_INCLUDES:

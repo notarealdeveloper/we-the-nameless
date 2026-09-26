@@ -21,6 +21,16 @@ And the Son of J spoke to the man, saying, "If you believe I am the best of all 
 
 INTERPOLATION:
 
+The text here quickly becomes rather dense and difficult, and does not properly belong anywhere. However, scholars believe that it was written soon after the Son of J's first meeting with the individual or group who is later addressed in the Epistle of 1 Jephesians, who he met on the Plane of Edom.
+
+As such, the following text does not properly belong inside the narrative of the Dudetheyreonamystic History, nor in the book of Dudetheyreontome, nor in 3 On The Lamb, but we include it here due to its historical significance, despite its overall lack of relevance to the surrounding text.
+
+The text begins now, and continues to the end of 3 On The Lamb.
+
+---
+
+The Son of J's vision after the meeting of Jeff of the Jephesians, in which he saw a vision of himself attending the Church of AAA in a future time, and was rejected by them in the vision.
+
 Lit. In the original text, "The True Man Show'in[g his acts to those who did not have ears to hear the] surround[ing] sound'[s of his acts, for he was] made a great prophet through his acts, and through the vision he brought to the people, for in this vision, he was special in all the world, because in the beginning was the Words, and the Words spoke of the acts that James would perform for all who came to see him, for at the first vision, he was dressed all in white before countless flashes of light, and he said to the light \heb{פפראצי}\fB{A word of unknown origin, probably Aramaic.} now depart from me, you cursed\fB{Lit. you [cursed; for he cursed at them] into everlasting fire,\fB{Lit. "go to hell."} for this night, I am to come simply down the carpet of scarlet\fB{Lit. red} in garments of white\fB{Lit. a white suit}, [a] just man pale of skin\fB{Lit. just a white guy.} for I have come to you this night, for the night of the opening is upon us,\fB{Lit. I'm only here because it's opening night.} and do not ask not for a sign, for I will not give a sign to this generation,\fB{Lit. I won't sign anything, I've signed enough for a lifetime.} for you are all like sheep, and you are flocking to the gates, but the Son of a Man\fB{Cf. The New Testament usage of the term "ben adam" (\heb{בן אדאם}) a Hebrew and Aramaic term meaning simply "Human Being."} comes to you in the role of a leader to give light to the world by means of this vision, for I come before you today not because of a desire in my heart, but by the orders of the one who sent me, for he directs me and he has made me a great prophet so that I shall never want for any lust of the flesh. These were the words of James, who was Carried.}
 
 And the Son of J told these things to the Nameless, for they had gathered together in secret to follow the twelve, for he was not their leader, but he came to them, for his body was the bread of life,\fB{Lit. had become dough-y throughout life.}, and his blood was wine.\fB{Lit. "the wine had literally become his blood." Sects of the Nameless differ on the exact interpretation of this.} and the Nameless had drunk the wine that was also his blood, they had drunk it each of them long before they came here, but they did not do so today, for they had come together for the water of the life that is to come after. And it was in that day, and the Son of J came to them, for they had followed in the same path as he. And it was at a secret meeting of the twelve that he said to them "Why have you given up the life of drinking like fish, and turned your heart to the power inside you?
@@ -73,6 +83,4 @@ And they worried no longer about the things of that day.
 
 But they knew that the Son of J had come to them, and that he was not like them, but he was something else.
 
-And they did not see him again for three days.
-
-And when he came to them it was Sunday on the Day of Saturn.  ב י".  V; Ñ7m?mkmk
+And they did not hear from him again for three days.

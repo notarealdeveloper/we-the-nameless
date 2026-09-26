@@ -3331,7 +3331,6 @@
 \DeclareChapterLinkRange{Nehemiah}{13}
 \DeclareChapterLinkRange{On the Lamb}{6}
 \DeclareChapterLinkRange{Esther}{10}
-\DeclareChapterLinkRange{Epistles}{1}
 \DeclareBookExtraLinkList{Genesis}{%
     \ifConfigApocryphaOn
         \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%
@@ -3355,7 +3354,7 @@
     \BookPartChapterLinks{Ezra}%
     \BookPartChapterLinks{Nehemiah}%
     \BookPartChapterLinks{Esther}%
-    \BookPartChapterLinks{Epistles}%
+    \EpistlesContents%
 }
 % Chapter-summary data for fancy individual book title pages.
 \DeclareBookChapterSummaryLinkList{Genesis}{%
@@ -3775,7 +3774,7 @@
     \BookPartChapterSummaryLinks{Ezra}%
     \BookPartChapterSummaryLinks{Nehemiah}%
     \BookPartChapterSummaryLinks{Esther}%
-    \BookPartChapterSummaryLinks{Epistles}%
+    \EpistlesContents%
 }
 \makeatother
 
@@ -3809,6 +3808,39 @@
 \newcommand{\BookPart}[1]{%
     \def\CurrentBook{#1}%
     \SetCurrentBookImageDir{#1}%
+}
+
+% Epistles are a collection within Dudetheyreontome; each file is a book.
+\directlua{epistles = dofile("bin/epistles.lua")}
+\newcommand{\EpistleContentsEntry}[1]{%
+    \par\noindent\hspace*{1em}%
+    \hyperlink{book.#1}{\BookExtraLinkText{#1}}%
+}
+\newcommand{\EpistleContentsEntries}{%
+    \directlua{epistles.contents("10-dudetheyreontome/epistles")}%
+}
+\newcommand{\EpistlesContents}{%
+    \par\nobreak\medskip
+    {\centering\large\textsc{Epistles}\par\nobreak\smallskip}%
+    \EpistleContentsEntries
+}
+\newcommand{\EpistlesHeading}{%
+    \BookHeading{\TableOfContentsLink{Epistles}}%
+    \phantomsection
+    \hypertarget{collection.Epistles}{}%
+    \addcontentsline{toc}{section}{Epistles}%
+    \EpistleContentsEntries
+}
+\newcommand{\EpistleBook}[1]{%
+    \BookPart{#1}%
+    \def\CurrentTitleBook{#1}%
+    \phantomsection
+    \hypertarget{book.#1}{}%
+    \addcontentsline{toc}{subsection}{#1}%
+}
+\newcommand{\IncludeEpistles}[1]{%
+    \EpistlesHeading
+    \directlua{epistles.include("\luaescapestring{#1}")}%
 }
 
 \iffalse
@@ -4989,7 +5021,6 @@
 \include{10-dudetheyreontome/04-esther/09}
 \include{10-dudetheyreontome/04-esther/10}
 
-\BookPart{Epistles}
-\include{10-dudetheyreontome/epistles/1-jephesians}
+\IncludeEpistles{10-dudetheyreontome/epistles}
 
 \end{document}

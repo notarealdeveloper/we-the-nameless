@@ -89,8 +89,7 @@ The Jews. (noun).
     - Said to help each other out.
     - More intensely devout versions of the system are known to be heavily focused on rules surrounding what goes into the body, especially food and drinks.
 
-    - They're like Programmers.
-        - The original text has "Unix" here.
+    - The original text has "Unix" here.
     - Cuz beards.
     - And man pages.
     - And man can they stare at those pages all day.
@@ -119,3 +118,5 @@ The Jews. (noun).
     - After Africa, most of the group left their home land and spread out across the world, so the whole species is mostly in diaspora mode, which is pretty Jewish.
     - The place they're all from is kinda messed up and dangerous now, but we all hope that's only temporary.
 
+
+From: Notes on the future of the church, written after the meeting of the Jephesian on the Plane of Edom, which turn out upon brief inspection to be nearly identical to the earliest known documents of the modern Nameless, attributed to the Son of J, near the time of the eclipse, ca. 0x00 P.A.
