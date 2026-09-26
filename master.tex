@@ -3333,7 +3333,11 @@
 \DeclareChapterLinkRange{2 On The Lamb}{3}
 \DeclareChapterLinkRange{3 On The Lamb}{2}
 \DeclareChapterLinkRange{Esther}{10}
-\DeclareChapterLinkRange{NHS}{1}
+\DeclareChapterLinkRange{1 NHS}{1}
+\DeclareChapterLinkList{Sects / Acts}{%
+    \par\noindent\hspace*{1em}%
+    \hyperlink{chapter.1 NHS.1}{\ChapterLinkText{1 NHS: The Nth Stair}}%
+}
 \DeclareBookExtraLinkList{Genesis}{%
     \ifConfigApocryphaOn
         \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%
@@ -3360,7 +3364,7 @@
     \BookPartChapterLinks{Ezra}%
     \BookPartChapterLinks{3 On The Lamb}%
     \BookPartChapterLinks{Nehemiah}%
-    \BookPartChapterLinks{NHS}%
+    \BookPartChapterLinks{Sects / Acts}%
     \EpistlesContents%
 }
 % Chapter-summary data for fancy individual book title pages.
@@ -3773,8 +3777,8 @@
     \ChapterSummaryLink{3 On The Lamb}{1}{3 On The Lamb}{The Plane of Edom}%
     \ChapterSummaryLink{3 On The Lamb}{2}{3 On The Lamb}{AAA; The Two Towers}%
 }
-\DeclareBookChapterSummaryLinkList{NHS}{%
-    \ChapterSummaryLink{NHS}{1}{NHS}{The Nth Stair}%
+\DeclareBookChapterSummaryLinkList{Sects / Acts}{%
+    \ChapterLinksForBook{Sects / Acts}%
 }
 \DeclareBookChapterSummaryLinkList{Samuel}{%
     \BookPartChapterSummaryLinks{I Samuel}%
@@ -3793,7 +3797,7 @@
     \BookPartChapterSummaryLinks{Ezra}%
     \BookPartChapterSummaryLinks{3 On The Lamb}%
     \BookPartChapterSummaryLinks{Nehemiah}%
-    \BookPartChapterSummaryLinks{NHS}%
+    \BookPartChapterSummaryLinks{Sects / Acts}%
     \EpistlesContents%
 }
 \makeatother
@@ -3806,8 +3810,16 @@
     \hyperlink{book.\CurrentTitleBook}{#1}%
 }
 
+% Chapter subtitles affect display headings, never verse identifiers.
+\newcommand{\DeclareChapterSubtitle}[3]{%
+    \expandafter\def\csname ChapterSubtitle@#1@#2\endcsname{#3}%
+}
+\DeclareChapterSubtitle{1 NHS}{1}{The Nth Stair}
 \DeclareRobustCommand{\ChapterTitleText}[1]{%
-    \BookTitleLink{\CurrentBook\ #1}%
+    \BookTitleLink{\CurrentBook\ #1%
+        \ifcsname ChapterSubtitle@\CurrentBook @#1\endcsname%
+            : \csname ChapterSubtitle@\CurrentBook @#1\endcsname%
+        \fi}%
 }
 
 \DeclareRobustCommand{\ChapterHeaderText}[1]{%
@@ -5061,7 +5073,7 @@
 \include{10-dudetheyreontome/exile/nehemiah/12}
 \include{10-dudetheyreontome/exile/nehemiah/13}
 
-\BookPart{NHS}
+\BookPart{Sects / Acts}
 \include{10-dudetheyreontome/sects-acts/nhs/01}
 
 \IncludeEpistles{10-dudetheyreontome/epistles}
