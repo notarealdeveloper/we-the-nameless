@@ -538,12 +538,17 @@ def read_master():
 
 
 def epistle_items(directory):
-    # Keep filename/title discovery in sync with bin/epistles.lua.
+    # Keep directory/title discovery in sync with bin/epistles.lua.
     items = [("epistles", directory)]
-    for path in sorted((ROOT / directory).glob("*.tex")):
-        if path.is_file() and re.fullmatch(r"[A-Za-z0-9-]+", path.stem):
-            items.append(("epistle", title_from_slug(path.stem)))
-            items.append(("include", f"{directory}/{path.stem}"))
+    for path in sorted((ROOT / directory).iterdir()):
+        match = re.fullmatch(r"(\d{2})-([A-Za-z0-9-]+)", path.name)
+        if not path.is_dir() or not match or int(match[1]) < 80:
+            continue
+        chapters = [p for p in sorted(path.glob("*.tex"))
+                    if p.is_file() and re.fullmatch(r"\d+", p.stem)]
+        if chapters:
+            items.append(("epistle", title_from_slug(match[2])))
+            items.extend(("include", f"{directory}/{path.name}/{p.stem}") for p in chapters)
     return items
 
 
@@ -988,12 +993,24 @@ def transform_chapter(source_path, target, include):
     pos = 0
     verse_count = 0
     while pos < len(text):
-        next_verse = text.find(r"\Verse", pos)
-        if next_verse < 0:
+        # Chapter blocks begin on their own line; ignore editorial comments.
+        match = re.search(r"(?m)^[ \t]*\\(Verse|Sentence)(?![A-Za-z])", text[pos:])
+        if match is None:
             out.append(text[pos:])
             break
+        next_verse = pos + match.start() + len(match[0]) - len(match[1]) - 1
         out.append(text[pos:next_verse])
-        verse, end, kept = transform_verse(text, next_verse, target, include, allowed_sources)
+        if match[1] == "Sentence":
+            command = parse_command(text, next_verse)
+            groups = parse_n_groups(text, command[2], 3)
+            if groups is None:
+                fatal("malformed sentence block")
+            _, end = groups
+            # Original prose has no biblical source-number filtering.
+            kept = allowed_sources is None or book_dir(include) in target.full_books
+            verse = text[next_verse:end] if kept else ""
+        else:
+            verse, end, kept = transform_verse(text, next_verse, target, include, allowed_sources)
         if kept:
             out.append(verse)
             verse_count += 1
@@ -1171,6 +1188,7 @@ def build_toc_overrides(target, books):
             r"    \BookChapterLinkArray{#1}%",
             r"}",
             r"\renewcommand{\Chapter}[1]{%",
+            r"    \setcounter{SentenceNumber}{0}%",
             r"    \phantomsection",
             r"    \hypertarget{chapter.\CurrentBook.#1}{}%",
             r"    \ChapterHeading{\ChapterTitleText{#1}}%",

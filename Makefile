@@ -237,7 +237,7 @@ build-translation: build-prepare
 build-pdf: $(BUILD)/$(PDF)
 	cp "$(BUILD)/$(MAIN).pdf" .
 
-$(BUILD)/$(PDF): $(TEX_SOURCES) bin/epistles.lua 10-dudetheyreontome/epistles
+$(BUILD)/$(PDF): $(TEX_SOURCES) bin/epistles.lua 10-dudetheyreontome
 	$(MAKE) BUILD="$(BUILD)" TRANSLATION="$(TRANSLATION)" build-translation
 	$(LATEX) $(LATEXFLAGS) "$(LATEX_INPUT)"
 	$(MAKE) clean-stray-aux

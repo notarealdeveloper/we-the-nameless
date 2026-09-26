@@ -1,17 +1,27 @@
--- Keep filename/title discovery in sync with epistle_items in book-subset.
+-- Keep directory/title discovery in sync with epistle_items in book-subset.
 local lfs = require("lfs")
 local M = {}
 
 function M.books(directory)
     local books = {}
-    for filename in lfs.dir(directory) do
-        local stem = filename:match("^([%w-]+)%.tex$")
-        if stem and lfs.attributes(directory .. "/" .. filename, "mode") == "file" then
-            local words = {}
-            for word in stem:gmatch("[^-]+") do
+    for dirname in lfs.dir(directory) do
+        local number, slug = dirname:match("^(%d%d)%-([%w-]+)$")
+        if number and tonumber(number) >= 80
+            and lfs.attributes(directory .. "/" .. dirname, "mode") == "directory" then
+            local words, chapters = {}, {}
+            for word in slug:gmatch("[^-]+") do
                 words[#words + 1] = word:sub(1, 1):upper() .. word:sub(2):lower()
             end
-            books[#books + 1] = {stem = stem, title = table.concat(words, " ")}
+            for filename in lfs.dir(directory .. "/" .. dirname) do
+                if filename:match("^%d+%.tex$")
+                    and lfs.attributes(directory .. "/" .. dirname .. "/" .. filename, "mode") == "file" then
+                    chapters[#chapters + 1] = dirname .. "/" .. filename:gsub("%.tex$", "")
+                end
+            end
+            table.sort(chapters)
+            if #chapters > 0 then
+                books[#books + 1] = {stem = dirname, title = table.concat(words, " "), chapters = chapters}
+            end
         end
     end
     table.sort(books, function(a, b) return a.stem < b.stem end)
@@ -26,9 +36,10 @@ end
 
 function M.include(directory)
     for _, book in ipairs(M.books(directory)) do
-        -- Start a new book without a second page break after its destination.
         tex.sprint("\\clearpage\\EpistleBook{" .. book.title .. "}")
-        tex.sprint("\\input{" .. directory .. "/" .. book.stem .. "}")
+        for _, chapter in ipairs(book.chapters) do
+            tex.sprint("\\input{" .. directory .. "/" .. chapter .. "}")
+        end
     end
 end
 
