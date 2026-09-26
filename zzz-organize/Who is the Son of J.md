@@ -1,7 +1,7 @@
 
-![[Screenshot_20260924_211057_Chrome.jpg]]
+![[two-percent-01.jpg]]
 
-![[Screenshot_20260924_211125_Chrome.jpg]]
+![[two-percent-00.jpg]]
 
 ## AAA
 
