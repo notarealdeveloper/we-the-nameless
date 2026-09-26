@@ -5,11 +5,11 @@ local M = {}
 function M.books(directory)
     local books = {}
     for dirname in lfs.dir(directory) do
-        local number, slug = dirname:match("^(%d%d)%-([%w-]+)$")
-        if number and tonumber(number) >= 80
+        local number, slug = dirname:match("^(%d+)%-([%w-]+)$")
+        if number and slug ~= "on-the-lamb" and not slug:match("^exile%-")
             and lfs.attributes(directory .. "/" .. dirname, "mode") == "directory" then
             local words, chapters = {}, {}
-            for word in slug:gmatch("[^-]+") do
+            for word in dirname:gmatch("[^-]+") do
                 words[#words + 1] = word:sub(1, 1):upper() .. word:sub(2):lower()
             end
             for filename in lfs.dir(directory .. "/" .. dirname) do

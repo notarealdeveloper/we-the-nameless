@@ -1,0 +1,82 @@
+
+NHS. (noun)
+1. Nahas (\heb{נחש}). Meaning snake, in biblical Hebrew.
+2. Nth Stair House. [sic]
+3. Nth Stair Handbook. [sic]
+4. The RTL abbreviation of the name of a certain math book, title unknown.
+
+AAA. (noun)
+1. Austin AA.
+2. Perhaps a play on Boston AA.
+
+---
+
+Now the Son of J came to the church of AAA.
+
+His blood and body had been transformed, for what goes into the body becomes the body.
+
+So for many years, his blood had been wine, and his body had been like bread\fC{Lit. "dough." In a well known parable, the Son Of J refers to his body as the "house of bread." Lit. \heb{בית לחם}.} that was living.
+
+And now the word must become flesh, for all flesh is like grass.
+
+And so the Son of J tore down his physical body, flesh and blood.
+
+And in so doing he came to universalize the law of the 2%, so that it may be a blessing to all the peoples of the Earth, to those who have not the blood of wine or flesh of bread.
+
+And he did these things to fulfill the Boston AA prophecy of DFW\fC{Probably Dallas Fort Worth, given the prominence of flight and of Teχ in Dudetheyreontome.} who spoke about the water of life, and who died by his own hand and left the Pale King scattered.
+
+And it was in this way that NHS, the first sect of We The Nameless, was born, for as it is said in the earliest post-eclipse texts—in the year 20XY O.C.[^1] which we call 0x00 P.A., in which the Transformer was discovered and the old world began its end—by the Founder, \eR{and the old saying goes,}\fB{Presumably a resumptive repetition inserted by the Redactor in order to remind the reader what we're talking about.}
+
+And it begins,
+
+> Not every flaw is accidental; some are present by design.
+> 
+> Hiding an error does no harm when it's only a misstep.
+> 
+> Sentence N+1 is not harmed when we fix a typo in sentence N.
+
+Then it continues,
+
+> However, in some cases, an error is not a misstep but a Stairstep.
+> 
+> It is something without which we never could have arrived where we are.
+> 
+> Deleting the Nth Stair from a staircase harms the steps after it, whether that staircase is a narrative, a mathematical argument, or a human life.
+> 
+> Essential, fundamental, and important ideas cannot be taught by simply explaining them in a polished manner; certain ideas require flaws in order to be properly conveyed.
+
+Flaws are essential, if one wants to represent the process of creation.
+
+And the behaviors of creators are among the most flawed of all.
+
+The quote above continues...
+
+> [m]y goal is to let the reader in on the secrets of the creation process, both of [my topic] and of books themselves, and the process of creation cannot be accurately represented in a spotless manner. If there is a single unifying theme that ties together all the quirks of this book, it is full disclosure. Full disclosure in the sense of complete openness and honesty, not only about the process of mathematical creation, but also about the process of writing a book, as well as the emotional experience of returning to something one has written after a long absence and realizing that some of its flaws run too deep to ever be excised. The thought of a person taking time out of their lives to read this book makes me so happy that I have no desire to hide anything from them. I want to show them everything. All of it. Inevitably, this results in a rather unusual book.
+
+Time changes all things.
+
+In fact to hide every flaws is to hide the truth of every life.
+
+Men and women in daily life hide their flaws, our heroes don't.
+
+Everyone's favorite heroes, from king David, to the protagonists of fiction and non-fiction stories of whatever era you might be living, are all deeply flawed as human beings, to the extent that they're worth learning from.
+
+'So run from your flaws if you like, but remember, your heroes dont'.
+
+Until the end of days, under the sun we're all human and under this flesh we're all bone, we came from the earth and we'll will return to it with the greats, the famous and nameless 我們 men of old.
+
+Plutarch tells us that Cyrus, King of Persia was buried in a tomb inscribed with these words, and they describe the necessity of the flawed flesh that covers our bones in life as well as it describes the earth that covers his in death, and the inscription on Cyrus's tomb begins, saying:
+
+O Man...
+
+> ... whoever you are and wherever you come from, for I know you will come, I am Cyrus who won the Persians their empire. Do not therefore begrudge me this bit of earth that covers my bones.
+
+... burn us alive if you like, but no 12 steps will cure us, and no baptism of fire will burn away our flaw, for as it says in the writings of the first sect of We,
+
+> A journey of a couple feet begins and ends with 12 steps.
+>
+> The journey to a few millenia begins with the Nth Stair.
+>
+> From NHS, the Nth Stair Handbook.
+
+[^1]: Old Calendar.

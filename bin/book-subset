@@ -541,13 +541,13 @@ def epistle_items(directory):
     # Keep directory/title discovery in sync with bin/epistles.lua.
     items = [("epistles", directory)]
     for path in sorted((ROOT / directory).iterdir()):
-        match = re.fullmatch(r"(\d{2})-([A-Za-z0-9-]+)", path.name)
-        if not path.is_dir() or not match or int(match[1]) < 80:
+        match = re.fullmatch(r"(\d+)-([A-Za-z0-9-]+)", path.name)
+        if not path.is_dir() or not match or match[2] == "on-the-lamb" or match[2].startswith("exile-"):
             continue
         chapters = [p for p in sorted(path.glob("*.tex"))
                     if p.is_file() and re.fullmatch(r"\d+", p.stem)]
         if chapters:
-            items.append(("epistle", title_from_slug(match[2])))
+            items.append(("epistle", title_from_slug(path.name)))
             items.extend(("include", f"{directory}/{path.name}/{p.stem}") for p in chapters)
     return items
 
