@@ -8,7 +8,7 @@
     \def\ConfigTheme{lite}
 \fi
 
-% choices: book, tech
+% choices: book, tech, even (book with equal inner and outer margins)
 \ifdefined\ConfigOutputMode\else
     \def\ConfigOutputMode{book}
 \fi
@@ -95,6 +95,7 @@
 \def\ConfigVerseLayoutVertical{vertical}
 \def\ConfigOutputModeBook{book}
 \def\ConfigOutputModeTech{tech}
+\def\ConfigOutputModeEven{even}
 \def\ConfigApocryphaApocryphal{apocryphal}
 \def\ConfigApocryphaCanonical{canonical}
 \def\ConfigEnglishTranslationDefault{default}
@@ -236,6 +237,10 @@
         bottom=0.75in,
         includefoot
     ]{geometry}
+    \ifx\ConfigOutputMode\ConfigOutputModeEven
+        % Center the book text block without changing its width.
+        \geometry{inner=0.625in,outer=0.625in}
+    \fi
 \fi
 \usepackage{lmodern}
 \usepackage[no-math]{fontspec}

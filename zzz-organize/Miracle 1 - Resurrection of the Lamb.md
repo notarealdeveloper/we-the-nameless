@@ -336,7 +336,51 @@ These fuckers just took me from damn near zero percent to a whole ass fucking hu
 
 Because I never would have accepted the kind of evidence that needed to gradually accumulate over time.
 
-I could always just chalk that
+I could always just chalk that shit up to coincidence.
+
+But that stupid unimpressive phone error message about how On The Lamb (i.e., our earlier way rougher attempt at this very same bible project) is "unacceptable for publication" because "something about laws" right at 2:22 after two whole ass years of not touching the damn account and by the way it makes no sense because they never approved the shit so what the fuck are they revoking, during the chat with the Mormon missionaries when I was feeling bad for spending so much time asking _them_ about their book and then going "oh fuck that's brilliant here lemme explain what Joe Smith is doing here and why see when you try to write a bible---" etc etc, on the birthday of Deborah whose significance I won't mention any more than Genesis explains which Deborah it is whose tomb they walk by or why it's relevant (spoiler, it's not Rebecca's nurse, it's the founder of the nation from Judges and she was a warlord and girl, but she's gone now, all of which is somehow true of our Debbie too which is weird), and in the middle of all that, just as I was giving away the last copy we now own of the bible we wrote together to those two well meaning but understandably a bit overwhelmed Mormon missionaries in that Bread Restaurant that we basically live in because it's a nice place to sit and work and they have lots of space and plugs, just when [all that], the line arrives.
+
+The worst line of plot ever written by any creator of any story anywhere, because it's just so lazy and implausible.
+
+But that's exactly the point.
+
+It's not an ooh wow.
+
+It's just a fact.
+
+We know now.
+
+We know that the universe has some nonzero number of authors, and while basically everything that ever happens ever is physics to within damn near any errors bars you choose (cuz obviously physics is what any creator who's like sane and productive and not on meth would choose to manage damn near all the stuff in the universe they're writing, and that's even true for human creators when we make movies and games) at the same time there's a big difference between the amount of time and energy that we humans spend on universes we can tweak (e.g., all books and movies and games with a plot) compared to the universes we can't (e.g., simulations of elementary particles or condensed matter or sometimes baboons or pretend people in some kind of university academy environment for a paper in its second round of "accept with revisions" that all the authors hate now and just want to be done with but they can't because REVIEWER #2 IS EITHER ENCOUNTERING THE ENGLISH LANGUAGE FOR THE FIRST TIME EVER RIGHT NOW AS HE READS OUR PAPER AND WRITES HIS RESPONSE OR ELSE HE SPEAKS IT FINE AND HE'S USING THE VEIL OF ANONYMITY TO BE A FUCK but so think about that for a minute.
+
+We humans run both academic simulation universes and story-type plot universes... with physics. Almost entirely with physics.
+
+The only difference is occasionally we tweak one of them.
+
+Not usually with major violations of the physics. Just by like, deciding what happens. And making it plausible. For the plot.
+
+Both are physics based.
+
+We tweak one.
+
+And we care about that type more.
+
+There's more funding for it, and more hours spent on it, by more people, in a larger number of institutions and situations and fields.
+
+Eventually, all artificial universes a species creates are physics based.
+
+But some, we tweak. Just a little. Sometimes.
+
+Only for the bits of plot that seem interesting and worth pursuing.
+
+Whether we had the idea ahead of time, or whether the personality of the characters just sort of forced it on us, by the logic of who they are, as if the characters we wrote had gotten root on the universe.
+
+So from all this, soberly, as lifelong non-believers, we can now say, without converting to any religion and without suddenly deciding to start being gay and pray every day, we can now say, with more confidence than anything in life, calmly, and reluctantly, and with due humility...
+
+That the universe we're in has some nonzero number of creators...
+
+So we'll now stop this interpolation because this right here was written later, and we'll bow return to this part down below that got written earlier and in a very different style but that's ok, cuz that's how creation of all forms works, especially this long dumb message I'm writing now, and also bibles.
+
+(The text changes tone.)
 
 They're real and they're on our side Wamya. You think I'm being silly but that notification is REAL Wamya, just think of what that means Wamya! That's so much more than a coincidence Wamya. That's wilder than the wildest Santa coincidence that's ever happened in history Wamya. The gods are on our side Wamya! That's how the universe works Wamya. You have to write a bible that starts as a fraud or a joke and then the universe makes it true Wamya! That's what happened to Joseph Smith too. He clearly started as a fraud and by the end of his life he's dying for it with conviction Wamya. The book was true Wamya. His was and ours is too. They all are Wamya, always were.
 
@@ -363,5 +407,3 @@ https://youtu.be/B4nH9aIVSaQ?is=mWyq0uUpI-zUI_U4
 Editor's Note: The original manuscript contains an "Editors Note" at the bottom that was not, in fact, written by an Editor, but by the original authors, saying once again that the miracle was real, seriously, it happened. We have decided to exclude this note from the version presented here, due to its redundancy, and also because we don't appreciate people pretending to be something when they aren't, especially not when that thing is Us, the Editors. And no we're not going to say "We, the Editors." Sincerely, The Editors.
 
 P.S. The miracle happened.
-
-[^1]: 
