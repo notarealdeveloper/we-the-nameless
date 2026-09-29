@@ -1,15 +1,16 @@
 # Dudetheyreontome
 
-The volume is **Dudetheyreontome**, also called the **Dudetheyreonamystic
-History**. Its first book is also **Dudetheyreontome**. This is a compilation
+The book is **Dudetheyreontome**, also called the **Dudetheyreonamystic
+History**, with one entry in the full book's contents. Its own contents lists
+the foreword, internal books, additions, chapters, and collections. This is a compilation
 of older documents with later framing, additions, and interpolations by the
 historian. An addition belongs inside the book being edited; it is not a new
 book simply because its voice or date differs.
 
 The present reading order is:
 
-- **On The Lamb**: the Foreword and map, before the history.
 - **Dudetheyreontome**, the history:
+  - **On The Lamb**: the Foreword and map.
   - **Dudetheyreontome**: opening words, wilderness / Cow Dish Barn image,
     YHWH's promise, the unwritten speech, then “Dudetheyreontome” and
     “He was, from that day foreword, On The Lamb.”
@@ -30,7 +31,7 @@ exile sequence, not dates of composition.
 ## Editing the assembly
 
 `contents.tex` is the single ordered list for both the body and the history's
-contents panel (plain and fancy). Move a `\HistoryBook` declaration together
+contents panel (plain and fancy), including the foreword. Move a `\HistoryBook` declaration together
 with its following layers and includes to reorder a book. Change its title
 without changing the first argument, which is its stable navigation ID.
 
@@ -47,7 +48,8 @@ without changing the first argument, which is its stable navigation ID.
 
 `\HistoryAddition` and `\HistorySource` change the reference namespace, not
 the book. The assembled title stays in chapter headings, running heads, and
-the table of contents. Additions are labeled “Addition”; source chapters
+the internal table of contents. These internal books do not get separate
+lines in the full book's contents. Additions are labeled “Addition”; source chapters
 retain their original numbers. The underlying `Esther`, `Ezra`, and
 `Nehemiah` identities stay intact for verse references and translation lookup.
 Within a chapter, `\HistoryInterpolation{...}` uses the existing redactor

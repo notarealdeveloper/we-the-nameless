@@ -2963,7 +2963,11 @@
     \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
     \phantomsection
     \hypertarget{tableofcontents}{}%
+    % The full-book contents lists books; each book owns its detailed contents.
+    \begingroup
+    \value{tocdepth}=0\relax
     \tableofcontents
+    \endgroup
     \restoregeometry
 }
 
@@ -4984,9 +4988,6 @@
 \include{09-kings/2-25}
 
 \input{10-dudetheyreontome/title}
-\Book{On The Lamb}
-\include{10-dudetheyreontome/frontmatter/foreword}
-
 \Book{Dudetheyreontome}
 \input{10-dudetheyreontome/contents}
 

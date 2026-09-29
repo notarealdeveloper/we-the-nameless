@@ -14,7 +14,7 @@
 \@ifundefined{DudePosterWideWidth}{\newlength{\DudePosterWideWidth}}{}
 \@ifundefined{DudePosterBox}{\newsavebox{\DudePosterBox}}{}
 \makeatother
-\setlength{\DudePosterWideWidth}{0.88\textwidth}
+\setlength{\DudePosterWideWidth}{0.88\linewidth}
 \providecommand{\DudePosterWide}[5]{}
 \renewcommand{\DudePosterWide}[5]{%
     {\color{#1}\resizebox{#4}{!}{\fontsize{#2}{#3}\selectfont\bfseries #5}\par}%
@@ -34,7 +34,7 @@
 % Keep the poster indivisible, and shrink it only when the current output
 % mode's text area is too short for its natural height.
 \begin{lrbox}{\DudePosterBox}
-\begin{minipage}{\textwidth}
+\begin{minipage}{\linewidth}
 \centering
     \DudePosterWide{DudePosterBlack}{60pt}{56pt}{0.45\DudePosterWideWidth}{WE}
     \vspace{0.12em}
@@ -66,15 +66,17 @@
     \vspace{0.24em}
     {\fontsize{30pt}{28pt}\selectfont\HebrewDavidFont\bfseries\color{DudePosterBlue}\heb{הם עלי}\par}
     \vspace{0.92em}
-    \DudePosterCredit{16pt}{ON THE LAMB}
+    \DudePosterCredit{16pt}{PART ONE}
     \vspace{0.22em}
-    \DudePosterWide{DudePosterRed}{52pt}{47pt}{0.73\DudePosterWideWidth}{FOREWORD}
+    \DudePosterWide{DudePosterRed}{52pt}{47pt}{0.73\DudePosterWideWidth}{ON THE LAMB}
 \end{minipage}
 \end{lrbox}
-\noindent\begin{minipage}[c][\textheight][c]{\textwidth}
+\noindent\begin{minipage}[c][\textheight][c]{\linewidth}
 \centering
 \ifdim\dimexpr\ht\DudePosterBox+\dp\DudePosterBox\relax>0.96\textheight
-    \resizebox{!}{0.96\textheight}{\usebox{\DudePosterBox}}%
+    % A centered minipage has depth as well as height. Fit their sum;
+    % unstarred resizebox fits only the height and nearly doubles the poster.
+    \resizebox*{!}{0.96\textheight}{\usebox{\DudePosterBox}}%
 \else
     \usebox{\DudePosterBox}%
 \fi

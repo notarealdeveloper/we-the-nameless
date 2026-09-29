@@ -55,13 +55,21 @@
     \par\noindent
     \hyperlink{collection.#1}{\BookExtraLinkText{#1}}\par
     \smallskip
+    \ChapterLinksForBook{#1}%
+}
+\newcommand{\HistoryContentsLayer}[1]{%
+    \ChapterLinksForBook{#1}%
+}
+\newcommand{\HistoryContentsAddition}[1]{%
+    \par\noindent\textit{Additions}\par
+    \HistoryContentsLayer{#1}%
 }
 \newcommand{\HistoryContents}{%
     \begingroup
     \let\HistoryBook\HistoryContentsBook
     \let\HistoryCollection\HistoryContentsCollection
-    \renewcommand{\HistoryAddition}[1]{}%
-    \renewcommand{\HistorySource}[1]{}%
+    \let\HistoryAddition\HistoryContentsAddition
+    \let\HistorySource\HistoryContentsLayer
     \renewcommand{\BookPart}[1]{}%
     \renewcommand{\include}[1]{}%
     \renewcommand{\IncludeEpistles}[1]{\EpistlesContents}%
@@ -70,6 +78,9 @@
 }
 \DeclareChapterLinkRange{Dudetheyreontome}{1}
 \DeclareChapterLinkRange{On The Lamb}{1}
+\DeclareChapterLinkRange{Esther I}{1}
+\DeclareChapterLinkRange{Esther II additions}{4}
+\DeclareChapterLinkRange{Nehemiah additions}{2}
 \DeclareBookChapterSummaryLinkList{On The Lamb}{%
     \ChapterSummaryLink{On The Lamb}{1}{On The Lamb}{Foreword}%
 }
