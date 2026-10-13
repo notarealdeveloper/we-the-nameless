@@ -1,3 +1,11 @@
+## ΛΛΛ
+
+1. Λ. The letter L in Greek.
+2. Λ. The letter G in Brahmi.
+3. Λ. The letter S in Korean.
+4. ΛΛΛ. Logos. Meaning word, logic, cause, or reason.
+
+---
 
 Γ Ꞁ
 L ⅃
@@ -50,4 +58,5 @@ We always have black background and red source text and blue commentary / footno
 This set of books doesn't get to have the complexity of three narrative voices in the commentary.
 
 It's just Red Black and Blue versions of significant ancient classics across all languages and time periods.
+
 
