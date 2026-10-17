@@ -3416,11 +3416,6 @@
 \DeclareChapterLinkRange{Ezra}{10}
 \DeclareChapterLinkRange{Nehemiah}{13}
 \DeclareChapterLinkRange{Esther}{10}
-\DeclareChapterLinkRange{1 NHS}{1}
-\DeclareChapterLinkList{Sects / Acts}{%
-    \par\noindent\hspace*{1em}%
-    \hyperlink{chapter.1 NHS.1}{\ChapterLinkText{1 NHS: The Nth Stair}}%
-}
 \DeclareBookExtraLinkList{Genesis}{%
     \ifConfigApocryphaOn
         \BookLink{Genesis Apocrypha}{Genesis Apocrypha}%
@@ -3835,9 +3830,6 @@
     \ChapterSummaryLink{Esther}{9}{Esther}{Purim}%
     \ChapterSummaryLink{Esther}{10}{Esther}{Mordecai exalted}%
 }
-\DeclareBookChapterSummaryLinkList{Sects / Acts}{%
-    \ChapterLinksForBook{Sects / Acts}%
-}
 \DeclareBookChapterSummaryLinkList{Samuel}{%
     \BookPartChapterSummaryLinks{I Samuel}%
     \columnbreak
@@ -3845,6 +3837,7 @@
 }
 \DeclareBookChapterSummaryLinkList{Kings}{%
     \BookPartChapterSummaryLinks{I Kings}%
+    \columnbreak
     \BookPartChapterSummaryLinks{II Kings}%
 }
 \makeatother
@@ -3861,7 +3854,6 @@
 \newcommand{\DeclareChapterSubtitle}[3]{%
     \expandafter\def\csname ChapterSubtitle@#1@#2\endcsname{#3}%
 }
-\DeclareChapterSubtitle{1 NHS}{1}{The Nth Stair}
 \DeclareRobustCommand{\ChapterTitleText}[1]{%
     \BookTitleLink{\CurrentBook\ #1%
         \ifcsname ChapterSubtitle@\CurrentBook @#1\endcsname%
@@ -3919,7 +3911,6 @@
     \addcontentsline{toc}{subsection}{#1}%
 }
 \newcommand{\IncludeEpistles}[1]{%
-    \HistoryBookActivefalse
     \EpistlesHeading
     \directlua{epistles.include("\luaescapestring{#1}")}%
 }
