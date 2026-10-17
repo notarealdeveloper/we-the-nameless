@@ -54,7 +54,7 @@ Replace `genesis` with `exodus`, `J`, `P`, `j`, `p`, `court`, `1-samuel`, `genes
 
 ### Build the paperback step by step
 
-Run these first two commands **in order**:
+Run these two commands **in order**:
 
 ```sh
 make genesis-kdp-build
@@ -62,18 +62,15 @@ make genesis-kdp-build
 
 make genesis-kdp-vectorize
 # 2. Convert fonts to paths, clean, and structurally check both PDFs.
-
-make genesis-kdp-check
-# Optional separate step: full pixel comparison of originals and vectors.
 ```
 
-`-kdp` runs stages 1 and 2, without the long pixel comparison. Only `-kdp-check`
-renders every page using both MuPDF and Poppler at 300 DPI.
+`make genesis-kdp-vectorize` uses the existing originals; it does not rebuild
+them. Neither command runs the optional pixel comparison described below.
 
 Build writes `pub/<canonical>-{interior,cover}-original.pdf`. Vectorize reads
 those files and writes `pub/<canonical>-{interior,cover}-vectorized.pdf`.
-Check compares those same pairs. You can copy replacement PDFs to the expected
-paths and rerun either step; no build manifest is required.
+You can copy replacement PDFs to the expected paths and rerun vectorize or
+check; no build manifest is required.
 
 Failures print log/report paths under `build/kdp/<canonical>/runs/<run>/`.
 Fix TeX/assets and repeat build, or fix an original PDF and repeat vectorize.
@@ -109,10 +106,13 @@ means faithful conversion; it does not replace editorial or physical review.
 
 ```sh
 make genesis-kdp
-# 1. Build interior + cover
-# 2. Outline all fonts
-# Structural checks are included; pixel comparison is a separate command.
+# Build the originals, then vectorize, clean, and structurally check both PDFs.
 ```
+
+`make genesis-kdp` combines the stages from `make genesis-kdp-build` and
+`make genesis-kdp-vectorize`, in that order. It **does not include
+`make genesis-kdp-check`**. Structural checks are included; the full pixel
+comparison is a separate, optional command.
 
 When that command finishes successfully, upload these **two separate files**:
 
@@ -141,6 +141,20 @@ The braces above abbreviate two filenames. Upload the interior as the manuscript
 and the cover as the paperback wrap. Do not combine them.
 
 The searchable `-original.pdf` files remain alongside the vectorized files for comparison.
+
+### Optionally compare the paperback PDFs
+
+After either the step-by-step build or the combined command, run:
+
+```sh
+make genesis-kdp-check
+# Compare existing originals and vectorized PDFs; do not build or vectorize.
+```
+
+This separate target compares both interior and cover pairs in `pub/`, rendering
+every page using both MuPDF and Poppler at 300 DPI. The full pixel comparison can
+take a long time and runs only when explicitly requested; `make genesis-kdp`
+does not run it. Both the original and vectorized PDFs must already exist.
 
 ## Ebook
 
