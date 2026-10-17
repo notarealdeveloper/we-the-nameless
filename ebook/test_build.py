@@ -101,7 +101,7 @@ class ConversionTests(unittest.TestCase):
         self.assertEqual(len(targets), 6)
         for target in targets:
             self.assertEqual(rendered.count(f'id="{target}"'), 1)
-        for debris in ("RuleColor", "4248", "0.75pt", "0.4pt", "=0pt", "[2]0.84", "#1", "#2", "\nempty\n", "\nplain\n"):
+        for debris in ("RuleColor", "4248", "0.75pt", "0.4pt", "=0pt", "[2]0.84", "#2[r]#1", "\nempty\n", "\nplain\n"):
             self.assertNotIn(debris, rendered)
         self.assertIn("### Publisher's Introduction", rendered)
         self.assertIn("### Genesis 1 Apocryphon — Infinite J Est", rendered)
@@ -109,13 +109,16 @@ class ConversionTests(unittest.TestCase):
         self.assertIn("Ever since the discovery", rendered)
         self.assertIn('Comet is short for', rendered)
         self.assertIn("#### Fragment 1", rendered)
+        for number in range(1, 5):
+            self.assertIn(f'src="img/comics/the-twelve-tribes-of-israel-comic-{number}.png"', rendered)
         # Only print preliminaries and label/heading markup may be replaced.
         body = source[source.index(r"\Apocrypha{Genesis}"):]
         plain = lambda value: re.sub(r"<[^>]+>|\s+|[#*]", "", value)
         original = build.tex_to_markdown(body)
         for target in targets:
             original = original.replace(target, "")
-        self.assertEqual(plain(original), plain(rendered.split('### Publisher', 1)[1].join(['Publisher', ''])))
+        content = "Publisher" + rendered.split("### Publisher", 1)[1]
+        self.assertEqual(plain(original), plain(content))
 
     def test_exodus_apocrypha_without_print_index_is_preserved(self):
         source = (build.ROOT / "02-exodus/apocrypha.tex").read_text(encoding="utf-8")

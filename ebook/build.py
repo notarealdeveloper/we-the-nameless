@@ -560,6 +560,10 @@ def source_class(name: str) -> tuple[str, str] | None:
 
 def resolve_image_path(authored_path: str) -> Path | None:
     """Resolve print-style image names to a concrete source asset for EPUB."""
+    # KDP assets are print derivatives; ebooks use the original colour image.
+    conditional = re.fullmatch(r"\\ifConfigKDPOn.*?\\else\s*(.*?)\\fi", authored_path, re.DOTALL)
+    if conditional:
+        authored_path = conditional[1].strip()
     direct = ROOT / authored_path
     if direct.is_file():
         return direct

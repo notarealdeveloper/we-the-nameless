@@ -32,6 +32,10 @@ on `build.py`. Full Genesis and Exodus editions retain their apocrypha,
 including introductions, fragment headings, notes, and trailing dialogue;
 source/chapter subsets follow the print selector’s exclusions. Print-only
 frontispieces remain excluded; alternate verses within chapters remain included.
+The Genesis apocrypha's print title/index pages become a linked contents list;
+its introduction and apocryphon headings retain destinations without exposing
+TeX layout settings or page references. Conditional KDP comic paths resolve to
+the original colour images for the ebook.
 Original `\Sentence` prose is rendered alongside numbered `\Verse` material.
 
 Direct interfaces remain: `make -C ebook genesis`, `make -C ebook J`, and
