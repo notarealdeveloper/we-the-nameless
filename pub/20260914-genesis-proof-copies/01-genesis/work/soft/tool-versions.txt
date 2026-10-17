@@ -1,0 +1,10 @@
+variant=soft
+paper=premium-color
+ink=premium-color
+bleed=no-bleed
+ghostscript=10.07.1
+qpdf=qpdf version 12.3.2
+mupdf=mutool version 1.27.2
+poppler=pdftoppm version 26.06.0
+pillow=12.3.0
+numpy=2.5.1
