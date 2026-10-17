@@ -1,19 +1,26 @@
-# Publishing We The Nameless
+## Publishing We The Nameless
 
-Run these commands **from the repository root**. They create local files; nothing
-uploads or publishes automatically. Replace `genesis` with `exodus`, `J`, `P`,
-`j`, `p`, `court`, `1-samuel`, `genesis-1`, or another name from `make list`.
+Run these commands **from the repository root**.
+
+They create local files; nothing uploads or publishes automatically.
+
+Replace `genesis` with `exodus`, `J`, `P`, `j`, `p`, `court`, `1-samuel`, `genesis-1`, or another name from `make list`.
+
 **Case matters:** `J` and `j` select different editions. Numbered aliases work too.
 
 ## Paperback: the shortest route
 
 ```sh
-make genesis-kdp                 # Build interior + cover, outline all fonts, validate, then release both PDFs.
+make genesis-kdp
+# 1. Build interior + cover
+# 2. Outline all fonts
+# 3. Validate
+# 4. Then release both PDFs.
 ```
 
 When that command finishes successfully, upload these **two separate files**:
 
-```text
+```sh
 build/kdp/01-genesis/artifacts/01-genesis-interior.pdf
 build/kdp/01-genesis/artifacts/01-genesis-cover.pdf
 ```
@@ -21,15 +28,23 @@ build/kdp/01-genesis/artifacts/01-genesis-cover.pdf
 For another selection, use the same command pattern:
 
 ```sh
-make exodus-kdp                  # Upload build/kdp/02-exodus/artifacts/02-exodus-{interior,cover}.pdf.
-make J-kdp                       # Upload build/kdp/J/artifacts/J-{interior,cover}.pdf.
-make P-kdp                       # Upload build/kdp/P/artifacts/P-{interior,cover}.pdf.
-bin/book-subset --output-name genesis  # Print the canonical filename stem: 01-genesis.
+make exodus-kdp
+# Upload build/kdp/02-exodus/artifacts/02-exodus-{interior,cover}.pdf.
+
+make J-kdp
+# Upload build/kdp/J/artifacts/J-{interior,cover}.pdf.
+
+make P-kdp
+# Upload build/kdp/P/artifacts/P-{interior,cover}.pdf.
+
+bin/book-subset --output-name genesis
+# Print the canonical filename stem: 01-genesis.
 ```
 
 The braces above abbreviate two filenames. Upload the interior as the manuscript
-and the cover as the paperback wrap. Do not combine them. Old PDFs in `pub/`, root
-PDFs, and the searchable references are **not** this pipeline's upload files.
+and the cover as the paperback wrap. Do not combine them.
+
+Old PDFs in `pub/`, root PDFs, and the searchable references are **not** this pipeline'supload files.
 
 ## Paperback: run the stages separately
 
