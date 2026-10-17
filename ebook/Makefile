@@ -1,19 +1,21 @@
 .DEFAULT_GOAL := all
 SUBSETS := $(shell ../bin/book-subset --make-targets) $(shell ../bin/book-subset --make-chapter-targets)
 COVER ?= we-cover-8
+APOCRYPHA ?=
+APOCRYPHA_OPTION = $(if $(APOCRYPHA),--apocrypha "$(APOCRYPHA)")
 RELEASE ?=
 
 .PHONY: all release validate test clean $(SUBSETS) $(addprefix validate-,$(SUBSETS))
 
 # Always rebuild on request: source selection and cover options are inputs too.
 all:
-	./build.py --cover "$(COVER)" $(RELEASE)
+	./build.py --cover "$(COVER)" $(APOCRYPHA_OPTION) $(RELEASE)
 
 release:
 	$(MAKE) all RELEASE=--require-epubcheck
 
 $(SUBSETS):
-	./build.py --subset "$@" --cover "$(COVER)" $(RELEASE)
+	./build.py --subset "$@" --cover "$(COVER)" $(APOCRYPHA_OPTION) $(RELEASE)
 
 # Checking an existing file never builds it. A missing checker is a release error.
 validate:

@@ -164,10 +164,10 @@ list:
 	bin/book-subset --list
 
 ebook:
-	$(MAKE) -C ebook all COVER="$(EBOOK_COVER)"
+	$(MAKE) -C ebook all COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)"
 
 ebook-release:
-	$(MAKE) -C ebook release COVER="$(EBOOK_COVER)"
+	$(MAKE) -C ebook release COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)"
 
 ebook-check ebook-validate:
 	$(MAKE) -C ebook validate
@@ -221,10 +221,10 @@ $(COVER_TARGETS): %-cover:
 	bin/kdp-cover "$${interior:-$$basename.pdf}" "$(COVER_PAPER)" "$${output:-$$basename-cover.pdf}" "$(COVER_BUILD)/$$basename/$(COVER_STYLE)" "$(COVER_STYLE)" "$(if $(COVER_VOLUME),$(COVER_VOLUME),$${title})" "$(SPINE)"
 
 $(addsuffix -ebook,$(EBOOK_SUBSETS)): %-ebook:
-	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)"
+	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)"
 
 $(addsuffix -ebook-release,$(EBOOK_SUBSETS)): %-ebook-release:
-	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)" RELEASE=--require-epubcheck
+	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)" RELEASE=--require-epubcheck
 
 $(addsuffix -ebook-check,$(EBOOK_SUBSETS)): %-ebook-check:
 	$(MAKE) -C ebook "validate-$*"

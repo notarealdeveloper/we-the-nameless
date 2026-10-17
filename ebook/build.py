@@ -75,7 +75,7 @@ def subset_edition(name):
     return target, output, title, metadata
 
 
-def subset_content(name):
+def subset_content(name, *, apocrypha=None):
     """Apply exactly the print selector's chapter and source filtering in memory."""
     selector = subset_module()
     target, _, _, _ = subset_edition(name)
@@ -100,11 +100,13 @@ def subset_content(name):
                 elif value.startswith(r"\HistoryAddition"):
                     label = history_title + " — Addition"
             elif kind == "include" and selector.selected_include(value, target):
-                # Preserve the renderer's existing exclusion of print-only
-                # apocrypha/frontispieces; biblical alternate verses stay inline.
-                if Path(value).name in ("apocrypha", "title"):
+                # Frontispieces are print layout; apocrypha is manuscript content.
+                if Path(value).name == "title" or (Path(value).name == "apocrypha" and not include_apocrypha(apocrypha)):
                     continue
-                text, _, _ = selector.transform_chapter(ROOT / (value + ".tex"), target, value)
+                if Path(value).name == "apocrypha":
+                    text = (ROOT / (value + ".tex")).read_text(encoding="utf-8")
+                else:
+                    text, _, _ = selector.transform_chapter(ROOT / (value + ".tex"), target, value)
                 if text is not None:
                     rel = value + ".tex"
                     sequence.append((label, rel))
@@ -143,10 +145,14 @@ FONT_FILES = [
     ROOT / "fonts/noto-sans-syriac.ttf",
     ROOT / "fonts/noto-sans-cuneiform-regular.ttf",
     ROOT / "fonts/noto-sans-ugaritic-regular.ttf",
+    ROOT / "fonts/noto-sans-canadian-aboriginal.ttf",
+    ROOT / "fonts/noto-sans-anatolian-hieroglyphs.ttf",
+    ROOT / "fonts/proto-sinaitic-15.ttf",
 ]
 
 SOURCE_NAMES = {
     "J": "J", "E": "E", "P": "P", "R": "R", "X": "Other",
+    "RA": "Redactor A", "RB": "Redactor B", "RC": "Redactor C",
     "JE": "JE", "JP": "JP", "JM": "JM", "JPP": "JPP", "PR": "PR",
     "EP": "EP", "EPP": "EPP", "PP": "Paleo P", "Diff": "Textual difference",
     "Red": "Redactor", "Reblacktor": "Redactor", "Records": "Book of Records",
@@ -184,6 +190,8 @@ INLINE = {
 }
 
 LANGUAGE_INLINE = {
+    "anatolian": ("anatolian", "hlu", "ltr"),
+    "nunavut": ("canadian-syllabics", "iu", "ltr"),
     "heb": ("hebrew", "he", "rtl"),
     "hebniq": ("hebrew hebrew-pointed", "he", "rtl"),
     "arb": ("arabic", "ar", "rtl"),
@@ -221,29 +229,15 @@ MATH_SYMBOLS = {
 
 ZERO_ARGUMENT_TEXT = {
     "IsaacBoundBurnedSummary": "Isaac bourned",
+    "textquotedblleft": "“", "textquotedblright": "”",
 }
 
 # Reusable manuscript substitutions defined with ``\def`` in master.tex.
 # Unlike ZERO_ARGUMENT_TEXT, these deliberately retain TeX markup so their
 # source-profile spans receive the same semantic EPUB treatment as authored
 # inline markup.
-ZERO_ARGUMENT_TEX = {
-    "cuma": r"c\eRJE{hildren}",
-    "cumb": r"co\eR{venantal heirs, a blessing from }me",
-    "cum": r"\cumb",
-    "pussya": r"p\eRJE{aternit}y",
-    "pussyb": r"p\eRJE{atriarch}y",
-    "pussyc": r"pu\eR{rity and blessing through your descendants provided you keep the covenant and be cla}ssy",
-    "pussyd": r"pu\eR{rchase over the peoples of the land even if they rebel against you and things get me}ssy",
-    "pussy": r"\pussya",
-    "dick": r"d\eR{ownstairs, for when I look upon it, I say }ick\eR{, for it is a distasteful thing}",
-    "penisa": r"p\eRJE{atriarchy}",
-    "penisb": r"p\eRJE{ride and joy}",
-    "penisc": r"p\eR{at}e\eR{r}ni\eR{ty, }s\eR{o that your days will be extended in the land}",
-    "penisd": r"p\eR{aternity, meaning children, and the meaning of childr}enis",
-    "penis": r"\penisc",
-    "foreskin": r"\eR{be}fore\eR{skin there is blood, and after blood there i}skin",
-}
+ZERO_ARGUMENT_TEX = {}  # Populated from master.tex after the TeX group parser is defined.
+
 
 HEBREW_ORDER = "אבגדהוזחטיכךלמםנןסעפףצץקרשת"
 PALEO_ASCII = "ABGDHWZXJYKKLMMNNS]PPC CQRVT".replace(" ", "")
@@ -355,6 +349,39 @@ def optional_group(text: str, pos: int) -> tuple[str, int] | None:
     if depth:
         raise ValueError("unbalanced TeX optional argument")
     return text[start:i - 1], i
+
+
+def master_command(name: str) -> str:
+    """Read a zero-argument newcommand's balanced body, without executing TeX."""
+    source = strip_comments(MASTER.read_text(encoding="utf-8"))
+    match = re.search(r"\\newcommand\s*\{\\" + re.escape(name) + r"\}\s*", source)
+    parsed = group(source, match.end()) if match else None
+    if parsed is None:
+        raise ValueError(f"missing master command: {name}")
+    return parsed[0]
+
+
+def include_apocrypha(setting=None):
+    if setting is None:
+        source = strip_comments(MASTER.read_text(encoding="utf-8"))
+        match = re.search(r"\\def\\ConfigApocrypha\s*\{([^}]+)\}", source)
+        setting = match[1] if match else "apocryphal"
+    return setting == "apocryphal"
+
+
+def manuscript_helpers():
+    source = strip_comments(MASTER.read_text(encoding="utf-8"))
+    start = source.index(r"\def\cuma")
+    end = source.index(r"\newcommand{\egH}", start)
+    helpers = {}
+    for match in re.finditer(r"\\def\\([A-Za-z]+)\s*", source[start:end]):
+        parsed = group(source[start:end], match.end())
+        if parsed:
+            helpers[match[1]] = parsed[0]
+    return helpers
+
+
+ZERO_ARGUMENT_TEX.update(manuscript_helpers())
 
 
 def split_tex(text: str, separator: str) -> list[str]:
@@ -540,7 +567,7 @@ def resolve_image_path(authored_path: str) -> Path | None:
     matches = [
         candidate
         for suffix in suffixes
-        for candidate in ROOT.glob(f"*/include/{authored_path}{suffix}")
+        for candidate in ROOT.glob(f"**/include/{authored_path}{suffix}")
         if candidate.is_file()
     ]
     return matches[0] if len(matches) == 1 else None
@@ -697,6 +724,8 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             env = group(text, i + 6)
             if env:
                 name, i = env
+                if name == "midrash":
+                    out.append(' <span class="annotation-c">(Begin Midrash)</span> ' if compact else '\n\n<span class="annotation-c">(Begin Midrash)</span>\n\n')
                 if name == "minipage":
                     placement = optional_group(text, i)
                     if placement:
@@ -746,6 +775,9 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             env = group(text, i + 4)
             if env:
                 name, i = env
+                if name == "midrash":
+                    out.append(' <span class="annotation-c">(End Midrash)</span> ' if compact else '\n\n<span class="annotation-c">(End Midrash)</span>\n\n')
+                    continue
                 if name == "wrapfigure":
                     out.append("</span>")
                 elif name in {"center", "flushleft", "flushright"}:
@@ -783,14 +815,37 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
         # visible strings such as "{2em}".
         if after < len(text) and text[after] == "*":
             after += 1
+        declarations = {"Record": "source source-records", "Records": "source source-records",
+                        "Poetry": "poetry", "LawFont": "law", "Yahwist": "source source-j",
+                        "MushiteStyle": "source source-e", "AaronidStyle": "source source-p",
+                        "DeuterNStyle": "source source-dtn"}
+        if name in declarations:
+            value = tex_to_markdown(text[after:], compact=compact)
+            tag = "div" if not compact and "\n\n" in value else "span"
+            out.append(f'<{tag} class="{declarations[name]}">' + value + f'</{tag}>')
+            break
+        if name == "nunavut":
+            out.append('<span class="canadian-syllabics" lang="iu" dir="ltr">'
+                       + tex_to_markdown(text[after:], compact=compact) + '</span>')
+            break
+        if name == "textdir":
+            direction = re.match(r"\s*(?:TLT|TRT)", text[after:])
+            i = after + (direction.end() if direction else 0)
+            continue
+        if name in {"kern", "mkern"}:
+            dimension = re.match(r"\s*[+-]?(?:\d*\.)?\d+(?:em|ex|pt|mu)", text[after:])
+            i = after + (dimension.end() if dimension else 0)
+            continue
+        if name == "ldots":
+            out.append("…"); i = after; continue
         if name in MATH_SYMBOLS:
             out.append(MATH_SYMBOLS[name]); i = after; continue
         if name in ZERO_ARGUMENT_TEXT:
             out.append(ZERO_ARGUMENT_TEXT[name]); i = after; continue
         if name in ZERO_ARGUMENT_TEX:
             out.append(tex_to_markdown(ZERO_ARGUMENT_TEX[name], compact=compact)); i = after; continue
-        if name in {"nl", "linebreak", "par", "medskip", "newpage", "clearpage", "pagebreak"}:
-            if name == "pagebreak":
+        if name in {"nl", "linebreak", "par", "medskip", "newpage", "clearpage", "pagebreak", "nopagebreak"}:
+            if name in {"pagebreak", "nopagebreak"}:
                 setting = optional_group(text, after)
                 if setting:
                     _, after = setting
@@ -816,7 +871,7 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
         arg = group(text, after)
         if not arg:
             # Preserve common escaped punctuation; discard purely presentational commands.
-            out.append({"%": "%", "&": "&amp;", "_": "_", "#": "#", "$": "&#36;", "{": "{", "}": "}"}.get(name, ""))
+            out.append({"%": "%", "&": "&amp;", "_": "_", "#": "#", "$": "&#36;", "{": "{", "}": "}", " ": " "}.get(name, ""))
             i = after; continue
         body, end = arg
         if name in {"setlength", "addtolength", "renewcommand", "newcommand"}:
@@ -824,6 +879,33 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             second = group(text, end)
             i = second[1] if second else end
             continue
+        if name == "textcolor":
+            second = group(text, end)
+            if second:
+                value, end = second
+                rendered = tex_to_markdown(value, compact=compact)
+                cls = "faint-reading" if body == "black!4" else ""
+                out.append(f'<span class="{cls}">{rendered}</span>')
+            i = end; continue
+        if name == "proto":
+            rendered = historical_hebrew(tex_to_markdown(body, compact=True), "ProtoA")
+            out.append(f'<bdo class="proto-sinaitic" lang="he" dir="rtl">{rendered}</bdo>')
+            i = end; continue
+        if name == "Apocrypha":
+            i = end; continue  # The enclosing chapter owns this heading.
+        if name == "Apocryphon":
+            out.append("\n\n### " + tex_to_markdown(body, compact=True).replace("<br/>", " — ") + "\n\n")
+            i = end; continue
+        if name == "ApocryphonVerse":
+            arguments = [body]
+            for _ in range(3):
+                parsed = group(text, end)
+                if parsed is None:
+                    raise ValueError("incomplete ApocryphonVerse")
+                value, end = parsed
+                arguments.append(value)
+            out.append("\n\n#### Fragment " + body + "\n\n" + tex_to_markdown(arguments[3]) + "\n\n")
+            i = end; continue
         if name == "Table":
             table_body = group(text, end)
             if table_body:
@@ -957,7 +1039,10 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             out.append(f'<span class="glyph-mirror">{rendered}</span>')
             i = end
             continue
-        src = source_class(name)
+        profile_aliases = {"Mushite": "eE", "Aaronid": "eP", "DeuterA": "eDtrA",
+                           "DeuterB": "eDtrB", "Jeremiah": "eDtrB",
+                           "ApocryphonMosesDialogue": "eE", "ApocryphonYHWHDialogue": "eR"}
+        src = source_class(profile_aliases.get(name, name))
         if src:
             language, key = src
             attrs = ' lang="he" dir="rtl"' if language == "hebrew" else ""
@@ -1036,6 +1121,15 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 out.append(f"[{tex_to_markdown(label).strip()}]({body})")
             else:
                 out.append(body)
+        elif name == "Priest":
+            out.append(f"<strong>{rendered}</strong>")
+        elif name == "SourceDecorate":
+            options = (optional_value or "").split(",")
+            cls = next((cls for key, cls in (("dtr1", "source-dtra"), ("dtr2", "source-dtrb"),
+                       ("aaronid", "source-p")) if key in options), "")
+            if "priest" in options:
+                rendered = "<strong>" + rendered + "</strong>"
+            out.append(f'<span class="source {cls}">{rendered}</span>')
         elif name in LANGUAGE_INLINE:
             cls, language, direction = LANGUAGE_INLINE[name]
             out.append(
@@ -1074,6 +1168,14 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
         elif name == "vspace":
             i = end
             continue
+        elif name == "scalebox":
+            scale = optional_group(text, end)
+            if scale:
+                _, end = scale
+            second = group(text, end)
+            if second:
+                value, end = second
+                out.append(tex_to_markdown(value, compact=compact))
         elif name in {"raisebox", "makebox", "rotatebox", "size", "up", "dn"}:
             second = group(text, end)
             if second:
@@ -1117,6 +1219,7 @@ def parse_verses(text: str) -> list[tuple[str, str, str, str]]:
     text = strip_comments(text)
     verses = []
     pos = 0
+    sentence_number = 0
     while True:
         match = re.search(r"\\(Verse|Sentence)(?![A-Za-z])\s*", text[pos:])
         if not match:
@@ -1132,7 +1235,8 @@ def parse_verses(text: str) -> list[tuple[str, str, str, str]]:
             args.append(value)
         if len(args) == count:
             if count == 3:
-                args.insert(0, str(len(verses) + 1))
+                sentence_number += 1
+                args.insert(0, str(sentence_number))
             verses.append(tuple(args))
             pos = cursor
         else:
@@ -1140,7 +1244,7 @@ def parse_verses(text: str) -> list[tuple[str, str, str, str]]:
     return verses
 
 
-def master_sequence(selected_book: str | None = None) -> list[tuple[str, str]]:
+def master_sequence(selected_book: str | None = None, *, apocrypha=None) -> list[tuple[str, str]]:
     body = history_layers_as_parts(expand_history(
         MASTER.read_text(encoding="utf-8").split("\\begin{document}", 1)[1], ROOT))
     sequence: list[tuple[str, str]] = []
@@ -1166,7 +1270,7 @@ def master_sequence(selected_book: str | None = None) -> list[tuple[str, str]]:
         m = re.match(r"\\include\{([^}]+)\}", line)
         if m:
             path = ROOT / f"{m.group(1)}.tex"
-            if (selected_book is None or current_book == selected_book) and path.exists() and path.name != "apocrypha.tex":
+            if (selected_book is None or current_book == selected_book) and path.exists() and path.name != "title.tex" and (path.name != "apocrypha.tex" or include_apocrypha(apocrypha)):
                 label = history_title or current_part or current_book
                 if history_title and current_part.endswith(" additions"):
                     label += " — Addition"
@@ -1219,7 +1323,48 @@ def chapter_summaries() -> dict[tuple[str, str], str]:
 
 def chapter_heading(book: str, chapter: str) -> str:
     r"""The running chapter page follows \Chapter, not the summary-only ToC."""
-    return f"{book} {chapter}"
+    return f"{book} {chapter.title() if chapter == 'apocrypha' else chapter}"
+
+
+def author_legend(command="SourceLegendPage"):
+    """Keep all current legend rows and their notes, without paper scaffolding."""
+    body = master_command(command)
+    notes = {}
+    for match in re.finditer(r"\\footnotetext\[\\([^]]+)\]\s*", body):
+        parsed = group(body, match.end())
+        if parsed:
+            notes[match[1]] = parsed[0]
+    body = re.sub(r"\\LegendFootmarkJ?\{([^}]+)\}",
+                  lambda m: r"\footnote{" + notes[m[1]] + "}", body)
+    lines = ['<div class="source-legend">']
+    for match in re.finditer(r"\\Legend(?:Breakable)?Row(?![A-Za-z])\s*", body):
+        label, end = group(body, match.end())
+        prose, _ = group(body, end)
+        label = re.sub(r"\\LegendFontAlphabet\{(\\h[A-Za-z]+)\}",
+                       lambda m: m[1] + "{אבגדהוזחטיכלמנסעפצקרשת}", label)
+        label = label.replace(r"\LegendPFontAlphabet", r"\hP{אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ}")
+        lines += ['<div class="legend-entry">',
+                  '<div class="legend-label">' + tex_to_markdown(label) + '</div>',
+                  '<div class="legend-description">', "", tex_to_markdown(prose), "", '</div></div>']
+    lines.append('</div>')
+    return lines
+
+
+def publication_notices():
+    lines = []
+    for suffix in ("One", "Two"):
+        body = master_command("LDPublicationNoticePage" + suffix)
+        paragraphs = []
+        for match in re.finditer(r"\\a[ABC]\s*", body):
+            parsed = group(body, match.end())
+            if parsed:
+                paragraphs.append(tex_to_markdown(match[0] + "{" + parsed[0] + "}"))
+        if len(paragraphs) != 3:
+            raise ValueError(f"unexpected publication notice structure: {suffix}")
+        lines += [f'# Publication Notice {suffix} {{.front-heading .visually-hidden}}', "",
+                  '<div class="publication-notice">', *paragraphs,
+                  '<img class="publication-logo" src="img/ld-book-light.png" alt="LD"/></div>', ""]
+    return lines
 
 
 def front_matter(
@@ -1229,7 +1374,6 @@ def front_matter(
     *, sources=None, parents=None,
 ) -> list[str]:
     """Reproduce the visible front matter from master.tex in reflowable form."""
-    e_alphabet = historical_hebrew("אבגדהוזחטיכלמנסעפצקרשת", "E")
     parents = include_parent_books() if parents is None else parents
     available_top_books = {parents.get(rel, label) for label, rel in sequence}
     books = list(dict.fromkeys([*top_level_books(), *[parents.get(rel, label) for label, rel in sequence]]))
@@ -1255,8 +1399,8 @@ def front_matter(
             found = re.search(r"\\Chapter\s*\{([^}]+)\}", strip_comments(source))
             chapter = found.group(1).strip() if found else Path(rel).stem
             anchor = re.sub(r"[^a-z0-9]+", "-", f"{label}-{chapter}".lower()).strip("-")
-            title = summaries.get((label, chapter), f"{label} {chapter}")
-            chapters.append(f'<li><a href="#{anchor}">{chapter}. {title}</a></li>')
+            title = summaries.get((label, chapter), chapter_heading(label, chapter))
+            chapters.append(f'<li><a href="#{anchor}">{"" if chapter == "apocrypha" else chapter + ". "}{title}</a></li>')
         book_anchor = re.sub(r"[^a-z0-9]+", "-", top_book.lower()).strip("-")
         contents_sections += [
             f'<section id="contents-{book_anchor}" class="contents-book">',
@@ -1283,27 +1427,18 @@ def front_matter(
         '<span class="source source-e">E</span> &nbsp; '
         '<span class="source source-p">P</span> &nbsp; '
         '<span class="source source-r">R</span></p>',
-        '<dl class="source-legend">',
-        '<dt class="source source-j">Green</dt><dd class="source source-j">J. The first author of the bible. The first author of prose in history. The author of the most widely known bible stories. The author of the bible with the best sense of human nature. We have little knowledge of the author’s identity beyond this.</dd>',
-        '<dt class="source source-e">Yellow</dt><dd class="source source-e">Mushites. A group of Levite priests who claim descent from Moses. Associated with the first temple in the city of Shiloh. The first author in this group is commonly known as the Elohist, or E.</dd>',
-        '<dt class="source source-p">Blue</dt><dd class="source source-p">Aaronids. A group of Levite priests who claim descent from Aaron. Associated with the first and second temple in Jerusalem. The first author in this group is known as the Priestly source, or P.</dd>',
-        '<dt class="source source-dtrb">Orange</dt><dd class="source source-dtrb">Deuteronomists. The later Mushite tradition, associated with king Josiah, the Shiloh and Anathoth priesthood, and the prophet Jeremiah.</dd>',
-        '<dt><span class="source source-r">Highlights</span></dt><dd><span class="source source-r">Editors. Called Redactors in bible circles, since E was already taken. Redactors mostly insert glue prose when combining sources.</span></dd>',
-        '<dt class="source source-bookofrecords">Record Grey</dt><dd class="source source-bookofrecords">Records. Begat lists, genealogies, and miscellaneous documents.</dd>',
-        '</dl>', "",
+        *author_legend(), "",
         '# The Source Fonts {.front-heading}', "",
-        '<div class="font-legend"><p class="source source-j hebrew" lang="he" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</p><p class="source source-j">J is written in the Paleo-Hebrew script of around 922 B.C.</p>',
-        f'<p><bdo class="source source-e hebrew" lang="he" dir="rtl">{e_alphabet}</bdo></p><p class="source source-e">E uses a northern variant of the Paleo-Hebrew script from soon after the time of J.</p>',
-        '<p class="source source-p hebrew" dir="rtl">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p><p class="source source-p">P is rendered in the modern Hebrew square script with niqqud.</p>',
-        '<p><span class="source source-r hebrew" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</span></p><p><span class="source source-r">R uses the Ezra variant of the Hebrew square script with no niqqud.</span></p></div>', "",
-        '# Publication Notice {.front-heading .visually-hidden}', "",
-        '<div class="publication-notice"><p><span class="aside-a">LD LLC makes no claim to have written the book that follows.<br/>We could not find a published edition of it, and thought one<br/>ought to exist. LD undertook the preparation of the text for<br/>publication, including its editing, typesetting, design, and</span><br/><span class="aside-b">production and is responsible for the volume presented here,<br/>but we make no claim to know the identity of the individuals<br/>who wrote the original text, nor do we make any claim to the<br/>effect that the original authors did not incorporate in that</span><br/><span class="aside-c">volume any earlier sources either verbatim or in paraphrase.<br/>In summary, it’s a bible, and all rules of that genre apply.<br/>If your work has been incorporated into the resulting volume<br/>and you would like to be removed from the bible, let us know</span></p>',
-        '<img class="publication-logo" src="img/ld-book-light.png" alt="LD"/></div>', "",
+        '<div class="font-legend">',
+        *author_legend("PrimarySourceFontsPage"), '</div>', "",
+        '# The Primeval Sources {.front-heading}', "",
+        *author_legend("PrimevalSourceFontsPage"), "",
+        *publication_notices(),
     ]
 
 
-def make_markdown(path: Path, selected_book: str | None = None, *, content=None) -> tuple[int, int]:
-    sequence, sources, parents = content if content is not None else (master_sequence(selected_book), None, include_parent_books())
+def make_markdown(path: Path, selected_book: str | None = None, *, content=None, apocrypha=None) -> tuple[int, int]:
+    sequence, sources, parents = content if content is not None else (master_sequence(selected_book, apocrypha=apocrypha), None, include_parent_books())
     summaries = chapter_summaries()
     edition_title = selected_book or "Complete Edition"
     lines = ["---", "lang: en-US", "---", ""] + front_matter(
@@ -1325,6 +1460,9 @@ def make_markdown(path: Path, selected_book: str | None = None, *, content=None)
         top_anchor = re.sub(r"[^a-z0-9]+", "-", top_book.lower()).strip("-")
         lines += [f"## [{heading}](#contents-{top_anchor}) {{#{anchor} .chapter-title}}", ""]
         chapter_count += 1
+        if Path(rel).stem == "apocrypha":
+            lines += [tex_to_markdown(source), ""]
+            continue
         verse_occurrences: dict[str, int] = {}
         for number, hebrew, english, commentary in parse_verses(source):
             verse_count += 1
@@ -1444,6 +1582,8 @@ def main() -> int:
         help="image basename in img/covers, or 'none' (default: none)",
     )
     parser.add_argument("--keep-markdown", action="store_true")
+    parser.add_argument("--apocrypha", choices=("apocryphal", "canonical"), default=None,
+                        help="follow ConfigApocrypha in master.tex unless overridden")
     args = parser.parse_args()
     if args.require_epubcheck and not shutil.which("epubcheck"):
         parser.error("epubcheck is required for a release build")
@@ -1471,13 +1611,13 @@ def main() -> int:
     with tempfile.TemporaryDirectory(prefix="wtn-ebook-") as temp:
         manuscript = Path(temp) / "manuscript.md"
         candidate = Path(temp) / "candidate.epub"
-        content = subset_content(args.subset) if args.subset else None
-        sequence = content[0] if content else master_sequence(args.book)
+        content = subset_content(args.subset, apocrypha=args.apocrypha) if args.subset else None
+        sequence = content[0] if content else master_sequence(args.book, apocrypha=args.apocrypha)
         if args.book and not sequence:
             parser.error(f"book not found or contains no source files: {args.book}")
         source_count = len(sequence)
         log(f"Generating Markdown from {source_count} included TeX files...")
-        chapters, verses = make_markdown(manuscript, args.book, content=content)
+        chapters, verses = make_markdown(manuscript, args.book, content=content, apocrypha=args.apocrypha)
         manuscript_size = manuscript.stat().st_size
         log(
             f"Generated {manuscript_size:,}-byte manuscript "

@@ -15,6 +15,75 @@ import build
 
 
 class ConversionTests(unittest.TestCase):
+    def test_new_genesis_redactors_and_inline_commands(self):
+        for key in ("RA", "RB", "RC"):
+            rendered = build.tex_to_markdown("\\e" + key + "{English}\\h" + key + "{אב}")
+            self.assertEqual(rendered.count("source-" + key.lower()), 2)
+            self.assertIn('dir="rtl"', rendered)
+        self.assertIn('class="proto-sinaitic"', build.tex_to_markdown(r"\proto{נח}"))
+        self.assertNotIn("black!4", build.tex_to_markdown(r"\textcolor{black!4}{S}laughter"))
+        self.assertNotIn("[4]", build.tex_to_markdown(r"before\nopagebreak[4]after"))
+
+    def test_current_publication_notices_and_legend(self):
+        matter = "\n".join(build.front_matter([], {}, "Genesis"))
+        self.assertIn("Publication Notice One", matter)
+        self.assertIn("Publication Notice Two", matter)
+        self.assertIn("Genesis 1 is written in a different style", matter)
+        self.assertIn("empowering of Zadok and the Aaronids", matter)
+        self.assertIn("We the people. We write regular.", matter)
+        self.assertIn("Named J, or the Yahwist", matter)
+        self.assertIn("We have complied, reluctantly.", matter)
+        self.assertIn("Ketef Hinnom", matter)
+        self.assertNotIn("SourceLegendFootnote", matter)
+
+    def test_midrash_boundaries_and_helper_glyphs_survive(self):
+        source = r"Before \begin{midrash}Abe: Which son?\end{midrash} After"
+        for compact in (False, True):
+            rendered = build.tex_to_markdown(source, compact=compact)
+            self.assertIn("(Begin Midrash)", rendered)
+            self.assertIn("(End Midrash)", rendered)
+            self.assertLess(rendered.index("(Begin Midrash)"), rendered.index("Abe:"))
+        self.assertIn("ᗺ", build.tex_to_markdown(r"{\Er}"))
+        self.assertIn("𓂋", build.tex_to_markdown(r"{\reubenface}"))
+        self.assertIn('class="canadian-syllabics"', build.tex_to_markdown(r"{\Er}"))
+
+    def test_apocrypha_selection_follows_print(self):
+        for selection in ("genesis", "exodus"):
+            enabled = build.subset_content(selection, apocrypha="apocryphal")[0]
+            disabled = build.subset_content(selection, apocrypha="canonical")[0]
+            self.assertTrue(any(rel.endswith("/apocrypha.tex") for _, rel in enabled))
+            self.assertFalse(any(rel.endswith("/apocrypha.tex") for _, rel in disabled))
+        self.assertFalse(any(rel.endswith("/apocrypha.tex") for _, rel in build.subset_content("J")[0]))
+        self.assertFalse(any(rel.endswith("/apocrypha.tex") for _, rel in build.master_sequence(apocrypha="canonical")))
+
+    def test_apocrypha_preserves_intro_titles_fragments_and_trailing_prose(self):
+        rendered = build.tex_to_markdown(
+            r"\Apocrypha{Genesis}Publisher intro. \Apocryphon[Short]{Long title}"
+            r"\ApocryphonVerse{1}{}{}{Fragment prose.} Trailing dialogue.")
+        for text in ("Publisher intro.", "### Long title", "#### Fragment 1", "Fragment prose.", "Trailing dialogue."):
+            self.assertIn(text, rendered)
+        self.assertNotIn("Short", rendered)
+
+    def test_sentence_numbering_is_independent_of_verses(self):
+        self.assertEqual([v[0] for v in build.parse_verses(
+            r"\Verse{7}{}{}{}\Sentence{}{One}{}\Verse{9}{}{}{}\Sentence{}{Two}{}")],
+            ["7", "1", "9", "2"])
+
+    def test_new_script_fonts_and_nested_image_paths(self):
+        rendered = build.tex_to_markdown(r"\anatolian{𔔉}")
+        self.assertIn('class="anatolian" lang="hlu" dir="ltr"', rendered)
+        for filename in ("noto-sans-anatolian-hieroglyphs.ttf", "noto-sans-canadian-aboriginal.ttf"):
+            font = build.ROOT / "fonts" / filename
+            self.assertIn(font, build.FONT_FILES)
+            self.assertTrue(font.is_file())
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            asset = root / "history/book/include/fixture.png"
+            asset.parent.mkdir(parents=True)
+            asset.touch()
+            with patch.object(build, "ROOT", root):
+                self.assertEqual(build.resolve_image_path("fixture"), asset)
+
     def test_subset_alias_identity_and_case(self):
         aliases = [build.subset_edition(name) for name in ("genesis", "1-genesis", "01-genesis")]
         self.assertEqual({item[1] for item in aliases}, {"genesis"})
@@ -44,7 +113,7 @@ class ConversionTests(unittest.TestCase):
             self.assertIn('href="#contents-genesis"', rendered)
             self.assertNotIn('href="#contents-exodus"', rendered)
             self.assertIn("Priestly", rendered)
-            self.assertNotIn("Yahwist", rendered)
+            self.assertNotIn("Yahwist", rendered.split("# [Genesis]", 1)[1])
 
     def test_all_subset_targets_have_ebook_commands(self):
         names = subprocess.check_output([str(build.ROOT / "bin/book-subset"), "--make-targets"], text=True).split()

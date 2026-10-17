@@ -26,8 +26,12 @@ make check-ebook               # Renderer regression tests; no PDF/EPUB build.
 subset editions. Numbered book aliases share the existing `ebook/genesis.epub`,
 `ebook/exodus.epub`, etc. Source/chapter editions use their canonical names,
 e.g. `ebook/J.epub` and `ebook/genesis-1.epub`. The active complete edition is
-`ebook/we-the-nameless.epub`. Standalone print apocrypha/frontispieces remain
-excluded by this renderer; alternate verses within chapters remain included.
+`ebook/we-the-nameless.epub`. Apocrypha follows `ConfigApocrypha` in `master.tex`, just like print. Override
+it with `APOCRYPHA=canonical` on either Makefile or `--apocrypha canonical`
+on `build.py`. Full Genesis and Exodus editions retain their apocrypha,
+including introductions, fragment headings, notes, and trailing dialogue;
+source/chapter subsets follow the print selector’s exclusions. Print-only
+frontispieces remain excluded; alternate verses within chapters remain included.
 Original `\Sentence` prose is rendered alongside numbered `\Verse` material.
 
 Direct interfaces remain: `make -C ebook genesis`, `make -C ebook J`, and
@@ -52,6 +56,14 @@ Single-book packages also carry their book name in `dc:title`, so stores and
 Kindle libraries do not display every volume under an indistinguishable title.
 A build requires Pandoc 3. `--keep-markdown` on `build.py` preserves
 `manuscript.generated.md` for debugging; otherwise it is temporary.
+
+The publication notices (including the Genesis 1 warning), author legend, and
+source-font explanations are read from their current definitions in `master.tex`.
+The reusable manuscript substitutions are read there too, including `Er` and
+the Reuben face. Midrash boundaries and RA/RB/RC redactor distinctions survive
+conversion. Canadian syllabics, Anatolian hieroglyphs, and the inline
+Proto-Sinaitic helper have embedded specialist fonts. The primeval font legend
+uses profile names as labels where a matching EPUB font sample is unavailable.
 
 ## Source-to-EPUB mapping
 
@@ -154,6 +166,11 @@ custom properties. Hue, weight, and highlight shape jointly encode source
 identity, so the text remains intelligible if a reader suppresses colour.
 
 ## Validation and QA
+
+The October synchronization changes were checked with renderer regression tests
+and a small Pandoc HTML fixture, without building a PDF or EPUB. A fresh release
+build and reading-system inspection are still needed before publication.
+
 
 Every build runs `validate.py`. It verifies EPUB ZIP ordering/mimetype,
 container and package XML, unique identifiers, manifest completeness,

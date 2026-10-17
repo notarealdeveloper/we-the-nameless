@@ -51,7 +51,7 @@ h1, h2, h3 { font-family: sans-serif; }
 .contents-list a { color: #0046aa !important; text-decoration: none; }
 .authors-subtitle, .legend-key { font-size: .82em; text-align: center; }
 .authors-subtitle span { font-size: 1em; }
-.source-legend { display: grid; grid-template-columns: 24% 72%; column-gap: 4%; font-size: .82em; }
+.source-legend { display: block; font-size: .82em; }
 .source-legend dt, .source-legend dd { margin: 0 0 1em; text-align: left; }
 .source-legend dt { font-weight: bold; }
 .font-legend { font-size: .82em; }
@@ -189,3 +189,22 @@ th { font-weight: bold; }
 .ugaritic { font-family: "WTN Ugaritic", sans-serif; font-size: 1.22em; }
 .cjk { font-family: serif; }
 @media (max-width: 30em) { .contents-book ol { columns: 1; } .wtn-table { width: 100%; } }
+
+/* Scripts and semantic components added to the current manuscript. */
+@font-face { font-family: "WTN Canadian Syllabics"; src: url("../fonts/noto-sans-canadian-aboriginal.ttf"); }
+@font-face { font-family: "WTN Anatolian"; src: url("../fonts/noto-sans-anatolian-hieroglyphs.ttf"); }
+.canadian-syllabics { font-family: "WTN Canadian Syllabics", sans-serif; }
+.anatolian { font-family: "WTN Anatolian", sans-serif; }
+.poetry { font-style: italic; }
+.law { font-family: monospace; }
+.legend-entry { margin-bottom: 1em; }
+.legend-label { font-weight: bold; }
+.legend-description { margin-left: 2em; }
+
+@font-face { font-family: "WTN Proto Sinaitic 15"; src: url("../fonts/proto-sinaitic-15.ttf"); }
+.proto-sinaitic { font-family: "WTN Proto Sinaitic 15", serif; }
+.source-ra { color: #000 !important; background-color: #e0e0e0 !important; }
+.source-rb { color: #aa0000 !important; background-color: #f5e0e0 !important; }
+.source-rc { color: #0046aa !important; background-color: #e0e8f5 !important; }
+.hebrew.source-ra, .hebrew.source-rb, .hebrew.source-rc { font-family: "WTN Hebrew Ezra", serif; }
+.faint-reading { color: #f5f5f5; }
