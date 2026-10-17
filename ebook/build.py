@@ -1437,6 +1437,41 @@ def front_matter(
     ]
 
 
+def render_verse_commentary(book: str, chapter: str, number: str, commentary: str) -> str:
+    """Use the supplied Genesis artwork in place of its centered TeX scenes."""
+    scenes = {
+        "11": [("11", "jacob", "Jacob, depicted as an old man with a staff.")],
+        "12": [("12", "family", "Joseph bows before Jacob, with Ephraim and Manasseh between them.")],
+        "13": [("13", "family", "Joseph stands before Jacob; Jacob's hands reach toward the two boys without crossing.")],
+        "14": [("14", "family", "Jacob crosses his hands, placing his right on Ephraim and his left on Manasseh.")],
+        "17": [("17", "family", "Joseph raises his arms in disapproval of Jacob's crossed hands.")],
+        "18": [
+            ("18-1", "not-good", "Egyptian hieroglyphs: Not good, dad."),
+            ("18-2", "right-hand", "Egyptian hieroglyphs: Set your right hand on his head."),
+        ],
+        "19": [("19", "family", "Jacob keeps his hands crossed despite Joseph's objection.")],
+    }
+    artwork = scenes.get(number.strip()) if book == "Genesis" and chapter == "48" else None
+    if artwork is None:
+        return tex_to_markdown(commentary)
+    # Replace whole centered illustrations, including the non-TikZ glyph
+    # compositions in verses 11 and 18. Convert the surrounding prose normally.
+    parts = re.split(r"\\begin\{center\}.*?\\end\{center\}", strip_comments(commentary), flags=re.DOTALL)
+    if len(parts) != len(artwork) + 1:
+        raise ValueError(f"Genesis 48:{number}: centered scenes no longer match ebook artwork")
+    rendered = [tex_to_markdown(parts[0])]
+    for (suffix, size, alt), prose in zip(artwork, parts[1:]):
+        source = f"ebook/img/genesis-48-{suffix}.png"
+        if not (ROOT / source).is_file():
+            raise FileNotFoundError(source)
+        rendered.append(
+            f'<figure class="verse-artwork verse-artwork-{size}">'
+            f'<img src="{source}" alt="{html.escape(alt, quote=True)}"/></figure>'
+        )
+        rendered.append(tex_to_markdown(prose))
+    return "\n\n".join(part for part in rendered if part)
+
+
 def make_markdown(path: Path, selected_book: str | None = None, *, content=None, apocrypha=None) -> tuple[int, int]:
     sequence, sources, parents = content if content is not None else (master_sequence(selected_book, apocrypha=apocrypha), None, include_parent_books())
     summaries = chapter_summaries()
@@ -1484,7 +1519,7 @@ def make_markdown(path: Path, selected_book: str | None = None, *, content=None,
                 "::::: {.verse-translation}", rendered_english, ":::::",
                 '::::: {.verse-source lang="he" dir="rtl"}', rendered_hebrew, ":::::",
             ]
-            rendered_commentary = tex_to_markdown(commentary)
+            rendered_commentary = render_verse_commentary(book, chapter, number, commentary)
             if rendered_commentary:
                 whole_voice = re.fullmatch(r"\s*\\a([ABC])\s*\{.*\}\s*", strip_comments(commentary), re.DOTALL)
                 voice_class = f" .annotation-{whole_voice.group(1).lower()}" if whole_voice else ""

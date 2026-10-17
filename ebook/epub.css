@@ -141,6 +141,12 @@ blockquote { margin: .8em 1em; }
 .embedded-note-image { display: block; max-height: 10em; width: auto; margin: .5em auto; }
 figure { margin: 1em auto; text-align: center; break-inside: avoid; }
 img, svg { max-width: 100%; height: auto; }
+/* Full-width labeled scenes; compact glyphs keep their print-like scale. */
+.verse-artwork { width: 100%; max-width: 32em; page-break-inside: avoid; }
+.verse-artwork img { display: block; width: 100%; height: auto; }
+.verse-artwork-jacob { width: 4em; max-width: 100%; }
+.verse-artwork-not-good { width: 6em; max-width: 100%; }
+.verse-artwork-right-hand { width: 8em; max-width: 100%; }
 .ebook-diagram { max-width: 22em; padding: .75em; border: 1px solid #6e6e6e; }
 .family-diagram > div { text-align: center; }
 .family-grandsons { display: flex; justify-content: space-around; gap: 2em; }

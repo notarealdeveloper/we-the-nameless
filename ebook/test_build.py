@@ -15,6 +15,29 @@ import build
 
 
 class ConversionTests(unittest.TestCase):
+    def test_genesis_48_artwork_replaces_scenes_and_preserves_prose(self):
+        source = (build.ROOT / "01-genesis/48.tex").read_text(encoding="utf-8")
+        rendered = {}
+        for number, _, _, commentary in build.parse_verses(source):
+            rendered[number] = build.render_verse_commentary("Genesis", "48", number, commentary)
+            if number not in {"11", "12", "13", "14", "17", "18", "19"}:
+                self.assertEqual(rendered[number], build.tex_to_markdown(commentary))
+            self.assertEqual(
+                build.render_verse_commentary("Exodus", "48", number, commentary),
+                build.tex_to_markdown(commentary),
+            )
+        for asset in (build.HERE / "img").glob("genesis-48-*.png"):
+            number = asset.stem.split("-")[2]
+            self.assertEqual(rendered[number].count(f'src="ebook/img/{asset.name}"'), 1)
+        for number in ("11", "12", "13", "14", "17", "18", "19"):
+            for obsolete in ("family-diagram", "glyph-overlap", "tikzpicture", 'class="egyptian"'):
+                self.assertNotIn(obsolete, rendered[number])
+        verse = rendered["18"]
+        self.assertLess(verse.index("Not good dad."), verse.index("genesis-48-18-1.png"))
+        self.assertLess(verse.index("genesis-48-18-1.png"), verse.index("Set your right hand on his head."))
+        self.assertLess(verse.index("Set your right hand on his head."), verse.index("genesis-48-18-2.png"))
+        self.assertIn("For the book.", rendered["19"])
+
     def test_new_genesis_redactors_and_inline_commands(self):
         for key in ("RA", "RB", "RC"):
             rendered = build.tex_to_markdown("\\e" + key + "{English}\\h" + key + "{אב}")
