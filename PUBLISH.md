@@ -61,9 +61,14 @@ Replace `genesis` with `exodus`, `J`, `P`, `j`, `p`, `court`, `1-samuel`, `genes
 Run these first two commands **in order**, with unchanged sources and options:
 
 ```sh
-make genesis-kdp-build           # 1. Build searchable reference interior and a cover sized from its page count.
-make genesis-kdp-vectorize       # 2. Convert fonts to paths, clean, check both PDFs, then release the pair.
-make genesis-kdp-check           # Optional later: recheck the released pair; no TeX build, but a full visual rerun.
+make genesis-kdp-build
+# 1. Build searchable reference interior and a cover sized from its page count.
+
+make genesis-kdp-vectorize
+# 2. Convert fonts to paths, clean, check both PDFs, then release the pair.
+
+make genesis-kdp-check
+# Optional later: recheck the released pair; no TeX build, but a full visual rerun.
 ```
 
 `-kdp` already runs stages 1 and 2; you do not need both routes. The long step is
