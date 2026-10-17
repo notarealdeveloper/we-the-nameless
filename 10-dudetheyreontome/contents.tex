@@ -1,23 +1,16 @@
-% Reading order: move a HistoryBook and its layers together.
-% Layer switches preserve inherited chapter/verse identities; they do not start books.
-\HistoryBook{foreword}{On The Lamb: Foreword}
+% Reading order shared by the body and the sub-book contents.
+\HistoryBook{on-the-lamb}{On The Lamb}
 \HistorySource{On The Lamb}
-\include{10-dudetheyreontome/frontmatter/foreword}
+\include{10-dudetheyreontome/on-the-lamb/foreword}
+\include{10-dudetheyreontome/on-the-lamb/opening}
+\include{10-dudetheyreontome/on-the-lamb/arrival}
+\include{10-dudetheyreontome/on-the-lamb/pharmacy}
+\include{10-dudetheyreontome/on-the-lamb/night}
+\include{10-dudetheyreontome/on-the-lamb/tablets}
+\include{10-dudetheyreontome/on-the-lamb/plane-of-edom}
+\include{10-dudetheyreontome/on-the-lamb/notes}
 
-\HistoryBook{opening}{Dudetheyreontome}
-\HistorySource{Dudetheyreontome}
-\include{10-dudetheyreontome/dudetheyreontome/01}
-
-\HistoryBook{esther-one}{On The Lamb 1: Esther}
-\HistorySource{Esther I}
-\include{10-dudetheyreontome/exile/esther/first-exile}
-
-\HistoryBook{esther-two}{On The Lamb 2: Esther}
-\HistoryAddition{Esther II additions}
-\include{10-dudetheyreontome/exile/esther/additions/arrival}
-\include{10-dudetheyreontome/exile/esther/additions/pharmacy}
-\include{10-dudetheyreontome/exile/esther/additions/night}
-\include{10-dudetheyreontome/exile/esther/additions/tablets}
+\HistoryBook{esther}{Esther}
 \HistorySource{Esther}
 \include{10-dudetheyreontome/exile/esther/01}
 \include{10-dudetheyreontome/exile/esther/02}
@@ -30,7 +23,7 @@
 \include{10-dudetheyreontome/exile/esther/09}
 \include{10-dudetheyreontome/exile/esther/10}
 
-\HistoryBook{ezra}{On The Lamb 3: Ezra}
+\HistoryBook{ezra}{Ezra}
 \HistorySource{Ezra}
 \include{10-dudetheyreontome/exile/ezra/01}
 \include{10-dudetheyreontome/exile/ezra/02}
@@ -43,10 +36,7 @@
 \include{10-dudetheyreontome/exile/ezra/09}
 \include{10-dudetheyreontome/exile/ezra/10}
 
-\HistoryBook{nehemiah}{On The Lamb 4: Nehemiah}
-\HistoryAddition{Nehemiah additions}
-\include{10-dudetheyreontome/exile/nehemiah/additions/01}
-\include{10-dudetheyreontome/exile/nehemiah/additions/02}
+\HistoryBook{nehemiah}{Nehemiah}
 \HistorySource{Nehemiah}
 \include{10-dudetheyreontome/exile/nehemiah/01}
 \include{10-dudetheyreontome/exile/nehemiah/02}
@@ -61,9 +51,5 @@
 \include{10-dudetheyreontome/exile/nehemiah/11}
 \include{10-dudetheyreontome/exile/nehemiah/12}
 \include{10-dudetheyreontome/exile/nehemiah/13}
-
-\HistoryCollection{Sects / Acts}
-\BookPart{Sects / Acts}
-\include{10-dudetheyreontome/sects-acts/nhs/01}
 
 \IncludeEpistles{10-dudetheyreontome/epistles}
