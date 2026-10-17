@@ -89,9 +89,14 @@ Defaults: **7×10-inch paperback, premium color on white paper, no interior blee
 simple cover, LD spine**. Use those settings in the publisher's setup. Alternatives:
 
 ```sh
-make genesis-kdp KDP_COVER_STYLE=fancy    # Use the illustrated wrap.
-make genesis-kdp KDP_SPINE=nameless       # Use the title instead of LD on the spine.
-make genesis-kdp KDP_PAPER=standard-color KDP_INK=standard-color  # Use standard color white stock.
+make genesis-kdp KDP_COVER_STYLE=fancy
+# Use the illustrated wrap.
+
+make genesis-kdp KDP_SPINE=nameless
+# Use the title instead of LD on the spine.
+
+make genesis-kdp KDP_PAPER=standard-color KDP_INK=standard-color
+# Use standard color white stock.
 ```
 
 Repeat the same options on every separate build/vectorize/check command. The

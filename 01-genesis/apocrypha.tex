@@ -1,4 +1,53 @@
+% Two numbered leaves; clearpage deliberately avoids recto-only padding.
+\clearpage
+\thispagestyle{empty}
+\begingroup
+\centering
+\vspace*{\fill}
+{\textdir TRT\DeadSeaScrollsIsaiahFont\Large\color{RuleColor}\paleolower\par}
+\vspace{2.5em}
+{\textdir TLT\EnglishProtoFont\fontsize{42}{48}\selectfont Genesis\par}
+\vspace{0.6em}
+{\EnglishFont\LARGE\scshape Apocrypha\par}
+\vspace{2em}
+{\color{RuleColor}\rule{0.38\linewidth}{\ifConfigKDPOn0.75pt\else0.4pt\fi}\par}
+\vspace{2em}
+{\textdir TRT\DeadSeaScrollsIsaiahFont\Large\color{RuleColor}\paleoijklower\par}
+\vspace*{\fill}
+\vspace*{\fill}
+\endgroup
+\clearpage
+\thispagestyle{plain}
+\begingroup
+\EnglishFont
+\parindent=0pt
+\begin{center}
+    \vspace*{2em}
+    {\EnglishProtoFont\LARGE Genesis Apocrypha\par}
+    \vspace{0.8em}
+    {\large\scshape Contents\par}
+    \vspace{1em}
+    {\color{RuleColor}\rule{0.38\linewidth}{\ifConfigKDPOn0.75pt\else0.4pt\fi}\par}
+\end{center}
+\vspace{2em}
+% Fixed-width title blocks allow wrapping without displacing the page column.
+% References resolve to printed page numbers on subsequent LaTeX passes.
+\newcommand{\GenesisApocryphaContentsEntry}[2]{%
+    \noindent\parbox[t]{0.84\linewidth}{\raggedright\hyperref[#1]{#2}}%
+    \hfill\makebox[0.1\linewidth][r]{\pageref{#1}}\par
+    \vspace{1.5em}%
+}
+\GenesisApocryphaContentsEntry{gen-apoc:introduction}{Publisher's Introduction}
+\GenesisApocryphaContentsEntry{gen-apoc:infinite-j-est}{Genesis 1 Apocryphon: Infinite J Est}
+\GenesisApocryphaContentsEntry{gen-apoc:yhwh-abraham}{Genesis 17 Apocryphon: YHWH and Abraham}
+\GenesisApocryphaContentsEntry{gen-apoc:points-of-power}{The Points of Power Apocryphon}
+\GenesisApocryphaContentsEntry{gen-apoc:seed}{Giving this land to your seed: A taste of things to come}
+\GenesisApocryphaContentsEntry{gen-apoc:son-of-j}{Genesis 22 Apocryphon: The Son of J}
+\endgroup
+\clearpage
+
 \Apocrypha{Genesis}
+\label{gen-apoc:introduction}
 
 \begin{center}
 	{\EnglishFont\large\scshape Publisher's Introduction}
@@ -73,6 +122,7 @@ requiring LD to endorse it.}
 % assigning ordinal positions to the disputed characters.
 
 \Apocryphon{Genesis 1 Apocryphon\\Infinite J Est}
+\phantomsection\label{gen-apoc:infinite-j-est}
 
 \ApocryphonVerse{1}
 {
@@ -299,6 +349,7 @@ requiring LD to endorse it.}
 }
 
 \Apocryphon{Genesis 17 Apocryphon\\YHWH and Abraham}
+\phantomsection\label{gen-apoc:yhwh-abraham}
 
 \ApocryphonVerse{1}
 {
@@ -891,6 +942,7 @@ requiring LD to endorse it.}
 }
 
 \Apocryphon{The Points of Power Apocryphon}
+\phantomsection\label{gen-apoc:points-of-power}
 
 \ApocryphonVerse{1}
 {
@@ -962,6 +1014,7 @@ requiring LD to endorse it.}
 }
 
 \Apocryphon{Giving this land to your seed:\\A taste of things to come}
+\phantomsection\label{gen-apoc:seed}
 
 \begin{center}
 	\includegraphics[width=\linewidth,height=0.9\textheight,keepaspectratio]{\ifConfigKDPOn\KDPAssetDir/the-twelve-tribes-of-israel-comic-1.png\else img/comics/the-twelve-tribes-of-israel-comic-1.png\fi}
@@ -983,6 +1036,7 @@ requiring LD to endorse it.}
 \end{center}
 
 \Apocryphon{Genesis 22 Apocryphon\\The Son of J}
+\phantomsection\label{gen-apoc:son-of-j}
 
 \aB{Who are you by the way?}
 

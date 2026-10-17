@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+After '... Get used to it, we’re gonna be here a while.' at the end of Genesis chapter 50, and before the page that says Genesis Apocrypha Publısher's Introductıon, add a full page title page for the Genesis apocrypha, using the same dead sea scrolls font that's currently used to decorate the titles of the individual apocrypha. Then immediately after that title page, add a mini TOC page that just applies to the genesis apocrypha. It should have entries for each apocryphon, in one column, listing their titles and the page on which they begin. There should also be an entry for the 'Publısher's Introductıon' to the Genesis Apocrypha. I'm asking for these two pages because the book is currently 585 pages exactly, and I have a hard constraint that I want it to be exactly 587 pages when we publish the first edition, since 587 BC was the year of the Babylonian Exile, and We The Nameless goes all the way up until that event, as it follows the story from Genesis through the end of II Kings. So, make me an aesthetically pleasing Genesis Apocrypha title page and TOC page, as two separate pages, so that we can publish We The Nameless Genesis at exactly 587 pages.
+
+Further, I just noticed that the command 'make genesis-kdp-build' fails with the following error.
+
+user@world We The Nameless $ make genesis-kdp-build
+[KDP 01-genesis 0/6 setup] START record sources and tool versions
+[KDP 01-genesis 0/6 setup] PASS  setup
+[KDP 01-genesis 1/6 assets] START select subset; log: /home/jason/obsidian/We The Nameless/build/kdp/01-genesis/runs/20261017T125609-27b173c7/logs/1-6-assets-select-subset.log
+[KDP 01-genesis 1/6 assets] PASS  select subset
+[KDP 01-genesis 1/6 assets] START prepare print assets; log: /home/jason/obsidian/We The Nameless/build/kdp/01-genesis/runs/20261017T125609-27b173c7/logs/1-6-assets-prepare-print-assets.log
+[KDP 01-genesis 1/6 assets] PASS  prepare print assets
+[KDP 01-genesis 2/6 interior] START LuaLaTeX pass 1; log: /home/jason/obsidian/We The Nameless/build/kdp/01-genesis/runs/20261017T125609-27b173c7/logs/2-6-interior-LuaLaTeX-pass-1.log
+[KDP 01-genesis 2/6 interior] PASS  LuaLaTeX pass 1
+[KDP 01-genesis 2/6 interior] START LuaLaTeX pass 2; log: /home/jason/obsidian/We The Nameless/build/kdp/01-genesis/runs/20261017T125609-27b173c7/logs/2-6-interior-LuaLaTeX-pass-2.log
+[KDP 01-genesis 2/6 interior] PASS  LuaLaTeX pass 2
+[KDP 01-genesis 2/6 interior] START LuaLaTeX pass 3; log: /home/jason/obsidian/We The Nameless/build/kdp/01-genesis/runs/20261017T125609-27b173c7/logs/2-6-interior-LuaLaTeX-pass-3.log
+[KDP 01-genesis 2/6 interior] PASS  LuaLaTeX pass 3
+[KDP 01-genesis 2/6 interior] START reference inspection; log: /home/jason/obsidian/We The Nameless/build/kdp/01-genesis/runs/20261017T125609-27b173c7/logs/2-6-interior-reference-inspection.log
+[KDP 01-genesis 2/6 interior] PASS  reference inspection
+[KDP 01-genesis 2/6 interior] FAIL  exit 1; operation: reference inspection; command: internal check; candidate: /home/jason/obsidian/We The Nameless/build/kdp/01-genesis/runs/20261017T125609-27b173c7/reference/interior.pdf; log: /home/jason/obsidian/We The Nameless/build/kdp/01-genesis/runs/20261017T125609-27b173c7/logs/2-6-interior-reference-inspection.log; reports: /home/jason/obsidian/We The Nameless/build/kdp/01-genesis/runs/20261017T125609-27b173c7/reports; premium-color requires an even page count in 24..828; got 597
+make: *** [Makefile:191: genesis-kdp-build] Error 1
+
+So after adding the two pages above, we'll be exactly 599 pages including the non-numbered pages in the front matter. So add one final blank (unnumbered) page after the final page numbered 587, in order to hopefully avoid this error and bring our pdf to exactly 600 pages. Do that now, and make it robust and good.
+
+EOF
