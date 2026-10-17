@@ -1,14 +1,3 @@
-> Head Note: Suspend judgement on what's going on in this file until you make it all the way to the bottom, dear reader.
-> 
-> Any inferences you make before then are likely to make this file more boring for you, and less useful for us as a means of like, I dunno, meeting friends and stuff.
-> 
-> However you got here, we should clarify that we're not religious in the usual sense, but more importantly we don't care what you believe.
-> 
-> And we don't want to convince you or anything. Except that you're wrong about the bible. Yes you are. The bible's way better than you think. Whatever else you believe about the bible already is welcome to come along for the ride. Nothing against your beliefs. But beliefs aren't a prerequisite for this particular wild ride.
-> 
-> Hell you can believe whatever you want, or nothing, or multiple completely contradictory things at the same time. This isn't about religion, and it's definitely not about church. This is about bible.
-> 
-> And whatever you think you believe about what's going on in that wacky book, trust me, it's a hell of a lot better and more entertaining than you think. Let's begin.
 
 DBA. (abbrev.)
 
