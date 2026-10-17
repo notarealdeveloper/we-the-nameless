@@ -1,6 +1,6 @@
 # KDP paperback workflow
 
-For the short print and EPUB command sequence, see [PUBLISH.md](../PUBLISH.md).
+For the short print and EPUB command sequence, see [PUBLISH.md](PUBLISH.md).
 
 The **two separate upload files** for Genesis are:
 

@@ -2,7 +2,7 @@
 
 Update: EPUB now uses the subset authority (item 4), and ordinary cleanup
 preserves `build/kdp/` and `pub/` evidence (item 9). Legacy routes are explicitly
-labeled in help; they remain available for compatibility. See [PUBLISH.md](../PUBLISH.md).
+labeled in help; they remain available for compatibility. See [PUBLISH.md](PUBLISH.md).
 
 The implemented workflow is documented in [doc/publishing.md](doc/publishing.md).
 These are opportunities to remove overlapping mechanisms and hidden state, in

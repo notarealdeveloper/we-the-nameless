@@ -19,10 +19,10 @@ loader.exec_module(parallel)
 class BuildPrepareTests(unittest.TestCase):
     def assert_history_dirs(self, output):
         for directory in (
-            "dudetheyreontome",
-            "exile/esther/additions",
-            "exile/nehemiah/additions",
-            "sects-acts/nhs",
+            "on-the-lamb",
+            "exile/esther",
+            "exile/ezra",
+            "exile/nehemiah",
         ):
             self.assertTrue((output / "10-dudetheyreontome" / directory).is_dir(), directory)
 
@@ -39,7 +39,7 @@ class BuildPrepareTests(unittest.TestCase):
     def test_parallel_build_prepares_nested_history(self):
         _, _, books = parallel.read_document_parts()
         book = next(book for book in books if book["title"] == "Dudetheyreontome")
-        self.assertIn("10-dudetheyreontome/dudetheyreontome/01", book["includes"])
+        self.assertIn("10-dudetheyreontome/on-the-lamb/opening", book["includes"])
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp)
             parallel.prepare_build_dirs(book, output)

@@ -9,7 +9,7 @@ images, navigation, and metadata, and then validates the resulting archive.
 
 ## Building
 
-Start with [PUBLISH.md](../PUBLISH.md) for the complete command sequence.
+Start with [PUBLISH.md](PUBLISH.md) for the complete command sequence.
 From the repository root:
 
 ```sh
