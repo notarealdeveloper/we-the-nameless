@@ -92,6 +92,35 @@ class ConversionTests(unittest.TestCase):
             r"\Verse{7}{}{}{}\Sentence{}{One}{}\Verse{9}{}{}{}\Sentence{}{Two}{}")],
             ["7", "1", "9", "2"])
 
+    def test_genesis_apocrypha_print_pages_become_linked_contents(self):
+        source = (build.ROOT / "01-genesis/apocrypha.tex").read_text(encoding="utf-8")
+        rendered = build.render_apocrypha(source)
+        self.assertTrue(rendered.startswith("### Contents\n\n- [Publisher's Introduction]"))
+        import re
+        targets = re.findall(r"\]\(#(gen-apoc:[^)]+)\)", rendered)
+        self.assertEqual(len(targets), 6)
+        for target in targets:
+            self.assertEqual(rendered.count(f'id="{target}"'), 1)
+        for debris in ("RuleColor", "4248", "0.75pt", "0.4pt", "=0pt", "[2]0.84", "#1", "#2", "\nempty\n", "\nplain\n"):
+            self.assertNotIn(debris, rendered)
+        self.assertIn("### Publisher's Introduction", rendered)
+        self.assertIn("### Genesis 1 Apocryphon — Infinite J Est", rendered)
+        self.assertIn("### Genesis 22 Apocryphon — The Son of J", rendered)
+        self.assertIn("Ever since the discovery", rendered)
+        self.assertIn('Comet is short for', rendered)
+        self.assertIn("#### Fragment 1", rendered)
+        # Only print preliminaries and label/heading markup may be replaced.
+        body = source[source.index(r"\Apocrypha{Genesis}"):]
+        plain = lambda value: re.sub(r"<[^>]+>|\s+|[#*]", "", value)
+        original = build.tex_to_markdown(body)
+        for target in targets:
+            original = original.replace(target, "")
+        self.assertEqual(plain(original), plain(rendered.split('### Publisher', 1)[1].join(['Publisher', ''])))
+
+    def test_exodus_apocrypha_without_print_index_is_preserved(self):
+        source = (build.ROOT / "02-exodus/apocrypha.tex").read_text(encoding="utf-8")
+        self.assertEqual(build.render_apocrypha(source), build.tex_to_markdown(source))
+
     def test_new_script_fonts_and_nested_image_paths(self):
         rendered = build.tex_to_markdown(r"\anatolian{𔔉}")
         self.assertIn('class="anatolian" lang="hlu" dir="ltr"', rendered)

@@ -131,13 +131,13 @@ help:
 		'  Set EBOOK_COVER=we-cover-8|none|<image basename>. See PUBLISH.md for the command sequence.' \
 		'' \
 		'Prepare KDP paperbacks:' \
-		'  make genesis-kdp-build                                 Build searchable print interior and separate raw cover.' \
-		'  make genesis-kdp-vectorize                             Outline, clean, and validate both PDFs; no TeX build.' \
-		'  make genesis-kdp                                       Run both KDP stages; promote both PDFs after validation.' \
-		'  make genesis-kdp-check                                 Reject stale artifacts and revalidate both PDFs; no build.' \
+		'  make genesis-kdp-build                                 Build pub/<canonical>-{interior,cover}-original.pdf.' \
+		'  make genesis-kdp-vectorize                             Convert pub originals to *-vectorized.pdf; no pixel comparison.' \
+		'  make genesis-kdp                                       Build and vectorize both PDFs in pub/; no pixel comparison.' \
+		'  make genesis-kdp-check                                 Compare pub originals and vectors pixel by pixel; no build.' \
 		'                                                         Equivalent targets exist for every book, chapter, alias, and source subset.' \
 		'  make check-kdp                                         Run inexpensive publishing tests (never builds a book).' \
-		'  Upload files: build/kdp/<canonical>/artifacts/<canonical>-interior.pdf and <canonical>-cover.pdf' \
+		'  Upload files: pub/<canonical>-interior-vectorized.pdf and pub/<canonical>-cover-vectorized.pdf' \
 		'  Defaults: KDP_PAPER=premium-color KDP_INK=premium-color KDP_BLEED=no-bleed KDP_TRIM=7x10' \
 		'  Set KDP_COVER_STYLE=simple|fancy and KDP_SPINE=ld|nameless. See doc/publishing.md.' \
 		'  make genesis-kdp-soft|medium|hard                      Build legacy diagnostic PDF-encoding variants.' \

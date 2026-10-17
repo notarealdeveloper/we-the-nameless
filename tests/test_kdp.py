@@ -52,22 +52,8 @@ class PublishingTests(unittest.TestCase):
             self.assertIn('bin/kdp-publish', dry)
             self.assertNotIn('lualatex', dry)
 
-    def test_stale_and_damaged_manifest(self):
-        file = self.root / 'interior.pdf'; pdf(file)
-        record = dict(config={'trim': '7x10'}, sources={'master.tex': 'one'}, tools={'gs': 'one'},
-            files={str(file): {'sha256': publishing.digest(file)}})
-        publishing.assert_current(record, record['config'], record['sources'], record['tools'])
-        for args in [({'trim': '6x9'}, record['sources'], record['tools']),
-                     (record['config'], {'master.tex': 'two'}, record['tools']),
-                     (record['config'], record['sources'], {'gs': 'two'})]:
-            with self.assertRaisesRegex(RuntimeError, 'stale manifest'):
-                publishing.assert_current(record, *args)
-        file.write_bytes(b'damaged')
-        with self.assertRaisesRegex(RuntimeError, 'damaged'):
-            publishing.assert_current(record, record['config'], record['sources'], record['tools'])
-
     def test_failure_keeps_command_and_full_log(self):
-        pipeline = publishing.Pipeline('fixture', self.root)
+        pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
         with contextlib.redirect_stdout(io.StringIO()) as terminal:
             with self.assertRaises(subprocess.CalledProcessError) as failure:
                 pipeline.run('2/6 interior', 'LuaLaTeX pass 2',
@@ -81,7 +67,7 @@ class PublishingTests(unittest.TestCase):
     def test_cli_reports_exact_failed_stage(self):
         # Inject a failed metadata probe: no PDF build or repository artifacts.
         def failed_versions(): raise RuntimeError('fixture tool unavailable')
-        with patch.object(sys, 'argv', ['kdp-publish', 'genesis', 'check']), \
+        with patch.object(sys, 'argv', ['kdp-publish', 'genesis', 'build']), \
              patch.object(publishing, 'ROOT', self.root), \
              patch.object(publishing.subprocess, 'check_output', side_effect=lambda cmd, **kw: '1\n' if cmd[0] == 'git' else 'fixture\n'), \
              patch.object(publishing, 'sources', return_value={}), \
@@ -112,7 +98,7 @@ class PublishingTests(unittest.TestCase):
         self.assertEqual(json.loads((self.root / 'assets/assets.json').read_text()), [])
 
     def test_build_staging_with_fake_tex_and_real_pdf_inspection(self):
-        pipeline = publishing.Pipeline('fixture', self.root / 'publish')
+        pipeline = publishing.Pipeline('fixture', self.root / 'publish', self.root / 'pub')
         passes = []
         def simulate(stage, operation, command, candidate=None, env=None):
             tool = command[0]
@@ -140,40 +126,60 @@ class PublishingTests(unittest.TestCase):
             record = pipeline.build(args, {}, {}, {})
         self.assertEqual(passes, ['LuaLaTeX pass 1', 'LuaLaTeX pass 2', 'LuaLaTeX pass 3'])
         self.assertEqual(len(record['files']), 2)
+        for artifact in ('interior', 'cover'):
+            self.assertTrue(pipeline.pdf_path(artifact, 'original').is_file())
+            self.assertEqual(pipeline.pdf_path(artifact, 'original').parent, self.root / 'pub')
         self.assertTrue((pipeline.base / 'build.json').exists())
         self.assertFalse((pipeline.base / 'current').exists())
 
-    def test_both_artifacts_promoted_together_and_failure_preserves_release(self):
-        reference = self.root / 'reference'; reference.mkdir()
-        # Searchable fixture with a built-in font tests real Ghostscript outlining.
+    def test_vectorize_and_check_use_editable_pub_files_without_manifest(self):
+        pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
         for name in ('interior', 'cover'):
-            pdf(reference / (name + '.pdf'), [b'BT /F1 16 Tf 70 650 Td (Fixture) Tj ET\n'],
+            pdf(pipeline.pdf_path(name, 'original'), [b'BT /F1 16 Tf 70 650 Td (Fixture) Tj ET\n'],
                 resources='<< /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >>')
-        record = dict(reference=str(reference), config={'variant': 'soft'}, sources={}, tools={}, dependencies={},
-            files={str(p): inspect(p) for p in reference.glob('*.pdf')})
-        pipeline = publishing.Pipeline('fixture', self.root / 'publish')
-        # The composed command already has an interior build directory.
-        (pipeline.run_dir / 'work/interior').mkdir(parents=True)
-        with patch.object(publishing, 'sources', return_value={}), contextlib.redirect_stdout(io.StringIO()):
-            pipeline.vectorize(record, record['config'], {}, {})
-        base = pipeline.base
-        manifest = json.loads((base / 'manifest.json').read_text())
-        self.assertEqual(len(manifest['upload_files']), 2)
-        for p in manifest['upload_files'].values():
-            self.assertEqual(inspect(p)['font_count'], 0)
-        publishing.assert_current(manifest, record['config'], {}, {}, uploads=True)
-        previous = (base / 'current').readlink()
-        failed = publishing.Pipeline('fixture', base)
-        real_validate = failed.validate
-        def fail_cover(artifact, *args):
+        with contextlib.redirect_stdout(io.StringIO()):
+            pipeline.vectorize({'variant': 'soft'})
+        self.assertFalse(any('bin/kdp-visual-compare' in c['argv'] for c in pipeline.commands))
+        for name in ('interior', 'cover'):
+            self.assertEqual(inspect(pipeline.pdf_path(name, 'vectorized'))['font_count'], 0)
+            self.assertGreater(inspect(pipeline.pdf_path(name, 'original'))['font_count'], 0)
+        previous = {a: pipeline.pdf_path(a, 'vectorized').read_bytes() for a in ('interior', 'cover')}
+        # A user can replace a stable input; no stale manifest blocks conversion.
+        pdf(pipeline.pdf_path('interior', 'original'))
+        real_validate = pipeline.validate
+        def fail_cover(artifact, *args, **kwargs):
             if artifact == 'cover': raise RuntimeError('damaged cover fixture')
-            return real_validate(artifact, *args)
-        with patch.object(publishing, 'sources', return_value={}), patch.object(failed, 'validate', side_effect=fail_cover), \
-             contextlib.redirect_stdout(io.StringIO()):
+            return real_validate(artifact, *args, **kwargs)
+        with patch.object(pipeline, 'validate', side_effect=fail_cover), contextlib.redirect_stdout(io.StringIO()):
             with self.assertRaisesRegex(RuntimeError, 'damaged cover'):
-                failed.vectorize(record, record['config'], {}, {})
-        self.assertEqual((base / 'current').readlink(), previous)
-        self.assertEqual(json.loads((base / 'manifest.json').read_text()), manifest)
+                pipeline.vectorize({'variant': 'soft'})
+        for a in previous:
+            self.assertEqual(pipeline.pdf_path(a, 'vectorized').read_bytes(), previous[a])
+        with contextlib.redirect_stdout(io.StringIO()):
+            pipeline.vectorize({'variant': 'soft'})
+            pipeline.check()
+        comparisons = [c for c in pipeline.commands if c['argv'][0] == 'bin/kdp-visual-compare']
+        self.assertEqual(len(comparisons), 3)  # Self-test plus both PDFs, only in check.
+        for command in comparisons[1:]:
+            self.assertEqual(Path(command['argv'][1]).parent, self.root / 'pub')
+            self.assertEqual(Path(command['argv'][2]).parent, self.root / 'pub')
+
+    def test_all_runs_build_then_vectorize_without_check(self):
+        with patch.object(sys, 'argv', ['kdp-publish', 'genesis', 'all']), \
+             patch.object(publishing, 'ROOT', self.root), \
+             patch.object(publishing.subprocess, 'check_output', side_effect=lambda cmd, **kw: '1\n' if cmd[0] == 'git' else '01-genesis\n'), \
+             patch.object(publishing, 'sources', return_value={}), \
+             patch.object(publishing, 'versions', return_value={}), \
+             patch.object(publishing.Pipeline, 'build') as build, \
+             patch.object(publishing.Pipeline, 'vectorize') as vectorize, \
+             patch.object(publishing.Pipeline, 'check') as check, \
+             contextlib.redirect_stdout(io.StringIO()):
+            calls = unittest.mock.Mock()
+            calls.attach_mock(build, 'build'); calls.attach_mock(vectorize, 'vectorize')
+            try: self.assertEqual(publishing.main(), 0)
+            finally: os.chdir(ROOT)
+        self.assertEqual([c[0] for c in calls.mock_calls], ['build', 'vectorize'])
+        check.assert_not_called()
 
 
 class ValidatorTests(unittest.TestCase):

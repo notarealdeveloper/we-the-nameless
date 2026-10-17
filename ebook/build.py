@@ -893,6 +893,9 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             i = end; continue
         if name == "Apocrypha":
             i = end; continue  # The enclosing chapter owns this heading.
+        if name == "ApocryphaAnchor":
+            out.append(f'\n\n<span id="{html.escape(body, quote=True)}"></span>\n\n')
+            i = end; continue
         if name == "Apocryphon":
             out.append("\n\n### " + tex_to_markdown(body, compact=True).replace("<br/>", " — ") + "\n\n")
             i = end; continue
@@ -1472,6 +1475,31 @@ def render_verse_commentary(book: str, chapter: str, number: str, commentary: st
     return "\n\n".join(part for part in rendered if part)
 
 
+def render_apocrypha(source: str) -> str:
+    """Replace the print frontispiece/index with reflowable linked contents."""
+    source = strip_comments(source)
+    start = re.search(r"\\Apocrypha\s*\{", source)
+    if start is None:
+        raise ValueError("apocrypha is missing its Apocrypha content boundary")
+    preamble, body = source[:start.start()], source[start.start():]
+    entries = []
+    for match in re.finditer(r"\\GenesisApocryphaContentsEntry\s*(?=\{)", preamble):
+        target, end = group(preamble, match.end())
+        title, _ = group(preamble, end)
+        if not re.search(r"\\label\s*\{" + re.escape(target) + r"\}", body):
+            raise ValueError(f"apocrypha contents target is missing: {target}")
+        entries.append(f'- [{tex_to_markdown(title, compact=True)}](#{target})')
+    # Labels are destinations, never visible prose. Keep the authored IDs so
+    # the ebook index follows the same entries and order as the print index.
+    body = re.sub(r"\\label\s*\{([^}]+)\}", r"\\ApocryphaAnchor{\1}", body)
+    body = re.sub(
+        r"\\begin\{center\}\s*\{\\EnglishFont\\large\\scshape (Publisher's Introduction)\}\s*\\end\{center\}",
+        r"\\Apocryphon{\1}", body,
+    )
+    contents = "### Contents\n\n" + "\n".join(entries) + "\n\n" if entries else ""
+    return contents + tex_to_markdown(body)
+
+
 def make_markdown(path: Path, selected_book: str | None = None, *, content=None, apocrypha=None) -> tuple[int, int]:
     sequence, sources, parents = content if content is not None else (master_sequence(selected_book, apocrypha=apocrypha), None, include_parent_books())
     summaries = chapter_summaries()
@@ -1496,7 +1524,7 @@ def make_markdown(path: Path, selected_book: str | None = None, *, content=None,
         lines += [f"## [{heading}](#contents-{top_anchor}) {{#{anchor} .chapter-title}}", ""]
         chapter_count += 1
         if Path(rel).stem == "apocrypha":
-            lines += [tex_to_markdown(source), ""]
+            lines += [render_apocrypha(source), ""]
             continue
         verse_occurrences: dict[str, int] = {}
         for number, hebrew, english, commentary in parse_verses(source):

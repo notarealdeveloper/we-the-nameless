@@ -23,12 +23,8 @@ make clean
 # Remove ordinary TeX auxiliaries; preserve build/kdp and pub evidence.
 ```
 
-`make distclean` deletes **all of build/**, including print releases and evidence.
-Archive the entire `build/kdp/<canonical>/` directory before removing it; its
-release pointers depend on retained runs. Print manifests also record the Git
-commit timestamp; when checking an archived release after a commit, preserve its
-recorded timestamp with `SOURCE_DATE_EPOCH` as described in
-[doc/publishing.md](doc/publishing.md).
+`make distclean` deletes build logs and auxiliaries, but keeps the publication
+PDFs in `pub/`. Vectorize and check use those PDFs directly.
 
 Legacy `make kdp KDP_INPUT=...`, `kdp-preflight`, and standalone `*-cover` targets
 remain for compatibility. They do not replace the outlined, validated pair above.
@@ -58,32 +54,30 @@ Replace `genesis` with `exodus`, `J`, `P`, `j`, `p`, `court`, `1-samuel`, `genes
 
 ### Build the paperback step by step
 
-Run these first two commands **in order**, with unchanged sources and options:
+Run these first two commands **in order**:
 
 ```sh
 make genesis-kdp-build
 # 1. Build searchable reference interior and a cover sized from its page count.
 
 make genesis-kdp-vectorize
-# 2. Convert fonts to paths, clean, check both PDFs, then release the pair.
+# 2. Convert fonts to paths, clean, and structurally check both PDFs.
 
 make genesis-kdp-check
-# Optional later: recheck the released pair; no TeX build, but a full visual rerun.
+# Optional separate step: full pixel comparison of originals and vectors.
 ```
 
-`-kdp` already runs stages 1 and 2; you do not need both routes. The long step is
-`-kdp-vectorize`: every page of both PDFs is rendered at 300 DPI by **both MuPDF
-and Poppler** and compared with its reference. The two-pixel Gaussian blur
-allows font/path edge differences; it is not permission to move pages by two
-pixels. Tile error, lost ink, page differences, geometry, zero remaining fonts,
-and other structural checks still must pass. Do not skip it for upload files.
+`-kdp` runs stages 1 and 2, without the long pixel comparison. Only `-kdp-check`
+renders every page using both MuPDF and Poppler at 300 DPI.
 
-Failures print the log/report paths. Fix TeX/assets and repeat `-kdp-build`;
-repeat `-kdp-vectorize` alone only if the reference, sources, tools, and settings
-are unchanged. A failed run preserves the previous release, so **do not upload
-an old artifact merely because the path exists**. Wait for the new command's PASS.
-Reports are under `build/kdp/<canonical>/current/reports/`; read the structural
-reports' human-review items and visual `index.html` files.
+Build writes `pub/<canonical>-{interior,cover}-original.pdf`. Vectorize reads
+those files and writes `pub/<canonical>-{interior,cover}-vectorized.pdf`.
+Check compares those same pairs. You can copy replacement PDFs to the expected
+paths and rerun either step; no build manifest is required.
+
+Failures print log/report paths under `build/kdp/<canonical>/runs/<run>/`.
+Fix TeX/assets and repeat build, or fix an original PDF and repeat vectorize.
+A failed conversion preserves older vectorized files; wait for the command's PASS.
 
 Defaults: **7×10-inch paperback, premium color on white paper, no interior bleed,
 simple cover, LD spine**. Use those settings in the publisher's setup. Alternatives:
@@ -117,28 +111,27 @@ means faithful conversion; it does not replace editorial or physical review.
 make genesis-kdp
 # 1. Build interior + cover
 # 2. Outline all fonts
-# 3. Validate
-# 4. Then release both PDFs.
+# Structural checks are included; pixel comparison is a separate command.
 ```
 
 When that command finishes successfully, upload these **two separate files**:
 
 ```sh
-build/kdp/01-genesis/artifacts/01-genesis-interior.pdf
-build/kdp/01-genesis/artifacts/01-genesis-cover.pdf
+pub/01-genesis-interior-vectorized.pdf
+pub/01-genesis-cover-vectorized.pdf
 ```
 
 For another selection, use the same command pattern:
 
 ```sh
 make exodus-kdp
-# Upload build/kdp/02-exodus/artifacts/02-exodus-{interior,cover}.pdf.
+# Upload pub/02-exodus-{interior,cover}-vectorized.pdf.
 
 make J-kdp
-# Upload build/kdp/J/artifacts/J-{interior,cover}.pdf.
+# Upload pub/J-{interior,cover}-vectorized.pdf.
 
 make P-kdp
-# Upload build/kdp/P/artifacts/P-{interior,cover}.pdf.
+# Upload pub/P-{interior,cover}-vectorized.pdf.
 
 bin/book-subset --output-name genesis
 # Print the canonical filename stem: 01-genesis.
@@ -147,7 +140,7 @@ bin/book-subset --output-name genesis
 The braces above abbreviate two filenames. Upload the interior as the manuscript
 and the cover as the paperback wrap. Do not combine them.
 
-Old PDFs in `pub/`, root PDFs, and the searchable references are **not** this pipeline'supload files.
+The searchable `-original.pdf` files remain alongside the vectorized files for comparison.
 
 ## Ebook
 

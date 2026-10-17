@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+In the ebook, in the genesis apocrypha, the ebook has:
+
+---
+empty
+
+RuleColor
+
+4248 Genesis
+
+Apocrypha
+
+RuleColor0.380.75pt0.4pt
+
+RuleColor
+
+plain
+
+=0pt
+Genesis Apocrypha
+
+Contents
+
+RuleColor0.380.75pt0.4pt
+
+[2]0.84#2[r]#1 gen-apoc:introductionPublisher’s Introduction gen-apoc:infinite-j-estGenesis 1 Apocryphon: Infinite J Est gen-apoc:yhwh-abrahamGenesis 17 Apocryphon: YHWH and Abraham gen-apoc:points-of-powerThe Points of Power Apocryphon gen-apoc:seedGiving this land to your seed: A taste of things to come gen-apoc:son-of-jGenesis 22 Apocryphon: The Son of J
+
+gen-apoc:introduction
+---
+
+Figure out what's going wrong, and fix it so that the Genesis Apocrypha in the ebook look sensible and nice without any of the weird formatting gibberish above that's ending up in the content now.
+
+EOF
