@@ -1,5 +1,7 @@
 # KDP paperback workflow
 
+For the short print and EPUB command sequence, see [PUBLISH.md](../PUBLISH.md).
+
 The **two separate upload files** for Genesis are:
 
 - `build/kdp/01-genesis/artifacts/01-genesis-interior.pdf`
@@ -136,9 +138,9 @@ bin/kdp-publish genesis check --artifact /path/final.pdf --reference /path/refer
 ```
 
 Retain runs needed by `current`, `build.json`, and the current manifest's reference
-path. `make clean` removes TeX logs/auxiliary files, including historical logs;
-`make distclean` removes all build outputs and publishing evidence. Archive the
-referenced runs before either if the evidence must be retained.
+path. `make clean` preserves `build/kdp/` and `pub/`, including publishing logs and
+recorders. `make distclean` removes all build outputs and publishing evidence;
+archive the referenced runs before using it if the evidence must be retained.
 
 ## Validation and remaining review
 

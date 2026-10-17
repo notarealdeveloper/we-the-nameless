@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import unittest
 import tempfile
+from unittest.mock import patch
+import subprocess
 from pathlib import Path
 
 from fontTools.ttLib import TTFont
@@ -13,6 +15,86 @@ import build
 
 
 class ConversionTests(unittest.TestCase):
+    def test_subset_alias_identity_and_case(self):
+        aliases = [build.subset_edition(name) for name in ("genesis", "1-genesis", "01-genesis")]
+        self.assertEqual({item[1] for item in aliases}, {"genesis"})
+        self.assertTrue(all(item[3] == build.publication_metadata("Genesis") for item in aliases))
+        self.assertNotEqual(build.subset_edition("J")[3]["identifier"], build.subset_edition("j")[3]["identifier"])
+        self.assertEqual(build.subset_edition("J")[1], "J")
+        self.assertEqual([build.subset_edition(name)[1] for name in ("samuel", "1-samuel", "2-samuel")],
+                         ["samuel", "1-samuel", "2-samuel"])
+
+    def test_subset_filtering_and_navigation_on_fixture(self):
+        selector = build.subset_module()
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "01-genesis").mkdir()
+            (root / "01-genesis/01.tex").write_text(
+                r"\Chapter{1}" + "\n" + r"\Verse{1}{\hP{אב}}{\eP{Priestly}}{}" + "\n"
+                + r"\Verse{2}{\hJ{אב}}{\eJ{Yahwist}}{}" + "\n")
+            body = r"\Book{Genesis}\include{01-genesis/01}"
+            with patch.object(build, "ROOT", root), patch.object(selector, "read_master", return_value=("", body)):
+                content = build.subset_content("P")
+            self.assertIn("Priestly", content[1]["01-genesis/01.tex"])
+            self.assertNotIn("Yahwist", content[1]["01-genesis/01.tex"])
+            manuscript = root / "fixture.md"
+            with patch.object(build, "chapter_summaries", return_value={}), patch.object(build, "top_level_books", return_value=["Genesis", "Exodus"]):
+                build.make_markdown(manuscript, "P", content=content)
+            rendered = manuscript.read_text()
+            self.assertIn('href="#contents-genesis"', rendered)
+            self.assertNotIn('href="#contents-exodus"', rendered)
+            self.assertIn("Priestly", rendered)
+            self.assertNotIn("Yahwist", rendered)
+
+    def test_all_subset_targets_have_ebook_commands(self):
+        names = subprocess.check_output([str(build.ROOT / "bin/book-subset"), "--make-targets"], text=True).split()
+        names += subprocess.check_output([str(build.ROOT / "bin/book-subset"), "--make-chapter-targets"], text=True).split()
+        database = subprocess.run(["make", "-qp"], cwd=build.ROOT, text=True, capture_output=True)
+        self.assertIn(database.returncode, (0, 1))
+        outputs = {}
+        for name in names:
+            for suffix in ("ebook", "ebook-release", "ebook-check"):
+                self.assertIn("\n" + name + "-" + suffix + ":", database.stdout)
+            target, output, _, _ = build.subset_edition(name)
+            canonical = build.subset_module().target_output_name(target)
+            self.assertEqual(outputs.setdefault(output, canonical), canonical)
+
+    def test_sentence_prose_is_not_dropped(self):
+        self.assertEqual(build.parse_verses(r"\Sentence{original}{English}{commentary}"),
+                         [("1", "original", "English", "commentary")])
+
+    def test_epubcheck_failure_is_not_swallowed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            temp = Path(temp)
+            for name, code in (("epubcheck", 7), ("validate.py", 0)):
+                script = temp / name
+                script.write_text(f"#!/bin/sh\nexit {code}\n")
+                script.chmod(0o755)
+            import os
+            result = subprocess.run(["make", "-f", str(build.HERE / "Makefile"), "validate"], cwd=temp,
+                env={**os.environ, "PATH": str(temp) + ":" + os.environ["PATH"]},
+                text=True, capture_output=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("Error 7", result.stderr)
+
+    def test_failed_release_preserves_previous_epub(self):
+        import sys
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "edition.epub"
+            output.write_bytes(b"previous release")
+            def fake_run(command, **kwargs):
+                if command[0] == "pandoc":
+                    Path(command[command.index("--output") + 1]).write_bytes(b"candidate")
+                return subprocess.CompletedProcess(command, 7 if command[0] == "epubcheck" else 0, "", "")
+            with patch.object(sys, "argv", ["build.py", "--output", str(output), "--require-epubcheck"]), \
+                 patch.object(build.shutil, "which", side_effect=lambda name: name), \
+                 patch.object(build, "master_sequence", return_value=[]), \
+                 patch.object(build, "make_markdown", side_effect=lambda path, *a, **kw: (path.write_text("fixture") and (1, 1))), \
+                 patch.object(build, "postprocess_epub"), \
+                 patch.object(build.subprocess, "run", side_effect=fake_run):
+                self.assertEqual(build.main(), 7)
+            self.assertEqual(output.read_bytes(), b"previous release")
+
     def test_babeled_j_font_aliases_original_phoenician_glyphs(self) -> None:
         original = TTFont(Path(build.ROOT) / "fonts/paleo-hebrew-phoenician.ttf")
         babeled_path = Path(build.ROOT) / "fonts/babel-paleo-hebrew-phoenician.ttf"

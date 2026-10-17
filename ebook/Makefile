@@ -1,42 +1,32 @@
-BOOKS := genesis exodus leviticus numbers deuteronomy joshua judges samuel kings dudetheyreontome
+.DEFAULT_GOAL := all
+SUBSETS := $(shell ../bin/book-subset --make-targets) $(shell ../bin/book-subset --make-chapter-targets)
 COVER ?= we-cover-8
-TEX_SOURCES := $(shell find .. -path '../.git' -prune -o -path '../build' -prune -o -path '../ebook' -prune -o -name '*.tex' -print)
-EBOOK_ASSETS := $(shell find ../fonts ../img -type f 2>/dev/null)
-RENDERER_SOURCES := build.py validate.py epub.css metadata.yaml $(TEX_SOURCES) $(EBOOK_ASSETS)
+RELEASE ?=
 
-.PHONY: all clean test validate validate-% $(BOOKS)
+.PHONY: all release validate test clean $(SUBSETS) $(addprefix validate-,$(SUBSETS))
 
-all: we-the-nameless.epub
+# Always rebuild on request: source selection and cover options are inputs too.
+all:
+	./build.py --cover "$(COVER)" $(RELEASE)
 
-we-the-nameless.epub: $(RENDERER_SOURCES)
-	./build.py --cover "$(COVER)"
+release:
+	$(MAKE) all RELEASE=--require-epubcheck
 
-genesis: BOOK := Genesis
-exodus: BOOK := Exodus
-leviticus: BOOK := Leviticus
-numbers: BOOK := Numbers
-deuteronomy: BOOK := Deuteronomy
-joshua: BOOK := Joshua
-judges: BOOK := Judges
-samuel: BOOK := Samuel
-kings: BOOK := Kings
-dudetheyreontome: BOOK := Dudetheyreontome
+$(SUBSETS):
+	./build.py --subset "$@" --cover "$(COVER)" $(RELEASE)
 
-$(BOOKS): $(RENDERER_SOURCES)
-	./build.py --book "$(BOOK)" --cover "$(COVER)" --output "$@.epub"
+# Checking an existing file never builds it. A missing checker is a release error.
+validate:
+	./validate.py we-the-nameless.epub
+	epubcheck we-the-nameless.epub
 
-validate: we-the-nameless.epub
-	./validate.py $<
-	@command -v epubcheck >/dev/null 2>&1 && epubcheck $< || \
-		{ printf '%s\n' 'epubcheck is not installed; internal validation passed.'; }
-
-validate-%: %.epub
-	./validate.py $<
-	@command -v epubcheck >/dev/null 2>&1 && epubcheck $< || \
-		{ printf '%s\n' 'epubcheck is not installed; internal validation passed.'; }
+$(addprefix validate-,$(SUBSETS)): validate-%:
+	@set -e; output="$$(python3 -c 'import build; print(build.subset_edition("$*")[1] + ".epub")')"; \
+	./validate.py "$$output"; \
+	epubcheck "$$output"
 
 test:
 	python3 -m unittest -v test_build.py
 
 clean:
-	rm -f we-the-nameless.epub $(BOOKS:%=%.epub) manuscript.generated.md
+	rm -f *.epub manuscript.generated.md

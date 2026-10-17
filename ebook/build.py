@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import argparse
 import html
+import importlib.machinery
+import importlib.util
 import posixpath
 import re
 import shutil
@@ -45,6 +47,72 @@ def publication_metadata(selected_book: str | None) -> dict[str, str]:
         "title": "We The Nameless" if selected_book is None else f"We The Nameless: {selected_book}",
         "publisher": "LD LLC",
     }
+
+
+def subset_module():
+    """Load the existing print selector; never run TeX or write subset files."""
+    name = "wtn_book_subset"
+    if name not in sys.modules:
+        loader = importlib.machinery.SourceFileLoader(name, str(ROOT / "bin/book-subset"))
+        spec = importlib.util.spec_from_loader(name, loader)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        loader.exec_module(module)
+    return sys.modules[name]
+
+
+def subset_edition(name):
+    selector = subset_module()
+    target = selector.resolve_target(name)
+    canonical = selector.target_output_name(target)
+    # Preserve existing single-book filenames and store identifiers. Source
+    # subsets are case-sensitive: J and j are different publications.
+    output = re.sub(r"^\d+-", "", canonical) if target.full_frontmatter and target.book_title_override is None else canonical
+    title = target.title_logo if target.full_frontmatter else canonical
+    metadata = publication_metadata(title)
+    if not target.full_frontmatter:
+        metadata["identifier"] = f"urn:uuid:{uuid.uuid5(PUBLICATION_NAMESPACE, PUBLICATION_KEY + ':subset:' + canonical)}"
+    return target, output, title, metadata
+
+
+def subset_content(name):
+    """Apply exactly the print selector's chapter and source filtering in memory."""
+    selector = subset_module()
+    target, _, _, _ = subset_edition(name)
+    _, body = selector.read_master()
+    sequence, sources, parents = [], {}, {}
+    for book in selector.parse_master_books(body):
+        label = book["title"]
+        history_title = ""
+        for kind, value in book["items"]:
+            if kind in ("part", "epistle"):
+                label = history_title or value
+                if history_title and value.endswith(" additions"):
+                    label += " — Addition"
+            elif kind == "history":
+                match = re.match(r"\\HistoryBook\{[^}]+\}\{([^}]+)\}", value)
+                if match:
+                    history_title = match[1]
+                    label = history_title
+                elif value.startswith(r"\HistoryCollection"):
+                    history_title = ""
+                    label = book["title"]
+                elif value.startswith(r"\HistoryAddition"):
+                    label = history_title + " — Addition"
+            elif kind == "include" and selector.selected_include(value, target):
+                # Preserve the renderer's existing exclusion of print-only
+                # apocrypha/frontispieces; biblical alternate verses stay inline.
+                if Path(value).name in ("apocrypha", "title"):
+                    continue
+                text, _, _ = selector.transform_chapter(ROOT / (value + ".tex"), target, value)
+                if text is not None:
+                    rel = value + ".tex"
+                    sequence.append((label, rel))
+                    sources[rel] = text
+                    parents[rel] = book["title"]
+    if not sequence:
+        raise ValueError(f"subset contains no EPUB chapters: {name}")
+    return sequence, sources, parents
 
 
 def cover_path(name: str) -> Path | None:
@@ -1050,18 +1118,21 @@ def parse_verses(text: str) -> list[tuple[str, str, str, str]]:
     verses = []
     pos = 0
     while True:
-        match = re.search(r"\\Verse\s*", text[pos:])
+        match = re.search(r"\\(Verse|Sentence)(?![A-Za-z])\s*", text[pos:])
         if not match:
             break
         cursor = pos + match.end()
         args = []
-        for _ in range(4):
+        count = 3 if match[1] == "Sentence" else 4
+        for _ in range(count):
             parsed = group(text, cursor)
             if not parsed:
                 break
             value, cursor = parsed
             args.append(value)
-        if len(args) == 4:
+        if len(args) == count:
+            if count == 3:
+                args.insert(0, str(len(verses) + 1))
             verses.append(tuple(args))
             pos = cursor
         else:
@@ -1155,20 +1226,22 @@ def front_matter(
     sequence: list[tuple[str, str]],
     summaries: dict[tuple[str, str], str],
     edition_title: str = "Complete Edition",
+    *, sources=None, parents=None,
 ) -> list[str]:
     """Reproduce the visible front matter from master.tex in reflowable form."""
     e_alphabet = historical_hebrew("אבגדהוזחטיכלמנסעפצקרשת", "E")
-    available_top_books = {edition_title} if edition_title != "Complete Edition" else set(top_level_books())
-    parents = include_parent_books()
+    parents = include_parent_books() if parents is None else parents
+    available_top_books = {parents.get(rel, label) for label, rel in sequence}
+    books = list(dict.fromkeys([*top_level_books(), *[parents.get(rel, label) for label, rel in sequence]]))
     contents_sections: list[str] = [":::: {.contents-list}", '<nav class="book-list" aria-label="Books"><ol>']
-    for book in top_level_books():
+    for book in books:
         book_anchor = re.sub(r"[^a-z0-9]+", "-", book.lower()).strip("-")
         if book in available_top_books:
             contents_sections.append(f'<li><a href="#contents-{book_anchor}">{html.escape(book)}</a></li>')
         else:
             contents_sections.append(f'<li><span>{html.escape(book)}</span></li>')
     contents_sections += ["</ol></nav>", ""]
-    for top_book in top_level_books():
+    for top_book in books:
         if top_book not in available_top_books:
             continue
         book_entries = [(label, rel) for label, rel in sequence if parents.get(rel) == top_book]
@@ -1178,7 +1251,7 @@ def front_matter(
             if label != top_book and label != last_label:
                 chapters += [f'<li class="contents-part">{html.escape(label)}</li>']
                 last_label = label
-            source = (ROOT / rel).read_text(encoding="utf-8")
+            source = sources[rel] if sources is not None else (ROOT / rel).read_text(encoding="utf-8")
             found = re.search(r"\\Chapter\s*\{([^}]+)\}", strip_comments(source))
             chapter = found.group(1).strip() if found else Path(rel).stem
             anchor = re.sub(r"[^a-z0-9]+", "-", f"{label}-{chapter}".lower()).strip("-")
@@ -1229,19 +1302,18 @@ def front_matter(
     ]
 
 
-def make_markdown(path: Path, selected_book: str | None = None) -> tuple[int, int]:
-    sequence = master_sequence(selected_book)
+def make_markdown(path: Path, selected_book: str | None = None, *, content=None) -> tuple[int, int]:
+    sequence, sources, parents = content if content is not None else (master_sequence(selected_book), None, include_parent_books())
     summaries = chapter_summaries()
     edition_title = selected_book or "Complete Edition"
     lines = ["---", "lang: en-US", "---", ""] + front_matter(
-        sequence, summaries, edition_title
+        sequence, summaries, edition_title, sources=sources, parents=parents
     )
     last_book = None
-    parents = include_parent_books()
     chapter_count = verse_count = 0
     for book, rel in sequence:
         top_book = parents.get(rel, book)
-        source = (ROOT / rel).read_text(encoding="utf-8")
+        source = sources[rel] if sources is not None else (ROOT / rel).read_text(encoding="utf-8")
         chapter_match = re.search(r"\\Chapter\s*\{([^}]+)\}", strip_comments(source))
         chapter = chapter_match.group(1).strip() if chapter_match else Path(rel).stem
         if top_book != last_book:
@@ -1363,13 +1435,23 @@ def postprocess_epub(path: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=OUTPUT)
-    parser.add_argument("--book", help="build only the named top-level \\Book from master.tex")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--subset", help="any case-sensitive bin/book-subset target")
+    parser.add_argument("--require-epubcheck", action="store_true", help="refuse a release build without EPUBCheck")
+    selection.add_argument("--book", help="build only the named top-level \\Book from master.tex")
     parser.add_argument(
         "--cover", default="none",
         help="image basename in img/covers, or 'none' (default: none)",
     )
     parser.add_argument("--keep-markdown", action="store_true")
     args = parser.parse_args()
+    if args.require_epubcheck and not shutil.which("epubcheck"):
+        parser.error("epubcheck is required for a release build")
+    metadata = publication_metadata(args.book)
+    if args.subset:
+        _, output, args.book, metadata = subset_edition(args.subset)
+        if args.output == OUTPUT:
+            args.output = HERE / (output + ".epub")
     try:
         cover = cover_path(args.cover)
     except ValueError as error:
@@ -1388,12 +1470,14 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="wtn-ebook-") as temp:
         manuscript = Path(temp) / "manuscript.md"
-        sequence = master_sequence(args.book)
+        candidate = Path(temp) / "candidate.epub"
+        content = subset_content(args.subset) if args.subset else None
+        sequence = content[0] if content else master_sequence(args.book)
         if args.book and not sequence:
             parser.error(f"book not found or contains no source files: {args.book}")
         source_count = len(sequence)
         log(f"Generating Markdown from {source_count} included TeX files...")
-        chapters, verses = make_markdown(manuscript, args.book)
+        chapters, verses = make_markdown(manuscript, args.book, content=content)
         manuscript_size = manuscript.stat().st_size
         log(
             f"Generated {manuscript_size:,}-byte manuscript "
@@ -1404,12 +1488,12 @@ def main() -> int:
             shutil.copy2(manuscript, kept_manuscript)
             log(f"Saved generated Markdown: {kept_manuscript}")
         cmd = ["pandoc", str(manuscript), "--from=markdown+fenced_divs+footnotes+raw_html+markdown_in_html_blocks",
-               "--to=epub3", "--output", str(args.output), "--standalone",
+               "--to=epub3", "--output", str(candidate), "--standalone",
                "--toc", "--toc-depth=2", "--split-level=1", "--css", str(HERE / "epub.css"),
                "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]
         if cover is not None:
             cmd += ["--epub-cover-image", str(cover)]
-        for key, value in publication_metadata(args.book).items():
+        for key, value in metadata.items():
             cmd += [f"--metadata={key}:{value}"]
         for font in FONT_FILES:
             cmd += ["--epub-embed-font", str(font)]
@@ -1426,22 +1510,30 @@ def main() -> int:
         if any(marker in result.stderr for marker in fatal_warnings):
             log("Pandoc emitted structural warnings; refusing a potentially damaged EPUB")
             return 2
-        postprocess_epub(args.output)
+        postprocess_epub(candidate)
         validator = HERE / "validate.py"
         log("Running EPUB package and link validation...")
         validation = subprocess.run(
-            [sys.executable, str(validator), str(args.output)], cwd=ROOT, check=False
+            [sys.executable, str(validator), str(candidate)], cwd=ROOT, check=False
         )
         if validation.returncode:
             return validation.returncode
         epubcheck = shutil.which("epubcheck")
         if epubcheck:
             log(f"Running EPUBCheck: {epubcheck}")
-            checked = subprocess.run([epubcheck, str(args.output)], check=False)
+            checked = subprocess.run([epubcheck, str(candidate)], check=False)
             if checked.returncode:
                 return checked.returncode
         else:
             log("EPUBCheck is not installed; dependency-free structural validation completed")
+        # Failed validation must never replace a previously accepted edition.
+        with tempfile.NamedTemporaryFile(dir=args.output.parent, suffix=".epub", delete=False) as staged:
+            staged_path = Path(staged.name)
+        try:
+            shutil.copyfile(candidate, staged_path)
+            staged_path.replace(args.output)
+        finally:
+            staged_path.unlink(missing_ok=True)
     output_size = args.output.stat().st_size
     elapsed = time.monotonic() - started
     log(

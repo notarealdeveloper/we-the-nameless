@@ -9,26 +9,38 @@ images, navigation, and metadata, and then validates the resulting archive.
 
 ## Building
 
+Start with [PUBLISH.md](../PUBLISH.md) for the complete command sequence.
 From the repository root:
 
 ```sh
-make ebook
-make genesis-ebook
-make samuel-ebook
-make ebook-validate
-make -C ebook test
+make genesis-ebook-release     # Build + internal validation + required EPUBCheck.
+make J-ebook-release           # Any print subset, including case-sensitive J/j and P/p.
+make genesis-1-ebook-release   # Chapter selection.
+make genesis-ebook-check       # Check the existing file; no rebuild.
+make ebook-release            # Active complete master selection.
+make genesis-ebook             # Development build; EPUBCheck optional.
+make check-ebook               # Renderer regression tests; no PDF/EPUB build.
 ```
 
-The original interfaces remain available:
+`bin/book-subset` supplies the registry and source/chapter filtering for all
+subset editions. Numbered book aliases share the existing `ebook/genesis.epub`,
+`ebook/exodus.epub`, etc. Source/chapter editions use their canonical names,
+e.g. `ebook/J.epub` and `ebook/genesis-1.epub`. The active complete edition is
+`ebook/we-the-nameless.epub`. Standalone print apocrypha/frontispieces remain
+excluded by this renderer; alternate verses within chapters remain included.
+Original `\Sentence` prose is rendered alongside numbered `\Verse` material.
 
-```sh
-make -C ebook
-make -C ebook genesis
-make -C ebook samuel
-make -C ebook validate-genesis
-```
+Direct interfaces remain: `make -C ebook genesis`, `make -C ebook J`, and
+`make -C ebook validate-genesis`. Checks now require EPUBCheck and never build.
+`--book Genesis` remains available on `build.py` for the legacy active-master
+selection; prefer `--subset genesis` to select independently of commented master
+includes, like print. Use `EBOOK_COVER=<basename>` at the root or `COVER=<basename>`
+in `ebook/` to select from `img/covers`; `none` omits it.
 
-Outputs are written to `ebook/we-the-nameless.epub` and `ebook/<book>.epub`.
+Builds stage their EPUB and replace the destination only after validation passes.
+Release targets fail immediately if EPUBCheck is unavailable. Development targets
+run it when installed and propagate its failures. Do not build the same edition
+concurrently; different editions have separate output paths.
 
 Each independently publishable edition has a deterministic `urn:uuid` package
 identifier. The complete edition and each single-book edition use different

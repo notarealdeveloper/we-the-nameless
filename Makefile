@@ -32,8 +32,9 @@ BOOK_TARGETS := $(shell bin/book-subset --make-book-targets)
 CHAPTER_TARGETS := $(shell bin/book-subset --make-chapter-targets)
 COMMENT_BOOK_TARGETS := $(addprefix comment-,$(BOOK_TARGETS))
 UNCOMMENT_BOOK_TARGETS := $(addprefix uncomment-,$(BOOK_TARGETS))
-EBOOK_BOOKS := genesis exodus leviticus numbers deuteronomy joshua judges samuel kings dudetheyreontome
-EBOOK_TARGETS := $(addsuffix -ebook,$(EBOOK_BOOKS))
+EBOOK_SUBSETS := $(SUBSET_TARGETS) $(CHAPTER_TARGETS)
+EBOOK_TARGETS := $(foreach suffix,ebook ebook-release ebook-check,$(addsuffix -$(suffix),$(EBOOK_SUBSETS)))
+EBOOK_COVER ?= we-cover-8
 KDP_SUBSETS := $(SUBSET_TARGETS) $(CHAPTER_TARGETS)
 KDP_TARGETS := $(foreach suffix,kdp kdp-build kdp-vectorize kdp-check,$(addsuffix -$(suffix),$(KDP_SUBSETS)))
 COVER_TARGETS := $(addsuffix -cover,$(SUBSET_TARGETS))
@@ -60,7 +61,7 @@ export TEXMFVAR = $(CACHE)
 # Pentateuch paths themselves.
 export max_print_line = 60
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-validate cover kdp kdp-preflight genesis-kdp genesis-kdp-soft genesis-kdp-medium genesis-kdp-hard check-genesis-kdp check-kdp-validator check-kdp $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-release ebook-check ebook-validate check-ebook cover kdp kdp-preflight genesis-kdp genesis-kdp-soft genesis-kdp-medium genesis-kdp-hard check-genesis-kdp check-kdp-validator check-kdp $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 define publish-and-open
 	@set -e; \
@@ -123,8 +124,11 @@ help:
 		'' \
 		'Publish ebooks:' \
 		'  make ebook                                             Build ebook/we-the-nameless.epub.' \
-		'  make genesis-ebook                                     Build ebook/genesis.epub; equivalent targets exist for each book.' \
-		'  make ebook-validate                                    Validate the complete EPUB (building it first if needed).' \
+		'  make genesis-ebook                                     Build ebook/genesis.epub; all print subset names also work (J, P, genesis-1).' \
+		'  make genesis-ebook-release                             Build and validate for release; requires EPUBCheck.' \
+		'  make genesis-ebook-check                               Check the existing EPUB with both validators; no build.' \
+		'  make ebook-release / ebook-check                       Equivalent commands for the complete EPUB.' \
+		'  Set EBOOK_COVER=we-cover-8|none|<image basename>. See PUBLISH.md for the command sequence.' \
 		'' \
 		'Prepare KDP paperbacks:' \
 		'  make genesis-kdp-build                                 Build searchable print interior and separate raw cover.' \
@@ -141,8 +145,8 @@ help:
 		'  make cover                                             Build 01-genesis-cover.pdf from 01-genesis.pdf.' \
 		'  make genesis-cover                                     Build the matching wrap from an existing 01-genesis.pdf.' \
 		'                                                         Set COVER_STYLE=simple|fancy; COVER_PAPER defaults to standard-color.' \
-		'  make kdp KDP_INPUT=file.pdf KDP_OUTPUT=file-kdp.pdf    Preflight an existing interior PDF.' \
-		'  make kdp-preflight KDP_INPUT=file.pdf                  Report on an existing PDF without changing it.' \
+		'  make kdp KDP_INPUT=file.pdf KDP_OUTPUT=file-kdp.pdf    Legacy PDF 1.3 conversion; does NOT use the outlined pipeline.' \
+		'  make kdp-preflight KDP_INPUT=file.pdf                  Legacy searchable-font check; NOT for outlined uploads.' \
 		'' \
 		'Edit the active selection:' \
 		'  make progress                                          Open master.tex.' \
@@ -160,10 +164,16 @@ list:
 	bin/book-subset --list
 
 ebook:
-	$(MAKE) -C ebook all
+	$(MAKE) -C ebook all COVER="$(EBOOK_COVER)"
 
-ebook-validate:
+ebook-release:
+	$(MAKE) -C ebook release COVER="$(EBOOK_COVER)"
+
+ebook-check ebook-validate:
 	$(MAKE) -C ebook validate
+
+check-ebook:
+	$(MAKE) -C ebook test
 
 cover:
 	@bin/kdp-cover "$(COVER_INTERIOR)" "$(COVER_PAPER)" "$(COVER_OUTPUT)" "$(COVER_BUILD)" "$(COVER_STYLE)" "$(COVER_VOLUME)" "$(SPINE)"
@@ -210,8 +220,14 @@ $(COVER_TARGETS): %-cover:
 	output="$(if $(filter command line environment override,$(origin COVER_OUTPUT)),$(COVER_OUTPUT),)"; \
 	bin/kdp-cover "$${interior:-$$basename.pdf}" "$(COVER_PAPER)" "$${output:-$$basename-cover.pdf}" "$(COVER_BUILD)/$$basename/$(COVER_STYLE)" "$(COVER_STYLE)" "$(if $(COVER_VOLUME),$(COVER_VOLUME),$${title})" "$(SPINE)"
 
-$(EBOOK_TARGETS):
-	$(MAKE) -C ebook "$(@:%-ebook=%)"
+$(addsuffix -ebook,$(EBOOK_SUBSETS)): %-ebook:
+	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)"
+
+$(addsuffix -ebook-release,$(EBOOK_SUBSETS)): %-ebook-release:
+	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)" RELEASE=--require-epubcheck
+
+$(addsuffix -ebook-check,$(EBOOK_SUBSETS)): %-ebook-check:
+	$(MAKE) -C ebook "validate-$*"
 
 pdf: build-pdf
 
@@ -254,7 +270,7 @@ draft: $(MAIN).tex
 	$(MAKE) clean-stray-aux
 
 clean-stray-aux:
-	@find . -path "./build" -prune -o -type f \( \
+	@find . \( -path "./build" -o -path "./pub" \) -prune -o -type f \( \
 		-name '*.aux' -o \
 		-name '*.log' -o \
 		-name '*.toc' -o \
@@ -288,14 +304,14 @@ view open: $(PDF)
 
 clean: clean-stray-aux
 	@if [ -d build ]; then \
-		find build -type f \( \
+		find build -path build/kdp -prune -o -type f \( \
 			-name '*.aux' -o \
 			-name '*.log' -o \
 			-name '*.toc' -o \
 			-name '*.out' -o \
 			-name '*.fls' -o \
 			-name '*.fdb_latexmk' \
-		\) -delete; \
+		\) -exec rm -f {} +; \
 	fi
 
 distclean:
