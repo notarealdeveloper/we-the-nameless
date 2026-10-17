@@ -1261,6 +1261,8 @@ def write_entrypoint(target, preamble, books, build_root):
         )
     lines.extend(
         [
+            r"\LDPublicationNoticePageOne",
+            r"\LDPublicationNoticePageTwo",
             r"\mainmatter",
             r"\hypersetup{pageanchor=true}",
             r"\pagestyle{fancy}",
