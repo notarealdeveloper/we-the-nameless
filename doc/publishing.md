@@ -89,7 +89,7 @@ September 14, 2026.
 
 TeX auxiliaries, prepared assets, logs, inspection reports, and build provenance
 remain under `build/kdp/<canonical>/runs/<run>/`. Active cover templates and art
-live in `we/cover/`. The archived proof copies in `pub/` are independent.
+live in `pub/covers/`. The archived proof copies in `pub/` are independent.
 
 Stage inputs never depend on PDFs hidden in those run directories. Ghostscript's
 intermediate output is `pub/<canonical>-<part>-outlined.pdf`; qpdf writes
