@@ -1,52 +1,62 @@
-## Publishing We The Nameless
+```table-of-contents
+```
 
-Run these commands **from the repository root**.
+## Basics
 
-They create local files; nothing uploads or publishes automatically.
+```sh
+make help
+# Show the make interface; no build.
+
+make list
+# List available selections; no build.
+
+make check-kdp
+# Run synthetic PDF pipeline tests; no book build.
+
+make check-kdp-validator
+# Test that visual damage is detected; no book build.
+
+make check-ebook
+# Run renderer regressions; no PDF or EPUB build.
+
+make clean
+# Remove ordinary TeX auxiliaries; preserve build/kdp and pub evidence.
+```
+
+`make distclean` deletes **all of build/**, including print releases and evidence.
+Archive the entire `build/kdp/<canonical>/` directory before removing it; its
+release pointers depend on retained runs. Print manifests also record the Git
+commit timestamp; when checking an archived release after a commit, preserve its
+recorded timestamp with `SOURCE_DATE_EPOCH` as described in
+[doc/publishing.md](doc/publishing.md).
+
+Legacy `make kdp KDP_INPUT=...`, `kdp-preflight`, and standalone `*-cover` targets
+remain for compatibility. They do not replace the outlined, validated pair above.
+For internals and recovery details, see [doc/publishing.md](doc/publishing.md).
+
+## Paperback
+
+### Dependencies
+
+Building the book for physical publication requires:
+- python with pillow and numpy,
+- LuaLaTeX,
+- the fonts in the repo's `fonts/` directory,
+- ghostscript (`gs`),
+- qpdf,
+- mupdf (`mutool`),
+- poppler utilities, and
+- imagemagick (`magick`).
+
+Once you have the dependencies, run the commands below **from the repository root**.
+
+These commands create local files; nothing uploads or publishes automatically.
 
 Replace `genesis` with `exodus`, `J`, `P`, `j`, `p`, `court`, `1-samuel`, `genesis-1`, or another name from `make list`.
 
 **Case matters:** `J` and `j` select different editions. Numbered aliases work too.
 
-## Paperback: the shortest route
-
-```sh
-make genesis-kdp
-# 1. Build interior + cover
-# 2. Outline all fonts
-# 3. Validate
-# 4. Then release both PDFs.
-```
-
-When that command finishes successfully, upload these **two separate files**:
-
-```sh
-build/kdp/01-genesis/artifacts/01-genesis-interior.pdf
-build/kdp/01-genesis/artifacts/01-genesis-cover.pdf
-```
-
-For another selection, use the same command pattern:
-
-```sh
-make exodus-kdp
-# Upload build/kdp/02-exodus/artifacts/02-exodus-{interior,cover}.pdf.
-
-make J-kdp
-# Upload build/kdp/J/artifacts/J-{interior,cover}.pdf.
-
-make P-kdp
-# Upload build/kdp/P/artifacts/P-{interior,cover}.pdf.
-
-bin/book-subset --output-name genesis
-# Print the canonical filename stem: 01-genesis.
-```
-
-The braces above abbreviate two filenames. Upload the interior as the manuscript
-and the cover as the paperback wrap. Do not combine them.
-
-Old PDFs in `pub/`, root PDFs, and the searchable references are **not** this pipeline'supload files.
-
-## Paperback: run the stages separately
+### Build the paperback step by step
 
 Run these first two commands **in order**, with unchanged sources and options:
 
@@ -91,7 +101,55 @@ still a draft, and inspect the physical copy before publishing. Check gutters,
 small scripts, images, color, spine, and barcode placement. Passing comparisons
 means faithful conversion; it does not replace editorial or physical review.
 
-## Ebook: build, check, preview, upload
+### Build the paperback with one command
+
+```sh
+make genesis-kdp
+# 1. Build interior + cover
+# 2. Outline all fonts
+# 3. Validate
+# 4. Then release both PDFs.
+```
+
+When that command finishes successfully, upload these **two separate files**:
+
+```sh
+build/kdp/01-genesis/artifacts/01-genesis-interior.pdf
+build/kdp/01-genesis/artifacts/01-genesis-cover.pdf
+```
+
+For another selection, use the same command pattern:
+
+```sh
+make exodus-kdp
+# Upload build/kdp/02-exodus/artifacts/02-exodus-{interior,cover}.pdf.
+
+make J-kdp
+# Upload build/kdp/J/artifacts/J-{interior,cover}.pdf.
+
+make P-kdp
+# Upload build/kdp/P/artifacts/P-{interior,cover}.pdf.
+
+bin/book-subset --output-name genesis
+# Print the canonical filename stem: 01-genesis.
+```
+
+The braces above abbreviate two filenames. Upload the interior as the manuscript
+and the cover as the paperback wrap. Do not combine them.
+
+Old PDFs in `pub/`, root PDFs, and the searchable references are **not** this pipeline'supload files.
+
+## Ebook
+
+### Dependencies
+
+Building the ebook requires:
+- python
+- pandoc 3,
+- the repository;s fonts and images, and
+- EPUBCheck somewhere in the PATH (with its Java runtime).
+
+### Build the ebook with one command
 
 ```sh
 make genesis-ebook-release       # Build ebook/genesis.epub; internal validation and EPUBCheck must pass.
@@ -129,30 +187,3 @@ and frontispiece files; alternate verses inside chapters remain. Do not treat
 successful validators as proof of complete editorial fidelity. Review the selected
 content and [renderer notes](ebook/README.md) before a public release.
 
-## Tools and maintenance
-
-Print needs Python 3.11+, Pillow, NumPy, LuaLaTeX and the manuscript's TeX packages
-and fonts, Ghostscript (`gs`), qpdf, MuPDF (`mutool`), Poppler utilities, and
-ImageMagick (`magick`). EPUB needs Python, Pandoc 3, the repository fonts/images,
-and **EPUBCheck on PATH for release** (with its Java runtime). Install these
-before running the relevant pipeline.
-
-```sh
-make list                       # List available selections; no build.
-make help                       # Show the Make interface; no build.
-make check-kdp                   # Run synthetic PDF pipeline tests; no book build.
-make check-kdp-validator         # Test that visual damage is detected; no book build.
-make check-ebook                 # Run renderer regressions; no PDF or EPUB build.
-make clean                      # Remove ordinary TeX auxiliaries; preserve build/kdp and pub evidence.
-```
-
-`make distclean` deletes **all of build/**, including print releases and evidence.
-Archive the entire `build/kdp/<canonical>/` directory before removing it; its
-release pointers depend on retained runs. Print manifests also record the Git
-commit timestamp; when checking an archived release after a commit, preserve its
-recorded timestamp with `SOURCE_DATE_EPOCH` as described in
-[doc/publishing.md](doc/publishing.md).
-
-Legacy `make kdp KDP_INPUT=...`, `kdp-preflight`, and standalone `*-cover` targets
-remain for compatibility. They do not replace the outlined, validated pair above.
-For internals and recovery details, see [doc/publishing.md](doc/publishing.md).
