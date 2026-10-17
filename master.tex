@@ -242,6 +242,40 @@
         \geometry{inner=0.625in,outer=0.625in}
     \fi
 \fi
+% BEGIN print-page layout
+% PDF page 1 is recto (right). Keep numeric page parity aligned with physical
+% sheets: front matter only hides its numbers; mainmatter resets on a recto.
+% Clear first, then insert a blank only if the next page has the wrong side.
+\newcommand{\WeClearToRightPage}{%
+    \clearpage
+    \ifConfigOutputModeTech\else
+        \ifodd\value{page}\else
+            \thispagestyle{empty}\null\clearpage
+        \fi
+    \fi
+}
+\newcommand{\WeClearToLeftPage}{%
+    \clearpage
+    \ifConfigOutputModeTech\else
+        \ifodd\value{page}
+            \thispagestyle{empty}\null\clearpage
+        \fi
+    \fi
+}
+
+% Preserve the current binding offset when narrowing a title/contents page.
+% This derives the offset from geometry rather than duplicating book margins;
+% tech and equal-margin modes consequently retain their centered text blocks.
+\newlength{\WeBindingOffset}
+\setlength{\WeBindingOffset}{\dimexpr(\oddsidemargin-\evensidemargin)/2\relax}
+\newcommand{\WeFrontMatterGeometry}{%
+    \newgeometry{
+        inner={\dimexpr2.13cm+\WeBindingOffset\relax},
+        outer={\dimexpr2.13cm-\WeBindingOffset\relax},
+        top=2.13cm,bottom=2.13cm}%
+}
+% END print-page layout
+
 \usepackage{lmodern}
 \usepackage[no-math]{fontspec}
 % The alphabet-history page deliberately uses a custom size ladder.  Permit
@@ -2497,6 +2531,7 @@
 }
 
 \newcommand{\SourceLegendPage}{%
+    \WeClearToLeftPage
 
     \ManualFrontMatterPage{%
     \SourceLegendTitle
@@ -2580,6 +2615,7 @@
 
     }%
 
+    \WeClearToRightPage
     \ManualFrontMatterPage{%
     \SourceLegendTitle
     \begingroup
@@ -2703,6 +2739,7 @@
 }
 
 \newcommand{\PrimevalSourceFontsPage}{%
+    \WeClearToLeftPage
     \ManualFrontMatterPage{%
 
     %\vspace*{-4.5em}
@@ -2775,6 +2812,7 @@
 }
 
 \newcommand{\PrimarySourceFontsPage}{%
+    \WeClearToRightPage
     \ManualFrontMatterPage{%
 
     \FontPageHeading{The Primary Sources}
@@ -2889,8 +2927,8 @@
 \newcommand{\WeTitlePageMiddleSpace}{\vspace*{0.2\textheight}}
 
 \newcommand{\wetitlepage}{%
-    \clearpage
-    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \WeClearToRightPage
+    \WeFrontMatterGeometry
     \pagestyle{empty}
     {
     \centering
@@ -2922,7 +2960,7 @@
 }
 
 \newcommand{\LDPublicationNoticePageOne}{%
-    \clearpage
+    \WeClearToLeftPage
     \thispagestyle{empty}
     \begingroup
     \centering
@@ -2959,7 +2997,7 @@
 }
 
 \newcommand{\LDPublicationNoticePageTwo}{%
-    \clearpage
+    \WeClearToRightPage
     \thispagestyle{empty}
     \begingroup
     \centering
@@ -2996,8 +3034,8 @@
 }
 
 \newcommand{\WeContentsPage}{%
-    \clearpage
-    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \WeClearToRightPage
+    \WeFrontMatterGeometry
     \phantomsection
     \hypertarget{tableofcontents}{}%
     % The full-book contents lists books; each book owns its detailed contents.
@@ -3010,7 +3048,7 @@
 
 \newcommand{\BookCoverPage}[2]{%
     \clearpage
-    \newgeometry{left=2.13cm,right=2.13cm,top=2.13cm,bottom=2.13cm}
+    \WeFrontMatterGeometry
     \pagestyle{empty}
     {
     \centering
@@ -3087,6 +3125,7 @@
 }
 
 \newcommand{\AlphabetHistoryPage}{%
+    \WeClearToLeftPage
     \begingroup
     \AlphabetHistoryTextSizes
     \clearpage
@@ -3114,7 +3153,7 @@
     \AlphabetHistoryRightToLeft{\PaleoHebrewPhoenicianFont}{2.13}{𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕}\\
     \end{flushright}
     \end{minipage}
-    \clearpage
+    \WeClearToRightPage
     \thispagestyle{empty}
     \noindent\begin{minipage}[c][\textheight][c]{\textwidth}
     \begin{flushright}
@@ -3340,6 +3379,7 @@
         \PlainBookChapterLinkArray{#1}%
         \BookExtraLinkArray{#1}%
     \fi
+    \WeClearToLeftPage
 }
 \newcommand{\BookExtraLinkText}[1]{%
     \ifConfigOutputModeTech
@@ -3834,6 +3874,7 @@
 }
 
 \newcommand{\Book}[1]{%
+    \WeClearToRightPage
     \def\CurrentTitleBook{#1}%
     \BookHeading{\TableOfContentsLink{#1}}%
     \phantomsection
@@ -4660,6 +4701,8 @@
 
 \LDPublicationNoticePageTwo
 
+% Also finish the separate parallel-build front-matter PDF on a verso.
+\WeClearToRightPage
 \mainmatter
 \hypersetup{pageanchor=true}
 \pagestyle{fancy}
