@@ -2921,7 +2921,7 @@
     \fi
 }
 
-\newcommand{\LDPublicationNoticePage}{%
+\newcommand{\LDPublicationNoticePageOne}{%
     \clearpage
     \thispagestyle{empty}
     \begingroup
@@ -2950,6 +2950,43 @@
         In summary, it's a bible, and all rules of that genre apply.\\
         If your work has been incorporated into the resulting volume\\
         and you would like to be removed from the bible, let us know\\
+    }\par
+    }
+    \vspace{2\baselineskip}
+    \includegraphics[width=1.00in]{\TitlePageLogoImage}\par
+    \vspace*{\fill}
+    \endgroup
+}
+
+\newcommand{\LDPublicationNoticePageTwo}{%
+    \clearpage
+    \thispagestyle{empty}
+    \begingroup
+    \centering
+    \vspace*{\fill}
+    {\ifConfigOutputModeTech
+        \BookModeTextSizes
+        \tiny
+    \else
+        \tiny
+    \fi
+    \aA{\ttfamily
+        The publishers would like to warn the reader before we begin\\
+        that the first chapter of the book, namely Genesis 1, should\\
+        not be taken to be representative of the content or genre of\\
+        the book that follows. For reasons that remain unclear to us\\
+    }
+    \aB{\ttfamily
+        Genesis 1 is written in a different style than the remainder\\
+        of the book, a style that some readers have found to be both\\
+        more intimidating and less dignified than the content of the\\
+        book that one finds in Genesis chapter 2 through chapter 50.\\
+    }
+    \aC{\ttfamily
+        After considerable debate on the issue of whether the reader\\
+        would be better served by an edited, abridged, or simplified\\
+        version of Genesis chapter one, we ultimately chose to leave\\
+        the text unchanged, and to simply give the reader a heads up\\
     }\par
     }
     \vspace{2\baselineskip}
@@ -4619,7 +4656,9 @@
 
 \SourceLegendPage
 
-\LDPublicationNoticePage
+\LDPublicationNoticePageOne
+
+\LDPublicationNoticePageTwo
 
 \mainmatter
 \hypersetup{pageanchor=true}
