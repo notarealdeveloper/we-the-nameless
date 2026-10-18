@@ -61,8 +61,10 @@ Kindle libraries do not display every volume under an indistinguishable title.
 A build requires Pandoc 3. `--keep-markdown` on `build.py` preserves
 `manuscript.generated.md` for debugging; otherwise it is temporary.
 
-The publication notices (including the Genesis 1 warning), author legend, and
-source-font explanations are read from their current definitions in `master.tex`.
+The two publication notices (including the Genesis 1 warning) use
+`ebook/img/publisher-page-1.png` and `ebook/img/publisher-page-2.png`, each
+scaled to the available page width. The author legend and source-font
+explanations are read from their current definitions in `master.tex`.
 The reusable manuscript substitutions are read there too, including `Er` and
 the Reuben face. Midrash boundaries and RA/RB/RC redactor distinctions survive
 conversion. Canadian syllabics, Anatolian hieroglyphs, and the inline

@@ -1457,18 +1457,11 @@ def legend_alphabet(profile):
 
 def publication_notices():
     lines = []
-    for suffix in ("One", "Two"):
-        body = master_command("LDPublicationNoticePage" + suffix)
-        paragraphs = []
-        for match in re.finditer(r"\\a[ABC]\s*", body):
-            parsed = group(body, match.end())
-            if parsed:
-                paragraphs.append(tex_to_markdown(match[0] + "{" + parsed[0] + "}"))
-        if len(paragraphs) != 3:
-            raise ValueError(f"unexpected publication notice structure: {suffix}")
+    for number, suffix in enumerate(("One", "Two"), start=1):
         lines += [f'# Publication Notice {suffix} {{.front-heading .visually-hidden}}', "",
-                  '<div class="publication-notice">', *paragraphs,
-                  '<img class="publication-logo" src="img/ld-book-light.png" alt="LD"/></div>', ""]
+                  '<div class="publication-notice">',
+                  f'<img src="ebook/img/publisher-page-{number}.png" '
+                  f'alt="Publisher’s disclaimer, page {number}"/></div>', ""]
     return lines
 
 
