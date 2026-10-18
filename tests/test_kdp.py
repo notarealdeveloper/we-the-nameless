@@ -52,6 +52,25 @@ class PublishingTests(unittest.TestCase):
             self.assertIn('bin/kdp-publish', dry)
             self.assertNotIn('lualatex', dry)
 
+    def test_binding_geometry_and_exact_template(self):
+        paperback = publishing.geometry(224, 8.25, 11, 'premium-color')
+        hardcover = publishing.geometry(224, 8.25, 11, 'premium-color', 'hardcover')
+        self.assertAlmostEqual(paperback['width'], 17.275728)
+        # Independent measured KDP template at this trim/page count.
+        self.assertAlmostEqual(hardcover['width'], 18.790, delta=.001)
+        self.assertAlmostEqual(hardcover['height'], 12.417, delta=.001)
+        self.assertAlmostEqual(hardcover['spine'], .715, delta=.001)
+        other = publishing.geometry(300, 7, 10, 'standard-color', 'hardcover')
+        self.assertAlmostEqual(other['spine'] - hardcover['spine'], 76*.002347)
+        exact = self.root / 'template.json'
+        data = dict(pages=224, trim_width=8.25, trim_height=11, paper='premium-color',
+            spine=.715, wrap=.591, hinge=.394, panel_width=8.447, panel_height=11.236)
+        exact.write_text(json.dumps(data))
+        measured = publishing.geometry(224, 8.25, 11, 'premium-color', 'hardcover', exact)
+        self.assertEqual(measured['spine'], .715)
+        with self.assertRaisesRegex(ValueError, 'does not match'):
+            publishing.geometry(226, 8.25, 11, 'premium-color', 'hardcover', exact)
+
     def test_failure_keeps_command_and_full_log(self):
         pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
         with contextlib.redirect_stdout(io.StringIO()) as terminal:
@@ -115,7 +134,8 @@ class PublishingTests(unittest.TestCase):
                 pdf(candidate, [b''] * 24)
             elif tool == 'bin/kdp-cover':
                 self.assertEqual(inspect(command[1])['pages'], 24)
-                pdf(command[3], box=f'0 0 {72 * (14.25 + 24 * .002347)} 738')
+                g = publishing.geometry(24, 7, 10, 'premium-color', command[8])
+                pdf(command[3], box=f"0 0 {72*g['width']} {72*g['height']}")
             elif tool == 'bin/kdp-inspect':
                 report = Path(command[2]); report.parent.mkdir(parents=True, exist_ok=True)
                 report.write_text(json.dumps(inspect(command[1])))
@@ -125,8 +145,8 @@ class PublishingTests(unittest.TestCase):
         with patch.object(pipeline, 'run', side_effect=simulate), patch.object(publishing, 'sources', return_value={}):
             record = pipeline.build(args, {}, {}, {})
         self.assertEqual(passes, ['LuaLaTeX pass 1', 'LuaLaTeX pass 2', 'LuaLaTeX pass 3'])
-        self.assertEqual(len(record['files']), 2)
-        for artifact in ('interior', 'cover'):
+        self.assertEqual(len(record['files']), 3)
+        for artifact in publishing.ARTIFACTS:
             self.assertTrue(pipeline.pdf_path(artifact, 'original').is_file())
             self.assertEqual(pipeline.pdf_path(artifact, 'original').parent, self.root / 'pub')
         self.assertTrue((pipeline.base / 'build.json').exists())
@@ -134,21 +154,21 @@ class PublishingTests(unittest.TestCase):
 
     def test_vectorize_and_check_use_editable_pub_files_without_manifest(self):
         pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
-        for name in ('interior', 'cover'):
+        for name in publishing.ARTIFACTS:
             pdf(pipeline.pdf_path(name, 'original'), [b'BT /F1 16 Tf 70 650 Td (Fixture) Tj ET\n'],
                 resources='<< /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >>')
         with contextlib.redirect_stdout(io.StringIO()):
             pipeline.vectorize({'variant': 'soft'})
         self.assertFalse(any('bin/kdp-visual-compare' in c['argv'] for c in pipeline.commands))
-        for name in ('interior', 'cover'):
+        for name in publishing.ARTIFACTS:
             self.assertEqual(inspect(pipeline.pdf_path(name, 'vectorized'))['font_count'], 0)
             self.assertGreater(inspect(pipeline.pdf_path(name, 'original'))['font_count'], 0)
-        previous = {a: pipeline.pdf_path(a, 'vectorized').read_bytes() for a in ('interior', 'cover')}
+        previous = {a: pipeline.pdf_path(a, 'vectorized').read_bytes() for a in publishing.ARTIFACTS}
         # A user can replace a stable input; no stale manifest blocks conversion.
         pdf(pipeline.pdf_path('interior', 'original'))
         real_validate = pipeline.validate
         def fail_cover(artifact, *args, **kwargs):
-            if artifact == 'cover': raise RuntimeError('damaged cover fixture')
+            if artifact == 'cover-hardcover': raise RuntimeError('damaged cover fixture')
             return real_validate(artifact, *args, **kwargs)
         with patch.object(pipeline, 'validate', side_effect=fail_cover), contextlib.redirect_stdout(io.StringIO()):
             with self.assertRaisesRegex(RuntimeError, 'damaged cover'):
@@ -159,7 +179,7 @@ class PublishingTests(unittest.TestCase):
             pipeline.vectorize({'variant': 'soft'})
             pipeline.check()
         comparisons = [c for c in pipeline.commands if c['argv'][0] == 'bin/kdp-visual-compare']
-        self.assertEqual(len(comparisons), 3)  # Self-test plus both PDFs, only in check.
+        self.assertEqual(len(comparisons), 4)  # Self-test plus all three PDFs, only in check.
         for command in comparisons[1:]:
             self.assertEqual(Path(command['argv'][1]).parent, self.root / 'pub')
             self.assertEqual(Path(command['argv'][2]).parent, self.root / 'pub')

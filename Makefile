@@ -46,9 +46,10 @@ KDP_BLEED ?= no-bleed
 KDP_TRIM ?= 7x10
 KDP_COVER_STYLE ?= simple
 KDP_SPINE ?= ld
+KDP_HARDCOVER_TEMPLATE ?=
 KDP_ARTIFACT ?=
 KDP_REFERENCE ?=
-KDP_OPTIONS = --paper "$(KDP_PAPER)" --ink "$(KDP_INK)" --bleed "$(KDP_BLEED)" --trim "$(KDP_TRIM)" --cover-style "$(KDP_COVER_STYLE)" --spine "$(KDP_SPINE)"
+KDP_OPTIONS = --paper "$(KDP_PAPER)" --ink "$(KDP_INK)" --bleed "$(KDP_BLEED)" --trim "$(KDP_TRIM)" --cover-style "$(KDP_COVER_STYLE)" --spine "$(KDP_SPINE)" $(if $(KDP_HARDCOVER_TEMPLATE),--hardcover-template "$(KDP_HARDCOVER_TEMPLATE)")
 KDP_CHECK_OPTIONS = $(if $(KDP_ARTIFACT),--artifact "$(KDP_ARTIFACT)") $(if $(KDP_REFERENCE),--reference "$(KDP_REFERENCE)")
 COVER_VOLUME ?=
 COVER_OUTPUT ?= 01-genesis-cover.pdf
@@ -131,13 +132,13 @@ help:
 		'  Set EBOOK_COVER=we-cover-8|none|<image basename>. See PUBLISH.md for the command sequence.' \
 		'' \
 		'Prepare KDP paperbacks:' \
-		'  make genesis-kdp-build                                 Build pub/<canonical>-{interior,cover}-original.pdf.' \
+		'  make genesis-kdp-build                                 Build pub/<canonical>-{interior,cover-paperback,cover-hardcover}-original.pdf.' \
 		'  make genesis-kdp-vectorize                             Convert pub originals to *-vectorized.pdf; no pixel comparison.' \
-		'  make genesis-kdp                                       Build and vectorize both PDFs in pub/; no pixel comparison.' \
+		'  make genesis-kdp                                       Build and vectorize all three PDFs in pub/; no pixel comparison.' \
 		'  make genesis-kdp-check                                 Compare pub originals and vectors pixel by pixel; no build.' \
 		'                                                         Equivalent targets exist for every book, chapter, alias, and source subset.' \
 		'  make check-kdp                                         Run inexpensive publishing tests (never builds a book).' \
-		'  Upload files: pub/<canonical>-interior-vectorized.pdf and pub/<canonical>-cover-vectorized.pdf' \
+		'  Upload files: pub/<canonical>-interior-vectorized.pdf and pub/<canonical>-cover-{paperback,hardcover}-vectorized.pdf' \
 		'  Defaults: KDP_PAPER=premium-color KDP_INK=premium-color KDP_BLEED=no-bleed KDP_TRIM=7x10' \
 		'  Set KDP_COVER_STYLE=simple|fancy and KDP_SPINE=ld|nameless. See doc/publishing.md.' \
 		'  make genesis-kdp-soft|medium|hard                      Build legacy diagnostic PDF-encoding variants.' \

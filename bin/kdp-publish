@@ -14,6 +14,8 @@ import sys
 import time
 import uuid
 
+from kdp_cover_geometry import ARTIFACTS, geometry
+
 ROOT = Path(__file__).resolve().parents[1]
 PRINT_CONFIG = dict(ConfigOutputMode='book', ConfigTheme='lite',
     ConfigVerseLayout='horizontal', ConfigCommentary='true',
@@ -58,6 +60,9 @@ def sources():
                     or (p.suffix == '.pdf' and 'include' in relative.parts)):
                 if p.is_file(): selected[str(relative)] = digest(p)
 
+    for p in sorted((ROOT / 'pub/covers').rglob('*')):
+        if p.is_file() and p.suffix in suffixes:
+            selected[str(p.relative_to(ROOT))] = digest(p)
     return selected
 
 
@@ -93,7 +98,7 @@ class Pipeline:
 
     def require_pdfs(self, kinds):
         for kind in kinds:
-            for artifact in ('interior', 'cover'):
+            for artifact in ARTIFACTS:
                 path = self.pdf_path(artifact, kind)
                 if not path.is_file():
                     raise FileNotFoundError(f'Missing PDF: {path}; build it or copy your PDF to this path')
@@ -120,7 +125,7 @@ class Pipeline:
                         log.write(line); log.flush()
                         progress = re.match(r'visual (?:mupdf|poppler): (\d+)/(\d+)', line)
                         if ((progress and (int(progress[1]) % 25 == 0 or progress[1] in ('1', progress[2])))
-                                or line.startswith('Cover LuaLaTeX pass ')):
+                                or line.startswith(('Cover LuaLaTeX pass ', 'Hardcover proof only:'))):
                             self.status('RUN', line.strip())
                     p.wait()
                 except BaseException:
@@ -157,7 +162,6 @@ class Pipeline:
     def build(self, args, config, snapshot, tools):
         work = self.run_dir / 'work/interior'
         interior = self.pdf_path('interior', 'original')
-        cover = self.pdf_path('cover', 'original')
         (self.run_dir / 'texmf-var').mkdir()
         self.run('1/6 assets', 'select subset', ['bin/book-subset', '--build-dir', work, args.book])
         assets = self.run_dir / 'assets'
@@ -183,16 +187,26 @@ class Pipeline:
             raise RuntimeError('interior does not match the supported 7x10 no-bleed trim')
         title = re.sub(r'^\d+-', '', self.book).replace('-', ' ')
         title = title.title() if len(title) > 1 else title
-        self.run('3/6 cover', 'build separate wrap', ['bin/kdp-cover', interior,
-            args.paper, cover, self.run_dir / 'work/cover', args.cover_style, title, args.spine], cover)
         files = {str(interior): info}
-        cover_info = json.loads(self.inspect('cover', cover, 'reference', stage=3).read_text())
-        sheet_width = 72 * (14.25 + info['pages'] * (0.002347 if args.paper == 'premium-color' else 0.002252))
-        if (cover_info['pages'] != 1 or any(
-                any(abs(a-b) > .01 for a, b in zip(p['MediaBox'], [0, 0, sheet_width, 738]))
-                or p['rotation'] != 0 or p['UserUnit'] != 1 for p in cover_info['page_geometry'])):
-            raise RuntimeError('cover sheet does not match interior page count, trim and paper stock')
-        files[str(cover)] = cover_info
+        for binding, style in (('paperback', args.cover_style), ('hardcover', 'fancy')):
+            artifact = 'cover-' + binding
+            cover = self.pdf_path(artifact, 'original')
+            template = getattr(args, 'hardcover_template', None) if binding == 'hardcover' else None
+            g = geometry(info['pages'], 7, 10, args.paper, binding, template)
+            self.run('3/6 ' + artifact, 'build separate wrap', ['bin/kdp-cover', interior,
+                args.paper, cover, self.run_dir / ('work/' + artifact), style, title,
+                args.spine, binding, str(template) if template else ''], cover)
+            cover_info = json.loads(self.inspect(artifact, cover, 'reference', stage=3).read_text())
+            expected = [0, 0, 72 * g['width'], 72 * g['height']]
+            if (cover_info['pages'] != 1 or any(
+                    any(abs(a-b) > .01 for a, b in zip(p['MediaBox'], expected))
+                    or p['rotation'] != 0 or p['UserUnit'] != 1 for p in cover_info['page_geometry'])):
+                raise RuntimeError(f'{binding} sheet does not match interior page count, trim and paper stock')
+            cover_info['cover_geometry'] = g
+            cover_info['geometry_source'] = ('kdp-template' if template else
+                'template-derived-model' if binding == 'hardcover' else 'kdp-published-formula')
+            cover_info['kdp_eligible'] = binding == 'paperback' or 76 <= info['pages'] <= 550
+            files[str(cover)] = cover_info
         dependencies = {}
         for recorder in self.run_dir.rglob('*.fls'):
             for line in recorder.read_text().splitlines():
@@ -202,7 +216,7 @@ class Pipeline:
         if sources() != snapshot:
             raise RuntimeError('sources changed during build; rerun build before vectorizing')
         record = self.record(config, snapshot, tools, files, dependencies)
-        record['reference_files'] = {a: str(self.pdf_path(a, 'original')) for a in ('interior', 'cover')}
+        record['reference_files'] = {a: str(self.pdf_path(a, 'original')) for a in ARTIFACTS}
         record['assets'] = json.loads((assets / 'assets.json').read_text())
         atomic_json(self.run_dir / 'build.json', record)
         atomic_json(self.base / 'build.json', record)
@@ -211,7 +225,7 @@ class Pipeline:
     def vectorize(self, config):
         self.require_pdfs(('original',))
         candidates = {}
-        for artifact in ('interior', 'cover'):
+        for artifact in ARTIFACTS:
             reference = self.pdf_path(artifact, 'original')
             outlined = self.pdf_path(artifact, 'outlined')
             candidate = self.pdf_path(artifact, 'vectorized-pending')
@@ -226,7 +240,7 @@ class Pipeline:
                 '--', *QPDF_OPTIONS, *encoding, candidate], candidate)
             self.validate(artifact, reference, candidate, visual=False)
             candidates[artifact] = candidate
-        # Leave the last converted pair untouched if either conversion/check fails.
+        # Leave the last converted set untouched if any conversion/check fails.
         for artifact, candidate in candidates.items():
             final = self.pdf_path(artifact, 'vectorized')
             os.replace(candidate, final)
@@ -236,7 +250,7 @@ class Pipeline:
     def check(self):
         self.require_pdfs(('original', 'vectorized'))
         self.run('4/6 validation', 'visual validator self-test', ['bin/kdp-visual-compare', '--self-test'])
-        for artifact in ('interior', 'cover'):
+        for artifact in ARTIFACTS:
             self.validate(artifact, self.pdf_path(artifact, 'original'),
                 self.pdf_path(artifact, 'vectorized'))
 
@@ -248,6 +262,7 @@ def main():
     for name, default in [('paper', 'premium-color'), ('ink', 'premium-color'), ('bleed', 'no-bleed'),
             ('trim', '7x10'), ('cover-style', 'simple'), ('spine', 'ld'), ('variant', 'soft')]:
         parser.add_argument('--' + name, default=default)
+    parser.add_argument('--hardcover-template', help='exact KDP hardcover measurements JSON; see PUBLISH.md')
     parser.add_argument('--source-date-epoch', type=int, default=os.environ.get('SOURCE_DATE_EPOCH'),
         help='reproducible PDF timestamp; defaults to the current Git commit timestamp')
     parser.add_argument('--artifact', type=Path, help='check an explicitly named final PDF; requires --reference')
@@ -270,6 +285,8 @@ def main():
             raise ValueError('SOURCE_DATE_EPOCH must be nonnegative')
         config = {k: v for k, v in vars(args).items() if k not in ('book', 'stage', 'artifact', 'reference')}
         config['print'] = PRINT_CONFIG
+        if args.hardcover_template:
+            config['hardcover_template_sha256'] = digest(args.hardcover_template)
         base = ROOT / 'build/kdp' / book
         if args.variant != 'soft': base = base / args.variant
         base.mkdir(parents=True, exist_ok=True)

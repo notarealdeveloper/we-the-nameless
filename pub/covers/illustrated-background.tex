@@ -1,0 +1,25 @@
+% Extend artwork through turn-ins; keep the framed panels out of the hinges.
+% Source PNGs are prepared once, never regenerated during a publication build.
+\node[inner sep=0pt] at (current page.center)
+  {\includegraphics[width=\CoverSheetWidth,height=\CoverSheetHeight]{pub/covers/fancy/assets/back.png}};
+% Engraving continues through the spine, hinges, and turn-ins.
+\begin{scope}
+  \clip ([xshift=\dimexpr\CoverBleed+\CoverPanelWidth\relax]current page.south west)
+    rectangle ([xshift=\CoverFrontLeft]current page.north west);
+  \node[inner sep=0pt] at (current page.center)
+    {\includegraphics[height=\CoverSheetHeight]{pub/covers/fancy/assets/back.png}};
+\end{scope}
+\foreach \side/\image in {west/back,east/front-textless} {
+  \begin{scope}
+    \def\WestSide{west}
+    \ifx\side\WestSide
+      \coordinate (panelCenter) at ([xshift=\dimexpr\CoverBleed+\CoverPanelWidth/2\relax]current page.west);
+    \else
+      \coordinate (panelCenter) at ([xshift=-\dimexpr\CoverBleed+\CoverPanelWidth/2\relax]current page.east);
+    \fi
+    \clip ([xshift=-\CoverPanelWidth/2,yshift=-\CoverPanelHeight/2]panelCenter)
+      rectangle ([xshift=\CoverPanelWidth/2,yshift=\CoverPanelHeight/2]panelCenter);
+    \node[inner sep=0pt] at (panelCenter)
+      {\includegraphics[width=\CoverPanelWidth,height=\CoverPanelHeight]{pub/covers/fancy/assets/\image.png}};
+  \end{scope}
+}

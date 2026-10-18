@@ -61,14 +61,14 @@ make genesis-kdp-build
 # 1. Build searchable reference interior and a cover sized from its page count.
 
 make genesis-kdp-vectorize
-# 2. Convert fonts to paths, clean, and structurally check both PDFs.
+# 2. Convert fonts to paths, clean, and structurally check all three PDFs.
 ```
 
 `make genesis-kdp-vectorize` uses the existing originals; it does not rebuild
 them. Neither command runs the optional pixel comparison described below.
 
-Build writes `pub/<canonical>-{interior,cover}-original.pdf`. Vectorize reads
-those files and writes `pub/<canonical>-{interior,cover}-vectorized.pdf`.
+Build writes `pub/<canonical>-{interior,cover-paperback,cover-hardcover}-original.pdf`. Vectorize reads
+those files and writes `pub/<canonical>-{interior,cover-paperback,cover-hardcover}-vectorized.pdf`.
 You can copy replacement PDFs to the expected paths and rerun vectorize or
 check; no build manifest is required.
 
@@ -94,7 +94,7 @@ Repeat the same options on every separate build/vectorize/check command. The
 pipeline currently enforces even page counts of 24–828 (premium) or 72–600
 (standard). Short chapter selections may fail these limits; large selections
 may need smaller editions. Other trims, black ink, cream paper, interior bleed,
-and hardcover need additional layout support. Other printers may accept these
+need additional layout support. Other printers may accept these
 PDFs, but verify their trim, stock, spine, bleed, and file requirements first.
 
 After upload, inspect KDP Print Previewer, order a proof while the listing is
@@ -106,7 +106,7 @@ means faithful conversion; it does not replace editorial or physical review.
 
 ```sh
 make genesis-kdp
-# Build the originals, then vectorize, clean, and structurally check both PDFs.
+# Build the originals, then vectorize, clean, and structurally check all three PDFs.
 ```
 
 `make genesis-kdp` combines the stages from `make genesis-kdp-build` and
@@ -118,27 +118,26 @@ When that command finishes successfully, upload these **two separate files**:
 
 ```sh
 pub/01-genesis-interior-vectorized.pdf
-pub/01-genesis-cover-vectorized.pdf
+pub/01-genesis-cover-paperback-vectorized.pdf
 ```
 
 For another selection, use the same command pattern:
 
 ```sh
 make exodus-kdp
-# Upload pub/02-exodus-{interior,cover}-vectorized.pdf.
+# Upload pub/02-exodus-interior-vectorized.pdf and the desired binding cover.
 
 make J-kdp
-# Upload pub/J-{interior,cover}-vectorized.pdf.
+# Upload pub/J-interior-vectorized.pdf and the desired binding cover.
 
 make P-kdp
-# Upload pub/P-{interior,cover}-vectorized.pdf.
+# Upload pub/P-interior-vectorized.pdf and the desired binding cover.
 
 bin/book-subset --output-name genesis
 # Print the canonical filename stem: 01-genesis.
 ```
 
-The braces above abbreviate two filenames. Upload the interior as the manuscript
-and the cover as the paperback wrap. Do not combine them.
+Upload the interior as the manuscript and the selected binding cover separately.
 
 The searchable `-original.pdf` files remain alongside the vectorized files for comparison.
 
@@ -151,10 +150,59 @@ make genesis-kdp-check
 # Compare existing originals and vectorized PDFs; do not build or vectorize.
 ```
 
-This separate target compares both interior and cover pairs in `pub/`, rendering
+This separate target compares the interior and both cover pairs in `pub/`, rendering
 every page using both MuPDF and Poppler at 300 DPI. The full pixel comparison can
 take a long time and runs only when explicitly requested; `make genesis-kdp`
 does not run it. Both the original and vectorized PDFs must already exist.
+
+### Hardcover covers
+
+Every KDP subset build also produces `pub/<canonical>-cover-hardcover-original.pdf`
+and `-vectorized.pdf`. Paperback covers now have `cover-paperback` in their basename;
+old `cover-original` / `cover-final` files are untouched archives, not current outputs.
+There are six current PDFs per subset. `KDP_COVER_STYLE` selects the paperback style;
+the hardcover always uses the illustrated artwork with shared simple-cover typography.
+The LD mark remains on the spine. No new author line is invented.
+
+Cover geometry comes from the actual interior's page count and page dimensions in
+`bin/kdp_cover_geometry.py`. With trim W×H in inches and N pages:
+
+- Paperback: spine = N × paper caliper; sheet = (2W + spine + 0.25) × (H + 0.25).
+- Hardcover: spine = N × 0.002347 + 4.8/25.4; panel = (W + 5/25.4) × (H + 6/25.4);
+  sheet = (2 × panel width + spine + 30/25.4) × (panel height + 30/25.4).
+  Hinges occupy the inner 10 mm of each panel, not an additional strip outside it.
+
+The hardcover model is inferred from a [recorded KDP calculator template](https://github.com/hackerbay/twenty-minute-table/blob/main/book/cover.py):
+224 premium-color pages at 8.25×11 give approximately 18.790×12.417 inches,
+with a 0.715-inch spine. This is not an Amazon-published formula. Amazon's
+[hardcover help](https://kdp.amazon.com/en_US/help/topic/GDTKFJPNQCBTMRV6)
+requires wrap and hinges, but inconsistently labels its wrap “0.51 inch (15 mm)”.
+The model uses 15 mm, matching the recorded calculator dimensions. Compare against
+[Amazon's exact template](https://kdp.amazon.com/cover-calculator) before upload.
+To use exact measurements instead, save a JSON file with these fields, in inches:
+
+```json
+{"pages":224,"trim_width":8.25,"trim_height":11,"paper":"premium-color",
+ "spine":0.715,"wrap":0.591,"hinge":0.394,"panel_width":8.447,"panel_height":11.236}
+```
+
+Pass `KDP_HARDCOVER_TEMPLATE=/absolute/path/template.json`. The pipeline rejects a
+page count, trim, or stock mismatch and records the template hash. Update these
+values from the calculator for the actual subset; the example is not a Genesis template.
+
+Hardcover color uses premium white stock even if paperback uses standard color.
+KDP hardcover requires 76–550 even pages. Out-of-range selections still get covers
+for review, with an explicit console warning and `kdp_eligible: false` in provenance.
+The current 600-page Genesis interior therefore needs shortening or splitting before
+hardcover publication. The supplied 1024×1536 illustrations have limited native print
+resolution (roughly 140 dpi at this trim); outlining preserves artwork and makes
+text vector paths, but cannot add image detail. Higher-resolution original artwork
+is needed to meet Amazon's 300 dpi image recommendation.
+
+The text-free front asset is `pub/covers/fancy/assets/front-textless.png`, edited
+with the built-in image generation tool from `cover-front.png` and `cover-back.png`.
+Its prompt is preserved in `pub/covers/fancy/assets/front-textless-prompt.txt`.
+Publication builds use the saved PNG and deterministic TeX only; no AI calls occur.
 
 ## Ebook
 

@@ -10,18 +10,20 @@ make genesis-kdp-check       # full pixel comparison; no build or conversion
 make check-kdp               # synthetic tests; never builds a book
 ```
 
-The four persistent PDFs are ordinary files:
+The six persistent PDFs are ordinary files:
 
 ```text
 pub/01-genesis-interior-original.pdf
 pub/01-genesis-interior-vectorized.pdf
-pub/01-genesis-cover-original.pdf
-pub/01-genesis-cover-vectorized.pdf
+pub/01-genesis-cover-paperback-original.pdf
+pub/01-genesis-cover-hardcover-original.pdf
+pub/01-genesis-cover-paperback-vectorized.pdf
+pub/01-genesis-cover-hardcover-vectorized.pdf
 ```
 
 Build writes the originals, including a cover sized from the original interior.
-Vectorize reads those exact originals and writes the vectorized pair. Check reads
-those same four paths. Upload the two vectorized files separately.
+Vectorize reads those exact originals and writes the vectorized set. Check reads
+those same six paths. Upload the interior and the chosen binding cover separately.
 
 Every book, chapter, numbered alias, and source subset has the same four targets.
 `make exodus-kdp` uses `pub/02-exodus-…`; `make J-kdp` uses `pub/J-…`.
@@ -31,7 +33,7 @@ and a lock. Case matters: `J` and `j` are distinct selections.
 You can replace an original with your own PDF at the expected filename and run
 vectorize, or replace either version and run check. Neither step reads a build
 manifest or rejects a file because sources, timestamps, or hashes changed.
-Both originals must exist before vectorization; all four PDFs must exist for check.
+All three originals must exist before vectorization; all six PDFs must exist for check.
 If an interior's page count changes, supply a correspondingly sized cover.
 
 `check-genesis-kdp` aliases `genesis-kdp-check`; `genesis-kdp-soft` aliases
@@ -85,6 +87,11 @@ follow KDP's [submission guidelines](https://kdp.amazon.com/en_US/help/topic/G20
 and [cover guidance](https://kdp.amazon.com/en_US/help/topic/G201953020), checked
 September 14, 2026.
 
+Hardcover geometry, template overrides, artwork provenance, stock, and eligibility
+are documented in [PUBLISH.md](../PUBLISH.md#hardcover-covers). Both cover styles
+share `pub/covers/simple/cover.tex` typography; dimensions come from
+`bin/kdp_cover_geometry.py`.
+
 ## Working files and recovery
 
 TeX auxiliaries, prepared assets, logs, inspection reports, and build provenance
@@ -93,18 +100,18 @@ live in `pub/covers/`. The archived proof copies in `pub/` are independent.
 
 Stage inputs never depend on PDFs hidden in those run directories. Ghostscript's
 intermediate output is `pub/<canonical>-<part>-outlined.pdf`; qpdf writes
-`pub/<canonical>-<part>-vectorized-pending.pdf`. After both parts pass structural
+`pub/<canonical>-<part>-vectorized-pending.pdf`. After all three parts pass structural
 checks, the pending files replace the vectorized files and outlined files are
-removed. On conversion/check failure the previous vectorized pair stays intact;
-intermediate files remain for diagnosis. Replacement of the two files is sequential,
-not an atomic pair operation. A failed build may leave partially updated originals;
+removed. On conversion/check failure the previous vectorized set stays intact;
+intermediate files remain for diagnosis. Replacement of the three files is sequential,
+not an atomic set operation. A failed build may leave partially updated originals;
 fix the cause and rerun build before converting them.
 
 Every operation prints its log path, and failures identify the command and candidate.
 Concurrent operations on the same selection and variant share a lock. Reports live
 in the run directory printed by that invocation. `make clean` preserves these
 records and `pub/`; `make distclean` deletes build logs/auxiliaries but preserves
-the four public PDFs. Vectorize and check still work after deleting `build/`.
+the six public PDFs. Vectorize and check still work after deleting `build/`.
 
 To check a different pair explicitly:
 
@@ -118,7 +125,7 @@ Vectorization uses Ghostscript font outlining followed by qpdf cleanup. Structur
 checks cover PDF validity, zero remaining fonts/text, page geometry, new raster
 placements, and file size. It does not run the visual validator or its self-test.
 
-Only `-kdp-check` runs the damaged-image self-test and renders every page of both
+Only `-kdp-check` runs the damaged-image self-test and renders every page of all three
 pairs at 300 DPI with MuPDF and Poppler for pixel comparison. It also repeats
 structural validation. Difference crops and visual HTML/JSON reports stay in that
 check's run directory. Check never rebuilds or changes the PDFs.
