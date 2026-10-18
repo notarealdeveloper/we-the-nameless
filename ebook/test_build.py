@@ -10,6 +10,7 @@ import re
 import shutil
 from unittest.mock import patch
 import subprocess
+import zipfile
 from pathlib import Path
 
 from fontTools.ttLib import TTFont
@@ -18,6 +19,116 @@ import build
 
 
 class ConversionTests(unittest.TestCase):
+    def css_properties(self, selector):
+        """Read the author's simple class rules, including shared declarations."""
+        stylesheet = (build.HERE / "epub.css").read_text()
+        stylesheet = re.sub(r"/\*.*?\*/", "", stylesheet, flags=re.DOTALL)
+        properties = {}
+        for selectors, body in re.findall(r"([^{}]+)\{([^{}]*)\}", stylesheet):
+            if selector in [value.strip() for value in selectors.split(",")]:
+                properties.update(declaration.strip().split(":", 1)
+                                  for declaration in body.split(";") if ":" in declaration)
+        return {key.strip(): value.strip() for key, value in properties.items()}
+
+    def test_apocryphon_dialogue_uses_inks_without_priest_or_redactor_profiles(self):
+        for compact in (False, True):
+            with self.subTest(compact=compact):
+                yhwh = build.tex_to_markdown(
+                    r"\ApocryphonYHWHDialogue{Yahweh: Words \eR{edited} here.}", compact=compact)
+                self.assertEqual(yhwh, build.tex_to_markdown(
+                    r"\aB{Yahweh: Words \eR{edited} here.}", compact=compact))
+                # Explicit redactor edits inside dialogue retain their own style.
+                self.assertEqual(yhwh.count('data-source="R"'), 1)
+                moses = build.tex_to_markdown(
+                    r"\ApocryphonMosesDialogue{Moses: \textsl{(whispering)} Words.}", compact=compact)
+                self.assertIn("yellow dialogue-moses", moses)
+                self.assertNotIn("source-e", moses)
+                self.assertNotIn("<strong>", moses)
+                self.assertIn("<em>(whispering)</em>", moses)
+        self.assertEqual(self.css_properties(".yellow")["color"],
+                         self.css_properties(".source-e")["color"])
+        self.assertEqual(self.css_properties(".dialogue-moses")["font-weight"], "400")
+        self.assertEqual(self.css_properties(".english.source-e")["font-weight"], "700")
+        # Exercise every dialogue wrapper in the current manuscript, including
+        # multiline speeches and the dialogue after the numbered fragments.
+        source = build.strip_comments((build.ROOT / "01-genesis/apocrypha.tex").read_text())
+        for name, cls in (("ApocryphonMosesDialogue", "yellow dialogue-moses"),
+                          ("ApocryphonYHWHDialogue", "annotation-b")):
+            for match in re.finditer(r"\\" + name + r"\s*(?=\{)", source):
+                body, _ = build.group(source, match.end())
+                self.assertIn(cls, build.tex_to_markdown("\\" + name + "{" + body + "}"))
+
+    def test_generic_paleo_inherits_foreground_and_explicit_sources_keep_colour(self):
+        source = (build.ROOT / "01-genesis/apocrypha.tex").read_text()
+        intro = build.render_apocrypha(source).split("### Apocryphon", 1)[0]
+        for letter in ("ה", "א"):
+            self.assertIn(f'<span class="paleo" lang="he" dir="rtl">{letter}</span>', intro)
+        self.assertNotIn("color", self.css_properties(".paleo"))
+        for command in ("paleo", "Paleo"):
+            rendered = build.tex_to_markdown("\\" + command + "{אב}")
+            self.assertIn('class="paleo" lang="he" dir="rtl"', rendered)
+            self.assertNotIn("source-j", rendered)
+        self.assertIn("color", self.css_properties(".source-j"))
+        self.assertIn("source-j", build.tex_to_markdown(r"\hJ{אב}"))
+
+    def test_source_traits_do_not_imply_priesthood_and_options_compose_in_order(self):
+        for macro, color in (("Mushite", "yellow"), ("Aaronid", "blue")):
+            plain = build.tex_to_markdown("\\" + macro + "{Words}")
+            self.assertIn(f'class="source-decoration {color}"', plain)
+            self.assertNotIn("font-weight", plain)
+            self.assertNotIn("font-weight", self.css_properties("." + color))
+            self.assertNotIn("data-source", plain)
+            priest = build.tex_to_markdown("\\" + macro + "[priest]{Words}")
+            self.assertIn('style="font-weight: 700"', priest)
+            regular = build.tex_to_markdown("\\" + macro + "[priest,nopriest]{Words}")
+            self.assertIn('style="font-weight: 400"', regular)
+        for options, weight in (("priest,nopriest", "400"), ("nopriest,priest", "700")):
+            rendered = build.tex_to_markdown("\\SourceDecorate[mushite," + options + "]{Words}")
+            self.assertIn("yellow", rendered)
+            self.assertIn(f'font-weight: {weight}', rendered)
+        self.assertIn("font-weight: 700", build.tex_to_markdown(r"\DeuterA{Dtr1}"))
+        self.assertIn("font-weight: 400", build.tex_to_markdown(r"\DeuterB[nopriest]{Dtr2}"))
+        redactor = build.tex_to_markdown(r"\Aaronid[redactor,nopriest]{R}")
+        self.assertIn("blue decorator-redactor", redactor)
+        self.assertIn("font-weight: 400", redactor)
+        self.assertIn("decorator-ezekiel", build.tex_to_markdown(r"\Aaronid[ezekiel]{Ezekiel}"))
+        nested = build.tex_to_markdown(r"\Priest{\Mushite{E}}")
+        self.assertIn('style="font-weight: 700"', nested)
+        self.assertIn('class="source-decoration yellow"', nested)
+        paragraphs = build.tex_to_markdown("\\Mushite{First.\n\nSecond.}")
+        self.assertIn('<div class="source-decoration yellow">', paragraphs)
+        self.assertNotIn('<span class="source-decoration', paragraphs)
+
+    def test_detached_and_recursive_notes_share_body_prose_size(self):
+        body = self.css_properties(".verse")
+        for selector in (".apocrypha", "section.footnotes"):
+            props = self.css_properties(selector)
+            self.assertEqual(props["font-size"], body["font-size"])
+            self.assertEqual(props["line-height"], body["line-height"])
+        for selector in (".footnote-voice", ".nested-footnote"):
+            self.assertNotIn("font-size", self.css_properties(selector))
+
+    @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is needed for note section fixtures")
+    def test_pandoc_detaches_note_sections_from_scaled_prose_containers(self):
+        manuscript = ("::: {.verse}\n\n" + build.tex_to_markdown(
+            r"Verse\footnote{Ordinary note.}\fB{Red note.}") + "\n\n:::\n\n"
+            "::: {.apocrypha}\n\n" + build.tex_to_markdown(
+            r"Apocryphon\fC{Blue note.\recursivefootnote{Recursive note.}}") + "\n\n:::")
+        result = subprocess.run(
+            ["pandoc", "--from=" + build.PANDOC_READER, "--to=html5"],
+            input=manuscript, text=True, capture_output=True, check=True,
+        ).stdout
+        root = build.ET.fromstring("<body>" + result + "</body>")
+        notes = [node for node in root if "footnotes" in node.get("class", "").split()]
+        self.assertEqual(len(notes), 1)
+        self.assertEqual(notes[0].tag, "section")
+        self.assertEqual(len(notes[0].findall(".//li")), 3)
+        for container in root:
+            if {"verse", "apocrypha"} & set(container.get("class", "").split()):
+                self.assertFalse(any("footnotes" in node.get("class", "").split()
+                                     for node in container.iter()))
+        self.assertIn("Recursive note.", "".join(notes[0].itertext()))
+
     def test_genesis_48_artwork_replaces_scenes_and_preserves_prose(self):
         source = (build.ROOT / "01-genesis/48.tex").read_text(encoding="utf-8")
         rendered = {}
@@ -447,6 +558,94 @@ class ConversionTests(unittest.TestCase):
         self.assertEqual(len(navmap), 50)
         self.assertEqual(rendered.count('<navPoint '), 50)
 
+    @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is needed for section fixtures")
+    def test_packaged_navigation_reads_real_pandoc_sections_without_building_an_epub(self):
+        # Generate only a small HTML fixture. This never invokes the book
+        # builder or Pandoc's EPUB writer.
+        manuscript = ("# Authors {.front-heading}\n\nFront matter.\n\n"
+                      "# Genesis {#book-genesis .book-title}\n\n"
+                      "## Genesis 1 {#genesis-1 .chapter-title}\n\nVerse.\n\n"
+                      "## Genesis 2 {#genesis-2 .chapter-title}\n\nVerse.\n\n"
+                      "## Apocrypha {#genesis-apocrypha .chapter-title}\n\nProse.")
+        body = subprocess.run(
+            ["pandoc", "--from=" + build.PANDOC_READER, "--to=html5", "--standalone",
+             "--section-divs", "--metadata=title:Fixture"],
+            input=manuscript, text=True, capture_output=True, check=True,
+        ).stdout
+        expected = {"genesis-1", "genesis-2"}
+        self.assertEqual(build.numbered_chapter_ids(body), expected)
+        ns = "{http://www.w3.org/1999/xhtml}"
+        parsed = build.ET.fromstring(body)
+        self.assertTrue(all("id" not in node.attrib for node in parsed.iter(ns + "h2")))
+        links = ''.join(f'<li><a href="body.xhtml#{key}">{label}</a></li>' for key, label in (
+            ("authors", "Authors"), ("genesis-1", "Genesis 1"),
+            ("genesis-2", "Genesis 2"), ("genesis-apocrypha", "Apocrypha")))
+        # Tokens, quote style, namespace prefix, attribute order and multiple
+        # nav elements must not affect discovery or erase unrelated nav.
+        nav = ("<html xmlns='http://www.w3.org/1999/xhtml' xmlns:e='http://www.idpf.org/2007/ops'>"
+               "<body><nav e:type='landmarks'><ol><li><a href='body.xhtml'>Start</a></li></ol></nav>"
+               "<nav id='reader-toc' e:type='frontmatter toc'><h1>Contents</h1><ol><li>Genesis<ol>"
+               + links + "</ol></li></ol></nav>"
+               "<nav e:type='page-list'><ol><li><a href='body.xhtml#genesis-1'>1</a></li></ol></nav>"
+               "</body></html>")
+        ncx = ('<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/"><head>'
+               '<meta name="dtb:depth" content="2"/></head><navMap><navPoint>'
+               '<navLabel><text>Genesis</text></navLabel><content src="body.xhtml#book-genesis"/>'
+               + ''.join(f'<navPoint><navLabel><text>Genesis {i}</text></navLabel>'
+                         f'<content src="body.xhtml#genesis-{i}"/></navPoint>' for i in (1, 2))
+               + '</navPoint></navMap></ncx>')
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = Path(temp) / "navigation-fixture.zip"
+            with zipfile.ZipFile(fixture, "w") as archive:
+                archive.writestr("EPUB/body.xhtml", body)
+                archive.writestr("EPUB/nav.xhtml", nav)
+                archive.writestr("EPUB/toc.ncx", ncx)
+            build.postprocess_epub(fixture)
+            with zipfile.ZipFile(fixture) as archive:
+                rewritten = archive.read("EPUB/nav.xhtml").decode()
+                reader_nav = build.ET.fromstring(rewritten).find(".//" + ns + "nav[@id='reader-toc']")
+                self.assertEqual(len(list(reader_nav.iter(ns + "ol"))), 1)
+                self.assertEqual([a.get("href") for a in reader_nav.iter(ns + "a")],
+                                 ["body.xhtml#genesis-1", "body.xhtml#genesis-2"])
+                self.assertNotIn("Authors", rewritten)
+                self.assertNotIn("Apocrypha", rewritten)
+                self.assertIn("Start", rewritten)
+                self.assertIn('epub:type="page-list"', rewritten)
+                self.assertIn("Contents", rewritten)
+                self.assertEqual(archive.read("EPUB/body.xhtml").decode(), body)
+                legacy = archive.read("EPUB/toc.ncx").decode()
+                self.assertEqual(legacy.count('<navPoint '), 2)
+                self.assertIn('name="dtb:depth" content="1"', legacy)
+            # Running cleanup again must leave navigation unchanged.
+            build.postprocess_epub(fixture)
+            with zipfile.ZipFile(fixture) as archive:
+                self.assertEqual(archive.read("EPUB/nav.xhtml").decode(), rewritten)
+                self.assertEqual(archive.read("EPUB/toc.ncx").decode(), legacy)
+
+    def test_reader_navigation_rejects_missing_or_duplicate_chapters(self):
+        for targets in ([], ["genesis-1"], ["genesis-1", "genesis-1", "genesis-2"]):
+            with self.subTest(targets=targets):
+                links = ''.join(f'<li><a href="body.xhtml#{key}">{key}</a></li>' for key in targets)
+                nav = ('<html xmlns="http://www.w3.org/1999/xhtml" xmlns:e="http://www.idpf.org/2007/ops">'
+                       '<nav e:type="toc"><ol>' + links + '</ol></nav></html>')
+                with self.assertRaisesRegex(ValueError, "every numbered chapter exactly once"):
+                    build.chapter_navigation(nav, {"genesis-1", "genesis-2"})
+
+    def test_chapter_discovery_supports_bare_headings_and_rejects_no_destinations(self):
+        body = ('<html xmlns="http://www.w3.org/1999/xhtml"><body>'
+                '<h2 class="chapter-title" id="genesis-1">Genesis 1</h2>'
+                '<h2 class="chapter-title" id="genesis-apocrypha">Apocrypha</h2>'
+                '<h1 class="front-heading" id="notice-2">Notice</h1></body></html>')
+        self.assertEqual(build.numbered_chapter_ids(body), {"genesis-1"})
+        with tempfile.TemporaryDirectory() as temp:
+            fixture = Path(temp) / "missing-chapters.zip"
+            with zipfile.ZipFile(fixture, "w") as archive:
+                archive.writestr("EPUB/body.xhtml", '<html xmlns="http://www.w3.org/1999/xhtml"/>')
+            before = fixture.read_bytes()
+            with self.assertRaisesRegex(ValueError, "no numbered chapter destinations"):
+                build.postprocess_epub(fixture)
+            self.assertEqual(fixture.read_bytes(), before)
+
     def test_front_matter_omits_alphabet_history_page(self) -> None:
         matter = "\n".join(build.front_matter([], {}, "Genesis"))
         self.assertNotIn("The History of the Alphabet", matter)
@@ -481,14 +680,14 @@ class ConversionTests(unittest.TestCase):
 
     def test_front_matter_prose_matches_body_scale(self) -> None:
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
-        self.assertIn(".verse { font-size: .82em", stylesheet)
+        self.assertEqual(self.css_properties(".verse")["font-size"], ".82em")
         self.assertIn(".contents-list { font-size: .82em", stylesheet)
         self.assertIn(".source-legend {", stylesheet)
         self.assertIn("font-size: .82em;", stylesheet)
         # The nested wrapper must not shrink an already scaled source legend.
         self.assertIn(".font-legend { font-size: 1em; }", stylesheet)
         self.assertIn(".book-list { font-size: 1em; }", stylesheet)
-        self.assertIn(".apocrypha { font-size: .82em;", stylesheet)
+        self.assertEqual(self.css_properties(".apocrypha")["font-size"], ".82em")
 
     def test_source_keys_reflow_without_print_line_breaks(self):
         for command in ("SourceLegendPage", "PrimarySourceFontsPage", "PrimevalSourceFontsPage"):

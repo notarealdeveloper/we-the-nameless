@@ -181,6 +181,10 @@ LEGACY_LTR_CODEPOINT_SOURCE_KEYS = {"E", "JE", "RJE", "Proto", "ProtoA", "ProtoF
 # source face/colour.
 COMMENTARY = {
     "aA": "annotation-a", "aB": "annotation-b", "aC": "annotation-c",
+    # Dialogue voices are inks, not complete source profiles. Moses keeps E's
+    # hue without its priestly weight; YHWH uses the same red ink as aB.
+    "ApocryphonMosesDialogue": "yellow dialogue-moses",
+    "ApocryphonYHWHDialogue": "annotation-b",
     "aJ": "source source-j english", "aE": "source source-e english",
     "aP": "annotation-p", "aDtrA": "source source-dtra english",
     "aDtrB": "source source-dtrb english", "aDtn": "source source-dtn english",
@@ -227,6 +231,47 @@ COLOR_INLINE = {
     "cY": "yellow", "cYellow": "yellow", "cGray": "gray", "cGrey": "gray",
     "hlA": "highlight-a", "hlB": "highlight-b", "hlC": "highlight-c",
 }
+
+SOURCE_DECORATORS = {
+    "Priest": "priest", "Levite": "levite", "Mushite": "mushite", "Aaronid": "aaronid",
+    "DeuterA": "dtr1", "DeuterB": "dtr2", "DeuterN": "dtn",
+    "Jeremiah": "jeremiah", "Ezekiel": "ezekiel",
+    "DeuteronomistA": "dtr1", "DeuteronomistB": "dtr2", "DeuteronomicLaw": "dtn",
+}
+
+
+def decorate_source(content: str, options: list[str]) -> str:
+    """Compose master.tex's source traits without applying a full e* profile."""
+    colors = {
+        "mushite": "yellow", "aaronid": "blue", "yahwist": "green",
+        "dtr1": "source-dtra", "dtr2": "source-dtrb", "dtn": "source-dtn",
+        "jeremiah": "decorator-jeremiah", "ezekiel": "decorator-ezekiel",
+        "levite": "decorator-levite", "record": "gray", "records": "gray",
+        "other": "source-other",
+    }
+    color, highlight = "", ""
+    styles = {}
+    # Like SourceDecorate's TeX clist, later options override earlier traits.
+    for option in map(str.strip, options):
+        if option in colors:
+            color = colors[option]
+        if option in {"priest", "bold", "dtr1", "dtr2"}:
+            styles["font-weight"] = "700"
+        elif option in {"plain", "regular", "native", "nopriest", "nobold", "yahwist", "other"}:
+            styles["font-weight"] = "400"
+        if option in {"poetry", "italic"}:
+            styles["font-style"] = "italic"
+        elif option in {"noitalic", "other"}:
+            styles["font-style"] = "normal"
+        if option in {"mono", "law"}:
+            styles["font-family"] = "monospace"
+        if option in {"redactor", "bg"}:
+            highlight = "decorator-redactor"
+    classes = " ".join(value for value in ("source-decoration", color, highlight) if value)
+    style = ' style="' + "; ".join(f"{key}: {value}" for key, value in styles.items()) + '"' if styles else ""
+    if "\n\n" in content or any(marker in content for marker in ("<div ", "<table", "<figure", "WTNTABLERUN")):
+        return f'\n\n<div class="{classes}"{style}>\n\n{content}\n\n</div>\n\n'
+    return f'<span class="{classes}"{style}>{content}</span>'
 
 MATH_SYMBOLS = {
     "sim": "∼", "approx": "≈", "times": "×", "cdot": "·",
@@ -1071,10 +1116,7 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             out.append(f'<span class="glyph-mirror">{rendered}</span>')
             i = end
             continue
-        profile_aliases = {"Mushite": "eE", "Aaronid": "eP", "DeuterA": "eDtrA",
-                           "DeuterB": "eDtrB", "Jeremiah": "eDtrB",
-                           "ApocryphonMosesDialogue": "eE", "ApocryphonYHWHDialogue": "eR"}
-        src = source_class(profile_aliases.get(name, name))
+        src = source_class(name)
         if src:
             language, key = src
             attrs = ' lang="he" dir="rtl"' if language == "hebrew" else ""
@@ -1153,15 +1195,10 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 out.append(f"[{tex_to_markdown(label).strip()}]({body})")
             else:
                 out.append(body)
-        elif name == "Priest":
-            out.append(f"<strong>{rendered}</strong>")
-        elif name == "SourceDecorate":
-            options = (optional_value or "").split(",")
-            cls = next((cls for key, cls in (("dtr1", "source-dtra"), ("dtr2", "source-dtrb"),
-                       ("aaronid", "source-p")) if key in options), "")
-            if "priest" in options:
-                rendered = "<strong>" + rendered + "</strong>"
-            out.append(f'<span class="source {cls}">{rendered}</span>')
+        elif name == "SourceDecorate" or name in SOURCE_DECORATORS:
+            options = [SOURCE_DECORATORS[name]] if name in SOURCE_DECORATORS else []
+            options += (optional_value or "").split(",")
+            out.append(decorate_source(rendered, options))
         elif name in LANGUAGE_INLINE:
             cls, language, direction = LANGUAGE_INLINE[name]
             out.append(
@@ -1630,6 +1667,17 @@ def make_markdown(path: Path, selected_book: str | None = None, *, content=None,
     return chapter_count, verse_count
 
 
+def numbered_chapter_ids(document: str) -> set[str]:
+    """Read chapter destinations from either Pandoc sections or bare headings."""
+    ns = "{http://www.w3.org/1999/xhtml}"
+    return {
+        element.get("id") for element in ET.fromstring(document).iter()
+        if element.tag in {ns + "section", ns + "h2"}
+        and "chapter-title" in element.get("class", "").split()
+        and re.search(r"-\d+$", element.get("id", ""))
+    }
+
+
 def chapter_navigation(document: str, chapter_ids: set[str], *, ncx: bool = False) -> str:
     """Keep numbered chapters as a flat reader TOC, preserving other navigation."""
     root = ET.fromstring(document)
@@ -1642,28 +1690,44 @@ def chapter_navigation(document: str, chapter_ids: set[str], *, ncx: bool = Fals
                 continue
             label = point.find(ns + "navLabel/" + ns + "text")
             points.append((content.get("src"), "".join(label.itertext())))
-        body = "".join(
-            f'<navPoint id="navPoint-{i}" playOrder="{i}"><navLabel><text>{html.escape(label)}</text>'
-            f'</navLabel><content src="{html.escape(href, quote=True)}" /></navPoint>'
-            for i, (href, label) in enumerate(points, 1)
-        )
-        return re.sub(r"(<navMap\b[^>]*>).*?(</navMap>)", lambda m: m[1] + body + m[2], document, flags=re.DOTALL)
-    ns = "{http://www.w3.org/1999/xhtml}"
-    for nav in root.iter(ns + "nav"):
-        if "toc" not in nav.get("{http://www.idpf.org/2007/ops}type", "").split():
-            continue
-        links = [a for a in nav.iter(ns + "a") if a.get("href", "").split("#")[-1] in chapter_ids]
-        body = '<ol class="toc">' + "".join(
-            f'<li><a href="{html.escape(a.get("href"), quote=True)}">{html.escape("".join(a.itertext()))}</a></li>'
-            for a in links
-        ) + '</ol>'
-        def replace_toc(match):
-            block = match[0]
-            if not re.search(r'epub:type="[^" ]*\btoc\b', block):
-                return block
-            return re.sub(r"<ol\b.*</ol>", lambda _: body, block, flags=re.DOTALL)
-        return re.sub(r"<nav\b.*?</nav>", replace_toc, document, flags=re.DOTALL)
-    return document
+        navmap = root.find(ns + "navMap")
+        if navmap is None:
+            raise ValueError("NCX navigation is missing navMap")
+        navmap[:] = []
+        for i, (href, label) in enumerate(points, 1):
+            point = ET.SubElement(navmap, ns + "navPoint", id=f"navPoint-{i}", playOrder=str(i))
+            ET.SubElement(ET.SubElement(point, ns + "navLabel"), ns + "text").text = label
+            ET.SubElement(point, ns + "content", src=href)
+        for meta in root.iter(ns + "meta"):
+            if meta.get("name") == "dtb:depth":
+                meta.set("content", "1")
+        destinations = [href.split("#")[-1] for href, _ in points]
+    else:
+        ns = "{http://www.w3.org/1999/xhtml}"
+        destinations = []
+        for nav in root.iter(ns + "nav"):
+            if "toc" not in nav.get("{http://www.idpf.org/2007/ops}type", "").split():
+                continue
+            links = [a for a in nav.iter(ns + "a") if a.get("href", "").split("#")[-1] in chapter_ids]
+            listing = ET.Element(ns + "ol", {"class": "toc"})
+            for link in links:
+                href = link.get("href")
+                destinations.append(href.split("#")[-1])
+                ET.SubElement(ET.SubElement(listing, ns + "li"), ns + "a", href=href).text = "".join(link.itertext())
+            old_lists = nav.findall(ns + "ol")
+            if not old_lists:
+                raise ValueError("EPUB table of contents is missing its list")
+            position = list(nav).index(old_lists[0])
+            for old in old_lists:
+                nav.remove(old)
+            nav.insert(position, listing)
+    # Never silently publish an empty or incomplete TOC if Pandoc's markup
+    # changes. Front matter and book nodes must not hide missing chapters.
+    if set(destinations) != chapter_ids or len(destinations) != len(chapter_ids):
+        raise ValueError("reader TOC must contain every numbered chapter exactly once")
+    ET.register_namespace("", ns[1:-1])
+    ET.register_namespace("epub", "http://www.idpf.org/2007/ops")
+    return '<?xml version="1.0" encoding="UTF-8"?>\n' + ET.tostring(root, encoding="unicode")
 
 
 def postprocess_epub(path: Path) -> None:
@@ -1679,11 +1743,9 @@ def postprocess_epub(path: Path) -> None:
     chapter_ids = set()
     for info, payload in entries:
         if info.filename.endswith((".xhtml", ".html")):
-            for heading in re.findall(r'<h2\b[^>]*>', payload.decode("utf-8")):
-                if re.search(r'class="[^"]*\bchapter-title\b', heading):
-                    fragment = re.search(r'\bid="([^"]+)"', heading)
-                    if fragment and re.search(r"-\d+$", fragment[1]):
-                        chapter_ids.add(fragment[1])
+            chapter_ids.update(numbered_chapter_ids(payload.decode("utf-8")))
+    if not chapter_ids:
+        raise ValueError("EPUB has no numbered chapter destinations")
     rewritten: list[tuple[zipfile.ZipInfo, bytes]] = []
     for info, payload in entries:
         if info.filename.endswith("content.opf"):
@@ -1706,7 +1768,10 @@ def postprocess_epub(path: Path) -> None:
         if not info.filename.endswith((".xhtml", ".html")):
             rewritten.append((info, payload))
             continue
-        document = chapter_navigation(payload.decode("utf-8"), chapter_ids) if b'epub:type="toc"' in payload else payload.decode("utf-8")
+        document = payload.decode("utf-8")
+        if any("toc" in node.get("{http://www.idpf.org/2007/ops}type", "").split()
+               for node in ET.fromstring(document).iter()):
+            document = chapter_navigation(document, chapter_ids)
         # Pandoc rewrites Markdown links across split EPUB chapters, but leaves
         # hrefs in our semantic raw-HTML contents lists untouched. Resolve all
         # fragment-only links against the packaged documents after splitting.

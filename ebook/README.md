@@ -169,6 +169,15 @@ their classes onto enclosing sections. All English headings and title lettering
 use serif. Source-key descriptions flow left-aligned without the print column's
 forced line breaks. The apocrypha index is left-aligned, and each apocryphon
 starts on a new page with its contents destination attached to the title.
+Detached endnotes share the verse/apocrypha prose-size rule, including recursive
+notes retained inside a parent note. Generic `\paleo`/`\Paleo` helpers select a
+script face and inherit the surrounding foreground; source colours belong to
+explicit source profiles such as `\hJ`. Apocryphon dialogue has independent
+speaker inks: YHWH uses `\aB` red, while Moses uses Elohist yellow at normal
+weight. Explicit source edits inside either speaker retain their own styles.
+The standalone Mushite/Aaronid and other source-trait helpers also compose
+colour, priestly weight, and highlighting independently, respecting the order
+of their optional decorations instead of substituting complete source profiles.
 Publisher fonts are embedded only where script identity
 or repertoire is editorial information: the project's Hebrew and historical
 Paleo-Hebrew faces plus the display face. Confirm redistribution rights before
@@ -181,7 +190,9 @@ identity, so the text remains intelligible if a reader suppresses colour.
 ## Validation and QA
 
 The October ebook fixes were checked with renderer regression tests and isolated
-Pandoc note fixtures, without building a PDF or EPUB. Adjacent-note regression
+Pandoc HTML fixtures, without building a PDF or EPUB. Navigation fixtures also
+exercise ZIP postprocessing with real Pandoc section IDs and synthetic EPUB/NCX
+navigation. Adjacent-note regression
 coverage scans verse fragments throughout the manuscript, including nested book
 directories. Markdown superscript shorthand is disabled in the packaging reader
 because it otherwise consumes adjacent inline footnotes; explicit HTML
@@ -233,6 +244,11 @@ Fixed/absolute positioning, viewport-dependent normal layout, negative table
 margins, nested tables, and fixed-layout pagination are avoided.
 
 The visible contents intentionally follows the print book's editorial chapter
-index; the EPUB nav exposes the same book/chapter hierarchy to readers. Page
+index. The reader TOC in both EPUB navigation and legacy NCX is a flat list of
+numbered chapters, omitting front matter and enclosing book nodes. Chapter
+destinations may live on Pandoc's enclosing sections or on headings; cleanup
+checks that every discovered numbered chapter appears exactly once and fails
+if no chapter destinations are found. Other navigation, such as landmarks and
+page lists, is preserved. Page
 numbers, running heads, literal margins, and two-column paper geometry are
 intentionally omitted because they do not survive reflow.

@@ -41,7 +41,8 @@ h1.front-heading { break-before: page; page-break-before: always; font-size: 1.1
 h1.alphabet-heading { visibility: hidden; height: 0; margin: 0; }
 .alphabet-page { padding: 25% 0; text-align: center; }
 .alphabet { font-size: 1em; line-height: 1.45; margin: .35em 0; text-align: justify; }
-.paleo { font-family: "WTN Paleo J", serif; color: #007800 !important; }
+/* A script helper does not imply J's source colour. */
+.paleo { font-family: "WTN Paleo J", serif; }
 .hebrew-david { font-family: "WTN Hebrew David", serif; }
 .hebrew-ezra { font-family: "WTN Hebrew Ezra", serif; color: #0046aa !important; }
 .contents-list { font-size: .82em; line-height: 1.45; }
@@ -68,7 +69,10 @@ h1.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidd
  */
 h1.book-title { text-align: center; page-break-before: always; break-before: page; font-size: 3.2em; font-variant: small-caps; }
 h2.chapter-title { page-break-before: always; break-before: page; font-family: serif; font-size: 2.2em; text-align: center; }
-.verse { font-size: .82em; line-height: 1.45; margin: .75em 0 1.6em; break-inside: avoid-page; page-break-inside: avoid; }
+/* Pandoc detaches notes from verse/apocrypha containers. Apply the same prose
+ * scale once to each region, including the endnote section. */
+.verse, .apocrypha, section.footnotes { font-size: .82em; line-height: 1.45; }
+.verse { margin: .75em 0 1.6em; break-inside: avoid-page; page-break-inside: avoid; }
 .verse-reference {
   border-top: 1px solid #6e6e6e !important; border-bottom: 1px solid #6e6e6e !important;
   font-size: 1.1em; font-weight: normal; text-align: center;
@@ -94,7 +98,8 @@ h2.chapter-title { page-break-before: always; break-before: page; font-family: s
 .annotation-rje { color: #006400 !important; background: #e1f5e1 !important; }
 .align-start { text-align: left; text-align: start; } .align-center { text-align: center; } .align-end { text-align: right; text-align: end; }
 .source-j, .source-je, .source-jp, .source-jpp, .source-jm { color: #008700 !important; }
-.source-e, .source-ep, .source-epp { color: #b98c00 !important; font-weight: 700; }
+.source-e, .source-ep, .source-epp, .yellow { color: #b98c00 !important; }
+.source-e, .source-ep, .source-epp { font-weight: 700; }
 .source-p, .source-pr, .source-pp { color: #0046aa !important; font-weight: 700; }
 .source-r, .source-diff { color: #0046aa !important; background-color: #e0e8f5 !important; }
 .source-pr { background-color: #e0e8f5 !important; }
@@ -169,7 +174,13 @@ img, svg { max-width: 100%; height: auto; }
 .definition-a { color: #000 !important; } .definition-b { color: #820000 !important; }
 .definition-c { color: #0046aa !important; }
 .red { color: #820000 !important; } .blue { color: #0046aa !important; } .green { color: #008700 !important; }
-.yellow { color: #b98c00 !important; } .gray { color: #6e6e6e !important; }
+.gray { color: #6e6e6e !important; }
+.dialogue-moses { font-weight: 400; }
+/* Standalone source traits: colour never supplies priestly weight. */
+.decorator-levite { color: #3c4437 !important; }
+.decorator-jeremiah { color: #6c3b00 !important; }
+.decorator-ezekiel { color: #5281c5 !important; }
+.decorator-redactor { background-color: #e0e8f5 !important; }
 .highlight-a { background: rgba(90, 90, 90, .13); }
 .highlight-b { background: rgba(138, 32, 32, .13); }
 .highlight-c { background: rgba(21, 95, 168, .13); }
@@ -186,7 +197,7 @@ th { font-weight: bold; }
 .footnote-ref, .footnote-back { color: inherit; text-decoration: none; }
 .footnote-ref { font-size: .72em; line-height: 0; vertical-align: super; margin: 0; padding: 0; }
 .footnote-voice { color: inherit; }
-.nested-footnote { font-size: .92em; font-style: italic; }
+.nested-footnote { font-style: italic; }
 .footnote-a { color: #000 !important; }
 .footnote-b { color: #820000 !important; }
 .footnote-c { color: #0046aa !important; }
@@ -214,8 +225,7 @@ th { font-weight: bold; }
 .legend-description > :first-child { margin-top: 0; }
 .legend-description > :last-child { margin-bottom: 0; }
 
-/* Apply the main verse's prose scale once, at the apocrypha container. */
-.apocrypha { font-size: .82em; line-height: 1.45; text-align: left; }
+.apocrypha { text-align: left; }
 .apocrypha h3, .apocrypha h4 { font-size: 1em; }
 .apocrypha-contents, .apocrypha-contents li { text-align: left; }
 .apocrypha-contents ul { padding-left: 1.4em; }
