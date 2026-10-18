@@ -139,7 +139,10 @@ h2.chapter-title { page-break-before: always; break-before: page; font-family: s
 .indent-1, .indent-2, .indent-3, .indent-4, .indent-5, .indent-6 { display: inline-block; }
 .indent-1 { width: 1em; } .indent-2 { width: 2em; } .indent-3 { width: 3em; }
 .indent-4 { width: 4em; } .indent-5 { width: 5em; } .indent-6 { width: 6em; }
-.redacted { background: #0046aa; color: transparent; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.redacted { box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+/* Match both inks, overriding source colours even inside the redaction.
+ * The repeated class gives descendants precedence over two-class source rules. */
+.redacted, .redacted.redacted * { background: #0046aa !important; color: #0046aa !important; }
 blockquote { margin: .8em 1em; }
 .quotation, .embedded-note {
   display: block; margin: .65em 1em; text-align: left;
