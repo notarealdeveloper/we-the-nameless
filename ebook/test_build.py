@@ -426,12 +426,32 @@ class ConversionTests(unittest.TestCase):
         self.assertIn("<math", rendered)
         self.assertNotIn("<annotation", rendered)
 
-    def test_front_matter_contains_named_alphabet_history_page(self) -> None:
+    def test_reader_navigation_lists_only_flat_numbered_chapters(self):
+        ids = {f"genesis-{i}" for i in range(1, 51)}
+        links = ''.join(f'<li><a href="body.xhtml#{key}">{key}</a></li>' for key in sorted(ids))
+        nav = ('<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">'
+               '<nav epub:type="toc"><ol><li><a href="front.xhtml#authors">Authors</a><ol>'
+               + links + '<li><a href="body.xhtml#genesis-apocrypha">Apocrypha</a></li></ol></li></ol></nav></html>')
+        rendered = build.chapter_navigation(nav, ids)
+        self.assertEqual(rendered.count('<ol'), 1)
+        self.assertEqual(rendered.count('<a '), 50)
+        self.assertNotIn('Authors', rendered)
+        self.assertNotIn('Apocrypha', rendered)
+        points = ''.join(f'<navPoint><navLabel><text>{key}</text></navLabel><content src="body.xhtml#{key}"/></navPoint>' for key in sorted(ids))
+        ncx = ('<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/"><navMap><navPoint>'
+               '<navLabel><text>Genesis</text></navLabel><content src="body.xhtml#book-genesis"/>'
+               + points + '</navPoint></navMap></ncx>')
+        rendered = build.chapter_navigation(ncx, ids, ncx=True)
+        root = build.ET.fromstring(rendered)
+        navmap = root.find('{http://www.daisy.org/z3986/2005/ncx/}navMap')
+        self.assertEqual(len(navmap), 50)
+        self.assertEqual(rendered.count('<navPoint '), 50)
+
+    def test_front_matter_omits_alphabet_history_page(self) -> None:
         matter = "\n".join(build.front_matter([], {}, "Genesis"))
-        self.assertIn("# The History of the Alphabet", matter)
-        self.assertIn('class="alphabet-page"', matter)
+        self.assertNotIn("The History of the Alphabet", matter)
+        self.assertNotIn('class="alphabet-page"', matter)
         self.assertIn('<div class="title-book">Genesis</div>', matter)
-        self.assertIn('class="alphabet paleo" lang="he" dir="rtl"', matter)
         self.assertIn('class="source source-j hebrew" lang="he" dir="rtl"', matter)
         self.assertIn('class="source source-e hebrew" lang="he" dir="rtl"', matter)
         self.assertEqual(build.cover_path("none"), None)

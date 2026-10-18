@@ -18,6 +18,7 @@ import time
 import unicodedata
 import uuid
 import zipfile
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
@@ -1481,12 +1482,6 @@ def front_matter(
         '<div class="title-nameless">The Nameless</div>',
         f'<div class="title-book">{html.escape(edition_title)}</div>',
         '</section>', "",
-        '# The History of the Alphabet {.front-heading .alphabet-heading}', "",
-        '<div class="alphabet-page" dir="rtl" epub:type="frontmatter">',
-        '<p class="alphabet paleo" lang="he" dir="rtl">אבגדהוזחטיכלמנסעפצקרשת</p>',
-        '<p class="alphabet hebrew-david">אבגדהוזחטיכלמנסעפצקרשת</p>',
-        '<p class="alphabet hebrew-ezra">אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ</p>',
-        '</div>', "",
         '# Contents {#tableofcontents .front-heading}', "", *contents_sections, "",
         '# The Authors {.front-heading}', "",
         '<p class="authors-subtitle"><em>or</em><br/><span>We: The Nameless</span></p>',
@@ -1635,6 +1630,42 @@ def make_markdown(path: Path, selected_book: str | None = None, *, content=None,
     return chapter_count, verse_count
 
 
+def chapter_navigation(document: str, chapter_ids: set[str], *, ncx: bool = False) -> str:
+    """Keep numbered chapters as a flat reader TOC, preserving other navigation."""
+    root = ET.fromstring(document)
+    if ncx:
+        ns = "{http://www.daisy.org/z3986/2005/ncx/}"
+        points = []
+        for point in root.iter(ns + "navPoint"):
+            content = point.find(ns + "content")
+            if content is None or content.get("src", "").split("#")[-1] not in chapter_ids:
+                continue
+            label = point.find(ns + "navLabel/" + ns + "text")
+            points.append((content.get("src"), "".join(label.itertext())))
+        body = "".join(
+            f'<navPoint id="navPoint-{i}" playOrder="{i}"><navLabel><text>{html.escape(label)}</text>'
+            f'</navLabel><content src="{html.escape(href, quote=True)}" /></navPoint>'
+            for i, (href, label) in enumerate(points, 1)
+        )
+        return re.sub(r"(<navMap\b[^>]*>).*?(</navMap>)", lambda m: m[1] + body + m[2], document, flags=re.DOTALL)
+    ns = "{http://www.w3.org/1999/xhtml}"
+    for nav in root.iter(ns + "nav"):
+        if "toc" not in nav.get("{http://www.idpf.org/2007/ops}type", "").split():
+            continue
+        links = [a for a in nav.iter(ns + "a") if a.get("href", "").split("#")[-1] in chapter_ids]
+        body = '<ol class="toc">' + "".join(
+            f'<li><a href="{html.escape(a.get("href"), quote=True)}">{html.escape("".join(a.itertext()))}</a></li>'
+            for a in links
+        ) + '</ol>'
+        def replace_toc(match):
+            block = match[0]
+            if not re.search(r'epub:type="[^" ]*\btoc\b', block):
+                return block
+            return re.sub(r"<ol\b.*</ol>", lambda _: body, block, flags=re.DOTALL)
+        return re.sub(r"<nav\b.*?</nav>", replace_toc, document, flags=re.DOTALL)
+    return document
+
+
 def postprocess_epub(path: Path) -> None:
     """Apply fixes that require access to Pandoc's packaged EPUB."""
     with zipfile.ZipFile(path, "r") as source:
@@ -1645,6 +1676,14 @@ def postprocess_epub(path: Path) -> None:
             document = payload.decode("utf-8")
             for fragment in re.findall(r'\bid="([^"]+)"', document):
                 fragment_locations.setdefault(fragment, info.filename)
+    chapter_ids = set()
+    for info, payload in entries:
+        if info.filename.endswith((".xhtml", ".html")):
+            for heading in re.findall(r'<h2\b[^>]*>', payload.decode("utf-8")):
+                if re.search(r'class="[^"]*\bchapter-title\b', heading):
+                    fragment = re.search(r'\bid="([^"]+)"', heading)
+                    if fragment and re.search(r"-\d+$", fragment[1]):
+                        chapter_ids.add(fragment[1])
     rewritten: list[tuple[zipfile.ZipInfo, bytes]] = []
     for info, payload in entries:
         if info.filename.endswith("content.opf"):
@@ -1660,10 +1699,14 @@ def postprocess_epub(path: Path) -> None:
                     package = package.replace(f'{attribute}="{old}"', f'{attribute}="{new}"')
             rewritten.append((info, package.encode("utf-8")))
             continue
+        if info.filename.endswith(".ncx"):
+            document = chapter_navigation(payload.decode("utf-8"), chapter_ids, ncx=True)
+            rewritten.append((info, document.encode("utf-8")))
+            continue
         if not info.filename.endswith((".xhtml", ".html")):
             rewritten.append((info, payload))
             continue
-        document = payload.decode("utf-8")
+        document = chapter_navigation(payload.decode("utf-8"), chapter_ids) if b'epub:type="toc"' in payload else payload.decode("utf-8")
         # Pandoc rewrites Markdown links across split EPUB chapters, but leaves
         # hrefs in our semantic raw-HTML contents lists untouched. Resolve all
         # fragment-only links against the packaged documents after splitting.
