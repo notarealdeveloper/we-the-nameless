@@ -67,7 +67,9 @@ The reusable manuscript substitutions are read there too, including `Er` and
 the Reuben face. Midrash boundaries and RA/RB/RC redactor distinctions survive
 conversion. Canadian syllabics, Anatolian hieroglyphs, and the inline
 Proto-Sinaitic helper have embedded specialist fonts. The primeval font legend
-uses profile names as labels where a matching EPUB font sample is unavailable.
+includes historical alphabet specimens using the glyph-slot maps in
+`master.tex`. The Isaiah-scroll alphabet below each apocryphon title uses the
+same face and lowercase sequence as print.
 
 ## Source-to-EPUB mapping
 
@@ -159,8 +161,15 @@ and the page background remain reader-controlled.
 
 ## Type and color
 
-Normal prose uses the reading system's book face, size, line spacing, and
-foreground/background. Publisher fonts are embedded only where script identity
+Normal prose uses the reading system's serif book face and foreground/background.
+Front-matter prose and apocrypha use the same relative scale and line spacing as
+the main verses; containers apply that scale once. Heading type, hiding, and
+page-break rules target heading elements explicitly because Pandoc also copies
+their classes onto enclosing sections. All English headings and title lettering
+use serif. Source-key descriptions flow left-aligned without the print column's
+forced line breaks. The apocrypha index is left-aligned, and each apocryphon
+starts on a new page with its contents destination attached to the title.
+Publisher fonts are embedded only where script identity
 or repertoire is editorial information: the project's Hebrew and historical
 Paleo-Hebrew faces plus the display face. Confirm redistribution rights before
 adding any font.
@@ -171,8 +180,12 @@ identity, so the text remains intelligible if a reader suppresses colour.
 
 ## Validation and QA
 
-The October synchronization changes were checked with renderer regression tests
-and a small Pandoc HTML fixture, without building a PDF or EPUB. A fresh release
+The October ebook fixes were checked with renderer regression tests and isolated
+Pandoc note fixtures, without building a PDF or EPUB. Adjacent-note regression
+coverage scans verse fragments throughout the manuscript, including nested book
+directories. Markdown superscript shorthand is disabled in the packaging reader
+because it otherwise consumes adjacent inline footnotes; explicit HTML
+superscripts remain supported. A fresh release
 build and reading-system inspection are still needed before publication.
 
 

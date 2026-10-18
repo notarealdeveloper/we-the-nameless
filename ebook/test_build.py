@@ -5,6 +5,9 @@ from __future__ import annotations
 
 import unittest
 import tempfile
+import json
+import re
+import shutil
 from unittest.mock import patch
 import subprocess
 from pathlib import Path
@@ -95,12 +98,12 @@ class ConversionTests(unittest.TestCase):
     def test_genesis_apocrypha_print_pages_become_linked_contents(self):
         source = (build.ROOT / "01-genesis/apocrypha.tex").read_text(encoding="utf-8")
         rendered = build.render_apocrypha(source)
-        self.assertTrue(rendered.startswith("### Contents\n\n- [Publisher's Introduction]"))
+        self.assertTrue(rendered.startswith("### Contents\n\n::: {.apocrypha-contents}\n\n- [Publisher's Introduction]"))
         import re
         targets = re.findall(r"\]\(#(gen-apoc:[^)]+)\)", rendered)
         self.assertEqual(len(targets), 6)
         for target in targets:
-            self.assertEqual(rendered.count(f'id="{target}"'), 1)
+            self.assertEqual(rendered.count("{#" + target), 1)
         for debris in ("RuleColor", "4248", "0.75pt", "0.4pt", "=0pt", "[2]0.84", "#2[r]#1", "\nempty\n", "\nplain\n"):
             self.assertNotIn(debris, rendered)
         self.assertIn("### Publisher's Introduction", rendered)
@@ -113,7 +116,7 @@ class ConversionTests(unittest.TestCase):
             self.assertIn(f'src="img/comics/the-twelve-tribes-of-israel-comic-{number}.png"', rendered)
         # Only print preliminaries and label/heading markup may be replaced.
         body = source[source.index(r"\Apocrypha{Genesis}"):]
-        plain = lambda value: re.sub(r"<[^>]+>|\s+|[#*]", "", value)
+        plain = lambda value: re.sub(r"<[^>]+>|\s+|[#*]", "", re.sub(r" \{[#.][^}]+\}", "", value))
         original = build.tex_to_markdown(body)
         for target in targets:
             original = original.replace(target, "")
@@ -462,7 +465,111 @@ class ConversionTests(unittest.TestCase):
         self.assertIn(".contents-list { font-size: .82em", stylesheet)
         self.assertIn(".source-legend {", stylesheet)
         self.assertIn("font-size: .82em;", stylesheet)
-        self.assertIn(".font-legend { font-size: .82em; }", stylesheet)
+        # The nested wrapper must not shrink an already scaled source legend.
+        self.assertIn(".font-legend { font-size: 1em; }", stylesheet)
+        self.assertIn(".book-list { font-size: 1em; }", stylesheet)
+        self.assertIn(".apocrypha { font-size: .82em;", stylesheet)
+
+    def test_source_keys_reflow_without_print_line_breaks(self):
+        for command in ("SourceLegendPage", "PrimarySourceFontsPage", "PrimevalSourceFontsPage"):
+            rendered = "\n".join(build.author_legend(command))
+            self.assertNotIn("<br/>", rendered)
+            self.assertNotIn("align-center", rendered)
+        rendered = "\n".join(build.author_legend())
+        self.assertIn('same event </span> <span class="source source-rje english"', rendered)
+        self.assertIn("while others prefer to choose one", rendered)
+
+    def test_primeval_specimens_have_embedded_fonts_and_correct_glyph_slots(self):
+        rendered = "\n".join(build.author_legend("PrimevalSourceFontsPage"))
+        self.assertIn("Archaic songs, poetry, and blessings", rendered)
+        self.assertEqual(rendered.count('class="legend-label" dir="rtl"'), 6)
+        for profile, filename in {
+            "ProtoA": "proto-sinaitic-15.ttf", "ProtoC": "proto-sinaitic-15.ttf",
+            "ProtoE": "proto-sinaitic-13.ttf", "Proto": "08-bc10c-paleo-hebrew-tel-zayit.ttf",
+            "Records": "paleo-hebrew-mono.ttf", "PaleoM": "paleo-hebrew-ketef-hinnom-1.ttf",
+        }.items():
+            sample = build.legend_alphabet(profile)
+            self.assertIn(sample, rendered)
+            self.assertIn('lang="he" dir="rtl"', sample)
+            font = build.ROOT / "fonts" / filename
+            self.assertIn(font, build.FONT_FILES)
+            cmap = TTFont(font).getBestCmap()
+            text = re.sub(r"<[^>]+>", "", sample)
+            for char in text:
+                self.assertIn(ord(char), cmap, (profile, char))
+                self.assertNotEqual(cmap[ord(char)], ".notdef")
+
+    def test_heading_styles_do_not_scale_or_hide_enclosing_sections(self):
+        stylesheet = (build.HERE / "epub.css").read_text()
+        for cls in ("front-heading", "alphabet-heading", "visually-hidden", "apocryphon-title"):
+            self.assertNotRegex(stylesheet, r"(?m)^\." + cls + r"\s*\{")
+        self.assertIn("h1, h2, h3, h4, h5, h6 { font-family: serif; }", stylesheet)
+        self.assertIn(".title-we, .title-nameless, .title-book { font-family: serif;", stylesheet)
+        title_rule = re.search(r"h3\.apocryphon-title\s*\{([^}]+)\}", stylesheet)[1]
+        self.assertIn("page-break-before: always", title_rule)
+        self.assertIn("margin-top: 0", title_rule)
+
+    def test_apocryphon_titles_have_scroll_ornaments_and_page_destinations(self):
+        rendered = build.render_apocrypha((build.ROOT / "01-genesis/apocrypha.tex").read_text())
+        titles = re.findall(r"(?m)^### .*\{#(gen-apoc:[^ ]+) \.apocryphon-title\}", rendered)
+        self.assertEqual(len(titles), 5)
+        self.assertEqual(rendered.count('class="apocryphon-alphabet"'), len(titles))
+        self.assertNotIn('<span id="gen-apoc:', rendered)
+        decoration = build.apocryphon_alphabet()
+        self.assertIn('aria-hidden="true"', decoration)
+        font = build.ROOT / "fonts/dead-sea-scrolls-isaiah.ttf"
+        self.assertIn(font, build.FONT_FILES)
+        cmap = TTFont(font).getBestCmap()
+        for char in re.sub(r"<[^>]+>", "", decoration):
+            self.assertIn(ord(char), cmap)
+
+    def test_stylesheet_fonts_are_packaged_and_alphabets_can_wrap(self):
+        stylesheet = (build.HERE / "epub.css").read_text()
+        for filename in re.findall(r'url\("\.\./fonts/([^\"]+)"\)', stylesheet):
+            self.assertIn(build.ROOT / "fonts" / filename, build.FONT_FILES)
+        wrapping = re.search(r"\.legend-label, \.apocryphon-alphabet, \.alphabet\s*\{([^}]+)\}", stylesheet)[1]
+        self.assertIn("word-wrap: break-word", wrapping)
+        self.assertIn("overflow-wrap: anywhere", wrapping)
+
+    @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is needed for note parsing fixtures")
+    def test_adjacent_footnotes_throughout_manuscript_are_real_notes(self):
+        # Parse only affected verse fragments, never compile a book or EPUB.
+        fixtures, expected_notes, locations = [], 0, []
+        for directory in sorted(build.ROOT.glob("[0-9][0-9]-*")):
+            for path in sorted(directory.rglob("*.tex")):
+                for number, hebrew, english, commentary in build.parse_verses(path.read_text()):
+                    for region in (hebrew, english, commentary):
+                        if not re.search(r"\\(?:footnote|recursivefootnote|hangingfootnote|f[ABC]X?)\b", region):
+                            continue
+                        rendered = build.tex_to_markdown(region)
+                        if re.search(r"\]\s*\^\[", rendered):
+                            fixtures.append(rendered)
+                            expected_notes += rendered.count("^[")
+                            locations.append((path.relative_to(build.ROOT).as_posix(), number))
+        self.assertIn(("01-genesis/26.tex", "22"), locations)
+        result = subprocess.run(["pandoc", "--from=" + build.PANDOC_READER, "--to=json"],
+                                input="\n\n---\n\n".join(fixtures), capture_output=True, text=True, check=True)
+        def nodes(value):
+            if isinstance(value, dict):
+                yield value
+                for child in value.values():
+                    yield from nodes(child)
+            elif isinstance(value, list):
+                for child in value:
+                    yield from nodes(child)
+        ast = list(nodes(json.loads(result.stdout)))
+        self.assertEqual(sum(node.get("t") == "Note" for node in ast), expected_notes)
+        self.assertFalse(any(node.get("t") == "Superscript" for node in ast))
+
+    @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is needed for note parsing fixtures")
+    def test_adjacent_notes_keep_voices_and_explicit_superscripts(self):
+        rendered = build.tex_to_markdown(r"Word\footnote{First.}\fB{Second.}\fC{Third.} x\textsuperscript{2}")
+        result = subprocess.run(["pandoc", "--from=" + build.PANDOC_READER, "--to=html5"],
+                                input=rendered, capture_output=True, text=True, check=True).stdout
+        self.assertEqual(result.count('class="footnote-ref"'), 3)
+        self.assertIn('class="footnote-voice annotation-b"', result)
+        self.assertIn('class="footnote-voice annotation-c"', result)
+        self.assertIn("x<sup>2</sup>", result)
 
     def test_definition_list_has_markdown_block_boundaries(self) -> None:
         rendered = build.tex_to_markdown(

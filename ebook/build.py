@@ -29,6 +29,9 @@ from history_structure import expand_history, history_layers_as_parts
 MASTER = ROOT / "master.tex"
 OUTPUT = HERE / "we-the-nameless.epub"
 COVERS = ROOT / "img/covers"
+# Superscripts are emitted as semantic HTML. Pandoc's optional ^...^ syntax
+# otherwise consumes adjacent inline footnotes (^[one]^[two]) as a superscript.
+PANDOC_READER = "markdown+fenced_divs+footnotes+raw_html+markdown_in_html_blocks-superscript"
 
 # Publication identity must survive rebuilds.  Pandoc otherwise invents a new
 # UUID each time, which makes stores (notably Google Play Books) treat an
@@ -148,6 +151,9 @@ FONT_FILES = [
     ROOT / "fonts/noto-sans-canadian-aboriginal.ttf",
     ROOT / "fonts/noto-sans-anatolian-hieroglyphs.ttf",
     ROOT / "fonts/proto-sinaitic-15.ttf",
+    ROOT / "fonts/proto-sinaitic-13.ttf",
+    ROOT / "fonts/paleo-hebrew-ketef-hinnom-1.ttf",
+    ROOT / "fonts/dead-sea-scrolls-isaiah.ttf",
 ]
 
 SOURCE_NAMES = {
@@ -898,10 +904,28 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
         if name == "Apocrypha":
             i = end; continue  # The enclosing chapter owns this heading.
         if name == "ApocryphaAnchor":
-            out.append(f'\n\n<span id="{html.escape(body, quote=True)}"></span>\n\n')
+            following = re.match(r"\s*\\ApocryphaIntroduction\s*", text[end:])
+            introduction = group(text, end + following.end()) if following else None
+            if introduction:
+                title, end = introduction
+                out.append("\n\n### " + tex_to_markdown(title, compact=True)
+                           + " {#" + body + "}\n\n")
+            else:
+                out.append(f'\n\n<span id="{html.escape(body, quote=True)}"></span>\n\n')
+            i = end; continue
+        if name == "ApocryphaIntroduction":
+            out.append("\n\n### " + tex_to_markdown(body, compact=True) + "\n\n")
             i = end; continue
         if name == "Apocryphon":
-            out.append("\n\n### " + tex_to_markdown(body, compact=True).replace("<br/>", " — ") + "\n\n")
+            following = re.match(r"\s*(?:\\phantomsection\s*)?\\ApocryphaAnchor\s*", text[end:])
+            anchor = group(text, end + following.end()) if following else None
+            attributes = ".apocryphon-title"
+            if anchor:
+                target, end = anchor
+                attributes = "#" + target + " " + attributes
+            out.append("\n\n### " + tex_to_markdown(body, compact=True).replace("<br/>", " — ")
+                       + " {" + attributes + "}\n\n"
+                       + apocryphon_alphabet() + "\n\n")
             i = end; continue
         if name == "ApocryphonVerse":
             arguments = [body]
@@ -1343,18 +1367,54 @@ def author_legend(command="SourceLegendPage"):
             notes[match[1]] = parsed[0]
     body = re.sub(r"\\LegendFootmarkJ?\{([^}]+)\}",
                   lambda m: r"\footnote{" + notes[m[1]] + "}", body)
+    # These breaks fit fixed print columns. Reflow prose at the reader's width;
+    # keep real paragraph boundaries and the source spans themselves intact.
+    body = re.sub(r"\\\\(?:\[[^]]*\])?|\\nl\b", " ", body)
     lines = ['<div class="source-legend">']
+    if command == "PrimevalSourceFontsPage":
+        columns = re.search(r"\\LegendColumns\s*", body)
+        _, end = group(body, columns.end())
+        _, end = group(body, end)
+        first_row = re.search(r"\\Legend(?:Breakable)?Row(?![A-Za-z])", body[end:])
+        introduction = body[end:end + first_row.start()]
+        lines += [tex_to_markdown(introduction), ""]
     for match in re.finditer(r"\\Legend(?:Breakable)?Row(?![A-Za-z])\s*", body):
         label, end = group(body, match.end())
         prose, _ = group(body, end)
         label = re.sub(r"\\LegendFontAlphabet\{(\\h[A-Za-z]+)\}",
                        lambda m: m[1] + "{אבגדהוזחטיכלמנסעפצקרשת}", label)
         label = label.replace(r"\LegendPFontAlphabet", r"\hP{אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻלֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ}")
+        sample = re.fullmatch(r"\\PrimevalLegendAlphabet\{([^}]+)\}", label)
+        rendered_label = legend_alphabet(sample[1]) if sample else tex_to_markdown(label)
+        direction = ' dir="rtl"' if 'lang="he"' in rendered_label else ""
         lines += ['<div class="legend-entry">',
-                  '<div class="legend-label">' + tex_to_markdown(label) + '</div>',
+                  '<div class="legend-label"' + direction + '>' + rendered_label + '</div>',
                   '<div class="legend-description">', "", tex_to_markdown(prose), "", '</div></div>']
     lines.append('</div>')
     return lines
+
+
+def legend_alphabet(profile):
+    """Legend-only specimens; leave the main text's source rendering alone."""
+    alphabet = "אבגדהוזחטיכלמנסעפצקרשת"
+    if profile in {"Proto", "Records"}:
+        return tex_to_markdown("\\h" + profile + "{" + alphabet + "}")
+    variants = {"ProtoA": "proto_a", "ProtoC": "proto_c", "ProtoE": "proto_e", "PaleoM": "paleo_upper"}
+    variant = variants[profile]
+    # Read the glyph slots from the print authority instead of maintaining a
+    # second, subtly different alphabet in the ebook converter.
+    source = MASTER.read_text(encoding="utf-8")
+    match = re.search(r"\b" + variant + r"\s*=\s*variant_map\s*\{([^}]+)\}", source)
+    slots = re.findall(r'"([^"]*)"', match[1]) if match else []
+    if len(slots) != len(alphabet):
+        raise ValueError(f"missing or incomplete legend alphabet: {profile}")
+    encoded = "".join(slots)
+    if profile == "PaleoM":
+        # This face stores ayin at '['; the generic paleo slot ']' is absent.
+        # Match fonts/bin/uniformize_ancient_fonts.py's fallback for this font.
+        encoded = encoded.replace("]", "[")
+    return (f'<bdo class="legend-script legend-{profile.lower()}" lang="he" dir="rtl" '
+            f'aria-label="{alphabet}">{html.escape(encoded)}</bdo>')
 
 
 def publication_notices():
@@ -1479,6 +1539,19 @@ def render_verse_commentary(book: str, chapter: str, number: str, commentary: st
     return "\n\n".join(part for part in rendered if part)
 
 
+def apocryphon_alphabet():
+    """Use the same lowercase Isaiah-scroll glyphs as the print ornaments."""
+    source = MASTER.read_text(encoding="utf-8")
+    match = re.search(r"\\def\\paleoijklower\s*", source)
+    parsed = group(source, match.end()) if match else None
+    if parsed is None:
+        raise ValueError("missing apocryphon alphabet decoration")
+    alphabet = parsed[0].strip("{}")
+    return ('<p class="apocryphon-alphabet" aria-hidden="true">'
+            '<bdo class="dead-sea-scrolls" lang="he" dir="rtl">'
+            + html.escape(alphabet) + '</bdo></p>')
+
+
 def render_apocrypha(source: str) -> str:
     """Replace the print frontispiece/index with reflowable linked contents."""
     source = strip_comments(source)
@@ -1498,9 +1571,10 @@ def render_apocrypha(source: str) -> str:
     body = re.sub(r"\\label\s*\{([^}]+)\}", r"\\ApocryphaAnchor{\1}", body)
     body = re.sub(
         r"\\begin\{center\}\s*\{\\EnglishFont\\large\\scshape (Publisher's Introduction)\}\s*\\end\{center\}",
-        r"\\Apocryphon{\1}", body,
+        r"\\ApocryphaIntroduction{\1}", body,
     )
-    contents = "### Contents\n\n" + "\n".join(entries) + "\n\n" if entries else ""
+    contents = ("### Contents\n\n::: {.apocrypha-contents}\n\n" + "\n".join(entries)
+                + "\n\n:::\n\n") if entries else ""
     return contents + tex_to_markdown(body)
 
 
@@ -1528,7 +1602,7 @@ def make_markdown(path: Path, selected_book: str | None = None, *, content=None,
         lines += [f"## [{heading}](#contents-{top_anchor}) {{#{anchor} .chapter-title}}", ""]
         chapter_count += 1
         if Path(rel).stem == "apocrypha":
-            lines += [render_apocrypha(source), ""]
+            lines += [":::: {.apocrypha}", "", render_apocrypha(source), "", "::::", ""]
             continue
         verse_occurrences: dict[str, int] = {}
         for number, hebrew, english, commentary in parse_verses(source):
@@ -1694,7 +1768,7 @@ def main() -> int:
             kept_manuscript = HERE / "manuscript.generated.md"
             shutil.copy2(manuscript, kept_manuscript)
             log(f"Saved generated Markdown: {kept_manuscript}")
-        cmd = ["pandoc", str(manuscript), "--from=markdown+fenced_divs+footnotes+raw_html+markdown_in_html_blocks",
+        cmd = ["pandoc", str(manuscript), "--from=" + PANDOC_READER,
                "--to=epub3", "--output", str(candidate), "--standalone",
                "--toc", "--toc-depth=2", "--split-level=1", "--css", str(HERE / "epub.css"),
                "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]

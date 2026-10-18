@@ -29,14 +29,16 @@ body { margin: 5%; widows: 2; orphans: 2; text-rendering: optimizeLegibility; fo
  * The few intentional small-caps classes below opt back in explicitly.
  */
 body, body * { font-variant: normal; font-variant-caps: normal; }
-h1, h2, h3 { font-family: sans-serif; }
+h1, h2, h3, h4, h5, h6 { font-family: serif; }
 .wtn-title-page { break-before: page; break-after: page; page-break-before: always; page-break-after: always; padding: 16% 0 30%; text-align: center; }
-.title-we, .title-nameless, .title-book { font-family: sans-serif; line-height: 1.08; }
+.title-we, .title-nameless, .title-book { font-family: serif; line-height: 1.08; }
 .title-we { color: #000 !important; font-size: 4.8em; font-variant: small-caps; font-weight: 700; letter-spacing: .04em; }
 .title-nameless { color: #820000 !important; font-size: 2.15em; margin-top: .7em; }
 .title-book { color: #0046aa !important; font-size: 2.65em; font-variant: small-caps; font-weight: 700; margin-top: 2.6em; }
-.front-heading { break-before: page; page-break-before: always; font-size: 1.1em; text-align: center; }
-.alphabet-heading { visibility: hidden; height: 0; margin: 0; }
+/* Heading classes are also copied to sections by Pandoc. Only style the
+ * heading: relative sizes on sections compound throughout their contents. */
+h1.front-heading { break-before: page; page-break-before: always; font-size: 1.1em; text-align: center; }
+h1.alphabet-heading { visibility: hidden; height: 0; margin: 0; }
 .alphabet-page { padding: 25% 0; text-align: center; }
 .alphabet { font-size: 1em; line-height: 1.45; margin: .35em 0; text-align: justify; }
 .paleo { font-family: "WTN Paleo J", serif; color: #007800 !important; }
@@ -54,11 +56,11 @@ h1, h2, h3 { font-family: sans-serif; }
 .source-legend { display: block; font-size: .82em; }
 .source-legend dt, .source-legend dd { margin: 0 0 1em; text-align: left; }
 .source-legend dt { font-weight: bold; }
-.font-legend { font-size: .82em; }
+.font-legend { font-size: 1em; }
 .font-legend .hebrew { font-size: 1em; margin-bottom: 0; }
 .publication-notice { break-before: page; page-break-before: always; font-family: monospace; font-size: .82em; line-height: 1.4; padding-top: 35%; text-align: center; }
 .publication-logo { width: 1in; margin: 2em auto 0; }
-.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
+h1.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 /*
  * Pandoc copies heading attributes to both the heading and its enclosing
  * section.  Scope type sizes to the headings themselves so the section does
@@ -74,7 +76,7 @@ h2.chapter-title { page-break-before: always; break-before: page; font-family: s
 }
 .verse-reference a { color: inherit; display: block; text-decoration: none; }
 .book-title a, .chapter-title a, .contents-book h2 a { color: inherit; text-decoration: none; }
-.book-list { font-size: .82em; }
+.book-list { font-size: 1em; }
 .book-list ol { list-style: none; margin: 0; padding: 0; text-align: center; }
 .book-list li { margin: .35em 0; }
 .contents-part { font-style: italic; grid-column: 1 / -1; margin-top: .8em !important; text-align: center !important; }
@@ -203,9 +205,35 @@ th { font-weight: bold; }
 .anatolian { font-family: "WTN Anatolian", sans-serif; }
 .poetry { font-style: italic; }
 .law { font-family: monospace; }
-.legend-entry { margin-bottom: 1em; }
-.legend-label { font-weight: bold; }
-.legend-description { margin-left: 2em; }
+.source-legend { text-align: left; line-height: 1.45; }
+.legend-entry { margin: 1.5em 0; }
+.legend-label { font-weight: bold; margin-bottom: .4em; }
+.legend-label[dir="rtl"] { text-align: right; }
+.legend-label, .apocryphon-alphabet, .alphabet { word-wrap: break-word; overflow-wrap: anywhere; }
+.legend-description { margin-left: 0; }
+.legend-description > :first-child { margin-top: 0; }
+.legend-description > :last-child { margin-bottom: 0; }
+
+/* Apply the main verse's prose scale once, at the apocrypha container. */
+.apocrypha { font-size: .82em; line-height: 1.45; text-align: left; }
+.apocrypha h3, .apocrypha h4 { font-size: 1em; }
+.apocrypha-contents, .apocrypha-contents li { text-align: left; }
+.apocrypha-contents ul { padding-left: 1.4em; }
+.apocrypha-contents li { margin: .65em 0; }
+h3.apocryphon-title {
+  break-before: page; page-break-before: always;
+  break-after: avoid; page-break-after: avoid;
+  margin-top: 0; text-align: center;
+}
+.apocryphon-alphabet { text-align: center; margin: .6em 0 1.2em; break-after: avoid; page-break-after: avoid; }
+@font-face { font-family: "WTN Dead Sea Scrolls"; src: url("../fonts/dead-sea-scrolls-isaiah.ttf"); }
+.dead-sea-scrolls { font-family: "WTN Dead Sea Scrolls", serif; font-weight: normal; }
+@font-face { font-family: "WTN Proto Canaanite"; src: url("../fonts/proto-sinaitic-13.ttf"); }
+@font-face { font-family: "WTN Ketef Hinnom"; src: url("../fonts/paleo-hebrew-ketef-hinnom-1.ttf"); }
+.legend-script { font-weight: normal; }
+.legend-protoa, .legend-protoc { font-family: "WTN Proto Sinaitic 15", serif; }
+.legend-protoe { font-family: "WTN Proto Canaanite", serif; }
+.legend-paleom { font-family: "WTN Ketef Hinnom", serif; }
 
 @font-face { font-family: "WTN Proto Sinaitic 15"; src: url("../fonts/proto-sinaitic-15.ttf"); }
 .proto-sinaitic { font-family: "WTN Proto Sinaitic 15", serif; }
