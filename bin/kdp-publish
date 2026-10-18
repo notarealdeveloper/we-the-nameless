@@ -81,6 +81,24 @@ def versions():
     return result
 
 
+def check_sources(snapshot, run_dir):
+    current = sources()
+    changes = {
+        'added': sorted(current.keys() - snapshot.keys()),
+        'removed': sorted(snapshot.keys() - current.keys()),
+        'modified': sorted(p for p in snapshot.keys() & current.keys()
+                           if snapshot[p] != current[p]),
+    }
+    if any(changes.values()):
+        report = run_dir / 'reports/source-changes.json'
+        report.parent.mkdir(parents=True, exist_ok=True)
+        atomic_json(report, changes)
+        details = '; '.join(f'{kind}: {", ".join(paths)}'
+                            for kind, paths in changes.items() if paths)
+        raise RuntimeError(f'sources changed during build ({details}); '
+                           f'report: {report}; rerun build before vectorizing')
+
+
 
 class Pipeline:
     def __init__(self, book, base, output_dir=None):
@@ -213,8 +231,7 @@ class Pipeline:
                 p = Path(line.removeprefix('INPUT '))
                 if line.startswith('INPUT ') and p.is_file() and not p.resolve().is_relative_to(ROOT / 'build'):
                     dependencies[str(p.resolve())] = digest(p)
-        if sources() != snapshot:
-            raise RuntimeError('sources changed during build; rerun build before vectorizing')
+        check_sources(snapshot, self.run_dir)
         record = self.record(config, snapshot, tools, files, dependencies)
         record['reference_files'] = {a: str(self.pdf_path(a, 'original')) for a in ARTIFACTS}
         record['assets'] = json.loads((assets / 'assets.json').read_text())

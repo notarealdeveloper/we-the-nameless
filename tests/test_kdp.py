@@ -71,6 +71,19 @@ class PublishingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'does not match'):
             publishing.geometry(226, 8.25, 11, 'premium-color', 'hardcover', exact)
 
+    def test_source_changes_name_files_and_save_report(self):
+        image = 'pub/covers/fancy/assets/front-textless.png'
+        with patch.object(publishing, 'sources', return_value={image: 'new', 'added.tex': 'a'}):
+            with self.assertRaisesRegex(RuntimeError, image):
+                publishing.check_sources({image: 'old', 'removed.tex': 'r'}, self.root)
+        self.assertEqual(json.loads((self.root / 'reports/source-changes.json').read_text()),
+                         dict(added=['added.tex'], removed=['removed.tex'], modified=[image]))
+
+    def test_unchanged_sources_pass(self):
+        with patch.object(publishing, 'sources', return_value={'chapter.tex': 'same'}):
+            publishing.check_sources({'chapter.tex': 'same'}, self.root)
+        self.assertFalse((self.root / 'reports').exists())
+
     def test_failure_keeps_command_and_full_log(self):
         pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
         with contextlib.redirect_stdout(io.StringIO()) as terminal:
