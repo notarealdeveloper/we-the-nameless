@@ -1,5 +1,6 @@
 """Exercise production layout macros with tiny synthetic pages, never the book."""
 from pathlib import Path
+import os
 import re
 import shutil
 import subprocess
@@ -24,6 +25,7 @@ class PrintPagingTests(unittest.TestCase):
             + geometry + r"]{geometry}"
             + r"\newif\ifConfigOutputModeTech"
             + (r"\ConfigOutputModeTechtrue" if mode == "tech" else "")
+            + r"\newif\ifConfigKDPOn"
             + LAYOUT
             + r"\newif\ifIndividualBookTitlePageStyleFancy"
             + (r"\IndividualBookTitlePageStyleFancytrue" if fancy else "")
@@ -110,6 +112,47 @@ class PrintPagingTests(unittest.TestCase):
             with self.subTest(mode=mode):
                 for values in self.render(mode=mode).values():
                     self.assertAlmostEqual(values[2], values[3], places=3)
+
+    @unittest.skipUnless(shutil.which("lualatex") and shutil.which("pdfinfo")
+                         and shutil.which("pdftotext"), "LuaLaTeX or Poppler unavailable")
+    def test_kdp_finishes_even_physical_pages(self):
+        # Exercise the production hook with real TeX output, including page
+        # counter resets and a float that ships only at the final clearpage.
+        cache = self.enterContext(tempfile.TemporaryDirectory(prefix="kdp-tex-cache-"))
+        for kdp in (False, True):
+            for count in (1, 2, 3, 4):
+                for deferred in (False, True):
+                    with self.subTest(kdp=kdp, pages=count, deferred=deferred):
+                        source = (
+                            r"\documentclass{book}\usepackage{geometry}"
+                            r"\newif\ifConfigOutputModeTech\newif\ifConfigKDPOn"
+                            + (r"\ConfigKDPOntrue" if kdp else "") + LAYOUT
+                            + r"\begin{document}"
+                            + r"\noindent Content\clearpage" * (count - 1)
+                            + r"\setcounter{page}{1}\noindent Final content"
+                            + (r"\begin{figure}[p]\centering Deferred figure\end{figure}"
+                               if deferred else "")
+                            + r"\end{document}"
+                        )
+                        with tempfile.TemporaryDirectory(prefix="kdp-paging-") as temp:
+                            path = Path(temp) / "fixture.tex"
+                            path.write_text(source)
+                            result = subprocess.run(
+                                ["lualatex", "-interaction=nonstopmode", "-halt-on-error", path.name],
+                                cwd=temp, capture_output=True, text=True,
+                                env={**os.environ, 'TEXMFVAR': cache, 'TEXMFCACHE': cache})
+                            self.assertEqual(result.returncode, 0, result.stdout[-4000:])
+                            output = path.with_suffix(".pdf")
+                            info = subprocess.check_output(["pdfinfo", str(output)], text=True)
+                            actual = int(re.search(r"Pages:\s+(\d+)", info)[1])
+                            unpadded = count + int(deferred)
+                            expected = unpadded + (unpadded % 2 if kdp else 0)
+                            self.assertEqual(actual, expected)
+                            if expected > unpadded:
+                                last = subprocess.check_output(
+                                    ["pdftotext", "-f", str(actual), "-l", str(actual),
+                                     str(output), "-"], text=True)
+                                self.assertEqual(last.strip(), "")
 
 
 if __name__ == "__main__":

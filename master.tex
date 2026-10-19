@@ -278,6 +278,16 @@
         outer={\dimexpr2.13cm-\WeBindingOffset\relax},
         top=2.13cm,bottom=2.13cm}%
 }
+% Finish KDP interiors on a complete sheet. Flush text and deferred floats
+% before counting physical pages; logical page numbers can reset in front matter.
+\ifConfigKDPOn
+    \AtEndDocument{%
+        \clearpage
+        \ifodd\ReadonlyShipoutCounter
+            \thispagestyle{empty}\null\clearpage
+        \fi
+    }
+\fi
 % END print-page layout
 
 \usepackage{lmodern}
