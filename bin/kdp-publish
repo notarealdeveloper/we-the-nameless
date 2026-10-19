@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """KDP build, vectorize, and optional visual checks with stable PDFs in pub/."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import fcntl
 import hashlib
 import json
@@ -12,6 +13,7 @@ import shutil
 import subprocess
 import sys
 import time
+import threading
 import uuid
 
 from kdp_cover_geometry import ARTIFACTS, BINDINGS, geometry
@@ -29,6 +31,8 @@ GS_OPTIONS = ['-dSAFER', '-dBATCH', '-dNOPAUSE', '-sDEVICE=pdfwrite',
     '-dAutoFilterGrayImages=false', '-dGrayImageFilter=/FlateEncode',
     '-dPassThroughJPEGImages=true', '-dPassThroughJPXImages=true',
     '-dPreserveOverprintSettings=true', '-dPreserveAnnots=false']
+STATUS_LOCK = threading.Lock()
+
 QPDF_OPTIONS = ['--remove-info', '--remove-metadata', '--remove-page-labels',
     '--remove-structure', '--stream-data=preserve', '--deterministic-id']
 
@@ -126,7 +130,9 @@ class Pipeline:
                     raise FileNotFoundError(f'Missing PDF: {path}; build it or copy your PDF to this path')
 
     def status(self, state, message):
-        print(f'[KDP {self.book} {self.stage}] {state:5} {message}', flush=True)
+        binding = ' ' + self.bindings[0] if len(self.bindings) == 1 else ''
+        with STATUS_LOCK:
+            print(f'[KDP {self.book}{binding} {self.stage}] {state:5} {message}', flush=True)
 
     def run(self, stage, operation, command, candidate=None, env=None):
         self.stage, self.operation = stage, operation
@@ -274,6 +280,42 @@ class Pipeline:
             self.pdf_path(artifact, 'outlined').unlink()
             self.status('PASS', str(final))
 
+    def parallel(self, args, config, snapshot, tools):
+        # Keep the caller's publication lock across both workers. Each owns its
+        # mutable state, assets, TeX cache, reports and disjoint stable PDF names.
+        workers = [Pipeline(self.book, self.run_dir / binding, self.output_dir, binding)
+                   for binding in self.bindings]
+        for worker in workers:
+            worker.environment = dict(self.environment)
+
+        def execute(worker):
+            try:
+                record = None
+                if args.stage in ('build', 'all'):
+                    record = worker.build(args, config, snapshot, tools)
+                if args.stage in ('vectorize', 'all'):
+                    worker.vectorize(config)
+                return record
+            except Exception as error:
+                worker.status('FAIL', f'{worker.operation}; candidate: {worker.candidate}; '
+                              f'log: {worker.log}; reports: {worker.run_dir}/reports; {error}')
+                raise
+
+        # Await both even on failure: never release the lock while a worker writes.
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            futures = [executor.submit(execute, worker) for worker in workers]
+            records = [future.result() for future in futures]
+        if args.stage in ('build', 'all'):
+            self.commands = [command for worker in workers for command in worker.commands]
+            record = self.record(config, snapshot, tools,
+                {path: info for item in records for path, info in item['files'].items()},
+                {path: value for item in records for path, value in item['dependencies'].items()})
+            record['reference_files'] = {a: str(self.pdf_path(a, 'original')) for a in self.artifacts}
+            record['assets'] = [asset for item in records for asset in item['assets']]
+            record['binding_runs'] = {w.bindings[0]: str(w.run_dir) for w in workers}
+            atomic_json(self.run_dir / 'build.json', record)
+            atomic_json(self.base / 'build.json', record)
+
     def check(self):
         self.require_pdfs(('original', 'vectorized'))
         self.run('4/6 validation', 'visual validator self-test', ['bin/kdp-visual-compare', '--self-test'])
@@ -335,6 +377,8 @@ def main():
                 pipeline.validate('explicit', args.reference.resolve(), args.artifact.resolve())
             elif args.stage == 'check':
                 pipeline.check()
+            elif args.binding == 'both':
+                pipeline.parallel(args, config, snapshot, tools)
             else:
                 if args.stage in ('build', 'all'): pipeline.build(args, config, snapshot, tools)
                 if args.stage in ('vectorize', 'all'): pipeline.vectorize(config)

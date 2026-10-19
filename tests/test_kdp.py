@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import threading
 import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -223,22 +224,51 @@ class PublishingTests(unittest.TestCase):
             self.assertEqual(Path(command['argv'][1]).parent, self.root / 'pub')
             self.assertEqual(Path(command['argv'][2]).parent, self.root / 'pub')
 
-    def test_all_runs_build_then_vectorize_without_check(self):
-        with patch.object(sys, 'argv', ['kdp-publish', 'genesis', 'all']), \
-             patch.object(publishing, 'ROOT', self.root), \
-             patch.object(publishing.subprocess, 'check_output', side_effect=lambda cmd, **kw: '1\n' if cmd[0] == 'git' else '01-genesis\n'), \
-             patch.object(publishing, 'sources', return_value={}), \
-             patch.object(publishing, 'versions', return_value={}), \
-             patch.object(publishing.Pipeline, 'build') as build, \
-             patch.object(publishing.Pipeline, 'vectorize') as vectorize, \
-             patch.object(publishing.Pipeline, 'check') as check, \
-             contextlib.redirect_stdout(io.StringIO()):
-            calls = unittest.mock.Mock()
-            calls.attach_mock(build, 'build'); calls.attach_mock(vectorize, 'vectorize')
-            try: self.assertEqual(publishing.main(), 0)
-            finally: os.chdir(ROOT)
-        self.assertEqual([c[0] for c in calls.mock_calls], ['build', 'vectorize'])
-        check.assert_not_called()
+    def test_parallel_bindings_have_isolated_state_and_independent_vectorization(self):
+        pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
+        pipeline.environment = {'SOURCE_DATE_EPOCH': '1'}
+        barrier = threading.Barrier(2)
+        workers = []
+        events = []
+        def build(worker, *args):
+            workers.append(worker)
+            events.append(('build', worker.bindings[0]))
+            barrier.wait(timeout=5)
+            return dict(files={}, dependencies={}, assets=[])
+        def vectorize(worker, config):
+            events.append(('vectorize', worker.bindings[0]))
+            barrier.wait(timeout=5)
+        with patch.object(publishing.Pipeline, 'build', build), \
+             patch.object(publishing.Pipeline, 'vectorize', vectorize):
+            pipeline.parallel(SimpleNamespace(stage='all'), {}, {}, {})
+        self.assertEqual(len(workers), 2)
+        self.assertNotEqual(workers[0].run_dir, workers[1].run_dir)
+        self.assertNotEqual(workers[0].base, workers[1].base)
+        self.assertTrue(set(workers[0].artifacts).isdisjoint(workers[1].artifacts))
+        for worker in workers:
+            binding = worker.bindings[0]
+            self.assertEqual(worker.environment, pipeline.environment)
+            self.assertLess(events.index(('build', binding)), events.index(('vectorize', binding)))
+        record = json.loads((pipeline.base / 'build.json').read_text())
+        self.assertEqual(set(record['binding_runs']), {'paperback', 'hardcover'})
+        self.assertEqual(len(record['reference_files']), 5)
+
+    def test_parallel_failure_waits_for_other_binding(self):
+        pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
+        pipeline.environment = {}
+        barrier = threading.Barrier(2)
+        finished = threading.Event()
+        def vectorize(worker, config):
+            barrier.wait(timeout=5)
+            if worker.bindings == ('paperback',):
+                raise RuntimeError('conversion failed')
+            finished.set()
+        with patch.object(publishing.Pipeline, 'vectorize', vectorize), \
+             contextlib.redirect_stdout(io.StringIO()) as terminal:
+            with self.assertRaisesRegex(RuntimeError, 'conversion failed'):
+                pipeline.parallel(SimpleNamespace(stage='vectorize'), {}, {}, {})
+        self.assertTrue(finished.is_set())
+        self.assertIn('paperback', terminal.getvalue())
 
 
 class ValidatorTests(unittest.TestCase):

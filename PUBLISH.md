@@ -106,11 +106,17 @@ means faithful conversion; it does not replace editorial or physical review.
 
 ```sh
 make genesis-kdp
-# Build the originals, then vectorize, clean, and structurally check all four PDFs.
+# Build and vectorize both bindings, including the alternate hardcover cover.
 ```
 
 `make genesis-kdp` combines the stages from `make genesis-kdp-build` and
-`make genesis-kdp-vectorize`, in that order. It **does not include
+`make genesis-kdp-vectorize`. Paperback and hardcover run concurrently, each
+building its interior and covers before vectorizing them. The same applies to
+other subset targets, and the standalone build and vectorize stages also run
+both bindings concurrently. Each binding has separate working directories,
+assets, TeX caches and logs; terminal messages interleave as complete lines
+labelled `paperback` or `hardcover`. The publication lock stays held until both
+workers finish, including on failure. It **does not include
 `make genesis-kdp-check`**. Structural checks are included; the full pixel
 comparison is a separate, optional command.
 
