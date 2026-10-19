@@ -1,8 +1,10 @@
 % The normal illustrated wrap preserves the original simple-cover typography.
 \def\CoverIllustrated{true}
-% Fraction of panel height from the circle center to either title's ink center.
-% Increase to move We up and the volume down; 0.212 matches front-textless.png.
-\newcommand{\CoverTitleSeparation}{0.212}
+% Alt layout: fractions of panel height measured from the big circle's center.
+% Its radius is 0.212: half that puts We and The Nameless halfway to the arcs.
+\newcommand{\CoverTitleSeparation}{0.106}
+% Upper of the two small circles below the big circle (y = 1184/1536).
+\newcommand{\CoverVolumeOffset}{0.289}
 \ifdefined\CoverAlternate
   \input{pub/covers/fancy/alternate.tex}
 \else

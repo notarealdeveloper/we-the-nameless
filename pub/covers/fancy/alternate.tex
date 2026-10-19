@@ -52,25 +52,34 @@
   % Use ink centers, including descenders in arbitrary sub-book titles.
   \coordinate (circleCenter) at
     ([xshift=0.497\CoverPanelWidth,yshift=0.518\CoverPanelHeight]frontSW);
+  % Share these ink-center heights with the spine; all tuning happens here.
+  \coordinate (coverWe) at
+    ([yshift=\CoverTitleSeparation\CoverPanelHeight]circleCenter);
+  \coordinate (coverNameless) at
+    ([yshift=-\CoverTitleSeparation\CoverPanelHeight]circleCenter);
+  \coordinate (coverVolume) at
+    ([yshift=-\CoverVolumeOffset\CoverPanelHeight]circleCenter);
+  \coordinate (spineAxis) at
+    ([xshift=\CoverSpineCenterX]current page.south west);
   \node[CoverForeground,anchor=base,inner sep=0pt] at
-    ([yshift=\CoverTitleSeparation\CoverPanelHeight]circleCenter)
+    (coverWe)
     {\CenterCoverInk{\fontsize{100}{120}\selectfont\textsc{We}}};
-  \node[CoverForeground,anchor=base,inner sep=0pt] at (circleCenter)
+  \node[CoverForeground,anchor=base,inner sep=0pt] at (coverNameless)
     {\CenterCoverInk{\fontsize{25}{30}\selectfont The Nameless}};
   \node[CoverForeground,anchor=base,inner sep=0pt] at
-    ([yshift=-\CoverTitleSeparation\CoverPanelHeight]circleCenter)
+    (coverVolume)
     {\CenterCoverInk{\fontsize{23}{28}\selectfont \CoverVolume}};
 
   \ifx\CoverShowSpine\CoverShowSpineTrue
-  \node[CoverForeground] at
-    ([xshift=\CoverSpineCenterX,yshift=\CoverWeY]current page.south west)
-    {\SpineLabel{26}{\textsc{We}}};
-  \node[CoverForeground,align=center] at
-    ([xshift=\CoverSpineCenterX,yshift=\CoverNamelessY]current page.south west)
-    {\SpineName};
-  \node[CoverForeground] at
-    ([xshift=\CoverSpineCenterX,yshift=\CoverVolumeY]current page.south west)
-    {\SpineLabel{18}{\CoverVolume}};
+  \node[CoverForeground,anchor=base,inner sep=0pt] at
+    (spineAxis |- coverWe)
+    {\CenterCoverInk{\SpineLabel{26}{\textsc{We}}}};
+  \node[CoverForeground,anchor=base,inner sep=0pt,align=center] at
+    (spineAxis |- coverNameless)
+    {\CenterCoverInk{\SpineName}};
+  \node[CoverForeground,anchor=base,inner sep=0pt] at
+    (spineAxis |- coverVolume)
+    {\CenterCoverInk{\SpineLabel{18}{\CoverVolume}}};
   \fi
 \end{tikzpicture}
 \null

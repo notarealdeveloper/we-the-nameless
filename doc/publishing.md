@@ -135,8 +135,12 @@ color, gutter, spine and barcode review still require inspection of the output.
 
 Hardcover builds also produce `pub/<canonical>-cover-hardcover-alt-original.pdf`
 and, in vectorizing targets, `pub/<canonical>-cover-hardcover-alt-vectorized.pdf`.
-The existing covers are retained. The alternate centers “The Nameless” in the
-artwork circle and places the ink centers of “We” and the volume title on its arcs.
-Adjust `\CoverTitleSeparation` in `pub/covers/fancy/cover.tex` (default `0.212`,
-a fraction of panel height): larger spreads the titles farther apart. Rerun the
+The existing covers are retained. The alternate places the ink centers of “We”
+and “The Nameless” halfway from the artwork circle's center to its top and bottom
+arcs, respectively. The volume title sits at the upper small circle below it.
+Adjust `\CoverTitleSeparation` in `pub/covers/fancy/cover.tex` (default `0.106`,
+a fraction of panel height): larger spreads the two main titles farther apart.
+`\CoverVolumeOffset` (default `0.289`) controls the volume title's distance below
+the circle center. All three spine ink centers share their corresponding cover
+heights, including when these parameters change. Rerun the
 relevant target, e.g. `make genesis-kdp-hardcover` or `make J-kdp-hardcover`.
