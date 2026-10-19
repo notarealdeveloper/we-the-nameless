@@ -62,7 +62,7 @@ export TEXMFVAR = $(CACHE)
 # Pentateuch paths themselves.
 export max_print_line = 60
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-release ebook-check ebook-validate check-ebook cover kdp kdp-preflight genesis-kdp genesis-kdp-soft genesis-kdp-medium genesis-kdp-hard check-genesis-kdp check-kdp-validator check-kdp $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-release ebook-check ebook-validate check-ebook cover kdp kdp-preflight genesis-kdp check-genesis-kdp check-kdp-validator check-kdp $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 define publish-and-open
 	@set -e; \
@@ -142,7 +142,6 @@ help:
 		'  Upload files: pub/<canonical>-interior-{paperback,hardcover}-vectorized.pdf and pub/<canonical>-cover-{paperback,hardcover}-vectorized.pdf' \
 		'  Defaults: KDP_PAPER=premium-color KDP_INK=premium-color KDP_BLEED=no-bleed KDP_TRIM=7x10' \
 		'  Set KDP_COVER_STYLE=simple|fancy and KDP_SPINE=ld|nameless. See doc/publishing.md.' \
-		'  make genesis-kdp-soft|medium|hard                      Build legacy diagnostic PDF-encoding variants.' \
 		'  make check-genesis-kdp                                 Alias for genesis-kdp-check.' \
 		'  make cover                                             Build 01-genesis-cover.pdf from 01-genesis.pdf.' \
 		'  make genesis-cover                                     Build the matching wrap from an existing 01-genesis.pdf.' \
@@ -206,11 +205,6 @@ $(addsuffix -kdp-paperback,$(KDP_SUBSETS)): %-kdp-paperback:
 
 $(addsuffix -kdp-hardcover,$(KDP_SUBSETS)): %-kdp-hardcover:
 	@bin/kdp-publish "$*" all $(KDP_OPTIONS) --binding hardcover
-
-genesis-kdp-soft: genesis-kdp
-
-genesis-kdp-medium genesis-kdp-hard:
-	@bin/kdp-publish genesis all $(KDP_OPTIONS) --variant "$(@:genesis-kdp-%=%)"
 
 check-genesis-kdp: genesis-kdp-check
 

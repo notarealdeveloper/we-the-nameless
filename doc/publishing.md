@@ -36,10 +36,9 @@ manifest or rejects a file because sources, timestamps, or hashes changed.
 All three originals must exist before vectorization; all six PDFs must exist for check.
 If an interior's page count changes, supply a correspondingly sized cover.
 
-`check-genesis-kdp` aliases `genesis-kdp-check`; `genesis-kdp-soft` aliases
-`genesis-kdp`. Legacy medium/hard diagnostic variants use the same filenames in
-`pub/medium/` and `pub/hard/`. The compatibility `bin/genesis-kdp` CLI delegates
-to this pipeline.
+`check-genesis-kdp` aliases `genesis-kdp-check`. All standard KDP targets use
+the soft PDF encoding profile by default. The compatibility `bin/genesis-kdp`
+CLI delegates to this pipeline.
 
 ## Print configuration
 
