@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Run LaTeX until its cross-references settle, without hiding compiler errors."""
 import argparse
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -19,6 +20,7 @@ def main():
             return result.returncode
         log = args.log.read_text()
         # TeX can wrap warning text at max_print_line; normalize whitespace.
+        log = re.sub(r"-\s*\n\s*", "-", log)
         log = " ".join(log.split())
         rerun = any(message in log for message in (
             "Rerun to get cross-references right",

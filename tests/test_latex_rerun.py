@@ -40,6 +40,15 @@ class LatexRerunTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(passes, 3)
 
+    def test_warning_wrapped_after_hyphen_still_reruns(self):
+        result, passes = self.run_compiler([
+            "Label(s) may have changed. Rerun to get cross-\nreferences right.",
+            "Rerun to get outlines right.",
+            "Output written on book.pdf.",
+        ])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(passes, 3)
+
     def test_clean_log_needs_only_one_pass(self):
         result, passes = self.run_compiler(["Output written on book.pdf."])
         self.assertEqual(result.returncode, 0)

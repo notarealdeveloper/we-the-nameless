@@ -1,0 +1,272 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Fix all warnings in the build of 'make genesis' below
+
+(/nix/store/bpxyv3ivbxaayknvfbaxclxrqrk7bhnf-texlive-2025-r7
+8234-final-env-texmfdist/tex/latex/lm/omllmm.fd)
+(/nix/store/bpxyv3ivbxaayknvfbaxclxrqrk7bhnf-texlive-2025-r7
+8234-final-env-texmfdist/tex/latex/lm/omslmsy.fd)
+(/nix/store/bpxyv3ivbxaayknvfbaxclxrqrk7bhnf-texlive-2025-r7
+8234-final-env-texmfdist/tex/latex/lm/omxlmex.fd) [2]
+[3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [1]
+(./build/genesis/chapters/01-genesis/01.tex
+warning  (pdf backend): ignoring duplicate destination with
+the name 'page.1'
+[1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13]
+[14] [15] [16] [17] [18]) [19]
+(./build/genesis/chapters/01-genesis/02.tex [20] [21]
+[22] [23] [24] [25] [26] [27] [28] [29]) [30]
+(./build/genesis/chapters/01-genesis/03.tex [31] [32]
+[33] [34] [35] [36]) [37]
+(./build/genesis/chapters/01-genesis/04.tex [38] [39]
+[40] [41] [42] [43] [44] [45] [46]) [47]
+(./build/genesis/chapters/01-genesis/05.tex [48] [49]
+[50] [51] [52] [53] [54]) [55]
+(./build/genesis/chapters/01-genesis/06.tex [56] [57]
+[58] [59] [60] [61]) [62]
+(./build/genesis/chapters/01-genesis/07.tex [63] [64]
+[65] [66] [67] [68] [69]) [70]
+(./build/genesis/chapters/01-genesis/08.tex [71] [72]
+[73] [74] [75]) [76]
+(./build/genesis/chapters/01-genesis/09.tex [77] [78]
+[79] [80] [81] [82] [83] [84]) [85]
+(./build/genesis/chapters/01-genesis/10.tex [86] [87]
+[88] [89] [90] [91] [92] [93] [94] [95] [96]) [97]
+(./build/genesis/chapters/01-genesis/11.tex [98] [99<./img/b
+rick-300ppi.png>] [100] [101] [102] [103] [104] [105]
+[106] [107]) [108]
+(./build/genesis/chapters/01-genesis/12.tex [109] [110]
+[111] [112] [113] [114]) [115]
+(./build/genesis/chapters/01-genesis/13.tex [116] [117]
+[118] [119] [120]) [121]
+(./build/genesis/chapters/01-genesis/14.tex [122] [123]
+[124] [125] [126] [127] [128]) [129]
+(./build/genesis/chapters/01-genesis/15.tex [130] [131]
+[132] [133] [134] [135] [136]) [137]
+(./build/genesis/chapters/01-genesis/16.tex [138] [139]
+[140] [141] [142] [143]) [144]
+(./build/genesis/chapters/01-genesis/17.tex [145] [146]
+[147] [148] [149] [150] [151] [152] [153] [154] [155]
+[156] [157]) [158]
+(./build/genesis/chapters/01-genesis/18.tex [159] [160]
+[161] [162] [163] [164] [165] [166] [167] [168] [169]
+[170]) [171] (./build/genesis/chapters/01-genesis/19.tex
+[172] [173] [174] [175] [176] [177] [178] [179] [180]
+[181] [182] [183] [184]) [185]
+(./build/genesis/chapters/01-genesis/20.tex [186] [187]
+[188] [189] [190] [191]) [192]
+(./build/genesis/chapters/01-genesis/21.tex [193] [194]
+[195] [196] [197] [198] [199] [200] [201] [202]) [203]
+(./build/genesis/chapters/01-genesis/22.tex [204] [205]
+[206] [207] [208] [209] [210] [211] [212] [213] [214])
+[215] [216] (./build/genesis/chapters/01-genesis/23.tex
+[217] [218] [219] [220] [221] [222]) [223]
+(./build/genesis/chapters/01-genesis/24.tex [224] [225]
+[226] [227] [228] [229] [230] [231] [232] [233] [234]
+[235] [236] [237] [238] [239] [240] [241] [242]) [243]
+(./build/genesis/chapters/01-genesis/25.tex [244] [245]
+[246] [247] [248] [249] [250] [251] [252] [253] [254]
+[255] [256<./01-genesis/include/seir-light.jpg>] [257]
+[258] [259] [260]) [261]
+(./build/genesis/chapters/01-genesis/26.tex [262] [263]
+[264] [265] [266] [267] [268] [269] [270]) [271]
+(./build/genesis/chapters/01-genesis/27.tex [272] [273]
+[274] [275] [276] [277] [278] [279] [280] [281] [282]
+[283] [284] [285]) [286]
+(./build/genesis/chapters/01-genesis/28.tex [287] [288]
+[289] [290] [291] [292] [293]) [294]
+(./build/genesis/chapters/01-genesis/29.tex [295] [296]
+[297] [298] [299] [300] [301] [302] [303] [304] [305])
+[306] (./build/genesis/chapters/01-genesis/30.tex [307]
+[308] [309] [310] [311] [312] [313<./01-genesis/include/mand
+rake.png>] [314] [315] [316] [317] [318] [319] [320]
+[321] [322] [323] [324]) [325]
+(./build/genesis/chapters/01-genesis/31.tex [326] [327]
+[328] [329] [330] [331] [332] [333] [334] [335] [336]
+[337] [338] [339] [340] [341] [342] [343]) [344]
+(./build/genesis/chapters/01-genesis/32.tex [345] [346]
+[347] [348] [349] [350] [351] [352] [353] [354] [355]
+[356]) [357] (./build/genesis/chapters/01-genesis/33.tex
+[358] [359] [360] [361] [362] [363<./img/genesis-33-map.png>
+]) [364] (./build/genesis/chapters/01-genesis/34.tex
+[365] [366] [367] [368] [369] [370] [371] [372]) [373]
+(./build/genesis/chapters/01-genesis/35.tex [374] [375]
+[376] [377] [378] [379] [380] [381] [382]) [383]
+(./build/genesis/chapters/01-genesis/36.tex [384] [385]
+[386] [387] [388] [389] [390] [391] [392] [393] [394]
+[395] [396] [397] [398] [399] [400] [401] [402]) [403]
+(./build/genesis/chapters/01-genesis/37.tex [404] [405]
+[406] [407] [408] [409] [410] [411] [412] [413]) [414]
+[415] (./build/genesis/chapters/01-genesis/38.tex [416]
+[417] [418] [419] [420] [421] [422] [423] [424] [425]
+[426] [427] [428]) [429]
+(./build/genesis/chapters/01-genesis/39.tex [430] [431]
+[432] [433] [434] [435]) [436]
+(./build/genesis/chapters/01-genesis/40.tex [437] [438]
+[439] [440] [441] [442]) [443]
+(./build/genesis/chapters/01-genesis/41.tex [444] [445]
+[446] [447] [448] [449] [450] [451] [452] [453] [454]
+[455] [456] [457] [458] [459] [460]) [461]
+(./build/genesis/chapters/01-genesis/42.tex [462] [463]
+[464] [465] [466] [467] [468] [469] [470] [471] [472])
+[473] (./build/genesis/chapters/01-genesis/43.tex [474]
+[475] [476] [477] [478] [479] [480] [481] [482]) [483]
+(./build/genesis/chapters/01-genesis/44.tex [484] [485]
+[486] [487] [488] [489] [490] [491]) [492]
+(./build/genesis/chapters/01-genesis/45.tex [493] [494]
+[495] [496] [497] [498] [499] [500]) [501]
+(./build/genesis/chapters/01-genesis/46.tex [502] [503]
+[504] [505] [506] [507] [508] [509] [510] [511] [512]
+[513]) [514] (./build/genesis/chapters/01-genesis/47.tex
+[515] [516] [517] [518] [519] [520] [521] [522] [523])
+[524] (./build/genesis/chapters/01-genesis/48.tex [525]
+[526] [527] [528] [529] [530] [531] [532]) [533]
+(./build/genesis/chapters/01-genesis/49.tex [534] [535]
+[536] [537] [538] [539] [540] [541] [542] [543] [544]
+[545] [546] [547] [548] [549] [550] [551]) [552]
+(./build/genesis/chapters/01-genesis/50.tex [553] [554]
+[555] [556] [557] [558] [559] [560]) [561]
+(./build/genesis/chapters/01-genesis/apocrypha.tex [562]
+
+LaTeX Warning: Hyper reference `gen-apoc:introduction' on pa
+ge 563 undefined on input line 40.
+
+
+LaTeX Warning: Reference `gen-apoc:introduction' on page 563
+ undefined on input line 40.
+
+
+LaTeX Warning: Hyper reference `gen-apoc:infinite-j-est' on
+page 563 undefined on input line 41.
+
+
+LaTeX Warning: Reference `gen-apoc:infinite-j-est' on page 5
+63 undefined on input line 41.
+
+
+LaTeX Warning: Hyper reference `gen-apoc:yhwh-abraham' on pa
+ge 563 undefined on input line 42.
+
+
+LaTeX Warning: Reference `gen-apoc:yhwh-abraham' on page 563
+ undefined on input line 42.
+
+
+LaTeX Warning: Hyper reference `gen-apoc:points-of-power' on
+ page 563 undefined on input line 43.
+
+
+LaTeX Warning: Reference `gen-apoc:points-of-power' on page
+563 undefined on input line 43.
+
+
+LaTeX Warning: Hyper reference `gen-apoc:seed' on page 563 u
+ndefined on input line 44.
+
+
+LaTeX Warning: Reference `gen-apoc:seed' on page 563 undefin
+ed on input line 44.
+
+
+LaTeX Warning: Hyper reference `gen-apoc:son-of-j' on page 5
+63 undefined on input line 45.
+
+
+LaTeX Warning: Reference `gen-apoc:son-of-j' on page 563 und
+efined on input line 45.
+
+[563] [564] [565] [566] [567] [568] [569] [570] [571]
+[572] [573] [574] [575] [576] [577] [578] [579] [580]
+[581<./img/comics/the-twelve-tribes-of-israel-comic-1.png>]
+[582<./img/comics/the-twelve-tribes-of-israel-comic-2.png>]
+[583<./img/comics/the-twelve-tribes-of-israel-comic-3.png>]
+[584<./img/comics/the-twelve-tribes-of-israel-comic-4.png>]
+[585] [586]) [587] (./build/genesis/01-genesis.aux
+(./build/genesis/chapters/01-genesis/01.aux)
+(./build/genesis/chapters/01-genesis/02.aux)
+(./build/genesis/chapters/01-genesis/03.aux)
+(./build/genesis/chapters/01-genesis/04.aux)
+(./build/genesis/chapters/01-genesis/05.aux)
+(./build/genesis/chapters/01-genesis/06.aux)
+(./build/genesis/chapters/01-genesis/07.aux)
+(./build/genesis/chapters/01-genesis/08.aux)
+(./build/genesis/chapters/01-genesis/09.aux)
+(./build/genesis/chapters/01-genesis/10.aux)
+(./build/genesis/chapters/01-genesis/11.aux)
+(./build/genesis/chapters/01-genesis/12.aux)
+(./build/genesis/chapters/01-genesis/13.aux)
+(./build/genesis/chapters/01-genesis/14.aux)
+(./build/genesis/chapters/01-genesis/15.aux)
+(./build/genesis/chapters/01-genesis/16.aux)
+(./build/genesis/chapters/01-genesis/17.aux)
+(./build/genesis/chapters/01-genesis/18.aux)
+(./build/genesis/chapters/01-genesis/19.aux)
+(./build/genesis/chapters/01-genesis/20.aux)
+(./build/genesis/chapters/01-genesis/21.aux)
+(./build/genesis/chapters/01-genesis/22.aux)
+(./build/genesis/chapters/01-genesis/23.aux)
+(./build/genesis/chapters/01-genesis/24.aux)
+(./build/genesis/chapters/01-genesis/25.aux)
+(./build/genesis/chapters/01-genesis/26.aux)
+(./build/genesis/chapters/01-genesis/27.aux)
+(./build/genesis/chapters/01-genesis/28.aux)
+(./build/genesis/chapters/01-genesis/29.aux)
+(./build/genesis/chapters/01-genesis/30.aux)
+(./build/genesis/chapters/01-genesis/31.aux)
+(./build/genesis/chapters/01-genesis/32.aux)
+(./build/genesis/chapters/01-genesis/33.aux)
+(./build/genesis/chapters/01-genesis/34.aux)
+(./build/genesis/chapters/01-genesis/35.aux)
+(./build/genesis/chapters/01-genesis/36.aux)
+(./build/genesis/chapters/01-genesis/37.aux)
+(./build/genesis/chapters/01-genesis/38.aux)
+(./build/genesis/chapters/01-genesis/39.aux)
+(./build/genesis/chapters/01-genesis/40.aux)
+(./build/genesis/chapters/01-genesis/41.aux)
+(./build/genesis/chapters/01-genesis/42.aux)
+(./build/genesis/chapters/01-genesis/43.aux)
+(./build/genesis/chapters/01-genesis/44.aux)
+(./build/genesis/chapters/01-genesis/45.aux)
+(./build/genesis/chapters/01-genesis/46.aux)
+(./build/genesis/chapters/01-genesis/47.aux)
+(./build/genesis/chapters/01-genesis/48.aux)
+(./build/genesis/chapters/01-genesis/49.aux)
+(./build/genesis/chapters/01-genesis/50.aux)
+(./build/genesis/chapters/01-genesis/apocrypha.aux))
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross
+-references right.
+
+
+Package rerunfilecheck Warning: File `01-genesis.out' has ch
+anged.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+)
+(see the transcript file for additional information)
+ 69303 words of node memory still in use:
+   6 hlist, 2 vlist, 28 rule, 465 glue, 4 kern, 1 glyph, 216
+76 attribute, 121 glue_spec, 10831 attribute_list, 4 write n
+odes
+   avail lists: 1:1,2:27187,3:837,4:87,5:3181,6:253,7:10596,
+8:66,9:1354,10:84,11:541
+
+warning  (pdf backend): unreferenced destination with name '
+Hfootnote.440'
+
+warning  (pdf backend): unreferenced destination with name '
+Hfootnote.439'
+
+warning  (pdf backend): unreferenced destination with name '
+Hfootnote.423'
+</nix/store/swxn2kgfg47a8r0igh45r51c7x3mk92s-lm-2.005-tex/fo
+nts/opentype/public/lm/lmmono8-regular.otf>{/nix/store/bpxyv
+3ivbxaayknvfbaxclxrqrk7bhnf-texlive-2025-r78234-final-env-te
+xmfdist/fonts/enc/dvips/lm/lm-mathit.enc}{/nix/store/bpxyv3i
+vbxaayknvfbaxclxrqrk7bhnf-texlive-2025-r78234-final-env-texm
+EOF

@@ -906,13 +906,21 @@
     \fi
 }
 
+% Optional \footnotetext bypasses Hyperref's anchor wrapper. Restore both
+% the printed mark and the destination saved when the deferred mark was made.
+\newcommand{\RecursiveFootnoteText}[3]{%
+    \begingroup
+        \def\@thefnmark{#1}%
+        \def\Hy@footnote@currentHref{#2}%
+        \@footnotetext{#3}%
+    \endgroup
+}
 \NewDocumentCommand{\recursivefootnote}{ +m }{%
     \footnotemark
     \begingroup
-        \count@=\csname c@\@mpfn\endcsname%
         \xdef\RecursiveFootnoteAppend{%
             \noexpand\g@addto@macro\noexpand\RecursiveFootnoteQueue{%
-                \noexpand\footnotetext[\the\count@]{\unexpanded{#1}}%
+                \noexpand\RecursiveFootnoteText{\@thefnmark}{\Hy@footnote@currentHref}{\unexpanded{#1}}%
             }%
         }%
     \endgroup
@@ -4719,7 +4727,7 @@
 % Also finish the separate parallel-build front-matter PDF on a verso.
 \WeClearToRightPage
 \mainmatter
-\hypersetup{pageanchor=true}
+% The opening book contents are flushed before chapter numbering starts.
 \pagestyle{fancy}
 
 \Book{Genesis}
