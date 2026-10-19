@@ -350,7 +350,7 @@ $(SUBSET_TARGETS):
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$@")"; \
 	bin/book-subset --build-dir "$(BUILD)" "$@"; \
-	$(LATEX) $(LATEXFLAGS) "$(LATEX_CONFIG)\input{$(BUILD)/$$basename.tex}"
+	python3 bin/latex-rerun.py "$(BUILD)/$$basename.log" $(LATEX) $(LATEXFLAGS) "$(LATEX_CONFIG)\input{$(BUILD)/$$basename.tex}"
 	$(MAKE) clean-stray-aux
 	@set -e; \
 	basename="$$(bin/book-subset --output-name "$@")"; \
