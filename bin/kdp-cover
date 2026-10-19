@@ -10,6 +10,15 @@ volume=${6:-Genesis}
 spine=${7:-nameless}
 binding=${8:-paperback}
 template=${9:-}
+layout=${10:-original}
+cover_layout_tex=
+case "$layout" in
+    original) ;;
+    alt)
+        [[ "$style" == fancy ]] || { echo "Alternate layout requires fancy style." >&2; exit 2; }
+        cover_layout_tex="\\def\\CoverAlternate{true}" ;;
+    *) echo "Unsupported cover layout: $layout" >&2; exit 2 ;;
+esac
 project_dir="pub/covers/$style"
 
 if [[ ! -f "$interior" ]]; then
@@ -64,7 +73,7 @@ for pass in 1 2; do
         -recorder -interaction=nonstopmode -halt-on-error -file-line-error \
         -output-directory="$build_dir" \
         -jobname=cover \
-        "\\def\\CoverDimensionsFile{$build_dir/dimensions.tex}\\def\\CoverShowSpine{$show_spine}\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverSpine{$spine}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}"
+        "${cover_layout_tex}\\def\\CoverDimensionsFile{$build_dir/dimensions.tex}\\def\\CoverShowSpine{$show_spine}\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverSpine{$spine}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}"
     printf 'Cover LuaLaTeX pass %s/2 PASS\n' "$pass"
 done
 cp "$build_dir/cover.pdf" "$output"

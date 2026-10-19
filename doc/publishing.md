@@ -87,7 +87,7 @@ and [cover guidance](https://kdp.amazon.com/en_US/help/topic/G201953020), checke
 September 14, 2026.
 
 Hardcover geometry, template overrides, artwork provenance, stock, and eligibility
-are documented in [PUBLISH.md](../PUBLISH.md#hardcover-covers). Both cover styles
+are documented in [PUBLISH.md](../PUBLISH.md#hardcover-covers). The original layouts of both cover styles
 share `pub/covers/simple/cover.tex` typography; dimensions come from
 `bin/kdp_cover_geometry.py`.
 
@@ -132,3 +132,11 @@ check's run directory. Check never rebuilds or changes the PDFs.
 The synthetic tests exercise conversion and visual comparison without building a
 book. They cannot establish that the current book sources compile. Physical layout,
 color, gutter, spine and barcode review still require inspection of the output.
+
+Hardcover builds also produce `pub/<canonical>-cover-hardcover-alt-original.pdf`
+and, in vectorizing targets, `pub/<canonical>-cover-hardcover-alt-vectorized.pdf`.
+The existing covers are retained. The alternate centers “The Nameless” in the
+artwork circle and places the ink centers of “We” and the volume title on its arcs.
+Adjust `\CoverTitleSeparation` in `pub/covers/fancy/cover.tex` (default `0.212`,
+a fraction of panel height): larger spreads the titles farther apart. Rerun the
+relevant target, e.g. `make genesis-kdp-hardcover` or `make J-kdp-hardcover`.

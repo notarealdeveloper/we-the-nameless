@@ -1,3 +1,10 @@
-% Illustrated wrap shares every typography coordinate with the simple cover.
+% The normal illustrated wrap preserves the original simple-cover typography.
 \def\CoverIllustrated{true}
-\input{pub/covers/simple/cover.tex}
+% Fraction of panel height from the circle center to either title's ink center.
+% Increase to move We up and the volume down; 0.212 matches front-textless.png.
+\newcommand{\CoverTitleSeparation}{0.212}
+\ifdefined\CoverAlternate
+  \input{pub/covers/fancy/alternate.tex}
+\else
+  \input{pub/covers/simple/cover.tex}
+\fi

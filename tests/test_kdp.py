@@ -157,6 +157,7 @@ class PublishingTests(unittest.TestCase):
                 pdf(candidate, [b''] * (80 if hard else 24), box='0 0 594 792' if hard else '0 0 504 720')
             elif tool == 'bin/kdp-cover':
                 hard = command[8] == 'hardcover'
+                self.assertEqual(command[10], 'alt' if '-alt-' in str(command[3]) else 'original')
                 pages = 80 if hard else 24
                 self.assertEqual(inspect(command[1])['pages'], pages)
                 self.assertEqual(Path(command[1]), pipeline.pdf_path('interior-' + command[8], 'original'))
@@ -171,7 +172,7 @@ class PublishingTests(unittest.TestCase):
         with patch.object(pipeline, 'run', side_effect=simulate), patch.object(publishing, 'sources', return_value={}):
             record = pipeline.build(args, {}, {}, {})
         self.assertEqual(passes, ['LuaLaTeX pass 1', 'LuaLaTeX pass 2', 'LuaLaTeX pass 3'] * len(pipeline.bindings))
-        self.assertEqual(len(record['files']), 2 * len(pipeline.bindings))
+        self.assertEqual(len(record['files']), len(pipeline.artifacts))
         self.assertEqual(len(list(pipeline.output_dir.glob('*.pdf'))), len(pipeline.artifacts))
         for artifact in pipeline.artifacts:
             self.assertTrue(pipeline.pdf_path(artifact, 'original').is_file())
@@ -179,28 +180,29 @@ class PublishingTests(unittest.TestCase):
         self.assertTrue((pipeline.base / 'build.json').exists())
         self.assertFalse((pipeline.base / 'current').exists())
 
-    def test_binding_selection_requires_only_its_pair(self):
+    def test_binding_selection_requires_only_its_artifacts(self):
         for binding in ('paperback', 'hardcover'):
             pipeline = publishing.Pipeline('fixture', self.root / binding, self.root / binding / 'pub', binding)
-            self.assertEqual(pipeline.artifacts, ('interior-' + binding, 'cover-' + binding))
+            self.assertEqual(pipeline.artifacts, ('interior-' + binding, 'cover-' + binding)
+                             + (('cover-hardcover-alt',) if binding == 'hardcover' else ()))
             for artifact in pipeline.artifacts:
                 pdf(pipeline.pdf_path(artifact, 'original'))
             with contextlib.redirect_stdout(io.StringIO()):
                 pipeline.vectorize({'variant': 'soft'})
-            self.assertEqual(len(list(pipeline.output_dir.glob('*-vectorized.pdf'))), 2)
+            self.assertEqual(len(list(pipeline.output_dir.glob('*-vectorized.pdf'))), len(pipeline.artifacts))
 
     def test_vectorize_and_check_use_editable_pub_files_without_manifest(self):
         pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
-        for name in publishing.ARTIFACTS:
+        for name in pipeline.artifacts:
             pdf(pipeline.pdf_path(name, 'original'), [b'BT /F1 16 Tf 70 650 Td (Fixture) Tj ET\n'],
                 resources='<< /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >>')
         with contextlib.redirect_stdout(io.StringIO()):
             pipeline.vectorize({'variant': 'soft'})
         self.assertFalse(any('bin/kdp-visual-compare' in c['argv'] for c in pipeline.commands))
-        for name in publishing.ARTIFACTS:
+        for name in pipeline.artifacts:
             self.assertEqual(inspect(pipeline.pdf_path(name, 'vectorized'))['font_count'], 0)
             self.assertGreater(inspect(pipeline.pdf_path(name, 'original'))['font_count'], 0)
-        previous = {a: pipeline.pdf_path(a, 'vectorized').read_bytes() for a in publishing.ARTIFACTS}
+        previous = {a: pipeline.pdf_path(a, 'vectorized').read_bytes() for a in pipeline.artifacts}
         # A user can replace a stable input; no stale manifest blocks conversion.
         pdf(pipeline.pdf_path('interior-paperback', 'original'))
         real_validate = pipeline.validate
@@ -216,7 +218,7 @@ class PublishingTests(unittest.TestCase):
             pipeline.vectorize({'variant': 'soft'})
             pipeline.check()
         comparisons = [c for c in pipeline.commands if c['argv'][0] == 'bin/kdp-visual-compare']
-        self.assertEqual(len(comparisons), 5)  # Self-test plus all four PDFs, only in check.
+        self.assertEqual(len(comparisons), 6)  # Self-test plus all five PDFs, only in check.
         for command in comparisons[1:]:
             self.assertEqual(Path(command['argv'][1]).parent, self.root / 'pub')
             self.assertEqual(Path(command['argv'][2]).parent, self.root / 'pub')

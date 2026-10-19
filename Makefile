@@ -134,8 +134,9 @@ help:
 		'Prepare KDP paperbacks and hardcovers:' \
 		'  make genesis-kdp-build                                 Build pub/<canonical>-{interior,cover}-{paperback,hardcover}-original.pdf.' \
 		'  make genesis-kdp-vectorize                             Convert pub originals to *-vectorized.pdf; no pixel comparison.' \
-		'  make genesis-kdp                                       Build and vectorize all four PDFs in pub/; no pixel comparison.' \
+		'  make genesis-kdp                                       Build and vectorize all five PDFs in pub/; no pixel comparison.' \
 		'  make genesis-kdp-paperback|hardcover                    Build and vectorize only that binding interior + cover.' \
+		'                                                         Hardcover builds also emit cover-hardcover-alt-{original,vectorized}.pdf.' \
 		'  make genesis-kdp-check                                 Compare pub originals and vectors pixel by pixel; no build.' \
 		'                                                         Equivalent targets exist for every book, chapter, alias, and source subset.' \
 		'  make check-kdp                                         Run inexpensive publishing tests (never builds a book).' \

@@ -104,6 +104,8 @@ class Pipeline:
     def __init__(self, book, base, output_dir=None, binding='both'):
         self.bindings = tuple(BINDINGS) if binding == 'both' else (binding,)
         self.artifacts = tuple(a for a in ARTIFACTS if a.rsplit('-', 1)[1] in self.bindings)
+        if 'hardcover' in self.bindings:
+            self.artifacts += ('cover-hardcover-alt',)
         self.book, self.base = book, base
         self.output_dir = output_dir or ROOT / 'pub'
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -213,24 +215,26 @@ class Pipeline:
             if any(p['MediaBox'] != [0, 0, width * 72, height * 72] or p['rotation'] != 0 or p['UserUnit'] != 1 for p in info['page_geometry']):
                 raise RuntimeError(f'{binding} interior does not match {width}x{height} no-bleed trim')
             files[str(interior)] = info
-            artifact = 'cover-' + binding
-            cover = self.pdf_path(artifact, 'original')
-            template = getattr(args, 'hardcover_template', None) if binding == 'hardcover' else None
-            g = geometry(info['pages'], width, height, args.paper, binding, template)
-            self.run('3/6 ' + artifact, 'build separate wrap', ['bin/kdp-cover', interior,
-                args.paper, cover, self.run_dir / ('work/' + artifact), style, title,
-                args.spine, binding, str(template) if template else ''], cover)
-            cover_info = json.loads(self.inspect(artifact, cover, 'reference', stage=3).read_text())
-            expected = [0, 0, 72 * g['width'], 72 * g['height']]
-            if (cover_info['pages'] != 1 or any(
-                    any(abs(a-b) > .01 for a, b in zip(p['MediaBox'], expected))
-                    or p['rotation'] != 0 or p['UserUnit'] != 1 for p in cover_info['page_geometry'])):
-                raise RuntimeError(f'{binding} sheet does not match interior page count, trim and paper stock')
-            cover_info['cover_geometry'] = g
-            cover_info['geometry_source'] = ('kdp-template' if template else
-                'template-derived-model' if binding == 'hardcover' else 'kdp-published-formula')
-            cover_info['kdp_eligible'] = binding == 'paperback' or 76 <= info['pages'] <= 550
-            files[str(cover)] = cover_info
+            layouts = ('original', 'alt') if binding == 'hardcover' else ('original',)
+            for layout in layouts:
+                artifact = 'cover-' + binding + ('-alt' if layout == 'alt' else '')
+                cover = self.pdf_path(artifact, 'original')
+                template = getattr(args, 'hardcover_template', None) if binding == 'hardcover' else None
+                g = geometry(info['pages'], width, height, args.paper, binding, template)
+                self.run('3/6 ' + artifact, 'build separate wrap', ['bin/kdp-cover', interior,
+                    args.paper, cover, self.run_dir / ('work/' + artifact), style, title,
+                    args.spine, binding, str(template) if template else '', layout], cover)
+                cover_info = json.loads(self.inspect(artifact, cover, 'reference', stage=3).read_text())
+                expected = [0, 0, 72 * g['width'], 72 * g['height']]
+                if (cover_info['pages'] != 1 or any(
+                        any(abs(a-b) > .01 for a, b in zip(p['MediaBox'], expected))
+                        or p['rotation'] != 0 or p['UserUnit'] != 1 for p in cover_info['page_geometry'])):
+                    raise RuntimeError(f'{binding} sheet does not match interior page count, trim and paper stock')
+                cover_info['cover_geometry'] = g
+                cover_info['geometry_source'] = ('kdp-template' if template else
+                    'template-derived-model' if binding == 'hardcover' else 'kdp-published-formula')
+                cover_info['kdp_eligible'] = binding == 'paperback' or 76 <= info['pages'] <= 550
+                files[str(cover)] = cover_info
         dependencies = {}
         for recorder in self.run_dir.rglob('*.fls'):
             for line in recorder.read_text().splitlines():
