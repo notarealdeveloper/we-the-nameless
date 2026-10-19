@@ -15,7 +15,8 @@ from pathlib import Path
 
 THICKNESS = {'white': .002252, 'cream': .0025,
              'standard-color': .002252, 'premium-color': .002347}
-ARTIFACTS = ('interior', 'cover-paperback', 'cover-hardcover')
+BINDINGS = {'paperback': ('book', 7, 10), 'hardcover': ('hard', 8.25, 11)}
+ARTIFACTS = tuple(f'{kind}-{binding}' for binding in BINDINGS for kind in ('interior', 'cover'))
 
 
 def geometry(pages, width, height, paper, binding='paperback', template=None):

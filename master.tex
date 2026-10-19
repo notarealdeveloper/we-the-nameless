@@ -8,7 +8,7 @@
     \def\ConfigTheme{lite}
 \fi
 
-% choices: book, tech, even (book with equal inner and outer margins)
+% choices: book, hard (8.25in x 11in hardcover), tech, even (equal book margins)
 \ifdefined\ConfigOutputMode\else
     \def\ConfigOutputMode{book}
 \fi
@@ -94,6 +94,7 @@
 \def\ConfigVerseLayoutHorizontal{horizontal}
 \def\ConfigVerseLayoutVertical{vertical}
 \def\ConfigOutputModeBook{book}
+\def\ConfigOutputModeHard{hard}
 \def\ConfigOutputModeTech{tech}
 \def\ConfigOutputModeEven{even}
 \def\ConfigApocryphaApocryphal{apocryphal}
@@ -237,6 +238,9 @@
         bottom=0.75in,
         includefoot
     ]{geometry}
+    \ifx\ConfigOutputMode\ConfigOutputModeHard
+        \geometry{paperwidth=8.25in,paperheight=11in}
+    \fi
     \ifx\ConfigOutputMode\ConfigOutputModeEven
         % Center the book text block without changing its width.
         \geometry{inner=0.625in,outer=0.625in}

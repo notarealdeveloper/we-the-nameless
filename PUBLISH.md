@@ -61,14 +61,14 @@ make genesis-kdp-build
 # 1. Build searchable reference interior and a cover sized from its page count.
 
 make genesis-kdp-vectorize
-# 2. Convert fonts to paths, clean, and structurally check all three PDFs.
+# 2. Convert fonts to paths, clean, and structurally check all four PDFs.
 ```
 
 `make genesis-kdp-vectorize` uses the existing originals; it does not rebuild
 them. Neither command runs the optional pixel comparison described below.
 
-Build writes `pub/<canonical>-{interior,cover-paperback,cover-hardcover}-original.pdf`. Vectorize reads
-those files and writes `pub/<canonical>-{interior,cover-paperback,cover-hardcover}-vectorized.pdf`.
+Build writes `pub/<canonical>-{interior,cover}-{paperback,hardcover}-original.pdf`. Vectorize reads
+those files and writes `pub/<canonical>-{interior,cover}-{paperback,hardcover}-vectorized.pdf`.
 You can copy replacement PDFs to the expected paths and rerun vectorize or
 check; no build manifest is required.
 
@@ -106,7 +106,7 @@ means faithful conversion; it does not replace editorial or physical review.
 
 ```sh
 make genesis-kdp
-# Build the originals, then vectorize, clean, and structurally check all three PDFs.
+# Build the originals, then vectorize, clean, and structurally check all four PDFs.
 ```
 
 `make genesis-kdp` combines the stages from `make genesis-kdp-build` and
@@ -117,7 +117,7 @@ comparison is a separate, optional command.
 When that command finishes successfully, upload these **two separate files**:
 
 ```sh
-pub/01-genesis-interior-vectorized.pdf
+pub/01-genesis-interior-paperback-vectorized.pdf
 pub/01-genesis-cover-paperback-vectorized.pdf
 ```
 
@@ -125,13 +125,13 @@ For another selection, use the same command pattern:
 
 ```sh
 make exodus-kdp
-# Upload pub/02-exodus-interior-vectorized.pdf and the desired binding cover.
+# Upload pub/02-exodus-interior-paperback-vectorized.pdf and the paperback cover (use the hardcover interior with the hardcover cover).
 
 make J-kdp
-# Upload pub/J-interior-vectorized.pdf and the desired binding cover.
+# Upload pub/J-interior-paperback-vectorized.pdf and the paperback cover (use the hardcover interior with the hardcover cover).
 
 make P-kdp
-# Upload pub/P-interior-vectorized.pdf and the desired binding cover.
+# Upload pub/P-interior-paperback-vectorized.pdf and the paperback cover (use the hardcover interior with the hardcover cover).
 
 bin/book-subset --output-name genesis
 # Print the canonical filename stem: 01-genesis.
@@ -150,17 +150,26 @@ make genesis-kdp-check
 # Compare existing originals and vectorized PDFs; do not build or vectorize.
 ```
 
-This separate target compares the interior and both cover pairs in `pub/`, rendering
+This separate target compares both interior and cover pairs in `pub/`, rendering
 every page using both MuPDF and Poppler at 300 DPI. The full pixel comparison can
 take a long time and runs only when explicitly requested; `make genesis-kdp`
 does not run it. Both the original and vectorized PDFs must already exist.
 
-### Hardcover covers
+### Hardcover interiors and covers
 
-Every KDP subset build also produces `pub/<canonical>-cover-hardcover-original.pdf`
+Use `make genesis-kdp-paperback` or `make genesis-kdp-hardcover` to build and
+vectorize only that binding's interior and cover. These suffixes work for every
+subset and chapter, including `exodus` and `J`. `make genesis-kdp` builds both.
+All outputs go directly in `pub/`. Each binding uses its own interior:
+`<canonical>-interior-paperback-{original,vectorized}.pdf` at 7×10 inches and
+`<canonical>-interior-hardcover-{original,vectorized}.pdf` at 8.25×11 inches.
+Hardcover uses `ConfigOutputMode=hard`, keeping book typography and margins.
+Old unqualified `interior` PDFs are untouched archives, not current outputs.
+
+Every combined KDP subset build also produces `pub/<canonical>-cover-hardcover-original.pdf`
 and `-vectorized.pdf`. Paperback covers now have `cover-paperback` in their basename;
 old `cover-original` / `cover-final` files are untouched archives, not current outputs.
-There are six current PDFs per subset. `KDP_COVER_STYLE` selects the paperback style;
+There are eight current PDFs per subset (four originals and four vectorized). `KDP_COVER_STYLE` selects the paperback style;
 the hardcover always uses the illustrated artwork with shared simple-cover typography.
 The LD mark remains on the spine. No new author line is invented.
 
@@ -193,8 +202,8 @@ values from the calculator for the actual subset; the example is not a Genesis t
 Hardcover color uses premium white stock even if paperback uses standard color.
 KDP hardcover requires 76–550 even pages. Out-of-range selections still get covers
 for review, with an explicit console warning and `kdp_eligible: false` in provenance.
-The current 600-page Genesis interior therefore needs shortening or splitting before
-hardcover publication. The supplied 1024×1536 illustrations have limited native print
+The larger hardcover trim is intended to bring Genesis within this limit; verify
+the actual page count after building. The supplied 1024×1536 illustrations have limited native print
 resolution (roughly 140 dpi at this trim); outlining preserves artwork and makes
 text vector paths, but cannot add image detail. Higher-resolution original artwork
 is needed to meet Amazon's 300 dpi image recommendation.

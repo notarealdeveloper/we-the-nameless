@@ -43,11 +43,11 @@ class PublishingTests(unittest.TestCase):
         names = subprocess.check_output(['bin/book-subset', '--make-targets'], cwd=ROOT, text=True).split()
         chapters = subprocess.check_output(['bin/book-subset', '--make-chapter-targets'], cwd=ROOT, text=True).split()
         for name in names + chapters:
-            for suffix in ('kdp', 'kdp-build', 'kdp-vectorize', 'kdp-check'):
+            for suffix in ('kdp', 'kdp-paperback', 'kdp-hardcover', 'kdp-build', 'kdp-vectorize', 'kdp-check'):
                 self.assertIn('\n' + name + '-' + suffix + ':', database)
         for alias in ('genesis', '1-genesis', '01-genesis'):
             self.assertEqual(subprocess.check_output(['bin/book-subset', '--output-name', alias], cwd=ROOT, text=True).strip(), '01-genesis')
-        for target in ('genesis-kdp-build', 'J-kdp-vectorize', 'P-kdp-check', 'genesis-1-kdp'):
+        for target in ('genesis-kdp-build', 'J-kdp-vectorize', 'P-kdp-check', 'genesis-1-kdp', 'genesis-kdp-paperback', 'J-kdp-hardcover'):
             dry = subprocess.check_output(['make', '-n', target], cwd=ROOT, text=True)
             self.assertIn('bin/kdp-publish', dry)
             self.assertNotIn('lualatex', dry)
@@ -130,7 +130,16 @@ class PublishingTests(unittest.TestCase):
         self.assertEqual(json.loads((self.root / 'assets/assets.json').read_text()), [])
 
     def test_build_staging_with_fake_tex_and_real_pdf_inspection(self):
-        pipeline = publishing.Pipeline('fixture', self.root / 'publish', self.root / 'pub')
+        self.build_fixture('both')
+
+    def test_paperback_build_only(self):
+        self.build_fixture('paperback')
+
+    def test_hardcover_build_only(self):
+        self.build_fixture('hardcover')
+
+    def build_fixture(self, binding):
+        pipeline = publishing.Pipeline('fixture', self.root / 'publish', self.root / 'pub', binding)
         passes = []
         def simulate(stage, operation, command, candidate=None, env=None):
             tool = command[0]
@@ -144,10 +153,14 @@ class PublishingTests(unittest.TestCase):
                 self.assertTrue((Path(candidate).parent / 'generated').is_dir())
                 self.assertTrue(Path(env['TEXMFVAR']).is_dir())
                 passes.append(operation)
-                pdf(candidate, [b''] * 24)
+                hard = r'\def\ConfigOutputMode{hard}' in command[-1]
+                pdf(candidate, [b''] * (80 if hard else 24), box='0 0 594 792' if hard else '0 0 504 720')
             elif tool == 'bin/kdp-cover':
-                self.assertEqual(inspect(command[1])['pages'], 24)
-                g = publishing.geometry(24, 7, 10, 'premium-color', command[8])
+                hard = command[8] == 'hardcover'
+                pages = 80 if hard else 24
+                self.assertEqual(inspect(command[1])['pages'], pages)
+                self.assertEqual(Path(command[1]), pipeline.pdf_path('interior-' + command[8], 'original'))
+                g = publishing.geometry(pages, 8.25 if hard else 7, 11 if hard else 10, 'premium-color', command[8])
                 pdf(command[3], box=f"0 0 {72*g['width']} {72*g['height']}")
             elif tool == 'bin/kdp-inspect':
                 report = Path(command[2]); report.parent.mkdir(parents=True, exist_ok=True)
@@ -157,13 +170,24 @@ class PublishingTests(unittest.TestCase):
         args = SimpleNamespace(book='fixture', paper='premium-color', cover_style='simple', spine='ld')
         with patch.object(pipeline, 'run', side_effect=simulate), patch.object(publishing, 'sources', return_value={}):
             record = pipeline.build(args, {}, {}, {})
-        self.assertEqual(passes, ['LuaLaTeX pass 1', 'LuaLaTeX pass 2', 'LuaLaTeX pass 3'])
-        self.assertEqual(len(record['files']), 3)
-        for artifact in publishing.ARTIFACTS:
+        self.assertEqual(passes, ['LuaLaTeX pass 1', 'LuaLaTeX pass 2', 'LuaLaTeX pass 3'] * len(pipeline.bindings))
+        self.assertEqual(len(record['files']), 2 * len(pipeline.bindings))
+        self.assertEqual(len(list(pipeline.output_dir.glob('*.pdf'))), len(pipeline.artifacts))
+        for artifact in pipeline.artifacts:
             self.assertTrue(pipeline.pdf_path(artifact, 'original').is_file())
             self.assertEqual(pipeline.pdf_path(artifact, 'original').parent, self.root / 'pub')
         self.assertTrue((pipeline.base / 'build.json').exists())
         self.assertFalse((pipeline.base / 'current').exists())
+
+    def test_binding_selection_requires_only_its_pair(self):
+        for binding in ('paperback', 'hardcover'):
+            pipeline = publishing.Pipeline('fixture', self.root / binding, self.root / binding / 'pub', binding)
+            self.assertEqual(pipeline.artifacts, ('interior-' + binding, 'cover-' + binding))
+            for artifact in pipeline.artifacts:
+                pdf(pipeline.pdf_path(artifact, 'original'))
+            with contextlib.redirect_stdout(io.StringIO()):
+                pipeline.vectorize({'variant': 'soft'})
+            self.assertEqual(len(list(pipeline.output_dir.glob('*-vectorized.pdf'))), 2)
 
     def test_vectorize_and_check_use_editable_pub_files_without_manifest(self):
         pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
@@ -178,7 +202,7 @@ class PublishingTests(unittest.TestCase):
             self.assertGreater(inspect(pipeline.pdf_path(name, 'original'))['font_count'], 0)
         previous = {a: pipeline.pdf_path(a, 'vectorized').read_bytes() for a in publishing.ARTIFACTS}
         # A user can replace a stable input; no stale manifest blocks conversion.
-        pdf(pipeline.pdf_path('interior', 'original'))
+        pdf(pipeline.pdf_path('interior-paperback', 'original'))
         real_validate = pipeline.validate
         def fail_cover(artifact, *args, **kwargs):
             if artifact == 'cover-hardcover': raise RuntimeError('damaged cover fixture')
@@ -192,7 +216,7 @@ class PublishingTests(unittest.TestCase):
             pipeline.vectorize({'variant': 'soft'})
             pipeline.check()
         comparisons = [c for c in pipeline.commands if c['argv'][0] == 'bin/kdp-visual-compare']
-        self.assertEqual(len(comparisons), 4)  # Self-test plus all three PDFs, only in check.
+        self.assertEqual(len(comparisons), 5)  # Self-test plus all four PDFs, only in check.
         for command in comparisons[1:]:
             self.assertEqual(Path(command['argv'][1]).parent, self.root / 'pub')
             self.assertEqual(Path(command['argv'][2]).parent, self.root / 'pub')

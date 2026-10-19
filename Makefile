@@ -36,7 +36,7 @@ EBOOK_SUBSETS := $(SUBSET_TARGETS) $(CHAPTER_TARGETS)
 EBOOK_TARGETS := $(foreach suffix,ebook ebook-release ebook-check,$(addsuffix -$(suffix),$(EBOOK_SUBSETS)))
 EBOOK_COVER ?= we-cover-8
 KDP_SUBSETS := $(SUBSET_TARGETS) $(CHAPTER_TARGETS)
-KDP_TARGETS := $(foreach suffix,kdp kdp-build kdp-vectorize kdp-check,$(addsuffix -$(suffix),$(KDP_SUBSETS)))
+KDP_TARGETS := $(foreach suffix,kdp kdp-paperback kdp-hardcover kdp-build kdp-vectorize kdp-check,$(addsuffix -$(suffix),$(KDP_SUBSETS)))
 COVER_TARGETS := $(addsuffix -cover,$(SUBSET_TARGETS))
 COVER_INTERIOR ?= 01-genesis.pdf
 COVER_PAPER ?= standard-color
@@ -131,14 +131,15 @@ help:
 		'  make ebook-release / ebook-check                       Equivalent commands for the complete EPUB.' \
 		'  Set EBOOK_COVER=we-cover-8|none|<image basename>. See PUBLISH.md for the command sequence.' \
 		'' \
-		'Prepare KDP paperbacks:' \
-		'  make genesis-kdp-build                                 Build pub/<canonical>-{interior,cover-paperback,cover-hardcover}-original.pdf.' \
+		'Prepare KDP paperbacks and hardcovers:' \
+		'  make genesis-kdp-build                                 Build pub/<canonical>-{interior,cover}-{paperback,hardcover}-original.pdf.' \
 		'  make genesis-kdp-vectorize                             Convert pub originals to *-vectorized.pdf; no pixel comparison.' \
-		'  make genesis-kdp                                       Build and vectorize all three PDFs in pub/; no pixel comparison.' \
+		'  make genesis-kdp                                       Build and vectorize all four PDFs in pub/; no pixel comparison.' \
+		'  make genesis-kdp-paperback|hardcover                    Build and vectorize only that binding interior + cover.' \
 		'  make genesis-kdp-check                                 Compare pub originals and vectors pixel by pixel; no build.' \
 		'                                                         Equivalent targets exist for every book, chapter, alias, and source subset.' \
 		'  make check-kdp                                         Run inexpensive publishing tests (never builds a book).' \
-		'  Upload files: pub/<canonical>-interior-vectorized.pdf and pub/<canonical>-cover-{paperback,hardcover}-vectorized.pdf' \
+		'  Upload files: pub/<canonical>-interior-{paperback,hardcover}-vectorized.pdf and pub/<canonical>-cover-{paperback,hardcover}-vectorized.pdf' \
 		'  Defaults: KDP_PAPER=premium-color KDP_INK=premium-color KDP_BLEED=no-bleed KDP_TRIM=7x10' \
 		'  Set KDP_COVER_STYLE=simple|fancy and KDP_SPINE=ld|nameless. See doc/publishing.md.' \
 		'  make genesis-kdp-soft|medium|hard                      Build legacy diagnostic PDF-encoding variants.' \
@@ -199,6 +200,12 @@ $(addsuffix -kdp-check,$(KDP_SUBSETS)): %-kdp-check:
 
 $(addsuffix -kdp,$(KDP_SUBSETS)): %-kdp:
 	@bin/kdp-publish "$*" all $(KDP_OPTIONS)
+
+$(addsuffix -kdp-paperback,$(KDP_SUBSETS)): %-kdp-paperback:
+	@bin/kdp-publish "$*" all $(KDP_OPTIONS) --binding paperback
+
+$(addsuffix -kdp-hardcover,$(KDP_SUBSETS)): %-kdp-hardcover:
+	@bin/kdp-publish "$*" all $(KDP_OPTIONS) --binding hardcover
 
 genesis-kdp-soft: genesis-kdp
 
