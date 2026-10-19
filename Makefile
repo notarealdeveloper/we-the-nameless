@@ -35,21 +35,27 @@ UNCOMMENT_BOOK_TARGETS := $(addprefix uncomment-,$(BOOK_TARGETS))
 EBOOK_SUBSETS := $(SUBSET_TARGETS) $(CHAPTER_TARGETS)
 EBOOK_TARGETS := $(foreach suffix,ebook ebook-release ebook-check,$(addsuffix -$(suffix),$(EBOOK_SUBSETS)))
 EBOOK_COVER ?= we-cover-8
-KDP_SUBSETS := $(SUBSET_TARGETS) $(CHAPTER_TARGETS)
-KDP_TARGETS := $(foreach suffix,kdp kdp-paperback kdp-hardcover kdp-build kdp-vectorize kdp-check,$(addsuffix -$(suffix),$(KDP_SUBSETS)))
+PRINT_SUBSETS := $(SUBSET_TARGETS) $(CHAPTER_TARGETS)
+PRINT_SUFFIXES := $(shell python3 bin/print_publish_config.py)
+PRINT_TARGETS := $(foreach suffix,$(PRINT_SUFFIXES),$(addsuffix -$(suffix),$(PRINT_SUBSETS)))
 COVER_TARGETS := $(addsuffix -cover,$(SUBSET_TARGETS))
 COVER_INTERIOR ?= 01-genesis.pdf
 COVER_PAPER ?= standard-color
 KDP_PAPER ?= premium-color
 KDP_INK ?= premium-color
 KDP_BLEED ?= no-bleed
-KDP_TRIM ?= 7x10
-KDP_COVER_STYLE ?= simple
+KDP_TRIM ?= default
+KDP_COVER_STYLE ?=
 KDP_SPINE ?= ld
+PRINT_PROCESSING ?=
+PRINT_BINDING ?=
+PRINT_OUTPUT_DIR ?=
+PRINT_PLAN ?=
 KDP_HARDCOVER_TEMPLATE ?=
 KDP_ARTIFACT ?=
 KDP_REFERENCE ?=
-KDP_OPTIONS = --paper "$(KDP_PAPER)" --ink "$(KDP_INK)" --bleed "$(KDP_BLEED)" --trim "$(KDP_TRIM)" --cover-style "$(KDP_COVER_STYLE)" --spine "$(KDP_SPINE)" $(if $(KDP_HARDCOVER_TEMPLATE),--hardcover-template "$(KDP_HARDCOVER_TEMPLATE)")
+KDP_OPTIONS = --paper "$(KDP_PAPER)" --ink "$(KDP_INK)" --bleed "$(KDP_BLEED)" --trim "$(KDP_TRIM)" $(if $(KDP_COVER_STYLE),--cover-style "$(KDP_COVER_STYLE)") --spine "$(KDP_SPINE)" $(if $(KDP_HARDCOVER_TEMPLATE),--hardcover-template "$(KDP_HARDCOVER_TEMPLATE)")
+PRINT_OPTIONS = $(KDP_OPTIONS) $(if $(PRINT_PROCESSING),--processing "$(PRINT_PROCESSING)") $(if $(PRINT_BINDING),--binding "$(PRINT_BINDING)") $(if $(PRINT_OUTPUT_DIR),--output-dir "$(PRINT_OUTPUT_DIR)") $(if $(filter 1 true,$(PRINT_PLAN)),--plan)
 KDP_CHECK_OPTIONS = $(if $(KDP_ARTIFACT),--artifact "$(KDP_ARTIFACT)") $(if $(KDP_REFERENCE),--reference "$(KDP_REFERENCE)")
 COVER_VOLUME ?=
 COVER_OUTPUT ?= 01-genesis-cover.pdf
@@ -62,7 +68,7 @@ export TEXMFVAR = $(CACHE)
 # Pentateuch paths themselves.
 export max_print_line = 60
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-release ebook-check ebook-validate check-ebook cover kdp kdp-preflight genesis-kdp check-genesis-kdp check-kdp-validator check-kdp $(KDP_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-release ebook-check ebook-validate check-ebook cover kdp kdp-preflight genesis-kdp check-genesis-kdp check-kdp-validator check-kdp $(PRINT_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 define publish-and-open
 	@set -e; \
@@ -131,25 +137,20 @@ help:
 		'  make ebook-release / ebook-check                       Equivalent commands for the complete EPUB.' \
 		'  Set EBOOK_COVER=we-cover-8|none|<image basename>. See PUBLISH.md for the command sequence.' \
 		'' \
-		'Prepare KDP paperbacks and hardcovers:' \
-		'  make genesis-kdp-build                                 Build pub/<canonical>-{interior,cover}-{paperback,hardcover}-original.pdf.' \
-		'  make genesis-kdp-vectorize                             Convert pub originals to *-vectorized.pdf; no pixel comparison.' \
-		'  make genesis-kdp                                       Build and vectorize all five PDFs in pub/; no pixel comparison.' \
-		'  make genesis-lulu-paperback|hardcover                   Build Lulu 7x10 color PDFs in pub/lulu/ (60# white).' \
-		'  make genesis-kdp-paperback|hardcover                    Build and vectorize only that binding interior + cover.' \
-		'                                                         Hardcover builds also emit cover-hardcover-alt-{original,vectorized}.pdf.' \
-		'  make genesis-kdp-check                                 Compare pub originals and vectors pixel by pixel; no build.' \
-		'                                                         Equivalent targets exist for every book, chapter, alias, and source subset.' \
-		'  make check-kdp                                         Run inexpensive publishing tests (never builds a book).' \
-		'  Upload files: pub/<canonical>-interior-{paperback,hardcover}-vectorized.pdf and pub/<canonical>-cover-{paperback,hardcover}-vectorized.pdf' \
-		'  Defaults: KDP_PAPER=premium-color KDP_INK=premium-color KDP_BLEED=no-bleed KDP_TRIM=7x10' \
-		'  Set KDP_COVER_STYLE=simple|fancy and KDP_SPINE=ld|nameless. See doc/publishing.md.' \
-		'  make check-genesis-kdp                                 Alias for genesis-kdp-check.' \
-		'  make cover                                             Build 01-genesis-cover.pdf from 01-genesis.pdf.' \
-		'  make genesis-cover                                     Build the matching wrap from an existing 01-genesis.pdf.' \
-		'                                                         Set COVER_STYLE=simple|fancy; COVER_PAPER defaults to standard-color.' \
-		'  make kdp KDP_INPUT=file.pdf KDP_OUTPUT=file-kdp.pdf    Legacy PDF 1.3 conversion; does NOT use the outlined pipeline.' \
-		'  make kdp-preflight KDP_INPUT=file.pdf                  Legacy searchable-font check; NOT for outlined uploads.' \
+		'Prepare print PDFs (see PUBLISH.md for defaults and equivalent bin/ commands):' \
+		'  make genesis-kdp                                       Simple 7x10 + fancy 8.25x11; vectorize interiors and covers.' \
+		'  make genesis-lulu                                      Simple + fancy 7x10; keep searchable originals.' \
+		'  make genesis-kdp-simplecover-original-8.25x11           Override artwork, processing, and trim independently.' \
+		'  make J-lulu-fancycover-vectorized-7x10                   Any selection, publisher, style, processing, and supported trim.' \
+		'  Qualifiers: [-simplecover|-fancycover][-original|-vectorized][-7x10|-8.25x11|-default]' \
+		'  Append -build (originals), -vectorize (existing originals), or -check (existing pairs).' \
+		'  -default and omitted trim are equivalent. Explicit cover, processing, and numeric trim override Make variables.' \
+		'  Add PRINT_PLAN=1 to print resolved parameters and paths without building.' \
+		'  make check-kdp                                         Synthetic KDP and Lulu tests; never builds a book.' \
+		'  make check-kdp-validator                               Synthetic visual validator self-test.' \
+		'  make cover / genesis-cover                             Standalone cover from an existing PDF.' \
+		'  make kdp KDP_INPUT=file.pdf                             Legacy PDF conversion; separate from the print pipeline.' \
+		'  make kdp-preflight KDP_INPUT=file.pdf                   Legacy searchable-font check.' \
 		'' \
 		'Edit the active selection:' \
 		'  make progress                                          Open master.tex.' \
@@ -189,37 +190,11 @@ kdp-preflight:
 	@test -n "$(KDP_INPUT)" || { echo 'KDP_INPUT is required' >&2; exit 2; }
 	@bin/kdp-preflight "$(KDP_INPUT)"
 
-# Enumerated static-pattern targets are visible to standard make tab completion.
-$(addsuffix -kdp-build,$(KDP_SUBSETS)): %-kdp-build:
-	@bin/kdp-publish "$*" build $(KDP_OPTIONS)
-
-$(addsuffix -kdp-vectorize,$(KDP_SUBSETS)): %-kdp-vectorize:
-	@bin/kdp-publish "$*" vectorize $(KDP_OPTIONS)
-
-$(addsuffix -kdp-check,$(KDP_SUBSETS)): %-kdp-check:
-	@bin/kdp-publish "$*" check $(KDP_OPTIONS) $(KDP_CHECK_OPTIONS)
-
-$(addsuffix -kdp,$(KDP_SUBSETS)): %-kdp:
-	@bin/kdp-publish "$*" all $(KDP_OPTIONS)
-
-$(addsuffix -kdp-paperback,$(KDP_SUBSETS)): %-kdp-paperback:
-	@bin/kdp-publish "$*" all $(KDP_OPTIONS) --binding paperback
-
-$(addsuffix -kdp-hardcover,$(KDP_SUBSETS)): %-kdp-hardcover:
-	@bin/kdp-publish "$*" all $(KDP_OPTIONS) --binding hardcover
-
-# Lulu uses a separate namespace and published Lulu cover dimensions.
-LULU_OPTIONS = --paper "$(KDP_PAPER)" --ink "$(KDP_INK)" --cover-style "$(KDP_COVER_STYLE)" --spine "$(KDP_SPINE)"
-.PHONY: genesis-lulu-paperback genesis-lulu-hardcover make-genesis-lulu-paperback
-
-genesis-lulu-paperback:
-	@bin/kdp-publish genesis all --provider lulu $(LULU_OPTIONS) --binding paperback
-
-genesis-lulu-hardcover:
-	@bin/kdp-publish genesis all --provider lulu $(LULU_OPTIONS) --binding hardcover
-
-# Also accept the hyphenated spellings used in the request.
-make-genesis-lulu-paperback: genesis-lulu-paperback
+# Target grammar and defaults live in one Python module, shared with the CLI.
+# Enumerate valid targets for tab completion and mark them phony even if a file
+# with that name exists. The CLI resolves qualifiers, not Make string slicing.
+$(PRINT_TARGETS):
+	@bin/kdp-publish --make-target "$@" $(PRINT_OPTIONS) $(KDP_CHECK_OPTIONS)
 
 check-genesis-kdp: genesis-kdp-check
 
@@ -228,6 +203,7 @@ check-kdp-validator:
 
 check-kdp:
 	@python3 -m unittest discover -s tests -p 'test_kdp*.py' -v
+	@python3 -m unittest discover -s tests -p 'test_lulu.py' -v
 
 $(COVER_TARGETS): %-cover:
 	@set -e; \
@@ -321,7 +297,7 @@ view open: $(PDF)
 
 clean: clean-stray-aux
 	@if [ -d build ]; then \
-		find build -path build/kdp -prune -o -type f \( \
+		find build \( -path build/kdp -o -path build/lulu \) -prune -o -type f \( \
 			-name '*.aux' -o \
 			-name '*.log' -o \
 			-name '*.toc' -o \

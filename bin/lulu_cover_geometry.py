@@ -21,8 +21,8 @@ def geometry(pages, width, height, paper, binding='paperback', template=None):
     minimum = 32 if binding == 'paperback' else 24
     if not minimum <= pages <= 800 or pages % 2:
         raise ValueError(f'Lulu {binding} requires an even page count in {minimum}..800')
-    if (width, height) != (7, 10) or paper not in ('premium-color', 'standard-color') or template:
-        raise ValueError('Lulu profile supports 7x10, color on 60# white, without KDP templates')
+    if (width, height) not in ((7, 10), (8.25, 11)) or paper not in ('premium-color', 'standard-color') or template:
+        raise ValueError('Lulu profile supports 7x10 or 8.25x11, color on 60# white, without KDP templates')
     spine = pages / 444 + .06
     wrap, panel_width, panel_height, hinge = .125, width, height, 0
     if binding == 'hardcover':

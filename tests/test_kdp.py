@@ -5,6 +5,7 @@ import importlib.util
 import io
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -18,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'bin'))
 from kdp_pdf_lib import inspect, validate
 from kdp_fixtures import pdf
+from print_publish_config import profiles, parse_target, target_suffixes, TRIMS
 
 
 def module(name, path):
@@ -40,18 +42,71 @@ class PublishingTests(unittest.TestCase):
     def test_make_completion_and_resolution(self):
         query = subprocess.run(['make', '-qp'], cwd=ROOT, text=True, capture_output=True)
         self.assertIn(query.returncode, (0, 1))
-        database = query.stdout
+        targets = set(re.findall(r'^(\S+):', query.stdout, re.MULTILINE))
         names = subprocess.check_output(['bin/book-subset', '--make-targets'], cwd=ROOT, text=True).split()
         chapters = subprocess.check_output(['bin/book-subset', '--make-chapter-targets'], cwd=ROOT, text=True).split()
         for name in names + chapters:
-            for suffix in ('kdp', 'kdp-paperback', 'kdp-hardcover', 'kdp-build', 'kdp-vectorize', 'kdp-check'):
-                self.assertIn('\n' + name + '-' + suffix + ':', database)
+            for suffix in ('kdp', 'lulu', 'kdp-simplecover', 'kdp-fancycover', 'kdp-build', 'kdp-vectorize', 'kdp-check'):
+                self.assertIn(name + '-' + suffix, targets)
         for alias in ('genesis', '1-genesis', '01-genesis'):
             self.assertEqual(subprocess.check_output(['bin/book-subset', '--output-name', alias], cwd=ROOT, text=True).strip(), '01-genesis')
-        for target in ('genesis-kdp-build', 'J-kdp-vectorize', 'P-kdp-check', 'genesis-1-kdp', 'genesis-kdp-paperback', 'J-kdp-hardcover'):
+        for target in ('genesis-kdp-build', 'J-kdp-vectorize', 'P-kdp-check', 'genesis-1-kdp', 'genesis-kdp-simplecover-original-8.25x11', 'J-lulu-fancycover-vectorized-7x10'):
             dry = subprocess.check_output(['make', '-n', target], cwd=ROOT, text=True)
             self.assertIn('bin/kdp-publish', dry)
             self.assertNotIn('lualatex', dry)
+
+    def test_make_routes_every_qualifier_combination(self):
+        targets = ['genesis-' + suffix for suffix in target_suffixes()]
+        dry = subprocess.check_output(['make', '--no-print-directory', '-n', *targets], cwd=ROOT, text=True)
+        self.assertEqual(len(dry.splitlines()), len(targets))
+        for target in targets:
+            self.assertIn('--make-target "' + target + '"', dry)
+        self.assertNotIn('lualatex', dry)
+
+    def test_target_matrix_and_precedence(self):
+        # Every enumerated spelling resolves, including chapter and numbered names.
+        for suffix in target_suffixes():
+            for book in ('genesis', 'genesis-1', '1-samuel', '1-samuel-1', 'J', 'j'):
+                args = publishing.arguments(['--make-target', book + '-' + suffix])
+                self.assertEqual(args.book, book)
+                selected = profiles(args.provider, args.cover_style, args.trim, args.processing)
+                self.assertEqual(len(selected), 1 if args.cover_style else 2)
+                if args.trim not in ('default', None):
+                    self.assertTrue(all(p.trim == args.trim for p in selected))
+                if args.processing:
+                    self.assertTrue(all(p.processing == args.processing for p in selected))
+                if '-default' in suffix:
+                    omitted = publishing.arguments(['--make-target', book + '-' + suffix.replace('-default', '')])
+                    self.assertEqual(selected, profiles(omitted.provider, omitted.cover_style, omitted.trim, omitted.processing))
+        args = publishing.arguments(['--make-target', 'genesis-lulu-fancycover-vectorized-7x10',
+            '--provider', 'kdp', '--cover-style', 'simple', '--trim', '8.25x11', '--processing', 'original'])
+        self.assertEqual((args.provider, args.cover_style, args.trim, args.processing), ('lulu', 'fancy', '7x10', 'vectorized'))
+        args = publishing.arguments(['--make-target', 'genesis-kdp-fancycover-default', '--trim', '7x10'])
+        self.assertEqual(profiles(args.provider, args.cover_style, args.trim)[0].trim, '7x10')
+        omitted = publishing.arguments(['--make-target', 'genesis-kdp-fancycover', '--trim', '7x10'])
+        self.assertEqual(profiles(args.provider, args.cover_style, args.trim),
+                         profiles(omitted.provider, omitted.cover_style, omitted.trim))
+        # Artwork and construction are independent through the script API.
+        self.assertEqual(profiles('lulu', 'simple', '8.25x11', 'vectorized', 'hardcover')[0].binding, 'hardcover')
+
+    def test_default_plans_and_make_overrides_without_writes(self):
+        for provider, trim, processing in (('kdp', '8.25x11', 'vectorized'), ('lulu', '7x10', 'original')):
+            command = ['bin/kdp-publish', 'genesis', 'all', '--provider', provider, '--plan']
+            direct = json.loads(subprocess.check_output(command, cwd=ROOT, text=True))
+            made = json.loads(subprocess.check_output(['make', '--no-print-directory', 'genesis-' + provider, 'PRINT_PLAN=1'], cwd=ROOT, text=True))
+            self.assertEqual(direct, made)
+            self.assertEqual([(p['style'], p['binding'], p['trim'], p['processing']) for p in direct['profiles']],
+                [('simple', 'paperback', '7x10', processing), ('fancy', 'hardcover', trim, processing)])
+            for p in direct['profiles']:
+                for paths in p['files'].values():
+                    self.assertTrue(all('/pub/' + provider + '/' in path for path in paths))
+                    self.assertFalse(any('paperback' in path or 'hardcover' in path or '-alt-' in path for path in paths))
+        plan = json.loads(subprocess.check_output(['make', '--no-print-directory',
+            'exodus-lulu-fancycover-vectorized-8.25x11', 'PRINT_PLAN=1', 'KDP_TRIM=7x10',
+            'KDP_COVER_STYLE=simple', 'PRINT_PROCESSING=original'], cwd=ROOT, text=True))
+        self.assertEqual(plan['book'], '02-exodus')
+        self.assertEqual([(p['style'], p['trim'], p['processing']) for p in plan['profiles']],
+                         [('fancy', '8.25x11', 'vectorized')])
 
     def test_binding_geometry_and_exact_template(self):
         paperback = publishing.geometry(224, 8.25, 11, 'premium-color')
@@ -139,8 +194,17 @@ class PublishingTests(unittest.TestCase):
     def test_hardcover_build_only(self):
         self.build_fixture('hardcover')
 
-    def build_fixture(self, binding):
-        pipeline = publishing.Pipeline('fixture', self.root / 'publish', self.root / 'pub', binding)
+    def test_build_matrix_uses_independent_artwork_trim_and_publisher(self):
+        for provider in ('kdp', 'lulu'):
+            for binding in ('paperback', 'hardcover'):
+                for trim in TRIMS:
+                    with self.subTest(provider=provider, binding=binding, trim=trim):
+                        self.build_fixture(binding, provider, trim, 'standard-color')
+
+    def build_fixture(self, binding, provider='kdp', trim='default', paper='premium-color'):
+        selected = profiles(provider, {'both': None, 'paperback': 'simple', 'hardcover': 'fancy'}[binding], trim)
+        base = self.root / provider / binding / trim / paper
+        pipeline = publishing.Pipeline('fixture', base / 'build', base / 'pub', selected, provider)
         passes = []
         def simulate(stage, operation, command, candidate=None, env=None):
             tool = command[0]
@@ -154,38 +218,45 @@ class PublishingTests(unittest.TestCase):
                 self.assertTrue((Path(candidate).parent / 'generated').is_dir())
                 self.assertTrue(Path(env['TEXMFVAR']).is_dir())
                 passes.append(operation)
-                hard = r'\def\ConfigOutputMode{hard}' in command[-1]
-                pdf(candidate, [b''] * (80 if hard else 24), box='0 0 594 792' if hard else '0 0 504 720')
+                profile = next(p for p in selected if p.key in str(candidate))
+                width, height = profile.dimensions
+                self.assertIn(r'\def\ConfigPrintTrimWidth{' + f'{width}in' + '}', command[-1])
+                self.assertIn(r'\def\ConfigPrintTrimHeight{' + f'{height}in' + '}', command[-1])
+                self.assertIn(r'\def\ConfigOutputMode{book}', command[-1])
+                pdf(candidate, [b''] * 80, box=f'0 0 {width*72} {height*72}')
             elif tool == 'bin/kdp-cover':
-                hard = command[8] == 'hardcover'
-                self.assertEqual(command[10], 'alt' if '-alt-' in str(command[3]) else 'original')
-                pages = 80 if hard else 24
-                self.assertEqual(inspect(command[1])['pages'], pages)
-                self.assertEqual(Path(command[1]), pipeline.pdf_path('interior-' + command[8], 'original'))
-                g = publishing.geometry(pages, 8.25 if hard else 7, 11 if hard else 10, 'premium-color', command[8])
+                profile = next(p for p in selected if p.key in str(command[1]))
+                self.assertEqual(command[10], provider)
+                self.assertEqual(command[5], profile.style)
+                self.assertEqual(command[8], profile.binding)
+                self.assertEqual(command[2], 'premium-color' if provider == 'kdp' and profile.binding == 'hardcover' else paper)
+                self.assertEqual(inspect(command[1])['pages'], 80)
+                self.assertEqual(Path(command[1]), pipeline.pdf_path('interior-' + profile.key, 'original'))
+                geometry = publishing.geometry if provider == 'kdp' else publishing.lulu_geometry
+                g = geometry(80, *profile.dimensions, command[2], profile.binding)
                 pdf(command[3], box=f"0 0 {72*g['width']} {72*g['height']}")
             elif tool == 'bin/kdp-inspect':
                 report = Path(command[2]); report.parent.mkdir(parents=True, exist_ok=True)
                 report.write_text(json.dumps(inspect(command[1])))
             else:
                 self.fail(f'unexpected command {command}')
-        args = SimpleNamespace(book='fixture', paper='premium-color', cover_style='simple', spine='ld')
+        args = SimpleNamespace(book='fixture', paper=paper, spine='ld')
         with patch.object(pipeline, 'run', side_effect=simulate), patch.object(publishing, 'sources', return_value={}):
             record = pipeline.build(args, {}, {}, {})
-        self.assertEqual(passes, ['LuaLaTeX pass 1', 'LuaLaTeX pass 2', 'LuaLaTeX pass 3'] * len(pipeline.bindings))
+        self.assertEqual(passes, ['LuaLaTeX pass 1', 'LuaLaTeX pass 2', 'LuaLaTeX pass 3'] * len(pipeline.profiles))
         self.assertEqual(len(record['files']), len(pipeline.artifacts))
         self.assertEqual(len(list(pipeline.output_dir.glob('*.pdf'))), len(pipeline.artifacts))
         for artifact in pipeline.artifacts:
             self.assertTrue(pipeline.pdf_path(artifact, 'original').is_file())
-            self.assertEqual(pipeline.pdf_path(artifact, 'original').parent, self.root / 'pub')
+            self.assertEqual(pipeline.pdf_path(artifact, 'original').parent, base / 'pub')
         self.assertTrue((pipeline.base / 'build.json').exists())
         self.assertFalse((pipeline.base / 'current').exists())
 
     def test_binding_selection_requires_only_its_artifacts(self):
         for binding in ('paperback', 'hardcover'):
-            pipeline = publishing.Pipeline('fixture', self.root / binding, self.root / binding / 'pub', binding)
-            self.assertEqual(pipeline.artifacts, ('interior-' + binding, 'cover-' + binding)
-                             + (('cover-hardcover-alt',) if binding == 'hardcover' else ()))
+            selected = profiles(style='simple' if binding == 'paperback' else 'fancy')
+            pipeline = publishing.Pipeline('fixture', self.root / binding, self.root / binding / 'pub', selected)
+            self.assertEqual(pipeline.artifacts, tuple(k + '-' + selected[0].key for k in ('interior', 'cover')))
             for artifact in pipeline.artifacts:
                 pdf(pipeline.pdf_path(artifact, 'original'))
             with contextlib.redirect_stdout(io.StringIO()):
@@ -205,10 +276,10 @@ class PublishingTests(unittest.TestCase):
             self.assertGreater(inspect(pipeline.pdf_path(name, 'original'))['font_count'], 0)
         previous = {a: pipeline.pdf_path(a, 'vectorized').read_bytes() for a in pipeline.artifacts}
         # A user can replace a stable input; no stale manifest blocks conversion.
-        pdf(pipeline.pdf_path('interior-paperback', 'original'))
+        pdf(pipeline.pdf_path('interior-simplecover-7x10', 'original'))
         real_validate = pipeline.validate
         def fail_cover(artifact, *args, **kwargs):
-            if artifact == 'cover-hardcover': raise RuntimeError('damaged cover fixture')
+            if artifact == 'cover-fancycover-8.25x11': raise RuntimeError('damaged cover fixture')
             return real_validate(artifact, *args, **kwargs)
         with patch.object(pipeline, 'validate', side_effect=fail_cover), contextlib.redirect_stdout(io.StringIO()):
             with self.assertRaisesRegex(RuntimeError, 'damaged cover'):
@@ -219,7 +290,7 @@ class PublishingTests(unittest.TestCase):
             pipeline.vectorize({'variant': 'soft'})
             pipeline.check()
         comparisons = [c for c in pipeline.commands if c['argv'][0] == 'bin/kdp-visual-compare']
-        self.assertEqual(len(comparisons), 6)  # Self-test plus all five PDFs, only in check.
+        self.assertEqual(len(comparisons), 5)  # Self-test plus four PDFs, only in check.
         for command in comparisons[1:]:
             self.assertEqual(Path(command['argv'][1]).parent, self.root / 'pub')
             self.assertEqual(Path(command['argv'][2]).parent, self.root / 'pub')
@@ -232,11 +303,11 @@ class PublishingTests(unittest.TestCase):
         events = []
         def build(worker, *args):
             workers.append(worker)
-            events.append(('build', worker.bindings[0]))
+            events.append(('build', worker.profiles[0].key))
             barrier.wait(timeout=5)
             return dict(files={}, dependencies={}, assets=[])
         def vectorize(worker, config):
-            events.append(('vectorize', worker.bindings[0]))
+            events.append(('vectorize', worker.profiles[0].key))
             barrier.wait(timeout=5)
         with patch.object(publishing.Pipeline, 'build', build), \
              patch.object(publishing.Pipeline, 'vectorize', vectorize):
@@ -246,12 +317,44 @@ class PublishingTests(unittest.TestCase):
         self.assertNotEqual(workers[0].base, workers[1].base)
         self.assertTrue(set(workers[0].artifacts).isdisjoint(workers[1].artifacts))
         for worker in workers:
-            binding = worker.bindings[0]
+            binding = worker.profiles[0].key
             self.assertEqual(worker.environment, pipeline.environment)
             self.assertLess(events.index(('build', binding)), events.index(('vectorize', binding)))
         record = json.loads((pipeline.base / 'build.json').read_text())
-        self.assertEqual(set(record['binding_runs']), {'paperback', 'hardcover'})
-        self.assertEqual(len(record['reference_files']), 5)
+        self.assertEqual(set(record['profile_runs']), {'simplecover-7x10', 'fancycover-8.25x11'})
+        self.assertEqual(len(record['reference_files']), 4)
+
+    def test_processing_dispatch_for_both_publishers(self):
+        for provider in ('kdp', 'lulu'):
+            for processing in ('original', 'vectorized'):
+                for stage in ('all', 'build', 'vectorize'):
+                    selected = profiles(provider, processing=processing)
+                    base = self.root / provider / processing / stage
+                    pipeline = publishing.Pipeline('fixture', base, base / 'pub', selected, provider)
+                    pipeline.environment = {}
+                    with patch.object(publishing.Pipeline, 'build', return_value=dict(files={}, dependencies={}, assets=[])) as build, \
+                         patch.object(publishing.Pipeline, 'vectorize') as convert:
+                        pipeline.parallel(SimpleNamespace(stage=stage), {}, {}, {})
+                    self.assertEqual(build.call_count, 0 if stage == 'vectorize' else 2)
+                    expected = stage == 'vectorize' or (stage == 'all' and processing == 'vectorized')
+                    self.assertEqual(convert.call_count, 2 if expected else 0)
+
+    def test_plan_creates_no_artifacts_and_does_not_probe_build_tools(self):
+        with patch.object(sys, 'argv', ['kdp-publish', 'genesis', 'build', '--plan']), \
+             patch.object(publishing, 'ROOT', self.root), \
+             patch.object(publishing.subprocess, 'check_output', return_value='fixture\n'), \
+             patch.object(publishing, 'Pipeline') as pipeline, \
+             patch.object(publishing, 'versions') as versions, \
+             patch.object(publishing, 'sources') as sources, \
+             contextlib.redirect_stdout(io.StringIO()) as output:
+            try: self.assertEqual(publishing.main(), 0)
+            finally: os.chdir(ROOT)
+        pipeline.assert_not_called()
+        versions.assert_not_called()
+        sources.assert_not_called()
+        self.assertEqual(list(self.root.iterdir()), [])
+        for p in json.loads(output.getvalue())['profiles']:
+            self.assertEqual(set(p['files']), {'original'})
 
     def test_parallel_failure_waits_for_other_binding(self):
         pipeline = publishing.Pipeline('fixture', self.root / 'build', self.root / 'pub')
@@ -260,7 +363,7 @@ class PublishingTests(unittest.TestCase):
         finished = threading.Event()
         def vectorize(worker, config):
             barrier.wait(timeout=5)
-            if worker.bindings == ('paperback',):
+            if worker.profiles[0].style == 'simple':
                 raise RuntimeError('conversion failed')
             finished.set()
         with patch.object(publishing.Pipeline, 'vectorize', vectorize), \
@@ -268,7 +371,7 @@ class PublishingTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, 'conversion failed'):
                 pipeline.parallel(SimpleNamespace(stage='vectorize'), {}, {}, {})
         self.assertTrue(finished.is_set())
-        self.assertIn('paperback', terminal.getvalue())
+        self.assertIn('simplecover-7x10', terminal.getvalue())
 
 
 class ValidatorTests(unittest.TestCase):

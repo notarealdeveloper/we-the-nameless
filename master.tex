@@ -241,6 +241,10 @@
     \ifx\ConfigOutputMode\ConfigOutputModeHard
         \geometry{paperwidth=8.25in,paperheight=11in}
     \fi
+    % Publication trim is independent of cover construction and artwork.
+    \ifdefined\ConfigPrintTrimWidth
+        \geometry{paperwidth=\ConfigPrintTrimWidth,paperheight=\ConfigPrintTrimHeight}
+    \fi
     \ifx\ConfigOutputMode\ConfigOutputModeEven
         % Center the book text block without changing its width.
         \geometry{inner=0.625in,outer=0.625in}

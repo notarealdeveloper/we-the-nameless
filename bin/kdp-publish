@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""KDP build, vectorize, and optional visual checks with stable PDFs in pub/."""
+"""Build print originals, outline fonts, or check PDFs for KDP and Lulu."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import fcntl
@@ -16,7 +16,8 @@ import time
 import threading
 import uuid
 
-from kdp_cover_geometry import ARTIFACTS, BINDINGS, geometry
+from kdp_cover_geometry import geometry
+from print_publish_config import profiles as resolve_profiles, parse_target, paper_for, STAGES
 from lulu_cover_geometry import geometry as lulu_geometry
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -106,15 +107,12 @@ def check_sources(snapshot, run_dir):
 
 
 class Pipeline:
-    def __init__(self, book, base, output_dir=None, binding='both', provider='kdp'):
+    def __init__(self, book, base, output_dir=None, profiles=None, provider='kdp'):
         self.provider = provider
-        self.binding_specs = BINDINGS if provider == 'kdp' else {b: ('book', 7, 10) for b in BINDINGS}
-        self.bindings = tuple(BINDINGS) if binding == 'both' else (binding,)
-        self.artifacts = tuple(a for a in ARTIFACTS if a.rsplit('-', 1)[1] in self.bindings)
-        if 'hardcover' in self.bindings:
-            self.artifacts += ('cover-hardcover-alt',)
+        self.profiles = profiles or resolve_profiles(provider)
+        self.artifacts = tuple(f'{kind}-{p.key}' for p in self.profiles for kind in ('interior', 'cover'))
         self.book, self.base = book, base
-        self.output_dir = output_dir or ROOT / 'pub'
+        self.output_dir = output_dir or ROOT / 'pub' / provider
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.run_dir = base / 'runs' / (time.strftime('%Y%m%dT%H%M%S') + '-' + uuid.uuid4().hex[:8])
         self.run_dir.mkdir(parents=True)
@@ -133,9 +131,9 @@ class Pipeline:
                     raise FileNotFoundError(f'Missing PDF: {path}; build it or copy your PDF to this path')
 
     def status(self, state, message):
-        binding = ' ' + self.bindings[0] if len(self.bindings) == 1 else ''
+        label = ' ' + self.profiles[0].key if len(self.profiles) == 1 else ''
         with STATUS_LOCK:
-            print(f'[{self.provider.upper()} {self.book}{binding} {self.stage}] {state:5} {message}', flush=True)
+            print(f'[{self.provider.upper()} {self.book}{label} {self.stage}] {state:5} {message}', flush=True)
 
     def run(self, stage, operation, command, candidate=None, env=None):
         self.stage, self.operation = stage, operation
@@ -196,15 +194,17 @@ class Pipeline:
         title = re.sub(r'^\d+-', '', self.book).replace('-', ' ')
         title = title.title() if len(title) > 1 else title
         files = {}
-        for binding in self.bindings:
-            mode, width, height = self.binding_specs[binding]
-            style = args.cover_style if binding == 'paperback' else 'fancy'
-            work = self.run_dir / ('work/interior-' + binding)
-            interior = self.pdf_path('interior-' + binding, 'original')
+        for profile in self.profiles:
+            binding, style = profile.binding, profile.style
+            width, height = profile.dimensions
+            key = profile.key
+            paper = paper_for(profile, self.provider, args.paper)
+            work = self.run_dir / ('work/interior-' + key)
+            interior = self.pdf_path('interior-' + key, 'original')
             self.run('1/6 assets', 'select subset', ['bin/book-subset', '--build-dir', work, args.book])
             if not assets.exists():
                 self.run('1/6 assets', 'prepare print assets', ['bin/kdp-assets', assets, work / 'chapters'])
-            tex_config = ''.join('\\def\\' + k + '{' + v + '}' for k, v in dict(PRINT_CONFIG, ConfigOutputMode=mode).items())
+            tex_config = ''.join('\\def\\' + k + '{' + v + '}' for k, v in dict(PRINT_CONFIG, ConfigPrintTrimWidth=f'{width}in', ConfigPrintTrimHeight=f'{height}in').items())
             tex_config += '\\def\\KDPAssetDir{' + str(assets) + '}'
             # book-subset emits project-relative include paths. TeX auxiliary files need
             # the same directory tree beneath output-directory.
@@ -217,40 +217,40 @@ class Pipeline:
                     '-output-directory=' + str(work), tex_config + '\\input{' + str(entrypoint) + '}'],
                     work / (self.book + '.pdf'), {'TEXMFVAR': str(self.run_dir / 'texmf-var')})
             shutil.copy2(work / (self.book + '.pdf'), interior)
-            info = json.loads(self.inspect('interior-' + binding, interior, 'reference', stage=2).read_text())
-            minimum, maximum = (24, 828) if args.paper == 'premium-color' else (72, 600)
+            info = json.loads(self.inspect('interior-' + key, interior, 'reference', stage=2).read_text())
+            minimum, maximum = (24, 828) if paper == 'premium-color' else (72, 600)
+            if binding == 'hardcover':
+                minimum, maximum = 76, 550
             if self.provider == 'lulu':
                 minimum, maximum = (32 if binding == 'paperback' else 24), 800
             if not minimum <= info['pages'] <= maximum or info['pages'] % 2:
-                raise RuntimeError(f'{args.paper} requires an even page count in {minimum}..{maximum}; got {info["pages"]}')
+                raise RuntimeError(f'{paper} requires an even page count in {minimum}..{maximum}; got {info["pages"]}')
             if any(p['MediaBox'] != [0, 0, width * 72, height * 72] or p['rotation'] != 0 or p['UserUnit'] != 1 for p in info['page_geometry']):
                 raise RuntimeError(f'{binding} interior does not match {width}x{height} no-bleed trim')
             files[str(interior)] = info
-            layouts = ('original', 'alt') if binding == 'hardcover' else ('original',)
-            for layout in layouts:
-                artifact = 'cover-' + binding + ('-alt' if layout == 'alt' else '')
-                cover = self.pdf_path(artifact, 'original')
-                template = getattr(args, 'hardcover_template', None) if binding == 'hardcover' else None
-                geometry_fn = lulu_geometry if self.provider == 'lulu' else geometry
-                g = geometry_fn(info['pages'], width, height, args.paper, binding, template)
-                self.run('3/6 ' + artifact, 'build separate wrap', ['bin/kdp-cover', interior,
-                    args.paper, cover, self.run_dir / ('work/' + artifact), style, title,
-                    args.spine, binding, str(template) if template else '', layout, self.provider], cover)
-                cover_info = json.loads(self.inspect(artifact, cover, 'reference', stage=3).read_text())
-                expected = [0, 0, 72 * g['width'], 72 * g['height']]
-                if (cover_info['pages'] != 1 or any(
-                        any(abs(a-b) > .01 for a, b in zip(p['MediaBox'], expected))
-                        or p['rotation'] != 0 or p['UserUnit'] != 1 for p in cover_info['page_geometry'])):
-                    raise RuntimeError(f'{binding} sheet does not match interior page count, trim and paper stock')
-                cover_info['cover_geometry'] = g
-                cover_info['geometry_source'] = ('kdp-template' if template else
-                    'template-derived-model' if binding == 'hardcover' else 'kdp-published-formula')
-                cover_info['kdp_eligible'] = binding == 'paperback' or 76 <= info['pages'] <= 550
-                if self.provider == 'lulu':
-                    cover_info.pop('kdp_eligible')
-                    cover_info['geometry_source'] = 'lulu-published-specifications'
-                    cover_info['lulu_eligible'] = True
-                files[str(cover)] = cover_info
+            artifact = 'cover-' + key
+            cover = self.pdf_path(artifact, 'original')
+            template = getattr(args, 'hardcover_template', None) if binding == 'hardcover' else None
+            geometry_fn = lulu_geometry if self.provider == 'lulu' else geometry
+            g = geometry_fn(info['pages'], width, height, paper, binding, template)
+            self.run('3/6 ' + artifact, 'build separate wrap', ['bin/kdp-cover', interior,
+                paper, cover, self.run_dir / ('work/' + artifact), style, title,
+                args.spine, binding, str(template) if template else '', self.provider], cover)
+            cover_info = json.loads(self.inspect(artifact, cover, 'reference', stage=3).read_text())
+            expected = [0, 0, 72 * g['width'], 72 * g['height']]
+            if (cover_info['pages'] != 1 or any(
+                    any(abs(a-b) > .01 for a, b in zip(p['MediaBox'], expected))
+                    or p['rotation'] != 0 or p['UserUnit'] != 1 for p in cover_info['page_geometry'])):
+                raise RuntimeError(f'{binding} sheet does not match interior page count, trim and paper stock')
+            cover_info['cover_geometry'] = g
+            cover_info['geometry_source'] = ('kdp-template' if template else
+                'template-derived-model' if binding == 'hardcover' else 'kdp-published-formula')
+            cover_info['kdp_eligible'] = binding == 'paperback' or 76 <= info['pages'] <= 550
+            if self.provider == 'lulu':
+                cover_info.pop('kdp_eligible')
+                cover_info['geometry_source'] = 'lulu-published-specifications'
+                cover_info['lulu_eligible'] = True
+            files[str(cover)] = cover_info
         dependencies = {}
         for recorder in self.run_dir.rglob('*.fls'):
             for line in recorder.read_text().splitlines():
@@ -266,8 +266,6 @@ class Pipeline:
         return record
 
     def vectorize(self, config):
-        if self.provider == 'lulu':
-            return self.flatten_lulu()
         self.require_pdfs(('original',))
         candidates = {}
         for artifact in self.artifacts:
@@ -292,36 +290,11 @@ class Pipeline:
             self.pdf_path(artifact, 'outlined').unlink()
             self.status('PASS', str(final))
 
-    def flatten_lulu(self):
-        # Lulu requests flattened vector objects and 300–600 PPI images.
-        # Keep original trim-sized interiors: Lulu adds blank bleed itself.
-        self.require_pdfs(('original',))
-        candidates = {}
-        for artifact in self.artifacts:
-            reference = self.pdf_path(artifact, 'original')
-            candidate = self.pdf_path(artifact, 'final-pending')
-            self.run(f'4/6 {artifact}', 'flatten at 300 DPI for Lulu',
-                ['gs', '-dSAFER', '-dBATCH', '-dNOPAUSE', '-sDEVICE=pdfimage24',
-                 '-r300', '-dAutoRotatePages=/None', '-sOutputFile=' + str(candidate), reference], candidate)
-            before = json.loads(self.inspect(artifact, reference, 'reference').read_text())
-            after = json.loads(self.inspect(artifact, candidate, 'final').read_text())
-            if (before['pages'] != after['pages'] or
-                    any(any(abs(a-b) > .25 for a, b in zip(p['MediaBox'], q['MediaBox']))
-                        for p, q in zip(before['page_geometry'], after['page_geometry']))):
-                raise RuntimeError('Lulu flattening changed page count or dimensions')
-            candidates[artifact] = candidate
-        for artifact, candidate in candidates.items():
-            final = self.pdf_path(artifact, 'final')
-            os.replace(candidate, final)
-            self.status('PASS', str(final))
-        print('Lulu differs from KDP: Lulu spine/wrap geometry, 7x10 trim for both bindings, '
-              '24/32..800 page limits, flattened 300 DPI final PDFs in pub/lulu/.', flush=True)
-
     def parallel(self, args, config, snapshot, tools):
         # Keep the caller's publication lock across both workers. Each owns its
         # mutable state, assets, TeX cache, reports and disjoint stable PDF names.
-        workers = [Pipeline(self.book, self.run_dir / binding, self.output_dir, binding, self.provider)
-                   for binding in self.bindings]
+        workers = [Pipeline(self.book, self.run_dir / p.key, self.output_dir, (p,), self.provider)
+                   for p in self.profiles]
         for worker in workers:
             worker.environment = dict(self.environment)
 
@@ -330,7 +303,7 @@ class Pipeline:
                 record = None
                 if args.stage in ('build', 'all'):
                     record = worker.build(args, config, snapshot, tools)
-                if args.stage in ('vectorize', 'all'):
+                if args.stage == 'vectorize' or (args.stage == 'all' and worker.profiles[0].processing == 'vectorized'):
                     worker.vectorize(config)
                 return record
             except Exception as error:
@@ -338,7 +311,7 @@ class Pipeline:
                               f'log: {worker.log}; reports: {worker.run_dir}/reports; {error}')
                 raise
 
-        # Await both even on failure: never release the lock while a worker writes.
+        # Await all workers even on failure: never release the lock while a worker writes.
         with ThreadPoolExecutor(max_workers=2) as executor:
             futures = [executor.submit(execute, worker) for worker in workers]
             records = [future.result() for future in futures]
@@ -349,7 +322,7 @@ class Pipeline:
                 {path: value for item in records for path, value in item['dependencies'].items()})
             record['reference_files'] = {a: str(self.pdf_path(a, 'original')) for a in self.artifacts}
             record['assets'] = [asset for item in records for asset in item['assets']]
-            record['binding_runs'] = {w.bindings[0]: str(w.run_dir) for w in workers}
+            record['profile_runs'] = {w.profiles[0].key: str(w.run_dir) for w in workers}
             atomic_json(self.run_dir / 'build.json', record)
             atomic_json(self.base / 'build.json', record)
 
@@ -361,53 +334,86 @@ class Pipeline:
                 self.pdf_path(artifact, 'vectorized'))
 
 
-def main():
+def arguments(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('book', nargs='?')
+    parser.add_argument('stage', nargs='?', choices=STAGES, default='all')
+    parser.add_argument('--make-target', help='resolve a complete Make target; target qualifiers override flags')
     parser.add_argument('--provider', choices=('kdp', 'lulu'), default='kdp')
-    parser.add_argument('book')
-    parser.add_argument('stage', choices=('build', 'vectorize', 'all', 'check'))
     for name, default in [('paper', 'premium-color'), ('ink', 'premium-color'), ('bleed', 'no-bleed'),
-            ('trim', '7x10'), ('cover-style', 'simple'), ('spine', 'ld'), ('variant', 'soft')]:
+            ('trim', 'default'), ('cover-style', None), ('spine', 'ld'), ('variant', 'soft')]:
         parser.add_argument('--' + name, default=default)
-    parser.add_argument('--binding', choices=('both', 'paperback', 'hardcover'), default='both')
+    parser.add_argument('--processing', choices=('original', 'vectorized'),
+        help='all: keep originals only, or also outline fonts; publisher default if omitted')
+    parser.add_argument('--binding', choices=('paperback', 'hardcover'),
+        help='override cover construction independently of artwork and trim')
+    parser.add_argument('--output-dir', type=Path, help='override pub/<publisher>[/<variant>]')
+    parser.add_argument('--plan', action='store_true', help='print resolved configuration and paths; no writes or builds')
     parser.add_argument('--hardcover-template', help='exact KDP hardcover measurements JSON; see PUBLISH.md')
     parser.add_argument('--source-date-epoch', type=int, default=os.environ.get('SOURCE_DATE_EPOCH'),
         help='reproducible PDF timestamp; defaults to the current Git commit timestamp')
     parser.add_argument('--artifact', type=Path, help='check an explicitly named final PDF; requires --reference')
     parser.add_argument('--reference', type=Path)
-    args = parser.parse_args()
-    os.chdir(ROOT)
+    args = parser.parse_args(argv)
+    if args.make_target:
+        for key, value in parse_target(args.make_target).items():
+            setattr(args, key, value)
+    if not args.book:
+        parser.error('book or --make-target is required')
+    return args
+
+
+def main():
     pipeline = None
+    args = None
+    try:
+        args = arguments()
+    except ValueError as error:
+        print(error, file=sys.stderr)
+        return 2
+    os.chdir(ROOT)
     try:
         if (args.paper not in ('premium-color', 'standard-color') or args.ink != args.paper
-                or args.bleed != 'no-bleed' or args.trim != '7x10'):
-            raise ValueError('supported: 7x10, no-bleed, matching premium-color or standard-color paper/ink')
-        if args.cover_style not in ('simple', 'fancy') or args.spine not in ('ld', 'nameless') or args.variant not in ('soft', 'medium', 'hard'):
+                or args.bleed != 'no-bleed'):
+            raise ValueError('supported: no-bleed, matching premium-color or standard-color paper/ink')
+        if args.spine not in ('ld', 'nameless') or args.variant not in ('soft', 'medium', 'hard'):
             raise ValueError('unsupported cover style, spine, or PDF encoding variant')
         if bool(args.artifact) != bool(args.reference) or (args.artifact and args.stage != 'check'):
             raise ValueError('--artifact and --reference must be supplied together for check')
-        if args.provider == 'lulu' and (args.stage not in ('build', 'all') or args.hardcover_template):
-            raise ValueError('Lulu supports build/all with published Lulu geometry; KDP templates are not compatible')
+        if args.provider == 'lulu' and args.hardcover_template:
+            raise ValueError('KDP templates are not compatible with Lulu')
+        selected = resolve_profiles(args.provider, args.cover_style, args.trim, args.processing, args.binding)
+        if args.hardcover_template and not any(p.binding == 'hardcover' for p in selected):
+            raise ValueError('--hardcover-template requires hardcover construction')
         book = subprocess.check_output(['bin/book-subset', '--output-name', args.book], text=True).strip()
-        if args.source_date_epoch is None and args.stage in ('build', 'all'):
-            args.source_date_epoch = int(subprocess.check_output(['git', 'log', '-1', '--format=%ct'], text=True).strip())
+        output_dir = args.output_dir or ROOT / 'pub' / args.provider
+        if not args.output_dir and args.variant != 'soft': output_dir /= args.variant
         if args.source_date_epoch is not None and args.source_date_epoch < 0:
             raise ValueError('SOURCE_DATE_EPOCH must be nonnegative')
-        config = {k: v for k, v in vars(args).items() if k not in ('book', 'stage', 'artifact', 'reference')}
-        selected = BINDINGS if args.binding == 'both' else (args.binding,)
-        config['print'] = {b: dict(PRINT_CONFIG, ConfigOutputMode=('book' if args.provider == 'lulu' else BINDINGS[b][0])) for b in selected}
+        if args.plan:
+            print(json.dumps(dict(book=book, provider=args.provider, stage=args.stage,
+                profiles=[dict(style=p.style, binding=p.binding, trim=p.trim, processing=p.processing,
+                    paper=paper_for(p, args.provider, args.paper),
+                    files={kind: [str(output_dir / f'{book}-{part}-{p.key}-{kind}.pdf')
+                        for part in ('interior', 'cover')] for kind in
+                        (('original', 'vectorized') if args.stage in ('vectorize', 'check') or
+                         (args.stage == 'all' and p.processing == 'vectorized') else ('original',))})
+                    for p in selected]), indent=2))
+            return 0
+        if args.source_date_epoch is None and args.stage in ('build', 'all'):
+            args.source_date_epoch = int(subprocess.check_output(['git', 'log', '-1', '--format=%ct'], text=True).strip())
+        config = {k: (str(v) if isinstance(v, Path) else v) for k, v in vars(args).items()
+                  if k not in ('book', 'stage', 'artifact', 'reference')}
+        config['profiles'] = [dict(vars(p), paper=paper_for(p, args.provider, args.paper)) for p in selected]
+        config['print'] = PRINT_CONFIG
         if args.hardcover_template:
             config['hardcover_template_sha256'] = digest(args.hardcover_template)
         base = ROOT / 'build' / args.provider / book
-        if args.variant != 'soft': base = base / args.variant
         base.mkdir(parents=True, exist_ok=True)
         with (base / '.lock').open('w') as lock:
             try: fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except BlockingIOError: raise RuntimeError(f'another KDP operation holds {base}/.lock')
-            output_dir = ROOT / 'pub'
-            if args.provider == 'lulu': output_dir = output_dir / 'lulu'
-            if args.variant != 'soft': output_dir = output_dir / args.variant
-            pipeline = Pipeline(book, base, output_dir, args.binding, args.provider)
+            except BlockingIOError: raise RuntimeError(f'another publication operation holds {base}/.lock')
+            pipeline = Pipeline(book, base, output_dir, selected, args.provider)
             pipeline.environment = {} if args.source_date_epoch is None else {
                 'SOURCE_DATE_EPOCH': str(args.source_date_epoch), 'FORCE_SOURCE_DATE': '1'}
             pipeline.status('START', 'initialize publication stage')
@@ -418,11 +424,12 @@ def main():
                 pipeline.validate('explicit', args.reference.resolve(), args.artifact.resolve())
             elif args.stage == 'check':
                 pipeline.check()
-            elif args.binding == 'both':
+            elif len(selected) > 1:
                 pipeline.parallel(args, config, snapshot, tools)
             else:
                 if args.stage in ('build', 'all'): pipeline.build(args, config, snapshot, tools)
-                if args.stage in ('vectorize', 'all'): pipeline.vectorize(config)
+                if args.stage == 'vectorize' or (args.stage == 'all' and selected[0].processing == 'vectorized'):
+                    pipeline.vectorize(config)
             pipeline.status('PASS', f'{args.stage} complete; run: {pipeline.run_dir}')
     except (Exception, KeyboardInterrupt) as error:
         status = getattr(error, 'returncode', 1) or 1
@@ -430,7 +437,7 @@ def main():
             pipeline.log.parent.mkdir(parents=True, exist_ok=True)
             with pipeline.log.open('a') as log: log.write(f'\nFAIL: {error}\n')
             pipeline.status('FAIL', f'exit {status}; operation: {pipeline.operation}; command: {getattr(error, "cmd", "internal check")}; candidate: {pipeline.candidate}; log: {pipeline.log}; reports: {pipeline.run_dir}/reports; {error}')
-        else: print(f'[KDP {args.book} 0/6 setup] FAIL exit {status}: {error}', file=sys.stderr, flush=True)
+        else: print(f'[{args.provider.upper()} {args.book} 0/6 setup] FAIL exit {status}: {error}', file=sys.stderr, flush=True)
         return status if status > 0 else 1
     return 0
 

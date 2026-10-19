@@ -1,12 +1,3 @@
-% The normal illustrated wrap preserves the original simple-cover typography.
+% Illustrated artwork shares the simple cover's typography and geometry.
 \def\CoverIllustrated{true}
-% Alt layout: fractions of panel height measured from the big circle's center.
-% Its radius is 0.212: half that puts We and The Nameless halfway to the arcs.
-\newcommand{\CoverTitleSeparation}{0.106}
-% Upper of the two small circles below the big circle (y = 1184/1536).
-\newcommand{\CoverVolumeOffset}{0.289}
-\ifdefined\CoverAlternate
-  \input{pub/covers/fancy/alternate.tex}
-\else
-  \input{pub/covers/simple/cover.tex}
-\fi
+\input{pub/covers/simple/cover.tex}
