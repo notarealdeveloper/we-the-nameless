@@ -1270,6 +1270,8 @@ def write_entrypoint(target, preamble, books, build_root):
         ]
     )
     for book in books:
+        if book is books[0]:
+            lines.append(r"\WeHideOpeningBookPageNumber")
         lines.append(rf"\Book{{{book['title']}}}")
         if book is books[0]:
             lines.append(r"\WeStartChapterPageNumbering")

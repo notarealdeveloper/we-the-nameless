@@ -3904,10 +3904,13 @@
     \SetCurrentBookImageDir{#1}%
 }
 
-% The opening book heading belongs to the unnumbered front matter.
-% Flush it before numbering the first chapter, including in parallel workers.
+% Hide the opening book contents number before BookChapterLinkArray ships it.
+% Book has already flushed that page when WeStartChapterPageNumbering runs.
+\newcommand{\WeHideOpeningBookPageNumber}{%
+    \AddToHookNext{cmd/BookChapterLinkArray/before}{\thispagestyle{empty}}%
+}
+% Reset on the first chapter's page, including in parallel workers.
 \newcommand{\WeStartChapterPageNumbering}{%
-    \thispagestyle{empty}%
     \hypersetup{pageanchor=false}%
     \clearpage
     \pagenumbering{arabic}%
@@ -4730,6 +4733,7 @@
 % The opening book contents are flushed before chapter numbering starts.
 \pagestyle{fancy}
 
+\WeHideOpeningBookPageNumber
 \Book{Genesis}
 \WeStartChapterPageNumbering
 \include{01-genesis/01}
