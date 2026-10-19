@@ -43,7 +43,7 @@ trim_width=$(awk -v points="$width_points" 'BEGIN {printf "%.6f", points / 72}')
 trim_height=$(awk -v points="$height_points" 'BEGIN {printf "%.6f", points / 72}')
 
 mkdir -p "$build_dir" "$build_dir/texmf-var"
-python3 - "$pages" "$trim_width" "$trim_height" "$paper" "$binding" "$template" "$build_dir" "$provider" <<'PYTHON'
+python3 - "$pages" "$trim_width" "$trim_height" "$paper" "$binding" "$template" "$build_dir" "$provider" "$style" <<'PYTHON'
 import json, sys
 from pathlib import Path
 sys.path.insert(0, 'bin')
@@ -54,6 +54,12 @@ pages, width, height = int(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3])
 g = geometry(pages, width, height, sys.argv[4], sys.argv[5], sys.argv[6] or None)
 work = Path(sys.argv[7])
 (work / 'dimensions.tex').write_text(tex_dimensions(g, width, height))
+if sys.argv[9] == 'fancy':
+    from cover_artwork import prepare_artwork
+    artwork = work / 'artwork'
+    prepare_artwork(g, artwork)
+    with (work / 'dimensions.tex').open('a') as dimensions:
+        dimensions.write(r'\def\CoverArtworkDir{' + artwork.as_posix() + '}\n')
 (work / 'geometry.json').write_text(json.dumps(g, indent=2) + '\n')
 (work / 'spine.txt').write_text(str(g['spine']))
 if sys.argv[8] == 'kdp' and sys.argv[5] == 'hardcover' and not 76 <= pages <= 550:

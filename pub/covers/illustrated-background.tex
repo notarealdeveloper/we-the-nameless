@@ -1,13 +1,16 @@
 % Extend artwork through turn-ins; keep the framed panels out of the hinges.
-% Source PNGs are prepared once, never regenerated during a publication build.
+% bin/kdp-cover supplies resampled copies sized for every placement at 300 PPI.
+\ifdefined\CoverArtworkDir\else
+  \def\CoverArtworkDir{pub/covers/fancy/assets}
+\fi
 \node[inner sep=0pt] at (current page.center)
-  {\includegraphics[width=\CoverSheetWidth,height=\CoverSheetHeight]{pub/covers/fancy/assets/back.png}};
+  {\includegraphics[width=\CoverSheetWidth,height=\CoverSheetHeight]{\CoverArtworkDir/back.png}};
 % Engraving continues through the spine, hinges, and turn-ins.
 \begin{scope}
   \clip ([xshift=\dimexpr\CoverBleed+\CoverPanelWidth\relax]current page.south west)
     rectangle ([xshift=\CoverFrontLeft]current page.north west);
   \node[inner sep=0pt] at (current page.center)
-    {\includegraphics[height=\CoverSheetHeight]{pub/covers/fancy/assets/back.png}};
+    {\includegraphics[height=\CoverSheetHeight]{\CoverArtworkDir/back.png}};
 \end{scope}
 \foreach \side/\image in {west/back,east/front-textless} {
   \begin{scope}
@@ -20,6 +23,6 @@
     \clip ([xshift=-\CoverPanelWidth/2,yshift=-\CoverPanelHeight/2]panelCenter)
       rectangle ([xshift=\CoverPanelWidth/2,yshift=\CoverPanelHeight/2]panelCenter);
     \node[inner sep=0pt] at (panelCenter)
-      {\includegraphics[width=\CoverPanelWidth,height=\CoverPanelHeight]{pub/covers/fancy/assets/\image.png}};
+      {\includegraphics[width=\CoverPanelWidth,height=\CoverPanelHeight]{\CoverArtworkDir/\image.png}};
   \end{scope}
 }
