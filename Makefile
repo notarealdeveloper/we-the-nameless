@@ -135,6 +135,7 @@ help:
 		'  make genesis-kdp-build                                 Build pub/<canonical>-{interior,cover}-{paperback,hardcover}-original.pdf.' \
 		'  make genesis-kdp-vectorize                             Convert pub originals to *-vectorized.pdf; no pixel comparison.' \
 		'  make genesis-kdp                                       Build and vectorize all five PDFs in pub/; no pixel comparison.' \
+		'  make genesis-lulu-paperback|hardcover                   Build Lulu 7x10 color PDFs in pub/lulu/ (60# white).' \
 		'  make genesis-kdp-paperback|hardcover                    Build and vectorize only that binding interior + cover.' \
 		'                                                         Hardcover builds also emit cover-hardcover-alt-{original,vectorized}.pdf.' \
 		'  make genesis-kdp-check                                 Compare pub originals and vectors pixel by pixel; no build.' \
@@ -206,6 +207,19 @@ $(addsuffix -kdp-paperback,$(KDP_SUBSETS)): %-kdp-paperback:
 
 $(addsuffix -kdp-hardcover,$(KDP_SUBSETS)): %-kdp-hardcover:
 	@bin/kdp-publish "$*" all $(KDP_OPTIONS) --binding hardcover
+
+# Lulu uses a separate namespace and published Lulu cover dimensions.
+LULU_OPTIONS = --paper "$(KDP_PAPER)" --ink "$(KDP_INK)" --cover-style "$(KDP_COVER_STYLE)" --spine "$(KDP_SPINE)"
+.PHONY: genesis-lulu-paperback genesis-lulu-hardcover make-genesis-lulu-paperback
+
+genesis-lulu-paperback:
+	@bin/kdp-publish genesis all --provider lulu $(LULU_OPTIONS) --binding paperback
+
+genesis-lulu-hardcover:
+	@bin/kdp-publish genesis all --provider lulu $(LULU_OPTIONS) --binding hardcover
+
+# Also accept the hyphenated spellings used in the request.
+make-genesis-lulu-paperback: genesis-lulu-paperback
 
 check-genesis-kdp: genesis-kdp-check
 

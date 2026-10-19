@@ -267,3 +267,46 @@ and frontispiece files; alternate verses inside chapters remain. Do not treat
 successful validators as proof of complete editorial fidelity. Review the selected
 content and [renderer notes](ebook/README.md) before a public release.
 
+
+## Lulu paperback and hardcover
+
+`make genesis-lulu-paperback` (also `make make-genesis-lulu-paperback`) and
+`make genesis-lulu-hardcover` use the isolated publication pipeline with Lulu
+geometry. They build from source and write originals plus upload-ready
+`01-genesis-{interior,cover}-{paperback,hardcover}-final.pdf` in `pub/lulu/`.
+The hardcover also supplies the existing alternate cover layout. Build records,
+logs, and inspection reports are in `build/lulu/01-genesis/`.
+
+Choose **Executive 7 × 10 inches**, **60# white uncoated**, **Premium Color**
+(default), and **Perfect Bound** or **Hardcover Casewrap** in Lulu. Standard
+Color is available with `KDP_PAPER=standard-color KDP_INK=standard-color`.
+The stock choice matters: these targets do not support 80# coated paper,
+magazines/comics, linen covers, or dust jackets. Final PDFs flatten all objects
+at 300 DPI, as Lulu requests; they are not the KDP vectorized PDFs. Original
+PDFs remain available for inspection. Flattening can create large files.
+
+The Lulu paperback spine is `pages / 444 + 0.06` inches, with 0.125-inch cover
+bleed. Hardcover spines use Lulu's page-count table; panels include 0.125-inch
+outer-edge overhang and 0.25-inch total vertical overhang, plus 0.75-inch wrap
+on every outside edge. At 600 pages the spines are 1.411351 inches (paperback)
+and 1.625 inches (hardcover); the cover sheets are respectively
+15.661351 × 10.25 and 17.375 × 11.75 inches. Lulu accepts 32–800 paperback
+pages and 24–800 hardcover pages. This pipeline requires even page counts.
+Both Lulu interiors use the existing 7 × 10 book layout, whereas KDP hardcover
+uses 8.25 × 11. Interior PDFs have white margins and retain trim dimensions;
+Lulu adds blank 0.125-inch bleed automatically for files without edge content.
+Spine text is omitted through 80 pages. The normal cover design is centered
+on the entire panel; the hinge is not added again to the sheet width.
+
+These targets print the differences from KDP to stdout on successful completion.
+Check the generated cover against Lulu's custom template after uploading the
+interior, and use Lulu's preview before ordering. No Lulu upload or book build
+was performed while implementing these targets.
+
+Specifications checked 2026-10-19:
+
+- [Lulu spine formula and hardcover table](https://help.api.lulu.com/en/support/solutions/articles/64000254616-how-is-spine-width-calculated-)
+- [Casewrap wrap, overhang, and hinge](https://help.lulu.com/en/support/solutions/articles/64000308572-creating-your-hardcover-casewrap-cover)
+- [PDF export requirements](https://help.lulu.com/en/support/solutions/articles/64000255519-pdf-creation-settings)
+- [Book Creation Guide: blank bleed on trim-sized interiors](https://assets.lulu.com/media/guides/en/lulu-book-creation-guide.pdf)
+- [Executive size, stock, and binding availability](https://assets.lulu.com/media/guides/en/lulu-retail-distribution-eligible-products.pdf)
