@@ -1272,6 +1272,8 @@ def write_entrypoint(target, preamble, books, build_root):
     )
     for book in books:
         lines.append(rf"\Book{{{book['title']}}}")
+        if book is books[0]:
+            lines.append(r"\WeStartChapterPageNumbering")
         pending_part = None
         pending_epistles = False
         pending_epistle = None
@@ -1328,15 +1330,6 @@ def write_entrypoint(target, preamble, books, build_root):
                 pending_part = None
             lines.append(rf"\include{{{generated}}}")
         lines.append("")
-    if target.name == "01-genesis":
-        # The first edition ends on numbered page 587. Ship one genuinely blank
-        # leaf after the apocrypha, without a running head or printed folio.
-        # Keep this out of the full anthology and canonical-only editions.
-        lines.extend([
-            r"\ifConfigApocryphaOn",
-            r"\clearpage\thispagestyle{empty}\null\clearpage",
-            r"\fi",
-        ])
     lines.extend([r"\end{document}", ""])
     entrypoint.parent.mkdir(parents=True, exist_ok=True)
     entrypoint.write_text("\n".join(lines))

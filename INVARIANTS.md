@@ -9,4 +9,6 @@ Gen 1:14. Footnotes 5-14 in Gen 1, i.e., the ten "Translator's Note:" footnotes,
 
 Gen 19:38. Name him laughter should be on page 187.
 
-Gen Apocrypha. Final page in Genesis with content, where it says _(Narrator: A knowing silence elapses.)_ should be on page 586, and the final numbered page, right after that, should be 587.
+Gen 1. The first page of Genesis 1 should be numbered 1; the opening book heading is unnumbered.
+
+Gen Apocrypha. The final page should be numbered 587 and contain only \\textsl{(Narrator: A knowing silence elapses.)}, vertically centered, with the page number below and no running header. There should be no trailing blank page, and the total PDF page count should be even.

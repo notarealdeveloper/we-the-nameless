@@ -3896,6 +3896,16 @@
     \SetCurrentBookImageDir{#1}%
 }
 
+% The opening book heading belongs to the unnumbered front matter.
+% Flush it before numbering the first chapter, including in parallel workers.
+\newcommand{\WeStartChapterPageNumbering}{%
+    \thispagestyle{empty}%
+    \hypersetup{pageanchor=false}%
+    \clearpage
+    \pagenumbering{arabic}%
+    \hypersetup{pageanchor=true}%
+}
+
 % Epistles are books in numbered directories within 10-dudetheyreontome/epistles.
 \directlua{epistles = dofile("bin/epistles.lua")}
 \newcommand{\EpistleContentsEntry}[1]{%
@@ -4713,6 +4723,7 @@
 \pagestyle{fancy}
 
 \Book{Genesis}
+\WeStartChapterPageNumbering
 \include{01-genesis/01}
 \include{01-genesis/02}
 \include{01-genesis/03}

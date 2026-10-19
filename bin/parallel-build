@@ -516,6 +516,9 @@ def publish_page_starts_if_ready(books, include_front, page_starts, pass_one_pdf
         pdf = ROOT / pass_one_pdfs[book["index"]]
         starts[book["index"]] = next_page
         next_page += pdf_page_count(pdf)
+        if r"\WeStartChapterPageNumbering" in book["body"]:
+            # The opening heading ships before chapter page 1.
+            next_page -= 1
 
     if include_front:
         write_front_toc(books, BUILD / FRONT_SLUG, starts)
