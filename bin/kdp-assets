@@ -12,7 +12,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 # Match the generated subset, not its name: filtered source subsets can cross books.
 ASSETS = [
-    ('brick.png', 'img/brick.png', 'brick.png', ['-background', 'white', '-alpha', 'remove', '-alpha', 'off']),
+    ('brick-300ppi.png', 'img/brick-300ppi.png', 'brick-300ppi.png', ['-background', 'white', '-alpha', 'remove', '-alpha', 'off']),
     ('seir-light.jpg', '01-genesis/include/seir-light.jpg', r'\\image(?:\[[^]]*\])?\{seir\}', ['-filter', 'Lanczos', '-resize', '155%', '-quality', '95']),
     ('mandrake.png', '01-genesis/include/mandrake.png', r'\\image(?:\[[^]]*\])?\{mandrake\}', ['-filter', 'Lanczos', '-resize', '145%']),
     ('genesis-33-map.png', 'img/genesis-33-map.png', 'genesis-33-map.png', ['-filter', 'Lanczos', '-resize', '105%']),

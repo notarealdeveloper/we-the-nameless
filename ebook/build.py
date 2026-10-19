@@ -1455,13 +1455,35 @@ def legend_alphabet(profile):
             f'aria-label="{alphabet}">{html.escape(encoded)}</bdo>')
 
 
+def publication_logo():
+    """Translate the shared mark's filled TeX rectangles into EPUB SVG."""
+    source = strip_comments((ROOT / "ld-logo.tex").read_text(encoding="utf-8"))
+    artwork = source.split(r"\fill", 1)[1].split(";", 1)[0]
+    rectangles = re.findall(
+        r"\(([\d.]+),([\d.]+)\)\s*rectangle\s*\(([\d.]+),([\d.]+)\)", artwork)
+    if not rectangles:
+        raise ValueError("ld-logo.tex has no filled rectangles")
+    paths = []
+    for left, bottom, right, top in rectangles:
+        x, y, x2, y2 = map(float, (left, bottom, right, top))
+        paths.append(f'<rect x="{x:g}" y="{1-y2:g}" width="{x2-x:g}" height="{y2-y:g}"/>')
+    return ('<svg xmlns="http://www.w3.org/2000/svg" class="publication-logo" '
+            'viewBox="0 0 1 1" preserveAspectRatio="none" role="img" aria-label="LD">'
+            '<g fill="currentColor">' + "".join(paths) + '</g></svg>')
+
+
 def publication_notices():
     lines = []
-    for number, suffix in enumerate(("One", "Two"), start=1):
+    for suffix in ("One", "Two"):
+        body = master_command("LDPublicationNoticePage" + suffix)
+        paragraphs = []
+        for match in re.finditer(r"\\a[ABC]\s*", body):
+            prose, _ = group(body, match.end())
+            prose = re.sub(r"\\\\", " ", prose).replace(r"\ttfamily", "")
+            paragraphs.append(tex_to_markdown(prose).strip())
         lines += [f'# Publication Notice {suffix} {{.front-heading .visually-hidden}}', "",
-                  '<div class="publication-notice">',
-                  f'<img src="ebook/img/publisher-page-{number}.png" '
-                  f'alt="Publisher’s disclaimer, page {number}"/></div>', ""]
+                  '<div class="publication-notice">', "",
+                  " ".join(paragraphs), "", publication_logo(), '</div>', ""]
     return lines
 
 

@@ -60,7 +60,8 @@ h1.alphabet-heading { visibility: hidden; height: 0; margin: 0; }
 .font-legend { font-size: 1em; }
 .font-legend .hebrew { font-size: 1em; margin-bottom: 0; }
 .publication-notice { break-before: page; page-break-before: always; break-inside: avoid; page-break-inside: avoid; margin: 0; text-align: center; }
-.publication-notice img { display: block; width: 100%; max-width: 100%; height: auto; margin: 0 auto; }
+.publication-notice { font-family: monospace; }
+.publication-logo { display: block; width: 1in; height: 1.11in; max-width: 100%; margin: 2em auto; }
 h1.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 /*
  * Pandoc copies heading attributes to both the heading and its enclosing
