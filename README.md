@@ -1,3 +1,4 @@
 The bible is weirder than you remember.
 
-![[img/make.png]]
+![make](img/make.png)
+
