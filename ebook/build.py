@@ -1553,6 +1553,8 @@ def front_matter(
 
 def render_verse_commentary(book: str, chapter: str, number: str, commentary: str) -> str:
     """Use the supplied Genesis artwork in place of its centered TeX scenes."""
+    if (book, chapter, number.strip()) == ("Genesis", "2", "4"):
+        commentary = commentary.replace("בְּיוֹם", "ביום")
     scenes = {
         "11": [("11", "jacob", "Jacob, depicted as an old man with a staff.")],
         "12": [("12", "family", "Joseph bows before Jacob, with Ephraim and Manasseh between them.")],
@@ -1655,7 +1657,11 @@ def make_markdown(path: Path, selected_book: str | None = None, *, content=None,
         for number, hebrew, english, commentary in parse_verses(source):
             verse_count += 1
             number_slug = re.sub(r'[^a-zA-Z0-9]+', '-', number).strip('-')
-            base_verse_anchor = f"{anchor}-{number_slug}"
+            # The opening verse in Genesis 3 belongs to 2:25, deliberately
+            # displayed after the chapter 3 heading. Keep identity separate.
+            reference_chapter = "2" if (book, chapter, number.strip()) == ("Genesis", "3", "25") else chapter
+            reference_anchor = re.sub(r"[^a-z0-9]+", "-", f"{book}-{reference_chapter}".lower()).strip("-")
+            base_verse_anchor = f"{reference_anchor}-{number_slug}"
             duplicate_count = verse_occurrences.get(base_verse_anchor, 0)
             verse_occurrences[base_verse_anchor] = duplicate_count + 1
             verse_anchor = base_verse_anchor if not duplicate_count else f"{base_verse_anchor}-alternate-{duplicate_count + 1}"
@@ -1668,7 +1674,7 @@ def make_markdown(path: Path, selected_book: str | None = None, *, content=None,
                 rendered_hebrew = re.sub(r"\s*<br\s*/?>\s*", " ", rendered_hebrew)
             lines += [
                 f':::::: {{.verse #{verse_anchor}}}',
-                f'<p id="{verse_anchor}-number" class="verse-reference"><a href="#{anchor}">{book} {chapter}:{number}</a></p>',
+                f'<p id="{verse_anchor}-number" class="verse-reference"><a href="#{anchor}">{book} {reference_chapter}:{number}</a></p>',
                 "::::: {.verse-translation}", rendered_english, ":::::",
                 '::::: {.verse-source lang="he" dir="rtl"}', rendered_hebrew, ":::::",
             ]

@@ -185,9 +185,9 @@ img, svg { max-width: 100%; height: auto; }
 .decorator-jeremiah { color: #6c3b00 !important; }
 .decorator-ezekiel { color: #5281c5 !important; }
 .decorator-redactor { background-color: #e0e8f5 !important; }
-.highlight-a { background: rgba(90, 90, 90, .13); }
-.highlight-b { background: rgba(138, 32, 32, .13); }
-.highlight-c { background: rgba(21, 95, 168, .13); }
+.highlight-a { background-color: #e0e0e0 !important; }
+.highlight-b { background-color: #f0e0e0 !important; }
+.highlight-c { background-color: #e0e9f5 !important; }
 .table-scroll { max-width: 100%; overflow-x: auto; margin: 1em 0; }
 .wtn-table { border-collapse: collapse; color: #0046aa !important; font-size: .73em; line-height: 1.35; margin: 0 auto; width: auto; max-width: 100%; }
 .wtn-table-custom { font-size: inherit; }

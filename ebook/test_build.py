@@ -680,6 +680,35 @@ class ConversionTests(unittest.TestCase):
         self.assertIn("## [Genesis 1](#contents-genesis) {#genesis-1 .chapter-title}", rendered)
         self.assertIn('<a href="#genesis-1">Genesis 1:1</a>', rendered)
 
+    def test_displaced_genesis_verse_keeps_reference_and_order(self):
+        with tempfile.TemporaryDirectory() as temp:
+            manuscript = Path(temp) / "manuscript.md"
+            build.make_markdown(manuscript, "Genesis")
+            rendered = manuscript.read_text()
+        heading = rendered.index("{#genesis-3 .chapter-title}")
+        displaced = rendered.index("{.verse #genesis-2-25}")
+        first = rendered.index("{.verse #genesis-3-1}")
+        self.assertLess(heading, displaced)
+        self.assertLess(displaced, first)
+        self.assertIn('>Genesis 2:25</a>', rendered)
+        self.assertNotIn('>Genesis 3:25</a>', rendered)
+
+    def test_genesis_day_commentary_is_unpointed(self):
+        source = (build.ROOT / "01-genesis/02.tex").read_text()
+        number, hebrew, _, commentary = next(v for v in build.parse_verses(source) if v[0] == "4")
+        rendered = build.render_verse_commentary("Genesis", "2", number, commentary)
+        self.assertIn("ביום", rendered)
+        self.assertNotIn("בְּיוֹם", rendered)
+        self.assertIn("בְּיוֹם", hebrew)
+
+    def test_highlights_use_lite_screens_and_preserve_ink(self):
+        for selector, color in ((".highlight-a", "#e0e0e0"),
+                                (".highlight-b", "#f0e0e0"),
+                                (".highlight-c", "#e0e9f5")):
+            properties = self.css_properties(selector)
+            self.assertEqual(properties["background-color"], color + " !important")
+            self.assertNotIn("color", properties)
+
     def test_front_matter_prose_matches_body_scale(self) -> None:
         stylesheet = (Path(build.HERE) / "epub.css").read_text()
         self.assertEqual(self.css_properties(".verse")["font-size"], ".82em")
