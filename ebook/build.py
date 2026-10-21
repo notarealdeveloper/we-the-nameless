@@ -7,6 +7,7 @@ import argparse
 import html
 import importlib.machinery
 import importlib.util
+import json
 import posixpath
 import re
 import shutil
@@ -33,6 +34,8 @@ COVERS = ROOT / "img/covers"
 # Superscripts are emitted as semantic HTML. Pandoc's optional ^...^ syntax
 # otherwise consumes adjacent inline footnotes (^[one]^[two]) as a superscript.
 PANDOC_READER = "markdown+fenced_divs+footnotes+raw_html+markdown_in_html_blocks-superscript"
+# Bound Markdown reader work without cutting fenced verse containers or notes.
+MARKDOWN_CHUNK_SIZE = 256 * 1024
 
 # Publication identity must survive rebuilds.  Pandoc otherwise invents a new
 # UUID each time, which makes stores (notably Google Play Books) treat an
@@ -930,6 +933,8 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
             out.append({"%": "%", "&": "&amp;", "_": "_", "#": "#", "$": "&#36;", "{": "{", "}": "}", " ": " "}.get(name, ""))
             i = after; continue
         body, end = arg
+        if name in {"pagestyle", "thispagestyle"}:
+            i = end; continue
         if name in {"setlength", "addtolength", "renewcommand", "newcommand"}:
             # Both arguments are print setup, never book content.
             second = group(text, end)
@@ -1840,6 +1845,108 @@ def postprocess_epub(path: Path) -> None:
     temporary.replace(path)
 
 
+def markdown_chunks(manuscript: str):
+    """Group complete generated chapters; never split prose at arbitrary bytes."""
+    boundary = r"(?=^#{1,2} \[.*\]\(#[^\n]+\) \{#[^\n]+ \.(?:book|chapter)-title\}\n)"
+    chunk = ""
+    for section in re.split(boundary, manuscript, flags=re.MULTILINE):
+        if chunk and len(chunk) + len(section) > MARKDOWN_CHUNK_SIZE:
+            yield chunk
+            chunk = ""
+        chunk += section
+    if chunk:
+        yield chunk
+
+
+def pandoc_diagnostics(result) -> int:
+    if result.stdout:
+        print(result.stdout, end="")
+    if result.stderr:
+        print(result.stderr, file=sys.stderr, end="")
+    if result.returncode:
+        return result.returncode
+    if any(marker in result.stderr for marker in ("Duplicate identifier", " unclosed at ")):
+        log("Pandoc emitted structural warnings; refusing a potentially damaged EPUB")
+        return 2
+    return 0
+
+
+def parse_manuscript(manuscript: Path, destination: Path) -> int:
+    """Parse bounded Markdown inputs, then assemble one Pandoc JSON document."""
+    chunks = list(markdown_chunks(manuscript.read_text(encoding="utf-8")))
+    document = None
+    identifiers = set()
+    explicit_ids = set()
+    renamed = {}
+
+    def check_identifiers(value):
+        if isinstance(value, list):
+            for item in value:
+                check_identifiers(item)
+        elif isinstance(value, dict):
+            kind = value.get("t")
+            content = value.get("c")
+            if kind in {"Header", "Div", "Span", "Code", "CodeBlock", "Link", "Image", "Table"}:
+                attr = content[1] if kind == "Header" else content[0]
+                identifier = attr[0]
+                if identifier:
+                    if identifier in identifiers:
+                        if kind != "Header" or identifier in explicit_ids:
+                            raise ValueError(f"Duplicate identifier '{identifier}' across Markdown chunks")
+                        # Pandoc normally disambiguates automatic heading IDs
+                        # across the whole input. Its reader state is local to
+                        # each chunk, so finish that job when combining them.
+                        suffix = 1
+                        while f"{identifier}-{suffix}" in identifiers:
+                            suffix += 1
+                        attr[0] = f"{identifier}-{suffix}"
+                        renamed[identifier] = attr[0]
+                        identifier = attr[0]
+                    identifiers.add(identifier)
+            for item in value.values():
+                check_identifiers(item)
+
+    def rewrite_heading_links(value):
+        if isinstance(value, list):
+            for item in value:
+                rewrite_heading_links(item)
+        elif isinstance(value, dict):
+            if value.get("t") == "Link":
+                target = value["c"][2]
+                if target[0].startswith("#") and target[0][1:] in renamed:
+                    target[0] = "#" + renamed[target[0][1:]]
+            for item in value.values():
+                rewrite_heading_links(item)
+
+    for index, chunk in enumerate(chunks, 1):
+        log(f"Parsing Markdown chunk {index}/{len(chunks)}...")
+        result = subprocess.run(
+            ["pandoc", "--from=" + PANDOC_READER, "--to=json"],
+            input=chunk, cwd=ROOT, text=True, capture_output=True, check=False,
+        )
+        # stdout is the document, not user-facing diagnostics.
+        status = pandoc_diagnostics(subprocess.CompletedProcess(
+            result.args, result.returncode, "", result.stderr))
+        if status:
+            return status
+        parsed = json.loads(result.stdout)
+        explicit_ids = set(re.findall(r"\{[^{}\n]*#([^\s}]+)", chunk))
+        renamed = {}
+        try:
+            check_identifiers(parsed["blocks"])
+        except ValueError as error:
+            log(str(error))
+            return 2
+        rewrite_heading_links(parsed["blocks"])
+        if document is None:
+            document = parsed
+        else:
+            document["blocks"].extend(parsed["blocks"])
+            document["meta"].update(parsed["meta"])
+    destination.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=OUTPUT)
@@ -1897,7 +2004,11 @@ def main() -> int:
             kept_manuscript = HERE / "manuscript.generated.md"
             shutil.copy2(manuscript, kept_manuscript)
             log(f"Saved generated Markdown: {kept_manuscript}")
-        cmd = ["pandoc", str(manuscript), "--from=" + PANDOC_READER,
+        parsed_manuscript = Path(temp) / "manuscript.json"
+        status = parse_manuscript(manuscript, parsed_manuscript)
+        if status:
+            return status
+        cmd = ["pandoc", str(parsed_manuscript), "--from=json",
                "--to=epub3", "--output", str(candidate), "--standalone",
                "--toc", "--toc-depth=2", "--split-level=1", "--css", str(HERE / "epub.css"),
                "--metadata-file", str(HERE / "metadata.yaml"), "--epub-title-page=false"]
@@ -1910,16 +2021,9 @@ def main() -> int:
         log(f"Using cover image: {cover}" if cover else "Building without a cover image")
         log("Running Pandoc to package EPUB 3...")
         result = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, check=False)
-        if result.stdout:
-            print(result.stdout, end="")
-        if result.stderr:
-            print(result.stderr, file=sys.stderr, end="")
-        if result.returncode:
-            return result.returncode
-        fatal_warnings = ("Duplicate identifier", " unclosed at ")
-        if any(marker in result.stderr for marker in fatal_warnings):
-            log("Pandoc emitted structural warnings; refusing a potentially damaged EPUB")
-            return 2
+        status = pandoc_diagnostics(result)
+        if status:
+            return status
         postprocess_epub(candidate)
         validator = HERE / "validate.py"
         log("Running EPUB package and link validation...")

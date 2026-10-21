@@ -19,6 +19,74 @@ import build
 
 
 class ConversionTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is needed for reader fixtures")
+    def test_chunked_reader_preserves_document_semantics(self):
+        manuscript = '''---
+lang: en-US
+---
+
+# [Book](#tableofcontents) {#book-book .book-title}
+
+## [Book 1](#contents-book) {#book-1 .chapter-title}
+
+:::::: {.verse #book-1-1}
+English^[First note.]^[Second note.] <span lang="he" dir="rtl">אב</span>
+
+[Next chapter](#book-2)
+
+:::::
+Commentary with **emphasis** and $x+1$.
+:::::
+::::::
+
+## [Book 2](#contents-book) {#book-2 .chapter-title}
+
+:::::: {.verse #book-2-1}
+Another verse^[Third note.] [Previous chapter](#book-1)
+
+<table><tr><td>Cell</td></tr></table>
+::::::
+'''
+        expected = json.loads(subprocess.run(
+            ["pandoc", "--from=" + build.PANDOC_READER, "--to=json"],
+            input=manuscript, text=True, capture_output=True, check=True,
+        ).stdout)
+        with tempfile.TemporaryDirectory() as temp:
+            source, output = Path(temp) / "input.md", Path(temp) / "output.json"
+            source.write_text(manuscript)
+            with patch.object(build, "MARKDOWN_CHUNK_SIZE", 100):
+                self.assertGreater(len(list(build.markdown_chunks(manuscript))), 1)
+                self.assertEqual(build.parse_manuscript(source, output), 0)
+            self.assertEqual(json.loads(output.read_text()), expected)
+
+    @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is needed for reader fixtures")
+    def test_chunked_reader_rejects_duplicate_ids_across_chunks(self):
+        manuscript = "".join(
+            f"## [Book {n}](#contents-book) {{#book-{n} .chapter-title}}\n\n"
+            "::: {#duplicate}\nWords.\n:::\n\n" for n in (1, 2))
+        with tempfile.TemporaryDirectory() as temp:
+            source, output = Path(temp) / "input.md", Path(temp) / "output.json"
+            source.write_text(manuscript)
+            with patch.object(build, "MARKDOWN_CHUNK_SIZE", 1):
+                self.assertEqual(build.parse_manuscript(source, output), 2)
+            self.assertFalse(output.exists())
+
+    @unittest.skipUnless(shutil.which("pandoc"), "Pandoc is needed for reader fixtures")
+    def test_chunked_reader_keeps_automatic_headings_unique_and_linked(self):
+        manuscript = "".join(
+            f"## [Book {n}](#contents-book) {{#book-{n} .chapter-title}}\n\n"
+            "### Fragment\n\n[Fragment](#fragment)\n\n" for n in (1, 2))
+        with tempfile.TemporaryDirectory() as temp:
+            source, output = Path(temp) / "input.md", Path(temp) / "output.json"
+            source.write_text(manuscript)
+            with patch.object(build, "MARKDOWN_CHUNK_SIZE", 1):
+                self.assertEqual(build.parse_manuscript(source, output), 0)
+            blocks = json.loads(output.read_text())["blocks"]
+            self.assertEqual([block["c"][1][0] for block in blocks if block["t"] == "Header"],
+                             ["book-1", "fragment", "book-2", "fragment-1"])
+            self.assertEqual([block["c"][0]["c"][2][0] for block in blocks if block["t"] == "Para"],
+                             ["#fragment", "#fragment-1"])
+
     def css_properties(self, selector):
         """Read the author's simple class rules, including shared declarations."""
         stylesheet = (build.HERE / "epub.css").read_text()
@@ -330,6 +398,7 @@ class ConversionTests(unittest.TestCase):
                  patch.object(build.shutil, "which", side_effect=lambda name: name), \
                  patch.object(build, "master_sequence", return_value=[]), \
                  patch.object(build, "make_markdown", side_effect=lambda path, *a, **kw: (path.write_text("fixture") and (1, 1))), \
+                 patch.object(build, "parse_manuscript", return_value=0), \
                  patch.object(build, "postprocess_epub"), \
                  patch.object(build.subprocess, "run", side_effect=fake_run):
                 self.assertEqual(build.main(), 7)

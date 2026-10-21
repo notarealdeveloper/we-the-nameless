@@ -61,6 +61,12 @@ Kindle libraries do not display every volume under an indistinguishable title.
 A build requires Pandoc 3. `--keep-markdown` on `build.py` preserves
 `manuscript.generated.md` for debugging; otherwise it is temporary.
 
+Markdown is parsed in bounded groups of complete chapters to avoid the
+Markdown reader's steep runtime growth on the complete edition. Progress is
+reported for each group. Their Pandoc JSON trees are combined before the
+single EPUB packaging step, keeping navigation and footnote numbering global.
+Explicit duplicate destinations and unclosed containers remain build errors.
+
 The two publication notices (including the Genesis 1 warning) read their text
 from `master.tex` and render the filled rectangles in `ld-logo.tex` as an SVG
 mark at the same one-inch width as print. The author legend and source-font
