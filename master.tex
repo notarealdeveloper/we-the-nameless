@@ -2198,10 +2198,10 @@
 
 \DeclareSourceProfile{R}
 	{\EnglishFont}				{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
-	{\HebrewHighlightRenderer}	{\SourceBackground{Rbgcolor}\let\SourceProfileTextWrapper\SourceProfileHighlightedText}
+	{\HebrewEzraRaw}			{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Scale=1.40}\mdseries}
+	% Don't change this font scale!
 
-% Currently identical to R, but kept as a separate profile so redactor C can
-% diverge without changing R.
+% Redactor C highlights text in the enclosing Hebrew font and encoding.
 \DeclareSourceProfile{RC}
 	{\EnglishFont}				{\SourceBackground{Rbgcolor}\AaronidStyle\Redactor\addfontfeatures{Ligatures=TeX}\mdseries}
 	{\HebrewHighlightRenderer}	{\SourceBackground{Rbgcolor}\let\SourceProfileTextWrapper\SourceProfileHighlightedText}
@@ -2763,11 +2763,7 @@
     \LegendFontSampleRows{\hP{אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻ}}{\hP{לֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ}}%
 }
 \newcommand{\LegendRFontAlphabet}{%
-    \begingroup
-    % R normally inherits its Hebrew renderer; this standalone sample needs Ezra and RTL.
-    \let\hRRenderer\HebrewEzra
     \LegendFontAlphabet{\hR}%
-    \endgroup
 }
 
 \newcommand{\PrimevalSourceFontsPage}{%
