@@ -2762,6 +2762,13 @@
 \newcommand{\LegendPFontAlphabet}{%
     \LegendFontSampleRows{\hP{אֲבֱגֶּדֲהֹוּזֻחִטֳיִּכֻ}}{\hP{לֵּמֱנָסֶעֲפֹצֻקָרֶשְּׁתֽ}}%
 }
+\newcommand{\LegendRFontAlphabet}{%
+    \begingroup
+    % R normally inherits its Hebrew renderer; this standalone sample needs Ezra and RTL.
+    \let\hRRenderer\HebrewEzra
+    \LegendFontAlphabet{\hR}%
+    \endgroup
+}
 
 \newcommand{\PrimevalSourceFontsPage}{%
     \WeClearToLeftPage
@@ -2903,7 +2910,7 @@
         }
     }
 
-    \LegendRow{\LegendFontAlphabet{\hR}}{%
+    \LegendRow{\LegendRFontAlphabet}{%
         \eR{
             R uses the Ezra variant of the Hebrew square script with no niqqud,
             since he is both:\nl
