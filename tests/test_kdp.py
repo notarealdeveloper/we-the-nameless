@@ -29,8 +29,8 @@ def module(name, path):
     return mod
 
 
-publishing = module('publishing', ROOT / 'bin/kdp-publish')
-visual = module('visual', ROOT / 'bin/kdp-visual-compare')
+publishing = module('publishing', ROOT / 'bin/print_publish.py')
+visual = module('visual', ROOT / 'bin/print-visual-compare')
 
 
 class PublishingTests(unittest.TestCase):
@@ -46,13 +46,15 @@ class PublishingTests(unittest.TestCase):
         names = subprocess.check_output(['bin/book-subset', '--make-targets'], cwd=ROOT, text=True).split()
         chapters = subprocess.check_output(['bin/book-subset', '--make-chapter-targets'], cwd=ROOT, text=True).split()
         for name in names + chapters:
-            for suffix in ('kdp', 'lulu', 'kdp-simplecover', 'kdp-fancycover', 'kdp-build', 'kdp-vectorize', 'kdp-check'):
+            for suffix in target_suffixes():
                 self.assertIn(name + '-' + suffix, targets)
+            for suffix in ('kdp-simplecover', 'kdp-fancycover', 'lulu-original', 'kdp-7x10', 'kdp-default'):
+                self.assertNotIn(name + '-' + suffix, targets)
         for alias in ('genesis', '1-genesis', '01-genesis'):
             self.assertEqual(subprocess.check_output(['bin/book-subset', '--output-name', alias], cwd=ROOT, text=True).strip(), '01-genesis')
-        for target in ('genesis-kdp-build', 'J-kdp-vectorize', 'P-kdp-check', 'genesis-1-kdp', 'genesis-kdp-simplecover-original-8.25x11', 'J-lulu-fancycover-vectorized-7x10'):
+        for target in ('genesis-kdp-paperback', 'J-kdp-hardcover', 'P-lulu', 'genesis-1-kdp', 'genesis-kdp-simplecover-original-8.25x11', 'J-lulu-fancycover-vectorized-7x10'):
             dry = subprocess.check_output(['make', '-n', target], cwd=ROOT, text=True)
-            self.assertIn('bin/kdp-publish', dry)
+            self.assertIn('bin/build', dry)
             self.assertNotIn('lualatex', dry)
 
     def test_make_routes_every_qualifier_combination(self):
@@ -176,7 +178,7 @@ class PublishingTests(unittest.TestCase):
     def test_empty_subset_needs_no_genesis_derivatives(self):
         subset = self.root / 'chapters'; subset.mkdir()
         (subset / '01.tex').write_text('No image references here: mandrake and seir are just words.')
-        assets = module('assets', ROOT / 'bin/kdp-assets')
+        assets = module('assets', ROOT / 'bin/print-assets')
         with patch.object(sys, 'argv', ['kdp-assets', str(self.root / 'assets'), str(subset)]), \
              patch.object(assets, 'ROOT', self.root), \
              patch.object(assets.subprocess, 'check_output', return_value=b'fixture magick'), \
@@ -201,7 +203,13 @@ class PublishingTests(unittest.TestCase):
                     with self.subTest(provider=provider, binding=binding, trim=trim):
                         self.build_fixture(binding, provider, trim, 'standard-color')
 
-    def build_fixture(self, binding, provider='kdp', trim='default', paper='premium-color'):
+    def test_custom_interior_settings_and_translation_reach_print_tex(self):
+        self.build_fixture('paperback', 'lulu', '8.25x11', tex_config=dict(
+            publishing.PRINT_CONFIG, ConfigOutputMode='tech', ConfigTheme='dark',
+            ConfigCommentary='false', ConfigEnglishTranslation='kjv',
+            ConfigApocrypha='canonical', ConfigVerseLayout='vertical'))
+
+    def build_fixture(self, binding, provider='kdp', trim='default', paper='premium-color', tex_config=None):
         selected = profiles(provider, {'both': None, 'paperback': 'simple', 'hardcover': 'fancy'}[binding], trim)
         base = self.root / provider / binding / trim / paper
         pipeline = publishing.Pipeline('fixture', base / 'build', base / 'pub', selected, provider)
@@ -211,9 +219,11 @@ class PublishingTests(unittest.TestCase):
             if tool == 'bin/book-subset':
                 work = Path(command[2]); (work / 'chapters').mkdir(parents=True)
                 (work / 'fixture.tex').write_text(r'\include{generated/chapter}')
-            elif tool == 'bin/kdp-assets':
+            elif tool == 'bin/print-assets':
                 assets = Path(command[1]); assets.mkdir()
                 (assets / 'assets.json').write_text('[]')
+            elif tool == 'bin/book-translation-lua':
+                Path(command[2]).write_text('-- synthetic translation')
             elif tool == 'lualatex':
                 self.assertTrue((Path(candidate).parent / 'generated').is_dir())
                 self.assertTrue(Path(env['TEXMFVAR']).is_dir())
@@ -222,9 +232,14 @@ class PublishingTests(unittest.TestCase):
                 width, height = profile.dimensions
                 self.assertIn(r'\def\ConfigPrintTrimWidth{' + f'{width}in' + '}', command[-1])
                 self.assertIn(r'\def\ConfigPrintTrimHeight{' + f'{height}in' + '}', command[-1])
-                self.assertIn(r'\def\ConfigOutputMode{book}', command[-1])
+                for key, value in (tex_config or publishing.PRINT_CONFIG).items():
+                    if key not in ('ConfigCoverStyle', 'ConfigSpine'):
+                        self.assertIn('\\def\\' + key + '{' + value + '}', command[-1])
+                if tex_config and tex_config['ConfigEnglishTranslation'] != 'default':
+                    self.assertIn(r'\def\ConfigEnglishTranslationLuaFile{', command[-1])
+                    self.assertTrue((Path(candidate).parent / 'translation-kjv.lua').is_file())
                 pdf(candidate, [b''] * 80, box=f'0 0 {width*72} {height*72}')
-            elif tool == 'bin/kdp-cover':
+            elif tool == 'bin/print-cover':
                 profile = next(p for p in selected if p.key in str(command[1]))
                 self.assertEqual(command[10], provider)
                 self.assertEqual(command[5], profile.style)
@@ -235,12 +250,13 @@ class PublishingTests(unittest.TestCase):
                 geometry = publishing.geometry if provider == 'kdp' else publishing.lulu_geometry
                 g = geometry(80, *profile.dimensions, command[2], profile.binding)
                 pdf(command[3], box=f"0 0 {72*g['width']} {72*g['height']}")
-            elif tool == 'bin/kdp-inspect':
+            elif tool == 'bin/print-inspect':
                 report = Path(command[2]); report.parent.mkdir(parents=True, exist_ok=True)
                 report.write_text(json.dumps(inspect(command[1])))
             else:
                 self.fail(f'unexpected command {command}')
         args = SimpleNamespace(book='fixture', paper=paper, spine='ld')
+        if tex_config: args.tex_config = tex_config
         with patch.object(pipeline, 'run', side_effect=simulate), patch.object(publishing, 'sources', return_value={}):
             record = pipeline.build(args, {}, {}, {})
         self.assertEqual(passes, ['LuaLaTeX pass 1', 'LuaLaTeX pass 2', 'LuaLaTeX pass 3'] * len(pipeline.profiles))
@@ -270,7 +286,7 @@ class PublishingTests(unittest.TestCase):
                 resources='<< /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >>')
         with contextlib.redirect_stdout(io.StringIO()):
             pipeline.vectorize({'variant': 'soft'})
-        self.assertFalse(any('bin/kdp-visual-compare' in c['argv'] for c in pipeline.commands))
+        self.assertFalse(any('bin/print-visual-compare' in c['argv'] for c in pipeline.commands))
         for name in pipeline.artifacts:
             self.assertEqual(inspect(pipeline.pdf_path(name, 'vectorized'))['font_count'], 0)
             self.assertGreater(inspect(pipeline.pdf_path(name, 'original'))['font_count'], 0)
@@ -289,7 +305,7 @@ class PublishingTests(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             pipeline.vectorize({'variant': 'soft'})
             pipeline.check()
-        comparisons = [c for c in pipeline.commands if c['argv'][0] == 'bin/kdp-visual-compare']
+        comparisons = [c for c in pipeline.commands if c['argv'][0] == 'bin/print-visual-compare']
         self.assertEqual(len(comparisons), 5)  # Self-test plus four PDFs, only in check.
         for command in comparisons[1:]:
             self.assertEqual(Path(command['argv'][1]).parent, self.root / 'pub')
@@ -342,7 +358,7 @@ class PublishingTests(unittest.TestCase):
     def test_plan_creates_no_artifacts_and_does_not_probe_build_tools(self):
         with patch.object(sys, 'argv', ['kdp-publish', 'genesis', 'build', '--plan']), \
              patch.object(publishing, 'ROOT', self.root), \
-             patch.object(publishing.subprocess, 'check_output', return_value='fixture\n'), \
+             patch.object(publishing.subprocess, 'check_output', side_effect=lambda cmd, **kw: '1\n' if cmd[0] == 'git' else 'fixture\n'), \
              patch.object(publishing, 'Pipeline') as pipeline, \
              patch.object(publishing, 'versions') as versions, \
              patch.object(publishing, 'sources') as sources, \
@@ -412,7 +428,7 @@ class ValidatorTests(unittest.TestCase):
     def test_malformed_pdf_writes_failed_report(self):
         final = self.root / 'broken.pdf'; final.write_bytes(b'not a PDF')
         report = self.root / 'report.json'
-        p = subprocess.run(['bin/kdp-validate', str(self.ref), str(final), str(report)], cwd=ROOT, capture_output=True)
+        p = subprocess.run(['bin/print-validate', str(self.ref), str(final), str(report)], cwd=ROOT, capture_output=True)
         self.assertNotEqual(p.returncode, 0)
         self.assertFalse(json.loads(report.read_text())['passed'])
 

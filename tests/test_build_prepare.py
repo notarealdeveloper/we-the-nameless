@@ -1,11 +1,14 @@
 """Check aux-directory preparation without compiling the book."""
 import importlib.machinery
 import importlib.util
+import contextlib
+import io
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,6 +47,23 @@ class BuildPrepareTests(unittest.TestCase):
             output = Path(temp)
             parallel.prepare_build_dirs(book, output)
             self.assert_history_dirs(output)
+
+    def test_parallel_cli_can_finish_without_opening_a_viewer(self):
+        with tempfile.TemporaryDirectory() as temp:
+            work = Path(temp)
+            with patch.object(sys, 'argv', ['parallel-build', '--plain', '--no-open', '--passes', '1']), \
+                 patch.object(parallel, 'BUILD', work), \
+                 patch.object(parallel, 'CONFIG_SIGNATURE', work/'config.json'), \
+                 patch.object(parallel, 'MERGED_PDF', work/'master.pdf'), \
+                 patch.object(parallel, 'read_document_parts', return_value=('', '', [])), \
+                 patch.object(parallel, 'warm_tex_cache'), \
+                 patch.object(parallel, 'prepare_worker_tex_caches'), \
+                 patch.object(parallel, 'run_plain', return_value=0), \
+                 patch.object(parallel, 'merge_pdfs', return_value=0), \
+                 patch.object(parallel, 'open_pdf') as viewer, \
+                 contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(parallel.main(), 0)
+            viewer.assert_not_called()
 
 
 if __name__ == "__main__":

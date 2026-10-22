@@ -1,19 +1,7 @@
 #!/usr/bin/env python3
-"""Strict structural validation for either an outlined interior or a cover."""
-import json
+"""Compatibility entry point; use print-validate."""
 from pathlib import Path
-import sys
-from kdp_pdf_lib import inspect, validate
+import runpy
 
-if len(sys.argv) not in (4, 6):
-    raise SystemExit('usage: kdp-validate REFERENCE FINAL REPORT.json [REFERENCE-INSPECTION FINAL-INSPECTION]')
-reference, final, output = map(Path, sys.argv[1:4])
-try:
-    before, after = [json.loads(Path(p).read_text()) for p in sys.argv[4:6]] if len(sys.argv) == 6 else [inspect(reference), inspect(final)]
-    report = validate(reference, final, before, after)
-except Exception as error:
-    report = dict(passed=False, failures=[str(error)], human_review=[])
-output.parent.mkdir(parents=True, exist_ok=True)
-output.write_text(json.dumps(report, indent=2) + '\n')
-print(json.dumps(report, indent=2), flush=True)
-raise SystemExit(not report['passed'])
+if __name__ == "__main__":
+    runpy.run_path(str(Path(__file__).with_name("print-validate")), run_name="__main__")

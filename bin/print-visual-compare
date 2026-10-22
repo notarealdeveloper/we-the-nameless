@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""Incremental 300-DPI, tile-sensitive visual comparison with two renderers."""
+import hashlib, html, json, subprocess, sys, tempfile
+from pathlib import Path
+import numpy as np
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
+
+DPI=300; TILE=128; DELTA=36; MAX_TILE_FRACTION=.08; MAX_TILE_MAE=12.0; MAX_PAGE_FOREGROUND=.016; MAX_TILE_LOST_INK=.02
+
+def digest(path):
+    h=hashlib.sha256()
+    with open(path,"rb") as f:
+        for chunk in iter(lambda:f.read(1024*1024),b""): h.update(chunk)
+    return h.hexdigest()
+
+def render(engine,pdf,page,out,dpi=DPI):
+    if engine=="mupdf": cmd=["mutool","draw","-q","-r",str(dpi),"-c","rgb","-A","8","-o",str(out),str(pdf),str(page)]
+    else: cmd=["pdftoppm","-f",str(page),"-l",str(page),"-singlefile","-r",str(dpi),"-png",str(pdf),str(out.with_suffix(""))]
+    subprocess.run(cmd,check=True,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
+
+def metrics(a,b):
+    ia=Image.open(a).convert("RGB"); ib=Image.open(b).convert("RGB")
+    if ia.size != ib.size: return {"shape_mismatch":True,"a":ia.size,"b":ib.size,"failed":True}
+    # Font rasterization and path rasterization place edge coverage differently.
+    # A 2 px (0.0067 in) blur at 300 DPI compares the same physical mark
+    # without translating or rescaling either page.
+    ba=np.asarray(ia.filter(ImageFilter.GaussianBlur(2)),dtype=np.int16)
+    bb2=np.asarray(ib.filter(ImageFilter.GaussianBlur(2)),dtype=np.int16)
+    d=np.max(np.abs(ba-bb2),axis=2); h,w=d.shape; worst={"fraction":0,"mae":0,"lost_ink":0,"box":[0,0,0,0]}
+    for y in range(0,h,TILE):
+      for x in range(0,w,TILE):
+        yy,xx=min(y+TILE,h),min(x+TILE,w); z=d[y:yy,x:xx]; f=float(np.mean(z>DELTA)); m=float(np.mean(z))
+        ink=np.min(ba[y:yy,x:xx],axis=2)<180; lost=float(np.sum(ink & (np.min(bb2[y:yy,x:xx],axis=2)>230))/max(1,np.sum(ink)))
+        # Retain independent maxima: a later tile cannot erase an earlier failure.
+        score=max(m/MAX_TILE_MAE,lost/MAX_TILE_LOST_INK)
+        old_score=max(worst["mae"]/MAX_TILE_MAE,worst["lost_ink"]/MAX_TILE_LOST_INK)
+        if score>old_score: worst["box"]=[x,y,xx,yy]
+        worst.update(fraction=max(f,worst["fraction"]),mae=max(m,worst["mae"]),lost_ink=max(lost,worst["lost_ink"]))
+    fg=np.min(ba,axis=2)<245; foreground=float(np.mean((d>DELTA)&fg))
+    failed=worst["mae"]>MAX_TILE_MAE or worst["lost_ink"]>MAX_TILE_LOST_INK or foreground>MAX_PAGE_FOREGROUND
+    return {"shape_mismatch":False,"worst_tile":worst,"foreground_changed_fraction":foreground,"failed":failed}
+
+def compare(ref,final,outdir):
+    pages=int(subprocess.check_output(["qpdf","--show-npages",str(ref)],text=True)); outdir.mkdir(parents=True,exist_ok=True)
+    final_pages=int(subprocess.check_output(["qpdf","--show-npages",str(final)],text=True))
+    if pages != final_pages: raise ValueError(f"page count differs: {pages} -> {final_pages}")
+    for stale in outdir.glob("*.png"): stale.unlink()
+    results=[]
+    with tempfile.TemporaryDirectory(prefix="wtn-visual-") as td:
+      td=Path(td)
+      for engine in ("mupdf","poppler"):
+        for page in range(1,pages+1):
+          a,b=td/"a.png",td/"b.png"; render(engine,ref,page,a); render(engine,final,page,b)
+          m=metrics(a,b); m.update(engine=engine,page=page); results.append(m)
+          if m["failed"]:
+            box=m.get("worst_tile",{}).get("box",[0,0,512,512]); pad=64; im1=Image.open(a); im2=Image.open(b)
+            crop=(max(0,box[0]-pad),max(0,box[1]-pad),min(im1.width,box[2]+pad),min(im1.height,box[3]+pad))
+            im1.crop(crop).save(outdir/f"{engine}-{page:04d}-before.png"); im2.crop(crop).save(outdir/f"{engine}-{page:04d}-after.png")
+            ImageChops.difference(im1.crop(crop),im2.crop(crop)).save(outdir/f"{engine}-{page:04d}-diff.png")
+          a.unlink(missing_ok=True); b.unlink(missing_ok=True)
+          print(f"visual {engine}: {page}/{pages}",flush=True)
+    failures=[x for x in results if x["failed"]]
+    summary={"reference_sha256":digest(ref),"final_sha256":digest(final),"validator_sha256":digest(Path(__file__)),"settings":{"dpi":DPI,"tile_pixels":TILE,"pixel_delta":DELTA,"max_tile_fraction":MAX_TILE_FRACTION,"max_tile_mae":MAX_TILE_MAE,"max_foreground_fraction":MAX_PAGE_FOREGROUND,"max_tile_lost_ink":MAX_TILE_LOST_INK},"pages":pages,"results":results,"failures":len(failures),"note":"Reference and output were compared within each renderer without alignment, shifting, or scaling. Rendering is evidence, not proof, of equivalence."}
+    (outdir/"visual-report.json").write_text(json.dumps(summary,indent=2)+"\n")
+    rows="\n".join(f"<tr><td>{r['engine']}</td><td>{r['page']}</td><td>{html.escape(str(r.get('worst_tile')))}</td><td>{r.get('foreground_changed_fraction','')}</td><td>{'FAIL' if r['failed'] else 'pass'}</td></tr>" for r in results)
+    (outdir/"index.html").write_text(f"<!doctype html><meta charset=utf-8><title>KDP visual regression</title><h1>KDP visual regression</h1><p>{html.escape(summary['note'])}</p><pre>{html.escape(json.dumps(summary['settings'],indent=2))}</pre><table><tr><th>renderer</th><th>page</th><th>worst tile</th><th>foreground</th><th>result</th></tr>{rows}</table>")
+    print(f"visual comparison: {2*pages} engine/pages, {len(failures)} failures")
+    return not failures
+
+def self_test():
+    a=Image.new("RGB",(1000,1000),"white"); d=ImageDraw.Draw(a); d.text((100,100),"A test glyph with a diacritic: é",fill="black"); d.rectangle((100,200,700,500),fill=(20,80,160));
+    with tempfile.TemporaryDirectory() as td:
+      td=Path(td); a.save(td/"a.png")
+      tests=[("identical",not metrics(td/"a.png",td/"a.png")["failed"])]
+      for name,edit in [("glyph",lambda x: ImageDraw.Draw(x).rectangle((100,100,112,116),fill="white")),("shift",lambda x: x.transform(x.size,Image.Transform.AFFINE,(1,0,-8,0,1,0),fillcolor="white")),("color",lambda x: ImageDraw.Draw(x).rectangle((100,200,700,500),fill=(50,110,190))),("clip",lambda x: ImageDraw.Draw(x).rectangle((100,96,300,108),fill="white"))]:
+        b=a.copy(); changed=edit(b); b=changed if changed is not None else b; b.save(td/"b.png"); tests.append((name,metrics(td/"a.png",td/"b.png")["failed"]))
+      if not all(v for _,v in tests): raise SystemExit(f"validator self-test failed: {tests}")
+      print(f"validator self-test passed: {tests}; page-drop is enforced structurally")
+
+def reclassify(path):
+    data=json.loads(path.read_text())
+    for r in data["results"]:
+        w=r.get("worst_tile",{})
+        r["failed"]=bool(r.get("shape_mismatch") or w.get("mae",0)>MAX_TILE_MAE or w.get("lost_ink",0)>MAX_TILE_LOST_INK or r.get("foreground_changed_fraction",0)>MAX_PAGE_FOREGROUND)
+    data["settings"].update(max_tile_mae=MAX_TILE_MAE,max_foreground_fraction=MAX_PAGE_FOREGROUND,max_tile_lost_ink=MAX_TILE_LOST_INK)
+    data["failures"]=sum(r["failed"] for r in data["results"])
+    path.write_text(json.dumps(data,indent=2)+"\n")
+    rows="\n".join(f"<tr><td>{r['engine']}</td><td>{r['page']}</td><td>{html.escape(str(r.get('worst_tile')))}</td><td>{r.get('foreground_changed_fraction','')}</td><td>{'FAIL' if r['failed'] else 'pass'}</td></tr>" for r in data["results"])
+    (path.parent/"index.html").write_text(f"<!doctype html><meta charset=utf-8><title>KDP visual regression</title><h1>KDP visual regression</h1><p>{html.escape(data['note'])}</p><pre>{html.escape(json.dumps(data['settings'],indent=2))}</pre><table><tr><th>renderer</th><th>page</th><th>worst tile</th><th>foreground</th><th>result</th></tr>{rows}</table>")
+    print(f"reclassified recorded pixels: {data['failures']} failures")
+    raise SystemExit(bool(data["failures"]))
+
+def check_cache(ref,final,outdir):
+    path=outdir/"visual-report.json"
+    if not path.exists(): raise SystemExit(1)
+    data=json.loads(path.read_text())
+    valid=data.get("reference_sha256")==digest(ref) and data.get("final_sha256")==digest(final) and data.get("validator_sha256")==digest(Path(__file__)) and data.get("failures")==0
+    print("visual cache: " + ("valid" if valid else "stale"))
+    raise SystemExit(not valid)
+
+if __name__ == "__main__":
+    if sys.argv[1:]==["--self-test"]: self_test()
+    elif len(sys.argv)==3 and sys.argv[1]=="--reclassify": reclassify(Path(sys.argv[2])/"visual-report.json")
+    elif len(sys.argv)==5 and sys.argv[1]=="--check-cache": check_cache(Path(sys.argv[2]),Path(sys.argv[3]),Path(sys.argv[4]))
+    elif len(sys.argv)==4: raise SystemExit(not compare(Path(sys.argv[1]),Path(sys.argv[2]),Path(sys.argv[3])))
+    else: raise SystemExit(f"usage: {sys.argv[0]} REFERENCE FINAL REPORT_DIR | --self-test")

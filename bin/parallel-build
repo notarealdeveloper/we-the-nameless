@@ -46,6 +46,9 @@ CONFIG_ENV = {
     "ConfigApocrypha": "WTN_APOCRYPHA",
     "ConfigRedactor": "WTN_REDACTOR",
     "ConfigCover": "WTN_COVER",
+    "ConfigCoverStyle": "WTN_COVER_STYLE",
+    "ConfigSpine": "WTN_SPINE",
+    "ConfigKDP": "WTN_PRINT_SAFE",
 }
 CONFIG = {
     name: os.environ.get(env_name) or read_master_config(name)
@@ -416,7 +419,7 @@ def worker_main(book, preamble, passes, page_starts, event_queue):
         rc, tail = stream_lualatex(book, master_path, output_dir, texmfvar, event_queue, 1)
         pdf = output_dir / f"{master_path.stem}.pdf"
         if rc == 0 and passes > 1 and page_starts is not None:
-            event_queue.put(("pass-done", book["index"], 1, str(pdf.relative_to(ROOT))))
+            event_queue.put(("pass-done", book["index"], 1, str(display_path(pdf))))
             start_page = wait_for_page_start(book, page_starts)
             master_path = write_worker_master(preamble, book, start_page=start_page)
             for pass_number in range(2, passes + 1):
@@ -431,7 +434,7 @@ def worker_main(book, preamble, passes, page_starts, event_queue):
 
         elapsed = time.monotonic() - started
         if rc == 0 and pdf.exists():
-            event_queue.put(("done", book["index"], elapsed, str(pdf.relative_to(ROOT))))
+            event_queue.put(("done", book["index"], elapsed, str(display_path(pdf))))
             raise SystemExit(0)
         else:
             event_queue.put(("failed", book["index"], rc, tail))
@@ -457,7 +460,7 @@ def front_main(preamble, front_body, books, passes, page_starts, event_queue):
         event_queue.put(("front-started", "compiling front matter"))
         rc, tail = stream_lualatex(front, master_path, output_dir, texmfvar, event_queue, 1)
         if rc == 0 and passes > 1 and page_starts is not None:
-            event_queue.put(("front-pass-done", 1, str(FRONT_PDF.relative_to(ROOT))))
+            event_queue.put(("front-pass-done", 1, str(display_path(FRONT_PDF))))
             while not page_starts.get("front_toc_ready"):
                 if page_starts.get("failed"):
                     raise RuntimeError("coordinated second pass cancelled")
@@ -474,7 +477,7 @@ def front_main(preamble, front_body, books, passes, page_starts, event_queue):
 
         elapsed = time.monotonic() - started
         if rc == 0 and FRONT_PDF.exists():
-            event_queue.put(("front-done", elapsed, str(FRONT_PDF.relative_to(ROOT))))
+            event_queue.put(("front-done", elapsed, str(display_path(FRONT_PDF))))
             raise SystemExit(0)
         event_queue.put(("front-failed", rc, tail))
         raise SystemExit(rc or 1)
@@ -1089,7 +1092,7 @@ def merge_pdfs(books, include_front):
     if missing:
         print("Cannot merge; missing PDFs:", file=sys.stderr)
         for pdf in missing:
-            print(f"  {pdf.relative_to(ROOT)}", file=sys.stderr)
+            print(f"  {display_path(pdf)}", file=sys.stderr)
         return 1
 
     if len(pdfs) == 1:
@@ -1117,12 +1120,20 @@ def open_pdf(pdf):
     if opener:
         subprocess.Popen([opener, str(pdf)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     else:
-        print(f"Built {pdf.relative_to(ROOT)}")
+        print(f"Built {display_path(pdf)}")
+
+
+def display_path(path):
+    try:
+        return path.relative_to(ROOT)
+    except ValueError:
+        return path
 
 
 def main():
     parser = argparse.ArgumentParser(description="Build the We The Nameless books in parallel.")
     parser.add_argument("--plain", action="store_true", help="use line-oriented ANSI output instead of curses")
+    parser.add_argument("--no-open", action="store_true", help="leave the completed PDF closed")
     parser.add_argument("--list-books", action="store_true", help="print the detected book chunks and exit")
     parser.add_argument("--clean", action="store_true", help="remove build/parallel before building")
     parser.add_argument("--only", metavar="TEXT", help="debug one matching book instead of all books")
@@ -1182,8 +1193,9 @@ def main():
         return 0
     rc = merge_pdfs(books, include_front)
     if rc == 0:
-        print(f"{GREEN}Done{END} {WHITE}merged{END} {BLUE}{MERGED_PDF.relative_to(ROOT)}{END}", flush=True)
-        open_pdf(MERGED_PDF)
+        print(f"{GREEN}Done{END} {WHITE}merged{END} {BLUE}{display_path(MERGED_PDF)}{END}", flush=True)
+        if not args.no_open:
+            open_pdf(MERGED_PDF)
     return rc
 
 

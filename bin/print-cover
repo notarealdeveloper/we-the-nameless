@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+interior=${1:-01-genesis.pdf}
+paper=${2:-standard-color}
+output=${3:-genesis-cover.pdf}
+build_dir=${4:-build/cover}
+style=${5:-simple}
+volume=${6:-Genesis}
+spine=${7:-nameless}
+binding=${8:-paperback}
+template=${9:-}
+provider=${10:-kdp}
+[[ "$provider" == kdp || "$provider" == lulu ]] || { echo "Unsupported provider: $provider" >&2; exit 2; }
+project_dir="pub/covers/$style"
+
+if [[ ! -f "$interior" ]]; then
+    printf 'Interior PDF not found: %s\nBuild it separately, or set COVER_INTERIOR to an existing PDF.\n' "$interior" >&2
+    exit 1
+fi
+if [[ ! -f "$project_dir/cover.tex" ]]; then
+    printf 'Unknown cover style: %s\nExpected %s/cover.tex.\n' "$style" "$project_dir" >&2
+    exit 2
+fi
+if [[ "$spine" != nameless && "$spine" != ld ]]; then
+    printf 'Unsupported spine style: %s\nUse nameless or ld.\n' "$spine" >&2
+    exit 2
+fi
+
+info=$(pdfinfo "$interior")
+pages=$(awk '/^Pages:/ {print $2}' <<<"$info")
+read -r width_points height_points < <(awk '/^Page size:/ {print $3, $5; exit}' <<<"$info")
+
+if [[ -z "$pages" || -z "$width_points" || -z "$height_points" ]]; then
+    printf 'Could not read page count and trim size from %s.\n' "$interior" >&2
+    exit 1
+fi
+# Short interiors get an unlettered spine; the wrap itself remains valid.
+show_spine=true
+if (( pages < 79 )) || [[ "$provider" == lulu && "$pages" -le 80 ]]; then show_spine=false; fi
+
+trim_width=$(awk -v points="$width_points" 'BEGIN {printf "%.6f", points / 72}')
+trim_height=$(awk -v points="$height_points" 'BEGIN {printf "%.6f", points / 72}')
+
+mkdir -p "$build_dir" "$build_dir/texmf-var"
+python3 - "$pages" "$trim_width" "$trim_height" "$paper" "$binding" "$template" "$build_dir" "$provider" "$style" <<'PYTHON'
+import json, sys
+from pathlib import Path
+sys.path.insert(0, 'bin')
+from kdp_cover_geometry import geometry, tex_dimensions
+if sys.argv[8] == "lulu":
+    from lulu_cover_geometry import geometry
+pages, width, height = int(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3])
+g = geometry(pages, width, height, sys.argv[4], sys.argv[5], sys.argv[6] or None)
+work = Path(sys.argv[7])
+(work / 'dimensions.tex').write_text(tex_dimensions(g, width, height))
+if sys.argv[9] == 'fancy':
+    from cover_artwork import prepare_artwork
+    artwork = work / 'artwork'
+    prepare_artwork(g, artwork)
+    with (work / 'dimensions.tex').open('a') as dimensions:
+        dimensions.write(r'\def\CoverArtworkDir{' + artwork.as_posix() + '}\n')
+(work / 'geometry.json').write_text(json.dumps(g, indent=2) + '\n')
+(work / 'spine.txt').write_text(str(g['spine']))
+if sys.argv[8] == 'kdp' and sys.argv[5] == 'hardcover' and not 76 <= pages <= 550:
+    print(f'Hardcover proof only: {pages} pages is outside KDP hardcover range 76..550.', file=sys.stderr)
+PYTHON
+spine_width=$(cat "$build_dir/spine.txt")
+# The templates use TikZ's remembered page anchors.  The first pass records
+# those positions; the second pass is what places the panels and labels there.
+for pass in 1 2; do
+    printf 'Cover LuaLaTeX pass %s/2 START\n' "$pass"
+    TEXMFVAR="$build_dir/texmf-var" lualatex \
+        -recorder -interaction=nonstopmode -halt-on-error -file-line-error \
+        -output-directory="$build_dir" \
+        -jobname=cover \
+        "\\def\\CoverDimensionsFile{$build_dir/dimensions.tex}\\def\\CoverShowSpine{$show_spine}\\def\\CoverSpineWidth{$spine_width in}\\def\\CoverVolume{$volume}\\def\\CoverSpine{$spine}\\def\\CoverProjectDir{$project_dir}\\input{$project_dir/cover.tex}"
+    printf 'Cover LuaLaTeX pass %s/2 PASS\n' "$pass"
+done
+cp "$build_dir/cover.pdf" "$output"
+printf 'Built %s: %s pages, %sx%s in trim, %s in spine (%s).\n' \
+    "$output" "$pages" "$trim_width" "$trim_height" "$spine_width" "$paper/$style"

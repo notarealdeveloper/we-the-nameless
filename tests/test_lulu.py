@@ -16,7 +16,7 @@ from kdp_fixtures import pdf
 from kdp_pdf_lib import inspect
 from print_publish_config import profiles
 
-loader = importlib.machinery.SourceFileLoader('lulu_publishing', str(ROOT / 'bin/kdp-publish'))
+loader = importlib.machinery.SourceFileLoader('lulu_publishing', str(ROOT / 'bin/print_publish.py'))
 spec = importlib.util.spec_from_loader(loader.name, loader)
 publishing = importlib.util.module_from_spec(spec)
 loader.exec_module(publishing)
@@ -41,9 +41,9 @@ class LuluTests(unittest.TestCase):
         self.assertEqual((large['width'], large['height']), (19.875, 12.75))
 
     def test_make_routes_without_building(self):
-        for style in ('simplecover', 'fancycover'):
-            result = subprocess.check_output(['make', '-n', 'genesis-lulu-' + style], cwd=ROOT, text=True)
-            self.assertIn('--make-target "genesis-lulu-' + style + '"', result)
+        for binding in ('paperback', 'hardcover'):
+            result = subprocess.check_output(['make', '-n', 'genesis-lulu-' + binding], cwd=ROOT, text=True)
+            self.assertIn('--make-target "genesis-lulu-' + binding + '"', result)
 
     def test_optional_vectorization_on_synthetic_pdfs(self):
         with tempfile.TemporaryDirectory(prefix='lulu-test-') as temp:

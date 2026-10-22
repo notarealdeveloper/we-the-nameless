@@ -15,6 +15,31 @@ BOOK_CONTENTS = MASTER.split(r"\newcommand{\BookChapterLinkArray}", 1)[1].split(
     r"\newcommand{\BookExtraLinkText}", 1)[0]
 
 
+@unittest.skipUnless(shutil.which('pdflatex') and shutil.which('pdfinfo'), 'TeX or Poppler unavailable')
+class TrimTests(unittest.TestCase):
+    def test_explicit_trim_overrides_every_typography_mode(self):
+        # Only the production geometry branch and one synthetic line of text.
+        marker = '\\ifConfigOutputModeTech\n    % Keep the existing 7in width;'
+        geometry = marker + MASTER.split(marker, 1)[1].split('% BEGIN print-page layout', 1)[0]
+        for mode in ('book', 'hard', 'tech', 'even'):
+            for width, height in ((7, 10), (8.25, 11)):
+                with self.subTest(mode=mode, width=width), tempfile.TemporaryDirectory(prefix='trim-fixture-') as temp:
+                    text = (r'\documentclass{book}\newif\ifConfigOutputModeTech'
+                        + (r'\ConfigOutputModeTechtrue' if mode == 'tech' else '')
+                        + r'\def\ConfigOutputMode{' + mode + '}'
+                        + r'\def\ConfigOutputModeHard{hard}\def\ConfigOutputModeEven{even}'
+                        + r'\def\ConfigPrintTrimWidth{' + str(width) + 'in}'
+                        + r'\def\ConfigPrintTrimHeight{' + str(height) + 'in}'
+                        + geometry + r'\begin{document}Synthetic trim fixture.\end{document}')
+                    (Path(temp)/'fixture.tex').write_text(text)
+                    result = subprocess.run(['pdflatex', '-interaction=nonstopmode', '-halt-on-error', 'fixture.tex'],
+                        cwd=temp, capture_output=True, text=True)
+                    self.assertEqual(result.returncode, 0, result.stdout[-2000:])
+                    info = subprocess.check_output(['pdfinfo', str(Path(temp)/'fixture.pdf')], text=True)
+                    measured = re.search(r'Page size:\s+([\d.]+) x ([\d.]+)', info)
+                    self.assertEqual(tuple(map(float, measured.groups())), (width*72, height*72))
+
+
 @unittest.skipUnless(shutil.which("pdflatex"), "pdflatex unavailable")
 class PrintPagingTests(unittest.TestCase):
     def render(self, contents_pages=1, cover=False, mode="book", fancy=True):

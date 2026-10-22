@@ -18,7 +18,7 @@ SPINE ?= $(call read-config,ConfigSpine)
 BUILD ?= build/$(OUTPUT_MODE)-$(THEME)
 CACHE = $(BUILD)/texmf-var
 TRANSLATION_LUA = $(BUILD)/translation-$(TRANSLATION).lua
-LATEX_CONFIG = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigVerseLayout{$(VERSE_LAYOUT)}\def\ConfigCommentary{$(COMMENTARY)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\IndividualBookTitlePageStyle{$(TITLE_PAGE_STYLE)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigRedactor{$(REDACTOR)}\def\ConfigCover{$(COVER)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}
+LATEX_CONFIG = \def\ConfigOutputMode{$(OUTPUT_MODE)}\def\ConfigTheme{$(THEME)}\def\ConfigVerseLayout{$(VERSE_LAYOUT)}\def\ConfigCommentary{$(COMMENTARY)}\def\ConfigEnglishTranslation{$(TRANSLATION)}\def\IndividualBookTitlePageStyle{$(TITLE_PAGE_STYLE)}\def\ConfigColors{$(COLORS)}\def\ConfigApocrypha{$(APOCRYPHA)}\def\ConfigRedactor{$(REDACTOR)}\def\ConfigCover{$(COVER)}\def\ConfigCoverStyle{$(COVER_STYLE)}\def\ConfigSpine{$(SPINE)}\def\ConfigEnglishTranslationLuaFile{$(TRANSLATION_LUA)}
 LATEX_INPUT = $(LATEX_CONFIG)\input{$(MAIN).tex}
 
 BUILD_MODES := book-lite book-dark tech-lite tech-dark
@@ -54,8 +54,18 @@ PRINT_PLAN ?=
 KDP_HARDCOVER_TEMPLATE ?=
 KDP_ARTIFACT ?=
 KDP_REFERENCE ?=
-KDP_OPTIONS = --paper "$(KDP_PAPER)" --ink "$(KDP_INK)" --bleed "$(KDP_BLEED)" --trim "$(KDP_TRIM)" $(if $(KDP_COVER_STYLE),--cover-style "$(KDP_COVER_STYLE)") --spine "$(KDP_SPINE)" $(if $(KDP_HARDCOVER_TEMPLATE),--hardcover-template "$(KDP_HARDCOVER_TEMPLATE)")
-PRINT_OPTIONS = $(KDP_OPTIONS) $(if $(PRINT_PROCESSING),--processing "$(PRINT_PROCESSING)") $(if $(PRINT_BINDING),--binding "$(PRINT_BINDING)") $(if $(PRINT_OUTPUT_DIR),--output-dir "$(PRINT_OUTPUT_DIR)") $(if $(filter 1 true,$(PRINT_PLAN)),--plan)
+# Neutral names apply equally to both publishers; KDP_* remain fallback aliases.
+PRINT_PAPER ?= $(KDP_PAPER)
+PRINT_INK ?= $(if $(filter command line environment override,$(origin KDP_INK)),$(KDP_INK),$(PRINT_PAPER))
+PRINT_BLEED ?= $(KDP_BLEED)
+PRINT_TRIM ?= $(KDP_TRIM)
+PRINT_COVER_STYLE ?= $(KDP_COVER_STYLE)
+PRINT_SPINE ?= $(KDP_SPINE)
+PRINT_HARDCOVER_TEMPLATE ?= $(KDP_HARDCOVER_TEMPLATE)
+PRINT_OPTIONS = --paper "$(PRINT_PAPER)" --ink "$(PRINT_INK)" --bleed "$(PRINT_BLEED)" --trim "$(PRINT_TRIM)" $(if $(PRINT_COVER_STYLE),--cover-style "$(PRINT_COVER_STYLE)") --spine "$(PRINT_SPINE)" $(if $(PRINT_HARDCOVER_TEMPLATE),--hardcover-template "$(PRINT_HARDCOVER_TEMPLATE)") $(if $(PRINT_PROCESSING),--processing "$(PRINT_PROCESSING)") $(if $(PRINT_BINDING),--binding "$(PRINT_BINDING)") $(if $(PRINT_OUTPUT_DIR),--output-dir "$(PRINT_OUTPUT_DIR)") $(if $(filter 1 true,$(PRINT_PLAN)),--plan)
+# Only deliberate display overrides change the stable print presets.
+print-override = $(if $(filter command line environment override,$(origin $(1))),--$(2) "$($(1))")
+PRINT_OPTIONS += $(call print-override,OUTPUT_MODE,output-mode) $(call print-override,THEME,theme) $(call print-override,VERSE_LAYOUT,verse-layout) $(call print-override,COMMENTARY,commentary) $(call print-override,TRANSLATION,translation) $(call print-override,TITLE_PAGE_STYLE,title-page-style) $(call print-override,COLORS,colors) $(call print-override,APOCRYPHA,apocrypha) $(call print-override,REDACTOR,redactor) $(call print-override,COVER,cover)
 KDP_CHECK_OPTIONS = $(if $(KDP_ARTIFACT),--artifact "$(KDP_ARTIFACT)") $(if $(KDP_REFERENCE),--reference "$(KDP_REFERENCE)")
 COVER_VOLUME ?=
 COVER_OUTPUT ?= 01-genesis-cover.pdf
@@ -68,7 +78,7 @@ export TEXMFVAR = $(CACHE)
 # Pentateuch paths themselves.
 export max_print_line = 60
 
-.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-release ebook-check ebook-validate check-ebook cover kdp kdp-preflight genesis-kdp check-genesis-kdp check-kdp-validator check-kdp $(PRINT_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
+.PHONY: all pdf build-pdf ci view open clean distclean debug progress parallel all-modes ebook ebook-release ebook-check ebook-validate check-ebook cover kdp kdp-preflight genesis-kdp check-genesis-kdp check-kdp-validator check-kdp check-build $(PRINT_TARGETS) $(COVER_TARGETS) $(EBOOK_TARGETS) $(BUILD_MODES) build-prepare build-translation clean-stray-aux draft c x comment halfcomment uncomment again help list $(SUBSET_TARGETS) $(CHAPTER_TARGETS) $(COMMENT_BOOK_TARGETS) $(UNCOMMENT_BOOK_TARGETS)
 
 define publish-and-open
 	@set -e; \
@@ -142,11 +152,15 @@ help:
 		'  make genesis-lulu                                      Simple + fancy 7x10; keep searchable originals.' \
 		'  make genesis-kdp-simplecover-original-8.25x11           Override artwork, processing, and trim independently.' \
 		'  make J-lulu-fancycover-vectorized-7x10                   Any selection, publisher, style, processing, and supported trim.' \
-		'  Qualifiers: [-simplecover|-fancycover][-original|-vectorized][-7x10|-8.25x11|-default]' \
-		'  Append -build (originals), -vectorize (existing originals), or -check (existing pairs).' \
-		'  -default and omitted trim are equivalent. Explicit cover, processing, and numeric trim override Make variables.' \
+		'  make exodus-lulu-hardcover                             Fancy hardcover 7x10; searchable originals.' \
+		'  Only publisher presets and complete cover-processing-trim combinations have Make targets.' \
+		'  Each also accepts -build, -vectorize, or -check for one publishing stage.' \
+		'  bin/build genesis kdp --cover-style fancy               Partial combinations use the general CLI.' \
+		'  bin/build genesis kdp --stage build|vectorize|check      Run one publishing stage.' \
+		'  bin/build --help                                       All master.tex settings, publishers, PDF and EPUB options.' \
 		'  Add PRINT_PLAN=1 to print resolved parameters and paths without building.' \
 		'  make check-kdp                                         Synthetic KDP and Lulu tests; never builds a book.' \
+		'  make check-build                                       CLI routing plus synthetic publishing tests; no book build.' \
 		'  make check-kdp-validator                               Synthetic visual validator self-test.' \
 		'  make cover / genesis-cover                             Standalone cover from an existing PDF.' \
 		'  make kdp KDP_INPUT=file.pdf                             Legacy PDF conversion; separate from the print pipeline.' \
@@ -168,19 +182,19 @@ list:
 	bin/book-subset --list
 
 ebook:
-	$(MAKE) -C ebook all COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)"
+	@bin/build all ebook --cover "$(EBOOK_COVER)" --apocrypha "$(APOCRYPHA)"
 
 ebook-release:
-	$(MAKE) -C ebook release COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)"
+	@bin/build all ebook --stage release --cover "$(EBOOK_COVER)" --apocrypha "$(APOCRYPHA)"
 
 ebook-check ebook-validate:
-	$(MAKE) -C ebook validate
+	@bin/build all ebook --stage check
 
 check-ebook:
 	$(MAKE) -C ebook test
 
 cover:
-	@bin/kdp-cover "$(COVER_INTERIOR)" "$(COVER_PAPER)" "$(COVER_OUTPUT)" "$(COVER_BUILD)" "$(COVER_STYLE)" "$(COVER_VOLUME)" "$(SPINE)"
+	@bin/print-cover "$(COVER_INTERIOR)" "$(COVER_PAPER)" "$(COVER_OUTPUT)" "$(COVER_BUILD)" "$(COVER_STYLE)" "$(COVER_VOLUME)" "$(SPINE)"
 
 kdp:
 	@test -n "$(KDP_INPUT)" || { echo 'KDP_INPUT is required' >&2; exit 2; }
@@ -194,12 +208,16 @@ kdp-preflight:
 # Enumerate valid targets for tab completion and mark them phony even if a file
 # with that name exists. The CLI resolves qualifiers, not Make string slicing.
 $(PRINT_TARGETS):
-	@bin/kdp-publish --make-target "$@" $(PRINT_OPTIONS) $(KDP_CHECK_OPTIONS)
+	@bin/build --make-target "$@" $(PRINT_OPTIONS) $(KDP_CHECK_OPTIONS)
 
-check-genesis-kdp: genesis-kdp-check
+check-genesis-kdp:
+	@bin/build genesis kdp --stage check $(PRINT_OPTIONS) $(KDP_CHECK_OPTIONS)
 
 check-kdp-validator:
-	@python3 bin/kdp-visual-compare --self-test
+	@python3 bin/print-visual-compare --self-test
+
+check-build: check-kdp
+	@python3 -m unittest discover -s tests -p 'test_build_cli.py' -v
 
 check-kdp:
 	@python3 -m unittest discover -s tests -p 'test_kdp*.py' -v
@@ -211,16 +229,16 @@ $(COVER_TARGETS): %-cover:
 	title="$$(printf '%s\n' "$${basename#??-}" | awk -F- '{ for (i=1; i<=NF; i++) { if ($$i ~ /^[a-z]/) $$i=toupper(substr($$i,1,1)) substr($$i,2); printf "%s%s", (i > 1 ? " " : ""), $$i } }')"; \
 	interior="$(if $(filter command line environment override,$(origin COVER_INTERIOR)),$(COVER_INTERIOR),)"; \
 	output="$(if $(filter command line environment override,$(origin COVER_OUTPUT)),$(COVER_OUTPUT),)"; \
-	bin/kdp-cover "$${interior:-$$basename.pdf}" "$(COVER_PAPER)" "$${output:-$$basename-cover.pdf}" "$(COVER_BUILD)/$$basename/$(COVER_STYLE)" "$(COVER_STYLE)" "$(if $(COVER_VOLUME),$(COVER_VOLUME),$${title})" "$(SPINE)"
+	bin/print-cover "$${interior:-$$basename.pdf}" "$(COVER_PAPER)" "$${output:-$$basename-cover.pdf}" "$(COVER_BUILD)/$$basename/$(COVER_STYLE)" "$(COVER_STYLE)" "$(if $(COVER_VOLUME),$(COVER_VOLUME),$${title})" "$(SPINE)"
 
 $(addsuffix -ebook,$(EBOOK_SUBSETS)): %-ebook:
-	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)"
+	@bin/build "$*" ebook --cover "$(EBOOK_COVER)" --apocrypha "$(APOCRYPHA)"
 
 $(addsuffix -ebook-release,$(EBOOK_SUBSETS)): %-ebook-release:
-	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)" RELEASE=--require-epubcheck
+	@bin/build "$*" ebook --stage release --cover "$(EBOOK_COVER)" --apocrypha "$(APOCRYPHA)"
 
 $(addsuffix -ebook-check,$(EBOOK_SUBSETS)): %-ebook-check:
-	$(MAKE) -C ebook "validate-$*"
+	@bin/build "$*" ebook --stage check
 
 pdf: build-pdf
 

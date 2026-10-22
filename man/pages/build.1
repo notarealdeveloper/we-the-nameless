@@ -1,0 +1,602 @@
+.TH BUILD 1 "October 2026" "We The Nameless" "User Commands"
+.SH NAME
+build \- build reading PDFs, KDP and Lulu print pairs, and reflowable EPUB
+.SH SYNOPSIS
+.B bin/build
+[\fIBOOK\fR] [\fIPRESET\fR] [\fIOPTIONS\fR]
+.SH DESCRIPTION
+Build any selection as a reading PDF, publisher print pair, or reflowable EPUB.
+Commands create local files and never upload to a publisher. The command can be
+called from any directory. Relative path arguments are relative to the caller;
+source files and default destinations are relative to the repository.
+.SH PRESETS
+.nf
+Presets (explicit options override only their own setting):
+  pdf             Active master.tex settings; one reading PDF (default).
+  kdp             Simple paperback 7x10 + fancy hardcover 8.25x11; vectorized.
+  lulu            Simple paperback 7x10 + fancy hardcover 7x10; originals.
+  kdp\-paperback / lulu\-paperback    Only the publisher's simple paperback.
+  kdp\-hardcover / lulu\-hardcover    Only the publisher's fancy hardcover.
+  ebook           Reflowable EPUB, cover we\-cover\-8; follows master apocrypha.
+
+All print presets use book/lite, horizontal verses, commentary, inline English,
+fancy title pages, default colors, apocrypha, uncensored redaction, no interior
+cover, print\-safe assets/rules, LD spine, matching premium\-color paper/ink,
+no interior bleed, and soft PDF encoding. Artwork, binding, processing and trim
+are independent. \-\-binding overrides construction; \-\-cover\-style selects artwork.
+Publisher\-only calls build both profiles concurrently. The flags expose every
+combination without creating intermediate Make targets.
+
+Stages:
+  Print all: build originals and apply processing; build: originals only;
+  vectorize: convert existing originals; check: compare existing original/vector
+  pairs at 300 DPI with both MuPDF and Poppler (no build or conversion).
+  PDF all/build: compile until references settle; \-\-workflow parallel builds the
+  complete selection by chapters. EPUB all/build: development; release: rebuild
+  with mandatory EPUBCheck; check: validate the existing archive only.
+
+Examples:
+  bin/build genesis kdp
+  bin/build exodus lulu\-hardcover
+  bin/build J lulu \-\-cover\-style fancy \-\-binding paperback \-\-trim 8.25x11
+  bin/build genesis kdp \-\-theme dark \-\-commentary false \-\-translation kjv
+  bin/build genesis \-\-output\-mode even \-\-verse\-layout vertical \-\-cover none
+  bin/build all \-\-workflow parallel \-\-theme lite
+  bin/build genesis ebook \-\-stage release
+  bin/build genesis kdp \-\-stage vectorize
+  bin/build \-\-make\-target genesis\-kdp\-simplecover\-vectorized\-7x10 \-\-plan
+
+Make keeps publisher and publisher\-binding abbreviations, plus targets with all
+of cover style, processing and numeric trim. Each also accepts a \-build,
+\-vectorize or \-check stage suffix. Use this command for partial choices and
+independent flags. \-\-plan resolves paths/configuration without writes or builds.
+Custom settings can share output names: choose \-\-output\-dir to retain variants.
+These commands only create local files; they never upload to a publisher.
+See PUBLISH.md and man/pages/build.1 for every option and operational limits.
+
+.fi
+.SH OPTIONS
+.TP
+.B \-h, \-\-help
+show this help message and exit
+.TP
+.B BOOK
+all (active master), book/alias, chapter or case\-sensitive source subset; \-\-list shows names
+.TP
+.B PRESET {pdf,ebook,kdp,kdp\-paperback,kdp\-hardcover,lulu,lulu\-paperback,lulu\-hardcover}
+build defaults; explicit flags override them (default: pdf)
+.TP
+.B \-\-publisher, \-\-provider {kdp,lulu}
+select print publisher; equivalent to its preset
+.TP
+.B \-\-stage {all,build,vectorize,check,release}
+operation; see stage descriptions below (default: all)
+.TP
+.B \-\-make\-target MAKE_TARGET
+resolve a retained Make abbreviation; its explicit fields override flags
+.TP
+.B \-\-output\-mode {book,hard,tech,even}
+book: 7x10 with gutter; hard: 8.25x11; even: 7x10 equal margins; tech: 7x14.68 and larger text; explicit trim overrides page size; defaults from preset or master.tex
+.TP
+.B \-\-theme {lite,dark}
+light or dark page theme; defaults from preset or master.tex
+.TP
+.B \-\-verse\-layout {horizontal,vertical}
+verse arrangement; defaults from preset or master.tex
+.TP
+.B \-\-commentary {true,false}
+include commentary; defaults from preset or master.tex
+.TP
+.B \-\-translation TRANSLATION
+default inline English or a translations/ directory; defaults from preset or master.tex
+.TP
+.B \-\-title\-page\-style {plain,fancy}
+individual book title pages; defaults from preset or master.tex
+.TP
+.B \-\-colors {default,lighter}
+theme palette; defaults from preset or master.tex
+.TP
+.B \-\-apocrypha {apocryphal,canonical}
+include or omit apocrypha; defaults from preset or master.tex
+.TP
+.B \-\-redactor {censored,uncensored}
+redaction policy; defaults from preset or master.tex
+.TP
+.B \-\-cover COVER
+none or an image basename in img/covers/; defaults from preset or master.tex
+.TP
+.B \-\-cover\-style {simple,fancy}
+simple typography or saved fancy artwork; defaults from preset or master.tex
+.TP
+.B \-\-spine {nameless,ld}
+spine lettering; defaults from preset or master.tex
+.TP
+.B \-\-print\-safe {true,false}
+print assets, heavier rules, and even final page count; defaults from preset or master.tex
+.TP
+.B \-\-trim {default,7x10,8.25x11}
+interior inches; default uses preset trim or natural PDF layout
+.TP
+.B \-\-binding {paperback,hardcover}
+physical cover construction, independently of artwork
+.TP
+.B \-\-processing {original,vectorized}
+print all: searchable originals, or originals plus outlined vectors; publisher default if omitted
+.TP
+.B \-\-paper {premium\-color,standard\-color}
+color stock; KDP hardcover always premium (default: premium\-color)
+.TP
+.B \-\-ink {premium\-color,standard\-color}
+must match paper; defaults to selected paper
+.TP
+.B \-\-bleed {no\-bleed}
+interior bleed policy (only no\-bleed is implemented)
+.TP
+.B \-\-variant {soft,medium,hard}
+print vector PDF encoding; unrelated to binding (default: soft)
+.TP
+.B \-\-hardcover\-template HARDCOVER_TEMPLATE
+exact KDP hardcover geometry JSON; rejected for Lulu
+.TP
+.B \-\-asset\-dir ASSET_DIR
+override KDPAssetDir (print\-safe assets); otherwise prepared automatically
+.TP
+.B \-\-output\-dir OUTPUT_DIR
+destination directory; PDF: project root; print: pub/PUBLISHER[/VARIANT]; EPUB: ebook/
+.TP
+.B \-\-build\-dir BUILD_DIR
+reading PDF scratch directory; default: build/editions/BOOK/CONFIG\-HASH
+.TP
+.B \-\-workflow {serial,parallel}
+reading PDF execution; parallel requires all (default: serial)
+.TP
+.B \-\-source\-date\-epoch SOURCE_DATE_EPOCH
+nonnegative reproducible timestamp; print builds default to Git commit time
+.TP
+.B \-\-artifact ARTIFACT
+print check: explicit final PDF, paired with \-\-reference
+.TP
+.B \-\-reference REFERENCE
+print check: explicit searchable reference PDF
+.TP
+.B \-\-plan
+print JSON configuration, paths and/or commands without writes or builds
+.TP
+.B \-\-list
+list selections without building
+.SH "MAKE ABBREVIATIONS"
+Run Make from the repository root. \fBbin/build\fR also works from other directories;
+relative path arguments are resolved against the caller's directory.
+.PP
+.nf
+| Make job | Exactly equivalent script call with default Make variables |
+| \-\-\- | \-\-\- |
+| \fBmake genesis\-kdp\fR | \fBbin/build genesis kdp\fR |
+| \fBmake exodus\-lulu\fR | \fBbin/build exodus lulu\fR |
+| \fBmake genesis\-kdp\-paperback\fR | \fBbin/build genesis kdp\-paperback\fR |
+| \fBmake genesis\-kdp\-hardcover\fR | \fBbin/build genesis kdp\-hardcover\fR |
+| \fBmake exodus\-lulu\-paperback\fR | \fBbin/build exodus lulu\-paperback\fR |
+| \fBmake exodus\-lulu\-hardcover\fR | \fBbin/build exodus lulu\-hardcover\fR |
+| \fBmake genesis\-kdp\-simplecover\-vectorized\-7x10\fR | \fBbin/build genesis kdp \-\-cover\-style simple \-\-processing vectorized \-\-trim 7x10\fR |
+| \fBmake J\-lulu\-fancycover\-original\-8.25x11\fR | \fBbin/build J lulu \-\-cover\-style fancy \-\-processing original \-\-trim 8.25x11\fR |
+| \fBmake genesis\-kdp\-build\fR | \fBbin/build genesis kdp \-\-stage build\fR |
+| \fBmake exodus\-lulu\-hardcover\-check\fR | \fBbin/build exodus lulu\-hardcover \-\-stage check\fR |
+| \fBmake genesis\-kdp\-simplecover\-vectorized\-7x10\-check\fR | \fBbin/build genesis kdp \-\-cover\-style simple \-\-processing vectorized \-\-trim 7x10 \-\-stage check\fR |
+| \fBmake genesis\-ebook\fR | \fBbin/build genesis ebook\fR |
+| \fBmake genesis\-ebook\-release\fR | \fBbin/build genesis ebook \-\-stage release\fR |
+| \fBmake genesis\-ebook\-check\fR | \fBbin/build genesis ebook \-\-stage check\fR |
+| \fBmake ebook\fR / \fBmake ebook\-release\fR / \fBmake ebook\-check\fR | The corresponding ebook command with selection \fBall\fR |
+.fi
+.PP
+A publisher\-only print job produces two matched interior/cover pairs. A
+publisher\-binding job produces one. Their complete print defaults are:
+.PP
+.nf
+| Preset | Artwork | Binding | Interior inches | Processing |
+| \-\-\- | \-\-\- | \-\-\- | \-\-\- | \-\-\- |
+| \fBkdp\fR (first pair), \fBkdp\-paperback\fR | simple | paperback | 7 × 10 | vectorized |
+| \fBkdp\fR (second pair), \fBkdp\-hardcover\fR | fancy | hardcover | 8.25 × 11 | vectorized |
+| \fBlulu\fR (first pair), \fBlulu\-paperback\fR | simple | paperback | 7 × 10 | original |
+| \fBlulu\fR (second pair), \fBlulu\-hardcover\fR | fancy | hardcover | 7 × 10 | original |
+.fi
+.PP
+All print presets use book mode, lite theme, horizontal verses, commentary,
+inline English, fancy title pages, default colors, apocrypha, uncensored
+redaction, no interior cover image, print safety, LD spine lettering,
+matching premium\-color paper/ink, no interior bleed, and soft PDF encoding.
+KDP retains searchable originals alongside vectors. The two pairs run concurrently
+with independent work directories, assets, caches, and logs.
+.PP
+Only these print suffixes are enumerated for each selection:
+.PP
+.nf
+PUBLISHER[\-STAGE]
+PUBLISHER\-paperback[\-STAGE]
+PUBLISHER\-hardcover[\-STAGE]
+PUBLISHER\-STYLEcover\-PROCESSING\-TRIM[\-STAGE]
+.fi
+.PP
+The last form requires every field: publisher \fBkdp|lulu\fR, style \fBsimple|fancy\fR,
+processing \fBoriginal|vectorized\fR, and numeric trim \fB7x10|8.25x11\fR.
+Stage is optional: \fBbuild\fR, \fBvectorize\fR, or \fBcheck\fR; omission runs \fBall\fR.
+There are 22 base print suffixes, or 88 including stages, reduced from 288.
+Intermediate targets
+such as \fBgenesis\-kdp\-fancycover\fR, \fBgenesis\-lulu\-original\fR, \fBgenesis\-kdp\-7x10\fR,
+are removed. Their operations remain available directly:
+.PP
+.nf
+bin/build genesis kdp \-\-cover\-style fancy
+bin/build genesis lulu \-\-processing original
+bin/build genesis kdp \-\-trim 7x10
+bin/build genesis kdp \-\-stage build
+bin/build genesis kdp \-\-stage vectorize
+bin/build genesis kdp \-\-stage check
+.fi
+.PP
+The ordinary reading targets (\fBmake pdf\fR, \fBmake genesis\fR, chapter and source
+names, mode/theme shortcuts, and \fBmake parallel\fR) remain available. New script
+calls never open a viewer automatically. For example, \fBbin/build genesis\fR creates
+\fB01\-genesis.pdf\fR; \fBbin/build all\fR creates \fBmaster.pdf\fR.
+.SH "SELECTION"
+Positional \fBBOOK\fR, default \fBall\fR. \fBall\fR uses the active include sequence in
+\fBmaster.tex\fR; book, chapter, and source selections use \fBbin/book\-subset\fR.
+Examples: \fBgenesis\fR, \fB01\-genesis\fR, \fB1\-genesis\fR, \fBgenesis\-1\fR, \fB1\-samuel\fR,
+\fB1\-samuel\-1\fR, \fBJ\fR, \fBE\fR, \fBI\fR, \fBP\fR, \fBD\fR, \fBR\fR, \fBM\fR, \fBA\fR, \fBcourt\fR, \fBj\fR, \fBe\fR, \fBi\fR,
+\fBp\fR, \fBr\fR. Case matters. Numbered aliases share canonical filenames and print locks.
+Run \fBbin/build \-\-list\fR or \fBmake list\fR to inspect selections.
+.PP
+Any selection can use either publisher. Resolving a selection does not guarantee
+its page count falls within the chosen publisher/binding limits.
+.SH "PRESET"
+Positional \fBPRESET\fR, default \fBpdf\fR. Choices: \fBpdf\fR, \fBebook\fR, \fBkdp\fR, \fBlulu\fR,
+\fBkdp\-paperback\fR, \fBkdp\-hardcover\fR, \fBlulu\-paperback\fR, \fBlulu\-hardcover\fR.
+.PP
+\fBpdf\fR follows the active settings at the top of \fBmaster.tex\fR. Print presets use
+the stable defaults above. \fBebook\fR creates reflowable EPUB with cover \fBwe\-cover\-8\fR
+and the active apocrypha setting. Explicit options override only their own field.
+For example, the following are equivalent:
+.PP
+.nf
+bin/build exodus lulu\-hardcover
+bin/build exodus lulu \-\-cover\-style fancy \-\-binding hardcover \-\-trim 7x10 \-\-processing original
+.fi
+.PP
+Overriding artwork on a binding preset keeps its binding and trim:
+\fBbin/build genesis kdp\-paperback \-\-cover\-style fancy\fR is an illustrated 7×10
+paperback. On a publisher\-only preset, \fB\-\-cover\-style fancy\fR selects its existing
+fancy profile, including that profile's binding and default trim.
+.SH "PUBLISHER"
+\fB\-\-publisher kdp|lulu\fR (alias \fB\-\-provider\fR) selects the corresponding print
+preset. Thus \fBbin/build genesis \-\-publisher lulu\fR equals \fBbin/build genesis lulu\fR.
+An explicit publisher must agree with a positional publisher preset.
+.PP
+Publisher chooses cover geometry, eligibility checks, default processing, and
+output namespace. It does not upload files. KDP and Lulu use separate geometry
+implementations in \fBbin/kdp_cover_geometry.py\fR and \fBbin/lulu_cover_geometry.py\fR.
+KDP paperback uses page\-count/caliper spine math; Lulu paperback uses
+\fBpages / 444 + 0.06\fR inches for the implemented 60# white stock. Hardcover models
+include different board overhang, hinges, wrap, and spine calculations. Lulu uses
+a page\-count table. The KDP hardcover model is inferred from a recorded template;
+use an exact template when preparing a production hardcover.
+.PP
+These are implemented policies, not a live catalog of publisher products. Check
+the publisher's current calculator and proof before ordering:
+KDP calculator (https://kdp.amazon.com/cover\-calculator),
+Lulu print resources (https://www.lulu.com/publishing\-toolkit).
+.SH "STAGE"
+\fB\-\-stage all|build|vectorize|check|release\fR, default \fBall\fR.
+.PP
+.nf
+| Format | Stage | Operation |
+| \-\-\- | \-\-\- | \-\-\- |
+| Print | \fBall\fR | Build originals, then vectorize profiles whose processing is vectorized |
+| Print | \fBbuild\fR | Build searchable originals and matching wraps only |
+| Print | \fBvectorize\fR | Convert existing originals; never rebuild |
+| Print | \fBcheck\fR | Compare existing original/vector pairs structurally and at 300 DPI with MuPDF and Poppler |
+| Reading PDF | \fBall\fR, \fBbuild\fR | Compile until cross\-references settle (up to five passes) |
+| EPUB | \fBall\fR, \fBbuild\fR | Development build; internal validation and optional EPUBCheck |
+| EPUB | \fBrelease\fR | Rebuild with mandatory EPUBCheck before replacing output |
+| EPUB | \fBcheck\fR | Validate the existing archive with both validators; never rebuild |
+.fi
+.PP
+Explicit print stages control the operation even if processing says otherwise:
+\fB\-\-processing original \-\-stage vectorize\fR converts; `\-\-processing vectorized
+\-\-stage build\fB only builds originals. \fRcheck` requires both versions even for
+Lulu. Normal conversion runs structural checks; full pixel comparison is a
+separate \fBcheck\fR operation. A check establishes fidelity to its reference, not
+freshness relative to current sources.
+.SH "OUTPUT MODE"
+\fB\-\-output\-mode book|hard|tech|even\fR → \fBConfigOutputMode\fR.
+.PP
+\fBbook\fR uses 7×10 inches and binding margins; \fBhard\fR uses 8.25×11 with book
+typography; \fBeven\fR uses 7×10 with equal margins; \fBtech\fR uses a 7×14.68 screen
+layout and larger typography. Explicit trim changes page dimensions independently
+of typography, including tech mode. Print presets default to \fBbook\fR; ordinary
+PDF defaults follow \fBmaster.tex\fR.
+.SH "THEME"
+\fB\-\-theme lite|dark\fR → \fBConfigTheme\fR. Print presets use \fBlite\fR; ordinary PDF
+uses the active theme. Explicit overrides also select the corresponding asset
+theme. Choosing dark is an editorial choice; publisher checks do not assess
+ink coverage or reading comfort.
+.SH "VERSE LAYOUT"
+\fB\-\-verse\-layout horizontal|vertical\fR → \fBConfigVerseLayout\fR.
+Print default: \fBhorizontal\fR. Controls verse arrangement independently of format,
+trim, and cover.
+.SH "COMMENTARY"
+\fB\-\-commentary true|false\fR → \fBConfigCommentary\fR. Print default: \fBtrue\fR.
+Changes interior pagination, so rebuild its cover with the interior.
+.SH "TRANSLATION"
+\fB\-\-translation default|NAME\fR → \fBConfigEnglishTranslation\fR.
+\fBdefault\fR uses inline English. Other names must identify a directory under
+\fBtranslations/\fR, such as \fBkjv\fR. The build generates a private translation Lua
+file and passes \fBConfigEnglishTranslationLuaFile\fR to TeX. Print default: \fBdefault\fR.
+Completion lists the installed translation directories.
+.SH "TITLE PAGE STYLE"
+\fB\-\-title\-page\-style plain|fancy\fR → \fBIndividualBookTitlePageStyle\fR.
+Print default: \fBfancy\fR. This controls individual interior title pages separately
+from print cover artwork.
+.SH "COLORS"
+\fB\-\-colors default|lighter\fR → \fBConfigColors\fR. Print default: \fBdefault\fR.
+\fBlighter\fR selects the lighter lite\-theme palette; theme remains a separate choice.
+.SH "APOCRYPHA"
+\fB\-\-apocrypha apocryphal|canonical\fR → \fBConfigApocrypha\fR.
+Print default: \fBapocryphal\fR; ordinary PDF and EPUB follow \fBmaster.tex\fR unless
+overridden. Make print jobs accept explicit \fBAPOCRYPHA=canonical\fR.
+.PP
+EPUB is still a work in progress: it retains the renderer's omission of
+standalone print apocrypha and frontispiece files. Alternate verses inside chapters
+remain. Review ebook/README.md (ebook/README.md) for editorial limitations.
+.SH "REDACTOR"
+\fB\-\-redactor censored|uncensored\fR → \fBConfigRedactor\fR.
+Print default: \fBuncensored\fR. Controls the existing redaction policy in the text.
+.SH "INTERIOR OR EBOOK COVER"
+\fB\-\-cover none|BASENAME\fR → \fBConfigCover\fR for PDFs; embedded cover image for EPUB.
+Choose a basename without extension from \fBimg/covers/\fR; completion lists images.
+Print default: \fBnone\fR. EPUB default: \fBwe\-cover\-8\fR. Ordinary PDF follows
+\fBmaster.tex\fR. This image is separate from the measured print wrap.
+.SH "PRINT COVER ARTWORK"
+\fB\-\-cover\-style simple|fancy\fR → \fBConfigCoverStyle\fR and print profile artwork.
+\fBsimple\fR uses cover typography; \fBfancy\fR adds saved illustrated artwork with the
+same typography. On a publisher\-only call, selecting a style selects that
+profile. Omitting it builds both profiles. Binding presets select one profile.
+.PP
+Either artwork can be combined with either binding, trim, or processing:
+.PP
+.nf
+bin/build genesis lulu\-paperback \-\-cover\-style fancy \-\-trim 8.25x11 \-\-processing vectorized
+.fi
+.PP
+Fancy artwork comes from \fBpub/covers/fancy/assets/front\-textless.png\fR and its
+saved prompt. Building uses saved assets and deterministic TeX, without AI calls.
+The saved 1024×1536 illustration has limited native print resolution; outlining
+text cannot add detail to it.
+.SH "SPINE LETTERING"
+\fB\-\-spine ld|nameless\fR → \fBConfigSpine\fR and cover lettering. Print default: \fBld\fR.
+Spines too short for lettering are left unlettered (KDP below 79 pages; Lulu at
+80 pages or fewer). Geometry still follows the exact interior page count.
+.SH "PRINT SAFETY"
+\fB\-\-print\-safe true|false\fR → the historical \fBConfigKDP\fR TeX switch. It applies
+to both publishers: print\-safe image derivatives, heavier rules, and a blank
+final page when needed to end on a complete sheet. Print presets use \fBtrue\fR;
+ordinary PDFs follow \fBmaster.tex\fR (currently \fBfalse\fR). It can also be enabled for
+a serial reading PDF. Disabling it does not disable geometry or page\-count checks.
+.SH "TRIM"
+\fB\-\-trim default|7x10|8.25x11\fR. Values are interior dimensions in inches.
+\fBdefault\fR preserves the selected preset's numeric trim, or the natural reading
+PDF layout. Print dimensions pass to \fBConfigPrintTrimWidth\fR and
+\fBConfigPrintTrimHeight\fR; matching wrap dimensions come from the resulting PDF.
+Changing trim reflows source; it does not scale a finished PDF.
+.PP
+On a publisher\-only call an override applies to both profiles. A binding preset
+keeps its own default trim even when artwork is overridden. Custom arbitrary
+trims are not implemented.
+.SH "BINDING"
+\fB\-\-binding paperback|hardcover\fR, print only. Overrides physical construction
+independently of artwork. On a publisher\-only call with both profiles, this
+changes the construction of both pairs; select a binding preset or explicit
+artwork to create one pair. Paperback is perfect bound; hardcover is casewrap.
+Linen covers and dust jackets need other geometry policies.
+.PP
+.nf
+bin/build genesis kdp\-hardcover \-\-cover\-style simple
+bin/build genesis lulu \-\-cover\-style fancy \-\-binding paperback \-\-trim 7x10
+.fi
+.SH "PROCESSING"
+\fB\-\-processing original|vectorized\fR, print only. \fBoriginal\fR preserves searchable
+text. \fBvectorized\fR also outlines all fonts in both interior and cover using
+Ghostscript and cleans the PDFs with qpdf, without rasterizing pages. The default
+is vectorized for KDP and original for Lulu. Lulu has no implicit flattening or
+\fB\-final.pdf\fR step. Original illustrations remain raster images.
+.SH "PAPER"
+\fB\-\-paper premium\-color|standard\-color\fR, default \fBpremium\-color\fR.
+KDP hardcover always uses premium color even when the selected paperback stock
+is standard. Lulu implements color on 60# white uncoated stock. Black ink, cream
+paper, and 80# coated stock are not implemented.
+.PP
+Current implemented eligibility checks require even page counts:
+.PP
+.nf
+| Publisher / binding / stock | Pages |
+| \-\-\- | \-\-\- |
+| KDP paperback, premium | 24–828 |
+| KDP paperback, standard | 72–600 |
+| KDP hardcover | 76–550 |
+| Lulu paperback | 32–800 |
+| Lulu hardcover | 24–800 |
+.fi
+.SH "INK"
+\fB\-\-ink premium\-color|standard\-color\fR, default selected paper. Must match paper;
+KDP hardcover's effective paper and ink are premium color. The two arguments are
+retained for compatibility; mismatches fail before building.
+.SH "BLEED"
+\fB\-\-bleed no\-bleed\fR. Only no\-bleed interiors are implemented. This is independent
+of the measured outer cover bleed/wrap required by each construction model.
+.SH "PDF ENCODING"
+\fB\-\-variant soft|medium|hard\fR, print only, default \fBsoft\fR.
+All outline fonts. \fBsoft\fR uses PDF 1.7 and generated object streams; \fBmedium\fR
+uses PDF 1.7 without object streams or content normalization; \fBhard\fR uses PDF 1.4,
+no object streams, normalized content, and linearization. \fBhard\fR has no relation
+to hardcover binding. Nondefault variants use \fBpub/PUBLISHER/VARIANT/\fR unless an
+output directory is supplied.
+.SH "HARDCOVER TEMPLATE"
+\fB\-\-hardcover\-template PATH\fR, KDP hardcover only. A JSON file can replace the
+inferred model with exact calculator measurements. It must match the built
+interior's page count, trim, and effective paper. The pipeline records its hash.
+Lulu rejects KDP templates. Example schema (illustrative measurements):
+.PP
+.nf
+{"pages":224,"trim_width":8.25,"trim_height":11,"paper":"premium\-color",
+ "spine":0.715,"wrap":0.591,"hinge":0.394,"panel_width":8.447,"panel_height":11.236}
+.fi
+.SH "ASSET DIRECTORY"
+\fB\-\-asset\-dir PATH\fR overrides \fBKDPAssetDir\fR. Normally each print run prepares its
+own derivative links through \fBbin/print\-assets\fR, backed by a shared
+content\-addressed cache at \fBbuild/print/assets/\fR. Serial reading PDFs with print
+safety enabled also prepare derivatives automatically. Supplying a directory
+selects its existing derivatives for TeX.
+.SH "OUTPUT DIRECTORY"
+\fB\-\-output\-dir PATH\fR. Default reading PDFs go to the repository root; print pairs
+go to \fBpub/PUBLISHER/\fR (or its encoding subdirectory); EPUB goes to \fBebook/\fR.
+The default print naming convention is:
+.PP
+.nf
+pub/PUBLISHER/CANONICAL\-{interior,cover}\-STYLEcover\-NUMERICTRIM\-{original,vectorized}.pdf
+.fi
+.PP
+For example, \fBmake genesis\-kdp\fR creates upload pairs ending in
+\fBsimplecover\-7x10\-vectorized.pdf\fR and \fBfancycover\-8.25x11\-vectorized.pdf\fR under
+\fBpub/kdp/\fR, plus their originals. Lulu uses its own namespace and geometry.
+Upload the interior manuscript and its matching cover separately.
+.PP
+Stock, binding overrides, typography, spine lettering, and templates are not
+encoded in these filenames. Choose a separate output directory to retain such
+variants. Aliases share stems. Existing archived PDFs are not deleted. EPUB
+single\-book outputs retain names such as \fBebook/genesis.epub\fR; source/chapter
+editions retain their case\-sensitive edition names.
+.SH "BUILD DIRECTORY"
+\fB\-\-build\-dir PATH\fR, reading PDFs only. Default:
+\fBbuild/editions/CANONICAL/CONFIG\-HASH/\fR. Separate configuration caches prevent
+stale auxiliaries from leaking between reading editions. Print runs manage their
+own isolated directories under \fBbuild/PUBLISHER/CANONICAL/runs/\fR.
+.SH "WORKFLOW"
+\fB\-\-workflow serial|parallel\fR, reading PDFs only, default \fBserial\fR.
+Serial supports every selection and PDF setting. Parallel uses the existing
+chapter workflow (\fBbin/parallel\-build \-\-plain\fR), requires selection \fBall\fR, and
+uses natural trim and original assets. It supports the display and translation
+settings. Print profiles already run concurrently and do not accept this flag.
+EPUB uses its own renderer. Neither script workflow opens the result automatically.
+.SH "REPRODUCIBLE TIMESTAMP"
+\fB\-\-source\-date\-epoch INTEGER\fR or environment \fBSOURCE_DATE_EPOCH\fR.
+Must be nonnegative. Print builds default to the current Git commit timestamp;
+ordinary PDFs use the toolchain's normal timestamp unless supplied. The pipeline
+exports \fBFORCE_SOURCE_DATE=1\fR when pinning a timestamp. This does not promise
+byte\-identical output across tool installations. EPUB rejects this PDF option.
+.SH "ARTIFACT"
+\fB\-\-artifact FINAL.pdf\fR, print \fB\-\-stage check\fR only. Selects an explicit final PDF
+instead of the preset's stable paths. Requires \fB\-\-reference\fR; structural
+validation and both visual renderers still run.
+.SH "REFERENCE"
+\fB\-\-reference ORIGINAL.pdf\fR, print \fB\-\-stage check\fR only. Selects the searchable
+original against which the explicit artifact is compared. Requires \fB\-\-artifact\fR.
+.PP
+.nf
+bin/build genesis lulu \-\-stage check \-\-reference /tmp/original.pdf \-\-artifact /tmp/final.pdf
+.fi
+.SH "MAKE TARGET RESOLUTION"
+\fB\-\-make\-target TARGET\fR resolves the same fields as Make. For example:
+.PP
+.nf
+bin/build \-\-make\-target genesis\-kdp\-simplecover\-vectorized\-7x10 \-\-plan
+.fi
+.PP
+Explicit target fields override flags and Make variables. A short target leaves
+unspecified fields available for overrides. The script resolver also understands
+legacy partial spellings, but Make only enumerates the abbreviated and complete
+forms described above. Use normal arguments for new partial combinations.
+.PP
+Neutral Make variables are \fBPRINT_PAPER\fR, \fBPRINT_INK\fR, \fBPRINT_BLEED\fR,
+\fBPRINT_TRIM\fR, \fBPRINT_COVER_STYLE\fR, \fBPRINT_SPINE\fR, \fBPRINT_HARDCOVER_TEMPLATE\fR,
+\fBPRINT_BINDING\fR, \fBPRINT_PROCESSING\fR, \fBPRINT_OUTPUT_DIR\fR, and \fBPRINT_PLAN\fR.
+The corresponding historical \fBKDP_*\fR variables remain fallbacks, as do
+\fBKDP_ARTIFACT\fR and \fBKDP_REFERENCE\fR for the compatibility check target.
+Explicit \fBOUTPUT_MODE\fR, \fBTHEME\fR, \fBVERSE_LAYOUT\fR, \fBCOMMENTARY\fR, \fBTRANSLATION\fR,
+\fBTITLE_PAGE_STYLE\fR, \fBCOLORS\fR, \fBAPOCRYPHA\fR, \fBREDACTOR\fR, or \fBCOVER\fR overrides also
+reach print builds. Active master settings alone do not change print presets.
+Ebook Make jobs use \fBEBOOK_COVER\fR and \fBAPOCRYPHA\fR.
+.SH "READ-ONLY PLAN"
+\fB\-\-plan\fR prints resolved configuration and paths as JSON without creating work
+or output directories, probing build\-tool versions, or compiling anything.
+For reading PDFs and EPUB it also prints argument arrays for the commands.
+For print jobs it lists every selected profile and original/vector path.
+.PP
+.nf
+bin/build exodus lulu\-hardcover \-\-plan
+make genesis\-kdp PRINT_PLAN=1
+.fi
+.PP
+A plan checks argument compatibility and selection names, not installed build
+dependencies, actual pagination, template measurements, or publisher eligibility.
+.SH "SELECTION LIST"
+\fB\-\-list\fR lists books, aliases, and source selections without building.
+Chapter names are also available through tab completion and
+\fBbin/book\-subset \-\-make\-chapter\-targets\fR.
+.SH "DEPENDENCIES AND CHECKS"
+Reading PDFs need Python, LuaLaTeX, repository fonts/assets, and the selected
+translation data. Print builds additionally use Pillow, NumPy, Ghostscript, qpdf,
+MuPDF, Poppler utilities, and ImageMagick. EPUB needs Python, pandoc 3, fonts,
+and images; release/check require EPUBCheck and Java. EPUB reflows semantic text
+and rejects PDF\-only typography arguments instead of silently ignoring them.
+.PP
+.nf
+make check\-build             # CLI routing + KDP/Lulu synthetic PDF tests; no book build
+make check\-kdp\-validator     # Synthetic visual validator self\-test
+make check\-ebook             # EPUB renderer tests
+make help                   # Interfaces only
+.fi
+.PP
+Review publisher previews and physical proofs for gutters, scripts, artwork,
+color, spine, and barcode placement. PDF checks establish conversion fidelity;
+they do not establish editorial completeness or print quality. Before releasing
+EPUB, review navigation, notes, Hebrew direction, source fonts, tables, phone
+width, large type, and selected content in a reader and Kindle Previewer.
+.SH "LOGS AND RECOVERY"
+Print runs record source hashes, effective configuration, tool versions,
+commands, dependencies, and reports under
+\fBbuild/PUBLISHER/CANONICAL/runs/RUN/\fR. Source changes during generation cause a
+failure with a source\-change report. A publisher/selection lock covers all
+workers, including failure cleanup. Errors name the operation, candidate, log,
+and report paths. Reading PDF scratch directories have their own build lock.
+.PP
+Vectorization uses existing public originals without requiring a manifest.
+Each worker replaces vectors after all of its candidates pass structural checks;
+failed conversion preserves its older vectors. Replacements across multiple
+files are sequential. Two profiles finish independently; a failed build may
+leave some new originals. Fix the cause, rebuild originals, then vectorize again.
+Changing an interior's page count requires rebuilding its matching cover.
+.PP
+\fBmake clean\fR preserves print records and \fBpub/\fR; \fBmake distclean\fR deletes build
+records while retaining \fBpub/\fR. Subsequent vectorize/check operations can still
+use the public PDFs. See doc/publishing.md (doc/publishing.md) for internals.
+.SH "COMPATIBILITY COMMANDS"
+\fBbin/kdp\-publish BOOK [STAGE] \-\-provider kdp|lulu ...\fR remains a compatibility
+entry point for the old print interface. \fBbin/genesis\-kdp\fR retains its positional
+encoding/stock interface. New work should use \fBbin/build\fR.
+.PP
+Shared operations have neutral names: \fBbin/print\-assets\fR, \fBbin/print\-cover\fR,
+\fBbin/print\-inspect\fR, \fBbin/print\-validate\fR, and \fBbin/print\-visual\-compare\fR.
+The old \fBbin/kdp\-*\fR counterparts delegate to them. Publisher\-specific geometry
+modules keep publisher names. \fBbin/kdp\-source\fR remains a separate historical
+Genesis overlay; normal builds do not apply it.
+.PP
+Standalone \fBmake cover\fR and \fBmake genesis\-cover\fR use an existing interior and
+\fBCOVER_*\fR variables. Their script is
+\fBbin/print\-cover INTERIOR PAPER OUTPUT BUILD_DIR STYLE VOLUME SPINE [BINDING [TEMPLATE [PUBLISHER]]]\fR.
+Legacy \fBmake kdp KDP_INPUT=...\fR (\fBbin/kdp\-pdf INPUT OUTPUT\fR) and
+\fBmake kdp\-preflight KDP_INPUT=...\fR remain separate conversion/font checks.
+These legacy tools are not aliases for a source build.
+.SH "EXIT STATUS"
+0 on success; nonzero for invalid arguments, missing tools/files, locking,
+compilation, conversion, or validation failure. Failed commands propagate their
+exit status where available.
+.SH "SEE ALSO"
+PUBLISH.md, doc/publishing.md, ebook/README.md

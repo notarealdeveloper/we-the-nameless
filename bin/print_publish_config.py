@@ -8,6 +8,39 @@ PROVIDERS = ('kdp', 'lulu')
 STYLES = ('simple', 'fancy')
 PROCESSING = ('original', 'vectorized')
 STAGES = ('all', 'build', 'vectorize', 'check')
+BINDINGS = ('paperback', 'hardcover')
+PRESETS = ('pdf', 'ebook', *(name for provider in PROVIDERS
+    for name in (provider, *(f'{provider}-{binding}' for binding in BINDINGS))))
+
+# Each public TeX setting is declared once for argument parsing, completion and
+# documentation. Ordinary PDF defaults come from master.tex; print presets are
+# deliberately stable even when the author's active reading settings change.
+BOOK_OPTIONS = {
+    'output-mode': ('ConfigOutputMode', ('book', 'hard', 'tech', 'even'), 'page layout and typography'),
+    'theme': ('ConfigTheme', ('lite', 'dark'), 'light or dark page theme'),
+    'verse-layout': ('ConfigVerseLayout', ('horizontal', 'vertical'), 'verse arrangement'),
+    'commentary': ('ConfigCommentary', ('true', 'false'), 'include commentary'),
+    'translation': ('ConfigEnglishTranslation', None, 'default inline English or a translations/ directory'),
+    'title-page-style': ('IndividualBookTitlePageStyle', ('plain', 'fancy'), 'individual book title pages'),
+    'colors': ('ConfigColors', ('default', 'lighter'), 'theme palette'),
+    'apocrypha': ('ConfigApocrypha', ('apocryphal', 'canonical'), 'include or omit apocrypha'),
+    'redactor': ('ConfigRedactor', ('censored', 'uncensored'), 'redaction policy'),
+    'cover': ('ConfigCover', None, 'none or an image basename in img/covers/'),
+    'cover-style': ('ConfigCoverStyle', STYLES, 'simple typography or saved fancy artwork'),
+    'spine': ('ConfigSpine', ('nameless', 'ld'), 'spine lettering'),
+    'print-safe': ('ConfigKDP', ('true', 'false'), 'print assets, heavier rules, and even final page count'),
+}
+PRINT_CONFIG = dict(ConfigOutputMode='book', ConfigTheme='lite',
+    ConfigVerseLayout='horizontal', ConfigCommentary='true',
+    ConfigEnglishTranslation='default', IndividualBookTitlePageStyle='fancy',
+    ConfigColors='default', ConfigApocrypha='apocryphal', ConfigRedactor='uncensored',
+    ConfigCover='none', ConfigCoverStyle='simple', ConfigSpine='ld', ConfigKDP='true')
+
+
+def master_defaults(root):
+    text = (root / 'master.tex').read_text()
+    return {name: re.search(r'\\def\\' + name + r'\s*\{([^}]+)\}', text)[1]
+            for name, _, _ in BOOK_OPTIONS.values()}
 
 
 @dataclass(frozen=True)
@@ -54,6 +87,7 @@ def paper_for(profile, provider, paper):
 
 
 TARGET = re.compile(r'(?P<book>.+)-(?P<provider>kdp|lulu)'
+    r'(?:-(?P<preset_binding>paperback|hardcover))?'
     r'(?:-(?P<style>simplecover|fancycover))?'
     r'(?:-(?P<processing>original|vectorized))?'
     r'(?:-(?P<trim>7x10|8\.25x11|default))?'
@@ -70,15 +104,21 @@ def parse_target(target):
         del values['trim']
     if 'style' in values:
         values['cover_style'] = values.pop('style').removesuffix('cover')
+    if 'preset_binding' in values:
+        binding = values.pop('preset_binding')
+        values.update(binding=binding, cover_style='simple' if binding == 'paperback' else 'fancy')
     return values
 
 
 def target_suffixes():
-    # Used by Make itself so target completion and CLI parsing share a grammar.
-    for provider, style, processing, trim, stage in product(PROVIDERS,
-            ('', *(s + 'cover' for s in STYLES)), ('', *PROCESSING),
-            ('', *TRIMS, 'default'), ('', *(s for s in STAGES if s != 'all'))):
-        yield '-'.join(x for x in (provider, style, processing, trim, stage) if x)
+    # Only useful abbreviations and fully specified builds belong in Make.
+    # Partial combinations remain available as independent CLI arguments.
+    abbreviated = [name for provider in PROVIDERS for name in
+        (provider, *(f'{provider}-{binding}' for binding in BINDINGS))]
+    complete = [f'{provider}-{style}cover-{processing}-{trim}'
+        for provider, style, processing, trim in product(PROVIDERS, STYLES, PROCESSING, TRIMS)]
+    for target, stage in product((*abbreviated, *complete), STAGES):
+        yield target if stage == 'all' else f'{target}-{stage}'
 
 
 if __name__ == '__main__':

@@ -3,5 +3,5 @@
 set -euo pipefail
 stage=all
 if [[ ${1:-} == --check ]]; then stage=check; shift; fi
-exec "$(dirname "$0")/kdp-publish" genesis "$stage" --variant "${1:-soft}" \
+exec "$(dirname "$0")/build" genesis kdp --stage "$stage" --variant "${1:-soft}" \
   --paper "${2:-premium-color}" --ink "${3:-premium-color}" --bleed "${4:-no-bleed}"

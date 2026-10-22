@@ -4,24 +4,30 @@ The user interface, defaults, parameter mapping, output paths, publisher geometr
 and equivalent CLI calls are documented in [PUBLISH.md](../PUBLISH.md).
 The implementation has these boundaries:
 
+- `bin/build` owns the common CLI, master settings, reading PDF and EPUB routing,
+  completion values, and read-only command plans. Print flags become a resolved
+  configuration passed to the shared print pipeline. KDP-named wrappers preserve
+  the old interfaces without duplicating the shared implementation.
+
 - `bin/print_publish_config.py` owns publisher presets, supported trims, and the
   Make target grammar. Make enumerates its suffixes for completion; the CLI parses
   those same suffixes. Resolution finishes before any generation. `--plan` only
   resolves selection/configuration and prints paths; it creates no build directories.
 - `bin/book-subset` owns selection and canonical names. Aliases share output paths
   and locks, while case-sensitive source selections remain distinct.
-- `bin/kdp-publish` orchestrates both publishers. Each resolved profile records
+- `bin/print_publish.py` orchestrates both publishers. Each resolved profile records
   artwork, physical construction, trim, and processing separately. It supplies
   explicit print settings to TeX, inspects the actual interior, and builds the
   matching wrap. Construction never selects interior trim. KDP hardcover uses
   premium-color stock; Lulu preserves the selected color stock.
 - `master.tex` accepts `ConfigPrintTrimWidth` and `ConfigPrintTrimHeight` together
-  in its book geometry. Print builds use book typography with these explicit
-  dimensions. The legacy `hard` display mode still works for ordinary builds,
+  in every output mode. Print presets use book typography with these explicit
+  dimensions; explicit typography overrides remain independent. The legacy `hard`
+  display mode still works for ordinary builds,
   but publishing no longer relies on it to select trim.
 - `bin/kdp_cover_geometry.py` and `bin/lulu_cover_geometry.py` own the distinct
   physical cover models. Neither selects artwork or changes interior typography.
-  `bin/kdp-cover` reads page count and dimensions from its input PDF, selects the
+  `bin/print-cover` reads page count and dimensions from its input PDF, selects the
   publisher's model, writes dimensions/provenance, then runs two cover TeX passes.
   The shared cover typography renders either plain or illustrated panels. There
   is no alternate-layout branch.
@@ -83,10 +89,10 @@ run's reports directory. Check never rebuilds or alters the PDFs.
 An arbitrary pair can be checked with:
 
 ```sh
-bin/kdp-publish genesis check --provider kdp \
+bin/build genesis kdp --stage check \
   --reference /path/original.pdf --artifact /path/vectorized.pdf
 # Equivalent:
-make genesis-kdp-check KDP_REFERENCE=/path/original.pdf KDP_ARTIFACT=/path/vectorized.pdf
+make check-genesis-kdp KDP_REFERENCE=/path/original.pdf KDP_ARTIFACT=/path/vectorized.pdf
 ```
 
 Synthetic tests use small generated PDFs, mocked book/cover TeX commands, real PDF
