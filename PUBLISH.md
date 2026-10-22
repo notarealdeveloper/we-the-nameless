@@ -73,16 +73,16 @@ trim without a cover applies that override to **both** presets.
 
 Examples, with equivalent script calls:
 
-| Make target | Equivalent command |
-| --- | --- |
-| `make genesis-kdp-simplecover` | `bin/kdp-publish genesis all --provider kdp --cover-style simple` |
-| `make genesis-kdp-fancycover` | `bin/kdp-publish genesis all --provider kdp --cover-style fancy` |
-| `make genesis-lulu-original` | `bin/kdp-publish genesis all --provider lulu --processing original` |
-| `make genesis-lulu-vectorized` | `bin/kdp-publish genesis all --provider lulu --processing vectorized` |
-| `make genesis-kdp-7x10` | `bin/kdp-publish genesis all --provider kdp --trim 7x10` |
-| `make genesis-kdp-default` | `bin/kdp-publish genesis all --provider kdp` |
+| Make target                                     | Equivalent command                                                                                     |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `make genesis-kdp-simplecover`                  | `bin/kdp-publish genesis all --provider kdp --cover-style simple`                                      |
+| `make genesis-kdp-fancycover`                   | `bin/kdp-publish genesis all --provider kdp --cover-style fancy`                                       |
+| `make genesis-lulu-original`                    | `bin/kdp-publish genesis all --provider lulu --processing original`                                    |
+| `make genesis-lulu-vectorized`                  | `bin/kdp-publish genesis all --provider lulu --processing vectorized`                                  |
+| `make genesis-kdp-7x10`                         | `bin/kdp-publish genesis all --provider kdp --trim 7x10`                                               |
+| `make genesis-kdp-default`                      | `bin/kdp-publish genesis all --provider kdp`                                                           |
 | `make genesis-kdp-simplecover-original-8.25x11` | `bin/kdp-publish genesis all --provider kdp --cover-style simple --processing original --trim 8.25x11` |
-| `make exodus-lulu-fancycover-vectorized-7x10` | `bin/kdp-publish exodus all --provider lulu --cover-style fancy --processing vectorized --trim 7x10` |
+| `make exodus-lulu-fancycover-vectorized-7x10`   | `bin/kdp-publish exodus all --provider lulu --cover-style fancy --processing vectorized --trim 7x10`   |
 
 This table composes: `simplecover` maps to `--cover-style simple`, `fancycover`
 to `--cover-style fancy`, processing to `--processing VALUE`, and a concrete trim
