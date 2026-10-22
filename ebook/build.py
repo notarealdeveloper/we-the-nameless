@@ -1489,6 +1489,33 @@ def publication_notices():
     return lines
 
 
+def alphabet_history():
+    """Keep the supplied print-page artwork in its original reading order."""
+    lines = []
+    for number in (1, 2):
+        lines += [f'# The History of the Alphabet, Page {number} {{.front-heading .visually-hidden}}', "",
+                  '<div class="alphabet-history-page">',
+                  f'<img src="ebook/img/alphabet-history-{number}.png" '
+                  f'alt="The History of the Alphabet, page {number}"/></div>', ""]
+    return lines
+
+
+def translation_quote():
+    """Read the Tooby quotation from the print front matter."""
+    body = master_command("WeTranslationQuotePage")
+    body = body.split(r"\setlength{\parskip}{0.8\baselineskip}", 1)[1]
+    body = body.split(r"\end{minipage}", 1)[0].strip()
+    attribution = re.search(r"\{\\raggedleft\\upshape (.*?)\\par\}", body)
+    if attribution is None:
+        raise ValueError("missing translation quote attribution")
+    prose = body[:attribution.start()]
+    prose = prose.replace(r"\upshape", "").replace(r"\par", "")
+    return ['# Translation {.front-heading .visually-hidden}', "",
+            '::: {.translation-quote}', "", tex_to_markdown(prose), "",
+            '<p class="quote-attribution">'
+            + tex_to_markdown(attribution[1]).replace("---", "—") + '</p>', "", ':::', ""]
+
+
 def front_matter(
     sequence: list[tuple[str, str]],
     summaries: dict[tuple[str, str], str],
@@ -1536,6 +1563,7 @@ def front_matter(
         '<div class="title-nameless">The Nameless</div>',
         f'<div class="title-book">{html.escape(edition_title)}</div>',
         '</section>', "",
+        *alphabet_history(), *translation_quote(),
         '# Contents {#tableofcontents .front-heading}', "", *contents_sections, "",
         '# The Authors {.front-heading}', "",
         '<p class="authors-subtitle"><em>or</em><br/><span>We: The Nameless</span></p>',

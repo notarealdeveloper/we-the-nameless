@@ -726,10 +726,18 @@ Another verse^[Third note.] [Previous chapter](#book-1)
                 build.postprocess_epub(fixture)
             self.assertEqual(fixture.read_bytes(), before)
 
-    def test_front_matter_omits_alphabet_history_page(self) -> None:
+    def test_front_matter_places_alphabet_history_and_quote_before_contents(self) -> None:
         matter = "\n".join(build.front_matter([], {}, "Genesis"))
-        self.assertNotIn("The History of the Alphabet", matter)
-        self.assertNotIn('class="alphabet-page"', matter)
+        markers = ['class="wtn-title-page"', 'alphabet-history-1.png',
+                   'alphabet-history-2.png', 'For the same reason',
+                   '—John Tooby', '# Contents', 'Dudetheyreontome']
+        positions = [matter.index(marker) for marker in markers]
+        self.assertEqual(positions, sorted(positions))
+        quote = "\n".join(build.translation_quote())
+        self.assertIn("I defy the Pope, and all his laws", quote)
+        self.assertIn("intermediary between book and reader.", quote)
+        self.assertNotIn("\\upshape", quote)
+        self.assertNotIn("\\par", quote)
         self.assertIn('<div class="title-book">Genesis</div>', matter)
         self.assertIn('class="source source-j hebrew" lang="he" dir="rtl"', matter)
         self.assertIn('class="source source-e hebrew" lang="he" dir="rtl"', matter)
