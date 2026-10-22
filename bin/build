@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# When adding/removing arguments or changing their values, keep completions()
+# and bin/completions/build.sh in sync with the CLI.
 """Build any selection as a reading PDF, publisher print pair, or reflowable EPUB."""
 import argparse
 import fcntl
@@ -8,13 +10,14 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import shutil
 import subprocess
 import sys
 import tempfile
 
 from print_publish_config import (BOOK_OPTIONS, PRESETS, PROCESSING, PROVIDERS,
-    DEFAULTS, PRINT_CONFIG, TRIMS, master_defaults, parse_target)
+    DEFAULTS, PRINT_CONFIG, TRIMS, master_defaults, parse_target, target_suffixes)
 
 ROOT = Path(__file__).resolve().parents[1]
 STAGES = ('all', 'build', 'vectorize', 'check', 'release')
@@ -107,30 +110,118 @@ def translation_names():
                                if p.is_dir())})
 
 
+def selection_names():
+    names = ['all']
+    for flag in ('--make-targets', '--make-chapter-targets'):
+        names.extend(subprocess.check_output([str(ROOT / 'bin/book-subset'), flag], text=True).split())
+    return names
+
+
+def completion_words(line):
+    """Shell words up to the cursor, allowing an unfinished quote or escape."""
+    lexer = shlex.shlex(line, posix=True)
+    lexer.whitespace_split = True
+    lexer.commenters = ''
+    words = []
+    boundary = True
+    while True:
+        try:
+            word = lexer.get_token()
+        except ValueError:
+            words.append(lexer.token)
+            break
+        if word is None:
+            if boundary:
+                words.append('')
+            break
+        words.append(word)
+        boundary = lexer.state == ' '
+    return words
+
+
 def completions(words):
+    """Complete arguments without resolving a build; @ markers request Bash paths."""
+    trim = 0
+    if words and words[0] == '--bash':
+        line, point, *raw = words[1:]
+        point = int(point)
+        # Locate this command within COMP_LINE, including after a pipe or ';'.
+        # Parse its text so quotes, spaces and configurable word breaks agree.
+        end = point + len(raw[-1])
+        starts = []
+        for word in reversed(raw):
+            end = line.rfind(word, 0, end) if word else point
+            starts.append(end)
+        words = completion_words(line[end:point])[1:]
+        replacement = '' if raw[-1] in ('=', ':') else completion_words(line[starts[0]:point])[0]
+        trim = len(words[-1]) - len(replacement)
+    words = words or ['']
     p = parser()
-    current = words[-1] if words else ''
-    previous = words[-2] if len(words) > 1 else ''
-    actions = {flag: action for action in p._actions for flag in action.option_strings}
+    actions = {flag: action for action in p._actions for flag in action.option_strings
+               if action.help != argparse.SUPPRESS}
+    positionals = [action for action in p._actions if not action.option_strings]
+
+    def option(word):
+        flag = word.partition('=')[0]
+        if flag in actions:
+            return actions[flag]
+        if p.allow_abbrev and flag.startswith('--'):
+            matches = [action for name, action in actions.items() if name.startswith(flag)]
+            if len(matches) == 1:
+                return matches[0]
+
+    pending = None
+    positional = 0
+    options = True
+    for word in words[:-1]:
+        if pending is not None and not word.startswith('-'):
+            pending = None
+            continue
+        pending = None
+        if options and word == '--':
+            options = False
+        elif options and word.startswith('-'):
+            action = option(word)
+            if action is not None and action.nargs != 0 and '=' not in word:
+                pending = action
+        else:
+            positional += 1
+
+    current = words[-1]
     prefix = ''
-    if current.startswith('--') and '=' in current:
-        previous, current = current.split('=', 1)
-        prefix = previous + '='
-    if previous == '--translation':
-        candidates = translation_names()
-    elif previous == '--cover':
-        candidates = ['none', *cover_names()]
-    elif previous in actions and actions[previous].choices:
-        candidates = actions[previous].choices
-    elif current.startswith('-'):
-        candidates = [flag for flag in actions if flag != '--complete']
-    elif previous in actions and actions[previous].nargs != 0:
-        candidates = []  # Bash falls back to filenames for path arguments.
+    if options and current.startswith('--') and '=' in current:
+        flag, current = current.split('=', 1)
+        action = option(flag)
+        prefix = flag + '='
+    elif options and current.startswith('-'):
+        action = None
     else:
-        candidates = ['all', *PRESETS]
-        for flag in ('--make-targets', '--make-chapter-targets'):
-            candidates.extend(subprocess.check_output([str(ROOT / 'bin/book-subset'), flag], text=True).split())
-    values = [prefix + value for value in candidates if value.startswith(current)]
+        action = pending
+        if action is None and positional < len(positionals):
+            action = positionals[positional]
+
+    candidates = []
+    if action is not None:
+        if action.choices is not None:
+            candidates = action.choices
+        elif action.dest == 'book':
+            candidates = selection_names()
+        elif action.dest == 'translation':
+            candidates = translation_names()
+        elif action.dest == 'cover':
+            candidates = ['none', *cover_names()]
+        elif action.dest == 'make_target':
+            candidates = (f'{book}-{suffix}' for book in selection_names()
+                          for suffix in target_suffixes())
+        elif action.type is Path:
+            print('@directories' if action.dest.endswith('_dir') else '@filenames')
+            print(current)
+            print(max(0, trim - len(prefix)))
+            return
+    if options and not prefix and (pending is None or current.startswith('-')):
+        candidates = [*candidates, *actions]
+    values = dict.fromkeys((prefix + str(value))[trim:] for value in candidates
+                           if str(value).startswith(current))
     if values:
         print('\n'.join(values))
 

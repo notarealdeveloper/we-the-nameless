@@ -504,6 +504,12 @@ configuration values, live selections/chapters, translations, cover images, and
 path arguments. The completion file asks the CLI for values so it cannot drift
 from its choices. `--complete` is its internal read-only protocol.
 
+At a new argument it offers the current positional choices together with options;
+`--` as a prefix shows only long options. After an option that takes a value,
+it offers that option's choices, including with `--option=value`. Directory
+options complete directories, and file options complete paths, with shell quoting
+for spaces. Invalid choices and free-form numbers never fall back to filenames.
+
 ## Dependencies and checks
 
 Reading PDFs need Python, LuaLaTeX, repository fonts/assets, and the selected
