@@ -720,7 +720,8 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
         # The print book occasionally stacks two readings with TeX's low-level
         # \genfrac primitive. Pandoc cannot parse the surrounding \hbox,
         # \raisebox and custom \size commands, so express the same editorial
-        # relationship as an accessible, reflow-safe inline stack.
+        # relationship as inline alternatives. Block children in an inline
+        # stack can force sentence breaks in ebook readers.
         if r"\genfrac" in math:
             start = math.find(r"\genfrac") + len(r"\genfrac")
             arguments: list[str] = []
@@ -741,13 +742,13 @@ def tex_to_markdown(text: str, *, compact: bool = False) -> str:
                 rtl_paleo = any(re.search(r"[\u0590-\u05ff]", value) for value in readings)
                 if rtl_paleo:
                     readings = [historical_hebrew(value, "J") for value in readings]
-                stack_class = "stacked-reading paleo" if rtl_paleo else "stacked-reading"
+                stack_class = "alternate-reading paleo" if rtl_paleo else "alternate-reading"
                 direction = ' lang="he" dir="rtl"' if rtl_paleo else ""
                 rendered = (
                     f'<span class="{stack_class}"{direction} role="group" '
                     'aria-label="alternate readings: '
                     + html.escape("; ".join(re.sub(r"<[^>]+>", "", item) for item in readings), quote=True)
-                    + '"><span>' + readings[0] + '</span><span>' + readings[1] + '</span></span>'
+                    + '"><span>' + readings[0] + '</span> / <span>' + readings[1] + '</span></span>'
                 )
                 token = f"WTNMATHRUN{len(math_runs)}TOKEN"
                 math_runs.append(rendered)
@@ -1478,17 +1479,13 @@ def publication_logo():
 
 
 def publication_notices():
+    """Preserve the publisher's page artwork, including its three ink colors."""
     lines = []
-    for suffix in ("One", "Two"):
-        body = master_command("LDPublicationNoticePage" + suffix)
-        paragraphs = []
-        for match in re.finditer(r"\\a[ABC]\s*", body):
-            prose, _ = group(body, match.end())
-            prose = re.sub(r"\\\\", " ", prose).replace(r"\ttfamily", "")
-            paragraphs.append(tex_to_markdown(prose).strip())
+    for number, suffix in enumerate(("One", "Two"), start=1):
         lines += [f'# Publication Notice {suffix} {{.front-heading .visually-hidden}}', "",
-                  '<div class="publication-notice">', "",
-                  " ".join(paragraphs), "", publication_logo(), '</div>', ""]
+                  '<div class="publication-notice">',
+                  f'<img src="ebook/img/publisher-page-{number}.png" '
+                  f'alt="Publisher’s disclaimer, page {number}"/></div>', ""]
     return lines
 
 

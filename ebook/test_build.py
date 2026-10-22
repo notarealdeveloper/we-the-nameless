@@ -233,11 +233,10 @@ Another verse^[Third note.] [Previous chapter](#book-1)
         matter = "\n".join(build.front_matter([], {}, "Genesis"))
         self.assertIn("Publication Notice One", matter)
         self.assertIn("Publication Notice Two", matter)
-        self.assertNotIn('publisher-page-', matter)
-        self.assertEqual(matter.count('class="publication-logo"'), 2)
-        self.assertEqual(matter.count('<rect '), 8)
-        self.assertIn("Genesis 1 is written in a different style", matter)
-        self.assertIn("empowering of Zadok and the Aaronids", matter)
+        for number in (1, 2):
+            self.assertIn(f'src="ebook/img/publisher-page-{number}.png"', matter)
+            self.assertTrue((build.HERE / f'img/publisher-page-{number}.png').is_file())
+        self.assertNotIn('class="publication-logo"', matter)
         self.assertIn("We the people. We write regular.", matter)
         self.assertIn("Named J, or the Yahwist", matter)
         self.assertIn("Ketef Hinnom", matter)
@@ -442,6 +441,16 @@ Another verse^[Third note.] [Previous chapter](#book-1)
         self.assertNotIn("{r}", rendered)
         self.assertNotIn(r"\linewidth", rendered)
         self.assertNotIn("<figure", rendered)
+
+    def test_genesis_3_10_alternate_readings_do_not_force_line_breaks(self):
+        source = (build.ROOT / "01-genesis/03.tex").read_text(encoding="utf-8")
+        verse = next(v for v in build.parse_verses(source) if v[0] == "10")
+        for text in verse[1:3]:
+            rendered = build.tex_to_markdown(text)
+            self.assertIn('</span> / <span>', rendered)
+            self.assertNotIn('<br', rendered)
+        stylesheet = (build.HERE / "epub.css").read_text()
+        self.assertIn('.alternate-reading > span { display: inline; }', stylesheet)
 
     def test_print_stacking_becomes_accessible_reflowable_text(self) -> None:
         rendered = build.tex_to_markdown(
