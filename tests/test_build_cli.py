@@ -229,7 +229,8 @@ class BuildCliTests(unittest.TestCase):
         for target in ('genesis-ebook', 'exodus-ebook-release', 'J-ebook-check'):
             result = subprocess.run(['make', '-n', target], cwd=ROOT, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertIn('bin/build', result.stdout)
+            self.assertIn('make -C ebook', result.stdout)
+            self.assertNotIn('bin/build', result.stdout)
 
     def test_make_explicit_display_settings_reach_print_plan(self):
         plan = json.loads(subprocess.check_output(['make', '--no-print-directory', 'genesis-lulu',

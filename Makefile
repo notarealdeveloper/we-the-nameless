@@ -182,13 +182,13 @@ list:
 	bin/book-subset --list
 
 ebook:
-	@bin/build all ebook --cover "$(EBOOK_COVER)" --apocrypha "$(APOCRYPHA)"
+	$(MAKE) -C ebook all COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)"
 
 ebook-release:
-	@bin/build all ebook --stage release --cover "$(EBOOK_COVER)" --apocrypha "$(APOCRYPHA)"
+	$(MAKE) -C ebook release COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)"
 
 ebook-check ebook-validate:
-	@bin/build all ebook --stage check
+	$(MAKE) -C ebook validate
 
 check-ebook:
 	$(MAKE) -C ebook test
@@ -232,13 +232,13 @@ $(COVER_TARGETS): %-cover:
 	bin/print-cover "$${interior:-$$basename.pdf}" "$(COVER_PAPER)" "$${output:-$$basename-cover.pdf}" "$(COVER_BUILD)/$$basename/$(COVER_STYLE)" "$(COVER_STYLE)" "$(if $(COVER_VOLUME),$(COVER_VOLUME),$${title})" "$(SPINE)"
 
 $(addsuffix -ebook,$(EBOOK_SUBSETS)): %-ebook:
-	@bin/build "$*" ebook --cover "$(EBOOK_COVER)" --apocrypha "$(APOCRYPHA)"
+	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)"
 
 $(addsuffix -ebook-release,$(EBOOK_SUBSETS)): %-ebook-release:
-	@bin/build "$*" ebook --stage release --cover "$(EBOOK_COVER)" --apocrypha "$(APOCRYPHA)"
+	$(MAKE) -C ebook "$*" COVER="$(EBOOK_COVER)" APOCRYPHA="$(APOCRYPHA)" RELEASE=--require-epubcheck
 
 $(addsuffix -ebook-check,$(EBOOK_SUBSETS)): %-ebook-check:
-	@bin/build "$*" ebook --stage check
+	$(MAKE) -C ebook "validate-$*"
 
 pdf: build-pdf
 
