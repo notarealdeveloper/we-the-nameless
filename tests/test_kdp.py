@@ -49,7 +49,7 @@ class PublishingTests(unittest.TestCase):
             for suffix in target_suffixes():
                 self.assertIn(name + '-' + suffix, targets)
             for suffix in ('kdp-simplecover', 'kdp-fancycover', 'lulu-original', 'kdp-7x10', 'kdp-default'):
-                self.assertNotIn(name + '-' + suffix, targets)
+                self.assertIn(name + '-' + suffix, targets)
         for alias in ('genesis', '1-genesis', '01-genesis'):
             self.assertEqual(subprocess.check_output(['bin/book-subset', '--output-name', alias], cwd=ROOT, text=True).strip(), '01-genesis')
         for target in ('genesis-kdp-paperback', 'J-kdp-hardcover', 'P-lulu', 'genesis-1-kdp', 'genesis-kdp-simplecover-original-8.25x11', 'J-lulu-fancycover-vectorized-7x10'):

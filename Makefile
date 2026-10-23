@@ -153,9 +153,9 @@ help:
 		'  make genesis-kdp-simplecover-original-8.25x11           Override artwork, processing, and trim independently.' \
 		'  make J-lulu-fancycover-vectorized-7x10                   Any selection, publisher, style, processing, and supported trim.' \
 		'  make exodus-lulu-hardcover                             Fancy hardcover 7x10; searchable originals.' \
-		'  Only publisher presets and complete cover-processing-trim combinations have Make targets.' \
+		'  Publisher presets and optional cover, processing, and trim qualifiers have Make targets.' \
 		'  Each also accepts -build, -vectorize, or -check for one publishing stage.' \
-		'  bin/build genesis kdp --cover-style fancy               Partial combinations use the general CLI.' \
+		'  bin/build genesis kdp --cover-style fancy               Equivalent to make genesis-kdp-fancycover.' \
 		'  bin/build genesis kdp --stage build|vectorize|check      Run one publishing stage.' \
 		'  bin/build --help                                       All master.tex settings, publishers, PDF and EPUB options.' \
 		'  Add PRINT_PLAN=1 to print resolved parameters and paths without building.' \

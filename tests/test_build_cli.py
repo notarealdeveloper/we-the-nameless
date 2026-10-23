@@ -214,14 +214,22 @@ class BuildCliTests(unittest.TestCase):
                 self.assertEqual(override['profiles'][0]['binding'], profile.binding)
                 self.assertEqual(override['profiles'][0]['style'], other)
 
-    def test_make_shorthands_match_cli_and_partial_targets_are_gone(self):
+    def test_make_shorthands_and_restored_partial_targets_match_cli(self):
         for name, preset in (('genesis-kdp', 'kdp'), ('exodus-lulu-hardcover', 'lulu-hardcover')):
             made = json.loads(subprocess.check_output(['make', '--no-print-directory', name, 'PRINT_PLAN=1'], cwd=ROOT, text=True))
             self.assertEqual(made, self.plan(name.split('-')[0], preset))
-        for target in ('genesis-kdp-fancycover', 'genesis-kdp-vectorized', 'genesis-lulu-7x10'):
+        for target, preset, flags in (
+                ('genesis-kdp-fancycover', 'kdp', ['--cover-style', 'fancy']),
+                ('genesis-kdp-vectorized', 'kdp', ['--processing', 'vectorized']),
+                ('genesis-lulu-7x10', 'lulu', ['--trim', '7x10']),
+                ('genesis-lulu-original-default-check', 'lulu', ['--processing', 'original', '--stage', 'check'])):
+            made = json.loads(subprocess.check_output(
+                ['make', '--no-print-directory', target, 'PRINT_PLAN=1'], cwd=ROOT, text=True))
+            self.assertEqual(made, self.plan('genesis', preset, *flags))
+        for target in ('genesis-ebook', 'exodus-ebook-release', 'J-ebook-check'):
             result = subprocess.run(['make', '-n', target], cwd=ROOT, capture_output=True, text=True)
-            self.assertNotEqual(result.returncode, 0)
-            self.assertIn('No rule to make target', result.stderr)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('bin/build', result.stdout)
 
     def test_make_explicit_display_settings_reach_print_plan(self):
         plan = json.loads(subprocess.check_output(['make', '--no-print-directory', 'genesis-lulu',

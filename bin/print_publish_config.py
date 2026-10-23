@@ -111,14 +111,15 @@ def parse_target(target):
 
 
 def target_suffixes():
-    # Only useful abbreviations and fully specified builds belong in Make.
-    # Partial combinations remain available as independent CLI arguments.
-    abbreviated = [name for provider in PROVIDERS for name in
-        (provider, *(f'{provider}-{binding}' for binding in BINDINGS))]
-    complete = [f'{provider}-{style}cover-{processing}-{trim}'
-        for provider, style, processing, trim in product(PROVIDERS, STYLES, PROCESSING, TRIMS)]
-    for target, stage in product((*abbreviated, *complete), STAGES):
+    # Preserve the historical optional qualifiers and newer binding presets.
+    for provider, style, processing, trim, stage in product(PROVIDERS,
+            ('', *(s + 'cover' for s in STYLES)), ('', *PROCESSING),
+            ('', *TRIMS, 'default'), ('', *(s for s in STAGES if s != 'all'))):
+        yield '-'.join(x for x in (provider, style, processing, trim, stage) if x)
+    for provider, binding, stage in product(PROVIDERS, BINDINGS, STAGES):
+        target = f'{provider}-{binding}'
         yield target if stage == 'all' else f'{target}-{stage}'
+
 
 
 if __name__ == '__main__':

@@ -88,22 +88,14 @@ matching premium-color paper/ink, no interior bleed, and soft PDF encoding.
 KDP retains searchable originals alongside vectors. The two pairs run concurrently
 with independent work directories, assets, caches, and logs.
 
-Only these print suffixes are enumerated for each selection:
-
-```text
-PUBLISHER[-STAGE]
-PUBLISHER-paperback[-STAGE]
-PUBLISHER-hardcover[-STAGE]
-PUBLISHER-STYLEcover-PROCESSING-TRIM[-STAGE]
-```
-
-The last form requires **every** field: publisher `kdp|lulu`, style `simple|fancy`,
-processing `original|vectorized`, and numeric trim `7x10|8.25x11`.
-Stage is optional: `build`, `vectorize`, or `check`; omission runs `all`.
-There are 22 base print suffixes, or 88 including stages, reduced from 288.
-Intermediate targets
-such as `genesis-kdp-fancycover`, `genesis-lulu-original`, `genesis-kdp-7x10`,
-are removed. Their operations remain available directly:
+Print targets support optional cover style, processing, trim and stage qualifiers,
+in that order, for every book, alias, source selection and chapter.
+Styles are simplecover or fancycover; processing is original or vectorized;
+trim is 7x10, 8.25x11 or default; stage is build, vectorize or check.
+Omitted fields use publisher defaults. Publisher-binding presets remain available.
+The historical 288 print suffixes and 16 newer binding preset suffixes are supported.
+For example, make genesis-kdp-fancycover, make genesis-lulu-original and
+make genesis-kdp-7x10 work alongside these script equivalents:
 
 ```sh
 bin/build genesis kdp --cover-style fancy
@@ -453,9 +445,8 @@ bin/build --make-target genesis-kdp-simplecover-vectorized-7x10 --plan
 ```
 
 Explicit target fields override flags and Make variables. A short target leaves
-unspecified fields available for overrides. The script resolver also understands
-legacy partial spellings, but Make only enumerates the abbreviated and complete
-forms described above. Use normal arguments for new partial combinations.
+unspecified fields available for overrides. Make and the script resolver support
+the same optional style, processing, trim and stage qualifiers.
 
 Neutral Make variables are `PRINT_PAPER`, `PRINT_INK`, `PRINT_BLEED`,
 `PRINT_TRIM`, `PRINT_COVER_STYLE`, `PRINT_SPINE`, `PRINT_HARDCOVER_TEMPLATE`,

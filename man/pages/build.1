@@ -25,7 +25,7 @@ cover, print\-safe assets/rules, LD spine, matching premium\-color paper/ink,
 no interior bleed, and soft PDF encoding. Artwork, binding, processing and trim
 are independent. \-\-binding overrides construction; \-\-cover\-style selects artwork.
 Publisher\-only calls build both profiles concurrently. The flags expose every
-combination without creating intermediate Make targets.
+combination, including the optional qualifiers supported by Make.
 
 Stages:
   Print all: build originals and apply processing; build: originals only;
@@ -46,10 +46,9 @@ Examples:
   bin/build genesis kdp \-\-stage vectorize
   bin/build \-\-make\-target genesis\-kdp\-simplecover\-vectorized\-7x10 \-\-plan
 
-Make keeps publisher and publisher\-binding abbreviations, plus targets with all
-of cover style, processing and numeric trim. Each also accepts a \-build,
-\-vectorize or \-check stage suffix. Use this command for partial choices and
-independent flags. \-\-plan resolves paths/configuration without writes or builds.
+Make supports publisher and publisher\-binding presets and optional style,
+processing, trim and stage qualifiers. Use \-\-plan to resolve configuration
+without writes or builds.
 Custom settings can share output names: choose \-\-output\-dir to retain variants.
 These commands only create local files; they never upload to a publisher.
 See PUBLISH.md and man/pages/build.1 for every option and operational limits.
@@ -73,7 +72,7 @@ select print publisher; equivalent to its preset
 operation; see stage descriptions below (default: all)
 .TP
 .B \-\-make\-target MAKE_TARGET
-resolve a retained Make abbreviation; its explicit fields override flags
+resolve a Make target; its explicit fields override flags
 .TP
 .B \-\-output\-mode {book,hard,tech,even}
 book: 7x10 with gutter; hard: 8.25x11; even: 7x10 equal margins; tech: 7x14.68 and larger text; explicit trim overrides page size; defaults from preset or master.tex
@@ -207,22 +206,15 @@ matching premium\-color paper/ink, no interior bleed, and soft PDF encoding.
 KDP retains searchable originals alongside vectors. The two pairs run concurrently
 with independent work directories, assets, caches, and logs.
 .PP
-Only these print suffixes are enumerated for each selection:
-.PP
-.nf
-PUBLISHER[\-STAGE]
-PUBLISHER\-paperback[\-STAGE]
-PUBLISHER\-hardcover[\-STAGE]
-PUBLISHER\-STYLEcover\-PROCESSING\-TRIM[\-STAGE]
-.fi
-.PP
-The last form requires every field: publisher \fBkdp|lulu\fR, style \fBsimple|fancy\fR,
-processing \fBoriginal|vectorized\fR, and numeric trim \fB7x10|8.25x11\fR.
-Stage is optional: \fBbuild\fR, \fBvectorize\fR, or \fBcheck\fR; omission runs \fBall\fR.
-There are 22 base print suffixes, or 88 including stages, reduced from 288.
-Intermediate targets
-such as \fBgenesis\-kdp\-fancycover\fR, \fBgenesis\-lulu\-original\fR, \fBgenesis\-kdp\-7x10\fR,
-are removed. Their operations remain available directly:
+Print targets support optional cover style, processing, trim and stage qualifiers,
+in that order, for every book, alias, source selection and chapter.
+Styles are simplecover or fancycover; processing is original or vectorized;
+trim is 7x10, 8.25x11 or default; stage is build, vectorize or check.
+Omitted fields use publisher defaults. Publisher\-binding presets remain available.
+The historical 288 print suffixes and 16 newer binding preset suffixes are supported.
+For example, make genesis\-kdp\-fancycover, make genesis\-lulu\-original and
+make genesis\-kdp\-7x10 work alongside these script equivalents:
+
 .PP
 .nf
 bin/build genesis kdp \-\-cover\-style fancy
@@ -510,9 +502,8 @@ bin/build \-\-make\-target genesis\-kdp\-simplecover\-vectorized\-7x10 \-\-plan
 .fi
 .PP
 Explicit target fields override flags and Make variables. A short target leaves
-unspecified fields available for overrides. The script resolver also understands
-legacy partial spellings, but Make only enumerates the abbreviated and complete
-forms described above. Use normal arguments for new partial combinations.
+unspecified fields available for overrides. Make and the script resolver support
+the same optional style, processing, trim and stage qualifiers.
 .PP
 Neutral Make variables are \fBPRINT_PAPER\fR, \fBPRINT_INK\fR, \fBPRINT_BLEED\fR,
 \fBPRINT_TRIM\fR, \fBPRINT_COVER_STYLE\fR, \fBPRINT_SPINE\fR, \fBPRINT_HARDCOVER_TEMPLATE\fR,
