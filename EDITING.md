@@ -8,7 +8,7 @@ Work on the book of Professionals, for Dudetheyreontome. The book will be a coll
 
 ## To do now
 
-if len(mistress.pdf) != 600 pages:
+if len(01-genesis.pdf) != 600 pages:
     Look back in the git history and figure out which of the changes made 
     today may have made the 'make genesis' output pdf change from 600 pages 
     something else. This is an important invariant there and something you 
